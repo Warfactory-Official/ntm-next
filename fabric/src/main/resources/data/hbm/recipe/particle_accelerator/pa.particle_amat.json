@@ -1,0 +1,16 @@
+{
+  "type": "hbm:particle_accelerator",
+  "input_items": [
+    {
+      "ingredient": "hbm:particle_hydrogen"
+    },
+    {
+      "ingredient": "hbm:particle_copper"
+    }
+  ],
+  "momentum": 300,
+  "order": 0,
+  "output_items": [
+    "hbm:particle_amat"
+  ]
+}

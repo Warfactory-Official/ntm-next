@@ -1,0 +1,78 @@
+{
+  "type": "hbm:assembly_machine",
+  "custom_localization": true,
+  "duration": 200,
+  "icon_from_input": true,
+  "input_items": [
+    {
+      "ingredient": "hbm:nitra"
+    }
+  ],
+  "order": 431,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:casing_shotshell"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "hbm:casing_buckshot"
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "count": 2,
+          "id": "hbm:casing_small"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "hbm:casing_large"
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "id": "minecraft:gunpowder"
+        },
+        "weight": 30
+      },
+      {
+        "data": {
+          "id": "hbm:cordite"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "hbm:ballistite"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "hbm:grenade_shell_frag"
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "id": "hbm:grenade_shell_stick"
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "id": "hbm:grenade_fuze_s3"
+        },
+        "weight": 10
+      }
+    ]
+  ],
+  "power": 500
+}

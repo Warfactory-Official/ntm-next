@@ -1,0 +1,23 @@
+{
+  "type": "hbm:oil_bubble",
+  "biomes": [
+    "minecraft:desert",
+    "minecraft:badlands",
+    "minecraft:eroded_badlands",
+    "minecraft:wooded_badlands"
+  ],
+  "core": {
+    "Name": "hbm:ore_oil_sand"
+  },
+  "fuzzy": true,
+  "max_size": 48,
+  "min_size": 16,
+  "min_y": 56,
+  "range_y": 16,
+  "replaceable": {
+    "predicate_type": "minecraft:tag_match",
+    "tag": "minecraft:sand"
+  },
+  "spawn_overrides": {},
+  "step": "underground_ores"
+}

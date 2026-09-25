@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 7.5
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:ingots/plutonium_240"
+}

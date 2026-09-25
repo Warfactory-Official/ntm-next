@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:hydroactive",
+      "level": 0.30000000000000004
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:tiny_dusts/lithium"
+}

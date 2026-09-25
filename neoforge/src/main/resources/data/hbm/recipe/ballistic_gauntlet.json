@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "R": "hbm:ring_starmetal",
+    "S": "#c:plates/steel",
+    "W": "#c:fine_wires/copper"
+  },
+  "pattern": [
+    " WS",
+    "WRS",
+    " RS"
+  ],
+  "result": {
+    "id": "hbm:ballistic_gauntlet"
+  }
+}

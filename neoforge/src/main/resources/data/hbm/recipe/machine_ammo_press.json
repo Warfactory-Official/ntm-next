@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:ingots/copper",
+    "I": "#c:ingots/iron",
+    "P": "minecraft:piston",
+    "S": "minecraft:stone"
+  },
+  "pattern": [
+    "IPI",
+    "C C",
+    "SSS"
+  ],
+  "result": {
+    "id": "hbm:machine_ammo_press"
+  }
+}

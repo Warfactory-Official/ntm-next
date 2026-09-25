@@ -1,0 +1,28 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/copper"
+    }
+  ],
+  "order": 237,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:pwr_channel"
+    }
+  ],
+  "power": 500
+}

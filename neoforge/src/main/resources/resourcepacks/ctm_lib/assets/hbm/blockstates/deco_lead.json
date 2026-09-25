@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:deco_lead"
+  ],
+  "ctm_textures": {
+    "hbm:block/deco_lead": "hbm:block/ctm_lib/deco_lead"
+  },
+  "variants": {
+    "": {
+      "model": "hbm:block/deco_lead"
+    }
+  }
+}

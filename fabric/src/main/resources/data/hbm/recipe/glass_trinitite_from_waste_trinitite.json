@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.25,
+  "ingredient": "hbm:waste_trinitite",
+  "result": {
+    "id": "hbm:glass_trinitite"
+  }
+}

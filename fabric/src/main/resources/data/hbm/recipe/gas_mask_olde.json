@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": "#c:ingots/iron",
+    "G": "#c:glass_panes",
+    "P": "minecraft:leather"
+  },
+  "pattern": [
+    "PPP",
+    "GPG",
+    " F "
+  ],
+  "result": {
+    "id": "hbm:gas_mask_olde"
+  }
+}

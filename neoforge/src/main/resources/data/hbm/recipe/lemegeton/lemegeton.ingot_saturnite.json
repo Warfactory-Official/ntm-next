@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/titanium"
+    }
+  ],
+  "order": 5,
+  "output_items": [
+    "hbm:ingot_saturnite"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "hbm:alloy"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "hbm:alloy"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "hbm:alloy"
+      }
+    ]
+  }
+}

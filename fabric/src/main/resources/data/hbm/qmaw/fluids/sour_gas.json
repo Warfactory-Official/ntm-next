@@ -1,0 +1,29 @@
+{
+  "content": {
+    "en_us": "Sour gas is first obtained by [[vacuum refining|Vacuum Refinery]] [[pressurized|Compressor]] [[crude oil|Crude Oil]]. It is used in a variety of applications including the production of [[TATB]], and the [[conversion|Ore Acidizer]] of [[latex|Latex]] to [[rubber|Rubber]]. It may also be obtained by [[hydrotreating|Hydrotreater]] various [[oil|Crude Oil]] and [[diesel|Cracked Diesel]] variants.<br><br>{{hbm:fluids/template_oil3}}"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:sourgas",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -3555827
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Sour Gas",
+  "title": {
+    "en_us": "Sour Gas"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:sourgas"
+    }
+  }
+}

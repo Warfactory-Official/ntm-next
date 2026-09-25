@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:bolts/dura_steel",
+    "D": "#c:gems/diamond",
+    "P": "#c:plates/saturnite"
+  },
+  "pattern": [
+    " P ",
+    "PBP",
+    "PDP"
+  ],
+  "result": {
+    "id": "hbm:padlock_unbreakable"
+  }
+}

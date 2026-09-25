@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/fusion_breeder"
+    },
+    "facing=north": {
+      "model": "hbm:block/fusion_breeder",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/fusion_breeder",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/fusion_breeder",
+      "y": 180
+    }
+  }
+}

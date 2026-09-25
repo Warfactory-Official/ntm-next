@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:blades_titanium"
+    },
+    "D": "#c:plates/titanium",
+    "H": "minecraft:hopper",
+    "P": "hbm:motor",
+    "T": "hbm:machine_transformer",
+    "U": "hbm:upgrade_smelter"
+  },
+  "pattern": [
+    "PHP",
+    "CUC",
+    "DTD"
+  ],
+  "result": {
+    "id": "hbm:upgrade_shredder"
+  }
+}

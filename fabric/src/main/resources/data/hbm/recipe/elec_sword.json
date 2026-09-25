@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:battery_pack_battery_lead",
+    "P": "#hbm:ingots/any_plastic",
+    "R": "#c:bolts/dura_steel"
+  },
+  "pattern": [
+    "RPR",
+    "RPR",
+    " B "
+  ],
+  "result": {
+    "id": "hbm:elec_sword"
+  }
+}

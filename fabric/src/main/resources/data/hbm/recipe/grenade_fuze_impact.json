@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#hbm:dusts/any_smokeless",
+    "F": "hbm:safety_fuse",
+    "S": "#c:bolts/steel"
+  },
+  "pattern": [
+    "C",
+    "S",
+    "F"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:grenade_fuze_impact"
+  }
+}

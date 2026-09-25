@@ -1,0 +1,24 @@
+{
+  "type": "hbm:electrolyser_metal",
+  "duration": 600,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_schraranium"
+    }
+  ],
+  "order": 11,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:nugget_neptunium"
+    }
+  ],
+  "output_material": {
+    "amount": 40,
+    "material": "schrabidium"
+  },
+  "output_material_2": {
+    "amount": 16,
+    "material": "uranium"
+  }
+}

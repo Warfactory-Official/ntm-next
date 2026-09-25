@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "I": "minecraft:iron_ingot",
+    "Q": "minecraft:quartz",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "QIQ",
+    "QIQ",
+    "GSG"
+  ],
+  "result": {
+    "id": "hbm:big_sword"
+  }
+}

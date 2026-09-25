@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:plates/steel",
+    "S": "#c:plates/lead"
+  },
+  "pattern": [
+    "II",
+    "SS",
+    "II"
+  ],
+  "result": {
+    "id": "hbm:door_bunker"
+  }
+}

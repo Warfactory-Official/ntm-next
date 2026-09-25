@@ -1,0 +1,6 @@
+{
+  "textures": {
+    "connected": "hbm:block/ctm_lib/hadron_coil_alloy_ct",
+    "particle": "hbm:block/hadron_coil_alloy"
+  }
+}

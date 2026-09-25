@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "hbm:ducttape",
+    "R": "hbm:rebar",
+    "W": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:wrench",
+      "components": {
+        "minecraft:damage": 0
+      }
+    }
+  },
+  "pattern": [
+    "RDR",
+    "DWD",
+    "RDR"
+  ],
+  "result": {
+    "id": "hbm:rebar_placer"
+  }
+}

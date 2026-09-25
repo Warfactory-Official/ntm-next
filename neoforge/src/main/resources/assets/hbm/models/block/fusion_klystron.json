@@ -1,0 +1,20 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Pipes",
+    "Rotor"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/fusion/klystron.obj",
+  "offset_x": -1.0,
+  "skins": {
+    "all": [
+      "Klystron"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/fusion/klystron",
+    "particle": "hbm:block/models/fusion/klystron"
+  }
+}

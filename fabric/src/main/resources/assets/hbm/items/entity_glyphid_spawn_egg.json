@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/entity_glyphid_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 7490081
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 13810546
+      }
+    ]
+  }
+}

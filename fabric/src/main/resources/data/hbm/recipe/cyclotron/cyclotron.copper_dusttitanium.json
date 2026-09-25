@@ -1,0 +1,16 @@
+{
+  "type": "hbm:cyclotron",
+  "amat": 15,
+  "input_items": [
+    {
+      "ingredient": "hbm:part_copper"
+    },
+    {
+      "ingredient": "#c:dusts/titanium"
+    }
+  ],
+  "order": 26,
+  "output_items": [
+    "hbm:powder_strontium"
+  ]
+}

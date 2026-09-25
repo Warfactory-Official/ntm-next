@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 12.5
+    }
+  ],
+  "targets": "hbm:pwr_fuel_bfb_pu241"
+}

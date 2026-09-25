@@ -1,0 +1,176 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -25.083786,
+        4.530514,
+        2.117508
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        1.0217853,
+        3.1177044,
+        2.2044005
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -25.083786,
+        4.530514,
+        2.117508
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        -0.6234735,
+        3.1177044,
+        2.3483424
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0.0,
+        89.99999,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        2.5987547E-6,
+        1.94,
+        2.5644317
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        -89.99999,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        -1.7762145E-6,
+        -1.75,
+        -1.0322158
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30.0,
+        44.999996,
+        -0.0
+      ],
+      "scale": [
+        0.3125,
+        0.3125,
+        0.3125
+      ],
+      "translation": [
+        -1.2164768,
+        -1.0926952,
+        -6.0714974
+      ]
+    },
+    "head": {
+      "rotation": [
+        179.99998,
+        50.000008,
+        25.000013
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        3.9509935,
+        -17.474873,
+        4.7086043
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -0.0,
+        -89.99999,
+        0.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        -6.1511837E-6,
+        9.0,
+        -4.1288643
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        15.499248,
+        -11.3468075,
+        14.955149
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        0.46112883,
+        2.671092,
+        1.6697192
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        15.499248,
+        -11.3468075,
+        14.955149
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -2.1653042,
+        2.1224203,
+        0.97063166
+      ]
+    }
+  },
+  "double_sided": [
+    "fatman_Cylinder"
+  ],
+  "gui_light": "side",
+  "model": "hbm:models/bombs/fatman.obj",
+  "offset_x": -0.40592796,
+  "offset_y": -0.25,
+  "offset_z": -4.7683716E-7,
+  "skins": {
+    "all": [
+      "fatman_Cylinder"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/bombs/fatman",
+    "particle": "hbm:block/models/bombs/fatman"
+  }
+}

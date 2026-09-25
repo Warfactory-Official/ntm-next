@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:storage_blocks/radium_226"
+    }
+  ],
+  "order": 330,
+  "output_items": [
+    {
+      "count": 9,
+      "id": "hbm:powder_ra226"
+    }
+  ]
+}

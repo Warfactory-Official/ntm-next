@@ -1,0 +1,28 @@
+{
+  "type": "hbm:crucible",
+  "frequency": 6,
+  "icon": {
+    "id": "hbm:stone_resource_malachite"
+  },
+  "input_materials": [
+    {
+      "amount": 144,
+      "material": "malachite"
+    },
+    {
+      "amount": 16,
+      "material": "flux"
+    }
+  ],
+  "order": 2,
+  "output_materials": [
+    {
+      "amount": 72,
+      "material": "copper"
+    },
+    {
+      "amount": 24,
+      "material": "slag"
+    }
+  ]
+}

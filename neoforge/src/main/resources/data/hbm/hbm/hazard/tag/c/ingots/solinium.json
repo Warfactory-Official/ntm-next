@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 17.5
+    },
+    {
+      "type": "hbm:blinding",
+      "level": 50.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:ingots/solinium"
+}

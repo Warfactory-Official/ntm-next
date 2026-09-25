@@ -1,0 +1,27 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#c:plates/steel"
+    },
+    "B": {
+      "ingredient": {
+        "neoforge:ingredient_type": "hbm:fluid_content",
+        "amount": 1000,
+        "fluid": "hbm:diesel"
+      }
+    },
+    "C": {
+      "ingredient": "#c:plates/steel"
+    }
+  },
+  "order": 71,
+  "output_items": [
+    "hbm:ammo_standard_flame_diesel"
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

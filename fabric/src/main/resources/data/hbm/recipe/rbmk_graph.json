@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:rbmk_display_blank",
+    "C": "hbm:crt_display",
+    "R": "hbm:radio_torch_receiver"
+  },
+  "pattern": [
+    "R",
+    "C",
+    "B"
+  ],
+  "result": {
+    "id": "hbm:rbmk_graph"
+  }
+}

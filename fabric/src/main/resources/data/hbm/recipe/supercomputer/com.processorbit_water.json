@@ -1,0 +1,39 @@
+{
+  "type": "hbm:supercomputer",
+  "duration": 72000,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 16000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:drive_disk_orbitdata"
+    }
+  ],
+  "order": 9,
+  "output_fluids": [
+    {
+      "type": "hbm:spentsteam",
+      "amount": 16000
+    }
+  ],
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:drive_disk_orbitdata_processed"
+        },
+        "weight": 75
+      },
+      {
+        "data": {
+          "id": "hbm:drive_disk_broken"
+        },
+        "weight": 25
+      }
+    ]
+  ],
+  "power": 10000
+}

@@ -1,0 +1,21 @@
+{
+  "type": "hbm:electrolyser_fluid",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:calcium_chloride",
+      "amount": 250
+    }
+  ],
+  "order": 7,
+  "output_fluids": [
+    {
+      "type": "hbm:chlorine",
+      "amount": 125
+    },
+    {
+      "type": "hbm:calcium_solution",
+      "amount": 125
+    }
+  ]
+}

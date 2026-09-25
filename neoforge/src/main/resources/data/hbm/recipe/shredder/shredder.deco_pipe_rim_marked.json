@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:deco_pipe_rim_marked"
+    }
+  ],
+  "order": 162,
+  "output_items": [
+    "hbm:powder_steel"
+  ]
+}

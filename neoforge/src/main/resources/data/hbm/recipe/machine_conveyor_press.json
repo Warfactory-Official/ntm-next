@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:conveyor_wand_regular",
+    "C": "#c:plates/copper",
+    "P": "hbm:machine_epress"
+  },
+  "pattern": [
+    "CPC",
+    "CBC",
+    "CCC"
+  ],
+  "result": {
+    "id": "hbm:machine_conveyor_press"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#c:concretes"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:ingot_firebrick"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "ingredient": "hbm:machine_transformer"
+    },
+    {
+      "ingredient": "hbm:circuit_analog"
+    }
+  ],
+  "order": 101,
+  "output_items": [
+    "hbm:machine_arc_furnace"
+  ],
+  "power": 100
+}

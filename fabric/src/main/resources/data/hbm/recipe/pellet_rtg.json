@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#hbm:billets/plutonium_238",
+    "#hbm:billets/plutonium_238",
+    "#hbm:billets/plutonium_238",
+    "#c:plates/iron"
+  ],
+  "result": {
+    "id": "hbm:pellet_rtg"
+  }
+}

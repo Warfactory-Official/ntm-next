@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:hydroactive",
+      "level": 10.0
+    }
+  ],
+  "targets": "#hbm:hazard/crystal_lithium"
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_basic",
+    "I": "hbm:plate_polymer",
+    "J": "hbm:jetpack_fly",
+    "T": "#c:ingots/dura_steel"
+  },
+  "pattern": [
+    "ICI",
+    "TJT",
+    "I I"
+  ],
+  "result": {
+    "id": "hbm:jetpack_break"
+  }
+}

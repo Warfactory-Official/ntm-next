@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/polonium"
+    }
+  ],
+  "order": 326,
+  "output_items": [
+    "hbm:powder_polonium"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "type": "hbm:single_piece",
+  "biomes": [
+    "minecraft:mangrove_swamp",
+    "minecraft:plains",
+    "minecraft:savanna",
+    "minecraft:savanna_plateau",
+    "minecraft:sunflower_plains",
+    "minecraft:swamp",
+    "minecraft:windswept_savanna"
+  ],
+  "height_offset": -10,
+  "spawn_overrides": {},
+  "start_pool": "hbm:single/water_pump",
+  "step": "strongholds"
+}

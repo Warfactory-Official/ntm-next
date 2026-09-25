@@ -1,0 +1,34 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_analog"
+    }
+  ],
+  "name": "anvil.machine_assembly_machineEx",
+  "order": 59,
+  "output_items": [
+    "hbm:machine_assembly_machine"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

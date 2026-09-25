@@ -1,0 +1,54 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528"
+    },
+    {
+      "condition": "hbm:flag",
+      "name": "lbsm_simple_crafting"
+    }
+  ],
+  "type": "hbm:soldering",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:perfluoromethyl",
+      "amount": 4000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_chip_bismoid"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_capacitor_tantalium"
+    },
+    {
+      "ingredient": "hbm:circuit_atomic_clock"
+    }
+  ],
+  "name": "soldering.circuit_controller_advancedLbsm",
+  "order": 12,
+  "output_items": [
+    "hbm:circuit_controller_advanced"
+  ],
+  "pcb": [
+    {
+      "ingredient": "hbm:circuit_controller_chassis"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    }
+  ],
+  "power": 25000,
+  "solder": [
+    {
+      "count": 24,
+      "ingredient": "#c:fine_wires/lead"
+    }
+  ]
+}

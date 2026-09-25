@@ -1,0 +1,22 @@
+{
+  "type": "hbm:mixer",
+  "duration": 30,
+  "input_fluids": [
+    {
+      "type": "hbm:chlorine",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/thorium"
+    }
+  ],
+  "order": 31,
+  "output_fluids": [
+    {
+      "type": "hbm:thorium_salt",
+      "amount": 1000
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_basic",
+    "I": "#c:ingots/steel",
+    "P": "#c:plates/steel"
+  },
+  "pattern": [
+    "IPI",
+    "PCP",
+    "IPI"
+  ],
+  "result": {
+    "components": {
+      "hbm:custom_machine_type": "hbm:paper_press"
+    },
+    "id": "hbm:custom_machine"
+  }
+}

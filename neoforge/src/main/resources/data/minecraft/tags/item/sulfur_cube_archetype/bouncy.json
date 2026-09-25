@@ -1,0 +1,9 @@
+{
+  "values": [
+    "hbm:block_rubber",
+    "hbm:waste_planks",
+    "hbm:frozen_log",
+    "hbm:frozen_planks",
+    "hbm:waste_log"
+  ]
+}

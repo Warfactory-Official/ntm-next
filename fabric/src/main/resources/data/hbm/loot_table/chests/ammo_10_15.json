@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/ammo"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 15.0,
+        "min": 10.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/ammo_10_15"
+}

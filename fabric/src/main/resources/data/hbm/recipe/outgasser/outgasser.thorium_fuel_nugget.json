@@ -1,0 +1,13 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "#c:nuggets/thorium"
+    }
+  ],
+  "order": 8,
+  "output_items": [
+    "hbm:nugget_thorium_fuel"
+  ]
+}

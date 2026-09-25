@@ -1,0 +1,54 @@
+{
+  "type": "gaseous",
+  "color": "#bab572",
+  "containers": {
+    "gastank": {
+      "bottle_color": "#bab572",
+      "label_color": "#361414"
+    }
+  },
+  "nfpa": {
+    "flame": 1,
+    "health": 4,
+    "react": 1
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "polluting": {
+      "release": {
+        "POISON": 5.0E-4
+      }
+    },
+    "toxin": {
+      "entries": [
+        {
+          "amount": 4.0,
+          "damage": "hbm:cloud",
+          "delay": 10,
+          "full_body": false,
+          "hazard": "GAS_BLISTERING",
+          "kind": "direct_damage"
+        },
+        {
+          "effects": [
+            {
+              "amplifier": 1,
+              "duration": 100,
+              "id": "minecraft:wither",
+              "show_icon": true
+            },
+            {
+              "duration": 100,
+              "id": "minecraft:nausea",
+              "show_icon": true
+            }
+          ],
+          "full_body": true,
+          "hazard": "GAS_BLISTERING",
+          "kind": "effects"
+        }
+      ]
+    }
+  }
+}

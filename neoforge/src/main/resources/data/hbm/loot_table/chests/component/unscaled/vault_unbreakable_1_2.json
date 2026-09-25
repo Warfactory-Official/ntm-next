@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/vault_unbreakable"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 2.0,
+        "min": 1.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/component/unscaled/vault_unbreakable_1_2"
+}

@@ -1,0 +1,15 @@
+{
+  "type": "techreborn:grinder",
+  "ingredients": [
+    {
+      "ingredient": "minecraft:cinnabar_brick_wall"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "techreborn:cinnabar_small_dust"
+    }
+  ],
+  "power": 1,
+  "time": 200
+}

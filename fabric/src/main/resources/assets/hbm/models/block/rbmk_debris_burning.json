@@ -1,0 +1,10 @@
+{
+  "fabric:type": "hbm:obj",
+  "parent": "hbm:block/rbmk_debris_burning_base",
+  "model": "hbm:models/rbmk/pribris_burning.obj",
+  "skins": {
+    "all": [
+      "Cube"
+    ]
+  }
+}

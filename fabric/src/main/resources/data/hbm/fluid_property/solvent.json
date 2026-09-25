@@ -1,0 +1,24 @@
+{
+  "type": "liquid",
+  "color": "#e4e3ef",
+  "containers": {
+    "canister": {
+      "color": "#e4e3ef"
+    }
+  },
+  "nfpa": {
+    "flame": 3,
+    "health": 2,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "corrosive": {
+      "rating": 30
+    },
+    "flammable": {
+      "energy": 100000
+    }
+  }
+}

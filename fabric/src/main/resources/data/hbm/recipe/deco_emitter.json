@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#c:gems/diamond",
+    "I": "#c:ingots/iron",
+    "R": "#c:storage_blocks/redstone"
+  },
+  "pattern": [
+    "IDI",
+    "DRD",
+    "IDI"
+  ],
+  "result": {
+    "id": "hbm:deco_emitter"
+  }
+}

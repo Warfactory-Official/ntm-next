@@ -1,0 +1,25 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/workers_alloy"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:dusts/any_plastic"
+    },
+    {
+      "ingredient": "#c:ingots/dura_steel"
+    }
+  ],
+  "order": 94,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:plate_desh"
+    }
+  ],
+  "overlay": "construction",
+  "tier": 3
+}

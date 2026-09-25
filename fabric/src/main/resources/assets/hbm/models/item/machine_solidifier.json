@@ -1,0 +1,175 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.088656664,
+        5.836628,
+        1.0133398
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.08865571,
+        5.836628,
+        1.0133395
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        9.440001,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        2.0,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.18750001
+      ],
+      "translation": [
+        2.3841858E-7,
+        1.0310891,
+        -6.2499995
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        2.6154037,
+        -29.746513,
+        3.1169157
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0.0,
+        24.0,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -0.98380625,
+        5.174478,
+        2.0630357
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -2.1435986,
+        4.9321938,
+        1.7543296
+      ]
+    }
+  },
+  "gui_light": "side",
+  "hidden": [
+    "Fluid",
+    "Glass"
+  ],
+  "model": "hbm:models/machines/solidifier.obj",
+  "offset_y": -1.5,
+  "skins": {
+    "all": [
+      "Main"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/solidifier",
+    "particle": "hbm:block/models/machines/solidifier"
+  }
+}

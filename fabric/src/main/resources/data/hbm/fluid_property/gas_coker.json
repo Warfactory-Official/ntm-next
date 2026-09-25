@@ -1,0 +1,28 @@
+{
+  "type": "gaseous",
+  "color": "#def4ca",
+  "nfpa": {
+    "flame": 4,
+    "health": 1,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "combustible": {
+      "energy": 93700,
+      "grade": "GAS"
+    },
+    "flammable": {
+      "energy": 62500
+    },
+    "polluting": {
+      "burn": {
+        "SOOT": 2.0E-4
+      },
+      "release": {
+        "POISON": 5.0E-5
+      }
+    }
+  }
+}

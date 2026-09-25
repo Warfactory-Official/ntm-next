@@ -1,0 +1,26 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_niter"
+    }
+  ],
+  "order": 144,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:niter"
+    },
+    {
+      "count": 3,
+      "id": "hbm:niter"
+    },
+    {
+      "count": 3,
+      "id": "hbm:niter"
+    },
+    "hbm:powder_lithium_tiny"
+  ],
+  "power": 200
+}

@@ -1,0 +1,209 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -180.0,
+        85.0,
+        -25.000013
+      ],
+      "scale": [
+        0.025312496,
+        0.025312498,
+        0.0253125
+      ],
+      "translation": [
+        1.2236569,
+        -1.643912,
+        -3.0907156
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -180.0,
+        85.0,
+        -25.000013
+      ],
+      "scale": [
+        0.025312496,
+        0.025312498,
+        0.0253125
+      ],
+      "translation": [
+        1.7589829,
+        1.220234,
+        3.0280874
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -5.008956E-6
+      ],
+      "scale": [
+        0.063281246,
+        0.063281246,
+        0.063281246
+      ],
+      "translation": [
+        -6.0796738E-6,
+        -3.2940612,
+        -3.2209373
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        0.0,
+        179.99998
+      ],
+      "scale": [
+        0.031640623,
+        0.031640623,
+        0.031640623
+      ],
+      "translation": [
+        3.0398369E-6,
+        -4.367031,
+        1.8604686
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -170.0,
+        8.406388E-6,
+        -0.0
+      ],
+      "scale": [
+        0.045703124,
+        0.04570312,
+        0.045703117
+      ],
+      "translation": [
+        -4.61936E-6,
+        -2.0554497,
+        -10.738577
+      ]
+    },
+    "head": {
+      "rotation": [
+        31.329784,
+        35.63104,
+        -19.525475
+      ],
+      "scale": [
+        0.10125,
+        0.10125,
+        0.10125
+      ],
+      "translation": [
+        11.618497,
+        -13.797007,
+        13.846405
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -0.0,
+        0.0,
+        179.99998
+      ],
+      "scale": [
+        0.12656249,
+        0.12656249,
+        0.12656249
+      ],
+      "translation": [
+        1.21593475E-5,
+        -1.4681234,
+        7.4418745
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -38.126263,
+        71.3061,
+        -127.868614
+      ],
+      "scale": [
+        0.023730466,
+        0.023730466,
+        0.023730464
+      ],
+      "translation": [
+        0.69605035,
+        1.1101557,
+        -0.38016486
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -38.126263,
+        71.3061,
+        -127.868614
+      ],
+      "scale": [
+        0.023730466,
+        0.023730466,
+        0.023730464
+      ],
+      "translation": [
+        0.38637492,
+        0.69777036,
+        1.1069266
+      ]
+    }
+  },
+  "groups": [
+    {
+      "parts": [
+        "Chest"
+      ],
+      "texture": "taurun_chest"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.1,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "LeftArm",
+        "RightArm"
+      ],
+      "texture": "taurun_arm"
+    }
+  ],
+  "gui_light": "front",
+  "hidden": [
+    "RightBoot",
+    "LeftBoot",
+    "RightLeg",
+    "LeftLeg",
+    "Helmet"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/armor/taurun.obj",
+  "offset_x": 6.198883E-6,
+  "offset_y": -10.225,
+  "offset_z": -3.675,
+  "textures": {
+    "particle": "hbm:armor/taurun_chest",
+    "taurun_arm": "hbm:armor/taurun_arm",
+    "taurun_chest": "hbm:armor/taurun_chest"
+  }
+}

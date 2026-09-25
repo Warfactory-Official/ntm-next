@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:balefire_fuel",
+      "amount": 250
+    }
+  ],
+  "order": 20,
+  "output_items": [
+    "hbm:solid_fuel_bf"
+  ]
+}

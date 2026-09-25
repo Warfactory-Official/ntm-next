@@ -1,0 +1,41 @@
+{
+  "double_sided": [
+    "Plane.001"
+  ],
+  "groups": [
+    {
+      "matrix": [
+        -0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        -0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Plane.001"
+      ],
+      "smooth": false,
+      "texture": "rail_standard_straight"
+    }
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/rail_standard_bend_wide.obj",
+  "textures": {
+    "particle": "hbm:block/rail_standard_straight",
+    "rail_standard_straight": "hbm:block/rail_standard_straight"
+  },
+  "tiled": [
+    "Plane.001"
+  ]
+}

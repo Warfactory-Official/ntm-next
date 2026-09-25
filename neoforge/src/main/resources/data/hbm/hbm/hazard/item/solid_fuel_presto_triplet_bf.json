@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 6000.0
+    }
+  ],
+  "targets": "hbm:solid_fuel_presto_triplet_bf"
+}

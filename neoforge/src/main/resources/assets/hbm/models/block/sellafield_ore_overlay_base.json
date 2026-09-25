@@ -1,0 +1,90 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#base",
+          "tintindex": 0
+        },
+        "east": {
+          "cullface": "east",
+          "texture": "#base",
+          "tintindex": 0
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#base",
+          "tintindex": 0
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#base",
+          "tintindex": 0
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#base",
+          "tintindex": 0
+        },
+        "west": {
+          "cullface": "west",
+          "texture": "#base",
+          "tintindex": 0
+        }
+      },
+      "from": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "to": [
+        16.0,
+        16.0,
+        16.0
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#overlay"
+        },
+        "east": {
+          "cullface": "east",
+          "texture": "#overlay"
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#overlay"
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#overlay"
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#overlay"
+        },
+        "west": {
+          "cullface": "west",
+          "texture": "#overlay"
+        }
+      },
+      "from": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "to": [
+        16.0,
+        16.0,
+        16.0
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "#base"
+  }
+}

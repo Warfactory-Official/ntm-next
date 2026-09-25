@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:glass_panes",
+    "S": "#c:ingots/steel"
+  },
+  "pattern": [
+    "  G",
+    " S ",
+    "S  "
+  ],
+  "result": {
+    "id": "hbm:analysis_tool"
+  }
+}

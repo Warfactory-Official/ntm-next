@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "hbm:paa"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "hbm:paa"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "hbm:paa"
+      }
+    ]
+  }
+}

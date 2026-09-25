@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "computercraft"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "computercraft:disk",
+    "hbm:pwr_casing"
+  ],
+  "result": {
+    "components": {
+      "computercraft:treasure_disk": {
+        "name": "PWRangler",
+        "path": "hbm/pwrangler"
+      },
+      "minecraft:dyed_color": 6750207
+    },
+    "id": "computercraft:treasure_disk"
+  }
+}

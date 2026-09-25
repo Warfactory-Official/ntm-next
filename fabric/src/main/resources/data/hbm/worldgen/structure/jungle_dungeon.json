@@ -1,0 +1,6 @@
+{
+  "type": "hbm:jungle_dungeon",
+  "biomes": "#minecraft:is_jungle",
+  "spawn_overrides": {},
+  "step": "strongholds"
+}

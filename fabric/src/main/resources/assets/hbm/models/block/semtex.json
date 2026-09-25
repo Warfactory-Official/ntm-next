@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "hbm:block/semtex_bottom",
+    "side": "hbm:block/semtex_side",
+    "top": "hbm:block/semtex_top"
+  }
+}

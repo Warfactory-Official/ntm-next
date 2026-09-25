@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "lbsm_simple_tools"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": "#c:rods/wooden",
+    "X": "#c:ingots/schrabidium"
+  },
+  "pattern": [
+    "XX",
+    "X#",
+    " #"
+  ],
+  "result": {
+    "id": "hbm:schrabidium_axe"
+  }
+}

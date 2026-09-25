@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/aluminium"
+    }
+  ],
+  "order": 234,
+  "output_items": [
+    "hbm:crystal_aluminium"
+  ],
+  "productivity": 0.05
+}

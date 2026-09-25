@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/fluid_pump",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "hbm:block/fluid_pump",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "hbm:block/fluid_pump"
+    },
+    "facing=west": {
+      "model": "hbm:block/fluid_pump",
+      "y": 90
+    }
+  }
+}

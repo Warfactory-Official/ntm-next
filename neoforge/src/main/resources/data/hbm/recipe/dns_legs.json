@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:bj_legs"
+    },
+    "C": "hbm:coin_worm",
+    "P": "hbm:plate_armor_dnt",
+    "S": "hbm:ingot_chainsteel"
+  },
+  "pattern": [
+    "PCP",
+    "PBP",
+    "PSP"
+  ],
+  "result": {
+    "id": "hbm:dns_legs"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_light/dura_steel",
+    "P": "#c:plates/weapon_steel"
+  },
+  "pattern": [
+    "P",
+    "B",
+    "P"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_special_choke"
+  }
+}

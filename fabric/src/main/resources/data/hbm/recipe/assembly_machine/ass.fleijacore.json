@@ -1,0 +1,27 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:nuggets/uranium_235"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:nuggets/neptunium_237"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:nuggets/beryllium"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:coil_copper"
+    }
+  ],
+  "order": 320,
+  "output_items": [
+    "hbm:fleija_core"
+  ],
+  "power": 100
+}

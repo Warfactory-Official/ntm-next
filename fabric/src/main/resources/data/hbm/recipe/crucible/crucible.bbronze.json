@@ -1,0 +1,32 @@
+{
+  "type": "hbm:crucible",
+  "frequency": 9,
+  "icon": {
+    "id": "hbm:ingot_bismuth_bronze"
+  },
+  "input_materials": [
+    {
+      "amount": 64,
+      "material": "copper"
+    },
+    {
+      "amount": 8,
+      "material": "bismuth"
+    },
+    {
+      "amount": 24,
+      "material": "flux"
+    }
+  ],
+  "order": 8,
+  "output_materials": [
+    {
+      "amount": 72,
+      "material": "bismuth_bronze"
+    },
+    {
+      "amount": 24,
+      "material": "slag"
+    }
+  ]
+}

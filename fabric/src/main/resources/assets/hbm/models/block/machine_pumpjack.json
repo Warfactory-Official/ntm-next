@@ -1,0 +1,20 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Rotor",
+    "Carriage",
+    "Head"
+  ],
+  "model": "hbm:models/machines/pumpjack.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/pumpjack",
+    "particle": "hbm:block/models/machines/pumpjack"
+  }
+}

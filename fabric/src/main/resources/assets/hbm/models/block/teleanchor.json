@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "hbm:block/tele_anchor_side",
+    "side": "hbm:block/tele_anchor_side",
+    "top": "hbm:block/tele_anchor_top"
+  }
+}

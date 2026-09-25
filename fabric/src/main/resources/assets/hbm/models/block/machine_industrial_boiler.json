@@ -1,0 +1,15 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbm:models/machines/industrial_boiler.obj",
+  "skins": {
+    "all": [
+      "Plane"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/industrial_boiler",
+    "particle": "hbm:block/models/machines/industrial_boiler"
+  }
+}

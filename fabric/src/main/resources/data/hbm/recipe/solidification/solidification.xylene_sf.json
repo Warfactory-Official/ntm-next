@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:xylene",
+      "amount": 570
+    }
+  ],
+  "order": 46,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

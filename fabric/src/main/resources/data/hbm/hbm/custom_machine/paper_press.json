@@ -1,0 +1,164 @@
+{
+  "cells": [
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": -1,
+      "y": -1,
+      "z": 0
+    },
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": -1,
+      "y": -1,
+      "z": 1
+    },
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": -1,
+      "y": -1,
+      "z": 2
+    },
+    {
+      "blocks": "hbm:cm_sheet_steel",
+      "x": -1,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "blocks": "hbm:cm_sheet_steel",
+      "x": -1,
+      "y": 0,
+      "z": 1
+    },
+    {
+      "blocks": "hbm:cm_sheet_steel",
+      "x": -1,
+      "y": 0,
+      "z": 2
+    },
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": -1,
+      "y": 1,
+      "z": 0
+    },
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": -1,
+      "y": 1,
+      "z": 1
+    },
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": -1,
+      "y": 1,
+      "z": 2
+    },
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": 0,
+      "y": -1,
+      "z": 1
+    },
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": 0,
+      "y": -1,
+      "z": 2
+    },
+    {
+      "blocks": "hbm:cm_sheet_steel",
+      "x": 0,
+      "y": 0,
+      "z": 2
+    },
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": 0,
+      "y": 1,
+      "z": 1
+    },
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": 0,
+      "y": 1,
+      "z": 2
+    },
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": 1,
+      "y": -1,
+      "z": 0
+    },
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": 1,
+      "y": -1,
+      "z": 1
+    },
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": 1,
+      "y": -1,
+      "z": 2
+    },
+    {
+      "blocks": "hbm:cm_sheet_steel",
+      "x": 1,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "blocks": "hbm:cm_sheet_steel",
+      "x": 1,
+      "y": 0,
+      "z": 1
+    },
+    {
+      "blocks": "hbm:cm_sheet_steel",
+      "x": 1,
+      "y": 0,
+      "z": 2
+    },
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": 1,
+      "y": 1,
+      "z": 0
+    },
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    {
+      "blocks": "hbm:cm_block_steel",
+      "x": 1,
+      "y": 1,
+      "z": 2
+    },
+    {
+      "blocks": "hbm:cm_port_steel",
+      "x": 0,
+      "y": -1,
+      "z": 0
+    },
+    {
+      "blocks": "hbm:cm_port_steel",
+      "x": 0,
+      "y": 1,
+      "z": 0
+    }
+  ],
+  "fluid_in_cap": 1000,
+  "fluid_in_count": 1,
+  "item_in_count": 1,
+  "item_out_count": 1,
+  "max_pollution_cap": 100,
+  "max_power": 10000,
+  "name": {
+    "translate": "machine.hbm.paper_press"
+  },
+  "recipe_key": "paperPress"
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_vacuum_tube",
+    "I": "#hbm:ingots/any_plastic",
+    "P": "#c:plates/steel",
+    "W": "#c:fine_wires/copper"
+  },
+  "pattern": [
+    "  W",
+    "PCP",
+    "PIP"
+  ],
+  "result": {
+    "id": "hbm:radiorec"
+  }
+}

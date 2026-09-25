@@ -1,0 +1,17 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbm:models/machines/wood_burner.obj",
+  "offset_x": -0.5,
+  "offset_z": -0.5,
+  "skins": {
+    "all": [
+      "Cylinder"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/wood_burner",
+    "particle": "hbm:block/models/machines/wood_burner"
+  }
+}

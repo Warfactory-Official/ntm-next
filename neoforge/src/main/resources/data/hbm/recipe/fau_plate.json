@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:starmetal_plate"
+    },
+    "C": "hbm:demon_core_closed",
+    "M": "hbm:motor_desh",
+    "P": "hbm:plate_armor_fau",
+    "S": "hbm:ancient_scrap"
+  },
+  "pattern": [
+    "MCM",
+    "PBP",
+    "PSP"
+  ],
+  "result": {
+    "id": "hbm:fau_plate"
+  }
+}

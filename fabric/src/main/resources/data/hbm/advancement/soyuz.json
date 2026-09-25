@@ -1,0 +1,25 @@
+{
+  "parent": "hbm:desh",
+  "criteria": {
+    "impossible": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.soyuz.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "minecraft:baked_potato"
+    },
+    "title": {
+      "translate": "achievement.soyuz"
+    }
+  },
+  "requirements": [
+    [
+      "impossible"
+    ]
+  ]
+}

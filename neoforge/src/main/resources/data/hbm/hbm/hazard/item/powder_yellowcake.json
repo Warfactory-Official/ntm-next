@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 1.0499999999999998
+    }
+  ],
+  "targets": "hbm:powder_yellowcake"
+}

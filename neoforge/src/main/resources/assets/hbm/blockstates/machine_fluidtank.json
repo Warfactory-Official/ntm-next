@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "damaged=false,facing=east": {
+      "model": "hbm:block/machine_fluidtank",
+      "y": 270
+    },
+    "damaged=false,facing=north": {
+      "model": "hbm:block/machine_fluidtank",
+      "y": 180
+    },
+    "damaged=false,facing=south": {
+      "model": "hbm:block/machine_fluidtank"
+    },
+    "damaged=false,facing=west": {
+      "model": "hbm:block/machine_fluidtank",
+      "y": 90
+    },
+    "damaged=true,facing=east": {
+      "model": "hbm:block/machine_fluidtank_damaged",
+      "y": 270
+    },
+    "damaged=true,facing=north": {
+      "model": "hbm:block/machine_fluidtank_damaged",
+      "y": 180
+    },
+    "damaged=true,facing=south": {
+      "model": "hbm:block/machine_fluidtank_damaged"
+    },
+    "damaged=true,facing=west": {
+      "model": "hbm:block/machine_fluidtank_damaged",
+      "y": 90
+    }
+  }
+}

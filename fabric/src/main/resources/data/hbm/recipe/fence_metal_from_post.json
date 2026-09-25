@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:fence_metal_post"
+  ],
+  "result": {
+    "id": "hbm:fence_metal"
+  }
+}

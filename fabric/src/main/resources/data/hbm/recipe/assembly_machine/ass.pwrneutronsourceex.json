@@ -1,0 +1,28 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:item_expensive_lead_plating"
+    },
+    {
+      "ingredient": "#hbm:plates_welded/zirconium"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:billet_ra226be"
+    }
+  ],
+  "name": "ass.pwrneutronsourceEx",
+  "order": 254,
+  "output_items": [
+    "hbm:pwr_neutron_source"
+  ],
+  "power": 500
+}

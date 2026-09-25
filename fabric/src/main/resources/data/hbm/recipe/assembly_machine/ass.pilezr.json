@@ -1,0 +1,18 @@
+{
+  "type": "hbm:assembly_machine",
+  "auto_switch_group": "autoswitch.pilerod",
+  "duration": 40,
+  "input_items": [
+    {
+      "ingredient": "#hbm:billets/zirconium"
+    }
+  ],
+  "order": 49,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:pile_rod_mk2_zr"
+    }
+  ],
+  "power": 200
+}

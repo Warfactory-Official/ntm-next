@@ -1,0 +1,187 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        0.2764088,
+        3.0552702,
+        2.2988384
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        0.12697947,
+        3.0552702,
+        2.3119118
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        1.7677765,
+        0.6875
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.09375,
+        0.09375,
+        0.09375
+      ],
+      "translation": [
+        0.0,
+        -1.836112,
+        -0.09375
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.140625,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -0.099437,
+        -0.1047709,
+        -6.790969
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "translation": [
+        5.775339,
+        -18.494295,
+        6.882779
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        8.655552,
+        -0.375
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07031249,
+        0.0703125,
+        0.0703125
+      ],
+      "translation": [
+        -0.18924987,
+        2.4708097,
+        1.478741
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07031249,
+        0.0703125,
+        0.0703125
+      ],
+      "translation": [
+        -1.4822452,
+        2.2006981,
+        1.1345795
+      ]
+    }
+  },
+  "groups": [
+    {
+      "parts": [
+        "Base",
+        "Rotor"
+      ],
+      "texture": "radgen"
+    },
+    {
+      "color": "0x00FF00",
+      "parts": [
+        "Light"
+      ],
+      "texture": "white"
+    }
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Glass"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/radgen.obj",
+  "offset_x": 0.4375,
+  "offset_y": -0.942592,
+  "textures": {
+    "particle": "hbm:block/models/machines/radgen",
+    "radgen": "hbm:block/models/machines/radgen",
+    "white": "hbm:effect/white"
+  }
+}

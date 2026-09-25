@@ -1,0 +1,22 @@
+{
+  "type": "hbm:mixer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 100
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_ash_wood"
+    }
+  ],
+  "order": 45,
+  "output_fluids": [
+    {
+      "type": "hbm:lye",
+      "amount": 100
+    }
+  ]
+}

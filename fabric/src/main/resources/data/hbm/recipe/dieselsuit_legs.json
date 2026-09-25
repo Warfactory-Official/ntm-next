@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "M": "hbm:motor",
+    "S": "#c:ingots/steel",
+    "W": "minecraft:red_wool"
+  },
+  "pattern": [
+    "M M",
+    "S S",
+    "W W"
+  ],
+  "result": {
+    "id": "hbm:dieselsuit_legs"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "gaseous",
+  "color": "#4c4c4c",
+  "nfpa": {
+    "flame": 0,
+    "health": 4,
+    "react": 4
+  },
+  "symbol": "RADIATION",
+  "temperature": 20,
+  "traits": {
+    "corrosive": {
+      "rating": 15
+    },
+    "ventradiation": {
+      "rad_per_mb": 0.1
+    }
+  }
+}

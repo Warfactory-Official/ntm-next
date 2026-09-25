@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "part=capacitor": {
+      "model": "hbm:block/icf_block"
+    },
+    "part=casing": {
+      "model": "hbm:block/icf_block"
+    },
+    "part=cell": {
+      "model": "hbm:block/icf_block"
+    },
+    "part=emitter": {
+      "model": "hbm:block/icf_block"
+    },
+    "part=port": {
+      "model": "hbm:block/icf_block_port"
+    },
+    "part=turbocharger": {
+      "model": "hbm:block/icf_block"
+    }
+  }
+}

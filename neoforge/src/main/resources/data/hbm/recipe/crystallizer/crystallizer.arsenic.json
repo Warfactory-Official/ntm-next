@@ -1,0 +1,21 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:radiosolvent",
+      "amount": 100
+    }
+  ],
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbm:scrap_oil"
+    }
+  ],
+  "order": 2,
+  "output_items": [
+    "hbm:nugget_arsenic"
+  ],
+  "productivity": 0.3
+}

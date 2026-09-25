@@ -1,0 +1,16 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/crucible.obj",
+  "skins": {
+    "all": [
+      "Lava",
+      "Main"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/crucible_heat",
+    "particle": "hbm:block/models/machines/crucible_heat"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#c:plates/dura_steel",
+    "P": "hbm:piston_selenium",
+    "S": "#hbm:pipes/steel"
+  },
+  "pattern": [
+    "DSD",
+    "PPP",
+    "DSD"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_special_engine_diesel"
+  }
+}

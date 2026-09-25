@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 10,
+  "input_items": [
+    {
+      "count": 64,
+      "ingredient": "hbm:cap_rad"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:cap_rad"
+    }
+  ],
+  "order": 81,
+  "output_items": [
+    "hbm:block_cap_rad"
+  ],
+  "power": 100
+}

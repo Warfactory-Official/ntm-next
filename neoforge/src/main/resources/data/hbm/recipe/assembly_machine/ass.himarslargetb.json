@@ -1,0 +1,46 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 36,
+      "ingredient": "hbm:rocket_fuel"
+    },
+    {
+      "count": 24,
+      "ingredient": "hbm:ball_tatb"
+    },
+    {
+      "count": 16,
+      "ingredient": {
+        "neoforge:ingredient_type": "hbm:fluid_content",
+        "amount": 1000,
+        "fluid": "hbm:kerosene_reform"
+      }
+    },
+    {
+      "count": 16,
+      "ingredient": {
+        "neoforge:ingredient_type": "hbm:fluid_content",
+        "amount": 1000,
+        "fluid": "hbm:peroxide"
+      }
+    },
+    {
+      "ingredient": "hbm:circuit_advanced"
+    }
+  ],
+  "order": 342,
+  "output_items": [
+    "hbm:ammo_himars_single_tb"
+  ],
+  "power": 100
+}

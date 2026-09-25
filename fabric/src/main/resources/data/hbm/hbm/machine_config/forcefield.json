@@ -1,0 +1,11 @@
+{
+  "base_consumption": 1000,
+  "base_radius": 16,
+  "cooldown_modifier": 1,
+  "health_regen_modifier": 1,
+  "power_capacity": 1000000,
+  "radius_consumption": 500,
+  "radius_upgrade": 16,
+  "shield_consumption": 250,
+  "shield_upgrade": 50
+}

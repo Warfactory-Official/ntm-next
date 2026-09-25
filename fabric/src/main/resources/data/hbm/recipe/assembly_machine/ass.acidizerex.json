@@ -1,0 +1,32 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 3,
+      "ingredient": "#hbm:shells/titanium"
+    },
+    {
+      "ingredient": "hbm:motor"
+    },
+    {
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.acidizerEx",
+  "order": 104,
+  "output_items": [
+    "hbm:machine_crystallizer"
+  ],
+  "power": 100
+}

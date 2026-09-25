@@ -1,0 +1,18 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Piston"
+  ],
+  "model": "hbm:models/rbmk/autoloader.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/rbmk_autoloader",
+    "particle": "hbm:block/rbmk_autoloader"
+  }
+}

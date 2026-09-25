@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_ashpit"
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_ashpit",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_ashpit",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_ashpit",
+      "y": 180
+    }
+  }
+}

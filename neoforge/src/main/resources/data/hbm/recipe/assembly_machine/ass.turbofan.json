@@ -1,0 +1,40 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#hbm:shells/titanium"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/dura_steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "ingredient": "hbm:turbine_tungsten"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:wires_dense/gold"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 180,
+  "output_items": [
+    "hbm:machine_turbofan"
+  ],
+  "power": 100
+}

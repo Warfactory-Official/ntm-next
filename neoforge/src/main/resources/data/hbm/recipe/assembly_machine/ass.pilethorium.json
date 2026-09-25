@@ -1,0 +1,16 @@
+{
+  "type": "hbm:assembly_machine",
+  "auto_switch_group": "autoswitch.pilerod",
+  "duration": 40,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "#hbm:billets/thorium"
+    }
+  ],
+  "order": 51,
+  "output_items": [
+    "hbm:pile_rod_mk2_thorium"
+  ],
+  "power": 200
+}

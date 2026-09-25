@@ -1,0 +1,19 @@
+{
+  "type": "hbm:coker",
+  "input_fluids": [
+    {
+      "type": "hbm:naphtha",
+      "amount": 4900
+    }
+  ],
+  "order": 7,
+  "output_fluids": [
+    {
+      "type": "hbm:naphtha_coker",
+      "amount": 490
+    }
+  ],
+  "output_items": [
+    "hbm:coke_petroleum"
+  ]
+}

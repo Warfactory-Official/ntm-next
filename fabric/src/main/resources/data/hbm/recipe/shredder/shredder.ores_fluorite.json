@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ores/fluorite"
+    }
+  ],
+  "order": 424,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:fluorite"
+    }
+  ]
+}

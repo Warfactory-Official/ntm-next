@@ -1,0 +1,6 @@
+{
+  "base_heat": 500,
+  "burn_time_multiplier": 0.125,
+  "heat_capacity": 500000,
+  "heat_pull_efficiency": 0.5
+}

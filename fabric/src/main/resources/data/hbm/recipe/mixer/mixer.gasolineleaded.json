@@ -1,0 +1,22 @@
+{
+  "type": "hbm:mixer",
+  "duration": 40,
+  "input_fluids": [
+    {
+      "type": "hbm:gasoline",
+      "amount": 10000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:fuel_additive_antiknock"
+    }
+  ],
+  "order": 36,
+  "output_fluids": [
+    {
+      "type": "hbm:gasoline_leaded",
+      "amount": 12000
+    }
+  ]
+}

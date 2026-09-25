@@ -1,0 +1,31 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "hbm:mesh",
+          "base": "hbm:item/diamond_gavel_base",
+          "cull": false,
+          "mesh": "hbm:models/weapons/gavel.obj",
+          "skins": [
+            "hbm:textures/models/weapons/gavel_diamond.png"
+          ]
+        },
+        "when": [
+          "thirdperson_righthand",
+          "thirdperson_lefthand",
+          "firstperson_righthand",
+          "firstperson_lefthand",
+          "ground",
+          "fixed"
+        ]
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:item/diamond_gavel_flat"
+    },
+    "property": "minecraft:display_context"
+  }
+}

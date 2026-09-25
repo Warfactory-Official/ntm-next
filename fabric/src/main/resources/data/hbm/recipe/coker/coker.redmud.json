@@ -1,0 +1,19 @@
+{
+  "type": "hbm:coker",
+  "input_fluids": [
+    {
+      "type": "hbm:redmud",
+      "amount": 450
+    }
+  ],
+  "order": 27,
+  "output_fluids": [
+    {
+      "type": "hbm:mercury",
+      "amount": 50
+    }
+  ],
+  "output_items": [
+    "minecraft:iron_ingot"
+  ]
+}

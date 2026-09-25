@@ -1,0 +1,22 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 800
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/sulfur"
+    }
+  ],
+  "order": 19,
+  "output_fluids": [
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 500
+    }
+  ]
+}

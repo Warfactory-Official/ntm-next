@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": "#c:ingots/steel",
+    "W": "minecraft:red_wool"
+  },
+  "pattern": [
+    "W W",
+    "S S"
+  ],
+  "result": {
+    "id": "hbm:dieselsuit_boots"
+  }
+}

@@ -1,0 +1,185 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -180.0,
+        85.0,
+        -25.000011
+      ],
+      "scale": [
+        0.035156246,
+        0.03515625,
+        0.03515625
+      ],
+      "translation": [
+        -0.7310082,
+        -0.086360246,
+        -3.6487741
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -180.0,
+        85.0,
+        -25.000011
+      ],
+      "scale": [
+        0.035156246,
+        0.03515625,
+        0.03515625
+      ],
+      "translation": [
+        -0.19568346,
+        2.7777836,
+        2.4700227
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -5.008956E-6
+      ],
+      "scale": [
+        0.087890625,
+        0.087890625,
+        0.087890625
+      ],
+      "translation": [
+        -1.3291836E-5,
+        1.0023538,
+        1.5255375
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        0.0,
+        179.99998
+      ],
+      "scale": [
+        0.043945312,
+        0.043945312,
+        0.043945312
+      ],
+      "translation": [
+        6.645918E-6,
+        -2.2188234,
+        -0.51276875
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -170.0,
+        8.406388E-6,
+        -0.0
+      ],
+      "scale": [
+        0.06347656,
+        0.06347656,
+        0.063476555
+      ],
+      "translation": [
+        -9.000301E-6,
+        -0.027903825,
+        -7.0738225
+      ]
+    },
+    "head": {
+      "rotation": [
+        31.329788,
+        35.63104,
+        -19.52548
+      ],
+      "scale": [
+        0.14062501,
+        0.14062499,
+        0.140625
+      ],
+      "translation": [
+        5.3268733,
+        -16.81769,
+        6.3483543
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -0.0,
+        0.0,
+        179.99998
+      ],
+      "scale": [
+        0.17578125,
+        0.17578125,
+        0.17578125
+      ],
+      "translation": [
+        2.6583672E-5,
+        7.1247063,
+        -2.051075
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -38.126266,
+        71.3061,
+        -127.868614
+      ],
+      "scale": [
+        0.032958984,
+        0.03295898,
+        0.03295898
+      ],
+      "translation": [
+        -1.3976294,
+        2.2797735,
+        -0.49180648
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -38.126266,
+        71.3061,
+        -127.868614
+      ],
+      "scale": [
+        0.032958984,
+        0.03295898,
+        0.03295898
+      ],
+      "translation": [
+        -1.7073044,
+        1.8673896,
+        0.99527895
+      ]
+    }
+  },
+  "groups": [
+    {
+      "parts": [
+        "Helmet"
+      ],
+      "texture": "taurun_helmet"
+    }
+  ],
+  "gui_light": "front",
+  "hidden": [
+    "RightBoot",
+    "LeftBoot",
+    "RightArm",
+    "RightLeg",
+    "LeftLeg",
+    "LeftArm",
+    "Chest"
+  ],
+  "model": "hbm:models/armor/taurun.obj",
+  "offset_x": 9.059906E-6,
+  "offset_y": 4.033229,
+  "offset_z": 0.7292712,
+  "textures": {
+    "particle": "hbm:armor/taurun_helmet",
+    "taurun_helmet": "hbm:armor/taurun_helmet"
+  }
+}

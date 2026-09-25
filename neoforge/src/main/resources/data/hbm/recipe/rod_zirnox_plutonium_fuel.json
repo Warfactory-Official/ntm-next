@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:rod_zirnox_empty",
+    "hbm:billet_plutonium_fuel",
+    "hbm:billet_plutonium_fuel"
+  ],
+  "result": {
+    "id": "hbm:rod_zirnox_plutonium_fuel"
+  }
+}

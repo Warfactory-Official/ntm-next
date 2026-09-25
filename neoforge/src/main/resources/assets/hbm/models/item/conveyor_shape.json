@@ -1,0 +1,44 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#belt"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "north": {
+          "texture": "#belt"
+        },
+        "south": {
+          "rotation": 270,
+          "texture": "#belt"
+        },
+        "up": {
+          "rotation": 270,
+          "texture": "#belt"
+        },
+        "west": {
+          "texture": "#side"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        4,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "belt": "hbm:block/conveyor",
+    "particle": "hbm:block/conveyor",
+    "side": "hbm:block/conveyor_side"
+  }
+}

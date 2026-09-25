@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/cobalt",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "I",
+    "I",
+    "S"
+  ],
+  "result": {
+    "id": "hbm:cobalt_sword"
+  }
+}

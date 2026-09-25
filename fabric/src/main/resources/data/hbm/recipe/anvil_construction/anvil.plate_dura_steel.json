@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/dura_steel"
+    }
+  ],
+  "order": 10,
+  "output_items": [
+    "hbm:plate_dura_steel"
+  ],
+  "overlay": "smithing",
+  "tier": 3
+}

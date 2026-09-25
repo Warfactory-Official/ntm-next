@@ -1,0 +1,25 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:sourgas",
+      "amount": 200,
+      "pressure": 1
+    },
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 10
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:ball_tnt"
+    }
+  ],
+  "order": 74,
+  "output_items": [
+    "hbm:ball_tatb"
+  ],
+  "power": 5000
+}

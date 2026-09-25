@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#hbm:plates_cast/copper",
+    "R": "#hbm:ingots/any_rubber"
+  },
+  "pattern": [
+    "CRC"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:pneumatic_tube"
+  }
+}

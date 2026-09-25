@@ -1,0 +1,14 @@
+{
+  "delay": 20,
+  "destruction_range": 75,
+  "drain_chance": 0.02,
+  "gas_per_bedrock_deposit_max": 50,
+  "gas_per_bedrock_deposit_min": 10,
+  "gas_per_deposit_max": 500,
+  "gas_per_deposit_min": 100,
+  "oil_per_bedrock_deposit": 100,
+  "oil_per_deposit": 1000,
+  "power_capacity": 5000000,
+  "power_consumption": 5000,
+  "solution_required": 10
+}

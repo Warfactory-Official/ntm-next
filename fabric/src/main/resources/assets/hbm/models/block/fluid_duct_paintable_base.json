@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "base": "hbm:block/fluid_duct_paintable",
+    "frame": "hbm:block/fluid_duct_paintable_overlay",
+    "overlay": "hbm:block/fluid_duct_paintable_color",
+    "particle": "hbm:block/fluid_duct_paintable"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:fusion_heater"
+    }
+  ],
+  "order": 256,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:pipe_steel"
+    },
+    {
+      "count": 2,
+      "id": "hbm:pipe_copper"
+    },
+    {
+      "chance": 0.5,
+      "id": "hbm:circuit_analog"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 1
+}

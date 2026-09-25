@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "#c:nuggets/gold"
+    },
+    {
+      "ingredient": "hbm:mold_base"
+    }
+  ],
+  "kind": "mold",
+  "order": 39,
+  "output_items": [
+    "hbm:mold_nugget"
+  ],
+  "shape": "nuggets"
+}

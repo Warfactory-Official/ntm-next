@@ -1,0 +1,29 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:chunk_ore_rare"
+    }
+  ],
+  "order": 13,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_cobalt_tiny"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_boron_tiny"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_niobium_tiny"
+    },
+    {
+      "count": 3,
+      "id": "hbm:nugget_zirconium"
+    }
+  ],
+  "power": 200
+}

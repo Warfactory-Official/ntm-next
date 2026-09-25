@@ -1,0 +1,15 @@
+{
+  "ambientocclusion": true,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/barbed_wire.obj",
+  "skins": {
+    "all": [
+      "cube"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/barbed_wire_wither",
+    "particle": "hbm:block/barbed_wire_wither"
+  }
+}

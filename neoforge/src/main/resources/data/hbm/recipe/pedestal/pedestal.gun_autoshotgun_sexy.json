@@ -1,0 +1,49 @@
+{
+  "type": "hbm:pedestal",
+  "key": {
+    "A": {
+      "count": 16,
+      "ingredient": "hbm:bolt_spike"
+    },
+    "B": {
+      "components": {
+        "minecraft:damage": 0
+      },
+      "ingredient": "hbm:wild_p"
+    },
+    "C": {
+      "count": 16,
+      "ingredient": "hbm:bolt_spike"
+    },
+    "D": {
+      "ingredient": "hbm:card_qos"
+    },
+    "E": {
+      "ingredient": "hbm:gun_autoshotgun"
+    },
+    "F": {
+      "ingredient": "hbm:card_aos"
+    },
+    "G": {
+      "count": 16,
+      "ingredient": "hbm:bolt_spike"
+    },
+    "H": {
+      "count": 16,
+      "ingredient": "#c:ingots/starmetal"
+    },
+    "I": {
+      "count": 16,
+      "ingredient": "hbm:bolt_spike"
+    }
+  },
+  "order": 7,
+  "output_items": [
+    "hbm:gun_autoshotgun_sexy"
+  ],
+  "pattern": [
+    "ABC",
+    "DEF",
+    "GHI"
+  ]
+}

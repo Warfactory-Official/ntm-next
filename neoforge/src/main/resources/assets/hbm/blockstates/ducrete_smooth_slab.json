@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "hbm:block/ducrete_smooth_slab"
+    },
+    "type=double": {
+      "model": "hbm:block/ducrete_smooth_slab_double"
+    },
+    "type=top": {
+      "model": "hbm:block/ducrete_smooth_slab_top"
+    }
+  }
+}

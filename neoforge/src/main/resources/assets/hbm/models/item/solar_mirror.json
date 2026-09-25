@@ -1,0 +1,198 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.20367646,
+        3.0064983,
+        2.3280303
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.20367551,
+        3.0064983,
+        2.3280299
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        1.6332431,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        -1.9033785,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "translation": [
+        -7.1525574E-7,
+        0.2438637,
+        -6.704504
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        6.0085807,
+        -18.425995,
+        7.160748
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0.0,
+        8.386486,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -0.24308562,
+        2.4092412,
+        1.4504563
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -1.4028773,
+        2.166957,
+        1.1417502
+      ]
+    }
+  },
+  "groups": [
+    {
+      "parts": [
+        "Base"
+      ],
+      "texture": "solar_mirror"
+    },
+    {
+      "matrix": [
+        0.70710677,
+        0.70710677,
+        0.0,
+        -0.70710677,
+        -0.70710677,
+        0.70710677,
+        0.0,
+        0.29289323,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Mirror"
+      ],
+      "texture": "solar_mirror"
+    }
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/solar_mirror.obj",
+  "offset_y": -0.19887382,
+  "textures": {
+    "particle": "hbm:block/models/machines/solar_mirror",
+    "solar_mirror": "hbm:block/models/machines/solar_mirror"
+  }
+}

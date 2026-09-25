@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:sodium",
+      "amount": 100
+    }
+  ],
+  "order": 7,
+  "output_items": [
+    "hbm:powder_sodium"
+  ]
+}

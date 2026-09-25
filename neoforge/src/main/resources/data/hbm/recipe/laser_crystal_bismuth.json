@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:nugget_bismuth",
+    "C": "hbm:crystal_rare",
+    "Q": "hbm:glass_quartz",
+    "T": "#c:ingots/thorium",
+    "U": "#c:ingots/uranium"
+  },
+  "pattern": [
+    "QUQ",
+    "BCB",
+    "QTQ"
+  ],
+  "result": {
+    "id": "hbm:laser_crystal_bismuth"
+  }
+}

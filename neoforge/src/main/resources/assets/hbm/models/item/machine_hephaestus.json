@@ -1,0 +1,244 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        -0.1991142,
+        8.011767,
+        0.020357996
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        0.19962561,
+        8.011767,
+        -0.014527112
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        9.536743E-7,
+        15.440001,
+        -3.3140182E-4
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.09375,
+        0.09375,
+        0.09375
+      ],
+      "translation": [
+        -4.7683716E-7,
+        5.0,
+        0.25016594
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.0703125,
+        0.0703125,
+        0.0703125
+      ],
+      "translation": [
+        0.13267124,
+        0.0148922205,
+        -6.989896
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "translation": [
+        0.47388625,
+        -38.78539,
+        0.56475306
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        -1.4305115E-6,
+        36.0,
+        1.0006628
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07031249,
+        0.0703125,
+        0.0703125
+      ],
+      "translation": [
+        -1.7308271,
+        7.2626147,
+        2.4865375
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07031249,
+        0.0703125,
+        0.0703125
+      ],
+      "translation": [
+        -2.535165,
+        7.094586,
+        2.2724438
+      ]
+    }
+  },
+  "double_sided": [
+    "Main",
+    "Rotor"
+  ],
+  "groups": [
+    {
+      "parts": [
+        "Main"
+      ],
+      "texture": "hephaestus"
+    },
+    {
+      "parts": [
+        "Rotor"
+      ],
+      "texture": "hephaestus"
+    },
+    {
+      "matrix": [
+        -0.5,
+        0.0,
+        0.8660254,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -0.8660254,
+        0.0,
+        -0.5,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Rotor"
+      ],
+      "texture": "hephaestus"
+    },
+    {
+      "matrix": [
+        -0.49999994,
+        0.0,
+        -0.86602545,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.86602545,
+        0.0,
+        -0.49999994,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Rotor"
+      ],
+      "texture": "hephaestus"
+    },
+    {
+      "parts": [
+        "Core"
+      ],
+      "texture": "cobblestone"
+    }
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/hephaestus.obj",
+  "offset_x": 0.16677713,
+  "offset_y": -5.5,
+  "offset_z": 2.3841858E-7,
+  "textures": {
+    "cobblestone": "minecraft:block/cobblestone",
+    "hephaestus": "hbm:block/models/machines/hephaestus",
+    "particle": "hbm:block/models/machines/hephaestus"
+  },
+  "tiled": [
+    "Core"
+  ]
+}

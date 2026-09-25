@@ -1,0 +1,26 @@
+{
+  "type": "hbm:coltan_deposit",
+  "config": {
+    "base_range": 750,
+    "min_y": 15,
+    "outer_attempts": 2,
+    "rings": 5,
+    "spread": 1500.0,
+    "vein": {
+      "discard_chance_on_air_exposure": 0.0,
+      "size": 4,
+      "targets": [
+        {
+          "state": {
+            "Name": "hbm:ore_coltan"
+          },
+          "target": {
+            "predicate_type": "minecraft:tag_match",
+            "tag": "minecraft:stone_ore_replaceables"
+          }
+        }
+      ]
+    },
+    "y_range": 25
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "#hbm:plates_welded/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    },
+    {
+      "count": 24,
+      "ingredient": "#hbm:ingots/any_rubber"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:magnetron"
+    },
+    {
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:crt_display"
+    }
+  ],
+  "order": 163,
+  "output_items": [
+    "hbm:machine_radar_large"
+  ],
+  "power": 100
+}

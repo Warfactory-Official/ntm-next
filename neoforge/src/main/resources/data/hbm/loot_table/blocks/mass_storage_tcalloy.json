@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "minecraft:custom_name",
+                "minecraft:container",
+                "hbm:lock_state",
+                "hbm:mass_stockpile"
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "hbm:mass_storage_tcalloy"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:blocks/mass_storage_tcalloy"
+}

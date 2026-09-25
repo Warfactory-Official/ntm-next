@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:plates/iron",
+    "P": "hbm:plate_polymer",
+    "R": "#c:storage_blocks/redstone"
+  },
+  "pattern": [
+    "IRI",
+    "PRP",
+    "IRI"
+  ],
+  "result": {
+    "id": "hbm:battery_pack_battery_redstone"
+  }
+}

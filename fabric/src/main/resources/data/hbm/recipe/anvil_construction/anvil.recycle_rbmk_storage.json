@@ -1,0 +1,18 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:rbmk_storage"
+    }
+  ],
+  "order": 246,
+  "output_items": [
+    "hbm:rbmk_blank",
+    {
+      "count": 2,
+      "id": "hbm:crate_steel"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 4
+}

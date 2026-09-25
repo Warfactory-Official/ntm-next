@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#c:plates/aluminum",
+    "I": "#c:plates/iron"
+  },
+  "pattern": [
+    "IAI",
+    "   ",
+    "IAI"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:fluid_pipe_silver"
+  }
+}

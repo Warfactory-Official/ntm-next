@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/lapis"
+    }
+  ],
+  "order": 451,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

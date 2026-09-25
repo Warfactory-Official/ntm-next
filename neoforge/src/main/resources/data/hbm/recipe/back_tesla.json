@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "hbm:ducttape",
+    "G": "#c:fine_wires/gold",
+    "T": "hbm:tesla"
+  },
+  "pattern": [
+    "DGD",
+    "GTG",
+    "DGD"
+  ],
+  "result": {
+    "id": "hbm:back_tesla"
+  }
+}

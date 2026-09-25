@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 5.0
+    },
+    {
+      "type": "hbm:hot",
+      "level": 1.5
+    }
+  ],
+  "mutex": 1,
+  "targets": "#hbm:billets/plutonium_238"
+}

@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_sawdust"
+    }
+  ],
+  "order": 10,
+  "output_items": [
+    "hbm:briquette_wood"
+  ],
+  "stamp": "flat"
+}

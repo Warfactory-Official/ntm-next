@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:explosive",
+      "level": 2.5
+    }
+  ],
+  "targets": "hbm:stick_semtex"
+}

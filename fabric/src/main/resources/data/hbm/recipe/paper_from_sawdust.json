@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": "hbm:powder_sawdust"
+  },
+  "pattern": [
+    "SSS"
+  ],
+  "result": {
+    "count": 3,
+    "id": "minecraft:paper"
+  }
+}

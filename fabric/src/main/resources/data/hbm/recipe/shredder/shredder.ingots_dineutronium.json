@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/dineutronium"
+    }
+  ],
+  "order": 397,
+  "output_items": [
+    "hbm:powder_dineutronium"
+  ]
+}

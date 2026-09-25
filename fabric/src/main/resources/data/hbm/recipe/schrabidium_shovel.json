@@ -1,0 +1,22 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!lbsm_simple_tools"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:storage_blocks/schrabidium",
+    "P": "#hbm:ingots/any_plastic",
+    "W": "hbm:desh_shovel"
+  },
+  "pattern": [
+    "B",
+    "W",
+    "P"
+  ],
+  "result": {
+    "id": "hbm:schrabidium_shovel"
+  }
+}

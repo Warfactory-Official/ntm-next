@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 3.75
+    }
+  ],
+  "targets": "hbm:pellet_rtg_depleted_neptunium"
+}

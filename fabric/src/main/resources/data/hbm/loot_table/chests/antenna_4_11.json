@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/antenna"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 11.0,
+        "min": 4.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/antenna_4_11"
+}

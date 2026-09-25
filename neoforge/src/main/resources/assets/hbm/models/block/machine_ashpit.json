@@ -1,0 +1,20 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Door",
+    "Inner",
+    "InnerBurning"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/heating_oven.obj",
+  "skins": {
+    "all": [
+      "Main"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/ashpit",
+    "particle": "hbm:block/models/machines/ashpit"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "hbm:ducttape",
+    "K": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:insert_kevlar",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "P": "#hbm:ingots/any_plastic"
+  },
+  "pattern": [
+    "PKP",
+    "DPD",
+    "PKP"
+  ],
+  "result": {
+    "id": "hbm:insert_sapi"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/schrabidium"
+    }
+  ],
+  "order": 296,
+  "output_items": [
+    "hbm:powder_schrabidium"
+  ]
+}

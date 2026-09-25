@@ -1,0 +1,22 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/graphite"
+    }
+  ],
+  "order": 19,
+  "output_items": [
+    "hbm:thruster_medium"
+  ],
+  "power": 2000
+}

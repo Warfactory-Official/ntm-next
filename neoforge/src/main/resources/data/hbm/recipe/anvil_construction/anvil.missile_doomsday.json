@@ -1,0 +1,26 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:missile_doomsday_rusted"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_welded/aluminum"
+    },
+    {
+      "count": 3,
+      "ingredient": "#hbm:billets/plutonium_239"
+    }
+  ],
+  "order": 102,
+  "output_items": [
+    "hbm:missile_doomsday"
+  ],
+  "overlay": "construction",
+  "tier": 5
+}

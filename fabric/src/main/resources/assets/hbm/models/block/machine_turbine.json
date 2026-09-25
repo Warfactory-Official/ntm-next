@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "hbm:block/machine_turbine_top",
+    "side": "hbm:block/machine_turbine_base",
+    "top": "hbm:block/machine_turbine_top"
+  }
+}

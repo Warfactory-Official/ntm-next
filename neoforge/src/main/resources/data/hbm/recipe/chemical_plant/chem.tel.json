@@ -1,0 +1,27 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 40,
+  "input_fluids": [
+    {
+      "type": "hbm:petroleum",
+      "amount": 100
+    },
+    {
+      "type": "hbm:steam",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#hbm:any_tar"
+    },
+    {
+      "ingredient": "#c:dusts/lead"
+    }
+  ],
+  "order": 17,
+  "output_items": [
+    "hbm:fuel_additive_antiknock"
+  ],
+  "power": 100
+}

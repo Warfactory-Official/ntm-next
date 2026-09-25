@@ -1,0 +1,31 @@
+{
+  "content": {
+    "en_us": "Solvent is obtained by combining any [[naphtha|Naphtha]] variant and [[aromatic hydrocarbons|Aromatic Hydrocarbons]]. It has multiple uses including [[bedrock ore processing|Bedrock Ore Processing]] and advanced circuit production.<br><br>{{hbm:fluids/template_oil2}}",
+    "ru_ru": "Растворитель получается путем объединения любого варианта [[нафты|Naphtha]] и [[ароматических углеводородов|Aromatic Hydrocarbons]]. Он имеет множество применений, включая [[обработку бедроковой руды|Bedrock Ore Processing]] и производство продвинутых микросхем.<br><br>{{hbm:fluids/template_oil2}}"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:solvent",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -1776657
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Solvent",
+  "title": {
+    "en_us": "Solvent",
+    "ru_ru": "Растворитель"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:solvent"
+    }
+  }
+}

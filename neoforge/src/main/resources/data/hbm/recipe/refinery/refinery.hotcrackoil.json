@@ -1,0 +1,31 @@
+{
+  "type": "hbm:refinery",
+  "input_fluids": [
+    {
+      "type": "hbm:hotcrackoil",
+      "amount": 100
+    }
+  ],
+  "order": 1,
+  "output_fluids": [
+    {
+      "type": "hbm:naphtha_crack",
+      "amount": 40
+    },
+    {
+      "type": "hbm:lightoil_crack",
+      "amount": 30
+    },
+    {
+      "type": "hbm:aromatics",
+      "amount": 15
+    },
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 15
+    }
+  ],
+  "output_items": [
+    "hbm:oil_tar_crack"
+  ]
+}

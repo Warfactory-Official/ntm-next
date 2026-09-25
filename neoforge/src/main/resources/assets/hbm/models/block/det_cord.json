@@ -1,0 +1,22 @@
+{
+  "parent": "hbm:block/det_cord_base",
+  "hidden": [
+    "negY",
+    "negX",
+    "negZ",
+    "posX",
+    "posY",
+    "Core",
+    "posZ",
+    "CX",
+    "CY"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/cable_neo.obj",
+  "offset_y": 0.5,
+  "skins": {
+    "all": [
+      "CZ"
+    ]
+  }
+}

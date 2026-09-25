@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:deco_red_copper"
+  ],
+  "ctm_textures": {
+    "hbm:block/deco_red_copper": "hbm:block/ctm_lib/deco_red_copper"
+  },
+  "variants": {
+    "": {
+      "model": "hbm:block/deco_red_copper"
+    }
+  }
+}

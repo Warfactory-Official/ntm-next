@@ -1,0 +1,19 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "BeamlineGlass",
+    "Beamline"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/particleaccelerator/beamline.obj",
+  "skins": {
+    "all": [
+      "BeamlineWindow"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/particleaccelerator/beamline",
+    "particle": "hbm:block/models/particleaccelerator/beamline"
+  }
+}

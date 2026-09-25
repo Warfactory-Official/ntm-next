@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:pellet_rtg_depleted_lead",
+          "weight": 40
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:pellet_rtg_weak",
+          "weight": 1
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/rtg"
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#hbm:billets/americium_241",
+    "#hbm:billets/americium_241",
+    "#hbm:billets/americium_241",
+    "#c:plates/iron"
+  ],
+  "result": {
+    "id": "hbm:pellet_rtg_americium"
+  }
+}

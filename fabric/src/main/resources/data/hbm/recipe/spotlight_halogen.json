@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:powder_bromine",
+    "G": "#c:glass_panes",
+    "S": "#c:plates/steel"
+  },
+  "pattern": [
+    "G",
+    "B",
+    "S"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:spotlight_halogen"
+  }
+}

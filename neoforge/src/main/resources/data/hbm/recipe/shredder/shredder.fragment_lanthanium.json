@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:fragment_lanthanium"
+    }
+  ],
+  "order": 42,
+  "output_items": [
+    "hbm:powder_lanthanium_tiny"
+  ]
+}

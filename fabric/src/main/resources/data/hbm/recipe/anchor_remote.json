@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:gems/diamond",
+    "hbm:ducttape",
+    "hbm:circuit_basic"
+  ],
+  "result": {
+    "components": {
+      "hbm:battery_charge": 0
+    },
+    "id": "hbm:anchor_remote"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "hbm:fusion",
+  "blue": 0.4,
+  "custom_localization": true,
+  "duration": 100,
+  "green": 0.6,
+  "icon": {
+    "id": "hbm:powder_chlorophyte"
+  },
+  "ignition_temp": 2500000,
+  "input_fluids": [
+    {
+      "type": "hbm:tritium",
+      "amount": 10
+    },
+    {
+      "type": "hbm:chlorine",
+      "amount": 10
+    }
+  ],
+  "neutron_flux": 500.0,
+  "order": 3,
+  "output_items": [
+    "hbm:powder_chlorophyte"
+  ],
+  "output_temp": 6250000,
+  "power": 25000,
+  "red": 0.8
+}

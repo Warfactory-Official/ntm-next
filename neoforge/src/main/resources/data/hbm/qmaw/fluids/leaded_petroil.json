@@ -1,0 +1,29 @@
+{
+  "content": {
+    "en_us": "Leaded petroil can be obtained from mixing [[petroil|Petroil]] and [[tetraethyllead antiknock agent|Tetraethyllead Antiknock Agent]]. It can only be used as a [[fuel|Fuels]] source for additional power.<br><br>See also:<br>[[Basic Oil Processing]]"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:petroil_leaded",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -12304067
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Leaded Petroil",
+  "title": {
+    "en_us": "Leaded Petroil"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:petroil_leaded"
+    }
+  }
+}

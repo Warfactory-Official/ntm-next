@@ -1,0 +1,15 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbm:models/press_body.obj",
+  "skins": {
+    "all": [
+      "Cube_Cube.000"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/press_body",
+    "particle": "hbm:block/models/machines/press_body"
+  }
+}

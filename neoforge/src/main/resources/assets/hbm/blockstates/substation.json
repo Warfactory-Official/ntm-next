@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/substation"
+    },
+    "facing=north": {
+      "model": "hbm:block/substation",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/substation",
+      "y": 270
+    },
+    "facing=west": {
+      "model": "hbm:block/substation"
+    }
+  }
+}

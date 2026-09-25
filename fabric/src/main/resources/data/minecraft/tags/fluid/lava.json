@@ -1,0 +1,8 @@
+{
+  "values": [
+    "hbm:volcanic_lava_fluid",
+    "hbm:flowing_volcanic_lava_fluid",
+    "hbm:rad_lava_fluid",
+    "hbm:flowing_rad_lava_fluid"
+  ]
+}

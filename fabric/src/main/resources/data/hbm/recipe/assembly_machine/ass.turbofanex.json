@@ -1,0 +1,38 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:turbine_tungsten"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:wires_dense/gold"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.turbofanEx",
+  "order": 181,
+  "output_items": [
+    "hbm:machine_turbofan"
+  ],
+  "power": 100
+}

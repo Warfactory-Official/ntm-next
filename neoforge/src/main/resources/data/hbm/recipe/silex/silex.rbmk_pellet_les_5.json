@@ -1,0 +1,57 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 600,
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_pellet": {
+          "xenon": true
+        }
+      },
+      "ingredient": "hbm:rbmk_pellet_les"
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 46,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_les"
+        },
+        "weight": 90
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_long_tiny_neptunium"
+        },
+        "weight": 2
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_short_tiny_neptunium"
+        },
+        "weight": 2
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_long_tiny_schrabidium"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_short_tiny_schrabidium"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "hbm:powder_coal_tiny"
+        },
+        "weight": 4
+      }
+    ]
+  ]
+}

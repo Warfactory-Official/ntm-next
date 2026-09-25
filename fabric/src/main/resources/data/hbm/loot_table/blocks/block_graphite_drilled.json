@@ -1,0 +1,49 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 8,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ingot_graphite"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        },
+        {
+          "block": "hbm:block_graphite_drilled",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "shrouded": "true"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:shell_aluminum"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:blocks/block_graphite_drilled"
+}

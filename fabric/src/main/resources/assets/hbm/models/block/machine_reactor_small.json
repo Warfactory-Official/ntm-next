@@ -1,0 +1,18 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "double_sided": [
+    "Cube_Cube.001"
+  ],
+  "gui_light": "side",
+  "model": "hbm:models/reactors/reactor_small_base.obj",
+  "skins": {
+    "all": [
+      "Cube_Cube.001"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/reactor_small_base",
+    "particle": "hbm:block/models/reactor_small_base"
+  }
+}

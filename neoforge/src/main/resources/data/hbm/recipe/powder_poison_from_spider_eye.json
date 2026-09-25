@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:spider_eye",
+    "#c:dusts/redstone",
+    "minecraft:quartz"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:powder_poison"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:watz_mud",
+      "amount": 1000
+    }
+  ],
+  "order": 8,
+  "output_items": [
+    "hbm:ingot_mud"
+  ]
+}

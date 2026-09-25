@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:bolts/steel",
+    "P": "#c:plates/iron"
+  },
+  "pattern": [
+    "BPB",
+    "BPB",
+    "BPB"
+  ],
+  "result": {
+    "id": "hbm:plate_cast_iron"
+  }
+}

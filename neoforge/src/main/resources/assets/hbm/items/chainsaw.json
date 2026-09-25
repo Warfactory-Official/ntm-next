@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "hbm:chainsaw",
+    "base": "hbm:item/chainsaw_base"
+  }
+}

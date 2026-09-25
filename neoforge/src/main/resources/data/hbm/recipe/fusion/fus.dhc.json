@@ -1,0 +1,36 @@
+{
+  "type": "hbm:fusion",
+  "blue": 0.8,
+  "custom_localization": true,
+  "duration": 100,
+  "green": 0.8,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:dhc",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -2969601
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "ignition_temp": 10000000,
+  "input_fluids": [
+    {
+      "type": "hbm:dhc",
+      "amount": 20
+    }
+  ],
+  "neutron_flux": 2000.0,
+  "order": 7,
+  "output_items": [
+    "hbm:powder_chlorophyte"
+  ],
+  "output_temp": 25000000,
+  "power": 25000,
+  "red": 0.2
+}

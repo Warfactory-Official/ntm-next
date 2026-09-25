@@ -1,0 +1,31 @@
+{
+  "content": {
+    "en_us": "Made primarily by casting material from the [[crucible|Crucible]]. The foundry mold requires dense wires to be made, therefore it is necessary to make at least one wire from either copper or gold using the [[arc welder|Arc Welder]] recipe.",
+    "ru_ru": "Изготавливается главным образом отливкой материала из [[тигля]]. Для изготовления литейной формы требуется сам плотный провод, из-за этого необходимо изготовить по крайней мере один провод из меди или золота по рецепту для [[дугового сварщика|Arc Welder]].",
+    "zh_cn": "主要通过铸造来自[[坩埚|Crucible]]的材料制造。致密线材铸模需要致密线材制作，因此在此之前必须使用[[电弧焊机|Arc Welder]]制造至少一个致密铜线或金线。"
+  },
+  "icon": "hbm:wire_dense_gold",
+  "name": "Dense Wire",
+  "title": {
+    "en_us": "Dense Wire",
+    "ru_ru": "Плотный провод",
+    "zh_cn": "致密线材"
+  },
+  "trigger": {
+    "items": [
+      "hbm:wire_dense_mingrade",
+      "hbm:wire_dense_starmetal",
+      "hbm:wire_dense_magnetized_tungsten",
+      "hbm:wire_dense_dineutronium",
+      "hbm:wire_dense_bscco",
+      "hbm:wire_dense_titanium",
+      "hbm:wire_dense_copper",
+      "hbm:wire_dense_niobium",
+      "hbm:wire_dense_neodymium",
+      "hbm:wire_dense_tungsten",
+      "hbm:wire_dense_gold",
+      "hbm:wire_dense_schrabidate",
+      "hbm:wire_dense_schrabidium"
+    ]
+  }
+}

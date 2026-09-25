@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_capacitor"
+    }
+  ],
+  "name": "ass.solidifierEx",
+  "order": 135,
+  "output_items": [
+    "hbm:machine_solidifier"
+  ],
+  "power": 100
+}

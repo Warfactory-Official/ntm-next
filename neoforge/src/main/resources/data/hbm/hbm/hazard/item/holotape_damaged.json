@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:digamma",
+      "level": 1000.0
+    }
+  ],
+  "targets": "hbm:holotape_damaged"
+}

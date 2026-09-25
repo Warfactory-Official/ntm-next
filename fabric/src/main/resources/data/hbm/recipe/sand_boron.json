@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#minecraft:sand",
+    "#minecraft:sand",
+    "#minecraft:sand",
+    "#minecraft:sand",
+    "#minecraft:sand",
+    "#minecraft:sand",
+    "#minecraft:sand",
+    "#minecraft:sand",
+    "#c:dusts/boron"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:sand_boron"
+  }
+}

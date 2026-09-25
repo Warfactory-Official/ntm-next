@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "ingredient": "hbm:plate_polymer"
+    }
+  ],
+  "order": 197,
+  "output_items": [
+    "hbm:siren_track_sweep_siren"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

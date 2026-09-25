@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "L": "#c:gems/lignite",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "L",
+    "S"
+  ],
+  "result": {
+    "count": 3,
+    "id": "minecraft:torch"
+  }
+}

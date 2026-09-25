@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:plates/iron"
+  },
+  "pattern": [
+    "III",
+    "III",
+    " I "
+  ],
+  "result": {
+    "id": "hbm:mask_of_infamy"
+  }
+}

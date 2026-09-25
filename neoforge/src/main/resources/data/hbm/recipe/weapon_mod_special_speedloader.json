@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:bolts/steel",
+    "S": "#c:plates/weapon_steel"
+  },
+  "pattern": [
+    " B ",
+    "BSB",
+    " B "
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_special_speedloader"
+  }
+}

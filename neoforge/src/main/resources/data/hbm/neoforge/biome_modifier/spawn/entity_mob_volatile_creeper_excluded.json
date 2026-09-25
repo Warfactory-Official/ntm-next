@@ -1,0 +1,5 @@
+{
+  "type": "neoforge:remove_spawns",
+  "biomes": "#c:no_default_monsters",
+  "entity_types": "hbm:entity_mob_volatile_creeper"
+}

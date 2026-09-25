@@ -1,0 +1,30 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_tau_base",
+    "mod_table": [
+      0.0,
+      0.0,
+      -10.0,
+      0.0,
+      -0.0,
+      -10.0,
+      0.0,
+      0.0,
+      10.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/tau.obj",
+    "parts": [
+      "Body",
+      "Rotor"
+    ],
+    "texture": "hbm:textures/models/weapons/tau.png"
+  }
+}

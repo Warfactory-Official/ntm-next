@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#hbm:ingots/any_rubber",
+    "P": "#c:plates/steel"
+  },
+  "pattern": [
+    "P P",
+    "I I"
+  ],
+  "result": {
+    "id": "hbm:security_boots"
+  }
+}

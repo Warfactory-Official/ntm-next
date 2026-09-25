@@ -1,0 +1,26 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 1000
+    },
+    {
+      "type": "hbm:hydrogen",
+      "amount": 200
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:pellet_charged"
+    }
+  ],
+  "order": 10,
+  "output_fluids": [
+    {
+      "type": "hbm:iongel",
+      "amount": 1000
+    }
+  ]
+}

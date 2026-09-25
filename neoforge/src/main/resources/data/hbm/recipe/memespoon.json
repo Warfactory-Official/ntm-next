@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#c:ingots/australium",
+    "C": "hbm:powder_yellowcake",
+    "G": "#c:storage_blocks/thorium",
+    "I": "hbm:plate_polymer",
+    "P": "hbm:photo_panel",
+    "S": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:steel_shovel"
+    }
+  },
+  "pattern": [
+    "CGC",
+    "PSP",
+    "IAI"
+  ],
+  "result": {
+    "id": "hbm:memespoon"
+  }
+}

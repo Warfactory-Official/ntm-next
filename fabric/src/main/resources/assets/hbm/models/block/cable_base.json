@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "all": "hbm:block/models/blocks/cable_neo",
+    "particle": "hbm:block/models/blocks/cable_neo"
+  }
+}

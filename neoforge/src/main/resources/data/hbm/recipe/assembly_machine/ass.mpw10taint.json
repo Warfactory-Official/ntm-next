@@ -1,0 +1,33 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_10"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:det_cord"
+    },
+    {
+      "count": 12,
+      "ingredient": "hbm:powder_magic"
+    },
+    {
+      "ingredient": {
+        "neoforge:ingredient_type": "hbm:fluid_content",
+        "amount": 1000,
+        "fluid": "hbm:watz_mud"
+      }
+    }
+  ],
+  "order": 402,
+  "output_items": [
+    "hbm:mp_warhead_10_taint"
+  ],
+  "power": 100
+}

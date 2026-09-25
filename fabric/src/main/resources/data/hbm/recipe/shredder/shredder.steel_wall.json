@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:steel_wall"
+    }
+  ],
+  "order": 125,
+  "output_items": [
+    {
+      "count": 9,
+      "id": "hbm:powder_steel_tiny"
+    }
+  ]
+}

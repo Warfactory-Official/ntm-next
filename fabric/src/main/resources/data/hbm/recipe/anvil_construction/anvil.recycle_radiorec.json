@@ -1,0 +1,26 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:radiorec"
+    }
+  ],
+  "order": 228,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:plate_steel"
+    },
+    "hbm:wire_fine_copper",
+    {
+      "chance": 0.5,
+      "id": "hbm:circuit_vacuum_tube"
+    },
+    {
+      "chance": 0.25,
+      "id": "hbm:ingot_polymer"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

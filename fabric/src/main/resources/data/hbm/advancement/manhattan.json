@@ -1,0 +1,30 @@
+{
+  "parent": "hbm:polymer",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "kinds": [
+          "nuke"
+        ]
+      },
+      "trigger": "hbm:detonation"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.manhattan.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:nuke_boy"
+    },
+    "title": {
+      "translate": "achievement.manhattan"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

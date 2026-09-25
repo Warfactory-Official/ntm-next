@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:stamp_stone_flat"
+    }
+  ],
+  "order": 155,
+  "output_items": [
+    "hbm:stamp_stone_circuit"
+  ],
+  "overlay": "smithing",
+  "tier": 1
+}

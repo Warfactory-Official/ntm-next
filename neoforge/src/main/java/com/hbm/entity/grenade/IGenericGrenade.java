@@ -1,0 +1,11 @@
+// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+// SPDX-License-Identifier: LGPL-3.0-only
+
+package com.hbm.entity.grenade;
+
+import com.hbm.items.weapon.ItemGenericGrenade;
+
+public interface IGenericGrenade {
+
+    ItemGenericGrenade getGrenade();
+}

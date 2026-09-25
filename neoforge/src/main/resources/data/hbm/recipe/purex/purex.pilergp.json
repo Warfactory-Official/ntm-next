@@ -1,0 +1,27 @@
+{
+  "type": "hbm:purex",
+  "auto_switch_group": "autoswitch.pile",
+  "duration": 40,
+  "icon_from_input": true,
+  "input_fluids": [
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 100
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:pile_rod_mk2_rgp"
+    }
+  ],
+  "name_wrapper": "purex.recycle",
+  "order": 4,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:billet_pu_mix"
+    },
+    "hbm:billet_nuclear_waste"
+  ],
+  "power": 100
+}

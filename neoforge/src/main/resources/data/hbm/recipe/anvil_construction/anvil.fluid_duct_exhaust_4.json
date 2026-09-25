@@ -1,0 +1,20 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:plates/iron"
+    },
+    {
+      "ingredient": "hbm:plate_polymer"
+    }
+  ],
+  "order": 141,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:fluid_duct_exhaust_4"
+    }
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

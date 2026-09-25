@@ -1,0 +1,37 @@
+{
+  "type": "liquid",
+  "color": "#595744",
+  "containers": {
+    "canister": {
+      "color": "#5f6d44"
+    }
+  },
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 1,
+    "health": 2,
+    "react": 0
+  },
+  "shares": "#c:naphtha",
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "combustible": {
+      "energy": 165000,
+      "grade": "MEDIUM"
+    },
+    "flammable": {
+      "energy": 110000
+    },
+    "polluting": {
+      "burn": {
+        "SOOT": 0.001
+      },
+      "release": {
+        "POISON": 5.0E-5
+      }
+    }
+  }
+}

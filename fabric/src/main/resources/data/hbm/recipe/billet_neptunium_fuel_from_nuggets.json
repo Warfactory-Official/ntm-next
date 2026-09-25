@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:nuggets/neptunium_237",
+    "#c:nuggets/neptunium_237",
+    "#c:nuggets/uranium_238",
+    "#c:nuggets/uranium_238",
+    "#c:nuggets/uranium_238",
+    "#c:nuggets/uranium_238"
+  ],
+  "result": {
+    "id": "hbm:billet_neptunium_fuel"
+  }
+}

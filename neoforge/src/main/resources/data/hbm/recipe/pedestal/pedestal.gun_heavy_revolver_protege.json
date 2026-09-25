@@ -1,0 +1,45 @@
+{
+  "type": "hbm:pedestal",
+  "key": {
+    "A": {
+      "count": 16,
+      "ingredient": "hbm:dungeon_chain"
+    },
+    "B": {
+      "ingredient": "#c:gems/cinnabar"
+    },
+    "C": {
+      "count": 16,
+      "ingredient": "hbm:dungeon_chain"
+    },
+    "D": {
+      "ingredient": "hbm:scrap_nuclear"
+    },
+    "E": {
+      "ingredient": "hbm:gun_heavy_revolver"
+    },
+    "F": {
+      "ingredient": "hbm:scrap_nuclear"
+    },
+    "G": {
+      "count": 16,
+      "ingredient": "hbm:dungeon_chain"
+    },
+    "H": {
+      "ingredient": "#c:gems/cinnabar"
+    },
+    "I": {
+      "count": 16,
+      "ingredient": "hbm:dungeon_chain"
+    }
+  },
+  "order": 3,
+  "output_items": [
+    "hbm:gun_heavy_revolver_protege"
+  ],
+  "pattern": [
+    "ABC",
+    "DEF",
+    "GHI"
+  ]
+}

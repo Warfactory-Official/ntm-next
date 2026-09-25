@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_sulfur"
+    }
+  ],
+  "order": 143,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:sulfur"
+    },
+    {
+      "count": 4,
+      "id": "hbm:sulfur"
+    },
+    "hbm:powder_iron",
+    "hbm:nugget_mercury"
+  ],
+  "power": 200
+}

@@ -1,0 +1,28 @@
+{
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 40,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:gasoline",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:canister"
+  },
+  "input_fluids": [
+    {
+      "type": "hbm:naphtha",
+      "amount": 1000
+    }
+  ],
+  "order": 13,
+  "output_fluids": [
+    {
+      "type": "hbm:gasoline",
+      "amount": 800
+    }
+  ],
+  "power": 100
+}

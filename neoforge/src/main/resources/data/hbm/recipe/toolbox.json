@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:plates/copper",
+    "I": "#c:ingots/iron"
+  },
+  "pattern": [
+    "CCC",
+    "CIC"
+  ],
+  "result": {
+    "id": "hbm:toolbox"
+  }
+}

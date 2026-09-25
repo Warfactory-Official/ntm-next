@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:block/gas_radon_tomb"
+  }
+}

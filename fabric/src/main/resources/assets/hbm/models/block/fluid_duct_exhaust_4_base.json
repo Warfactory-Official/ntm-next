@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "curve_bl": "hbm:block/boxduct_exhaust_curve_bl",
+    "curve_br": "hbm:block/boxduct_exhaust_curve_br",
+    "curve_tl": "hbm:block/boxduct_exhaust_curve_tl",
+    "curve_tr": "hbm:block/boxduct_exhaust_curve_tr",
+    "end": "hbm:block/boxduct_exhaust_end",
+    "junction": "hbm:block/boxduct_exhaust_junction_4",
+    "particle": "hbm:block/boxduct_exhaust_straight",
+    "straight": "hbm:block/boxduct_exhaust_straight"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:sourgas",
+      "amount": 7200
+    }
+  ],
+  "order": 37,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

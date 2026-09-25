@@ -1,0 +1,16 @@
+{
+  "type": "hbm:cyclotron",
+  "amat": 15,
+  "input_items": [
+    {
+      "ingredient": "hbm:part_copper"
+    },
+    {
+      "ingredient": "hbm:powder_bromine"
+    }
+  ],
+  "order": 28,
+  "output_items": [
+    "hbm:powder_iodine"
+  ]
+}

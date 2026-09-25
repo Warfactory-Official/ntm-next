@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:ores/fluorite"
+    }
+  ],
+  "order": 235,
+  "output_items": [
+    "hbm:crystal_fluorite"
+  ],
+  "productivity": 0.05
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:titanium_boots",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "P": "hbm:plate_armor_titanium"
+  },
+  "pattern": [
+    "P P",
+    "PBP"
+  ],
+  "result": {
+    "id": "hbm:t51_boots"
+  }
+}

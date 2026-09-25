@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 1200,
+  "input_items": [
+    {
+      "count": 7,
+      "ingredient": "#c:nuggets/plutonium_239"
+    },
+    {
+      "count": 3,
+      "ingredient": "#c:nuggets/uranium_238"
+    }
+  ],
+  "order": 308,
+  "output_items": [
+    "hbm:gadget_core"
+  ],
+  "power": 100
+}

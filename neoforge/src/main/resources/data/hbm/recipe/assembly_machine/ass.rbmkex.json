@@ -1,0 +1,32 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.ferrouranium"
+  ],
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:concrete_asbestos"
+    },
+    {
+      "ingredient": "hbm:item_expensive_lead_plating"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:plates/copper"
+    }
+  ],
+  "name": "ass.rbmkEx",
+  "order": 230,
+  "output_items": [
+    "hbm:rbmk_blank"
+  ],
+  "power": 100
+}

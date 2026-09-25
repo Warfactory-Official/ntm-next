@@ -1,0 +1,37 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.rubber"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/niobium"
+    }
+  ],
+  "name": "ass.cokerEx",
+  "order": 123,
+  "output_items": [
+    "hbm:machine_coker"
+  ],
+  "power": 100
+}

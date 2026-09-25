@@ -1,0 +1,123 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#all",
+          "uv": [
+            14,
+            12,
+            16,
+            0
+          ]
+        },
+        "east": {
+          "texture": "#all"
+        },
+        "north": {
+          "texture": "#all"
+        },
+        "south": {
+          "texture": "#all"
+        },
+        "up": {
+          "texture": "#all"
+        },
+        "west": {
+          "texture": "#all"
+        }
+      },
+      "from": [
+        14,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        12
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#all",
+          "uv": [
+            12,
+            16,
+            16,
+            12
+          ]
+        },
+        "east": {
+          "texture": "#all"
+        },
+        "north": {
+          "texture": "#all"
+        },
+        "south": {
+          "texture": "#all"
+        },
+        "up": {
+          "texture": "#all"
+        },
+        "west": {
+          "texture": "#all"
+        }
+      },
+      "from": [
+        12,
+        0,
+        12
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#all",
+          "uv": [
+            0,
+            16,
+            12,
+            14
+          ]
+        },
+        "east": {
+          "texture": "#all"
+        },
+        "north": {
+          "texture": "#all"
+        },
+        "south": {
+          "texture": "#all"
+        },
+        "up": {
+          "texture": "#all"
+        },
+        "west": {
+          "texture": "#all"
+        }
+      },
+      "from": [
+        0,
+        0,
+        14
+      ],
+      "to": [
+        12,
+        16,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "all": "hbm:block/steel_wall",
+    "particle": "hbm:block/steel_wall"
+  }
+}

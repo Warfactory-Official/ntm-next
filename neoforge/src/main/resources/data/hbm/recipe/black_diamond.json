@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:gems/volcanic",
+    "I": "hbm:ink",
+    "N": "#c:nuggets/gold_198"
+  },
+  "pattern": [
+    "NIN",
+    "IGI",
+    "NIN"
+  ],
+  "result": {
+    "id": "hbm:black_diamond"
+  }
+}

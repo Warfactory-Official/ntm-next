@@ -1,0 +1,171 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.29999998,
+        0.3,
+        0.29999998
+      ],
+      "translation": [
+        0.21573114,
+        2.7098663,
+        2.4658246
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.29999998,
+        0.3,
+        0.29999998
+      ],
+      "translation": [
+        0.2157321,
+        2.7098663,
+        2.465825
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0.0,
+        0.81500006,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        -2.3125,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999992,
+        -180.0
+      ],
+      "scale": [
+        0.875,
+        0.87499994,
+        0.87500006
+      ],
+      "translation": [
+        -9.536743E-7,
+        -1.6211138,
+        -7.7812495
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        1.2,
+        1.2,
+        1.2
+      ],
+      "translation": [
+        6.3642263,
+        -17.239468,
+        7.584591
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        1.5,
+        1.5,
+        1.5
+      ],
+      "translation": [
+        0.0,
+        6.75,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.28124997,
+        0.28125,
+        0.28125
+      ],
+      "translation": [
+        -0.16544962,
+        2.1194122,
+        1.3862517
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.28124997,
+        0.28125,
+        0.28125
+      ],
+      "translation": [
+        -1.3252411,
+        1.8771269,
+        1.0775459
+      ]
+    }
+  },
+  "gui_light": "side",
+  "model": "hbm:models/network/connector.obj",
+  "offset_y": 0.21875,
+  "skins": {
+    "all": [
+      "Cube_Cube.001"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/network/connector",
+    "particle": "hbm:block/models/network/connector"
+  }
+}

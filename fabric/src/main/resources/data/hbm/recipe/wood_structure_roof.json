@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": "minecraft:oak_fence",
+    "S": "#minecraft:wooden_slabs"
+  },
+  "pattern": [
+    "SSS",
+    "F F"
+  ],
+  "result": {
+    "count": 16,
+    "id": "hbm:wood_structure_roof"
+  }
+}

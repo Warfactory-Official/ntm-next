@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/titanium"
+    }
+  ],
+  "order": 36,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:deco_titanium"
+    }
+  ],
+  "overlay": "construction",
+  "tier": 1
+}

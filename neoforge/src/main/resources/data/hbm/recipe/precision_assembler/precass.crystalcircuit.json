@@ -1,0 +1,43 @@
+{
+  "type": "hbm:precision_assembler",
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_chip_quantum"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:ingot_cft"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_pcb"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:fine_wires/gold"
+    }
+  ],
+  "order": 0,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:orbital_assembly"
+        },
+        "weight": 500
+      },
+      {
+        "data": {
+          "components": {
+            "hbm:broken_item_source": "hbm:orbital_assembly"
+          },
+          "id": "hbm:broken_item"
+        },
+        "weight": 500
+      }
+    ]
+  ],
+  "power": 20000
+}

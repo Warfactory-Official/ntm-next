@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!lbsm_simple_tools"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:blades_desh",
+    "P": "#hbm:ingots/any_plastic",
+    "S": "#c:storage_blocks/schrabidium",
+    "W": "hbm:desh_pickaxe"
+  },
+  "pattern": [
+    "BSB",
+    " W ",
+    " P "
+  ],
+  "result": {
+    "id": "hbm:schrabidium_pickaxe"
+  }
+}

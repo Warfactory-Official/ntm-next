@@ -1,0 +1,60 @@
+{
+  "model": {
+    "type": "hbm:mesh",
+    "base": "hbm:item/ammo_himars_standard_he_base",
+    "mesh": "hbm:models/turrets/turret_himars.obj",
+    "parts": [
+      [
+        {
+          "offset": [
+            0.75,
+            0.0,
+            0.0
+          ],
+          "part": "RocketStandard"
+        },
+        {
+          "offset": [
+            -0.75,
+            -3.375,
+            0.0
+          ],
+          "part": "TubeStandard"
+        }
+      ]
+    ],
+    "pose_suffix": {
+      "gui": [
+        0.70710677,
+        -0.70710677,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        1.5,
+        0.70710677,
+        0.70710677,
+        -0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.0,
+        1.0
+      ]
+    },
+    "skins": [
+      "hbm:textures/models/projectiles/himars_standard_he.png"
+    ],
+    "spin": {
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "divisor": 1,
+      "modulus": 3600,
+      "rate": 0.1
+    }
+  }
+}

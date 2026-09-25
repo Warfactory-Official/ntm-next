@@ -1,0 +1,31 @@
+{
+  "content": {
+    "en_us": "Industrial Oil can be obtained through [[fractioning|Fractioning Tower]] [[heavy oil|Heavy Oil]]. It is primarily used to obtain [[engine lubricant|Engine Lubricant]] and [[heating oil|Heating Oil]] through [[fractioning|Fractioning Tower]]. It may also be used to produce additional [[naphtha|Naphtha]] or [[reclaimed industrial oil|Reclaimed Industrial Oil]].<br><br>{{hbm:fluids/template_oil1}}",
+    "ru_ru": "Промышленное масло можно получить из [[тяжёлой нефти|Heavy Oil]] путём [[ректификации|Fractioning Tower]]. Оно в основном используется для получения [[машинной смазки|Engine Lubricant]] и [[мазута|Heating Oil]] путём [[ректификации|Fractioning Tower]]. Также его можно использовать для производства дополнительной [[нафты|Naphtha]] или [[очищенное промышленное масло|Reclaimed Industrial Oil]]."
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:smear",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -15134975
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Industrial Oil",
+  "title": {
+    "en_us": "Industrial Oil",
+    "ru_ru": "Промышленное масло"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:smear"
+    }
+  }
+}

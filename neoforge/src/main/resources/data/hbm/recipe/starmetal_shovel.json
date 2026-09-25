@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!lbsm_simple_tools"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:cobalt_decorated_shovel"
+    },
+    "I": "#c:ingots/starmetal"
+  },
+  "pattern": [
+    "I",
+    "B",
+    "I"
+  ],
+  "result": {
+    "id": "hbm:starmetal_shovel"
+  }
+}

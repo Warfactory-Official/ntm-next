@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:plates/copper",
+    "I": "#c:plates/iron",
+    "L": "#c:plates/lead",
+    "T": "hbm:cell_tritium"
+  },
+  "pattern": [
+    " C ",
+    "LTL",
+    "LIL"
+  ],
+  "result": {
+    "id": "hbm:custom_hydro"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:fluid_duct_exhaust_4"
+    }
+  ],
+  "order": 142,
+  "output_items": [
+    "hbm:plate_iron",
+    "hbm:plate_polymer"
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

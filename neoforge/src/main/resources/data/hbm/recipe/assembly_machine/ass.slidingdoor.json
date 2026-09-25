@@ -1,0 +1,35 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/tungsten"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:reinforced_glass"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_rubber"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:bolts/dura_steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    }
+  ],
+  "order": 67,
+  "output_items": [
+    "hbm:sliding_blast_door"
+  ],
+  "power": 100
+}

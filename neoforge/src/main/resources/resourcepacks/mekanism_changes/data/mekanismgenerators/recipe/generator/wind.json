@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "mekanismgenerators"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#mekanism:alloys/infused",
+    "B": "mekanism:energy_tablet",
+    "C": "#hbm:ingots/any_plastic",
+    "T": "#hbm:plates_cast/titanium"
+  },
+  "pattern": [
+    " T ",
+    "TAT",
+    "BCB"
+  ],
+  "result": {
+    "id": "mekanismgenerators:wind_generator"
+  }
+}

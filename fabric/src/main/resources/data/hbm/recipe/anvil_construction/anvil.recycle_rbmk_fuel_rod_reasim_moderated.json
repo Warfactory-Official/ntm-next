@@ -1,0 +1,22 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:rbmk_fuel_rod_reasim_moderated"
+    }
+  ],
+  "order": 244,
+  "output_items": [
+    "hbm:rbmk_fuel_rod_reasim",
+    {
+      "count": 4,
+      "id": "hbm:block_graphite"
+    },
+    {
+      "count": 4,
+      "id": "hbm:ingot_tcalloy"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 4
+}

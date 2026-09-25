@@ -1,0 +1,50 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/meteor-corner",
+        "processors": "hbm:meteor_bricks",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/meteor-t",
+        "processors": "hbm:meteor_bricks",
+        "projection": "rigid"
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/meteor-stairs",
+        "processors": "hbm:meteor_bricks",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/room10/room-base-thru",
+        "processors": "hbm:meteor_bricks",
+        "projection": "rigid"
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/room10/room-base-end",
+        "processors": "hbm:meteor_bricks",
+        "projection": "rigid"
+      },
+      "weight": 4
+    }
+  ],
+  "fallback": "hbm:meteor/fallback"
+}

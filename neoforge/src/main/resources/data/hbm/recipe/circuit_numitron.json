@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:glass_panes",
+    "I": "#c:plates/copper",
+    "W": "hbm:coil_tungsten"
+  },
+  "pattern": [
+    "G",
+    "W",
+    "I"
+  ],
+  "result": {
+    "count": 3,
+    "id": "hbm:circuit_numitron"
+  }
+}

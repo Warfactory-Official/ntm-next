@@ -1,0 +1,30 @@
+{
+  "values": [
+    "hbm:microwave",
+    "hbm:digamma",
+    "hbm:blackhole",
+    "hbm:blender",
+    "hbm:meteorite",
+    "hbm:boxcar",
+    "hbm:boat",
+    "hbm:building",
+    "hbm:taint",
+    "hbm:ams",
+    "hbm:ams_core",
+    "hbm:broadcast",
+    "hbm:bang",
+    "hbm:pink_cloud",
+    "hbm:cloud",
+    "hbm:lead",
+    "hbm:enervation",
+    "hbm:electricity",
+    "hbm:exhaust",
+    "hbm:lunar",
+    "hbm:monoxide",
+    "hbm:asbestos",
+    "hbm:blacklung",
+    "hbm:mku",
+    "hbm:vacuum",
+    "hbm:overdose"
+  ]
+}

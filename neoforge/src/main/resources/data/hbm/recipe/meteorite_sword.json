@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:blade_meteorite",
+    "G": "#c:plates/gold",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "  B",
+    "GB ",
+    "SG "
+  ],
+  "result": {
+    "id": "hbm:meteorite_sword"
+  }
+}

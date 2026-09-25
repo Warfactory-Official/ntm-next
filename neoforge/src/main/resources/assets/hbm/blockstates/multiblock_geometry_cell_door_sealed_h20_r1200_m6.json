@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "hbm:block/multiblock_geometry_cell_door_sealed_h20_r1200_m6"
+    }
+  }
+}

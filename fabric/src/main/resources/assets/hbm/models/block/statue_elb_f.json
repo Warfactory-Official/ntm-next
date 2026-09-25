@@ -1,0 +1,45 @@
+{
+  "fabric:type": "hbm:obj",
+  "model": "hbm:models/blocks/statue_elb_f.obj",
+  "skins": {
+    "gun": [
+      "Gun_Shape1",
+      "Gun_Shape2",
+      "Gun_Shape3",
+      "Gun_Shape4",
+      "Gun_Shape5",
+      "Gun_Shape6",
+      "Gun_Shape7",
+      "Gun_Shape8",
+      "Gun_Shape9",
+      "Gun_Shape10",
+      "Gun_Shape11",
+      "Gun_Shape12",
+      "Gun_Shape13",
+      "Gun_Shape14",
+      "Gun_Shape15",
+      "Gun_Shape16"
+    ],
+    "statue": [
+      "Statue_Shape1",
+      "Statue_Shape2",
+      "Statue_Shape3",
+      "Statue_Shape4",
+      "Statue_Shape6",
+      "Statue_Shape7",
+      "Statue_Shape8",
+      "Statue_Shape9",
+      "Statue_Shape10"
+    ],
+    "watch": [
+      "Watch"
+    ]
+  },
+  "smooth": false,
+  "textures": {
+    "gun": "hbm:block/models/model_gun",
+    "particle": "hbm:block/code",
+    "statue": "hbm:block/models/model_statue",
+    "watch": "hbm:block/watch"
+  }
+}

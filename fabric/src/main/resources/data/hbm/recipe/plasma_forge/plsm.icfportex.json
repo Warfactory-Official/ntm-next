@@ -1,0 +1,34 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:plasma_forge",
+  "blueprint_pools_528": [
+    "528.chlorophyte"
+  ],
+  "duration": 800,
+  "ignition_temp": 1000000,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_bronze_tubes"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:wires_dense/neodymium"
+    }
+  ],
+  "name": "plsm.icfportEx",
+  "order": 26,
+  "output_items": [
+    "hbm:icf_port"
+  ],
+  "power": 10000000
+}

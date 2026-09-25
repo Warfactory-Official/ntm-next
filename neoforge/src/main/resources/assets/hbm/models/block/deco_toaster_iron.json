@@ -1,0 +1,15 @@
+{
+  "ambientocclusion": true,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/toaster.obj",
+  "skins": {
+    "all": [
+      "Plane"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/toaster_iron",
+    "particle": "hbm:block/toaster_iron"
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        -0.32648122,
+        5.0209513,
+        1.4314698
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        0.57009375,
+        5.0209513,
+        1.3530294
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        7.1900005,
+        -0.625
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.09375,
+        0.09375,
+        0.09375
+      ],
+      "translation": [
+        0.0,
+        0.875,
+        0.5625
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999992,
+        -180.0
+      ],
+      "scale": [
+        0.109375,
+        0.10937499,
+        0.10937501
+      ],
+      "translation": [
+        0.46403825,
+        0.55946237,
+        -7.05812
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "translation": [
+        4.6419716,
+        -27.244518,
+        5.5320854
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        19.5,
+        2.25
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07031249,
+        0.0703125,
+        0.0703125
+      ],
+      "translation": [
+        -1.1699417,
+        4.294023,
+        1.7801155
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07031249,
+        0.0703125,
+        0.0703125
+      ],
+      "translation": [
+        -1.5304954,
+        4.218702,
+        1.6841458
+      ]
+    }
+  },
+  "gui_light": "side",
+  "hidden": [
+    "Electrode1Short",
+    "Electrode2Short",
+    "Electrode3Short",
+    "Electrode3Hot",
+    "Electrode2Hot",
+    "Electrode1Hot",
+    "ContentsCold",
+    "ContentsHot"
+  ],
+  "model": "hbm:models/machines/arc_furnace.obj",
+  "offset_x": 0.375,
+  "offset_y": -2.75,
+  "skins": {
+    "all": [
+      "Electrode1",
+      "Electrode2",
+      "Ring1",
+      "Ring2",
+      "Cable2",
+      "Cable1",
+      "Cable3",
+      "Lid",
+      "Electrode3",
+      "Ring3",
+      "Furnace"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/arc_furnace",
+    "particle": "hbm:block/models/machines/arc_furnace"
+  }
+}

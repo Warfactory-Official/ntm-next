@@ -1,0 +1,23 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Plasma",
+    "Bolts4",
+    "Bolts3",
+    "Bolts2",
+    "Bolts1",
+    "Magnet"
+  ],
+  "model": "hbm:models/fusion/torus.obj",
+  "skins": {
+    "all": [
+      "Torus"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/fusion/torus",
+    "particle": "hbm:block/models/fusion/torus"
+  }
+}

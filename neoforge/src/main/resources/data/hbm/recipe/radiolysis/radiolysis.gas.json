@@ -1,0 +1,20 @@
+{
+  "type": "hbm:radiolysis",
+  "input_fluids": [
+    {
+      "type": "hbm:gas",
+      "amount": 100
+    }
+  ],
+  "order": 4,
+  "output_fluids": [
+    {
+      "type": "hbm:petroleum",
+      "amount": 30
+    },
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 20
+    }
+  ]
+}

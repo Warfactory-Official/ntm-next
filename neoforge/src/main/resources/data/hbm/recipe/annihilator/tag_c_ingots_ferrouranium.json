@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:annihilator",
+  "item": "#c:ingots/ferrouranium",
+  "milestones": [
+    {
+      "amount": "1024",
+      "payout": {
+        "components": {
+          "hbm:blueprint_pool": "528.ferrouranium"
+        },
+        "id": "hbm:blueprints"
+      }
+    }
+  ]
+}

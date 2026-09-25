@@ -1,0 +1,26 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_10"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:plates/weapon_steel"
+    },
+    {
+      "count": 6,
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 399,
+  "output_items": [
+    "hbm:mp_warhead_10_buster"
+  ],
+  "power": 100
+}

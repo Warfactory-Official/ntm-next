@@ -1,0 +1,27 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:coil_copper"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:bolts/tungsten"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_vacuum_tube"
+    }
+  ],
+  "order": 77,
+  "output_items": [
+    "hbm:machine_soldering_station"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

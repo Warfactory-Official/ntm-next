@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/magnetized_tungsten"
+    }
+  ],
+  "order": 23,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:wire_fine_magnetized_tungsten"
+    }
+  ],
+  "overlay": "smithing",
+  "tier": 4
+}

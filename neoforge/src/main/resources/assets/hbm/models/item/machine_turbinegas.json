@@ -1,0 +1,176 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -0.0,
+        -85.0,
+        25.000008
+      ],
+      "scale": [
+        0.11249999,
+        0.1125,
+        0.1125
+      ],
+      "translation": [
+        0.47552866,
+        0.6781162,
+        -4.891014
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -0.0,
+        -85.0,
+        25.000008
+      ],
+      "scale": [
+        0.11249999,
+        0.1125,
+        0.1125
+      ],
+      "translation": [
+        1.1219429,
+        4.136614,
+        2.497531
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.28125,
+        0.28125,
+        0.28125
+      ],
+      "translation": [
+        1.7579427,
+        3.9308634,
+        -1.75
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.140625,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -0.8789711,
+        -0.7545681,
+        1.125
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30.0,
+        -45.000008,
+        -0.0
+      ],
+      "scale": [
+        0.11718749,
+        0.11718749,
+        0.1171875
+      ],
+      "translation": [
+        0.120191336,
+        0.07897979,
+        -8.191846
+      ]
+    },
+    "head": {
+      "rotation": [
+        -148.67021,
+        -35.63104,
+        19.52547
+      ],
+      "scale": [
+        0.45000002,
+        0.45000002,
+        0.45000002
+      ],
+      "translation": [
+        9.261817,
+        -23.279182,
+        6.6620064
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.5625,
+        0.5625,
+        0.5625
+      ],
+      "translation": [
+        -3.5158854,
+        12.981728,
+        4.5
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        141.87373,
+        -71.3061,
+        127.868614
+      ],
+      "scale": [
+        0.10546875,
+        0.10546874,
+        0.105468735
+      ],
+      "translation": [
+        -0.3822657,
+        3.7328696,
+        -0.575153
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        141.87373,
+        -71.3061,
+        127.868614
+      ],
+      "scale": [
+        0.10546875,
+        0.10546874,
+        0.105468735
+      ],
+      "translation": [
+        -0.9513439,
+        2.9750447,
+        2.1576154
+      ]
+    }
+  },
+  "double_sided": [
+    "turbineShit_withCOVER"
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/turbinegas.obj",
+  "offset_x": -0.39065397,
+  "offset_y": -0.94241405,
+  "offset_z": 0.5,
+  "skins": {
+    "all": [
+      "turbineShit_withCOVER"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/turbinegas",
+    "particle": "hbm:block/models/machines/turbinegas"
+  }
+}

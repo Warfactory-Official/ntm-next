@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 0.125
+    }
+  ],
+  "mutex": 1,
+  "targets": "#hbm:billets/uranium_238"
+}

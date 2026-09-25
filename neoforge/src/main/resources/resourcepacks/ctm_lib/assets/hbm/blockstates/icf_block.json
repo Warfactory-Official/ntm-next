@@ -1,0 +1,31 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:icf_block",
+    "hbm:icf_controller"
+  ],
+  "ctm_textures": {
+    "hbm:block/icf_block": "hbm:block/ctm_lib/icf_block",
+    "hbm:block/icf_block_port": "hbm:block/ctm_lib/icf_block_port"
+  },
+  "variants": {
+    "part=capacitor": {
+      "model": "hbm:block/icf_block"
+    },
+    "part=casing": {
+      "model": "hbm:block/icf_block"
+    },
+    "part=cell": {
+      "model": "hbm:block/icf_block"
+    },
+    "part=emitter": {
+      "model": "hbm:block/icf_block"
+    },
+    "part=port": {
+      "model": "hbm:block/icf_block_port"
+    },
+    "part=turbocharger": {
+      "model": "hbm:block/icf_block"
+    }
+  }
+}

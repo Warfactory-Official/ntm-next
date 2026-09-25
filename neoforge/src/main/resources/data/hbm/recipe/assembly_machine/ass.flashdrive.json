@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "ingredient": "hbm:circuit_chip"
+    },
+    {
+      "ingredient": "#c:plates/gold"
+    }
+  ],
+  "order": 36,
+  "output_items": [
+    "hbm:drive_flash_empty"
+  ],
+  "power": 250
+}

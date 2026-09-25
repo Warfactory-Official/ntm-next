@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_copper"
+    }
+  ],
+  "order": 145,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_copper"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_copper"
+    },
+    "hbm:sulfur",
+    "hbm:powder_cobalt_tiny"
+  ],
+  "power": 200
+}

@@ -1,0 +1,29 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_starmetal"
+    }
+  ],
+  "order": 157,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:powder_dura_steel"
+    },
+    {
+      "count": 3,
+      "id": "hbm:powder_cobalt"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_astatine"
+    },
+    {
+      "count": 5,
+      "id": "hbm:nugget_mercury"
+    }
+  ],
+  "power": 200
+}

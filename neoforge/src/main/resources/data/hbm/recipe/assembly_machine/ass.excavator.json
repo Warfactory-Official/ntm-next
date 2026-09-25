@@ -1,0 +1,30 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "minecraft:stone_bricks"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/iron"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "ingredient": "hbm:circuit_analog"
+    }
+  ],
+  "order": 146,
+  "output_items": [
+    "hbm:machine_excavator"
+  ],
+  "power": 100
+}

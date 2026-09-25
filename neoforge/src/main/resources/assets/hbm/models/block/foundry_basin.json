@@ -1,0 +1,129 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#bottom"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "up": {
+          "texture": "#top"
+        },
+        "west": {
+          "texture": "#side"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "up": {
+          "texture": "#bottom"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        2,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "texture": "#inner"
+        }
+      },
+      "from": [
+        2,
+        0,
+        0
+      ],
+      "to": [
+        2,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "west": {
+          "texture": "#inner"
+        }
+      },
+      "from": [
+        14,
+        0,
+        0
+      ],
+      "to": [
+        14,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "south": {
+          "texture": "#inner"
+        }
+      },
+      "from": [
+        0,
+        0,
+        2
+      ],
+      "to": [
+        16,
+        16,
+        2
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#inner"
+        }
+      },
+      "from": [
+        0,
+        0,
+        14
+      ],
+      "to": [
+        16,
+        16,
+        14
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "hbm:block/foundry_basin_bottom",
+    "inner": "hbm:block/foundry_basin_inner",
+    "particle": "hbm:block/foundry_basin_side",
+    "side": "hbm:block/foundry_basin_side",
+    "top": "hbm:block/foundry_basin_top"
+  }
+}

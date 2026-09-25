@@ -1,0 +1,35 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 1200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#hbm:shells/saturnite"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:photo_panel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:wires_dense/schrabidate"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_quantum"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:part_generic_lde"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:circuit_controller_advanced"
+    }
+  ],
+  "order": 429,
+  "output_items": [
+    "hbm:satellite_ray_scan"
+  ],
+  "power": 25000
+}

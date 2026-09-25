@@ -1,0 +1,141 @@
+classTweaker	v2	official
+
+transitive-accessible field net/minecraft/world/level/block/entity/BlockEntityType validBlocks Ljava/util/Set;
+
+transitive-accessible field net/minecraft/world/phys/shapes/VoxelShape shape Lnet/minecraft/world/phys/shapes/DiscreteVoxelShape;
+transitive-accessible method net/minecraft/world/phys/shapes/ArrayVoxelShape <init> (Lnet/minecraft/world/phys/shapes/DiscreteVoxelShape;Lit/unimi/dsi/fastutil/doubles/DoubleList;Lit/unimi/dsi/fastutil/doubles/DoubleList;Lit/unimi/dsi/fastutil/doubles/DoubleList;)V
+
+transitive-accessible method com/mojang/blaze3d/opengl/GlProgram <init> (ILjava/lang/String;)V
+transitive-accessible class com/mojang/blaze3d/opengl/GlRenderPass
+transitive-accessible class com/mojang/blaze3d/opengl/GlRenderPass$TextureViewAndSampler
+transitive-accessible field com/mojang/blaze3d/pipeline/RenderPipeline vertexFormatPerBuffer [Lcom/mojang/blaze3d/vertex/VertexFormat;
+
+transitive-accessible field net/minecraft/network/Connection channel Lio/netty/channel/Channel;
+transitive-accessible method net/minecraft/network/protocol/game/ClientboundBlockEntityDataPacket <init> (Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/BlockEntityType;Lnet/minecraft/nbt/CompoundTag;)V
+transitive-accessible field net/minecraft/world/item/ItemStack components Lnet/minecraft/core/component/PatchedDataComponentMap;
+transitive-extendable method net/minecraft/world/level/block/entity/BlockEntity loadWithComponents (Lnet/minecraft/world/level/storage/ValueInput;)V
+transitive-extendable method net/minecraft/world/level/block/entity/BlockEntity loadCustomOnly (Lnet/minecraft/world/level/storage/ValueInput;)V
+transitive-accessible field net/minecraft/server/network/ServerCommonPacketListenerImpl connection Lnet/minecraft/network/Connection;
+
+transitive-accessible field net/minecraft/world/level/chunk/PalettedContainer data Lnet/minecraft/world/level/chunk/PalettedContainer$Data;
+transitive-accessible class net/minecraft/world/level/chunk/PalettedContainer$Data
+transitive-accessible field net/minecraft/world/level/chunk/LevelChunkSection nonEmptyBlockCount S
+transitive-accessible field net/minecraft/world/level/Level soundSeedGenerator Lnet/minecraft/util/RandomSource;
+
+transitive-accessible field net/minecraft/world/level/levelgen/synth/SimplexNoise p [I
+
+transitive-accessible method net/minecraft/client/gui/screens/MenuScreens register (Lnet/minecraft/world/inventory/MenuType;Lnet/minecraft/client/gui/screens/MenuScreens$ScreenConstructor;)V
+
+transitive-accessible field net/minecraft/client/color/item/ItemTintSources ID_MAPPER Lnet/minecraft/util/ExtraCodecs$LateBoundIdMapper;
+
+transitive-accessible field net/minecraft/server/level/ChunkMap visibleChunkMap Lit/unimi/dsi/fastutil/longs/Long2ObjectLinkedOpenHashMap;
+transitive-accessible method net/minecraft/server/level/ServerChunkCache runDistanceManagerUpdates ()Z
+transitive-accessible class net/minecraft/server/level/ThreadedLevelLightEngine$TaskType
+transitive-accessible method net/minecraft/server/level/ThreadedLevelLightEngine addTask (IILnet/minecraft/server/level/ThreadedLevelLightEngine$TaskType;Ljava/lang/Runnable;)V
+transitive-accessible method net/minecraft/server/level/ThreadedLevelLightEngine addTask (IILjava/util/function/IntSupplier;Lnet/minecraft/server/level/ThreadedLevelLightEngine$TaskType;Ljava/lang/Runnable;)V
+transitive-accessible method net/minecraft/server/level/ChunkMap getVisibleChunkIfPresent (J)Lnet/minecraft/server/level/ChunkHolder;
+
+transitive-accessible field net/minecraft/client/renderer/LevelRenderer viewArea Lnet/minecraft/client/renderer/ViewArea;
+transitive-accessible field net/minecraft/client/renderer/LevelRenderer sectionOcclusionGraph Lnet/minecraft/client/renderer/SectionOcclusionGraph;
+
+transitive-accessible field net/minecraft/client/renderer/chunk/RenderSectionRegion minSectionX I
+transitive-accessible field net/minecraft/client/renderer/chunk/RenderSectionRegion minSectionY I
+transitive-accessible field net/minecraft/client/renderer/chunk/RenderSectionRegion minSectionZ I
+
+transitive-accessible method net/minecraft/world/level/block/FireBlock getBurnOdds (Lnet/minecraft/world/level/block/state/BlockState;)I
+
+transitive-accessible method net/minecraft/world/level/block/FireBlock getIgniteOdds (Lnet/minecraft/world/level/block/state/BlockState;)I
+
+transitive-extendable method net/minecraft/world/entity/item/PrimedTnt explode ()V
+
+transitive-accessible field net/minecraft/world/level/biome/Biome climateSettings Lnet/minecraft/world/level/biome/Biome$ClimateSettings;
+transitive-accessible class net/minecraft/world/level/biome/Biome$ClimateSettings
+
+transitive-accessible method net/minecraft/client/particle/SuspendedParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
+transitive-accessible field net/minecraft/client/particle/Particle stoppedByCollision Z
+
+transitive-accessible field net/minecraft/client/gui/GuiGraphicsExtractor guiRenderState Lnet/minecraft/client/renderer/state/gui/GuiRenderState;
+
+transitive-accessible method net/minecraft/world/level/block/state/properties/BlockSetType register (Lnet/minecraft/world/level/block/state/properties/BlockSetType;)Lnet/minecraft/world/level/block/state/properties/BlockSetType;
+
+transitive-accessible field net/minecraft/world/entity/LivingEntity lastHurt F
+transitive-accessible field net/minecraft/world/entity/LivingEntity useItemRemaining I
+
+transitive-accessible field net/minecraft/world/entity/item/FallingBlockEntity blockState Lnet/minecraft/world/level/block/state/BlockState;
+transitive-accessible field net/minecraft/world/entity/item/FallingBlockEntity cancelDrop Z
+accessible field net/minecraft/world/entity/item/ItemEntity age I
+accessible field net/minecraft/world/entity/item/ItemEntity LIFETIME I
+
+transitive-accessible field net/minecraft/world/entity/Entity xRot F
+transitive-accessible field net/minecraft/world/entity/Entity yRot F
+
+transitive-extendable method net/minecraft/world/entity/vehicle/boat/AbstractBoat controlBoat ()V
+transitive-accessible field net/minecraft/world/entity/vehicle/boat/AbstractBoat inputLeft Z
+transitive-accessible field net/minecraft/world/entity/vehicle/boat/AbstractBoat inputRight Z
+transitive-accessible field net/minecraft/world/entity/vehicle/boat/AbstractBoat inputUp Z
+transitive-accessible field net/minecraft/world/entity/vehicle/boat/AbstractBoat inputDown Z
+
+transitive-accessible field net/minecraft/world/level/storage/loot/LootPool$Builder entries Lcom/google/common/collect/ImmutableList$Builder;
+
+transitive-accessible field net/minecraft/world/entity/monster/Creeper DATA_IS_IGNITED Lnet/minecraft/network/syncher/EntityDataAccessor;
+transitive-accessible field net/minecraft/world/entity/monster/Creeper DATA_IS_POWERED Lnet/minecraft/network/syncher/EntityDataAccessor;
+transitive-accessible field net/minecraft/world/entity/monster/Creeper swell I
+transitive-accessible field net/minecraft/world/entity/monster/Creeper maxSwell I
+
+transitive-accessible field net/minecraft/core/Direction VALUES [Lnet/minecraft/core/Direction;
+
+transitive-accessible field net/minecraft/world/item/component/ItemContainerContents items Ljava/util/List;
+transitive-accessible field net/minecraft/world/CompoundContainer container1 Lnet/minecraft/world/Container;
+transitive-accessible field net/minecraft/world/CompoundContainer container2 Lnet/minecraft/world/Container;
+transitive-accessible method net/minecraft/world/item/component/ItemContainerContents <init> (Ljava/util/List;)V
+transitive-accessible method net/minecraft/world/item/component/BundleContents <init> (Ljava/util/List;I)V
+transitive-accessible field net/minecraft/world/entity/animal/equine/AbstractHorse inventory Lnet/minecraft/world/SimpleContainer;
+transitive-accessible method net/minecraft/world/entity/Display$ItemDisplay getItemStack ()Lnet/minecraft/world/item/ItemStack;
+
+transitive-accessible field net/minecraft/world/entity/item/PrimedTnt owner Lnet/minecraft/world/entity/EntityReference;
+
+transitive-accessible field net/minecraft/world/level/levelgen/structure/StructurePiece mirror Lnet/minecraft/world/level/block/Mirror;
+transitive-accessible field net/minecraft/world/level/levelgen/structure/StructurePiece rotation Lnet/minecraft/world/level/block/Rotation;
+
+transitive-inject-interface	net/minecraft/client/multiplayer/ClientLevel	com/hbm/interfaces/injected/IClientLevelExtension
+transitive-inject-interface	net/minecraft/server/level/ServerLevel	com/hbm/interfaces/injected/IServerLevelExtension
+transitive-inject-interface	net/minecraft/world/level/chunk/ChunkAccess	com/hbm/interfaces/injected/IChunkExtension
+transitive-inject-interface	net/minecraft/world/level/chunk/storage/SerializableChunkData	com/hbm/interfaces/injected/IChunkExtension
+transitive-inject-interface	net/minecraft/world/entity/player/Player	com/hbm/interfaces/injected/PlayerAppearance
+transitive-inject-interface	net/minecraft/client/renderer/entity/state/AvatarRenderState	com/hbm/interfaces/injected/PlayerAppearance
+transitive-inject-interface	net/minecraft/world/level/block/piston/PistonMovingBlockEntity	com/hbm/interfaces/injected/MovedBlockEntityData
+transitive-inject-interface	net/minecraft/client/resources/model/geometry/BakedQuad$MaterialInfo	com/hbm/interfaces/injected/IQuadLightOrigin
+transitive-inject-interface	net/minecraft/server/level/ServerLevel	com/hbm/interfaces/injected/CapCacheHost
+
+transitive-accessible field net/minecraft/client/renderer/item/ItemStackRenderState layers [Lnet/minecraft/client/renderer/item/ItemStackRenderState$LayerRenderState;
+transitive-accessible field net/minecraft/client/renderer/item/ItemStackRenderState activeLayerCount I
+transitive-accessible field net/minecraft/client/renderer/item/ItemStackRenderState$LayerRenderState specialRenderer Lnet/minecraft/client/renderer/special/SpecialModelRenderer;
+transitive-accessible field net/minecraft/client/renderer/item/ItemStackRenderState$LayerRenderState argumentForSpecialRendering Ljava/lang/Object;
+transitive-accessible field net/minecraft/client/renderer/texture/SpriteContents originalImage Lcom/mojang/blaze3d/platform/NativeImage;
+
+transitive-accessible field net/minecraft/client/renderer/rendertype/RenderType state Lnet/minecraft/client/renderer/rendertype/RenderSetup;
+transitive-accessible field net/minecraft/client/renderer/rendertype/RenderSetup textures Ljava/util/Map;
+transitive-accessible class net/minecraft/client/renderer/rendertype/RenderSetup$TextureBinding
+
+accessible field net/minecraft/client/renderer/ItemInHandRenderer mainHandHeight F
+accessible field net/minecraft/client/renderer/ItemInHandRenderer oMainHandHeight F
+accessible method net/minecraft/world/item/ItemStack processDurabilityChange (ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/server/level/ServerPlayer;)I
+accessible field net/minecraft/client/gui/render/pip/PictureInPictureRenderer texture Lcom/mojang/blaze3d/textures/GpuTexture;
+extendable class net/minecraft/world/level/levelgen/structure/structures/JigsawStructure
+
+transitive-accessible field net/minecraft/client/particle/Particle x D
+transitive-accessible field net/minecraft/client/particle/Particle y D
+transitive-accessible field net/minecraft/client/particle/Particle z D
+transitive-accessible field net/minecraft/client/particle/Particle xo D
+transitive-accessible field net/minecraft/client/particle/Particle yo D
+transitive-accessible field net/minecraft/client/particle/Particle zo D
+transitive-accessible field net/minecraft/client/particle/Particle age I
+transitive-accessible field net/minecraft/client/particle/Particle hasPhysics Z
+transitive-accessible field net/minecraft/client/particle/SingleQuadParticle quadSize F
+transitive-accessible field net/minecraft/client/particle/SingleQuadParticle rCol F
+transitive-accessible field net/minecraft/client/particle/SingleQuadParticle gCol F
+transitive-accessible field net/minecraft/client/particle/SingleQuadParticle bCol F
+transitive-accessible field net/minecraft/client/particle/SingleQuadParticle alpha F
+transitive-accessible field net/minecraft/client/particle/SingleQuadParticle roll F
+transitive-accessible field net/minecraft/client/particle/SingleQuadParticle oRoll F
+transitive-accessible field net/minecraft/client/particle/ParticleGroup particles Ljava/util/Queue;

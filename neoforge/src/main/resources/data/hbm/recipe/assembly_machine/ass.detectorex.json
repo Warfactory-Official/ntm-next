@@ -1,0 +1,45 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.chip_quantum"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:pa_beamline"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:item_expensive_lead_plating"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:wires_dense/gold"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_quantum"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_computer"
+    }
+  ],
+  "name": "ass.detectorEx",
+  "order": 218,
+  "output_items": [
+    "hbm:pa_detector"
+  ],
+  "power": 100
+}

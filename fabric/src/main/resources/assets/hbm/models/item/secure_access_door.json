@@ -1,0 +1,178 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.044455767,
+        6.924197,
+        0.508128
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.044454813,
+        6.924197,
+        0.5081276
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        12.440001,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        3.5,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.15,
+        0.14999999,
+        0.15
+      ],
+      "translation": [
+        -5.9604645E-7,
+        -0.05144283,
+        -6.875
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        1.3114638,
+        -34.09679,
+        1.5629435
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0.0,
+        30.0,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -1.2684532,
+        6.237111,
+        2.2984397
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -2.428245,
+        5.9948263,
+        1.9897336
+      ]
+    }
+  },
+  "gui_light": "side",
+  "model": "hbm:models/pheodoors/secure_door.obj",
+  "offset_y": -1.0,
+  "skins": {
+    "all": [
+      "Door",
+      "Frame"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/doors/secure_access_door",
+    "particle": "hbm:block/models/doors/secure_access_door"
+  },
+  "uv_scale": {
+    "all": [
+      0.97596157,
+      0.99038464
+    ]
+  }
+}

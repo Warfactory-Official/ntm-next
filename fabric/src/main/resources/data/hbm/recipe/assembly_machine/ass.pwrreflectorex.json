@@ -1,0 +1,28 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:neutron_reflector"
+    }
+  ],
+  "name": "ass.pwrreflectorEx",
+  "order": 244,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:pwr_reflector"
+    }
+  ],
+  "power": 500
+}

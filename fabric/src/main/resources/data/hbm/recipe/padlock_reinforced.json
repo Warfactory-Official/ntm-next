@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:bolts/dura_steel",
+    "D": "hbm:plate_desh",
+    "P": "#c:plates/dura_steel"
+  },
+  "pattern": [
+    " P ",
+    "PBP",
+    "PDP"
+  ],
+  "result": {
+    "id": "hbm:padlock_reinforced"
+  }
+}

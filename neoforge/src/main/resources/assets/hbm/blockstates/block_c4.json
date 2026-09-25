@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "hbm:block/block_c4",
+      "x": -90
+    },
+    "facing=east": {
+      "model": "hbm:block/block_c4",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "hbm:block/block_c4",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "hbm:block/block_c4"
+    },
+    "facing=up": {
+      "model": "hbm:block/block_c4",
+      "x": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/block_c4",
+      "y": 90
+    }
+  }
+}

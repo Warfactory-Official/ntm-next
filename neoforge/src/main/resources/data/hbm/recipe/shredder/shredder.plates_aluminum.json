@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:plates/aluminum"
+    }
+  ],
+  "order": 267,
+  "output_items": [
+    "hbm:powder_aluminium"
+  ]
+}

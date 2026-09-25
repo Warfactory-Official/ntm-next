@@ -1,0 +1,21 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:heater_oven"
+    }
+  ],
+  "order": 216,
+  "output_items": [
+    {
+      "count": 16,
+      "id": "hbm:ingot_firebrick"
+    },
+    {
+      "count": 8,
+      "id": "minecraft:copper_ingot"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

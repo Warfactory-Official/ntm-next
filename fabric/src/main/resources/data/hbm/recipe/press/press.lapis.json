@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/lapis"
+    }
+  ],
+  "order": 1,
+  "output_items": [
+    "minecraft:lapis_lazuli"
+  ],
+  "stamp": "flat"
+}

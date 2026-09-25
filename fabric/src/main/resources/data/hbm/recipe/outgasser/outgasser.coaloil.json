@@ -1,0 +1,16 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "hbm:oil_tar_coal"
+    }
+  ],
+  "order": 17,
+  "output_fluids": [
+    {
+      "type": "hbm:coaloil",
+      "amount": 100
+    }
+  ]
+}

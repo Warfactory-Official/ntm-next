@@ -1,0 +1,26 @@
+{
+  "type": "hbm:purex",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:amat",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#hbm:billets/gold_198"
+    },
+    {
+      "ingredient": "hbm:pellet_charged"
+    }
+  ],
+  "order": 1,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:billet_balefire_gold"
+    }
+  ],
+  "power": 1000
+}

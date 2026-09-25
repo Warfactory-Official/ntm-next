@@ -1,0 +1,41 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.chip_quantum"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_lead_plating"
+    },
+    {
+      "count": 24,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 32,
+      "ingredient": "#hbm:wires_dense/gold"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_bismoid"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_computer"
+    }
+  ],
+  "name": "ass.exposurechamberEx",
+  "order": 224,
+  "output_items": [
+    "hbm:machine_exposure_chamber"
+  ],
+  "power": 100
+}

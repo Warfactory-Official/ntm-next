@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hbm:item/bedrock_ore_primary_actinide",
+    "layer1": "hbm:item/bedrock_ore_overlay_rad"
+  }
+}

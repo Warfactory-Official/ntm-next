@@ -1,0 +1,20 @@
+{
+  "type": "hbm:pyro_oven",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:biomass"
+    }
+  ],
+  "order": 61,
+  "output_fluids": [
+    {
+      "type": "hbm:syngas",
+      "amount": 1000
+    }
+  ],
+  "output_items": [
+    "minecraft:charcoal"
+  ]
+}

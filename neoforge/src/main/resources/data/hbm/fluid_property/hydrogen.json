@@ -1,0 +1,29 @@
+{
+  "type": "liquid",
+  "color": "#4286f4",
+  "containers": {
+    "gastank": {
+      "bottle_color": "#4286f4",
+      "label_color": "#ffffff"
+    }
+  },
+  "flags": [
+    "gaseous_art"
+  ],
+  "nfpa": {
+    "flame": 4,
+    "health": 3,
+    "react": 0
+  },
+  "symbol": "CRYOGENIC",
+  "temperature": -260,
+  "traits": {
+    "combustible": {
+      "energy": 10000,
+      "grade": "HIGH"
+    },
+    "flammable": {
+      "energy": 5000
+    }
+  }
+}

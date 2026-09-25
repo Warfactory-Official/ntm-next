@@ -1,0 +1,182 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:t51_helmet",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:t51_plate",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:t51_legs",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:t51_boots",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:fusion_core",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_light_revolver",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:gun_kit_1",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 24.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ammo_standard_m357_fmj",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ammo_standard_g40_he",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:ammo_standard_g26_flare_weapon",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_u235",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:billet_uranium_fuel",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:ingot_uranium_fuel",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:bottle_nuka",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:bottle_quantum",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:stealth_boy",
+          "weight": 7
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gas_mask_m65",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gas_mask_filter",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "hbm:grenade": {
+                  "filling": "nuclear",
+                  "fuze": "s7",
+                  "shell": "nuke"
+                },
+                "minecraft:max_stack_size": 1
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:grenade_universal",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:bomb_caller_carpet_bombing",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:bomb_caller_napalm",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:bomb_caller_poison_gas",
+          "weight": 2
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/vertibird"
+}

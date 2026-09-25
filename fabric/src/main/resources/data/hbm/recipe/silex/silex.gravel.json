@@ -1,0 +1,40 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 250,
+  "fluid_produced": 1000,
+  "input_items": [
+    {
+      "ingredient": "minecraft:gravel"
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 295,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "minecraft:flint"
+        },
+        "weight": 80
+      },
+      {
+        "data": {
+          "id": "hbm:powder_boron"
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "id": "hbm:powder_lithium"
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "id": "hbm:fluorite"
+        },
+        "weight": 5
+      }
+    ]
+  ]
+}

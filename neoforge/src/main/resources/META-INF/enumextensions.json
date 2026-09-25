@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+      "name": "HBM_AKIMBO",
+      "constructor": "(ZZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+      "parameters": {
+        "class": "com/hbm/neoforge/client/GunClientExtensions",
+        "field": "AKIMBO_POSE"
+      }
+    }
+  ]
+}

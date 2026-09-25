@@ -1,0 +1,11 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "textures": {
+    "particle": "hbm:block/models/pheodoors/secure_door",
+    "sheet0": "hbm:block/models/pheodoors/secure_door",
+    "sheet1": "hbm:block/models/pheodoors/secure_door_grey",
+    "sheet2": "hbm:block/models/pheodoors/secure_door_black",
+    "sheet3": "hbm:block/models/pheodoors/secure_door_yellow"
+  }
+}

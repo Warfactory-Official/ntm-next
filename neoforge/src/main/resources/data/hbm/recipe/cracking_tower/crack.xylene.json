@@ -1,0 +1,20 @@
+{
+  "type": "hbm:cracking_tower",
+  "input_fluids": [
+    {
+      "type": "hbm:xylene",
+      "amount": 100
+    }
+  ],
+  "order": 8,
+  "output_fluids": [
+    {
+      "type": "hbm:aromatics",
+      "amount": 80
+    },
+    {
+      "type": "hbm:petroleum",
+      "amount": 20
+    }
+  ]
+}

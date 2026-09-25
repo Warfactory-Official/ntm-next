@@ -1,0 +1,135 @@
+{
+  "fabric:type": "hbm:obj",
+  "groups": [
+    {
+      "matrix": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Top"
+      ],
+      "texture": "top"
+    },
+    {
+      "matrix": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Side"
+      ],
+      "texture": "side"
+    },
+    {
+      "matrix": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Bottom"
+      ],
+      "texture": "bottom"
+    },
+    {
+      "matrix": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "InnerTop"
+      ],
+      "texture": "inner_top"
+    },
+    {
+      "matrix": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "InnerSide"
+      ],
+      "texture": "inner_side"
+    }
+  ],
+  "model": "hbm:models/blocks/capacitor.obj",
+  "offset_y": 0.5,
+  "textures": {
+    "bottom": "hbm:block/capacitor_copper_bottom",
+    "inner_side": "hbm:block/capacitor_copper_inner_side",
+    "inner_top": "hbm:block/capacitor_copper_inner_top",
+    "particle": "hbm:block/block_copper",
+    "side": "hbm:block/capacitor_copper_side",
+    "top": "hbm:block/capacitor_copper_top"
+  }
+}

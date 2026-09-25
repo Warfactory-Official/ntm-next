@@ -1,0 +1,203 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.14169621,
+        4.5315447,
+        1.6195953
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.14169621,
+        4.5315447,
+        1.6195948
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        5.84,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        0.19999981,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "translation": [
+        1.1920929E-7,
+        -0.61435986,
+        -7.2
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        4.1801295,
+        -24.52618,
+        4.981684
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0.0,
+        16.8,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -0.64223075,
+        3.89932,
+        1.7805516
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -1.8020229,
+        3.6570356,
+        1.4718455
+      ]
+    }
+  },
+  "double_sided": [
+    "Cube_Cube.001"
+  ],
+  "groups": [
+    {
+      "parts": [
+        "Cube_Cube.001"
+      ],
+      "texture": "reactor_small_base"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "model": "hbm:models/reactors/reactor_small_rods.obj",
+      "parts": [
+        "Cylinder"
+      ],
+      "texture": "reactor_small_rods"
+    }
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/reactors/reactor_small_base.obj",
+  "offset_y": -0.9,
+  "textures": {
+    "particle": "hbm:block/models/reactor_small_base",
+    "reactor_small_base": "hbm:block/models/reactor_small_base",
+    "reactor_small_rods": "hbm:block/models/reactor_small_rods"
+  }
+}

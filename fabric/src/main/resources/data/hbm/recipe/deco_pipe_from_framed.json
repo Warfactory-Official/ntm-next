@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:deco_pipe_framed"
+  ],
+  "result": {
+    "id": "hbm:deco_pipe"
+  }
+}

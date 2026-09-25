@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:battery_sc_empty",
+    "#hbm:billets/radium_226",
+    "#hbm:billets/radium_226"
+  ],
+  "result": {
+    "id": "hbm:battery_sc_ra226"
+  }
+}

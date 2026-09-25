@@ -1,0 +1,44 @@
+{
+  "type": "hbm:purex",
+  "auto_switch_group": "autoswitch.watz",
+  "duration": 60,
+  "icon_from_input": true,
+  "input_fluids": [
+    {
+      "type": "hbm:kerosene",
+      "amount": 500
+    },
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:watz_pellet_depleted_lead"
+    }
+  ],
+  "name_wrapper": "purex.recycle",
+  "order": 46,
+  "output_fluids": [
+    {
+      "type": "hbm:watz_mud",
+      "amount": 1000
+    }
+  ],
+  "output_items": [
+    {
+      "count": 6,
+      "id": "hbm:nugget_lead"
+    },
+    {
+      "count": 12,
+      "id": "hbm:nugget_bismuth"
+    },
+    {
+      "count": 2,
+      "id": "hbm:nuclear_waste"
+    }
+  ],
+  "power": 10000
+}

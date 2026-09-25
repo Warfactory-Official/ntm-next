@@ -1,0 +1,31 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    "B": {
+      "count": 8,
+      "ingredient": "#c:nuggets/lead"
+    },
+    "C": {
+      "count": 2,
+      "ingredient": "#hbm:dusts/any_smokeless"
+    },
+    "D": {
+      "ingredient": "hbm:casing_buckshot_advanced"
+    }
+  },
+  "order": 51,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:ammo_standard_g10_shrapnel"
+    }
+  ],
+  "pattern": [
+    "AB ",
+    " C ",
+    " D "
+  ]
+}

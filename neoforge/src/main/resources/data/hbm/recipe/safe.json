@@ -1,0 +1,17 @@
+{
+  "type": "hbm:container_upgrade",
+  "carrier": "hbm:crate_steel",
+  "key": {
+    "A": "#c:plates/titanium",
+    "C": "hbm:crate_steel",
+    "L": "#c:plates/lead"
+  },
+  "pattern": [
+    "LAL",
+    "ACA",
+    "LAL"
+  ],
+  "result": {
+    "id": "hbm:safe"
+  }
+}

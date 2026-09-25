@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:heavyoil_vacuum",
+      "amount": 150
+    }
+  ],
+  "order": 15,
+  "output_items": [
+    "hbm:oil_tar_crude"
+  ]
+}

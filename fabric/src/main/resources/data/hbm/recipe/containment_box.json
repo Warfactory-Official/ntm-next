@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:crate_steel",
+    "L": "#c:plates/lead",
+    "U": "#c:ingots/ferrouranium"
+  },
+  "pattern": [
+    "LUL",
+    "UCU",
+    "LUL"
+  ],
+  "result": {
+    "id": "hbm:containment_box"
+  }
+}

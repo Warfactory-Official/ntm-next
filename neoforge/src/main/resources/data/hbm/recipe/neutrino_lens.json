@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_bismoid",
+    "P": "#hbm:ingots/any_plastic",
+    "S": "#c:ingots/starmetal"
+  },
+  "pattern": [
+    "PSP",
+    "SCS",
+    "PSP"
+  ],
+  "result": {
+    "id": "hbm:neutrino_lens"
+  }
+}

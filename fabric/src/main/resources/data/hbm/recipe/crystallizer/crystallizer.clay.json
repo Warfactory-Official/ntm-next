@@ -1,0 +1,19 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:colloid",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#minecraft:sand"
+    }
+  ],
+  "order": 282,
+  "output_items": [
+    "minecraft:clay"
+  ]
+}

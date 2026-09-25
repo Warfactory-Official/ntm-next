@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:nether_quartz_ore"
+    }
+  ],
+  "order": 10,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_quartz"
+    }
+  ]
+}

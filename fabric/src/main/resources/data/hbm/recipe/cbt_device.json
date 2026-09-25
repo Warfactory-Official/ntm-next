@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:bolts/steel",
+    {
+      "fabric:type": "fabric:components",
+      "base": "hbm:wrench",
+      "components": {
+        "minecraft:damage": 0
+      }
+    }
+  ],
+  "result": {
+    "id": "hbm:cbt_device"
+  }
+}

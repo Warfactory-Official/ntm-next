@@ -1,0 +1,18 @@
+{
+  "type": "hbm:compressor",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:perfluoromethyl",
+      "amount": 1000,
+      "pressure": 1
+    }
+  ],
+  "order": 4,
+  "output_fluids": [
+    {
+      "type": "hbm:perfluoromethyl_cold",
+      "amount": 1000
+    }
+  ]
+}

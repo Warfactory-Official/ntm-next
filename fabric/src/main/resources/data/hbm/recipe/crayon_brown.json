@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:chemical_dye_brown",
+    "#hbm:any_tar",
+    "minecraft:paper"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:crayon_brown"
+  }
+}

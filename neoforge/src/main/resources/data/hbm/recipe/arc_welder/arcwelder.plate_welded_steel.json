@@ -1,0 +1,15 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/steel"
+    }
+  ],
+  "order": 8,
+  "output_items": [
+    "hbm:plate_welded_steel"
+  ],
+  "power": 500
+}

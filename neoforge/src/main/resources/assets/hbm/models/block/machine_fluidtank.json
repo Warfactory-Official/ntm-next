@@ -1,0 +1,21 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Frame"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Tank"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/fluidtank.obj",
+  "skins": {
+    "all": [
+      "Frame"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/tank",
+    "particle": "hbm:block/models/machines/tank"
+  }
+}

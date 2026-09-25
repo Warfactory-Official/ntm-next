@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 150.0
+    }
+  ],
+  "targets": "hbm:ancient_scrap"
+}

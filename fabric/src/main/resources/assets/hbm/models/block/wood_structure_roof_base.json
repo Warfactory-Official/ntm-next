@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "hbm:block/wood_barrier",
+    "texture": "hbm:block/wood_barrier"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": "hbm:steel_grate_wide"
+  },
+  "pattern": [
+    "SS"
+  ],
+  "result": {
+    "id": "hbm:steel_grate"
+  }
+}

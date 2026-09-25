@@ -1,0 +1,40 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:balefire_fuel",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -14098386
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "input_fluids": [
+    {
+      "type": "hbm:kerosene",
+      "amount": 6000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:egg_balefire_shard"
+    }
+  ],
+  "order": 84,
+  "output_fluids": [
+    {
+      "type": "hbm:balefire_fuel",
+      "amount": 8000
+    }
+  ],
+  "output_items": [
+    "hbm:powder_balefire"
+  ],
+  "power": 10000
+}

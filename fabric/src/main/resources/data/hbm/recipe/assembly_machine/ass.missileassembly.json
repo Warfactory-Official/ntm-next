@@ -1,0 +1,30 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:shells/aluminum"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:shells/titanium"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:rocket_fuel"
+    },
+    {
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 343,
+  "output_items": [
+    "hbm:missile_assembly"
+  ],
+  "power": 100
+}

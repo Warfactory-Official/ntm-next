@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/dura_steel"
+    }
+  ],
+  "order": 2,
+  "output_items": [
+    "hbm:ingot_tcalloy"
+  ]
+}

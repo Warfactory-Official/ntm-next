@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:nitra_small",
+    "hbm:nitra_small",
+    "hbm:nitra_small",
+    "hbm:syringe_metal_empty"
+  ],
+  "result": {
+    "id": "hbm:syringe_metal_stimpak"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 720,
+      "material": "flux"
+    }
+  ],
+  "targets": "hbm:stone_resource_limestone"
+}

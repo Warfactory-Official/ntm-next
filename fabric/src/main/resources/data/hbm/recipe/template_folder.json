@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:dyes",
+    "L": "#c:dyes",
+    "P": "minecraft:paper"
+  },
+  "pattern": [
+    "LPL",
+    "BPB",
+    "LPL"
+  ],
+  "result": {
+    "id": "hbm:template_folder"
+  }
+}

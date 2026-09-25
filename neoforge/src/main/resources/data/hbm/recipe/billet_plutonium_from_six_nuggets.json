@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": "#c:nuggets/plutonium"
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "id": "hbm:billet_plutonium"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "processors": [
+    {
+      "offset": -1,
+      "processor_type": "hbm:ground_height"
+    },
+    {
+      "processor_type": "hbm:loot_pile"
+    }
+  ]
+}

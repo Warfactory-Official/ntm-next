@@ -1,0 +1,29 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_10"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:dusts/red_phosphorus"
+    },
+    {
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 398,
+  "output_items": [
+    "hbm:mp_warhead_10_incendiary"
+  ],
+  "power": 100
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": "minecraft:flint",
+    "I": "#c:plates/steel",
+    "T": "#hbm:ingots/any_plasticexplosive"
+  },
+  "pattern": [
+    "FFF",
+    "ITI",
+    "ITI"
+  ],
+  "result": {
+    "count": 12,
+    "id": "hbm:det_miner"
+  }
+}

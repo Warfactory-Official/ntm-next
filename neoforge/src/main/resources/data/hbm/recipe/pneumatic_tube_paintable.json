@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "hbm:pneumatic_tube",
+    "S": "#c:plates/steel"
+  },
+  "pattern": [
+    "SAS",
+    "A A",
+    "SAS"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:pneumatic_tube_paintable"
+  }
+}

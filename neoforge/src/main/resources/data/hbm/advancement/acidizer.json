@@ -1,0 +1,29 @@
+{
+  "parent": "hbm:desh",
+  "criteria": {
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": "hbm:machine_crystallizer"
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.acidizer.desc"
+    },
+    "icon": {
+      "id": "hbm:machine_crystallizer"
+    },
+    "title": {
+      "translate": "achievement.acidizer"
+    }
+  },
+  "requirements": [
+    [
+      "produced"
+    ]
+  ]
+}

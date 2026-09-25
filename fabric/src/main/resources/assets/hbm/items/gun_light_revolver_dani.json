@@ -1,0 +1,226 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "akimbo_base": "hbm:item/gun_light_revolver_dani_akimbo_base",
+    "akimbo_draws": [
+      {
+        "parts": [
+          "Barrel",
+          "Latch",
+          "Hammer",
+          "Drum",
+          "Grip"
+        ],
+        "texture": "hbm:textures/models/weapons/dani_celestial.png"
+      }
+    ],
+    "akimbo_muzzles": [
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          1.5,
+          -1.0,
+          0.0,
+          -0.0,
+          9.25,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    ],
+    "akimbo_shot_config": 0,
+    "base": "hbm:item/gun_light_revolver_dani_base",
+    "entity_draws": [
+      {
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          -2.0,
+          0.0,
+          1.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Barrel",
+          "Latch",
+          "Hammer",
+          "Drum",
+          "Grip"
+        ],
+        "texture": "hbm:textures/models/weapons/dani_lunar.png"
+      },
+      {
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          2.0,
+          0.0,
+          1.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Barrel",
+          "Latch",
+          "Hammer",
+          "Drum",
+          "Grip"
+        ],
+        "texture": "hbm:textures/models/weapons/dani_celestial.png"
+      }
+    ],
+    "equipped_draws": [
+      {
+        "parts": [
+          "Barrel",
+          "Latch",
+          "Hammer",
+          "Drum",
+          "Grip"
+        ],
+        "texture": "hbm:textures/models/weapons/dani_lunar.png"
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          1.5,
+          -1.0,
+          0.0,
+          -0.0,
+          9.25,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    ],
+    "equipped_shot_config": 1,
+    "gui_draws": [
+      {
+        "matrix": [
+          0.664463,
+          0.34201998,
+          -0.664463,
+          1.328926,
+          0.24184464,
+          -0.9396926,
+          -0.24184464,
+          0.48368928,
+          -0.70710677,
+          0.0,
+          -0.70710677,
+          -1.4142135,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Barrel",
+          "Latch",
+          "Hammer",
+          "Drum",
+          "Grip"
+        ],
+        "texture": "hbm:textures/models/weapons/dani_celestial.png"
+      },
+      {
+        "matrix": [
+          0.664463,
+          -0.34202024,
+          0.664463,
+          -1.328926,
+          -0.24184483,
+          -0.93969256,
+          -0.24184483,
+          0.48368967,
+          0.70710677,
+          0.0,
+          -0.70710677,
+          3.5857863,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Barrel",
+          "Latch",
+          "Hammer",
+          "Drum",
+          "Grip"
+        ],
+        "texture": "hbm:textures/models/weapons/dani_lunar.png"
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -5.0,
+      0.0,
+      -0.0,
+      -5.0,
+      0.0,
+      -7.5,
+      5.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/bio_revolver.obj",
+    "parts": [
+      "Barrel",
+      "Latch",
+      "Hammer",
+      "Drum",
+      "Grip"
+    ],
+    "texture": "hbm:textures/models/weapons/dani_celestial.png"
+  }
+}

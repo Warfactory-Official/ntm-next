@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:glass_panes",
+    "P": "#c:plates/steel"
+  },
+  "pattern": [
+    "P P",
+    "GPG"
+  ],
+  "result": {
+    "id": "hbm:goggles"
+  }
+}

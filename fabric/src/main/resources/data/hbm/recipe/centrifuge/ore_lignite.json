@@ -1,0 +1,26 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#c:ores/lignite"
+    }
+  ],
+  "order": 14,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_lignite"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_lignite"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_lignite"
+    },
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

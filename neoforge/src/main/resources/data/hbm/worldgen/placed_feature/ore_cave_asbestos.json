@@ -1,0 +1,12 @@
+{
+  "feature": "hbm:ore_cave_asbestos",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 1
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

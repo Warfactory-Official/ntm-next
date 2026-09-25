@@ -1,0 +1,22 @@
+{
+  "type": "hbm:rotary_furnace",
+  "duration": 40,
+  "input_fluids": [
+    {
+      "type": "hbm:sodium_aluminate",
+      "amount": 150
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:powder_flux"
+    }
+  ],
+  "order": 11,
+  "output_material": {
+    "amount": 216,
+    "material": "aluminum"
+  },
+  "steam": 200
+}

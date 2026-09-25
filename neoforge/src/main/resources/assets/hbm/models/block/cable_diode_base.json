@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "housing": "hbm:block/cable_diode",
+    "pad": "hbm:block/hadron_coil_alloy",
+    "particle": "hbm:block/cable_diode",
+    "stub": "hbm:block/models/blocks/cable_neo"
+  }
+}

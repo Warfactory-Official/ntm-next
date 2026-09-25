@@ -1,0 +1,20 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "components": {
+        "minecraft:block_state": {
+          "variant": "base"
+        }
+      },
+      "count": 4,
+      "ingredient": "hbm:platemetal"
+    }
+  ],
+  "order": 214,
+  "output_items": [
+    "hbm:plate_iron"
+  ],
+  "overlay": "recycling",
+  "tier": 1
+}

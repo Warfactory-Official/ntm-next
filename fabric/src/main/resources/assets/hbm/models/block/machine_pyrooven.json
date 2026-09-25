@@ -1,0 +1,19 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Fan",
+    "Slider"
+  ],
+  "model": "hbm:models/machines/pyrooven.obj",
+  "skins": {
+    "all": [
+      "Oven"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/pyrooven",
+    "particle": "hbm:block/models/machines/pyrooven"
+  }
+}

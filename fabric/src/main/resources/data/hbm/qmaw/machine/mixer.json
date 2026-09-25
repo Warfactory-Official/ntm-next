@@ -1,0 +1,17 @@
+{
+  "content": {
+    "en_us": "Can combine two fluids and one item into a single fluid. The recipe is defined by setting the output fluid with a fluid identifier. If an output has multiple possible recipes, the recipe can be changed using the [C] button.",
+    "ru_ru": "Может смешивать две жидкости и один предмет в одну жидкость. Рецепт определяется путём установки для выходной жидкости идентификатора жидкости. Если рецептов получения продукта несколько, то можно выбрать нужный нажатием кнопки [C].",
+    "zh_cn": "可将两种流体和一种物品混合为一种新流体，可通过用流体识别码设定输出的 流体来决定该机器执行的配方。若某种流体有多种可能的配方，则可通过“C”按钮 切换使用的配方。"
+  },
+  "icon": "hbm:machine_mixer",
+  "name": "Industrial Mixer",
+  "title": {
+    "en_us": "Industrial Mixer",
+    "ru_ru": "Промышленный смеситель",
+    "zh_cn": "工业搅拌机"
+  },
+  "trigger": {
+    "items": "hbm:machine_mixer"
+  }
+}

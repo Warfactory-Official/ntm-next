@@ -1,0 +1,25 @@
+{
+  "parent": "hbm:horizonsend",
+  "criteria": {
+    "impossible": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.horizonsBonus.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:sat_gerald"
+    },
+    "title": {
+      "translate": "achievement.horizonsBonus"
+    }
+  },
+  "requirements": [
+    [
+      "impossible"
+    ]
+  ]
+}

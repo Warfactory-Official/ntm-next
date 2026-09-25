@@ -1,0 +1,6 @@
+{
+  "type": "hbm:null_spawn",
+  "biomes": "#c:is_ocean",
+  "spawn_overrides": {},
+  "step": "strongholds"
+}

@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "facing=east,tilted=false": {
+      "model": "hbm:block/reactor_zirnox"
+    },
+    "facing=east,tilted=true": {
+      "model": "hbm:block/reactor_zirnox_tilted_east"
+    },
+    "facing=north,tilted=false": {
+      "model": "hbm:block/reactor_zirnox",
+      "y": 270
+    },
+    "facing=north,tilted=true": {
+      "model": "hbm:block/reactor_zirnox_tilted_north"
+    },
+    "facing=south,tilted=false": {
+      "model": "hbm:block/reactor_zirnox",
+      "y": 90
+    },
+    "facing=south,tilted=true": {
+      "model": "hbm:block/reactor_zirnox_tilted_south"
+    },
+    "facing=west,tilted=false": {
+      "model": "hbm:block/reactor_zirnox",
+      "y": 180
+    },
+    "facing=west,tilted=true": {
+      "model": "hbm:block/reactor_zirnox_tilted_west"
+    }
+  }
+}

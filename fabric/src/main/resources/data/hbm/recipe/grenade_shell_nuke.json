@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_advanced",
+    "M": "#hbm:gun_mechanisms/weapon_steel",
+    "S": "#hbm:shells/weapon_steel"
+  },
+  "pattern": [
+    " S ",
+    "CMC",
+    " S "
+  ],
+  "result": {
+    "count": 2,
+    "id": "hbm:grenade_shell_nuke"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/lead"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:thermo_element"
+    }
+  ],
+  "order": 42,
+  "output_items": [
+    "hbm:rtg_unit"
+  ],
+  "power": 100
+}

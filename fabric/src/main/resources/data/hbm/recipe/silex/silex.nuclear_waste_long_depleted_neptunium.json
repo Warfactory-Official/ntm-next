@@ -1,0 +1,40 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": "hbm:nuclear_waste_long_depleted_neptunium"
+    }
+  ],
+  "laser_strength": "ir",
+  "order": 287,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_u238"
+        },
+        "weight": 16
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_lead"
+        },
+        "weight": 55
+      },
+      {
+        "data": {
+          "id": "hbm:dust_tiny"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_tiny"
+        },
+        "weight": 9
+      }
+    ]
+  ]
+}

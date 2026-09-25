@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:radaway_strong",
+    "#c:dusts/iodine"
+  ],
+  "result": {
+    "id": "hbm:radaway_flush"
+  }
+}

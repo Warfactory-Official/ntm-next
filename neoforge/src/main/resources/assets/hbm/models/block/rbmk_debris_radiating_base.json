@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "all": "hbm:block/rbmk/rbmk_debris_radiating",
+    "particle": "hbm:block/rbmk/rbmk_debris_radiating"
+  }
+}

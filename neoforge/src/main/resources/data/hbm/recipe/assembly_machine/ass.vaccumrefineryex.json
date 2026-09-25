@@ -1,0 +1,41 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_bronze_tubes"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_ferro_plating"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:pipes/dura_steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_chip_bismoid"
+    },
+    {
+      "ingredient": "hbm:item_expensive_computer"
+    }
+  ],
+  "name": "ass.vaccumrefineryEx",
+  "order": 125,
+  "output_items": [
+    "hbm:machine_vacuum_distill"
+  ],
+  "power": 100
+}

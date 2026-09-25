@@ -1,0 +1,64 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:plasma_forge",
+  "duration": 6000,
+  "ignition_temp": 50000000,
+  "input_items": [
+    {
+      "count": 64,
+      "ingredient": "hbm:ingot_electronium"
+    },
+    {
+      "ingredient": "hbm:battery_pack_battery_quantum"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:plates_welded/osmiridium"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:plates_welded/osmiridium"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:plates_cast/any_bismoid_bronze"
+    },
+    {
+      "count": 32,
+      "ingredient": "#hbm:plates_cast/cmbsteel"
+    },
+    {
+      "count": 32,
+      "ingredient": "#hbm:wires_dense/magnetized_tungsten"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:plate_dineutronium"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:powder_magic"
+    },
+    {
+      "ingredient": "hbm:ingot_u238m2"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:ingot_cft"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:ingot_cft"
+    }
+  ],
+  "order": 38,
+  "output_items": [
+    "hbm:machine_battery_redd"
+  ],
+  "power": 50000000
+}

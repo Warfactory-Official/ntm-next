@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:annihilator",
+  "item": "#hbm:ingots/any_hard_plastic",
+  "milestones": [
+    {
+      "amount": "1024",
+      "payout": {
+        "components": {
+          "hbm:blueprint_pool": "528.hardplastic"
+        },
+        "id": "hbm:blueprints"
+      }
+    }
+  ]
+}

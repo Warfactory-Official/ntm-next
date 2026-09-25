@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:nitroglycerin",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_sawdust"
+    }
+  ],
+  "order": 277,
+  "output_items": [
+    "hbm:cordite"
+  ],
+  "productivity": 0.25
+}

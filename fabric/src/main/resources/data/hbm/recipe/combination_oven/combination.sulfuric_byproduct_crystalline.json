@@ -1,0 +1,32 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "crystalline",
+          "grade": "sulfuric_byproduct"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 50,
+  "output_fluids": [
+    {
+      "type": "hbm:vitriol",
+      "amount": 50
+    }
+  ],
+  "output_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "crystalline",
+          "grade": "sulfuric_roasted"
+        }
+      },
+      "id": "hbm:bedrock_ore"
+    }
+  ]
+}

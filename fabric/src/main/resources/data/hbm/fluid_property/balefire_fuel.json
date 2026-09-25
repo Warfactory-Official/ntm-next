@@ -1,0 +1,34 @@
+{
+  "type": "liquid",
+  "color": "#28e02e",
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 4,
+    "health": 4,
+    "react": 3
+  },
+  "symbol": "RADIATION",
+  "temperature": 1500,
+  "traits": {
+    "combustible": {
+      "energy": 640000000,
+      "grade": "HIGH"
+    },
+    "corrosive": {
+      "rating": 50
+    },
+    "flammable": {
+      "energy": 256000000
+    },
+    "polluting": {
+      "burn": {
+        "SOOT": 0.001
+      },
+      "release": {
+        "POISON": 5.0E-5
+      }
+    }
+  }
+}

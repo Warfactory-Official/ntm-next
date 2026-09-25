@@ -1,0 +1,32 @@
+{
+  "type": "hbm:plasma_forge",
+  "duration": 600,
+  "ignition_temp": 1000000,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/euphemium"
+    },
+    {
+      "count": 3,
+      "ingredient": "#c:dusts/astatine"
+    },
+    {
+      "ingredient": "#c:dusts/bismuth"
+    },
+    {
+      "ingredient": "#c:gems/volcanic"
+    },
+    {
+      "ingredient": "#c:ingots/osmiridium"
+    }
+  ],
+  "order": 0,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:plate_euphemium"
+    }
+  ],
+  "power": 10000000
+}

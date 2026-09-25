@@ -1,0 +1,21 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Light",
+    "Left",
+    "Right",
+    "Slide"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/charger.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/charger",
+    "particle": "hbm:block/models/machines/charger"
+  }
+}

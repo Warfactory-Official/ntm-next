@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#c:dyes/yellow",
+    "S": "minecraft:stone"
+  },
+  "pattern": [
+    " D ",
+    "DSD",
+    " D "
+  ],
+  "result": {
+    "id": "hbm:lemon"
+  }
+}

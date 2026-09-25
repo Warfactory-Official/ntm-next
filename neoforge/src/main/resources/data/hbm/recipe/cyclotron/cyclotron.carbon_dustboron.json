@@ -1,0 +1,16 @@
+{
+  "type": "hbm:cyclotron",
+  "amat": 10,
+  "input_items": [
+    {
+      "ingredient": "hbm:part_carbon"
+    },
+    {
+      "ingredient": "#c:dusts/boron"
+    }
+  ],
+  "order": 20,
+  "output_items": [
+    "hbm:powder_aluminium"
+  ]
+}

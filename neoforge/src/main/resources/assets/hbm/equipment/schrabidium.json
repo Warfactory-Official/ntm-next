@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "hbm:schrabidium"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "hbm:schrabidium"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "hbm:schrabidium"
+      }
+    ]
+  }
+}

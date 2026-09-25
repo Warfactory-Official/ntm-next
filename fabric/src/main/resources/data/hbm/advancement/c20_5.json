@@ -1,0 +1,25 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "impossible": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.c20_5.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:achievement_icon_questionmark"
+    },
+    "title": {
+      "translate": "achievement.c20_5"
+    }
+  },
+  "requirements": [
+    [
+      "impossible"
+    ]
+  ]
+}

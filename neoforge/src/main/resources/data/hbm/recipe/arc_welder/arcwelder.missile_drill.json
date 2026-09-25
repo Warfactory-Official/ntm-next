@@ -1,0 +1,22 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 300,
+  "input_items": [
+    {
+      "ingredient": "hbm:warhead_buster_large"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:fuel_tank_medium"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:thruster_medium"
+    }
+  ],
+  "order": 38,
+  "output_items": [
+    "hbm:missile_drill"
+  ],
+  "power": 25000
+}

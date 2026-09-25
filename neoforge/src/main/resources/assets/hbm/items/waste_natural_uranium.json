@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/waste_natural_uranium",
+    "tints": [
+      {
+        "type": "hbm:waste_cooling"
+      }
+    ]
+  }
+}

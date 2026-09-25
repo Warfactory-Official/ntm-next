@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/beryllium"
+    }
+  ],
+  "order": 236,
+  "output_items": [
+    "hbm:crystal_beryllium"
+  ],
+  "productivity": 0.05
+}

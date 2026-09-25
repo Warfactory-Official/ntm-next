@@ -1,0 +1,16 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 1000,
+  "fluid_produced": 1000,
+  "input_fluids": [
+    {
+      "type": "hbm:fullerene",
+      "amount": 0
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 296,
+  "output_items": [
+    "hbm:powder_ash_fullerene"
+  ]
+}

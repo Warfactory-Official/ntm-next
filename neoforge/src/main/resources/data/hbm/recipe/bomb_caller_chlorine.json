@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": "hbm:pellet_gas",
+    "R": "hbm:rangefinder"
+  },
+  "pattern": [
+    "PPP",
+    "PRP",
+    "PPP"
+  ],
+  "result": {
+    "id": "hbm:bomb_caller_poison_gas"
+  }
+}

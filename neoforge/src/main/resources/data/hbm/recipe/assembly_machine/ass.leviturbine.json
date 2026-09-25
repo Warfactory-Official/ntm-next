@@ -1,0 +1,56 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:plates_welded/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    },
+    {
+      "count": 5,
+      "ingredient": "hbm:turbine_tungsten"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:turbine_titanium"
+    },
+    {
+      "ingredient": "hbm:flywheel_beryllium"
+    },
+    {
+      "count": 48,
+      "ingredient": "#hbm:wires_dense/gold"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:pipes/dura_steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:pipes/steel"
+    }
+  ],
+  "order": 188,
+  "output_items": [
+    "hbm:machine_chungus"
+  ],
+  "power": 100
+}

@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 10,
+  "input_items": [
+    {
+      "count": 64,
+      "ingredient": "hbm:cap_nuka"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:cap_nuka"
+    }
+  ],
+  "order": 78,
+  "output_items": [
+    "hbm:block_cap_nuka"
+  ],
+  "power": 100
+}

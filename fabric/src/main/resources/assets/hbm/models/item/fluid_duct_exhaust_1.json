@@ -1,0 +1,56 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#straight"
+        },
+        "east": {
+          "rotation": 90,
+          "texture": "#straight",
+          "uv": [
+            3,
+            16,
+            13,
+            0
+          ]
+        },
+        "north": {
+          "texture": "#end"
+        },
+        "south": {
+          "texture": "#end"
+        },
+        "up": {
+          "texture": "#straight"
+        },
+        "west": {
+          "rotation": 90,
+          "texture": "#straight",
+          "uv": [
+            3,
+            0,
+            13,
+            16
+          ]
+        }
+      },
+      "from": [
+        3,
+        3,
+        0
+      ],
+      "to": [
+        13,
+        13,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "end": "hbm:block/boxduct_exhaust_end",
+    "particle": "hbm:block/boxduct_exhaust_straight",
+    "straight": "hbm:block/boxduct_exhaust_straight"
+  }
+}

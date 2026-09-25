@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_heavy/any_resistant_alloy",
+    "C": "hbm:coil_copper",
+    "E": "hbm:circuit_advanced",
+    "G": "#hbm:grips/any_plastic",
+    "M": "#hbm:gun_mechanisms/weapon_steel",
+    "R": "#hbm:receivers_heavy/any_resistant_alloy"
+  },
+  "pattern": [
+    "CCC",
+    "BRB",
+    "MGE"
+  ],
+  "result": {
+    "id": "hbm:gun_tesla_cannon"
+  }
+}

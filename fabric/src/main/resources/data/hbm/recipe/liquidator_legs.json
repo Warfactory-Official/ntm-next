@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:hazmat_legs_grey",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "C": "hbm:cladding_lead",
+    "I": "#hbm:ingots/any_rubber"
+  },
+  "pattern": [
+    "III",
+    "CBC",
+    "I I"
+  ],
+  "result": {
+    "id": "hbm:liquidator_legs"
+  }
+}

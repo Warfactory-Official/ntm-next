@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:cart_empty",
+      "components": {
+        "hbm:cart_base": "wood"
+      }
+    },
+    "P": "minecraft:gunpowder"
+  },
+  "pattern": [
+    "PPP",
+    "PCP",
+    "PPP"
+  ],
+  "result": {
+    "components": {
+      "hbm:cart_base": "wood"
+    },
+    "id": "hbm:cart_powder"
+  }
+}

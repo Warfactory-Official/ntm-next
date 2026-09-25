@@ -1,0 +1,77 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_charge_thrower_base",
+    "draws": [
+      {
+        "excludes_mods": [
+          {
+            "id": 202
+          }
+        ],
+        "parts": [
+          "Gun"
+        ]
+      },
+      {
+        "parts": [
+          "Gun",
+          "Scope"
+        ],
+        "requires_mods": [
+          {
+            "id": 202
+          }
+        ]
+      },
+      {
+        "parts": [
+          "Hook"
+        ],
+        "requires_ammo": {
+          "item": "hbm:ammo_standard_ct_hook"
+        },
+        "texture": "hbm:textures/models/weapons/charge_thrower_hook.png"
+      },
+      {
+        "parts": [
+          "Mortar"
+        ],
+        "requires_ammo": {
+          "item": "hbm:ammo_standard_ct_mortar"
+        },
+        "texture": "hbm:textures/models/weapons/charge_thrower_mortar.png"
+      },
+      {
+        "parts": [
+          "Mortar",
+          "Oomph"
+        ],
+        "requires_ammo": {
+          "item": "hbm:ammo_standard_ct_mortar_charge"
+        },
+        "texture": "hbm:textures/models/weapons/charge_thrower_mortar.png"
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -8.5,
+      8.5,
+      -0.0,
+      -8.5,
+      0.0,
+      0.0,
+      8.5,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/charge_thrower.obj",
+    "texture": "hbm:textures/models/weapons/charge_thrower.png"
+  }
+}

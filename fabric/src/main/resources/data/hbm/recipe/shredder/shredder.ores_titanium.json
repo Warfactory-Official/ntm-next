@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ores/titanium"
+    }
+  ],
+  "order": 262,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_titanium"
+    }
+  ]
+}

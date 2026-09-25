@@ -1,0 +1,26 @@
+{
+  "type": "hbm:catalytic_reformer",
+  "duration": 1,
+  "input_fluids": [
+    {
+      "type": "hbm:lightoil",
+      "amount": 100
+    }
+  ],
+  "order": 4,
+  "output_fluids": [
+    {
+      "type": "hbm:aromatics",
+      "amount": 50
+    },
+    {
+      "type": "hbm:reformgas",
+      "amount": 10
+    },
+    {
+      "type": "hbm:hydrogen",
+      "amount": 15
+    }
+  ],
+  "power": 20000
+}

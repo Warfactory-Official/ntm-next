@@ -1,0 +1,34 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:rocket_fuel"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:ball_tatb"
+    },
+    {
+      "ingredient": "#c:gems/volcanic"
+    },
+    {
+      "count": 6,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 340,
+  "output_items": [
+    "hbm:ammo_himars_standard_lava"
+  ],
+  "power": 100
+}

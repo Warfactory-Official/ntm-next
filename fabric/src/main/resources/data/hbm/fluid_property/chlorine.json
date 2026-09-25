@@ -1,0 +1,35 @@
+{
+  "type": "gaseous",
+  "color": "#bab572",
+  "containers": {
+    "gastank": {
+      "bottle_color": "#bab572",
+      "label_color": "#887b34"
+    }
+  },
+  "nfpa": {
+    "flame": 0,
+    "health": 3,
+    "react": 0
+  },
+  "shares": "#c:chlorine",
+  "symbol": "OXIDIZER",
+  "temperature": 20,
+  "traits": {
+    "corrosive": {
+      "rating": 25
+    },
+    "toxin": {
+      "entries": [
+        {
+          "amount": 2.0,
+          "damage": "hbm:cloud",
+          "delay": 20,
+          "full_body": false,
+          "hazard": "GAS_LUNG",
+          "kind": "direct_damage"
+        }
+      ]
+    }
+  }
+}

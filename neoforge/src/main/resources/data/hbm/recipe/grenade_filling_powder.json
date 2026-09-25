@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": "minecraft:gunpowder",
+    "I": "hbm:plate_polymer"
+  },
+  "pattern": [
+    "F",
+    "I",
+    "F"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:grenade_filling_powder"
+  }
+}

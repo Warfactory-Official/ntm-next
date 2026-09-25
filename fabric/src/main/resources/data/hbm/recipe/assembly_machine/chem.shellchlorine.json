@@ -1,0 +1,23 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:chlorine",
+      "amount": 4000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:ammo_arty"
+    },
+    {
+      "ingredient": "#hbm:ingots/any_plastic"
+    }
+  ],
+  "order": 411,
+  "output_items": [
+    "hbm:ammo_arty_chlorine"
+  ],
+  "power": 1000
+}

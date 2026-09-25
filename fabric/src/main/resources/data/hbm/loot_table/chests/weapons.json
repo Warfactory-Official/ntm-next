@@ -1,0 +1,56 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_light_revolver",
+          "weight": 100
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_henry",
+          "weight": 100
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_maresleg",
+          "weight": 100
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_greasegun",
+          "weight": 100
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_carbine",
+          "weight": 50
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_heavy_revolver",
+          "weight": 50
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_panzerschreck",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_double_barrel",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_n_i_4_n_i",
+          "weight": 1
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/weapons"
+}

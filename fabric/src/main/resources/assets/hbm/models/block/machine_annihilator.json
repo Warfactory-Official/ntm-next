@@ -1,0 +1,19 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Roller",
+    "Belt"
+  ],
+  "model": "hbm:models/machines/annihilator.obj",
+  "skins": {
+    "all": [
+      "Annihilator"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/annihilator",
+    "particle": "hbm:block/models/machines/annihilator"
+  }
+}

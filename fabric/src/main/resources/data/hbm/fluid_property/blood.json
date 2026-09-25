@@ -1,0 +1,31 @@
+{
+  "type": "liquid",
+  "color": "#b22424",
+  "flags": [
+    "viscous",
+    "delicious"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 0,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "heatable": {
+      "efficiency": {
+        "HEATEXCHANGER": 1.0,
+        "ICF": 1.25
+      },
+      "steps": [
+        {
+          "amount_produced": 1,
+          "amount_req": 1,
+          "heat_req": 500,
+          "produces": "hbm:blood_hot"
+        }
+      ]
+    }
+  }
+}

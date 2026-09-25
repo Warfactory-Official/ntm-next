@@ -1,0 +1,39 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.bmg"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:battery_pack_battery_lead"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "#hbm:gun_mechanisms/gun_metal"
+    },
+    {
+      "ingredient": "hbm:barrel_steel"
+    }
+  ],
+  "order": 332,
+  "output_items": [
+    "hbm:turret_fritz"
+  ],
+  "power": 100
+}

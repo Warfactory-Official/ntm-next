@@ -1,0 +1,32 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:plasma_forge",
+  "blueprint_pools_528": [
+    "528.chlorophyte"
+  ],
+  "duration": 800,
+  "ignition_temp": 1000000,
+  "input_items": [
+    {
+      "ingredient": "#hbm:plates_welded/any_resistant_alloy"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:wires_dense/neodymium"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:wires_dense/schrabidate"
+    }
+  ],
+  "order": 19,
+  "output_items": [
+    "hbm:icf_capacitor"
+  ],
+  "power": 10000000
+}

@@ -1,0 +1,20 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/machine_stirling_no_cog"
+        },
+        "when": false
+      }
+    ],
+    "component": "hbm:has_cog",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:item/machine_stirling"
+    },
+    "property": "minecraft:component"
+  }
+}

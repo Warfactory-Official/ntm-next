@@ -1,0 +1,28 @@
+{
+  "type": "hbm:rotary_furnace",
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:reformgas",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:dusts/dura_steel"
+    },
+    {
+      "ingredient": "#c:dusts/copper"
+    },
+    {
+      "ingredient": "#c:dusts/borax"
+    }
+  ],
+  "order": 9,
+  "output_material": {
+    "amount": 288,
+    "material": "saturnite"
+  },
+  "steam": 300
+}

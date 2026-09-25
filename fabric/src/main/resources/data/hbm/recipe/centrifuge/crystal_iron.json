@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_iron"
+    }
+  ],
+  "order": 134,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_iron"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_iron"
+    },
+    "hbm:powder_titanium",
+    "hbm:powder_lithium_tiny"
+  ],
+  "power": 200
+}

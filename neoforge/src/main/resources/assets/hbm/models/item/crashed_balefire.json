@@ -1,0 +1,173 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -0.0,
+        -85.0,
+        25.00001
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        -0.26886296,
+        -1.4025542,
+        -3.073113
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -0.0,
+        -85.0,
+        25.00001
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.26646316,
+        1.4615914,
+        3.0456896
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        -2.861023E-6,
+        -2.6282978,
+        0.50000286
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        1.9073486E-6,
+        -4.034149,
+        -1.9073486E-6
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -60.0,
+        0.0,
+        -45.000008
+      ],
+      "scale": [
+        0.1328125,
+        0.1328125,
+        0.1328125
+      ],
+      "translation": [
+        -0.017104805,
+        0.58952487,
+        -6.4851875
+      ]
+    },
+    "head": {
+      "rotation": [
+        -148.67021,
+        -35.63104,
+        19.52547
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        7.860836,
+        -12.246365,
+        9.368189
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        5.722046E-6,
+        -0.13659573,
+        -5.722046E-6
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        141.87373,
+        -71.3061,
+        127.868614
+      ],
+      "scale": [
+        0.140625,
+        0.140625,
+        0.14062499
+      ],
+      "translation": [
+        -0.68885946,
+        1.0698599,
+        -0.6797334
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        141.87373,
+        -71.3061,
+        127.868614
+      ],
+      "scale": [
+        0.140625,
+        0.140625,
+        0.14062499
+      ],
+      "translation": [
+        -0.9985347,
+        0.65747464,
+        0.80735576
+      ]
+    }
+  },
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/bombs/dud_balefire.obj",
+  "offset_x": 4.7683716E-7,
+  "offset_y": 0.511383,
+  "offset_z": -4.7683716E-7,
+  "skins": {
+    "all": [
+      "Cylinder.002_Cylinder.003"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/bombs/dud_balefire",
+    "particle": "hbm:block/models/bombs/dud_balefire"
+  }
+}

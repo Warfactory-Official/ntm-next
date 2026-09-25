@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_advanced",
+    "G": "#c:plates/gold",
+    "I": "#c:plates/iron"
+  },
+  "pattern": [
+    "I I",
+    "ICI",
+    "GGG"
+  ],
+  "result": {
+    "id": "hbm:linker"
+  }
+}

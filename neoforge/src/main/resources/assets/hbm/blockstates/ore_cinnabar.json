@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/ore_cinnabar"
+      },
+      {
+        "model": "hbm:block/ore_cinnabar_mirrored"
+      },
+      {
+        "model": "hbm:block/ore_cinnabar",
+        "y": 180
+      },
+      {
+        "model": "hbm:block/ore_cinnabar_mirrored",
+        "y": 180
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/glowstone",
+    "#c:dusts/diamond",
+    "#c:dusts/magnetized_tungsten"
+  ],
+  "result": {
+    "count": 3,
+    "id": "hbm:powder_power"
+  }
+}

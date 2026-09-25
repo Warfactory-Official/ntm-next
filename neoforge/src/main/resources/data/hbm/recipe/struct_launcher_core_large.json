@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:struct_launcher",
+    "C": "hbm:circuit_advanced",
+    "E": "hbm:battery_pack_battery_lead",
+    "I": "minecraft:iron_bars",
+    "S": "hbm:circuit_advanced"
+  },
+  "pattern": [
+    "SIS",
+    "ICI",
+    "BEB"
+  ],
+  "result": {
+    "id": "hbm:struct_launcher_core_large"
+  }
+}

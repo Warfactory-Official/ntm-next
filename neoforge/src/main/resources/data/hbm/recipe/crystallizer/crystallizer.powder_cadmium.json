@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:radiosolvent",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "count": 10,
+      "ingredient": "hbm:plant_item_mustardwillow"
+    }
+  ],
+  "order": 268,
+  "output_items": [
+    "hbm:powder_cadmium"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "com.hbm.mixin.compat",
+  "plugin": "com.hbm.mixin.compat.ClientCompatPlugin",
+  "client": [
+    "EnhancedLightMixin",
+    "flywheel.MixinLivingEntityVisualConfig",
+    "sodium.FlatLightMixin",
+    "sodium.SmoothLightMixin",
+    "sodium.QuadImportMixin",
+    "sodium.QuadAoMixin",
+    "sodium.FabricSectionGeometryMixin",
+    "sodium.LevelSliceMixin",
+    "sodium.SectionTreeAdmissionMixin",
+    "fusion.QuadOriginMixin",
+    "iris.FallbackGlobalsMixin",
+    "iris.MixinChunkVertexConsumer",
+    "iris.MixinVertex",
+    "iris.MixinXHFPTerrainVertex",
+    "iris.ShaderCreatorMixin",
+    "iris.ExtendedShaderMixin",
+    "iris.IrisRenderingPipelineMixin",
+    "iris.GlDeviceMixin",
+    "iris.VertexBindingsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

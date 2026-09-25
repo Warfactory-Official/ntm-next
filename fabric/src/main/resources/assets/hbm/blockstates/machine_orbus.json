@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_orbus_east"
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_orbus_north"
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_orbus_south"
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_orbus_west"
+    }
+  }
+}

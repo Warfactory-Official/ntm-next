@@ -1,0 +1,28 @@
+{
+  "type": "hbm:electrolyser_metal",
+  "duration": 600,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_lithium"
+    }
+  ],
+  "order": 15,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_quartz"
+    },
+    {
+      "count": 2,
+      "id": "hbm:fluorite"
+    }
+  ],
+  "output_material": {
+    "amount": 432,
+    "material": "lithium"
+  },
+  "output_material_2": {
+    "amount": 144,
+    "material": "boron"
+  }
+}

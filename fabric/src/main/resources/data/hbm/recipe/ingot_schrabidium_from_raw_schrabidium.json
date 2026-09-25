@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 128.0,
+  "ingredient": "hbm:raw_schrabidium",
+  "result": {
+    "id": "hbm:ingot_schrabidium"
+  }
+}

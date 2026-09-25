@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_chip",
+    "P": "hbm:pipette_boron",
+    "R": "#c:ingots/rubber"
+  },
+  "pattern": [
+    "  C",
+    " R ",
+    "P  "
+  ],
+  "result": {
+    "id": "hbm:pipette_laboratory"
+  }
+}

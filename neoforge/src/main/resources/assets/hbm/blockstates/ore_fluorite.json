@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/ore_fluorite"
+      },
+      {
+        "model": "hbm:block/ore_fluorite_mirrored"
+      },
+      {
+        "model": "hbm:block/ore_fluorite",
+        "y": 180
+      },
+      {
+        "model": "hbm:block/ore_fluorite_mirrored",
+        "y": 180
+      }
+    ]
+  }
+}

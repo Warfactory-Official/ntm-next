@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_analog",
+    "I": "#c:ingots/copper",
+    "P": "#c:plates/steel",
+    "W": "#c:fine_wires/gold"
+  },
+  "pattern": [
+    "W I",
+    "WCI",
+    "PPP"
+  ],
+  "result": {
+    "id": "hbm:oil_detector"
+  }
+}

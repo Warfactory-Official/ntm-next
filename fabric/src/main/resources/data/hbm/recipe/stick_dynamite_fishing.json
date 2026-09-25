@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:stick_dynamite",
+    "hbm:stick_dynamite",
+    "hbm:stick_dynamite",
+    "minecraft:paper",
+    "#hbm:any_tar"
+  ],
+  "result": {
+    "id": "hbm:stick_dynamite_fishing"
+  }
+}

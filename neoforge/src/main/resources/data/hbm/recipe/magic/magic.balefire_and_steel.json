@@ -1,0 +1,15 @@
+{
+  "type": "hbm:magic",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "ingredient": "hbm:egg_balefire_shard"
+    }
+  ],
+  "order": 2,
+  "output_items": [
+    "hbm:balefire_and_steel"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "minecraft:pufferfish"
+    }
+  ],
+  "order": 28,
+  "output_fluids": [
+    {
+      "type": "hbm:fishoil",
+      "amount": 100
+    }
+  ]
+}

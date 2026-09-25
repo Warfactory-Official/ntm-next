@@ -1,0 +1,31 @@
+{
+  "content": {
+    "en_us": "Obtained after [[refining|Oil Refinery]] [[heated|Boiler]] cracked crude oil. Unsaturated hydrocarbons are used in both [[rubber|Rubber]] and [[perfluoromethyl|Perfluoromethyl]]. It is also used in both [[PVC|PVC]] directly, and [[hard plastic|Hard Plastic]] through the production of [[phosgene|Phosgene]].<br><br>{{hbm:fluids/template_oil2}}",
+    "ru_ru": "Непредельные углеводороды получаются после [[переработки|Oil Refinery]] [[нагретой|Boiler]] крекированной сырой нефти. Непредельные углеводороды используются как в производстве [[резины|Rubber]], так и [[перфторометана|Perfluoromethyl]]. Они также применяются непосредственно для получения [[ПВХ|PVC]] и для создания [[твёрдого пластика|Hard Plastic]] через производство [[фосгена|Phosgene]].<br><br>{{hbm:fluids/template_oil2}}"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:unsaturateds",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -10317906
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Unsaturated Hydrocarbons",
+  "title": {
+    "en_us": "Unsaturated Hydrocarbons",
+    "ru_ru": "Непредельные углеводороды"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:unsaturateds"
+    }
+  }
+}

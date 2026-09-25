@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "fabric:type": "hbm:fluid_content",
+      "amount": 16000,
+      "fluid": "hbm:heatingoil"
+    },
+    "#hbm:tools/chemistry_set"
+  ],
+  "result": {
+    "count": 3,
+    "id": "hbm:solid_fuel"
+  }
+}

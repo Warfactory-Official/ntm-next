@@ -1,0 +1,22 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:wires_dense/mingrade"
+    }
+  ],
+  "order": 0,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:motor"
+    }
+  ],
+  "power": 400
+}

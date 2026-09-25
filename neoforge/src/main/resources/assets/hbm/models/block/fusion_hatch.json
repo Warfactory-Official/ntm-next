@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "hbm:block/fusion_hatch",
+    "particle": "hbm:block/fusion_hatch",
+    "side": "hbm:block/fusion_heater_side",
+    "top": "hbm:block/block_tungsten"
+  }
+}

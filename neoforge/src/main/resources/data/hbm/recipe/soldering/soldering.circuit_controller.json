@@ -1,0 +1,54 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528"
+    },
+    {
+      "type": "hbm:flag",
+      "name": "!lbsm_simple_crafting"
+    }
+  ],
+  "type": "hbm:soldering",
+  "duration": 400,
+  "input_fluids": [
+    {
+      "type": "hbm:perfluoromethyl",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 32,
+      "ingredient": "hbm:circuit_chip"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:circuit_capacitor"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_capacitor_tantalium"
+    }
+  ],
+  "order": 9,
+  "output_items": [
+    "hbm:circuit_controller"
+  ],
+  "pcb": [
+    {
+      "ingredient": "hbm:circuit_controller_chassis"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/rubber"
+    }
+  ],
+  "power": 15000,
+  "solder": [
+    {
+      "count": 16,
+      "ingredient": "#c:fine_wires/lead"
+    }
+  ]
+}

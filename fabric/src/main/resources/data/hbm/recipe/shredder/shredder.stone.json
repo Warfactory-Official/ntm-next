@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:stone"
+    }
+  ],
+  "order": 22,
+  "output_items": [
+    "minecraft:gravel"
+  ]
+}

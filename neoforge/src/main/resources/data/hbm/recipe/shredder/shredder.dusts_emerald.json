@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/emerald"
+    }
+  ],
+  "order": 410,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

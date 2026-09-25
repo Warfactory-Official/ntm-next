@@ -1,0 +1,30 @@
+{
+  "parent": "hbm:rbmk",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "kinds": [
+          "rbmk"
+        ]
+      },
+      "trigger": "hbm:detonation"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.RBMKBoom.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:debris_fuel"
+    },
+    "title": {
+      "translate": "achievement.RBMKBoom"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "hbm:pyro_oven",
+  "duration": 60,
+  "input_fluids": [
+    {
+      "type": "hbm:heatingoil",
+      "amount": 1800
+    }
+  ],
+  "order": 1,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

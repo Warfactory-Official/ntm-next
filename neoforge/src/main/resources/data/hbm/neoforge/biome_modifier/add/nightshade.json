@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "minecraft:dark_forest",
+  "features": "hbm:nightshade",
+  "step": "vegetal_decoration"
+}

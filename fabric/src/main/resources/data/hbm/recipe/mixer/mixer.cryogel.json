@@ -1,0 +1,22 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:coolant",
+      "amount": 1800
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_ice"
+    }
+  ],
+  "order": 1,
+  "output_fluids": [
+    {
+      "type": "hbm:cryogel",
+      "amount": 2000
+    }
+  ]
+}

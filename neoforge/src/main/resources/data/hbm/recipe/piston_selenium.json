@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#c:bolts/dura_steel",
+    "S": "#c:plates/steel",
+    "T": "#c:ingots/tungsten"
+  },
+  "pattern": [
+    "SSS",
+    "STS",
+    " D "
+  ],
+  "result": {
+    "id": "hbm:piston_selenium"
+  }
+}

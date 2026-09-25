@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:rod_zirnox_empty",
+    "hbm:billet_mox_fuel",
+    "#hbm:billets/zirconium"
+  ],
+  "result": {
+    "id": "hbm:rod_zirnox_zfb_mox_fuel"
+  }
+}

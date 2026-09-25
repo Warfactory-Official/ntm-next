@@ -1,0 +1,31 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.soyuz"
+  ],
+  "duration": 1200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#hbm:plates_welded/steel"
+    },
+    {
+      "ingredient": "hbm:upgrade_speed_3"
+    },
+    {
+      "ingredient": "hbm:upgrade_power_3"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_controller"
+    },
+    {
+      "ingredient": "hbm:battery_pack_battery_lithium"
+    }
+  ],
+  "order": 414,
+  "output_items": [
+    "hbm:struct_soyuz_core"
+  ],
+  "power": 25000
+}

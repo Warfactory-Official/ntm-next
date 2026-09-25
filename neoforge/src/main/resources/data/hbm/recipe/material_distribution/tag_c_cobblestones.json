@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 648,
+      "material": "stone"
+    }
+  ],
+  "targets": "#c:cobblestones"
+}

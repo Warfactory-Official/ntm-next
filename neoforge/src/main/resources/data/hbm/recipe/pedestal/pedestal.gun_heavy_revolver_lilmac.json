@@ -1,0 +1,33 @@
+{
+  "type": "hbm:pedestal",
+  "key": {
+    "A": {
+      "ingredient": "hbm:weapon_mod_special_scope"
+    },
+    "B": {
+      "ingredient": "hbm:powder_magic"
+    },
+    "C": {
+      "ingredient": "hbm:gun_heavy_revolver"
+    },
+    "D": {
+      "ingredient": "#c:plates/weapon_steel"
+    },
+    "E": {
+      "ingredient": "#hbm:grips/bone"
+    },
+    "F": {
+      "count": 3,
+      "ingredient": "minecraft:apple"
+    }
+  },
+  "order": 2,
+  "output_items": [
+    "hbm:gun_heavy_revolver_lilmac"
+  ],
+  "pattern": [
+    " A ",
+    "BCD",
+    " EF"
+  ]
+}

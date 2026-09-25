@@ -1,0 +1,28 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "enable_528_pressurized"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:aromatics",
+      "amount": 500,
+      "pressure": 1
+    },
+    {
+      "type": "hbm:petroleum",
+      "amount": 500,
+      "pressure": 1
+    }
+  ],
+  "name": "chem.bakelitePressurized",
+  "order": 41,
+  "output_items": [
+    "hbm:ingot_bakelite"
+  ],
+  "power": 100
+}

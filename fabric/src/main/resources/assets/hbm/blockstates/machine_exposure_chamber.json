@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_exposure_chamber"
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_exposure_chamber",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_exposure_chamber",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_exposure_chamber",
+      "y": 180
+    }
+  }
+}

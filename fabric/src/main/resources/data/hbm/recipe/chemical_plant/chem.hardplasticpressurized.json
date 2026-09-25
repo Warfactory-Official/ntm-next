@@ -1,0 +1,28 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "enable_528_pressurized"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:xylene",
+      "amount": 500,
+      "pressure": 2
+    },
+    {
+      "type": "hbm:phosgene",
+      "amount": 500,
+      "pressure": 2
+    }
+  ],
+  "name": "chem.hardplasticPressurized",
+  "order": 45,
+  "output_items": [
+    "hbm:ingot_pc"
+  ],
+  "power": 1000
+}

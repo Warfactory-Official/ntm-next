@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:titanium_plate",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "M": "hbm:motor_desh",
+    "P": "hbm:plate_armor_ajr",
+    "T": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:gas_tank",
+      "components": {
+        "!hbm:fluid_content": {}
+      }
+    }
+  },
+  "pattern": [
+    "MPM",
+    "TBT",
+    "PPP"
+  ],
+  "result": {
+    "id": "hbm:ajr_plate"
+  }
+}

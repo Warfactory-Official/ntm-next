@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "hbm:block/obj_tester"
+    }
+  }
+}

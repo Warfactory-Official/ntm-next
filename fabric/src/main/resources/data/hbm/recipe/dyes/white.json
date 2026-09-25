@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "hbm:oil_tar_paraffin",
+      "hbm:fluorite",
+      "hbm:crayon_white",
+      "hbm:chemical_dye_white"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:white_dye"
+  }
+}

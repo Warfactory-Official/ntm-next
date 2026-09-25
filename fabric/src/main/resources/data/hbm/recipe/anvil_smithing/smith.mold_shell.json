@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "ingredient": "hbm:mold_base"
+    }
+  ],
+  "kind": "mold",
+  "order": 49,
+  "output_items": [
+    "hbm:mold_shell"
+  ],
+  "shape": "shells"
+}

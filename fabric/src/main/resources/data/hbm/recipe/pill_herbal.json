@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/coal",
+    "minecraft:poisonous_potato",
+    "minecraft:nether_wart",
+    "hbm:plant_flower_foxglove"
+  ],
+  "result": {
+    "id": "hbm:pill_herbal"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "hbm:block/reinforced_lamp"
+    },
+    "lit=true": {
+      "model": "hbm:block/reinforced_lamp_on"
+    }
+  }
+}

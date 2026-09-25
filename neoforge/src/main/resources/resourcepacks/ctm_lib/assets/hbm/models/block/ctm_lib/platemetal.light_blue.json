@@ -1,0 +1,6 @@
+{
+  "textures": {
+    "connected": "hbm:block/ctm_lib/platemetal.light_blue_ct",
+    "particle": "hbm:block/platemetal.light_blue"
+  }
+}

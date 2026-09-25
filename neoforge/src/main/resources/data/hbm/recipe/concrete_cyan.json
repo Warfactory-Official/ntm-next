@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:concrete_smooth",
+    "D": "#c:dyes/cyan"
+  },
+  "pattern": [
+    "CCC",
+    "CDC",
+    "CCC"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:concrete_cyan"
+  }
+}

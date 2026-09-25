@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:rangefinder",
+    "hbm:circuit_advanced",
+    "#hbm:ingots/any_plastic"
+  ],
+  "result": {
+    "id": "hbm:designator_arty_range"
+  }
+}

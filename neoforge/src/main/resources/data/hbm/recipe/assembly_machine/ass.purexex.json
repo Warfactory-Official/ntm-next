@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_lead_plating"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:pipes/rubber"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.purexEx",
+  "order": 92,
+  "output_items": [
+    "hbm:machine_purex"
+  ],
+  "power": 100
+}

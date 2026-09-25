@@ -1,0 +1,31 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": [
+        "hbm:ingot_australium",
+        "hbm:powder_australium"
+      ]
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 7,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_australium_lesser"
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_australium_greater"
+        },
+        "weight": 1
+      }
+    ]
+  ]
+}

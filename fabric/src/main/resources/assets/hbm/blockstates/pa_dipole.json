@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/pa_dipole"
+    },
+    "facing=north": {
+      "model": "hbm:block/pa_dipole"
+    },
+    "facing=south": {
+      "model": "hbm:block/pa_dipole"
+    },
+    "facing=west": {
+      "model": "hbm:block/pa_dipole"
+    }
+  }
+}

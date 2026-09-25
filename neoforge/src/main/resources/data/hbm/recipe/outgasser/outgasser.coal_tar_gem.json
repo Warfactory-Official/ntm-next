@@ -1,0 +1,19 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "#c:gems/coal"
+    }
+  ],
+  "order": 13,
+  "output_fluids": [
+    {
+      "type": "hbm:syngas",
+      "amount": 50
+    }
+  ],
+  "output_items": [
+    "hbm:oil_tar_coal"
+  ]
+}

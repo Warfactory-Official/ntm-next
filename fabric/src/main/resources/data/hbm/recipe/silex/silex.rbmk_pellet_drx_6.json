@@ -1,0 +1,58 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 600,
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_pellet": {
+          "depletion": 1,
+          "xenon": true
+        }
+      },
+      "ingredient": "hbm:rbmk_pellet_drx"
+    }
+  ],
+  "laser_strength": "gamma",
+  "order": 110,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:undefined"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "hbm:undefined"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "hbm:undefined"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "hbm:undefined"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "hbm:undefined"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "hbm:undefined"
+        },
+        "weight": 1
+      }
+    ]
+  ]
+}

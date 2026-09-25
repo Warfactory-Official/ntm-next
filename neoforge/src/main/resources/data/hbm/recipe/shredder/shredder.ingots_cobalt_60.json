@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/cobalt_60"
+    }
+  ],
+  "order": 336,
+  "output_items": [
+    "hbm:powder_co60"
+  ]
+}

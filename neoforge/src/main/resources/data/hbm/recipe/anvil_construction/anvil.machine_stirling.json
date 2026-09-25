@@ -1,0 +1,30 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#minecraft:planks"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/copper"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:coil_copper"
+    },
+    {
+      "ingredient": "hbm:gear_large"
+    }
+  ],
+  "order": 71,
+  "output_items": [
+    "hbm:machine_stirling"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

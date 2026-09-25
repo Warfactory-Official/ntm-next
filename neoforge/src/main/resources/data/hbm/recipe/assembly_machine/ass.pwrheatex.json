@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/copper"
+    },
+    {
+      "ingredient": "hbm:motor"
+    }
+  ],
+  "order": 239,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:pwr_heatex"
+    }
+  ],
+  "power": 500
+}

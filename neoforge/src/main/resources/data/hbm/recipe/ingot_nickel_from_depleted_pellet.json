@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/nickel"
+      }
+    }
+  ],
+  "type": "hbm:tag_result",
+  "ingredients": [
+    "hbm:pellet_rtg_depleted_nickel"
+  ],
+  "result": {
+    "count": 2,
+    "tag": "c:ingots/nickel"
+  }
+}

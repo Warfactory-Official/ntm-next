@@ -1,0 +1,17 @@
+{
+  "type": "hbm:plasma_forge",
+  "auto_switch_group": "autoswitch.weldPlates",
+  "duration": 50,
+  "ignition_temp": 500000,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/iron"
+    }
+  ],
+  "order": 3,
+  "output_items": [
+    "hbm:plate_welded_iron"
+  ],
+  "power": 100
+}

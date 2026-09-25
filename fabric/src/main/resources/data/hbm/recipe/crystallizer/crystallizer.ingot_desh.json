@@ -1,0 +1,19 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_desh_ready"
+    }
+  ],
+  "order": 273,
+  "output_items": [
+    "hbm:ingot_desh"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:annihilator",
+  "item": "#hbm:ingots/any_resistant_alloy",
+  "milestones": [
+    {
+      "amount": "1024",
+      "payout": {
+        "components": {
+          "hbm:blueprint_pool": "528.tcalloy"
+        },
+        "id": "hbm:blueprints"
+      }
+    }
+  ]
+}

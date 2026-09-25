@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/nuke_misc"
+        }
+      ],
+      "rolls": 10.0
+    }
+  ],
+  "random_sequence": "hbm:chests/nuke_misc_10_10"
+}

@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:explosive",
+      "level": 1.0
+    }
+  ],
+  "targets": "hbm:ballistite"
+}

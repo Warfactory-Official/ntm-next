@@ -1,0 +1,34 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!lbsm_simple_chemistry"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "duration": 40,
+  "input_fluids": [
+    {
+      "type": "hbm:gas",
+      "amount": 200
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#c:dusts/saltpeter"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:powder_sawdust"
+    }
+  ],
+  "order": 67,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:cordite"
+    }
+  ],
+  "power": 100
+}

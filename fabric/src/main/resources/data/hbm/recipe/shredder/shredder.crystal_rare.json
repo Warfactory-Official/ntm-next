@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_rare"
+    }
+  ],
+  "order": 117,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_desh_mix"
+    }
+  ]
+}

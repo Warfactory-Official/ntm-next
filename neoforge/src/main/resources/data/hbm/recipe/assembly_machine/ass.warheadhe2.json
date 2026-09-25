@@ -1,0 +1,22 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    },
+    {
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 345,
+  "output_items": [
+    "hbm:warhead_generic_medium"
+  ],
+  "power": 100
+}

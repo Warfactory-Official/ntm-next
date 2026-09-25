@@ -1,0 +1,46 @@
+{
+  "type": "liquid",
+  "color": "#020202",
+  "containers": {
+    "canister": {
+      "color": "#424242"
+    }
+  },
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 1,
+    "health": 2,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "flammable": {
+      "energy": 31200
+    },
+    "heatable": {
+      "efficiency": {
+        "BOILER": 1.0,
+        "HEATEXCHANGER": 1.0
+      },
+      "steps": [
+        {
+          "amount_produced": 1,
+          "amount_req": 1,
+          "heat_req": 10,
+          "produces": "hbm:hotcrackoil"
+        }
+      ]
+    },
+    "polluting": {
+      "burn": {
+        "SOOT": 0.004
+      },
+      "release": {
+        "POISON": 5.0E-5
+      }
+    }
+  }
+}

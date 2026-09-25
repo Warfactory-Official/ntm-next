@@ -1,0 +1,19 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": [
+        "hbm:blades_steel",
+        "hbm:blades_titanium"
+      ]
+    },
+    {
+      "ingredient": "hbm:mold_base"
+    }
+  ],
+  "kind": "mold",
+  "order": 47,
+  "output_items": [
+    "hbm:mold_blades"
+  ]
+}

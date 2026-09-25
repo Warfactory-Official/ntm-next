@@ -1,0 +1,185 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -180.0,
+        85.0,
+        -25.000011
+      ],
+      "scale": [
+        0.035156246,
+        0.03515625,
+        0.03515625
+      ],
+      "translation": [
+        -0.33785307,
+        0.29498455,
+        -3.8616652
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -180.0,
+        85.0,
+        -25.000011
+      ],
+      "scale": [
+        0.035156246,
+        0.03515625,
+        0.03515625
+      ],
+      "translation": [
+        0.19747163,
+        3.1591218,
+        2.2571177
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -5.008956E-6
+      ],
+      "scale": [
+        0.087890625,
+        0.087890625,
+        0.087890625
+      ],
+      "translation": [
+        -2.9981136E-5,
+        2.0542603,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        0.0,
+        179.99998
+      ],
+      "scale": [
+        0.043945312,
+        0.043945312,
+        0.043945312
+      ],
+      "translation": [
+        1.4275312E-5,
+        -1.6928697,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -170.0,
+        8.406388E-6,
+        -0.0
+      ],
+      "scale": [
+        0.06347656,
+        0.06347656,
+        0.063476555
+      ],
+      "translation": [
+        -2.1398067E-5,
+        -0.017145425,
+        -8.171313
+      ]
+    },
+    "head": {
+      "rotation": [
+        31.329788,
+        35.63104,
+        -19.52548
+      ],
+      "scale": [
+        0.14062501,
+        0.14062499,
+        0.140625
+      ],
+      "translation": [
+        5.8255496,
+        -19.036509,
+        6.9426966
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -0.0,
+        0.0,
+        179.99998
+      ],
+      "scale": [
+        0.17578125,
+        0.17578125,
+        0.17578125
+      ],
+      "translation": [
+        5.9962273E-5,
+        9.228521,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -38.126266,
+        71.3061,
+        -127.868614
+      ],
+      "scale": [
+        0.032958984,
+        0.03295898,
+        0.03295898
+      ],
+      "translation": [
+        -1.1331497,
+        2.7284696,
+        -0.3122954
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -38.126266,
+        71.3061,
+        -127.868614
+      ],
+      "scale": [
+        0.032958984,
+        0.03295898,
+        0.03295898
+      ],
+      "translation": [
+        -1.4428219,
+        2.3160884,
+        1.1747776
+      ]
+    }
+  },
+  "groups": [
+    {
+      "parts": [
+        "Head"
+      ],
+      "texture": "bj_eyepatch"
+    }
+  ],
+  "gui_light": "front",
+  "hidden": [
+    "Jetpack",
+    "RightFoot",
+    "LeftFoot",
+    "RightArm",
+    "LeftArm",
+    "Body",
+    "RightLeg",
+    "LeftLeg"
+  ],
+  "model": "hbm:models/armor/bj.obj",
+  "offset_x": 2.0980835E-5,
+  "offset_y": 4.781252,
+  "textures": {
+    "bj_eyepatch": "hbm:armor/bj_eyepatch",
+    "particle": "hbm:armor/bj_eyepatch"
+  }
+}

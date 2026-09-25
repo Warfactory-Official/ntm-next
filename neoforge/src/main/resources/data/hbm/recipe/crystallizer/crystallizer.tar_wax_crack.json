@@ -1,0 +1,19 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:chlorine",
+      "amount": 100
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:oil_tar_crack"
+    }
+  ],
+  "order": 279,
+  "output_items": [
+    "hbm:oil_tar_wax"
+  ]
+}

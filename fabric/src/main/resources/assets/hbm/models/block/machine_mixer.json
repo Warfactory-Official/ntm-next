@@ -1,0 +1,22 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "double_sided": [
+    "Main"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Mixer",
+    "Fluid"
+  ],
+  "model": "hbm:models/machines/mixer.obj",
+  "skins": {
+    "all": [
+      "Main"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/mixer",
+    "particle": "hbm:block/models/machines/mixer"
+  }
+}

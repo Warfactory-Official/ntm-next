@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "minecraft:yellow_dye",
+    "S": [
+      "hbm:steel_scaffold",
+      "hbm:steel_scaffold_red",
+      "hbm:steel_scaffold_white",
+      "hbm:steel_scaffold_yellow"
+    ]
+  },
+  "pattern": [
+    "SSS",
+    "SDS",
+    "SSS"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:steel_scaffold_yellow"
+  }
+}

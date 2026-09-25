@@ -1,0 +1,41 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/niobium"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:glass_quartz"
+    }
+  ],
+  "order": 184,
+  "output_items": [
+    "hbm:machine_hephaestus"
+  ],
+  "power": 100
+}

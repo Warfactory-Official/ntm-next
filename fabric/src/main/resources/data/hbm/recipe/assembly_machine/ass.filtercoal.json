@@ -1,0 +1,22 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 50,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:dusts/coal"
+    },
+    {
+      "count": 2,
+      "ingredient": "minecraft:string"
+    },
+    {
+      "ingredient": "minecraft:paper"
+    }
+  ],
+  "order": 28,
+  "output_items": [
+    "hbm:filter_coal"
+  ],
+  "power": 100
+}

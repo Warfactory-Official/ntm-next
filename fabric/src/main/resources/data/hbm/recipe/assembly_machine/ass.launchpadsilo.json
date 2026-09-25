@@ -1,0 +1,27 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_welded/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:concretes"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_advanced"
+    }
+  ],
+  "order": 363,
+  "output_items": [
+    "hbm:launch_pad"
+  ],
+  "power": 100
+}

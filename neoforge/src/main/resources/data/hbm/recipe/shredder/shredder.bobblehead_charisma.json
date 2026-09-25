@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:bobblehead_charisma"
+    }
+  ],
+  "order": 181,
+  "output_items": [
+    "hbm:scrap_plastic_bridge_io"
+  ]
+}

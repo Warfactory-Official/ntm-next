@@ -1,0 +1,23 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 50,
+  "input_items": [
+    {
+      "ingredient": "minecraft:sugar"
+    },
+    {
+      "ingredient": "#c:dusts/saltpeter"
+    },
+    {
+      "ingredient": "#minecraft:sand"
+    }
+  ],
+  "order": 71,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:ball_dynamite"
+    }
+  ],
+  "power": 100
+}

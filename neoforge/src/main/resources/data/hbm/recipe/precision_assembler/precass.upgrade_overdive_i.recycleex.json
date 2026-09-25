@@ -1,0 +1,57 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    },
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:precision_assembler",
+  "duration": 200,
+  "icon": {
+    "components": {
+      "hbm:broken_item_source": "hbm:upgrade_overdrive_1"
+    },
+    "id": "hbm:broken_item"
+  },
+  "input_items": [
+    {
+      "components": {
+        "hbm:broken_item_source": "hbm:upgrade_overdrive_1"
+      },
+      "ingredient": "hbm:broken_item"
+    }
+  ],
+  "name": "precass.upgrade_overdive_i.recycleEx",
+  "name_wrapper": "precass.recycle",
+  "order": 45,
+  "output_items": [
+    {
+      "chance": 0.5,
+      "id": "hbm:upgrade_speed_3"
+    },
+    {
+      "chance": 0.5,
+      "id": "hbm:upgrade_effect_3"
+    },
+    {
+      "chance": 0.5,
+      "count": 16,
+      "id": "hbm:ingot_saturnite"
+    },
+    {
+      "chance": 0.5,
+      "count": 16,
+      "id": "hbm:ingot_pvc"
+    },
+    {
+      "chance": 0.5,
+      "count": 16,
+      "id": "hbm:circuit_advanced"
+    }
+  ],
+  "power": 1000
+}

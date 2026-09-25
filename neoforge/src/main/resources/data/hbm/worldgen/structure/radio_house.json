@@ -1,0 +1,12 @@
+{
+  "type": "hbm:single_piece",
+  "biomes": [
+    "minecraft:savanna",
+    "minecraft:savanna_plateau",
+    "minecraft:wooded_badlands"
+  ],
+  "height_offset": -6,
+  "spawn_overrides": {},
+  "start_pool": "hbm:single/radio_house",
+  "step": "strongholds"
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "hbm:cart_base": "wood"
+      },
+      "items": "hbm:cart_empty"
+    },
+    "P": "minecraft:gunpowder"
+  },
+  "pattern": [
+    "PPP",
+    "PCP",
+    "PPP"
+  ],
+  "result": {
+    "components": {
+      "hbm:cart_base": "wood"
+    },
+    "id": "hbm:cart_powder"
+  }
+}

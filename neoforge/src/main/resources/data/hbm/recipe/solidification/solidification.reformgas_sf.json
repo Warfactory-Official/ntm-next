@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:reformgas",
+      "amount": 170
+    }
+  ],
+  "order": 38,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

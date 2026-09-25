@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/vault_standard"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 4.0,
+        "min": 2.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/component/unscaled/vault_standard_2_4"
+}

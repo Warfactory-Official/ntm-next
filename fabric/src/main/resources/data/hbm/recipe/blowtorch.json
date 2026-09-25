@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:plates/copper",
+    "I": "#c:ingots/iron"
+  },
+  "pattern": [
+    "CC ",
+    " I ",
+    "CCC"
+  ],
+  "result": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:gas",
+        "amount": 0,
+        "pressure": 0
+      }
+    },
+    "id": "hbm:blowtorch"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:coil_copper_torus",
+    "G": "minecraft:glowstone",
+    "S": "#c:storage_blocks/steel"
+  },
+  "pattern": [
+    "G",
+    "S",
+    "C"
+  ],
+  "result": {
+    "count": 16,
+    "id": "hbm:charger"
+  }
+}

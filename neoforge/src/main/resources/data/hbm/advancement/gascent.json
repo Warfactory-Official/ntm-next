@@ -1,0 +1,29 @@
+{
+  "parent": "hbm:desh",
+  "criteria": {
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": "hbm:machine_gascent"
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.gasCent.desc"
+    },
+    "icon": {
+      "id": "hbm:ingot_uranium_fuel"
+    },
+    "title": {
+      "translate": "achievement.gasCent"
+    }
+  },
+  "requirements": [
+    [
+      "produced"
+    ]
+  ]
+}

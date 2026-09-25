@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 0.15000000000000002
+    }
+  ],
+  "targets": "#hbm:hazard/nugget_neptunium_fuel"
+}

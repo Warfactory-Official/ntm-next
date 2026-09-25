@@ -1,0 +1,17 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#c:ores/diamond"
+    }
+  ],
+  "order": 6,
+  "output_items": [
+    "hbm:powder_diamond",
+    "hbm:powder_diamond",
+    "hbm:powder_diamond",
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

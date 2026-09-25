@@ -1,0 +1,20 @@
+{
+  "type": "hbm:pyro_oven",
+  "duration": 60,
+  "input_fluids": [
+    {
+      "type": "hbm:gas",
+      "amount": 12000
+    }
+  ],
+  "order": 69,
+  "output_fluids": [
+    {
+      "type": "hbm:hydrogen",
+      "amount": 8000
+    }
+  ],
+  "output_items": [
+    "hbm:ingot_graphite"
+  ]
+}

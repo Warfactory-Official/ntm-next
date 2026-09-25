@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/titanium"
+    }
+  ],
+  "order": 13,
+  "output_items": [
+    "hbm:plate_titanium"
+  ],
+  "stamp": "plate"
+}

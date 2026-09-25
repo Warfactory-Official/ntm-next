@@ -1,0 +1,19 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "lbsm_simple_crafting"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": "#c:ingots/steel"
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 24,
+    "id": "hbm:wire_fine_steel"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.hardplastic"
+  ],
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#hbm:plates_welded/steel"
+    },
+    {
+      "count": 24,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:pipes/copper"
+    },
+    {
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "ingredient": "hbm:circuit_bismoid"
+    }
+  ],
+  "order": 130,
+  "output_items": [
+    "hbm:machine_pyrooven"
+  ],
+  "power": 100
+}

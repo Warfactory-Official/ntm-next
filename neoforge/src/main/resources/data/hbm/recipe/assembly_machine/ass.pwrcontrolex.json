@@ -1,0 +1,31 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/boron"
+    },
+    {
+      "ingredient": "hbm:motor"
+    }
+  ],
+  "name": "ass.pwrcontrolEx",
+  "order": 236,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:pwr_control"
+    }
+  ],
+  "power": 500
+}

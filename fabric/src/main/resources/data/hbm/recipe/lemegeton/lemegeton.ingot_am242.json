@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/americium_241"
+    }
+  ],
+  "order": 22,
+  "output_items": [
+    "hbm:ingot_am242"
+  ]
+}

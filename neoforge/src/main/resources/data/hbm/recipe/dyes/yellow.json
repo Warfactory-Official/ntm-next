@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "hbm:sulfur",
+      "hbm:crayon_yellow",
+      "hbm:chemical_dye_yellow"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:yellow_dye"
+  }
+}

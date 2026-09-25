@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "hbm:plate_paa",
+    "D": "#c:dusts/dineutronium",
+    "F": "hbm:shimmer_handle",
+    "P": "hbm:chlorophyte_pickaxe",
+    "S": "hbm:blades_desh"
+  },
+  "pattern": [
+    " SD",
+    "APS",
+    "FA "
+  ],
+  "result": {
+    "id": "hbm:mese_pickaxe"
+  }
+}

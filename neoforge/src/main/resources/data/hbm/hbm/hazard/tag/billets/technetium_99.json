@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 1.375
+    }
+  ],
+  "mutex": 1,
+  "targets": "#hbm:billets/technetium_99"
+}

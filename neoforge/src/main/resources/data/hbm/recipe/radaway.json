@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:iv_blood",
+    "#c:dusts/coal",
+    "minecraft:pumpkin_seeds"
+  ],
+  "result": {
+    "id": "hbm:radaway"
+  }
+}

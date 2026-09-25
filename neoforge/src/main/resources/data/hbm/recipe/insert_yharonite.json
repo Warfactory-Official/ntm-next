@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:insert_du"
+    },
+    "Y": "hbm:billet_yharonite"
+  },
+  "pattern": [
+    "YIY",
+    "IYI",
+    "YIY"
+  ],
+  "result": {
+    "id": "hbm:insert_yharonite"
+  }
+}

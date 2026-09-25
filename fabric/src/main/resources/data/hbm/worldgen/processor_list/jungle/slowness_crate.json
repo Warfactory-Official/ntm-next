@@ -1,0 +1,194 @@
+{
+  "processors": [
+    {
+      "marker": {
+        "Name": "minecraft:command_block",
+        "Properties": {
+          "conditional": "false",
+          "facing": "north"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_jungle"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_cracked"
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "hbm:brick_jungle_trap_slowness"
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_trap_slowness"
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_cracked"
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:chain_command_block",
+        "Properties": {
+          "conditional": "false",
+          "facing": "north"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_jungle"
+          },
+          "weight": 50
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_cracked"
+          },
+          "weight": 50
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_0"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_1"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_2"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_3"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_4"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_5"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_6"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_7"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_8"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_9"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_10"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_11"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_12"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_13"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_14"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_jungle_glyph_15"
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "fallback": [
+        {
+          "Name": "minecraft:air"
+        }
+      ],
+      "marker": {
+        "Name": "minecraft:barrier",
+        "Properties": {
+          "waterlogged": "false"
+        }
+      },
+      "processor_type": "hbm:pick_one",
+      "result": {
+        "Name": "hbm:crate_jungle"
+      }
+    },
+    {
+      "processor_type": "hbm:loot_pile"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "item": {
+          "items": "hbm:sat_gerald"
+        }
+      },
+      "trigger": "hbm:orbit"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.horizonsStart.desc"
+    },
+    "icon": {
+      "id": "hbm:sat_gerald"
+    },
+    "title": {
+      "translate": "achievement.horizonsStart"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

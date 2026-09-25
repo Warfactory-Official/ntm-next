@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:platemetal"
+  ],
+  "result": {
+    "components": {
+      "minecraft:block_state": {
+        "variant": "base"
+      }
+    },
+    "id": "hbm:platemetal"
+  }
+}

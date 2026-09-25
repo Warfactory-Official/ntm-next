@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/safe",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "hbm:block/safe"
+    },
+    "facing=south": {
+      "model": "hbm:block/safe",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "hbm:block/safe",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:ammo_standard_ct_mortar",
+    "hbm:ammo_standard_ct_mortar",
+    "hbm:ammo_standard_ct_mortar",
+    "hbm:ammo_standard_ct_mortar",
+    "hbm:ammo_standard_ct_mortar",
+    "hbm:ammo_standard_ct_mortar",
+    "hbm:ammo_standard_ct_mortar",
+    "hbm:ducttape",
+    "hbm:ducttape"
+  ],
+  "result": {
+    "id": "hbm:ammo_standard_ct_mortar_charge"
+  }
+}

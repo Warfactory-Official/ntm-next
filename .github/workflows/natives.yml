@@ -1,0 +1,120 @@
+name: Build native libraries
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Install GCC 16.2 for Windows
+        run: |
+          set -euo pipefail
+          archive=x86_64-16.2.0-release-posix-seh-ucrt-rt_v14-rev1.7z
+          cd "$(cygpath -u "$RUNNER_TEMP")"
+          curl -fsSL --retry 3 -o "$archive" \
+            "https://github.com/niXman/mingw-builds-binaries/releases/download/16.2.0-rt_v14-rev1/$archive"
+          echo "26788998d615856a915e1eeacb0854fce87bc608fa9a0c16f96bcbfdcf3415c0  $archive" | sha256sum -c -
+          mkdir -p mingw
+          "/c/Program Files/7-Zip/7z.exe" x "$archive" -o"$PWD/mingw" -y > /dev/null
+          compiler=$(find "$PWD/mingw" -name g++.exe -print -quit)
+          test -n "$compiler"
+          cygpath -wa "$(dirname "$compiler")" >> "$GITHUB_PATH"
+      - name: Build Windows native library
+        run: |
+          chmod +x gradlew
+          ./gradlew :native:stage --stacktrace
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ntm-natives-windows
+          path: build/native/resources/host/ntm_natives/windows-x86_64-ntm_next_native.dll
+          if-no-files-found: error
+          retention-days: 1
+
+  linux:
+    runs-on: ubuntu-latest
+    container: gcc:16.2.0-trixie
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Build Linux native library
+        shell: bash
+        run: |
+          set -euo pipefail
+          apt-get update
+          apt-get install -y --no-install-recommends cmake ninja-build
+          chmod +x gradlew
+          export HBM_CI_LINUX_CC=$(command -v gcc)
+          export HBM_CI_LINUX_CXX=$(command -v g++)
+          ./gradlew :native:ciStageLinux --stacktrace
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ntm-natives-linux
+          path: build/ci-natives/linux-x86_64-libntm_next_native.so
+          if-no-files-found: error
+          retention-days: 1
+
+  mac-arm64:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Build arm64 macOS native library
+        shell: bash
+        run: |
+          set -euo pipefail
+          brew install gcc
+          chmod +x gradlew
+          export HBM_CI_DARWIN_CC=$(command -v gcc-16)
+          export HBM_CI_DARWIN_CXX=$(command -v g++-16)
+          ./gradlew :native:ciStageOsxAarch64 --stacktrace
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ntm-natives-darwin-arm64
+          path: build/ci-natives/osx-aarch_64-libntm_next_native.dylib
+          if-no-files-found: error
+          retention-days: 1
+
+  mac-x86:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Build x86_64 macOS native library
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x gradlew
+          export HBM_CI_DARWIN_CC=clang
+          export HBM_CI_DARWIN_CXX=clang++
+          ./gradlew :native:ciStageOsxX86 --stacktrace
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ntm-natives-darwin-x86
+          path: build/ci-natives/osx-x86_64-libntm_next_native.dylib
+          if-no-files-found: error
+          retention-days: 1

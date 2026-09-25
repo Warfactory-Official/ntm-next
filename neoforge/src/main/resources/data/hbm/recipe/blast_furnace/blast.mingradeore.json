@@ -1,0 +1,22 @@
+{
+  "type": "hbm:blast_furnace",
+  "duration": 1200,
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/copper"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:dusts/redstone"
+    }
+  ],
+  "name": "blast.mingradeOre",
+  "order": 8,
+  "output_items": [
+    {
+      "count": 6,
+      "id": "hbm:ingot_red_copper"
+    },
+    "hbm:ingot_raw_slag"
+  ]
+}

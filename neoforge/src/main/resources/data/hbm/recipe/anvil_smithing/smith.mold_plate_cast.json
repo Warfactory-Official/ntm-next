@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "#hbm:plates_cast/iron"
+    },
+    {
+      "ingredient": "hbm:mold_base"
+    }
+  ],
+  "kind": "mold",
+  "order": 43,
+  "output_items": [
+    "hbm:mold_plate_cast"
+  ],
+  "shape": "plates_cast"
+}

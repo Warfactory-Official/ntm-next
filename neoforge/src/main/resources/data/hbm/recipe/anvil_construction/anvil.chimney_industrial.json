@@ -1,0 +1,27 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 64,
+      "ingredient": "#c:concretes"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:steel_grate"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:filter_coal"
+    }
+  ],
+  "order": 90,
+  "output_items": [
+    "hbm:chimney_industrial"
+  ],
+  "overlay": "construction",
+  "tier": 3
+}

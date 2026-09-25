@@ -1,0 +1,19 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Flywheel",
+    "Gauge"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/industrial_turbine.obj",
+  "skins": {
+    "all": [
+      "Turbine"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/industrial_turbine",
+    "particle": "hbm:block/models/machines/industrial_turbine"
+  }
+}

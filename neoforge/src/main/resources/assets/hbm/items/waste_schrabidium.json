@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/waste_schrabidium",
+    "tints": [
+      {
+        "type": "hbm:waste_cooling"
+      }
+    ]
+  }
+}

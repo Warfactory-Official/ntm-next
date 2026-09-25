@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:ingots/titanium",
+    "I": "#c:ingots/steel",
+    "P": {
+      "fabric:type": "hbm:fluid_content",
+      "amount": 1000,
+      "fluid": "hbm:lubricant"
+    }
+  },
+  "pattern": [
+    " I ",
+    "CPC",
+    " I "
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:part_generic_piston_hydraulic"
+  }
+}

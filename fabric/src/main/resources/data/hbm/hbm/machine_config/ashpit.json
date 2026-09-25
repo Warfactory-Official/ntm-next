@@ -1,0 +1,7 @@
+{
+  "threshold_coal": 2000,
+  "threshold_fly": 2000,
+  "threshold_misc": 2000,
+  "threshold_soot": 8000,
+  "threshold_wood": 2000
+}

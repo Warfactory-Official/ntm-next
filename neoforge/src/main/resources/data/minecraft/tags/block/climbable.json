@@ -1,0 +1,10 @@
+{
+  "values": [
+    "hbm:ladder_sturdy",
+    "hbm:ladder_gold",
+    "hbm:ladder_titanium",
+    "hbm:ladder_copper",
+    "hbm:ladder_steel",
+    "hbm:dungeon_chain"
+  ]
+}

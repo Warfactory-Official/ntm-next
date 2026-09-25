@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "hbm:block/cm_heat_top",
+    "particle": "hbm:block/cm_heat_side",
+    "side": "hbm:block/cm_heat_side"
+  }
+}

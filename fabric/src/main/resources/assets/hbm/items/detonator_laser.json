@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "hbm:detonator_laser",
+    "base": "hbm:item/detonator_laser_base"
+  }
+}

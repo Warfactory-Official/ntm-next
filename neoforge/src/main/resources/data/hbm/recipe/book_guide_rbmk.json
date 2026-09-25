@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:book",
+    "minecraft:potato"
+  ],
+  "result": {
+    "id": "hbm:book_guide_rbmk"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_vacuum_tube",
+    "D": "#c:dyes",
+    "P": "#c:plates/iron"
+  },
+  "pattern": [
+    "D",
+    "C",
+    "P"
+  ],
+  "result": {
+    "id": "hbm:fluid_identifier_multi"
+  }
+}

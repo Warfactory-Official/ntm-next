@@ -1,0 +1,3628 @@
+{
+  "POOL_AMMO": [
+    {
+      "item": "hbm:ammo_standard_m357_sp",
+      "max": 12,
+      "min": 12,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ammo_standard_m357_fmj",
+      "max": 6,
+      "min": 6,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ammo_standard_m44_sp",
+      "max": 12,
+      "min": 12,
+      "weight": 5
+    },
+    {
+      "item": "hbm:ammo_standard_m44_fmj",
+      "max": 6,
+      "min": 6,
+      "weight": 5
+    },
+    {
+      "item": "hbm:ammo_standard_p9_sp",
+      "max": 12,
+      "min": 12,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ammo_standard_p9_fmj",
+      "max": 6,
+      "min": 6,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ammo_standard_r762_sp",
+      "max": 6,
+      "min": 6,
+      "weight": 5
+    },
+    {
+      "item": "hbm:ammo_standard_g12_bp",
+      "max": 6,
+      "min": 6,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ammo_standard_rocket_he",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:ammo_container",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    }
+  ],
+  "POOL_ANTENNA": [
+    {
+      "item": "hbm:twinkie",
+      "max": 3,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:ingot_steel",
+      "max": 2,
+      "min": 1,
+      "weight": 7
+    },
+    {
+      "item": "hbm:ingot_red_copper",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:ingot_titanium",
+      "max": 3,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:wire_fine_mingrade",
+      "max": 3,
+      "min": 2,
+      "weight": 7
+    },
+    {
+      "item": "hbm:circuit_vacuum_tube",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:circuit_capacitor",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:battery_pack_battery_redstone",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:powder_iodine",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:powder_bromine",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:steel_poles",
+      "max": 4,
+      "min": 1,
+      "weight": 8
+    },
+    {
+      "item": "hbm:steel_scaffold",
+      "max": 3,
+      "min": 1,
+      "weight": 8
+    },
+    {
+      "item": "hbm:pole_top",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:pole_satellite_receiver",
+      "max": 1,
+      "min": 1,
+      "weight": 7
+    },
+    {
+      "item": "hbm:scrap",
+      "max": 3,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:dust",
+      "max": 4,
+      "min": 2,
+      "weight": 9
+    },
+    {
+      "item": "hbm:bottle_opener",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:bottle_nuka",
+      "max": 3,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:bottle_cherry",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:stealth_boy",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:cap_nuka",
+      "max": 15,
+      "min": 1,
+      "weight": 7
+    },
+    {
+      "item": "hbm:bomb_caller_carpet_bombing",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:gas_mask_filter",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    }
+  ],
+  "POOL_BLACK_PART": [
+    {
+      "item": "hbm:item_secret_selenium_steel",
+      "max": 4,
+      "min": 4,
+      "weight": 10
+    },
+    {
+      "item": "hbm:item_secret_controller",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:item_secret_canister",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:blueprint_folder_secret",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    }
+  ],
+  "POOL_BLACK_SLAB": [
+    {
+      "item": "hbm:clay_tablet",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    }
+  ],
+  "POOL_BLUEPRINTS": [
+    {
+      "item": "hbm:blueprint_folder",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:blueprint_folder_discover",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:blueprint_folder",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    }
+  ],
+  "POOL_EXPENSIVE": [
+    {
+      "item": "hbm:chlorine_pinwheel",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:circuit_vacuum_tube",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:circuit_analog",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:circuit_chip",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:gun_kit_1",
+      "max": 3,
+      "min": 1,
+      "weight": 6
+    },
+    {
+      "item": "hbm:gun_kit_2",
+      "max": 2,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:gun_panzerschreck",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:ammo_standard_rocket_he",
+      "max": 4,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:ammo_standard_g26_flare_supply",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:ammo_standard_g26_flare_weapon",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "components": {
+        "hbm:grenade": {
+          "filling": "nuclear",
+          "fuze": "s7",
+          "shell": "nuke"
+        },
+        "minecraft:max_stack_size": 1
+      },
+      "item": "hbm:grenade_universal",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "components": {
+        "hbm:grenade": {
+          "filling": "cluster",
+          "fuze": "s7",
+          "shell": "frag"
+        },
+        "minecraft:max_stack_size": 4
+      },
+      "item": "hbm:grenade_universal",
+      "max": 3,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:grenade_extra_triplex",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:stealth_boy",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:battery_pack_battery_lithium",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:syringe_awesome",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:fusion_core",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:bottle_nuka",
+      "max": 3,
+      "min": 1,
+      "weight": 6
+    },
+    {
+      "item": "hbm:bottle_quantum",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:red_barrel",
+      "max": 1,
+      "min": 1,
+      "weight": 6
+    },
+    {
+      "components": {
+        "hbm:fluid_content": {
+          "type": "hbm:diesel",
+          "amount": 1000
+        }
+      },
+      "item": "hbm:canister",
+      "max": 2,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "components": {
+        "hbm:fluid_content": {
+          "type": "hbm:biofuel",
+          "amount": 1000
+        }
+      },
+      "item": "hbm:canister",
+      "max": 2,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "components": {
+        "minecraft:damage": 60
+      },
+      "item": "hbm:gas_mask_m65",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:bomb_caller_carpet_bombing",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:bomb_caller_napalm",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:bomb_caller_poison_gas",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:gas_mask_filter",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:launch_code_piece",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:gun_double_barrel",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:blueprint_folder_discover",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    }
+  ],
+  "POOL_FILING_CABINET": [
+    {
+      "item": "minecraft:paper",
+      "max": 12,
+      "min": 1,
+      "weight": 240
+    },
+    {
+      "item": "minecraft:book",
+      "max": 3,
+      "min": 1,
+      "weight": 90
+    },
+    {
+      "item": "minecraft:map",
+      "max": 1,
+      "min": 1,
+      "weight": 50
+    },
+    {
+      "item": "minecraft:writable_book",
+      "max": 1,
+      "min": 1,
+      "weight": 30
+    },
+    {
+      "item": "hbm:cigarette",
+      "max": 16,
+      "min": 1,
+      "weight": 20
+    },
+    {
+      "item": "hbm:dust",
+      "max": 1,
+      "min": 1,
+      "weight": 40
+    },
+    {
+      "item": "hbm:dust_tiny",
+      "max": 3,
+      "min": 1,
+      "weight": 75
+    },
+    {
+      "item": "hbm:ink",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:screwdriver",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:blueprint_folder",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:coin_token",
+      "max": 1,
+      "min": 1,
+      "weight": 30
+    }
+  ],
+  "POOL_GENERIC": [
+    {
+      "item": "minecraft:bread",
+      "max": 5,
+      "min": 1,
+      "weight": 8
+    },
+    {
+      "item": "hbm:twinkie",
+      "max": 3,
+      "min": 1,
+      "weight": 6
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "max": 6,
+      "min": 2,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ingot_steel",
+      "max": 5,
+      "min": 2,
+      "weight": 7
+    },
+    {
+      "item": "hbm:ingot_beryllium",
+      "max": 2,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:ingot_titanium",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:circuit_vacuum_tube",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:gun_light_revolver",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:ammo_standard_m357_sp",
+      "max": 6,
+      "min": 2,
+      "weight": 4
+    },
+    {
+      "item": "hbm:ammo_standard_g12_bp",
+      "max": 6,
+      "min": 3,
+      "weight": 3
+    },
+    {
+      "item": "hbm:ammo_standard_g26_flare_supply",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:gun_kit_1",
+      "max": 3,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:gun_maresleg",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:casing_small",
+      "max": 10,
+      "min": 4,
+      "weight": 3
+    },
+    {
+      "item": "hbm:casing_shotshell",
+      "max": 10,
+      "min": 4,
+      "weight": 3
+    },
+    {
+      "item": "hbm:cordite",
+      "max": 6,
+      "min": 4,
+      "weight": 5
+    },
+    {
+      "item": "hbm:battery_pack_battery_redstone",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:scrap",
+      "max": 3,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:dust",
+      "max": 4,
+      "min": 2,
+      "weight": 9
+    },
+    {
+      "item": "hbm:bottle_opener",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:bottle_nuka",
+      "max": 3,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:bottle_cherry",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:stealth_boy",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:cap_nuka",
+      "max": 15,
+      "min": 1,
+      "weight": 7
+    },
+    {
+      "components": {
+        "hbm:fluid_content": {
+          "type": "hbm:diesel",
+          "amount": 1000
+        }
+      },
+      "item": "hbm:canister",
+      "max": 2,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "components": {
+        "hbm:fluid_content": {
+          "type": "hbm:biofuel",
+          "amount": 1000
+        }
+      },
+      "item": "hbm:canister",
+      "max": 2,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "components": {
+        "minecraft:damage": 60
+      },
+      "item": "hbm:gas_mask_m65",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:gas_mask_filter",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:blueprint_folder",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:coin_token",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    }
+  ],
+  "POOL_LAUNCH_KEY": [
+    {
+      "item": "hbm:launch_key",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    }
+  ],
+  "POOL_MACHINE_PARTS": [
+    {
+      "item": "hbm:plate_steel",
+      "max": 5,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:shell_steel",
+      "max": 3,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:plate_polymer",
+      "max": 6,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:bolt_steel",
+      "max": 16,
+      "min": 4,
+      "weight": 3
+    },
+    {
+      "item": "hbm:bolt_tungsten",
+      "max": 16,
+      "min": 4,
+      "weight": 3
+    },
+    {
+      "item": "hbm:coil_tungsten",
+      "max": 2,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:motor",
+      "max": 2,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:coil_copper",
+      "max": 3,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:coil_copper_torus",
+      "max": 2,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:wire_fine_mingrade",
+      "max": 8,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:piston_selenium",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:battery_pack_battery_lead",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:circuit_vacuum_tube",
+      "max": 2,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:circuit_pcb",
+      "max": 3,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:circuit_capacitor",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:blade_titanium",
+      "max": 8,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:blueprint_folder",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    }
+  ],
+  "POOL_METEORITE_TREASURE": [
+    {
+      "item": "hbm:cobalt_pickaxe",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ingot_zirconium",
+      "max": 16,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ingot_niobium",
+      "max": 16,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ingot_cobalt",
+      "max": 16,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ingot_boron",
+      "max": 16,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ingot_starmetal",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:crystal_gold",
+      "max": 4,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:circuit_vacuum_tube",
+      "max": 8,
+      "min": 4,
+      "weight": 10
+    },
+    {
+      "item": "hbm:circuit_chip",
+      "max": 4,
+      "min": 2,
+      "weight": 10
+    },
+    {
+      "item": "hbm:definitelyfood",
+      "max": 32,
+      "min": 16,
+      "weight": 25
+    },
+    {
+      "item": "hbm:crate_can",
+      "max": 3,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:pill_herbal",
+      "max": 2,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:serum",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:heart_piece",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:scrumpy",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:launch_code_piece",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:egg_glyphid",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:gem_alexandrite",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:blueprint_folder_discover",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    }
+  ],
+  "POOL_METEOR_SAFE": [
+    {
+      "item": "hbm:book_of_",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:stamp_book_printing1",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:stamp_book_printing2",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:stamp_book_printing3",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:stamp_book_printing4",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:stamp_book_printing5",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:stamp_book_printing6",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:stamp_book_printing7",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:stamp_book_printing8",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    }
+  ],
+  "POOL_NUKE_FUEL": [
+    {
+      "item": "hbm:billet_uranium",
+      "max": 4,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:billet_th232",
+      "max": 3,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:billet_uranium_fuel",
+      "max": 3,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:billet_mox_fuel",
+      "max": 3,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:billet_thorium_fuel",
+      "max": 3,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:billet_ra226be",
+      "max": 2,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:billet_beryllium",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:nugget_u233",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:nugget_uranium_fuel",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:rod_zirnox_empty",
+      "max": 3,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:ingot_graphite",
+      "max": 4,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:pile_rod_uranium",
+      "max": 5,
+      "min": 2,
+      "weight": 3
+    },
+    {
+      "item": "hbm:pile_rod_source",
+      "max": 2,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:reacher",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:screwdriver",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    }
+  ],
+  "POOL_NUKE_MISC": [
+    {
+      "item": "hbm:nugget_u235",
+      "max": 12,
+      "min": 3,
+      "weight": 5
+    },
+    {
+      "item": "hbm:nugget_pu238",
+      "max": 12,
+      "min": 3,
+      "weight": 5
+    },
+    {
+      "item": "hbm:nugget_ra226",
+      "max": 6,
+      "min": 3,
+      "weight": 5
+    },
+    {
+      "item": "hbm:rod_u235",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:rod_dual_u235",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:rod_quad_u235",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:rod_zirnox_uranium_fuel",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:rod_zirnox_mox_fuel",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:rod_zirnox_lithium_fuel",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:rod_zirnox_thorium_fuel",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:rod_dual_thf",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:rod_zirnox_tritium",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:rod_zirnox_u233_fuel",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:rod_zirnox_u235_fuel",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:pellet_rtg",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:powder_thorium",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:powder_neptunium",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:powder_strontium",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:powder_cobalt",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:bottle_quantum",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "components": {
+        "minecraft:damage": 60
+      },
+      "item": "hbm:gas_mask_m65",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:hazmat_kit",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:gas_mask_filter",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:yellow_barrel",
+      "max": 3,
+      "min": 1,
+      "weight": 3
+    }
+  ],
+  "POOL_NUKE_TRASH": [
+    {
+      "item": "hbm:nugget_u238",
+      "max": 12,
+      "min": 3,
+      "weight": 5
+    },
+    {
+      "item": "hbm:nugget_pu240",
+      "max": 8,
+      "min": 3,
+      "weight": 5
+    },
+    {
+      "item": "hbm:nugget_neptunium",
+      "max": 4,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:rod_u238",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:rod_dual_u238",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:rod_quad_u238",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:bottle_quantum",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "components": {
+        "minecraft:damage": 60
+      },
+      "item": "hbm:gas_mask_m65",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:hazmat_kit",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:gas_mask_filter",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:yellow_barrel",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    }
+  ],
+  "POOL_OFFICE_TRASH": [
+    {
+      "item": "minecraft:paper",
+      "max": 12,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "minecraft:book",
+      "max": 3,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:twinkie",
+      "max": 2,
+      "min": 1,
+      "weight": 6
+    },
+    {
+      "item": "hbm:coffee",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:flame_politics",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:ring_pull",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:can_empty",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:can_creature",
+      "max": 2,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:can_smart",
+      "max": 3,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:can_mrsugar",
+      "max": 2,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:cap_nuka",
+      "max": 16,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:book_guide_starter",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:deco_computer",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:blueprint_folder",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:coin_token",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    }
+  ],
+  "POOL_OIL_RIG": [
+    {
+      "item": "hbm:oil_detector",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "components": {
+        "hbm:fluid_content": {
+          "type": "hbm:oil",
+          "amount": 1000
+        }
+      },
+      "item": "hbm:canister",
+      "max": 4,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:canister",
+      "max": 16,
+      "min": 4,
+      "weight": 10
+    },
+    {
+      "item": "hbm:circuit_analog",
+      "max": 4,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:circuit_capacitor",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    }
+  ],
+  "POOL_PILE_BONES": [
+    {
+      "item": "minecraft:bone",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "minecraft:rotten_flesh",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:biomass",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    }
+  ],
+  "POOL_PILE_CAPS": [
+    {
+      "item": "hbm:cap_nuka",
+      "max": 4,
+      "min": 4,
+      "weight": 20
+    },
+    {
+      "item": "hbm:cap_quantum",
+      "max": 4,
+      "min": 4,
+      "weight": 3
+    },
+    {
+      "item": "hbm:cap_sparkle",
+      "max": 4,
+      "min": 4,
+      "weight": 1
+    }
+  ],
+  "POOL_PILE_GEAR": [
+    {
+      "item": "hbm:defuser",
+      "max": 1,
+      "min": 1,
+      "weight": 40
+    },
+    {
+      "item": "hbm:screwdriver",
+      "max": 1,
+      "min": 1,
+      "weight": 30
+    },
+    {
+      "max": 1,
+      "min": 1,
+      "weight": 40
+    },
+    {
+      "item": "hbm:casing_small_steel",
+      "max": 4,
+      "min": 1,
+      "weight": 30
+    },
+    {
+      "item": "hbm:casing_small",
+      "max": 8,
+      "min": 3,
+      "weight": 40
+    },
+    {
+      "item": "hbm:casing_buckshot",
+      "max": 8,
+      "min": 3,
+      "weight": 40
+    },
+    {
+      "item": "hbm:canned_beef",
+      "max": 5,
+      "min": 2,
+      "weight": 40
+    },
+    {
+      "item": "hbm:taurun_helmet",
+      "max": 1,
+      "min": 1,
+      "weight": 20
+    },
+    {
+      "item": "hbm:taurun_plate",
+      "max": 1,
+      "min": 1,
+      "weight": 20
+    },
+    {
+      "item": "hbm:taurun_legs",
+      "max": 1,
+      "min": 1,
+      "weight": 20
+    },
+    {
+      "item": "hbm:taurun_boots",
+      "max": 1,
+      "min": 1,
+      "weight": 20
+    }
+  ],
+  "POOL_PILE_HIVE": [
+    {
+      "item": "minecraft:iron_ingot",
+      "max": 3,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ingot_steel",
+      "max": 2,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ingot_aluminium",
+      "max": 2,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:scrap",
+      "max": 6,
+      "min": 3,
+      "weight": 10
+    },
+    {
+      "item": "hbm:gas_mask_m65",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:steel_plate",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:steel_legs",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:steel_pickaxe",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:steel_shovel",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:gun_maresleg",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:gun_light_revolver",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "components": {
+        "hbm:grenade": {
+          "extra": "frag_sleeve",
+          "filling": "he",
+          "fuze": "s3",
+          "shell": "frag"
+        },
+        "minecraft:max_stack_size": 4
+      },
+      "item": "hbm:grenade_universal",
+      "max": 2,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "components": {
+        "hbm:grenade": {
+          "filling": "demo",
+          "fuze": "impact",
+          "shell": "stick"
+        },
+        "minecraft:max_stack_size": 4
+      },
+      "item": "hbm:grenade_universal",
+      "max": 2,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:ammo_standard_g12",
+      "max": 4,
+      "min": 4,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ammo_standard_m357_sp",
+      "max": 12,
+      "min": 6,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ammo_standard_g40_he",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:bottle_nuka",
+      "max": 2,
+      "min": 1,
+      "weight": 20
+    },
+    {
+      "item": "hbm:bottle_quantum",
+      "max": 2,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:definitelyfood",
+      "max": 12,
+      "min": 5,
+      "weight": 20
+    },
+    {
+      "item": "hbm:egg_glyphid",
+      "max": 3,
+      "min": 1,
+      "weight": 30
+    },
+    {
+      "item": "hbm:syringe_metal_stimpak",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:iv_blood",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "minecraft:experience_bottle",
+      "max": 3,
+      "min": 1,
+      "weight": 5
+    }
+  ],
+  "POOL_PILE_MAKESHIFT_GUN": [
+    {
+      "item": "hbm:gun_maresleg",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    }
+  ],
+  "POOL_PILE_MAKESHIFT_PLATES": [
+    {
+      "item": "hbm:plate_steel",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    }
+  ],
+  "POOL_PILE_MAKESHIFT_WIRE": [
+    {
+      "item": "hbm:wire_fine_aluminum",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    }
+  ],
+  "POOL_PILE_MAKESHIFT_WRENCH": [
+    {
+      "item": "hbm:wrench",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    }
+  ],
+  "POOL_PILE_MECHANICAL": [
+    {
+      "item": "hbm:defuser",
+      "max": 1,
+      "min": 1,
+      "weight": 30
+    },
+    {
+      "item": "hbm:screwdriver",
+      "max": 1,
+      "min": 1,
+      "weight": 30
+    },
+    {
+      "item": "hbm:wire_fine_copper",
+      "max": 12,
+      "min": 8,
+      "weight": 120
+    },
+    {
+      "item": "hbm:plate_steel",
+      "max": 8,
+      "min": 3,
+      "weight": 40
+    },
+    {
+      "item": "hbm:plate_copper",
+      "max": 5,
+      "min": 2,
+      "weight": 40
+    },
+    {
+      "item": "hbm:coil_copper",
+      "max": 5,
+      "min": 2,
+      "weight": 40
+    },
+    {
+      "item": "hbm:coil_tungsten",
+      "max": 5,
+      "min": 2,
+      "weight": 40
+    }
+  ],
+  "POOL_PILE_MED_PILLS": [
+    {
+      "item": "hbm:radaway",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:radx",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:iv_blood",
+      "max": 1,
+      "min": 1,
+      "weight": 15
+    },
+    {
+      "item": "hbm:siox",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    }
+  ],
+  "POOL_PILE_MED_SYRINGE": [
+    {
+      "item": "hbm:syringe_metal_stimpak",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    }
+  ],
+  "POOL_PILE_NUKE_STORAGE": [
+    {
+      "item": "hbm:ammo_standard_nuke_standard",
+      "max": 1,
+      "min": 1,
+      "weight": 50
+    },
+    {
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    }
+  ],
+  "POOL_PILE_OF_GARBAGE": [
+    {
+      "item": "hbm:pipe_iron",
+      "max": 2,
+      "min": 0,
+      "weight": 20
+    },
+    {
+      "item": "hbm:scrap",
+      "max": 5,
+      "min": 1,
+      "weight": 20
+    },
+    {
+      "item": "hbm:dust",
+      "max": 3,
+      "min": 1,
+      "weight": 40
+    },
+    {
+      "item": "hbm:dust_tiny",
+      "max": 7,
+      "min": 1,
+      "weight": 40
+    },
+    {
+      "item": "hbm:powder_cement",
+      "max": 6,
+      "min": 1,
+      "weight": 40
+    },
+    {
+      "item": "hbm:nugget_lead",
+      "max": 3,
+      "min": 0,
+      "weight": 20
+    },
+    {
+      "item": "hbm:wire_fine_lead",
+      "max": 2,
+      "min": 1,
+      "weight": 20
+    },
+    {
+      "item": "hbm:powder_ash_wood",
+      "max": 1,
+      "min": 0,
+      "weight": 15
+    },
+    {
+      "item": "hbm:plate_lead",
+      "max": 1,
+      "min": 0,
+      "weight": 15
+    },
+    {
+      "item": "minecraft:string",
+      "max": 1,
+      "min": 0,
+      "weight": 15
+    },
+    {
+      "item": "hbm:bolt_lead",
+      "max": 2,
+      "min": 0,
+      "weight": 15
+    },
+    {
+      "item": "hbm:pin",
+      "max": 2,
+      "min": 0,
+      "weight": 15
+    },
+    {
+      "item": "hbm:cap_nuka",
+      "max": 8,
+      "min": 0,
+      "weight": 15
+    },
+    {
+      "item": "hbm:plate_iron",
+      "max": 2,
+      "min": 0,
+      "weight": 15
+    },
+    {
+      "item": "hbm:falloutitem",
+      "max": 2,
+      "min": 0,
+      "weight": 15
+    },
+    {
+      "item": "hbm:coil_tungsten",
+      "max": 2,
+      "min": 0,
+      "weight": 15
+    },
+    {
+      "item": "hbm:can_empty",
+      "max": 1,
+      "min": 0,
+      "weight": 15
+    },
+    {
+      "item": "hbm:ingot_asbestos",
+      "max": 1,
+      "min": 0,
+      "weight": 15
+    },
+    {
+      "item": "hbm:syringe_metal_empty",
+      "max": 1,
+      "min": 0,
+      "weight": 15
+    },
+    {
+      "item": "hbm:syringe_empty",
+      "max": 1,
+      "min": 0,
+      "weight": 15
+    },
+    {
+      "item": "hbm:weapon_pipe_lead",
+      "max": 1,
+      "min": 0,
+      "weight": 5
+    },
+    {
+      "item": "hbm:motor",
+      "max": 1,
+      "min": 0,
+      "weight": 5
+    },
+    {
+      "item": "hbm:canned_mystery",
+      "max": 1,
+      "min": 0,
+      "weight": 5
+    }
+  ],
+  "POOL_PILE_SUPPLIES": [
+    {
+      "components": {
+        "hbm:grenade": {
+          "extra": "frag_sleeve",
+          "filling": "he",
+          "fuze": "s3",
+          "shell": "frag"
+        },
+        "minecraft:max_stack_size": 4
+      },
+      "item": "hbm:grenade_universal",
+      "max": 5,
+      "min": 3,
+      "weight": 10
+    },
+    {
+      "components": {
+        "hbm:grenade": {
+          "extra": "frag_sleeve",
+          "filling": "he",
+          "fuze": "s3",
+          "shell": "frag"
+        },
+        "minecraft:max_stack_size": 4
+      },
+      "item": "hbm:grenade_universal",
+      "max": 5,
+      "min": 3,
+      "weight": 10
+    },
+    {
+      "components": {
+        "hbm:grenade": {
+          "extra": "frag_sleeve",
+          "filling": "he",
+          "fuze": "s3",
+          "shell": "frag"
+        },
+        "minecraft:max_stack_size": 4
+      },
+      "item": "hbm:grenade_universal",
+      "max": 5,
+      "min": 3,
+      "weight": 10
+    },
+    {
+      "item": "hbm:syringe_metal_stimpak",
+      "max": 5,
+      "min": 3,
+      "weight": 30
+    },
+    {
+      "item": "hbm:syringe_metal_psycho",
+      "max": 5,
+      "min": 3,
+      "weight": 30
+    },
+    {
+      "item": "hbm:syringe_antidote",
+      "max": 2,
+      "min": 1,
+      "weight": 30
+    },
+    {
+      "item": "hbm:ammo_container",
+      "max": 3,
+      "min": 2,
+      "weight": 40
+    }
+  ],
+  "POOL_RED_PEDESTAL": [
+    {
+      "item": "hbm:ballistic_gauntlet",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:armor_polish",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:bandaid",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:serum",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:quartz_plutonium",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:morning_glory",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:spider_milk",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:ink",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:heart_container",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:black_diamond",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:scrumpy",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:wild_p",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:card_aos",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:card_qos",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:starmetal_sword",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:gem_alexandrite",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:crackpipe",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:flask_infusion_shield",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:boxcar",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:book_of_",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:gun_hangman",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:gun_mas36",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:item_secret_folly",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:weapon_mod_special_nickel",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:weapon_mod_special_doubloons",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    }
+  ],
+  "POOL_REPAIR_MATERIALS": [
+    {
+      "item": "hbm:ingot_aluminium",
+      "max": 8,
+      "min": 2,
+      "weight": 3
+    },
+    {
+      "item": "hbm:ingot_steel",
+      "max": 12,
+      "min": 0,
+      "weight": 4
+    },
+    {
+      "item": "hbm:plate_aluminium",
+      "max": 12,
+      "min": 5,
+      "weight": 3
+    },
+    {
+      "item": "hbm:plate_iron",
+      "max": 16,
+      "min": 6,
+      "weight": 3
+    },
+    {
+      "item": "hbm:plate_steel",
+      "max": 12,
+      "min": 2,
+      "weight": 2
+    },
+    {
+      "item": "hbm:ingot_tungsten",
+      "max": 2,
+      "min": 0,
+      "weight": 1
+    },
+    {
+      "item": "hbm:deco_aluminium",
+      "max": 24,
+      "min": 12,
+      "weight": 4
+    },
+    {
+      "item": "hbm:deco_steel",
+      "max": 12,
+      "min": 5,
+      "weight": 2
+    },
+    {
+      "item": "hbm:block_aluminium",
+      "max": 2,
+      "min": 0,
+      "weight": 1
+    },
+    {
+      "item": "hbm:block_steel",
+      "max": 1,
+      "min": 0,
+      "weight": 1
+    },
+    {
+      "item": "hbm:bolt_steel",
+      "max": 16,
+      "min": 4,
+      "weight": 3
+    },
+    {
+      "item": "hbm:circuit_vacuum_tube",
+      "max": 2,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:circuit_analog",
+      "max": 3,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:circuit_capacitor",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    }
+  ],
+  "POOL_RTG": [
+    {
+      "item": "hbm:pellet_rtg_depleted_lead",
+      "max": 1,
+      "min": 1,
+      "weight": 40
+    },
+    {
+      "item": "hbm:pellet_rtg_weak",
+      "max": 1,
+      "min": 0,
+      "weight": 1
+    }
+  ],
+  "POOL_SAT_LUNAR": [
+    {
+      "item": "hbm:moon_turf",
+      "max": 48,
+      "min": 48,
+      "weight": 5
+    },
+    {
+      "item": "hbm:moon_turf",
+      "max": 32,
+      "min": 32,
+      "weight": 7
+    },
+    {
+      "item": "hbm:moon_turf",
+      "max": 16,
+      "min": 16,
+      "weight": 5
+    },
+    {
+      "item": "hbm:powder_lithium",
+      "max": 3,
+      "min": 3,
+      "weight": 5
+    },
+    {
+      "item": "hbm:powder_iron",
+      "max": 3,
+      "min": 3,
+      "weight": 5
+    },
+    {
+      "item": "hbm:crystal_iron",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:crystal_lithium",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    }
+  ],
+  "POOL_SAT_MINER": [
+    {
+      "item": "hbm:powder_aluminium",
+      "max": 3,
+      "min": 3,
+      "weight": 10
+    },
+    {
+      "item": "hbm:powder_iron",
+      "max": 3,
+      "min": 3,
+      "weight": 10
+    },
+    {
+      "item": "hbm:powder_titanium",
+      "max": 2,
+      "min": 2,
+      "weight": 8
+    },
+    {
+      "item": "hbm:crystal_tungsten",
+      "max": 2,
+      "min": 2,
+      "weight": 7
+    },
+    {
+      "item": "hbm:powder_coal",
+      "max": 4,
+      "min": 4,
+      "weight": 15
+    },
+    {
+      "item": "hbm:powder_uranium",
+      "max": 2,
+      "min": 2,
+      "weight": 5
+    },
+    {
+      "item": "hbm:powder_plutonium",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:powder_thorium",
+      "max": 2,
+      "min": 2,
+      "weight": 7
+    },
+    {
+      "item": "hbm:powder_desh_mix",
+      "max": 3,
+      "min": 3,
+      "weight": 5
+    },
+    {
+      "item": "hbm:powder_diamond",
+      "max": 2,
+      "min": 2,
+      "weight": 7
+    },
+    {
+      "item": "minecraft:redstone",
+      "max": 5,
+      "min": 5,
+      "weight": 15
+    },
+    {
+      "item": "hbm:powder_nitan_mix",
+      "max": 2,
+      "min": 2,
+      "weight": 5
+    },
+    {
+      "item": "hbm:powder_power",
+      "max": 2,
+      "min": 2,
+      "weight": 5
+    },
+    {
+      "item": "hbm:powder_copper",
+      "max": 5,
+      "min": 5,
+      "weight": 15
+    },
+    {
+      "item": "hbm:powder_lead",
+      "max": 3,
+      "min": 3,
+      "weight": 10
+    },
+    {
+      "item": "hbm:fluorite",
+      "max": 4,
+      "min": 4,
+      "weight": 15
+    },
+    {
+      "item": "hbm:powder_lapis",
+      "max": 4,
+      "min": 4,
+      "weight": 10
+    },
+    {
+      "item": "hbm:crystal_aluminium",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:crystal_gold",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:crystal_phosphorus",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:gravel_diamond",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:crystal_uranium",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:crystal_plutonium",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:crystal_trixite",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:crystal_starmetal",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:crystal_lithium",
+      "max": 2,
+      "min": 2,
+      "weight": 4
+    }
+  ],
+  "POOL_SILO": [
+    {
+      "item": "hbm:missile_generic",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:missile_incendiary",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:gas_mask_m65",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:battery_pack_battery_lead",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:designator",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:thruster_small",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:thruster_medium",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:fuel_tank_small",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:fuel_tank_medium",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:bomb_caller_carpet_bombing",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:bomb_caller_agent_orange",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:bottle_nuka",
+      "max": 3,
+      "min": 1,
+      "weight": 10
+    }
+  ],
+  "POOL_SNACKS": [
+    {
+      "item": "hbm:definitelyfood",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:canned_beef",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:canned_tube",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:twinkie",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:chocolate",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    }
+  ],
+  "POOL_SODA": [
+    {
+      "item": "hbm:bottle_nuka",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:bottle_cherry",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:bottle_quantum",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:can_bepis",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:can_luna",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:can_mug",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:can_breen",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    }
+  ],
+  "POOL_SOLID_FUEL": [
+    {
+      "item": "hbm:solid_fuel",
+      "max": 5,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:solid_fuel_presto",
+      "max": 2,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:ball_dynamite",
+      "max": 4,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:coke_petroleum",
+      "max": 3,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "minecraft:redstone",
+      "max": 3,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:niter",
+      "max": 3,
+      "min": 1,
+      "weight": 1
+    }
+  ],
+  "POOL_SPACESHIP": [
+    {
+      "item": "hbm:battery_pack_battery_lead",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:coil_copper",
+      "max": 16,
+      "min": 2,
+      "weight": 5
+    },
+    {
+      "item": "hbm:wire_fine_mingrade",
+      "max": 32,
+      "min": 8,
+      "weight": 5
+    },
+    {
+      "item": "hbm:cell_deuterium",
+      "max": 8,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:cell_tritium",
+      "max": 8,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:cell_antimatter",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:powder_neodymium",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:powder_niobium",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:wire_dense_mingrade",
+      "max": 4,
+      "min": 2,
+      "weight": 5
+    },
+    {
+      "item": "hbm:wire_dense_gold",
+      "max": 3,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:pwr_fuel",
+      "max": 2,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:block_tungsten",
+      "max": 8,
+      "min": 3,
+      "weight": 5
+    },
+    {
+      "item": "hbm:red_wire_coated",
+      "max": 8,
+      "min": 4,
+      "weight": 5
+    },
+    {
+      "item": "hbm:cable",
+      "max": 16,
+      "min": 8,
+      "weight": 5
+    }
+  ],
+  "POOL_SUPPLIES": [
+    {
+      "item": "hbm:definitelyfood",
+      "max": 10,
+      "min": 3,
+      "weight": 25
+    },
+    {
+      "item": "hbm:syringe_metal_stimpak",
+      "max": 3,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:pill_iodine",
+      "max": 2,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "components": {
+        "hbm:fluid_content": {
+          "type": "hbm:diesel",
+          "amount": 1000
+        }
+      },
+      "item": "hbm:canister",
+      "max": 4,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:machine_diesel",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:geiger_counter",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:med_bag",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:radaway",
+      "max": 5,
+      "min": 1,
+      "weight": 10
+    }
+  ],
+  "POOL_VAULT_LAB": [
+    {
+      "components": {
+        "hbm:fluid_content": {
+          "type": "hbm:gas",
+          "amount": 0
+        }
+      },
+      "item": "hbm:blowtorch",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:chemistry_set",
+      "max": 1,
+      "min": 1,
+      "weight": 15
+    },
+    {
+      "item": "hbm:screwdriver",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:nugget_mercury_tiny",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:morning_glory",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:filter_coal",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:dust",
+      "max": 3,
+      "min": 1,
+      "weight": 25
+    },
+    {
+      "item": "minecraft:paper",
+      "max": 2,
+      "min": 1,
+      "weight": 15
+    },
+    {
+      "item": "hbm:cell_empty",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "minecraft:glass_bottle",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:powder_iodine",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:powder_bromine",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:powder_cobalt",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:powder_neodymium",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:powder_boron",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:blueprint_folder_discover",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    }
+  ],
+  "POOL_VAULT_LOCKERS": [
+    {
+      "item": "hbm:robes_helmet",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:robes_plate",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:robes_legs",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:robes_boots",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:jackt",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:jackt2",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:gas_mask_m65",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:gas_mask_mono",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:goggles",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:gas_mask_filter",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:flame_opinion",
+      "max": 3,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:flame_conspiracy",
+      "max": 3,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:flame_politics",
+      "max": 3,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:definitelyfood",
+      "max": 7,
+      "min": 2,
+      "weight": 5
+    },
+    {
+      "item": "hbm:cigarette",
+      "max": 8,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:armor_polish",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:gun_kit_1",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:rag",
+      "max": 3,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "minecraft:paper",
+      "max": 6,
+      "min": 1,
+      "weight": 7
+    },
+    {
+      "item": "minecraft:clock",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "minecraft:book",
+      "max": 5,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "minecraft:experience_bottle",
+      "max": 3,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:blueprint_folder",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:blueprint_folder_discover",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:ammo_container",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:coin_token",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    }
+  ],
+  "POOL_VAULT_REINFORCED": [
+    {
+      "item": "hbm:ingot_desh",
+      "max": 16,
+      "min": 6,
+      "weight": 1
+    },
+    {
+      "item": "hbm:powder_power",
+      "max": 5,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:sat_chip",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "minecraft:diamond",
+      "max": 9,
+      "min": 5,
+      "weight": 1
+    },
+    {
+      "item": "hbm:ammo_standard_nuke_standard",
+      "max": 3,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:ammo_container",
+      "max": 4,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "components": {
+        "hbm:grenade": {
+          "filling": "nuclear",
+          "fuze": "s7",
+          "shell": "nuke"
+        },
+        "minecraft:max_stack_size": 1
+      },
+      "item": "hbm:grenade_universal",
+      "max": 2,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "components": {
+        "hbm:grenade": {
+          "extra": "triplex",
+          "filling": "he",
+          "fuze": "impact",
+          "shell": "stick"
+        },
+        "minecraft:max_stack_size": 4
+      },
+      "item": "hbm:grenade_universal",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:powder_yellowcake",
+      "max": 42,
+      "min": 26,
+      "weight": 1
+    },
+    {
+      "item": "hbm:gun_heavy_revolver",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:circuit_chip",
+      "max": 32,
+      "min": 18,
+      "weight": 1
+    },
+    {
+      "item": "hbm:circuit_basic",
+      "max": 12,
+      "min": 6,
+      "weight": 1
+    }
+  ],
+  "POOL_VAULT_RUSTY": [
+    {
+      "item": "minecraft:gold_ingot",
+      "max": 14,
+      "min": 3,
+      "weight": 1
+    },
+    {
+      "item": "hbm:gun_heavy_revolver",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:pin",
+      "max": 8,
+      "min": 8,
+      "weight": 1
+    },
+    {
+      "item": "hbm:gun_am180",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:bottle_quantum",
+      "max": 3,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:ingot_cobalt",
+      "max": 12,
+      "min": 4,
+      "weight": 1
+    },
+    {
+      "item": "hbm:ammo_standard_bmg50_fmj",
+      "max": 48,
+      "min": 24,
+      "weight": 1
+    },
+    {
+      "item": "hbm:ammo_standard_p9_jhp",
+      "max": 64,
+      "min": 48,
+      "weight": 2
+    },
+    {
+      "item": "hbm:circuit_chip",
+      "max": 6,
+      "min": 3,
+      "weight": 1
+    },
+    {
+      "item": "hbm:gas_mask_m65",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "components": {
+        "hbm:grenade": {
+          "filling": "he",
+          "fuze": "s3",
+          "shell": "frag"
+        },
+        "minecraft:max_stack_size": 4
+      },
+      "item": "hbm:grenade_universal",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "components": {
+        "hbm:grenade": {
+          "filling": "inc",
+          "fuze": "s3",
+          "shell": "frag"
+        },
+        "minecraft:max_stack_size": 4
+      },
+      "item": "hbm:grenade_universal",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "minecraft:diamond",
+      "max": 2,
+      "min": 1,
+      "weight": 1
+    }
+  ],
+  "POOL_VAULT_STANDARD": [
+    {
+      "item": "hbm:ingot_desh",
+      "max": 6,
+      "min": 2,
+      "weight": 1
+    },
+    {
+      "item": "hbm:powder_desh_mix",
+      "max": 5,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "minecraft:diamond",
+      "max": 6,
+      "min": 3,
+      "weight": 1
+    },
+    {
+      "item": "hbm:ammo_standard_nuke_standard",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:ammo_container",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "components": {
+        "hbm:grenade": {
+          "filling": "nuclear",
+          "fuze": "s7",
+          "shell": "nuke"
+        },
+        "minecraft:max_stack_size": 1
+      },
+      "item": "hbm:grenade_universal",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "components": {
+        "hbm:grenade": {
+          "filling": "emp",
+          "fuze": "s3",
+          "shell": "tech"
+        },
+        "minecraft:max_stack_size": 2
+      },
+      "item": "hbm:grenade_universal",
+      "max": 6,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:powder_yellowcake",
+      "max": 24,
+      "min": 16,
+      "weight": 1
+    },
+    {
+      "item": "hbm:gun_uzi",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:circuit_vacuum_tube",
+      "max": 16,
+      "min": 12,
+      "weight": 1
+    },
+    {
+      "item": "hbm:circuit_chip",
+      "max": 6,
+      "min": 2,
+      "weight": 1
+    }
+  ],
+  "POOL_VAULT_UNBREAKABLE": [
+    {
+      "item": "hbm:ammo_container",
+      "max": 6,
+      "min": 3,
+      "weight": 1
+    },
+    {
+      "item": "hbm:ammo_standard_nuke_demo",
+      "max": 3,
+      "min": 2,
+      "weight": 1
+    },
+    {
+      "item": "hbm:gun_carbine",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:ammo_standard_r762_du",
+      "max": 32,
+      "min": 16,
+      "weight": 1
+    },
+    {
+      "item": "hbm:gun_congolake",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:circuit_advanced",
+      "max": 12,
+      "min": 6,
+      "weight": 1
+    }
+  ],
+  "POOL_VERTIBIRD": [
+    {
+      "item": "hbm:t51_helmet",
+      "max": 1,
+      "min": 1,
+      "weight": 15
+    },
+    {
+      "item": "hbm:t51_plate",
+      "max": 1,
+      "min": 1,
+      "weight": 15
+    },
+    {
+      "item": "hbm:t51_legs",
+      "max": 1,
+      "min": 1,
+      "weight": 15
+    },
+    {
+      "item": "hbm:t51_boots",
+      "max": 1,
+      "min": 1,
+      "weight": 15
+    },
+    {
+      "item": "hbm:fusion_core",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:gun_light_revolver",
+      "max": 1,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:gun_kit_1",
+      "max": 3,
+      "min": 2,
+      "weight": 4
+    },
+    {
+      "item": "hbm:ammo_standard_m357_fmj",
+      "max": 24,
+      "min": 1,
+      "weight": 4
+    },
+    {
+      "item": "hbm:ammo_standard_g40_he",
+      "max": 6,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:ammo_standard_g26_flare_weapon",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:rod_u235",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:billet_uranium_fuel",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:ingot_uranium_fuel",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:bottle_nuka",
+      "max": 3,
+      "min": 1,
+      "weight": 6
+    },
+    {
+      "item": "hbm:bottle_quantum",
+      "max": 1,
+      "min": 1,
+      "weight": 3
+    },
+    {
+      "item": "hbm:stealth_boy",
+      "max": 1,
+      "min": 1,
+      "weight": 7
+    },
+    {
+      "item": "hbm:gas_mask_m65",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "item": "hbm:gas_mask_filter",
+      "max": 1,
+      "min": 1,
+      "weight": 5
+    },
+    {
+      "components": {
+        "hbm:grenade": {
+          "filling": "nuclear",
+          "fuze": "s7",
+          "shell": "nuke"
+        },
+        "minecraft:max_stack_size": 1
+      },
+      "item": "hbm:grenade_universal",
+      "max": 2,
+      "min": 1,
+      "weight": 2
+    },
+    {
+      "item": "hbm:bomb_caller_carpet_bombing",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:bomb_caller_napalm",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    },
+    {
+      "item": "hbm:bomb_caller_poison_gas",
+      "max": 1,
+      "min": 1,
+      "weight": 2
+    }
+  ],
+  "POOL_WEAPONS": [
+    {
+      "item": "hbm:gun_light_revolver",
+      "max": 1,
+      "min": 1,
+      "weight": 100
+    },
+    {
+      "item": "hbm:gun_henry",
+      "max": 1,
+      "min": 1,
+      "weight": 100
+    },
+    {
+      "item": "hbm:gun_maresleg",
+      "max": 1,
+      "min": 1,
+      "weight": 100
+    },
+    {
+      "item": "hbm:gun_greasegun",
+      "max": 1,
+      "min": 1,
+      "weight": 100
+    },
+    {
+      "item": "hbm:gun_carbine",
+      "max": 1,
+      "min": 1,
+      "weight": 50
+    },
+    {
+      "item": "hbm:gun_heavy_revolver",
+      "max": 1,
+      "min": 1,
+      "weight": 50
+    },
+    {
+      "item": "hbm:gun_panzerschreck",
+      "max": 1,
+      "min": 1,
+      "weight": 20
+    },
+    {
+      "item": "hbm:gun_double_barrel",
+      "max": 1,
+      "min": 1,
+      "weight": 10
+    },
+    {
+      "item": "hbm:gun_n_i_4_n_i",
+      "max": 1,
+      "min": 1,
+      "weight": 1
+    }
+  ]
+}

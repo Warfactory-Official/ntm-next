@@ -1,0 +1,45 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 600,
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_pellet": {
+          "xenon": true
+        }
+      },
+      "ingredient": "hbm:rbmk_pellet_thmeu"
+    }
+  ],
+  "laser_strength": "ir",
+  "order": 26,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:powder_xe135_tiny"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_thorium_fuel"
+        },
+        "weight": 83
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_u233"
+        },
+        "weight": 6
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_long_tiny_thorium"
+        },
+        "weight": 10
+      }
+    ]
+  ]
+}

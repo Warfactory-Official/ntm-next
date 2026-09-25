@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "open=false": {
+      "model": "hbm:block/fluid_counter_valve_off"
+    },
+    "open=true": {
+      "model": "hbm:block/fluid_counter_valve_on"
+    }
+  }
+}

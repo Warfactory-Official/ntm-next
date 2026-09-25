@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 10,
+  "input_items": [
+    {
+      "count": 64,
+      "ingredient": "hbm:cap_sparkle"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:cap_sparkle"
+    }
+  ],
+  "order": 80,
+  "output_items": [
+    "hbm:block_cap_sparkle"
+  ],
+  "power": 100
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredient": {
+    "neoforge:ingredient_type": "neoforge:components",
+    "components": {
+      "hbm:forge_count": 0
+    },
+    "items": "hbm:ingot_steel_dusted"
+  },
+  "result": {
+    "components": {
+      "hbm:hot_item_heat": 200
+    },
+    "id": "hbm:ingot_steel_dusted"
+  }
+}

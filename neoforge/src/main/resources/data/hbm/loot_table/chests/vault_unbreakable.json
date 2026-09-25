@@ -1,0 +1,81 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ammo_container",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ammo_standard_nuke_demo",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_carbine",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 32.0,
+                "min": 16.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ammo_standard_r762_du",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_congolake",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 12.0,
+                "min": 6.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:circuit_advanced",
+          "weight": 1
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/vault_unbreakable"
+}

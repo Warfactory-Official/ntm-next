@@ -1,0 +1,49 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#all",
+          "uv": [
+            4,
+            16,
+            12,
+            4
+          ]
+        },
+        "east": {
+          "texture": "#all"
+        },
+        "north": {
+          "texture": "#all"
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#all"
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#all"
+        },
+        "west": {
+          "texture": "#all"
+        }
+      },
+      "from": [
+        4,
+        0,
+        4
+      ],
+      "to": [
+        12,
+        16,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "all": "hbm:block/sandbags",
+    "particle": "hbm:block/sandbags"
+  }
+}

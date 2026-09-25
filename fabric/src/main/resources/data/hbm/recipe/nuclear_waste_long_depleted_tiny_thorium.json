@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:nuclear_waste_long_depleted_thorium"
+  ],
+  "result": {
+    "count": 9,
+    "id": "hbm:nuclear_waste_long_depleted_tiny_thorium"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.chip_quantum"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:pa_beamline"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_lead_plating"
+    },
+    {
+      "count": 32,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_bismoid"
+    },
+    {
+      "ingredient": "hbm:item_expensive_computer"
+    }
+  ],
+  "name": "ass.dipoleEx",
+  "order": 214,
+  "output_items": [
+    "hbm:pa_dipole"
+  ],
+  "power": 100
+}

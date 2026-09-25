@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:battery_sc_empty",
+    "#hbm:billets/lead_209",
+    "#hbm:billets/lead_209"
+  ],
+  "result": {
+    "id": "hbm:battery_sc_pb209"
+  }
+}

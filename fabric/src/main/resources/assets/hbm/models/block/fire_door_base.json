@@ -1,0 +1,12 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "textures": {
+    "particle": "hbm:block/models/pheodoors/fire_door",
+    "sheet0": "hbm:block/models/pheodoors/fire_door",
+    "sheet1": "hbm:block/models/pheodoors/fire_door_black",
+    "sheet2": "hbm:block/models/pheodoors/fire_door_orange",
+    "sheet3": "hbm:block/models/pheodoors/fire_door_yellow",
+    "sheet4": "hbm:block/models/pheodoors/fire_door_trefoil"
+  }
+}

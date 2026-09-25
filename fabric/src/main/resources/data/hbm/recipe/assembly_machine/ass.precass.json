@@ -1,0 +1,33 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 1200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/zirconium"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_capacitor_board"
+    }
+  ],
+  "order": 93,
+  "output_items": [
+    "hbm:machine_precass"
+  ],
+  "power": 100
+}

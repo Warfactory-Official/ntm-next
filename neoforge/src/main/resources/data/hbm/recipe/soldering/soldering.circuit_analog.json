@@ -1,0 +1,31 @@
+{
+  "type": "hbm:soldering",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:circuit_vacuum_tube"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_capacitor"
+    }
+  ],
+  "order": 0,
+  "output_items": [
+    "hbm:circuit_analog"
+  ],
+  "pcb": [
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_pcb"
+    }
+  ],
+  "power": 100,
+  "solder": [
+    {
+      "count": 4,
+      "ingredient": "#c:fine_wires/lead"
+    }
+  ]
+}

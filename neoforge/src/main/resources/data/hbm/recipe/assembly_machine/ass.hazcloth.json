@@ -1,0 +1,22 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 50,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:dusts/lead"
+    },
+    {
+      "count": 8,
+      "ingredient": "minecraft:string"
+    }
+  ],
+  "order": 26,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:hazmat_cloth"
+    }
+  ],
+  "power": 100
+}

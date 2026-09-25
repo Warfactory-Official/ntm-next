@@ -1,0 +1,29 @@
+{
+  "type": "hbm:ore_cave",
+  "config": {
+    "domain": "hbm:noise/ore_cave_asbestos",
+    "max_range": 20,
+    "ore": {
+      "Name": "hbm:stone_resource_asbestos"
+    },
+    "range_mult": 20,
+    "replaceable": {
+      "predicate_type": "minecraft:tag_match",
+      "tag": "minecraft:stone_ore_replaceables"
+    },
+    "stalactite": {
+      "Name": "hbm:stalactite_asbestos",
+      "Properties": {
+        "waterlogged": "false"
+      }
+    },
+    "stalagmite": {
+      "Name": "hbm:stalagmite_asbestos",
+      "Properties": {
+        "waterlogged": "false"
+      }
+    },
+    "threshold": 1.75,
+    "y_level": 25
+  }
+}

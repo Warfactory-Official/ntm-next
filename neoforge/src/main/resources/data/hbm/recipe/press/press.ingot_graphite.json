@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#hbm:gems/any_coke"
+    }
+  ],
+  "order": 5,
+  "output_items": [
+    "hbm:ingot_graphite"
+  ],
+  "stamp": "flat"
+}

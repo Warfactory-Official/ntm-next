@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "N": "hbm:neutron_reflector",
+    "P": "#c:nuggets/plutonium_239",
+    "S": "hbm:ammo_arty"
+  },
+  "pattern": [
+    " P ",
+    "NSN",
+    " P "
+  ],
+  "result": {
+    "id": "hbm:ammo_arty_mini_nuke"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_advanced",
+    "P": "#hbm:ingots/any_plastic",
+    "W": "#c:fine_wires/gold"
+  },
+  "pattern": [
+    "WWW",
+    "CPC",
+    "WWW"
+  ],
+  "result": {
+    "id": "hbm:turret_chip"
+  }
+}

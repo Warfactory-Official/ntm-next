@@ -1,0 +1,18 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:rbmk_reflector"
+    }
+  ],
+  "order": 239,
+  "output_items": [
+    "hbm:rbmk_blank",
+    {
+      "count": 8,
+      "id": "hbm:neutron_reflector"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 4
+}

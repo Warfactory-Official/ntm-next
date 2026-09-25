@@ -1,0 +1,9 @@
+{
+  "values": [
+    "hbm:powder_lignite",
+    "hbm:oil_tar_wood",
+    "hbm:powder_ash_fly",
+    "hbm:crayon_brown",
+    "hbm:chemical_dye_brown"
+  ]
+}

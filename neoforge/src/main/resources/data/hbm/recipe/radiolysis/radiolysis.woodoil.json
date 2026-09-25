@@ -1,0 +1,20 @@
+{
+  "type": "hbm:radiolysis",
+  "input_fluids": [
+    {
+      "type": "hbm:woodoil",
+      "amount": 100
+    }
+  ],
+  "order": 8,
+  "output_fluids": [
+    {
+      "type": "hbm:heatingoil",
+      "amount": 40
+    },
+    {
+      "type": "hbm:aromatics",
+      "amount": 10
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:hazmat_helmet_grey"
+    },
+    "C": "hbm:cladding_lead",
+    "I": "#hbm:ingots/any_rubber"
+  },
+  "pattern": [
+    "III",
+    "CBC",
+    "III"
+  ],
+  "result": {
+    "id": "hbm:liquidator_helmet"
+  }
+}

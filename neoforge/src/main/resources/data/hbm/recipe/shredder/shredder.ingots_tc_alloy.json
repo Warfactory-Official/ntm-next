@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/tc_alloy"
+    }
+  ],
+  "order": 226,
+  "output_items": [
+    "hbm:powder_tcalloy"
+  ]
+}

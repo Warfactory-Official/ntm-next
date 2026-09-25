@@ -1,0 +1,31 @@
+{
+  "type": "hbm:refinery",
+  "input_fluids": [
+    {
+      "type": "hbm:hotoil_ds",
+      "amount": 100
+    }
+  ],
+  "order": 2,
+  "output_fluids": [
+    {
+      "type": "hbm:heavyoil",
+      "amount": 30
+    },
+    {
+      "type": "hbm:naphtha_ds",
+      "amount": 35
+    },
+    {
+      "type": "hbm:lightoil_ds",
+      "amount": 20
+    },
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 15
+    }
+  ],
+  "output_items": [
+    "hbm:oil_tar_paraffin"
+  ]
+}

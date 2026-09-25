@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#c:ingots/aluminum",
+    "C": "hbm:cable",
+    "Q": "#c:nuggets/silicon"
+  },
+  "pattern": [
+    " Q ",
+    "CAC",
+    " Q "
+  ],
+  "result": {
+    "id": "hbm:cable_diode"
+  }
+}

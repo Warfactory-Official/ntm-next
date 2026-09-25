@@ -1,0 +1,28 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Ring2",
+    "Frame",
+    "Spike1",
+    "Spike2",
+    "Head1",
+    "ArmUpper1",
+    "ArmUpper2",
+    "ArmLower2",
+    "ArmLower1",
+    "Ring",
+    "Head2"
+  ],
+  "model": "hbm:models/machines/assembly_machine.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/assembly_machine",
+    "particle": "hbm:block/models/machines/assembly_machine"
+  }
+}

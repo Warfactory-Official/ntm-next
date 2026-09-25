@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": "#c:nuggets/ghiorsium_336"
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "id": "hbm:billet_gh336"
+  }
+}

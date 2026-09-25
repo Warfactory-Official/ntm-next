@@ -1,0 +1,16 @@
+{
+  "type": "hbm:mixer",
+  "duration": 20,
+  "input_items": [
+    {
+      "ingredient": "#hbm:any_tar"
+    }
+  ],
+  "order": 49,
+  "output_fluids": [
+    {
+      "type": "hbm:bitumen",
+      "amount": 50
+    }
+  ]
+}

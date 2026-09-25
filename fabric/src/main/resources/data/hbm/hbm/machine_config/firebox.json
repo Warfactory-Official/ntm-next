@@ -1,0 +1,5 @@
+{
+  "base_heat": 100,
+  "burn_time_multiplier": 1,
+  "heat_capacity": 100000
+}

@@ -1,0 +1,27 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "count": 2,
+      "ingredient": "#c:ingots/lead"
+    },
+    "B": {
+      "ingredient": "minecraft:gunpowder"
+    },
+    "C": {
+      "ingredient": "hbm:casing_small"
+    }
+  },
+  "order": 6,
+  "output_items": [
+    {
+      "count": 12,
+      "id": "hbm:ammo_standard_m44_bp"
+    }
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

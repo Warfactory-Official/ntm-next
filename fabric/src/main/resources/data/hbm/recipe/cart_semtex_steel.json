@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:cart_empty",
+      "components": {
+        "hbm:cart_base": "steel"
+      }
+    },
+    "S": "hbm:semtex"
+  },
+  "pattern": [
+    "S",
+    "C"
+  ],
+  "result": {
+    "components": {
+      "hbm:cart_base": "steel"
+    },
+    "id": "hbm:cart_semtex"
+  }
+}

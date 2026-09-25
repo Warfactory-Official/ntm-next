@@ -1,0 +1,15 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbm:models/machines/furnace_steel.obj",
+  "skins": {
+    "all": [
+      "Plane"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/furnace_steel",
+    "particle": "hbm:block/models/machines/furnace_steel"
+  }
+}

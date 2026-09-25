@@ -1,0 +1,34 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools": [
+    "alt.circuit"
+  ],
+  "custom_localization": true,
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/iron"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:fine_wires/copper"
+    }
+  ],
+  "name": "ass.factorioChip",
+  "order": 34,
+  "output_items": [
+    "hbm:circuit_basic"
+  ],
+  "power": 20000
+}

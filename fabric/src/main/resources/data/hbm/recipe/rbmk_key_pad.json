@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:rbmk_display_blank",
+    "C": "hbm:circuit_vacuum_tube",
+    "R": "hbm:radio_torch_sender"
+  },
+  "pattern": [
+    "R",
+    "C",
+    "B"
+  ],
+  "result": {
+    "id": "hbm:rbmk_key_pad"
+  }
+}

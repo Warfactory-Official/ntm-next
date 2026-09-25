@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:billet_australium",
+    "hbm:billet_australium",
+    "hbm:billet_australium"
+  ],
+  "result": {
+    "count": 2,
+    "id": "hbm:ingot_australium"
+  }
+}

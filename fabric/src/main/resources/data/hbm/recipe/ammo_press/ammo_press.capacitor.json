@@ -1,0 +1,27 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    "B": {
+      "count": 4,
+      "ingredient": "#hbm:billets/silicon"
+    },
+    "C": {
+      "ingredient": "#hbm:ingots/any_plastic"
+    }
+  },
+  "order": 75,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:ammo_standard_capacitor"
+    }
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

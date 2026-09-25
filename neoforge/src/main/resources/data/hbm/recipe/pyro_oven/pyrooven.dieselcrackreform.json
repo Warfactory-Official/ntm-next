@@ -1,0 +1,14 @@
+{
+  "type": "hbm:pyro_oven",
+  "duration": 60,
+  "input_fluids": [
+    {
+      "type": "hbm:diesel_crack_reform",
+      "amount": 560
+    }
+  ],
+  "order": 10,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

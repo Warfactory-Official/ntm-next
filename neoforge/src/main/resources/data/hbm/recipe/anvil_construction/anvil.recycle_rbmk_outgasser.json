@@ -1,0 +1,20 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:rbmk_outgasser"
+    }
+  ],
+  "order": 245,
+  "output_items": [
+    "hbm:rbmk_blank",
+    {
+      "count": 6,
+      "id": "hbm:steel_grate"
+    },
+    "hbm:tank_steel",
+    "minecraft:hopper"
+  ],
+  "overlay": "recycling",
+  "tier": 4
+}

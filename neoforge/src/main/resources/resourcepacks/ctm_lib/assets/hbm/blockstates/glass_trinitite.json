@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:glass_trinitite"
+  ],
+  "ctm_textures": {
+    "hbm:block/glass_trinitite": "hbm:block/ctm_lib/glass_trinitite"
+  },
+  "variants": {
+    "": {
+      "model": "hbm:block/glass_trinitite"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 10,
+  "input_fluids": [
+    {
+      "type": "hbm:liquid_concrete",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:rebar"
+    }
+  ],
+  "order": 286,
+  "output_items": [
+    "hbm:concrete_rebar"
+  ]
+}

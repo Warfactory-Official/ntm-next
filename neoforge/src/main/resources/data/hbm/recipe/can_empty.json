@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": "#c:plates/aluminum"
+  },
+  "pattern": [
+    "P",
+    "P"
+  ],
+  "result": {
+    "id": "hbm:can_empty"
+  }
+}

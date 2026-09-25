@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/ore_niter"
+      },
+      {
+        "model": "hbm:block/ore_niter_mirrored"
+      },
+      {
+        "model": "hbm:block/ore_niter",
+        "y": 180
+      },
+      {
+        "model": "hbm:block/ore_niter_mirrored",
+        "y": 180
+      }
+    ]
+  }
+}

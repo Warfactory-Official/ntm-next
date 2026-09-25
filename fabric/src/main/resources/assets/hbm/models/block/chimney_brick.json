@@ -1,0 +1,18 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "double_sided": [
+    "Plane"
+  ],
+  "gui_light": "side",
+  "model": "hbm:models/machines/chimney_brick.obj",
+  "skins": {
+    "all": [
+      "Plane"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/chimney_brick",
+    "particle": "hbm:block/models/machines/chimney_brick"
+  }
+}

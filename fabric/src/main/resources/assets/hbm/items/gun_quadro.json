@@ -1,0 +1,55 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_quadro_base",
+    "equipped_muzzles": [
+      {
+        "duration": 150,
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          -0.75,
+          0.0,
+          -0.0,
+          2.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -30.0,
+      0.0,
+      -0.0,
+      -30.0,
+      0.0,
+      33.75,
+      30.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/quadro.obj",
+    "parts": [
+      "Launcher"
+    ],
+    "texture": "hbm:textures/models/weapons/quadro.png"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "lbsm_simple_crafting"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "minecraft:water_bucket",
+    "O": "hbm:ore_sellafield_uranium_scorched"
+  },
+  "pattern": [
+    "OOO",
+    "OBO",
+    "OOO"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:ore_uranium"
+  }
+}

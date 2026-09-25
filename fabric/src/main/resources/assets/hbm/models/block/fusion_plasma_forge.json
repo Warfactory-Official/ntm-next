@@ -1,0 +1,30 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Plasma",
+    "SliderStriker",
+    "ArmLowerStriker",
+    "ArmUpperStriker",
+    "StrikerMount",
+    "StrikerLeft",
+    "StrikerRight",
+    "PistonLeft",
+    "PistonRight",
+    "SliderJet",
+    "ArmLowerJet",
+    "ArmUpperJet",
+    "Jet"
+  ],
+  "model": "hbm:models/fusion/plasma_forge.obj",
+  "skins": {
+    "all": [
+      "Body"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/fusion/plasma_forge",
+    "particle": "hbm:block/models/fusion/plasma_forge"
+  }
+}

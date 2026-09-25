@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_light/workers_alloy",
+    "G": "#hbm:grips/any_plastic",
+    "M": "#hbm:gun_mechanisms/gun_metal",
+    "R": "#hbm:receivers_light/workers_alloy",
+    "S": "#hbm:stocks/any_plastic"
+  },
+  "pattern": [
+    "BRS",
+    " GM"
+  ],
+  "result": {
+    "id": "hbm:gun_uzi"
+  }
+}

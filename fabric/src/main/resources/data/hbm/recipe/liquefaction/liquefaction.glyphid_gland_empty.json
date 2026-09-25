@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "hbm:glyphid_gland_empty"
+    }
+  ],
+  "order": 34,
+  "output_fluids": [
+    {
+      "type": "hbm:biogas",
+      "amount": 2000
+    }
+  ]
+}

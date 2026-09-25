@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/iron",
+    "P": "#c:plates/iron"
+  },
+  "pattern": [
+    "PPP",
+    "I I",
+    "III"
+  ],
+  "result": {
+    "id": "hbm:crate_iron"
+  }
+}

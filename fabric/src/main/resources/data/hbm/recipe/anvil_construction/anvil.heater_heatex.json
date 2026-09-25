@@ -1,0 +1,27 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/copper"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "#hbm:pipes/steel"
+    }
+  ],
+  "order": 67,
+  "output_items": [
+    "hbm:heater_heatex"
+  ],
+  "overlay": "construction",
+  "tier": 3
+}

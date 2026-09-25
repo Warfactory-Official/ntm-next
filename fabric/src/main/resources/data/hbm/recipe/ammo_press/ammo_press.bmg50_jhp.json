@@ -1,0 +1,31 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    "B": {
+      "count": 2,
+      "ingredient": "#c:ingots/copper"
+    },
+    "C": {
+      "count": 3,
+      "ingredient": "#hbm:dusts/any_smokeless"
+    },
+    "D": {
+      "ingredient": "hbm:casing_large"
+    }
+  },
+  "order": 37,
+  "output_items": [
+    {
+      "count": 12,
+      "id": "hbm:ammo_standard_bmg50_jhp"
+    }
+  ],
+  "pattern": [
+    "AB ",
+    " C ",
+    " D "
+  ]
+}

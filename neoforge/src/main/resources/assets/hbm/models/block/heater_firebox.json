@@ -1,0 +1,20 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "InnerEmpty",
+    "InnerBurning",
+    "Door"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/firebox.obj",
+  "skins": {
+    "all": [
+      "Main"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/firebox",
+    "particle": "hbm:block/models/machines/firebox"
+  }
+}

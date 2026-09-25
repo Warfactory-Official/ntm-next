@@ -1,0 +1,9 @@
+{
+  "delay": 25,
+  "drain_chance": 0.025,
+  "gas_per_deposit_max": 250,
+  "gas_per_deposit_min": 50,
+  "oil_per_deposit": 750,
+  "power_capacity": 250000,
+  "power_consumption": 200
+}

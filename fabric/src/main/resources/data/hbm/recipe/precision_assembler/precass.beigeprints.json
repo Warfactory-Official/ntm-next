@@ -1,0 +1,37 @@
+{
+  "type": "hbm:precision_assembler",
+  "duration": 6000,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "minecraft:paper"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:gems/cinnabar"
+    },
+    {
+      "count": 8,
+      "ingredient": "minecraft:pufferfish"
+    }
+  ],
+  "order": 53,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:blueprint_folder_discover"
+        },
+        "weight": 50
+      },
+      {
+        "data": {
+          "count": 24,
+          "id": "minecraft:paper"
+        },
+        "weight": 950
+      }
+    ]
+  ],
+  "power": 50000
+}

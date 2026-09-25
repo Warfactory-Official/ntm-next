@@ -1,0 +1,17 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/orbus.obj",
+  "offset_x": 0.5,
+  "offset_z": -0.5,
+  "skins": {
+    "all": [
+      "Sphere.002"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/orbus",
+    "particle": "hbm:block/models/machines/orbus"
+  }
+}

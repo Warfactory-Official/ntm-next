@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:plates/copper",
+    "L": "#c:plates/lead",
+    "W": "hbm:nuclear_waste"
+  },
+  "pattern": [
+    " C ",
+    "WLW",
+    "WLW"
+  ],
+  "result": {
+    "id": "hbm:custom_dirty"
+  }
+}

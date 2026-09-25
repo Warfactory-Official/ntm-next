@@ -1,0 +1,27 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:petroleum",
+      "amount": 1000
+    },
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/fluorite"
+    }
+  ],
+  "order": 7,
+  "output_fluids": [
+    {
+      "type": "hbm:perfluoromethyl",
+      "amount": 1000
+    }
+  ],
+  "power": 100
+}

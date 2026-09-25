@@ -1,0 +1,16 @@
+{
+  "type": "hbm:cyclotron",
+  "amat": 10,
+  "input_items": [
+    {
+      "ingredient": "hbm:part_carbon"
+    },
+    {
+      "ingredient": "hbm:nugget_mercury"
+    }
+  ],
+  "order": 36,
+  "output_items": [
+    "hbm:powder_polonium"
+  ]
+}

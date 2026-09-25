@@ -1,0 +1,20 @@
+{
+  "fabric:type": "hbm:obj",
+  "parent": "hbm:block/deco_pipe_quad_base",
+  "groups": [
+    {
+      "parts": [
+        "Top"
+      ],
+      "texture": "top"
+    },
+    {
+      "parts": [
+        "Side"
+      ],
+      "texture": "side"
+    }
+  ],
+  "model": "hbm:models/blocks/pipe_quad.obj",
+  "offset_y": 0.5
+}

@@ -1,0 +1,160 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ingot_desh",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 5.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:powder_desh_mix",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:diamond",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:ammo_standard_nuke_standard",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:ammo_container",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "hbm:grenade": {
+                  "filling": "nuclear",
+                  "fuze": "s7",
+                  "shell": "nuke"
+                },
+                "minecraft:max_stack_size": 1
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "hbm:grenade_universal",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "hbm:grenade": {
+                  "filling": "emp",
+                  "fuze": "s3",
+                  "shell": "tech"
+                },
+                "minecraft:max_stack_size": 2
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:grenade_universal",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 24.0,
+                "min": 16.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:powder_yellowcake",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_uzi",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 16.0,
+                "min": 12.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:circuit_vacuum_tube",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:circuit_chip",
+          "weight": 1
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/vault_standard"
+}

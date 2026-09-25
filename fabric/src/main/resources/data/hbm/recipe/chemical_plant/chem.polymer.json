@@ -1,0 +1,33 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528_pressurized"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:petroleum",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#c:dusts/coal"
+    },
+    {
+      "ingredient": "#c:dusts/fluorite"
+    }
+  ],
+  "order": 38,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:ingot_polymer"
+    }
+  ],
+  "power": 100
+}

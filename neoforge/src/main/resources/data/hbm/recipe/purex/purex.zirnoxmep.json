@@ -1,0 +1,38 @@
+{
+  "type": "hbm:purex",
+  "auto_switch_group": "autoswitch.zirnox",
+  "duration": 100,
+  "icon_from_input": true,
+  "input_fluids": [
+    {
+      "type": "hbm:kerosene",
+      "amount": 500
+    },
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "components": {
+        "hbm:decay_heat": false
+      },
+      "ingredient": "hbm:waste_plutonium"
+    }
+  ],
+  "name_wrapper": "purex.recycle",
+  "order": 11,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:nugget_pu_mix"
+    },
+    "hbm:nugget_technetium",
+    {
+      "count": 3,
+      "id": "hbm:nuclear_waste_tiny"
+    }
+  ],
+  "power": 1000
+}

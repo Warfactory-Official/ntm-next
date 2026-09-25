@@ -1,0 +1,25 @@
+{
+  "content": {
+    "en_us": "The earliest available type of cartridge, black powder ammo is available for revolver calibers and 12 gauge shells. For revolver calibers, black powder bullets are a variant of soft point bullets. Black powder shells however are available in buckshot, magnum shot and slug variants. Black powder ammo is very cheap, but deals significantly less damage and causes a large cloud of smoke on every shot.<br><br>{{hbm:weapon/template_bullet}}<br>{{hbm:weapon/template_shotshell}}",
+    "ru_ru": "Самый ранний из доступных типов патронов. Боеприпасы с дымным порохом доступны для револьверных калибров и ружейных гильз 12-го калибра. В револьверных калибрах пули с дымным порохом представляют собой вариант пуль с мягким наконечником. Однако ружейные патроны с дымным порохом доступны в вариантах с картечью, магнум-картечью и пулевыми снарядами. Боеприпасы с дымным порохом очень дешевы, но наносят значительно меньше урона и создают большое облако дыма при каждом выстреле.<br><br>{{hbm:weapon/template_bullet}}<br>{{hbm:weapon/template_shotshell}}",
+    "zh_cn": "黑火药弹是最早可获取的弹药类型，可用于手枪口径的子弹和12号鹿弹。 对于手枪弹，黑火药弹属于软尖弹的一种；除此之外，鹿弹、马格南子弹和独 头弹也有黑火药变种。黑火药弹成本极低，但造成的伤害也有所降低，并且每 次发射时都会产生大量黑烟。<br><br>{{hbm:weapon/template_bullet}}<br>{{hbm:weapon/template_shotshell}}"
+  },
+  "icon": "hbm:ammo_standard_m44_bp",
+  "name": "Black Powder Ammunition",
+  "title": {
+    "en_us": "Black Powder Ammunition",
+    "ru_ru": "Патроны с дымным порохом",
+    "zh_cn": "黑火药弹"
+  },
+  "trigger": [
+    {
+      "items": "hbm:ammo_standard_m357_bp"
+    },
+    {
+      "items": "hbm:ammo_standard_m44_bp"
+    },
+    {
+      "items": "hbm:ammo_standard_g12_bp"
+    }
+  ]
+}

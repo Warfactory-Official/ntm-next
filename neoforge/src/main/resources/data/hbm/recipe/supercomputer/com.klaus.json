@@ -1,0 +1,35 @@
+{
+  "type": "hbm:supercomputer",
+  "duration": 72000,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 1000000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 64,
+      "ingredient": "hbm:drive_disk_empty"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:drive_disk_empty"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:drive_disk_empty"
+    }
+  ],
+  "order": 17,
+  "output_fluids": [
+    {
+      "type": "hbm:slop",
+      "amount": 1000
+    }
+  ],
+  "output_items": [
+    "hbm:drive_klaus"
+  ],
+  "power": 5000000
+}

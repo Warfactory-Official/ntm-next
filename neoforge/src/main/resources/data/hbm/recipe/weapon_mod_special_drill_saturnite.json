@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/saturnite",
+    "M": "#hbm:gun_mechanisms/weapon_steel",
+    "P": "#hbm:ingots/any_hard_plastic"
+  },
+  "pattern": [
+    " IP",
+    "IIM",
+    " IP"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_special_drill_saturnite"
+  }
+}

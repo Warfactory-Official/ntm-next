@@ -1,0 +1,18 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "ingredient": "hbm:briquette_coal"
+    }
+  ],
+  "order": 2,
+  "output_fluids": [
+    {
+      "type": "hbm:coalcreosote",
+      "amount": 150
+    }
+  ],
+  "output_items": [
+    "hbm:coke_coal"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:bolts/steel",
+    "P": "#c:plates/steel"
+  },
+  "pattern": [
+    "  P",
+    "BBB"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_special_bayonet"
+  }
+}

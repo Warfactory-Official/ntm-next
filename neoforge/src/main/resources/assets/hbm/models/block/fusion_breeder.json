@@ -1,0 +1,18 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "BreederAlt"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/fusion/breeder.obj",
+  "skins": {
+    "all": [
+      "Breeder"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/fusion/breeder",
+    "particle": "hbm:block/models/fusion/breeder"
+  }
+}

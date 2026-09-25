@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/ore_uranium"
+      },
+      {
+        "model": "hbm:block/ore_uranium_mirrored"
+      },
+      {
+        "model": "hbm:block/ore_uranium",
+        "y": 180
+      },
+      {
+        "model": "hbm:block/ore_uranium_mirrored",
+        "y": 180
+      }
+    ]
+  }
+}

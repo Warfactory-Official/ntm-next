@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/nether_quartz"
+    }
+  ],
+  "order": 215,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

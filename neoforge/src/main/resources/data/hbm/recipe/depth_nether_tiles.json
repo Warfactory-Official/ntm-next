@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:depth_nether_brick"
+  },
+  "pattern": [
+    "CC",
+    "CC"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:depth_nether_tiles"
+  }
+}

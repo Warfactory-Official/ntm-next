@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_cracking_tower"
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_cracking_tower",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_cracking_tower",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_cracking_tower",
+      "y": 180
+    }
+  }
+}

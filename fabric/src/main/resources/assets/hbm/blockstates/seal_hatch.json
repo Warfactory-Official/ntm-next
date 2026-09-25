@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "hbm:block/seal_hatch"
+    }
+  }
+}

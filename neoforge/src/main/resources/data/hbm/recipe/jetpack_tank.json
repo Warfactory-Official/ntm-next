@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:bolts/steel",
+    "K": {
+      "neoforge:ingredient_type": "hbm:fluid_content",
+      "amount": 1000,
+      "fluid": "hbm:kerosene"
+    },
+    "S": "#c:plates/steel"
+  },
+  "pattern": [
+    " S ",
+    "BKB",
+    " S "
+  ],
+  "result": {
+    "id": "hbm:jetpack_tank"
+  }
+}

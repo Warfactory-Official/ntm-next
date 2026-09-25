@@ -1,0 +1,18 @@
+{
+  "type": "hbm:compressor",
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:blood",
+      "amount": 1000,
+      "pressure": 3
+    }
+  ],
+  "order": 2,
+  "output_fluids": [
+    {
+      "type": "hbm:heavyoil",
+      "amount": 250
+    }
+  ]
+}

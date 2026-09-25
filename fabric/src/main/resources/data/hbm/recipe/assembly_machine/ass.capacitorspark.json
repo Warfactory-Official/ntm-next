@@ -1,0 +1,39 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:perfluoromethyl_cold",
+      "amount": 8000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#hbm:plates_cast/cmbsteel"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:powder_spark_mix"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:pellet_charged"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_chip_quantum"
+    }
+  ],
+  "order": 198,
+  "output_fluids": [
+    {
+      "type": "hbm:perfluoromethyl",
+      "amount": 8000
+    }
+  ],
+  "output_items": [
+    "hbm:battery_pack_capacitor_spark"
+  ],
+  "power": 100000
+}

@@ -1,0 +1,18 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "ingredient": "hbm:chunk_ore_cryolite"
+    }
+  ],
+  "order": 11,
+  "output_fluids": [
+    {
+      "type": "hbm:lye",
+      "amount": 150
+    }
+  ],
+  "output_items": [
+    "hbm:powder_aluminium"
+  ]
+}

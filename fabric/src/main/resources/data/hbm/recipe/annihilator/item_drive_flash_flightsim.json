@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:annihilator",
+  "item": "hbm:drive_flash_flightsim",
+  "milestones": [
+    {
+      "amount": "64",
+      "payout": {
+        "components": {
+          "hbm:blueprint_pool": "528.soyuz"
+        },
+        "id": "hbm:blueprints"
+      }
+    }
+  ]
+}

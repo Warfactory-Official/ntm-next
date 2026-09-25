@@ -1,0 +1,31 @@
+{
+  "content": {
+    "en_us": "Cracked diesel can be obtained by [[fractioning|Fractioning Tower]] [[cracked naphtha|Cracked Naphtha]]. It is primarily used to obtain additional [[kerosene|Kerosene]] and [[petroleum gas|Petroleum Gas]] through [[cracking|Catalytic Cracking Tower]] or [[radiolysis|Radiolysis Chamber]]. It may also be mixed to obtain [[high-cetane cracked diesel|High-Cetane Cracked Diesel]], a more powerful combustible [[fuel|Fuels]].<br><br>{{hbm:fluids/template_oil2}}",
+    "ru_ru": "Крекинг-дизель можно получить путём [[ректификации|Fractioning Tower]] [[крекинг-нафты|Cracked Naphtha]]. В основном он используется для получения дополнительного [[керосина|Kerosene]] и [[попутного нефтяного газа|Petroleum Gas]] с помощью [[крекинга|Catalytic Cracking Tower]] или [[радиолиза|Radiolysis Chamber]]. Его также можно смешивать для получения [[высокоцетанового крекинг-дизеля|High-Cetane Cracked Diesel]] для более мощного горючего топлива.<br><br>{{hbm:fluids/template_oil2}}"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:diesel_crack",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -856363
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Cracked Diesel",
+  "title": {
+    "en_us": "Cracked Diesel",
+    "ru_ru": "Крекированный дизель"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:diesel_crack"
+    }
+  }
+}

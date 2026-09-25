@@ -1,0 +1,39 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "item": {
+          "items": "hbm:particle_digamma"
+        }
+      },
+      "trigger": "hbm:particle_produced"
+    },
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": "hbm:particle_digamma"
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.omega12.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:particle_digamma"
+    },
+    "title": {
+      "translate": "achievement.omega12"
+    }
+  },
+  "requirements": [
+    [
+      "earned",
+      "produced"
+    ]
+  ]
+}

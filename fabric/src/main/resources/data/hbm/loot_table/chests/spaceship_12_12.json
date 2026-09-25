@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/spaceship"
+        }
+      ],
+      "rolls": 12.0
+    }
+  ],
+  "random_sequence": "hbm:chests/spaceship_12_12"
+}

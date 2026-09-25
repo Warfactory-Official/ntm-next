@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/vault_lab"
+        }
+      ],
+      "rolls": {
+        "type": "hbm:config_scaled",
+        "value": 6.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/component/vault_lab_6_6"
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:plant_flower_nightshade"
+  ],
+  "result": {
+    "id": "hbm:powder_poison"
+  }
+}

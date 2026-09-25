@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "face=0": {
+      "model": "hbm:block/brick_red"
+    },
+    "face=1": {
+      "model": "hbm:block/brick_red_1"
+    },
+    "face=2": {
+      "model": "hbm:block/brick_red_2"
+    },
+    "face=3": {
+      "model": "hbm:block/brick_red_3"
+    },
+    "face=4": {
+      "model": "hbm:block/brick_red_4"
+    },
+    "face=5": {
+      "model": "hbm:block/brick_red_5"
+    },
+    "face=6": {
+      "model": "hbm:block/brick_red_6"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "textures": {
+    "all": "hbm:block/models/pile/pile_loader",
+    "particle": "hbm:block/block_steel"
+  }
+}

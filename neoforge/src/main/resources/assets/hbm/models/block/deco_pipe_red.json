@@ -1,0 +1,20 @@
+{
+  "parent": "hbm:block/deco_pipe_red_base",
+  "groups": [
+    {
+      "parts": [
+        "Top"
+      ],
+      "texture": "top"
+    },
+    {
+      "parts": [
+        "Side"
+      ],
+      "texture": "side"
+    }
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/pipe.obj",
+  "offset_y": 0.5
+}

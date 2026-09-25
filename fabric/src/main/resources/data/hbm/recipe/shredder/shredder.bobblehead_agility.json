@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:bobblehead_agility"
+    }
+  ],
+  "order": 183,
+  "output_items": [
+    "hbm:scrap_plastic_bridge_chipset"
+  ]
+}

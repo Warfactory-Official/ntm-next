@@ -1,0 +1,17 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": true,
+  "gui_light": "side",
+  "model": "hbm:models/blocks/puter.obj",
+  "offset_y": 0.5,
+  "skins": {
+    "all": [
+      "Cube.003"
+    ]
+  },
+  "smooth": false,
+  "textures": {
+    "all": "hbm:block/deco_computer",
+    "particle": "hbm:block/deco_computer"
+  }
+}

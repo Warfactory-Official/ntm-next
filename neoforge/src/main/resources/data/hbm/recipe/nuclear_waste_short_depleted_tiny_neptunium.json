@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:nuclear_waste_short_depleted_neptunium"
+  ],
+  "result": {
+    "count": 9,
+    "id": "hbm:nuclear_waste_short_depleted_tiny_neptunium"
+  }
+}

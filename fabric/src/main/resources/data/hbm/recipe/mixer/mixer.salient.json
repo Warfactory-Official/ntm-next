@@ -1,0 +1,21 @@
+{
+  "type": "hbm:mixer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:seedslurry",
+      "amount": 500
+    },
+    {
+      "type": "hbm:blood",
+      "amount": 500
+    }
+  ],
+  "order": 6,
+  "output_fluids": [
+    {
+      "type": "hbm:salient",
+      "amount": 1000
+    }
+  ]
+}

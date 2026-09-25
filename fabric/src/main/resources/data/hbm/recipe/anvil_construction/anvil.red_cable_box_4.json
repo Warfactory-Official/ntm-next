@@ -1,0 +1,20 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/mingrade"
+    },
+    {
+      "ingredient": "hbm:plate_polymer"
+    }
+  ],
+  "order": 151,
+  "output_items": [
+    {
+      "count": 16,
+      "id": "hbm:red_cable_box_4"
+    }
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

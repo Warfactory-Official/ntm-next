@@ -1,0 +1,22 @@
+{
+  "content": {
+    "en_us": "Incendiary explosives leave behind lingering fire, which can ignite targets. The afterburn does not last very long, and can be extinguished with water.<br><br>Use of incendiary weapons against or near civilians is forbidden by the Geneva Conventions.<br><br>{{hbm:weapon/template_explosives}}",
+    "ru_ru": "Зажигательные взрывные боеприпасы оставляют после себя остаточный огонь, который может поджечь цели. Горение длится недолго и может быть потушено водой.<br><br>Использование зажигательного оружия против гражданского населения или вблизи него запрещено Женевскими конвенциями.<br><br>{{hbm:weapon/template_explosives}}",
+    "zh_cn": "燃烧弹会残留下能够点燃目标的持续火焰。燃烧效果持续时间并不长，而且可 以用水扑灭。<br><br>日内瓦公约禁止对普通民众或在普通民众附近使用燃烧性武器。<br><br>{{hbm:weapon/template_explosives}}"
+  },
+  "icon": "hbm:ammo_standard_rocket_inc",
+  "name": "Incendiary Munitions",
+  "title": {
+    "en_us": "Incendiary Munitions",
+    "ru_ru": "Зажигательные боеприпасы",
+    "zh_cn": "燃烧弹"
+  },
+  "trigger": [
+    {
+      "items": "hbm:ammo_standard_g40_inc"
+    },
+    {
+      "items": "hbm:ammo_standard_rocket_inc"
+    }
+  ]
+}

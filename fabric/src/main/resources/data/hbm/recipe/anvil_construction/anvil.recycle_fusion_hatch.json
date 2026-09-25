@@ -1,0 +1,25 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:fusion_hatch"
+    }
+  ],
+  "order": 257,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:pipe_steel"
+    },
+    {
+      "count": 4,
+      "id": "hbm:pipe_copper"
+    },
+    {
+      "chance": 0.75,
+      "id": "hbm:circuit_analog"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 1
+}

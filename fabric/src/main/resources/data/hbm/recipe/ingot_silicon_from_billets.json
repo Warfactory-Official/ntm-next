@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:billet_silicon",
+    "hbm:billet_silicon",
+    "hbm:billet_silicon"
+  ],
+  "result": {
+    "count": 2,
+    "id": "hbm:ingot_silicon"
+  }
+}

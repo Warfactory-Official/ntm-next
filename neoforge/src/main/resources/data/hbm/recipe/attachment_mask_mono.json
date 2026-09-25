@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "hbm:ducttape",
+    "F": "#c:plates/iron",
+    "I": "#hbm:ingots/any_rubber"
+  },
+  "pattern": [
+    " D ",
+    "DID",
+    " F "
+  ],
+  "result": {
+    "id": "hbm:attachment_mask_mono"
+  }
+}

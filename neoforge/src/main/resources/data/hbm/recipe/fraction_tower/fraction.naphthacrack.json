@@ -1,0 +1,20 @@
+{
+  "type": "hbm:fraction_tower",
+  "input_fluids": [
+    {
+      "type": "hbm:naphtha_crack",
+      "amount": 100
+    }
+  ],
+  "order": 5,
+  "output_fluids": [
+    {
+      "type": "hbm:heatingoil",
+      "amount": 30
+    },
+    {
+      "type": "hbm:diesel_crack",
+      "amount": 70
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_chip",
+    "G": "#c:glass_panes",
+    "R": "#c:ingots/rubber",
+    "T": "#c:plates/titanium"
+  },
+  "pattern": [
+    "TCT",
+    "TGT",
+    "RRR"
+  ],
+  "result": {
+    "id": "hbm:envsuit_helmet"
+  }
+}

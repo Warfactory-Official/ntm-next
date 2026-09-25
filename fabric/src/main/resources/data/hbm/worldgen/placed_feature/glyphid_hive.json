@@ -1,0 +1,18 @@
+{
+  "feature": "hbm:glyphid_hive",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 1
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "hbm:light_blocking_height"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

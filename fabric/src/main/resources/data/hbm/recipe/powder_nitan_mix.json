@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/neptunium_237",
+    "#c:dusts/iodine",
+    "#c:dusts/thorium",
+    "#c:dusts/astatine",
+    "#c:dusts/neodymium",
+    "#c:dusts/caesium"
+  ],
+  "result": {
+    "count": 6,
+    "id": "hbm:powder_nitan_mix"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_capacitor_board",
+    "K": "hbm:cell_tritium",
+    "W": "#c:plates/weapon_steel"
+  },
+  "pattern": [
+    " C ",
+    "KWK"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:grenade_filling_plasma"
+  }
+}

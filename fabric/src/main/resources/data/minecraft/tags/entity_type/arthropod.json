@@ -1,0 +1,14 @@
+{
+  "values": [
+    "hbm:entity_glyphid",
+    "hbm:entity_glyphid_brawler",
+    "hbm:entity_glyphid_behemoth",
+    "hbm:entity_glyphid_brenda",
+    "hbm:entity_glyphid_bombardier",
+    "hbm:entity_glyphid_blaster",
+    "hbm:entity_glyphid_scout",
+    "hbm:entity_glyphid_nuclear",
+    "hbm:entity_glyphid_digger",
+    "hbm:entity_parasite_maggot"
+  ]
+}

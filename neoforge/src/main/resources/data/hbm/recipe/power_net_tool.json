@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:battery_pack_battery_lead",
+    "I": "#c:ingots/iron",
+    "R": "#c:dusts/redstone",
+    "W": "#c:fine_wires/mingrade"
+  },
+  "pattern": [
+    "WRW",
+    " I ",
+    " B "
+  ],
+  "result": {
+    "id": "hbm:power_net_tool"
+  }
+}

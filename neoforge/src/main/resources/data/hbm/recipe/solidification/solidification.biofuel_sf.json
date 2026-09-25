@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:biofuel",
+      "amount": 3600
+    }
+  ],
+  "order": 42,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "R": "hbm:rangefinder",
+    "T": "hbm:grenade_filling_inc"
+  },
+  "pattern": [
+    "TTT",
+    "TRT",
+    "TTT"
+  ],
+  "result": {
+    "id": "hbm:bomb_caller_napalm"
+  }
+}

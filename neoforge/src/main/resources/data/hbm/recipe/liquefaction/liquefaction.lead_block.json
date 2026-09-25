@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "#c:storage_blocks/lead"
+    }
+  ],
+  "order": 11,
+  "output_fluids": [
+    {
+      "type": "hbm:lead",
+      "amount": 900
+    }
+  ]
+}

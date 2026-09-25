@@ -1,0 +1,30 @@
+{
+  "type": "hbm:fuel_pool",
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_fuel": {
+          "core": 100.0,
+          "hull": 50.0,
+          "xenon": 0.0,
+          "yield": 5000000.0
+        }
+      },
+      "ingredient": "hbm:rbmk_fuel_po210be"
+    }
+  ],
+  "order": 53,
+  "output_items": [
+    {
+      "components": {
+        "hbm:rbmk_fuel": {
+          "core": 20.0,
+          "hull": 20.0,
+          "xenon": 0.0,
+          "yield": 5000000.0
+        }
+      },
+      "id": "hbm:rbmk_fuel_po210be"
+    }
+  ]
+}

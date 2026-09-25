@@ -1,0 +1,34 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "rare_earth",
+          "grade": "solvent_byproduct"
+        }
+      },
+      "count": 4,
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 91,
+  "output_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "rare_earth",
+          "grade": "solvent_washed"
+        }
+      },
+      "id": "hbm:bedrock_ore"
+    }
+  ]
+}

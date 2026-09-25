@@ -1,0 +1,21 @@
+{
+  "feature": "hbm:bedrock_ore_nether",
+  "placement": [
+    {
+      "type": "hbm:world_config",
+      "switches": [
+        "nether_ores"
+      ]
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 10
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

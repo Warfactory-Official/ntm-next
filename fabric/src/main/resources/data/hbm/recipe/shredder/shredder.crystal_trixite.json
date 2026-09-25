@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_trixite"
+    }
+  ],
+  "order": 119,
+  "output_items": [
+    {
+      "count": 6,
+      "id": "hbm:powder_plutonium"
+    }
+  ]
+}

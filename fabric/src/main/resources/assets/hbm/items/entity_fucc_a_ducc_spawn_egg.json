@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/entity_fucc_a_ducc_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 13684944
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 16760576
+      }
+    ]
+  }
+}

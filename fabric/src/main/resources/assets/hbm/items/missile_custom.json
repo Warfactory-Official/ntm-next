@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "component": "hbm:missile_parts",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "hbm:item/missile_custom_flat"
+    },
+    "on_true": {
+      "type": "hbm:missile_custom",
+      "base": "hbm:item/missile_custom_base"
+    },
+    "property": "minecraft:has_component"
+  },
+  "oversized_in_gui": true
+}

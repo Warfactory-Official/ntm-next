@@ -1,0 +1,21 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 1200,
+  "input_fluids": [
+    {
+      "type": "hbm:oxygen",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/cd_alloy"
+    }
+  ],
+  "order": 14,
+  "output_items": [
+    "hbm:plate_welded_cd_alloy"
+  ],
+  "power": 1000000
+}

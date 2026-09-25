@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:storage_blocks/niobium",
+    "G": "#hbm:wires_dense/gold",
+    "R": "#c:ingots/rubber"
+  },
+  "pattern": [
+    "RGR",
+    "GBG",
+    "RGR"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_special_magnet"
+  }
+}

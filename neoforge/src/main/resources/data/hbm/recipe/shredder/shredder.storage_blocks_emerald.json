@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:storage_blocks/emerald"
+    }
+  ],
+  "order": 409,
+  "output_items": [
+    {
+      "count": 9,
+      "id": "hbm:powder_emerald"
+    }
+  ]
+}

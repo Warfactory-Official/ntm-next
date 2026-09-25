@@ -1,0 +1,17 @@
+{
+  "content": {
+    "en_us": "A simple, early way of making power out of combustible [[fuels|Fuels]], like [[diesel|Diesel]] or [[gasoline|Gasoline]]. Can be stopped using a redstone signal.<br><br>See also:<br>[[Industrial Combustion Engine]]<br>[[Turbofan]]<br>[[Combined Cycle Gas Turbine]]",
+    "ru_ru": "Простой ранний способ получения энергии из горючих видов топлива, таких как [[дизель|Diesel]] или [[газолин|Gasoline]]. Генератор может быть остановлен с помощью сигнала красного камня.<br><br>Смотрите также:<br>[[Промышленный двигатель внутреннего сгорания|Industrial Combustion Engine]]<br>[[Турбовентилятор|Turbofan]]<br>[[Газовая турбина комбинированного цикла|Combined Cycle Gas Turbine]]",
+    "zh_cn": "一种简单且早期的燃烧[[柴油|Diesel]]、[[汽油|Gasoline]]等可燃流体的发电手段。可储存 16,000 mB 燃料。收到红石信号时停止工作。<br><br>另见：<br>[[工业内燃机|Industrial Combustion Engine]]<br>[[涡扇发动机|Turbofan]]<br>[[联合循环燃气轮机|Combined Cycle Gas Turbine]]"
+  },
+  "icon": "hbm:machine_diesel",
+  "name": "Diesel Generator",
+  "title": {
+    "en_us": "Diesel Generator",
+    "ru_ru": "Дизельный генератор",
+    "zh_cn": "柴油发电机"
+  },
+  "trigger": {
+    "items": "hbm:machine_diesel"
+  }
+}

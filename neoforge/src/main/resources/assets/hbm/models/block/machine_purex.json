@@ -1,0 +1,20 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Frame",
+    "Fan",
+    "Pump"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/purex.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/purex",
+    "particle": "hbm:block/models/machines/purex"
+  }
+}

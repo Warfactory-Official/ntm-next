@@ -1,0 +1,16 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/lithium"
+    }
+  ],
+  "order": 2,
+  "output_fluids": [
+    {
+      "type": "hbm:tritium",
+      "amount": 1000
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:steel_legs",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "E": "#hbm:billets/cobalt"
+  },
+  "pattern": [
+    "ECE",
+    "E E"
+  ],
+  "result": {
+    "id": "hbm:cobalt_legs"
+  }
+}

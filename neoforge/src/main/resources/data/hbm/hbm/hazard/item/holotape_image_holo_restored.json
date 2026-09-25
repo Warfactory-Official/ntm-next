@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:digamma",
+      "level": 1.0
+    }
+  ],
+  "targets": "hbm:holotape_image_holo_restored"
+}

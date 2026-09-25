@@ -1,0 +1,29 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "count": 2,
+      "ingredient": "#c:ingots/weapon_steel"
+    },
+    "B": {
+      "count": 4,
+      "ingredient": "#hbm:dusts/any_smokeless"
+    },
+    "C": {
+      "count": 2,
+      "ingredient": "hbm:casing_small_steel"
+    }
+  },
+  "order": 32,
+  "output_items": [
+    {
+      "count": 12,
+      "id": "hbm:ammo_standard_r762_ap"
+    }
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

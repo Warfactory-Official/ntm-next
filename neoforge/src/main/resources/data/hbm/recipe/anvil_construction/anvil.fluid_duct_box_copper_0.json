@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:plates/copper"
+    }
+  ],
+  "order": 104,
+  "output_items": [
+    "hbm:fluid_duct_box_copper_0"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

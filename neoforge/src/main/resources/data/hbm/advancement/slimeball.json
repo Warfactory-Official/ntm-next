@@ -1,0 +1,29 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "item": {
+          "items": "minecraft:slime_ball"
+        }
+      },
+      "trigger": "hbm:item_picked_up"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.slimeball.desc"
+    },
+    "icon": {
+      "id": "hbm:achievement_icon_acid"
+    },
+    "title": {
+      "translate": "achievement.slimeball"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

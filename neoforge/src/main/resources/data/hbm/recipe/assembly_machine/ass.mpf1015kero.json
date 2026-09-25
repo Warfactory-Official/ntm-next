@@ -1,0 +1,25 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_10"
+    },
+    {
+      "ingredient": "hbm:seg_15"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:plates/aluminum"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/steel"
+    }
+  ],
+  "order": 388,
+  "output_items": [
+    "hbm:mp_fuselage_10_15_kerosene"
+  ],
+  "power": 100
+}

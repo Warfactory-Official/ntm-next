@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:shells/titanium"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/copper"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 138,
+  "output_items": [
+    "hbm:machine_compressor_compact"
+  ],
+  "power": 100
+}

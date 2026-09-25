@@ -1,0 +1,26 @@
+{
+  "criteria": {
+    "impossible": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:block/dirt",
+    "description": {
+      "translate": "achievement.root.desc"
+    },
+    "icon": {
+      "id": "hbm:nuke_man"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "achievement.root"
+    }
+  },
+  "requirements": [
+    [
+      "impossible"
+    ]
+  ]
+}

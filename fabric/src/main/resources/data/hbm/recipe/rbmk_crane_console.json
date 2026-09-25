@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:ingots/boron",
+    "C": "hbm:circuit_analog",
+    "D": "hbm:deco_rbmk"
+  },
+  "pattern": [
+    "BCD",
+    "DDD"
+  ],
+  "result": {
+    "id": "hbm:rbmk_crane_console"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 600,
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_pellet": {
+          "depletion": 4,
+          "xenon": true
+        }
+      },
+      "ingredient": "hbm:rbmk_pellet_heaus"
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 248,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:powder_xe135_tiny"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_australium_greater"
+        },
+        "weight": 9
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_au198"
+        },
+        "weight": 45
+      },
+      {
+        "data": {
+          "id": "minecraft:gold_nugget"
+        },
+        "weight": 27
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_pb209"
+        },
+        "weight": 18
+      }
+    ]
+  ]
+}

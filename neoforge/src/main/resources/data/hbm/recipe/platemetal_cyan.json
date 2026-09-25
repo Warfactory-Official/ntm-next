@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#c:dyes/cyan",
+    "P": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:block_state": {
+          "variant": "base"
+        }
+      },
+      "items": "hbm:platemetal"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "PDP",
+    "PPP"
+  ],
+  "result": {
+    "components": {
+      "minecraft:block_state": {
+        "variant": "cyan"
+      }
+    },
+    "count": 8,
+    "id": "hbm:platemetal"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "hbm:radiolysis",
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 100
+    }
+  ],
+  "order": 0,
+  "output_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 80
+    },
+    {
+      "type": "hbm:hydrogen",
+      "amount": 20
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1314147651,
+    "separation": 23,
+    "spacing": 71
+  },
+  "structures": [
+    {
+      "structure": "hbm:sellafield_crater",
+      "weight": 1
+    }
+  ]
+}

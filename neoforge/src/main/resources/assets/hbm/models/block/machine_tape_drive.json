@@ -1,0 +1,19 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Light",
+    "Drive"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/tape_drive.obj",
+  "skins": {
+    "all": [
+      "Frame"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/tape_drive",
+    "particle": "hbm:block/models/machines/tape_drive"
+  }
+}

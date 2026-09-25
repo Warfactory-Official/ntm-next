@@ -1,0 +1,52 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": "hbm:nuclear_waste_long_schrabidium"
+    }
+  ],
+  "laser_strength": "ir",
+  "order": 290,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_solinium"
+        },
+        "weight": 25
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_euphemium"
+        },
+        "weight": 18
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_gh336"
+        },
+        "weight": 16
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_tantalium"
+        },
+        "weight": 8
+      },
+      {
+        "data": {
+          "id": "hbm:powder_neodymium_tiny"
+        },
+        "weight": 8
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_tiny"
+        },
+        "weight": 25
+      }
+    ]
+  ]
+}

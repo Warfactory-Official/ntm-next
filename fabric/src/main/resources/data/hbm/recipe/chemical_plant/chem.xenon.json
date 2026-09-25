@@ -1,0 +1,28 @@
+{
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 300,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:xenon",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:gas_tank"
+  },
+  "input_fluids": [
+    {
+      "type": "hbm:air",
+      "amount": 16000
+    }
+  ],
+  "order": 3,
+  "output_fluids": [
+    {
+      "type": "hbm:xenon",
+      "amount": 50
+    }
+  ],
+  "power": 1000
+}

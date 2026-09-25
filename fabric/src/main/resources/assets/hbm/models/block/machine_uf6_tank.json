@@ -1,0 +1,15 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbm:models/tank.obj",
+  "skins": {
+    "all": [
+      "Cylinder.001"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/uf6tank",
+    "particle": "hbm:block/machine_uf6_tank"
+  }
+}

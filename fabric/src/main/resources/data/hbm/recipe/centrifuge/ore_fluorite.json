@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#c:ores/fluorite"
+    }
+  ],
+  "order": 29,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:fluorite"
+    },
+    {
+      "count": 3,
+      "id": "hbm:fluorite"
+    },
+    "hbm:gem_sodalite",
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

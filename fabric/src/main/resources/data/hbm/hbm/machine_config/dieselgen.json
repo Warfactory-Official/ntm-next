@@ -1,0 +1,11 @@
+{
+  "efficiency": {
+    "AERO": 0.1,
+    "GAS": 0,
+    "HIGH": 0.75,
+    "LOW": 0,
+    "MEDIUM": 0.5
+  },
+  "fuel_capacity": 16000,
+  "power_capacity": 50000
+}

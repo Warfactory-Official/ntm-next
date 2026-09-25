@@ -1,0 +1,16 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "hbm:anvil_lead"
+    },
+    {
+      "count": 10,
+      "ingredient": "#c:ingots/bismuth_bronze"
+    }
+  ],
+  "order": 13,
+  "output_items": [
+    "hbm:anvil_bismuth_bronze"
+  ]
+}

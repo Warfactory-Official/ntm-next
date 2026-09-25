@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#c:dyes/black",
+    "H": "#hbm:shells/steel",
+    "S": "#c:ingots/steel"
+  },
+  "pattern": [
+    "SHS",
+    "DHD",
+    "SHS"
+  ],
+  "result": {
+    "id": "hbm:machine_solar_boiler"
+  }
+}

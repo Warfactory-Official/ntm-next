@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:plate_polymer",
+    "#minecraft:sand",
+    "#minecraft:sand",
+    "#minecraft:sand"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:sandbags"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "feature": "hbm:ore_nether_coal",
+  "placement": [
+    {
+      "type": "hbm:world_config",
+      "switches": [
+        "nether_ores"
+      ]
+    },
+    {
+      "type": "minecraft:count",
+      "count": 8
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "below_top": 16
+        },
+        "min_inclusive": {
+          "above_bottom": 16
+        }
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

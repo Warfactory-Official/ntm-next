@@ -1,0 +1,23 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/saltpeter"
+    }
+  ],
+  "order": 60,
+  "output_fluids": [
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 1000
+    }
+  ],
+  "power": 100
+}

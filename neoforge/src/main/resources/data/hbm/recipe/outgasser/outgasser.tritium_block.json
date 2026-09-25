@@ -1,0 +1,16 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "#c:storage_blocks/lithium"
+    }
+  ],
+  "order": 0,
+  "output_fluids": [
+    {
+      "type": "hbm:tritium",
+      "amount": 10000
+    }
+  ]
+}

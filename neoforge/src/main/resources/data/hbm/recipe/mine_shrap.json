@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "L": "hbm:pellet_buckshot",
+    "M": "hbm:mine_ap"
+  },
+  "pattern": [
+    "L",
+    "M"
+  ],
+  "result": {
+    "id": "hbm:mine_shrap"
+  }
+}

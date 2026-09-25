@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:bobblehead_endurance"
+    }
+  ],
+  "order": 180,
+  "output_items": [
+    "hbm:scrap_plastic_bridge_south"
+  ]
+}

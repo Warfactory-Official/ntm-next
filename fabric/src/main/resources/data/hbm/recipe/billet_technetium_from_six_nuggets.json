@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": "#c:nuggets/technetium_99"
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "id": "hbm:billet_technetium"
+  }
+}

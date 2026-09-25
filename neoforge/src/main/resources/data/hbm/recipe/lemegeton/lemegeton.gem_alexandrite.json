@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "hbm:gem_rad"
+    }
+  ],
+  "order": 34,
+  "output_items": [
+    "hbm:gem_alexandrite"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:plates/iron"
+    }
+  ],
+  "order": 103,
+  "output_items": [
+    "hbm:fluid_duct_box_silver_0"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

@@ -1,0 +1,57 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_autoshotgun_shredder_base",
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          1.0,
+          -0.75,
+          0.0,
+          -0.0,
+          7.5,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -7.5,
+      -11.25,
+      -0.0,
+      -7.5,
+      0.0,
+      0.0,
+      7.5,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/shredder.obj",
+    "parts": [
+      "Gun",
+      "Magazine",
+      "Shells"
+    ],
+    "texture": "hbm:textures/models/weapons/shredder_orig.png"
+  }
+}

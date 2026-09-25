@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/cmbsteel"
+    }
+  ],
+  "order": 20,
+  "output_items": [
+    "hbm:plate_combine_steel"
+  ],
+  "stamp": "plate"
+}

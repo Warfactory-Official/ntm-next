@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "minecraft:gunpowder",
+    "P": "#c:plates/gold",
+    "R": "#c:music_discs"
+  },
+  "pattern": [
+    "GPG",
+    "PRP",
+    "GPG"
+  ],
+  "result": {
+    "id": "hbm:defuser_gold"
+  }
+}

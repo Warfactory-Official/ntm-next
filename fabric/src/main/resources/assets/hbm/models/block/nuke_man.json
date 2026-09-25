@@ -1,0 +1,18 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "double_sided": [
+    "fatman_Cylinder"
+  ],
+  "gui_light": "side",
+  "model": "hbm:models/bombs/fatman.obj",
+  "skins": {
+    "all": [
+      "fatman_Cylinder"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/bombs/fatman",
+    "particle": "hbm:block/models/bombs/fatman"
+  }
+}

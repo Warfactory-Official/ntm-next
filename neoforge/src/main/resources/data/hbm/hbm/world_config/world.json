@@ -1,0 +1,5 @@
+{
+  "enable_impact_atmosphere": true,
+  "enable_mycelium_spread": false,
+  "enable_virus_spread": false
+}

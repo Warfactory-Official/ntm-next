@@ -1,0 +1,6 @@
+{
+  "textures": {
+    "connected": "hbm:block/ctm_lib/glass_polarized_ctm",
+    "particle": "hbm:block/glass_polarized"
+  }
+}

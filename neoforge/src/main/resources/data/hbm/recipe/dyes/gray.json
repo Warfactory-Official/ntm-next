@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "hbm:oil_tar_coal",
+      "hbm:powder_ash_misc",
+      "hbm:crayon_gray",
+      "hbm:chemical_dye_gray"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:gray_dye"
+  }
+}

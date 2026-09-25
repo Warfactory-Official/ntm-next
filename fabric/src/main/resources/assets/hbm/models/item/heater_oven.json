@@ -1,0 +1,176 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.44540334,
+        2.5739202,
+        2.5093658
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        -0.0028874874,
+        2.5739202,
+        2.5485861
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        0.44000006,
+        1.0625
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        -2.5,
+        -0.28125
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.203125,
+        0.203125,
+        0.20312501
+      ],
+      "translation": [
+        -0.215446,
+        -1.5664577,
+        -7.5009184
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        6.002912,
+        -16.315327,
+        7.153992
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0.0,
+        6.0,
+        -1.125
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        0.069940805,
+        2.0283246,
+        1.41001
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -1.4894695,
+        1.7025574,
+        0.99493587
+      ]
+    }
+  },
+  "gui_light": "side",
+  "hidden": [
+    "Inner",
+    "InnerBurning"
+  ],
+  "model": "hbm:models/machines/heating_oven.obj",
+  "offset_x": -0.09375,
+  "skins": {
+    "all": [
+      "Door",
+      "Main"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/heating_oven",
+    "particle": "hbm:block/models/machines/heating_oven"
+  }
+}

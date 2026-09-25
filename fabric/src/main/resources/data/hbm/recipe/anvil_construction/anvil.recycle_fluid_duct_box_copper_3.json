@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:fluid_duct_box_copper_3"
+    }
+  ],
+  "order": 131,
+  "output_items": [
+    "hbm:plate_copper"
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

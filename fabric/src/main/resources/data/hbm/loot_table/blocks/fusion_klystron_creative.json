@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:fusion_klystron_creative"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:blocks/fusion_klystron_creative"
+}

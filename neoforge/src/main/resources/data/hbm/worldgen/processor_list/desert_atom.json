@@ -1,0 +1,42 @@
+{
+  "processors": [
+    {
+      "marker": {
+        "Name": "hbm:brick_concrete"
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_concrete"
+          },
+          "weight": 9
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken"
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked"
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy"
+          },
+          "weight": 6
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "processor_type": "hbm:multiblock_assembly"
+    },
+    {
+      "processor_type": "hbm:loot_pile"
+    }
+  ]
+}

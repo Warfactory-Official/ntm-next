@@ -1,0 +1,51 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.hardplastic"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_welded/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/copper"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/niobium"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "ingredient": "hbm:circuit_bismoid"
+    }
+  ],
+  "order": 128,
+  "output_items": [
+    "hbm:machine_hydrotreater"
+  ],
+  "power": 100
+}

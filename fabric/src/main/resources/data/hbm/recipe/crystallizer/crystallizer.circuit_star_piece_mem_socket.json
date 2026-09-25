@@ -1,0 +1,19 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:scrap_plastic_mem_socket"
+    }
+  ],
+  "order": 303,
+  "output_items": [
+    "hbm:circuit_star_piece_mem_socket"
+  ]
+}

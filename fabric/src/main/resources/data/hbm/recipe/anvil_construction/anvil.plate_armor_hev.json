@@ -1,0 +1,22 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/dura_steel"
+    },
+    {
+      "ingredient": "hbm:plate_armor_titanium"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:fine_wires/tungsten"
+    }
+  ],
+  "order": 98,
+  "output_items": [
+    "hbm:plate_armor_hev"
+  ],
+  "overlay": "construction",
+  "tier": 4
+}

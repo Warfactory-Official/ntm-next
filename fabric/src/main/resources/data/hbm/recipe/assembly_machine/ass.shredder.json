@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    }
+  ],
+  "order": 84,
+  "output_items": [
+    "hbm:machine_shredder"
+  ],
+  "power": 100
+}

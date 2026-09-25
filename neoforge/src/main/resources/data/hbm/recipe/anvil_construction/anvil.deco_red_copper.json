@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/mingrade"
+    }
+  ],
+  "order": 34,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:deco_red_copper"
+    }
+  ],
+  "overlay": "construction",
+  "tier": 1
+}

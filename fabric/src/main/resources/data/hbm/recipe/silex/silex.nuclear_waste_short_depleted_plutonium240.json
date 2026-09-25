@@ -1,0 +1,52 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": "hbm:nuclear_waste_short_depleted_plutonium240"
+    }
+  ],
+  "laser_strength": "ir",
+  "order": 281,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_zirconium"
+        },
+        "weight": 2
+      },
+      {
+        "data": {
+          "id": "hbm:dust_tiny"
+        },
+        "weight": 22
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_bismuth"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_lead"
+        },
+        "weight": 17
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_u238"
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_tiny"
+        },
+        "weight": 36
+      }
+    ]
+  ]
+}

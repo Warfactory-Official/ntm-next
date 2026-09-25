@@ -1,0 +1,30 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:ingots/beryllium"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/copper"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:coil_gold"
+    },
+    {
+      "ingredient": "hbm:gear_large_steel"
+    }
+  ],
+  "order": 72,
+  "output_items": [
+    "hbm:machine_stirling_steel"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

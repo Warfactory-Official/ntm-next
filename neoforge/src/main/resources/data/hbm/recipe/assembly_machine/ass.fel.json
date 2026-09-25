@@ -1,0 +1,44 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "ingredient": "hbm:battery_pack_battery_lithium"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:wires_dense/gold"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:part_generic_glass_polarized"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_capacitor"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 142,
+  "output_items": [
+    "hbm:machine_fel"
+  ],
+  "power": 100
+}

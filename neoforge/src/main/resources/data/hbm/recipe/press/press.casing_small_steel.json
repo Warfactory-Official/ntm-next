@@ -1,0 +1,16 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:plates/weapon_steel"
+    }
+  ],
+  "order": 26,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:casing_small_steel"
+    }
+  ],
+  "stamp": "c9"
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": "#minecraft:wooden_slabs",
+    "W": "#minecraft:planks"
+  },
+  "pattern": [
+    "P P",
+    "WPW"
+  ],
+  "result": {
+    "components": {
+      "hbm:cart_base": "wood"
+    },
+    "id": "hbm:cart_empty"
+  }
+}

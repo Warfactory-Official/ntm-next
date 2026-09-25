@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "hbm:block/concrete_ext_machine",
+    "side": "hbm:block/concrete_ext_machine_stripe",
+    "top": "hbm:block/concrete_ext_machine"
+  }
+}

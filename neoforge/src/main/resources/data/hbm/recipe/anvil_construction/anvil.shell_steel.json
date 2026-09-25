@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/steel"
+    }
+  ],
+  "order": 42,
+  "output_items": [
+    "hbm:shell_steel"
+  ],
+  "overlay": "smithing",
+  "tier": 1
+}

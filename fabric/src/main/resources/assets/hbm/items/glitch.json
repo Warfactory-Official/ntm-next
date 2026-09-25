@@ -1,0 +1,138 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_1"
+        },
+        "when": "1"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_2"
+        },
+        "when": "2"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_3"
+        },
+        "when": "3"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_4"
+        },
+        "when": "4"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_5"
+        },
+        "when": "5"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_6"
+        },
+        "when": "6"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_7"
+        },
+        "when": "7"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_8"
+        },
+        "when": "8"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_9"
+        },
+        "when": "9"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_10"
+        },
+        "when": "10"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_11"
+        },
+        "when": "11"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_12"
+        },
+        "when": "12"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_13"
+        },
+        "when": "13"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_14"
+        },
+        "when": "14"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_15"
+        },
+        "when": "15"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_16"
+        },
+        "when": "16"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_17"
+        },
+        "when": "17"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/glitch_18"
+        },
+        "when": "18"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:item/glitch_1"
+    },
+    "property": "hbm:polaroid"
+  }
+}

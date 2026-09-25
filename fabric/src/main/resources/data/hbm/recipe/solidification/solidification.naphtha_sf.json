@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:naphtha",
+      "amount": 16000
+    }
+  ],
+  "order": 26,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

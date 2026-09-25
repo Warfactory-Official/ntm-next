@@ -1,0 +1,36 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools": [
+    "alt.circuit"
+  ],
+  "custom_localization": true,
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:circuit_chip"
+    },
+    {
+      "ingredient": "#c:dusts/caesium_137"
+    }
+  ],
+  "name": "ass.atomicClockAlt",
+  "order": 35,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:circuit_atomic_clock"
+    }
+  ],
+  "power": 20000
+}

@@ -1,0 +1,31 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#c:ingots/workers_alloy"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/tungsten"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/dura_steel"
+    }
+  ],
+  "order": 178,
+  "output_items": [
+    "hbm:piston_set_desh"
+  ],
+  "power": 100
+}

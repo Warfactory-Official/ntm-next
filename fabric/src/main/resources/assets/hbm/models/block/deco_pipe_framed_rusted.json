@@ -1,0 +1,38 @@
+{
+  "fabric:type": "hbm:obj",
+  "parent": "hbm:block/deco_pipe_framed_rusted_base",
+  "groups": [
+    {
+      "parts": [
+        "Top"
+      ],
+      "texture": "top"
+    },
+    {
+      "parts": [
+        "Side"
+      ],
+      "texture": "side"
+    },
+    {
+      "model": "hbm:models/blocks/pipe_frame.obj",
+      "parts": [
+        "Frame"
+      ],
+      "texture": "frame"
+    },
+    {
+      "model": "hbm:models/blocks/pipe_frame.obj",
+      "parts": [
+        "Mesh"
+      ],
+      "texture": "mesh"
+    }
+  ],
+  "model": "hbm:models/blocks/pipe_rim.obj",
+  "offset_y": 0.5,
+  "textures": {
+    "frame": "hbm:block/pipe_frame",
+    "mesh": "hbm:block/pipe_mesh"
+  }
+}

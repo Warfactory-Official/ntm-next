@@ -1,0 +1,29 @@
+{
+  "content": {
+    "en_us": "High-cetane diesel can first be obtained by mixing [[reformate|Reformate]] and [[diesel|Diesel]]. It is used as a combustible [[fuel|Fuels]] source. It may also be obtained by [[fractioning|Fractioning Tower]] [[desulfurized naphtha|Desulfurized Naphtha]] or [[desulfurized light oil|Desulfurized Light Oil]].<br><br>{{hbm:fluids/template_oil3}}"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:diesel_reform",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -3292218
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "High-Cetane Diesel",
+  "title": {
+    "en_us": "High-Cetane Diesel"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:diesel_reform"
+    }
+  }
+}

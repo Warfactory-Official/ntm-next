@@ -1,0 +1,36 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "groups": [
+    {
+      "matrix": [
+        0.0,
+        1.0,
+        0.0,
+        -0.5,
+        0.0,
+        0.0,
+        -1.0,
+        0.5,
+        -1.0,
+        0.0,
+        -0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Sphere"
+      ],
+      "texture": "all"
+    }
+  ],
+  "gui_light": "side",
+  "model": "hbm:models/blocks/demon_lamp.obj",
+  "textures": {
+    "all": "hbm:block/models/machines/demon_lamp",
+    "particle": "hbm:block/lamp_demon"
+  }
+}

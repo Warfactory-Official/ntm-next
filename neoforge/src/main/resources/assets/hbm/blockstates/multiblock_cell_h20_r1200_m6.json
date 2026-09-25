@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "hbm:block/multiblock_cell_h20_r1200_m6"
+    }
+  }
+}

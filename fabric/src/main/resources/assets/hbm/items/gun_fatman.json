@@ -1,0 +1,88 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_fatman_base",
+    "draws": [
+      {
+        "parts": [
+          "Launcher",
+          "Handle",
+          "Gauge",
+          "Lid"
+        ]
+      },
+      {
+        "magazine": "loaded",
+        "parts": [
+          "Piston"
+        ]
+      },
+      {
+        "magazine": "empty",
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          3.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Piston"
+        ]
+      },
+      {
+        "excludes_ammo": [
+          {
+            "item": "hbm:ammo_standard_nuke_balefire"
+          }
+        ],
+        "magazine": "loaded",
+        "parts": [
+          "MiniNuke"
+        ],
+        "texture": "hbm:textures/models/weapons/fatman_mininuke.png"
+      },
+      {
+        "glint": "balefire",
+        "parts": [
+          "MiniNuke"
+        ],
+        "requires_ammo": {
+          "item": "hbm:ammo_standard_nuke_balefire"
+        },
+        "texture": "hbm:textures/models/weapons/fatman_balefire.png"
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -8.75,
+      0.0,
+      -0.0,
+      -8.75,
+      0.0,
+      0.0,
+      8.75,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/fatman.obj",
+    "texture": "hbm:textures/models/weapons/fatman.png"
+  }
+}

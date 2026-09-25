@@ -1,0 +1,31 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 64,
+      "ingredient": "#c:concretes"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 24,
+      "ingredient": "hbm:steel_scaffold"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_advanced"
+    }
+  ],
+  "order": 362,
+  "output_items": [
+    "hbm:launch_pad_large"
+  ],
+  "power": 100
+}

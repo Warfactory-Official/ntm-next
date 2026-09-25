@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/iron"
+    }
+  ],
+  "order": 0,
+  "output_items": [
+    "hbm:ingot_steel"
+  ]
+}

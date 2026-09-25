@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "hbm:snowglobe",
+    "base": "hbm:item/snowglobe_lucky38_base"
+  }
+}

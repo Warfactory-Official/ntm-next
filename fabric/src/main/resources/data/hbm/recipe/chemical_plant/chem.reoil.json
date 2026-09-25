@@ -1,0 +1,28 @@
+{
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 40,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:reclaimed",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:canister"
+  },
+  "input_fluids": [
+    {
+      "type": "hbm:smear",
+      "amount": 1000
+    }
+  ],
+  "order": 12,
+  "output_fluids": [
+    {
+      "type": "hbm:reclaimed",
+      "amount": 800
+    }
+  ],
+  "power": 100
+}

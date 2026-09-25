@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/sellafield_0"
+      },
+      {
+        "model": "hbm:block/sellafield_1"
+      },
+      {
+        "model": "hbm:block/sellafield_2"
+      },
+      {
+        "model": "hbm:block/sellafield_3"
+      }
+    ]
+  }
+}

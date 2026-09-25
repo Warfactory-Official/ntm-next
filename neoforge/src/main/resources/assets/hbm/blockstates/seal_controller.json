@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/seal_controller",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "hbm:block/seal_controller"
+    },
+    "facing=south": {
+      "model": "hbm:block/seal_controller",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "hbm:block/seal_controller",
+      "y": 270
+    }
+  }
+}

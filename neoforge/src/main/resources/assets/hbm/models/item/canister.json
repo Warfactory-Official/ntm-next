@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hbm:item/canister_empty",
+    "layer1": "hbm:item/canister_overlay"
+  }
+}

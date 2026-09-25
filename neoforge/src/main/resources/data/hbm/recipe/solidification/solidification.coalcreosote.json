@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:coalcreosote",
+      "amount": 200
+    }
+  ],
+  "order": 17,
+  "output_items": [
+    "hbm:oil_tar_coal"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.tcalloy"
+  ],
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:wires_dense/bscco"
+    },
+    {
+      "ingredient": "hbm:item_expensive_ferro_plating"
+    },
+    {
+      "ingredient": "hbm:item_expensive_plastic"
+    }
+  ],
+  "name": "ass.fusionbsccoEx",
+  "order": 258,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:fusion_component"
+    }
+  ],
+  "power": 100
+}

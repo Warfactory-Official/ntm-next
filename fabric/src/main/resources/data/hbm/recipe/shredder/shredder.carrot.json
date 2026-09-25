@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:carrot"
+    }
+  ],
+  "order": 77,
+  "output_items": [
+    "minecraft:sugar"
+  ]
+}

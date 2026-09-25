@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:quartz"
+    }
+  ],
+  "order": 9,
+  "output_items": [
+    "hbm:powder_quartz"
+  ]
+}

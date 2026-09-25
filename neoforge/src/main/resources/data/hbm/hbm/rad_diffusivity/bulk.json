@@ -1,0 +1,12 @@
+{
+  "blocks": [
+    "hbm:asphalt",
+    "hbm:asphalt_light",
+    "hbm:waste_earth",
+    "hbm:sand_dirty",
+    "hbm:sand_dirty_red",
+    "hbm:slag",
+    "hbm:sellafield_slaked"
+  ],
+  "value": 0.45
+}

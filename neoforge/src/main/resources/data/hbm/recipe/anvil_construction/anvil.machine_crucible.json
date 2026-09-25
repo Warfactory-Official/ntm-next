@@ -1,0 +1,23 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 20,
+      "ingredient": "hbm:ingot_firebrick"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/copper"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/steel"
+    }
+  ],
+  "order": 75,
+  "output_items": [
+    "hbm:machine_crucible"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

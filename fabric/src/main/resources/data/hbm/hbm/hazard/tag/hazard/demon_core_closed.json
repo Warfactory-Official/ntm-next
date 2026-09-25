@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 100000.0
+    }
+  ],
+  "targets": "#hbm:hazard/demon_core_closed"
+}

@@ -1,0 +1,24 @@
+{
+  "type": "hbm:crucible",
+  "frequency": 3,
+  "icon": {
+    "id": "hbm:ingot_ferrouranium"
+  },
+  "input_materials": [
+    {
+      "amount": 16,
+      "material": "steel"
+    },
+    {
+      "amount": 8,
+      "material": "uranium_238"
+    }
+  ],
+  "order": 5,
+  "output_materials": [
+    {
+      "amount": 24,
+      "material": "ferrouranium"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "hbm:gun_b92",
+          "base": "hbm:item/gun_b92_base"
+        },
+        "when": [
+          "thirdperson_righthand",
+          "thirdperson_lefthand",
+          "firstperson_righthand",
+          "firstperson_lefthand",
+          "ground",
+          "fixed"
+        ]
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:item/gun_b92_flat"
+    },
+    "property": "minecraft:display_context"
+  }
+}

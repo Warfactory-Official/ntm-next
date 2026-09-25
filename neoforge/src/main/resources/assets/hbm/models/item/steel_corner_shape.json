@@ -1,0 +1,146 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#wall",
+          "uv": [
+            0,
+            16,
+            12,
+            14
+          ]
+        },
+        "north": {
+          "texture": "#wall",
+          "uv": [
+            0,
+            0,
+            12,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#wall"
+        },
+        "up": {
+          "texture": "#wall"
+        },
+        "west": {
+          "texture": "#wall"
+        }
+      },
+      "from": [
+        0,
+        0,
+        14
+      ],
+      "to": [
+        12,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#wall",
+          "uv": [
+            12,
+            16,
+            16,
+            12
+          ]
+        },
+        "east": {
+          "texture": "#wall",
+          "uv": [
+            12,
+            0,
+            16,
+            16
+          ]
+        },
+        "north": {
+          "texture": "#wall",
+          "uv": [
+            12,
+            0,
+            16,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#wall"
+        },
+        "up": {
+          "texture": "#wall"
+        },
+        "west": {
+          "texture": "#wall"
+        }
+      },
+      "from": [
+        12,
+        0,
+        12
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#wall",
+          "uv": [
+            14,
+            12,
+            16,
+            0
+          ]
+        },
+        "east": {
+          "texture": "#wall",
+          "uv": [
+            0,
+            0,
+            12,
+            16
+          ]
+        },
+        "north": {
+          "texture": "#wall",
+          "uv": [
+            14,
+            0,
+            16,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#wall"
+        },
+        "west": {
+          "texture": "#wall"
+        }
+      },
+      "from": [
+        14,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        12
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "hbm:block/steel_wall",
+    "wall": "hbm:block/steel_wall"
+  }
+}

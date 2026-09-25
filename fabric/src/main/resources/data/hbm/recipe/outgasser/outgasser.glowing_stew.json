@@ -1,0 +1,13 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "minecraft:mushroom_stew"
+    }
+  ],
+  "order": 12,
+  "output_items": [
+    "hbm:glowing_stew"
+  ]
+}

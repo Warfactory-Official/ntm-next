@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "hbm:powder_cadmium",
+      "hbm:crayon_orange",
+      "hbm:chemical_dye_orange"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:orange_dye"
+  }
+}

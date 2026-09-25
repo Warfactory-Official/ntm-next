@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "minecraft:stone_button",
+    "C": "hbm:circuit_basic",
+    "I": "#c:ingots/steel",
+    "L": "minecraft:leather"
+  },
+  "pattern": [
+    " B",
+    "LI",
+    "LC"
+  ],
+  "result": {
+    "id": "hbm:stealth_boy"
+  }
+}

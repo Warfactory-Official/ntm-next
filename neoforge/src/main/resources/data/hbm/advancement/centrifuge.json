@@ -1,0 +1,29 @@
+{
+  "parent": "hbm:polymer",
+  "criteria": {
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": "hbm:machine_centrifuge"
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.centrifuge.desc"
+    },
+    "icon": {
+      "id": "hbm:machine_centrifuge"
+    },
+    "title": {
+      "translate": "achievement.centrifuge"
+    }
+  },
+  "requirements": [
+    [
+      "produced"
+    ]
+  ]
+}

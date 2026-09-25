@@ -1,0 +1,13 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/gold"
+    }
+  ],
+  "order": 6,
+  "output_items": [
+    "hbm:powder_au198"
+  ]
+}

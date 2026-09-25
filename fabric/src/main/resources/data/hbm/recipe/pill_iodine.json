@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": "#c:dusts/fluorite",
+    "I": "#c:dusts/iodine"
+  },
+  "pattern": [
+    "IF"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:pill_iodine"
+  }
+}

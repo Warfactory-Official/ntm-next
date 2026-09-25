@@ -1,0 +1,2150 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "akimbo_base": "hbm:item/gun_uzi_akimbo_akimbo_base",
+    "akimbo_draws": [
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          }
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ]
+      },
+      {
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 215
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          }
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ]
+      },
+      {
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          },
+          {
+            "id": 215
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      }
+    ],
+    "akimbo_muzzles": [
+      {
+        "duration": 75,
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.75,
+          -1.0,
+          0.0,
+          -0.0,
+          8.5,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "akimbo_shot_config": 0,
+    "base": "hbm:item/gun_uzi_akimbo_base",
+    "draws": [
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.664463,
+          0.34201998,
+          -0.664463,
+          0.34201998,
+          0.24184464,
+          -0.9396926,
+          -0.24184464,
+          -0.9396926,
+          -0.70710677,
+          0.0,
+          -0.70710677,
+          0.0,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.664463,
+          0.34201998,
+          -0.664463,
+          0.34201998,
+          0.24184464,
+          -0.9396926,
+          -0.24184464,
+          -0.9396926,
+          -0.70710677,
+          0.0,
+          -0.70710677,
+          0.0,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 215
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          },
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.664463,
+          -0.34202024,
+          0.664463,
+          -0.34202024,
+          -0.24184483,
+          -0.93969256,
+          -0.24184483,
+          -0.93969256,
+          0.70710677,
+          0.0,
+          -0.70710677,
+          5.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.664463,
+          -0.34202024,
+          0.664463,
+          -0.34202024,
+          -0.24184483,
+          -0.93969256,
+          -0.24184483,
+          -0.93969256,
+          0.70710677,
+          0.0,
+          -0.70710677,
+          5.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 215
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          0.21376249,
+          -0.41528937,
+          2.0031774,
+          0.1511529,
+          -0.5873079,
+          -0.1511529,
+          -0.33508104,
+          -0.44194174,
+          0.0,
+          -0.44194174,
+          1.767767,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          0.21376249,
+          -0.41528937,
+          2.0031774,
+          0.1511529,
+          -0.5873079,
+          -0.1511529,
+          -0.33508104,
+          -0.44194174,
+          0.0,
+          -0.44194174,
+          1.767767,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          -0.21376266,
+          0.41528937,
+          -2.0031776,
+          -0.15115303,
+          -0.5873079,
+          -0.15115303,
+          -0.33508044,
+          0.44194174,
+          0.0,
+          -0.44194174,
+          6.767767,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          -0.21376266,
+          0.41528937,
+          -2.0031776,
+          -0.15115303,
+          -0.5873079,
+          -0.15115303,
+          -0.33508044,
+          0.44194174,
+          0.0,
+          -0.44194174,
+          6.767767,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 215
+          },
+          {
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          0.21376249,
+          -0.41528937,
+          2.0031774,
+          0.1511529,
+          -0.5873079,
+          -0.1511529,
+          -0.33508104,
+          -0.44194174,
+          0.0,
+          -0.44194174,
+          1.767767,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 201
+          }
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          0.21376249,
+          -0.41528937,
+          2.0031774,
+          0.1511529,
+          -0.5873079,
+          -0.1511529,
+          -0.33508104,
+          -0.44194174,
+          0.0,
+          -0.44194174,
+          1.767767,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          },
+          {
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          -0.21376266,
+          0.41528937,
+          -2.0031776,
+          -0.15115303,
+          -0.5873079,
+          -0.15115303,
+          -0.33508044,
+          0.44194174,
+          0.0,
+          -0.44194174,
+          6.767767,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 201
+          }
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          -0.21376266,
+          0.41528937,
+          -2.0031776,
+          -0.15115303,
+          -0.5873079,
+          -0.15115303,
+          -0.33508044,
+          0.44194174,
+          0.0,
+          -0.44194174,
+          6.767767,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 215
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 215
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          0.21376249,
+          -0.41528937,
+          2.0031774,
+          0.1511529,
+          -0.5873079,
+          -0.1511529,
+          -0.33508104,
+          -0.44194174,
+          0.0,
+          -0.44194174,
+          1.767767,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ]
+      },
+      {
+        "matrix": [
+          0.41528937,
+          0.21376249,
+          -0.41528937,
+          2.0031774,
+          0.1511529,
+          -0.5873079,
+          -0.1511529,
+          -0.33508104,
+          -0.44194174,
+          0.0,
+          -0.44194174,
+          1.767767,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          -0.21376266,
+          0.41528937,
+          -2.0031776,
+          -0.15115303,
+          -0.5873079,
+          -0.15115303,
+          -0.33508044,
+          0.44194174,
+          0.0,
+          -0.44194174,
+          6.767767,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ]
+      },
+      {
+        "matrix": [
+          0.41528937,
+          -0.21376266,
+          0.41528937,
+          -2.0031776,
+          -0.15115303,
+          -0.5873079,
+          -0.15115303,
+          -0.33508044,
+          0.44194174,
+          0.0,
+          -0.44194174,
+          6.767767,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 215
+          },
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          0.21376249,
+          -0.41528937,
+          2.0031774,
+          0.1511529,
+          -0.5873079,
+          -0.1511529,
+          -0.33508104,
+          -0.44194174,
+          0.0,
+          -0.44194174,
+          1.767767,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 201
+          }
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          0.21376249,
+          -0.41528937,
+          2.0031774,
+          0.1511529,
+          -0.5873079,
+          -0.1511529,
+          -0.33508104,
+          -0.44194174,
+          0.0,
+          -0.44194174,
+          1.767767,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 215
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          0.21376249,
+          -0.41528937,
+          2.0031774,
+          0.1511529,
+          -0.5873079,
+          -0.1511529,
+          -0.33508104,
+          -0.44194174,
+          0.0,
+          -0.44194174,
+          1.767767,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ]
+      },
+      {
+        "matrix": [
+          0.41528937,
+          0.21376249,
+          -0.41528937,
+          2.0031774,
+          0.1511529,
+          -0.5873079,
+          -0.1511529,
+          -0.33508104,
+          -0.44194174,
+          0.0,
+          -0.44194174,
+          1.767767,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          -0.21376266,
+          0.41528937,
+          -2.0031776,
+          -0.15115303,
+          -0.5873079,
+          -0.15115303,
+          -0.33508044,
+          0.44194174,
+          0.0,
+          -0.44194174,
+          6.767767,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          -0.21376266,
+          0.41528937,
+          -2.0031776,
+          -0.15115303,
+          -0.5873079,
+          -0.15115303,
+          -0.33508044,
+          0.44194174,
+          0.0,
+          -0.44194174,
+          6.767767,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 215
+          },
+          {
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          }
+        ],
+        "matrix": [
+          0.41528937,
+          -0.21376266,
+          0.41528937,
+          -2.0031776,
+          -0.15115303,
+          -0.5873079,
+          -0.15115303,
+          -0.33508044,
+          0.44194174,
+          0.0,
+          -0.44194174,
+          6.767767,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ]
+      },
+      {
+        "matrix": [
+          0.41528937,
+          -0.21376266,
+          0.41528937,
+          -2.0031776,
+          -0.15115303,
+          -0.5873079,
+          -0.15115303,
+          -0.33508044,
+          0.44194174,
+          0.0,
+          -0.44194174,
+          6.767767,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 215
+          },
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      }
+    ],
+    "entity_draws": [
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          -1.0,
+          0.0,
+          1.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          -1.0,
+          0.0,
+          1.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 215
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          },
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          1.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          1.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 215
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          -0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          -0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 215
+          },
+          {
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          -0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 201
+          }
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          -0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          },
+          {
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 201
+          }
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 215
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 215
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          -0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ]
+      },
+      {
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          -0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ]
+      },
+      {
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunMirror",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 215
+          },
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          -0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 201
+          }
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          -0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 215
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          -0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ]
+      },
+      {
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          -0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 215
+          },
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 215
+          },
+          {
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          }
+        ],
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ]
+      },
+      {
+        "matrix": [
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 215
+          },
+          {
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      }
+    ],
+    "equipped_draws": [
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 215
+          }
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ]
+      },
+      {
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 215
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 215
+          }
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 201
+          }
+        ]
+      },
+      {
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "config": 1,
+            "id": 201
+          },
+          {
+            "config": 1,
+            "id": 215
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "excludes_mods": [
+          {
+            "config": 1,
+            "id": 201
+          }
+        ],
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.75,
+          -1.0,
+          0.0,
+          -0.0,
+          8.5,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "equipped_shot_config": 1,
+    "mod_table": [
+      0.0,
+      0.0,
+      -6.25,
+      25.0,
+      -0.0,
+      -6.25,
+      0.0,
+      -6.25,
+      6.25,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/uzi.obj",
+    "texture": "hbm:textures/models/weapons/uzi.png"
+  }
+}

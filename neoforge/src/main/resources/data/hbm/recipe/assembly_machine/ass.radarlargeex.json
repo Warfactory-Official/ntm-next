@@ -1,0 +1,46 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    },
+    {
+      "count": 24,
+      "ingredient": "#hbm:ingots/any_rubber"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:magnetron"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "count": 6,
+      "ingredient": "hbm:item_expensive_circuit"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:crt_display"
+    }
+  ],
+  "name": "ass.radarlargeEx",
+  "order": 164,
+  "output_items": [
+    "hbm:machine_radar_large"
+  ],
+  "power": 100
+}

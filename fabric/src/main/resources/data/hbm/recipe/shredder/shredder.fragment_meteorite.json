@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:fragment_meteorite"
+    }
+  ],
+  "order": 45,
+  "output_items": [
+    "hbm:powder_meteorite_tiny"
+  ]
+}

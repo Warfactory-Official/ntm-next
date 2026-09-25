@@ -1,0 +1,19 @@
+{
+  "type": "hbm:coker",
+  "input_fluids": [
+    {
+      "type": "hbm:slop",
+      "amount": 1000
+    }
+  ],
+  "order": 29,
+  "output_fluids": [
+    {
+      "type": "hbm:colloid",
+      "amount": 250
+    }
+  ],
+  "output_items": [
+    "hbm:powder_limestone"
+  ]
+}

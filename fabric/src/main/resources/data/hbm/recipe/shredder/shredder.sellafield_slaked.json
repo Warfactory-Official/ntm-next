@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:sellafield_slaked"
+    }
+  ],
+  "order": 143,
+  "output_items": [
+    "minecraft:gravel"
+  ]
+}

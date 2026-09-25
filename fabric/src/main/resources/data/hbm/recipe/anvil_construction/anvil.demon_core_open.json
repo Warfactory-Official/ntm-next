@@ -1,0 +1,21 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:man_core"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/beryllium"
+    },
+    {
+      "ingredient": "hbm:screwdriver"
+    }
+  ],
+  "order": 93,
+  "output_items": [
+    "hbm:demon_core_open"
+  ],
+  "overlay": "construction",
+  "tier": 3
+}

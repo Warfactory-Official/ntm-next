@@ -1,0 +1,33 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 1200,
+  "input_fluids": [
+    {
+      "type": "hbm:perfluoromethyl",
+      "amount": 2000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:item_expensive_circuit"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_controller"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_capacitor_board"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:glass_quartz"
+    }
+  ],
+  "order": 22,
+  "output_items": [
+    "hbm:item_expensive_computer"
+  ],
+  "power": 16000
+}

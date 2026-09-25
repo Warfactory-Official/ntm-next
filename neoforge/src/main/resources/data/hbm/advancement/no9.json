@@ -1,0 +1,42 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "item": {
+          "items": "hbm:cigarette"
+        },
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:equipment": {
+                "head": {
+                  "items": "hbm:no9"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "hbm:smoked"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.no9.desc"
+    },
+    "icon": {
+      "id": "hbm:no9"
+    },
+    "title": {
+      "translate": "achievement.no9"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

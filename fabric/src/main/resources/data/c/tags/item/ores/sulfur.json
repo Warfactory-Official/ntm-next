@@ -1,0 +1,9 @@
+{
+  "values": [
+    "hbm:ore_sulfur",
+    "hbm:ore_nether_sulfur",
+    "hbm:ore_basalt_sulfur",
+    "hbm:ore_sulfur_deepslate",
+    "hbm:stone_resource_sulfur"
+  ]
+}

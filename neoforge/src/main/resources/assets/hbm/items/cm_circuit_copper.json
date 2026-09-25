@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:block/cm_circuit_copper"
+  }
+}

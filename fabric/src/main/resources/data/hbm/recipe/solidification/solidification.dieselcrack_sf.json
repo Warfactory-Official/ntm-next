@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:diesel_crack",
+      "amount": 3400
+    }
+  ],
+  "order": 30,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

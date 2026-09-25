@@ -1,0 +1,28 @@
+{
+  "parent": "hbm:bossworm",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "kind": "ufo"
+      },
+      "trigger": "hbm:boss_killed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.bossUFO.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:coin_ufo"
+    },
+    "title": {
+      "translate": "achievement.bossUFO"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:storage_blocks/workers_alloy",
+    "I": "#c:ingots/tungsten",
+    "P": "#c:plates/steel"
+  },
+  "pattern": [
+    "PII",
+    "PBB",
+    "PII"
+  ],
+  "result": {
+    "id": "hbm:shimmer_axe_head"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:concrete_asbestos",
+    "P": "#c:plates/steel"
+  },
+  "pattern": [
+    "PPP",
+    "CCC",
+    "PPP"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:rbmk_lid"
+  }
+}

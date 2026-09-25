@@ -1,0 +1,16 @@
+{
+  "type": "hbm:blast_furnace",
+  "duration": 600,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/saturnite"
+    },
+    {
+      "ingredient": "hbm:ingot_meteorite"
+    }
+  ],
+  "order": 11,
+  "output_items": [
+    "hbm:ingot_starmetal"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 50
+    }
+  ],
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "minecraft:chiseled_cinnabar"
+    }
+  ],
+  "order": 335,
+  "output_items": [
+    "hbm:cinnabar"
+  ]
+}

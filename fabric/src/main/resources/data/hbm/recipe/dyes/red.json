@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "hbm:cinnabar",
+      "hbm:crayon_red",
+      "hbm:chemical_dye_red"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:red_dye"
+  }
+}

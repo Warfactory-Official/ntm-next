@@ -1,0 +1,31 @@
+{
+  "content": {
+    "en_us": "Petroil can be obtained through mixing [[engine lubricant|Engine Lubricant]] and [[reclaimed industrial oil|Reclaimed Industrial Oil]]. It is primarily used as [[fuel|Fuels]] source, or as an ingredient in [[leaded petroil|Leaded Petroil]].<br><br>See also:<br>[[Basic Oil Processing]]",
+    "ru_ru": "Бензин получают путём смешивания [[машинной смазки|Engine Lubricant]] и [[очищенного промышленного масла|Reclaimed Industrial Oil]]. В основном он используется в качестве источника топлива или как ингредиент для [[этилированного бензина|Leaded Petroil]].<br><br>См.также:<br>[[Базовая нефтепереработка|Basic Oil Processing]]"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:petroil",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -12304067
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Petroil",
+  "title": {
+    "en_us": "Petroil",
+    "ru_ru": "Бензин"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:petroil"
+    }
+  }
+}

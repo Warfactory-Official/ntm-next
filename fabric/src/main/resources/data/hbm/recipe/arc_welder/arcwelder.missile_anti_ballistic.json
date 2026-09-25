@@ -1,0 +1,22 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    },
+    {
+      "ingredient": "hbm:missile_assembly"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:thruster_small"
+    }
+  ],
+  "order": 24,
+  "output_items": [
+    "hbm:missile_anti_ballistic"
+  ],
+  "power": 5000
+}

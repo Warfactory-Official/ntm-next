@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 750.0
+    },
+    {
+      "type": "hbm:hot",
+      "level": 30.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:storage_blocks/polonium_210"
+}

@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbm:glass_quartz"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/workers_alloy"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:pipes/steel"
+    }
+  ],
+  "order": 144,
+  "output_items": [
+    "hbm:machine_silex"
+  ],
+  "power": 100
+}

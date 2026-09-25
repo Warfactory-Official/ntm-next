@@ -1,0 +1,41 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:turbine_titanium"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:wires_dense/gold"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/dura_steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 186,
+  "output_items": [
+    "hbm:machine_industrial_turbine"
+  ],
+  "power": 100
+}

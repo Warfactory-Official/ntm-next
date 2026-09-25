@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "hbm:block/multiblock_geometry_cell_rail_h5_r6"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "type": "liquid",
+  "color": "#4747ea",
+  "nfpa": {
+    "flame": 3,
+    "health": 1,
+    "react": 1
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "combustible": {
+      "energy": 4530000,
+      "grade": "HIGH"
+    },
+    "flammable": {
+      "energy": 1810000
+    },
+    "polluting": {
+      "burn": {
+        "SOOT": 4.0E-4
+      }
+    }
+  }
+}

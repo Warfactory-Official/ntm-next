@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:annihilator",
+  "item": "hbm:ammo_arty",
+  "milestones": [
+    {
+      "amount": "128",
+      "payout": {
+        "components": {
+          "hbm:blueprint_pool": "528.arty"
+        },
+        "id": "hbm:blueprints"
+      }
+    }
+  ]
+}

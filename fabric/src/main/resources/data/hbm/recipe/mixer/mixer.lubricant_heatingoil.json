@@ -1,0 +1,21 @@
+{
+  "type": "hbm:mixer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:heatingoil",
+      "amount": 500
+    },
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 500
+    }
+  ],
+  "order": 24,
+  "output_fluids": [
+    {
+      "type": "hbm:lubricant",
+      "amount": 1000
+    }
+  ]
+}

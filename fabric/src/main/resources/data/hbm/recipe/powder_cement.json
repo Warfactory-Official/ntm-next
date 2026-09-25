@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/limestone",
+    "minecraft:clay_ball",
+    "minecraft:clay_ball",
+    "minecraft:clay_ball"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:powder_cement"
+  }
+}

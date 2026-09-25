@@ -1,0 +1,25 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Base"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Shaft",
+    "Piston",
+    "Transmission",
+    "Flywheel"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/steam_engine.obj",
+  "offset_x": 2.0,
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/steam_engine",
+    "particle": "hbm:block/models/machines/steam_engine"
+  }
+}

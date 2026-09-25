@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:tnt"
+    }
+  ],
+  "order": 35,
+  "output_items": [
+    {
+      "count": 5,
+      "id": "minecraft:gunpowder"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 50,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    }
+  ],
+  "order": 288,
+  "output_items": [
+    "hbm:pellet_cluster"
+  ],
+  "power": 100
+}

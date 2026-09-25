@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:clay_ball",
+    "minecraft:clay_ball",
+    "hbm:stone_resource_limestone",
+    "#minecraft:sand"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:ball_fireclay"
+  }
+}

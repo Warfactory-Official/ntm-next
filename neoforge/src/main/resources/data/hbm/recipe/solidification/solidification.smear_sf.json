@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:smear",
+      "amount": 21000
+    }
+  ],
+  "order": 21,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

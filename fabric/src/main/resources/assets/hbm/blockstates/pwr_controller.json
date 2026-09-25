@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/pwr_controller",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "hbm:block/pwr_controller"
+    },
+    "facing=south": {
+      "model": "hbm:block/pwr_controller",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "hbm:block/pwr_controller",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "hbm:neutron_reflector",
+    "R": "hbm:rbmk_blank"
+  },
+  "pattern": [
+    "GGG",
+    "GRG",
+    "GGG"
+  ],
+  "result": {
+    "id": "hbm:rbmk_reflector"
+  }
+}

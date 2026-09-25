@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "hbm:block/cm_block_desh"
+    }
+  }
+}

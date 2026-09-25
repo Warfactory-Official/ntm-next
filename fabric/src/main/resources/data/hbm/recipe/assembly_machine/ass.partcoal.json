@@ -1,0 +1,18 @@
+{
+  "type": "hbm:assembly_machine",
+  "auto_switch_group": "autoswitch.cyclotron",
+  "duration": 40,
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/coal"
+    }
+  ],
+  "order": 54,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:part_carbon"
+    }
+  ],
+  "power": 100
+}

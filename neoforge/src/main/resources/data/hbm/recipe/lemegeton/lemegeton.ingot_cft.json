@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:gems/diamond"
+    }
+  ],
+  "order": 30,
+  "output_items": [
+    "hbm:ingot_cft"
+  ]
+}

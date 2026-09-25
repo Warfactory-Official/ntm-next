@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "axis=x,shrouded=false": {
+      "model": "hbm:block/block_graphite_drilled",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,shrouded=true": {
+      "model": "hbm:block/block_graphite_drilled_aluminum",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,shrouded=false": {
+      "model": "hbm:block/block_graphite_drilled"
+    },
+    "axis=y,shrouded=true": {
+      "model": "hbm:block/block_graphite_drilled_aluminum"
+    },
+    "axis=z,shrouded=false": {
+      "model": "hbm:block/block_graphite_drilled",
+      "x": 90
+    },
+    "axis=z,shrouded=true": {
+      "model": "hbm:block/block_graphite_drilled_aluminum",
+      "x": 90
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_capacitor",
+    "D": "#c:ingots/mingrade",
+    "M": "hbm:coil_copper",
+    "S": "#c:ingots/iron"
+  },
+  "pattern": [
+    "SCS",
+    "MDM",
+    "SCS"
+  ],
+  "result": {
+    "id": "hbm:machine_transformer"
+  }
+}

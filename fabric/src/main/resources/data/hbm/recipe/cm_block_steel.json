@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/steel",
+    "P": "#hbm:plates_cast/steel"
+  },
+  "pattern": [
+    " I ",
+    "IPI",
+    " I "
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:cm_block_steel"
+  }
+}

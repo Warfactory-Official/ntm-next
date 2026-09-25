@@ -1,0 +1,30 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_ferro_plating"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:item_expensive_plastic"
+    }
+  ],
+  "name": "ass.fusionboilerEx",
+  "order": 270,
+  "output_items": [
+    "hbm:fusion_boiler"
+  ],
+  "power": 100
+}

@@ -1,0 +1,23 @@
+{
+  "type": "hbm:purex",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:amat",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#hbm:billets/lead_209"
+    },
+    {
+      "ingredient": "hbm:billet_balefire_gold"
+    }
+  ],
+  "order": 2,
+  "output_items": [
+    "hbm:billet_flashlead"
+  ],
+  "power": 1000
+}

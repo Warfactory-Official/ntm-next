@@ -1,0 +1,48 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.bmg"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:battery_pack_capacitor_niobium"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "#hbm:gun_mechanisms/saturnite"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:magnetron"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    },
+    {
+      "ingredient": "hbm:crt_display"
+    }
+  ],
+  "order": 331,
+  "output_items": [
+    "hbm:turret_maxwell"
+  ],
+  "power": 100
+}

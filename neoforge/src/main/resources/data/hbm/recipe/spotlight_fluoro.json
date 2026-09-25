@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "hbm:plate_aluminium",
+    "G": "#c:glass_panes",
+    "M": "hbm:nugget_mercury"
+  },
+  "pattern": [
+    "G",
+    "M",
+    "A"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:spotlight_fluoro"
+  }
+}

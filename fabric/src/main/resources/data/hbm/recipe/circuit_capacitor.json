@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "hbm:plate_polymer",
+    "N": "#c:nuggets/niobium",
+    "W": "#c:fine_wires/aluminum"
+  },
+  "pattern": [
+    "I",
+    "N",
+    "W"
+  ],
+  "result": {
+    "id": "hbm:circuit_capacitor"
+  }
+}

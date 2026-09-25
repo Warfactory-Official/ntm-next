@@ -1,0 +1,21 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Piston",
+    "Platform"
+  ],
+  "model": "hbm:models/machines/elevator.obj",
+  "skins": {
+    "all": [
+      "Base",
+      "Guides"
+    ]
+  },
+  "smooth": false,
+  "textures": {
+    "all": "hbm:block/models/machines/elevator",
+    "particle": "hbm:block/block_steel"
+  }
+}

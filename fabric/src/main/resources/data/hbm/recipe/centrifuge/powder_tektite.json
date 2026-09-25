@@ -1,0 +1,20 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_tektite"
+    }
+  ],
+  "order": 33,
+  "output_items": [
+    "hbm:powder_meteorite_tiny",
+    "hbm:powder_paleogenite_tiny",
+    "hbm:powder_meteorite_tiny",
+    {
+      "count": 6,
+      "id": "hbm:dust"
+    }
+  ],
+  "power": 200
+}

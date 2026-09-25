@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/fluid_duct_paintable_block_exhaust"
+  }
+}

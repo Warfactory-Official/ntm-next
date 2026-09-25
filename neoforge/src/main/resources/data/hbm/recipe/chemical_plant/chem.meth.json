@@ -1,0 +1,31 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 60,
+  "input_fluids": [
+    {
+      "type": "hbm:lubricant",
+      "amount": 400
+    },
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "minecraft:wheat"
+    },
+    {
+      "count": 2,
+      "ingredient": "minecraft:cocoa_beans"
+    }
+  ],
+  "order": 50,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:chocolate"
+    }
+  ],
+  "power": 300
+}

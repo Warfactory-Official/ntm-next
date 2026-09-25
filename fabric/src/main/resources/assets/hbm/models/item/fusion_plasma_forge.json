@@ -1,0 +1,187 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "blackout": [
+    "Plasma"
+  ],
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -0.0,
+        -85.0,
+        25.00001
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        -0.38036954,
+        1.3411264,
+        -4.3476486
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -0.0,
+        -85.0,
+        25.00001
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        0.15495676,
+        4.2052736,
+        1.7711577
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        4.9400005,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.09375,
+        0.09375,
+        0.09375
+      ],
+      "translation": [
+        0.0,
+        -0.25,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30.0,
+        44.999996,
+        -0.0
+      ],
+      "scale": [
+        0.0859375,
+        0.0859375,
+        0.0859375
+      ],
+      "translation": [
+        -5.9604645E-8,
+        0.11093731,
+        -6.78125
+      ]
+    },
+    "head": {
+      "rotation": [
+        -148.67021,
+        -35.63104,
+        19.52547
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "translation": [
+        4.57131,
+        -23.221098,
+        5.447877
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        15.0,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        141.87373,
+        -71.3061,
+        127.868614
+      ],
+      "scale": [
+        0.0703125,
+        0.0703125,
+        0.07031249
+      ],
+      "translation": [
+        -1.4069536,
+        3.7506318,
+        -0.085866034
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        141.87373,
+        -71.3061,
+        127.868614
+      ],
+      "scale": [
+        0.0703125,
+        0.0703125,
+        0.07031249
+      ],
+      "translation": [
+        -1.7166293,
+        3.3382459,
+        1.4012253
+      ]
+    }
+  },
+  "gui_light": "side",
+  "model": "hbm:models/fusion/plasma_forge.obj",
+  "offset_y": -2.0,
+  "skins": {
+    "all": [
+      "Plasma",
+      "SliderStriker",
+      "ArmLowerStriker",
+      "ArmUpperStriker",
+      "StrikerMount",
+      "StrikerLeft",
+      "StrikerRight",
+      "PistonLeft",
+      "PistonRight",
+      "SliderJet",
+      "ArmLowerJet",
+      "ArmUpperJet",
+      "Jet",
+      "Body"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/fusion/plasma_forge",
+    "particle": "hbm:block/models/fusion/plasma_forge"
+  }
+}

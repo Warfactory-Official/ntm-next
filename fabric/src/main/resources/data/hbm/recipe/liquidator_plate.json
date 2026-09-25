@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:hazmat_plate_grey",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "C": "hbm:cladding_lead",
+    "I": "#hbm:ingots/any_rubber",
+    "T": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:gas_tank",
+      "components": {
+        "!hbm:fluid_content": {}
+      }
+    }
+  },
+  "pattern": [
+    "ICI",
+    "TBT",
+    "ICI"
+  ],
+  "result": {
+    "id": "hbm:liquidator_plate"
+  }
+}

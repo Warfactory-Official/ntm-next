@@ -1,0 +1,17 @@
+{
+  "values": [
+    "hbm:barricade",
+    "hbm:block_graphite",
+    "hbm:block_coke_coal",
+    "hbm:block_coke_lignite",
+    "hbm:block_coke_petroleum",
+    "hbm:dirt",
+    "hbm:tektite",
+    "hbm:frozen_dirt",
+    "hbm:frozen_grass",
+    "hbm:waste_earth",
+    "hbm:impact_dirt",
+    "hbm:waste_trinitite",
+    "hbm:waste_trinitite_red"
+  ]
+}

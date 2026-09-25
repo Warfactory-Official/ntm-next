@@ -1,0 +1,192 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.40672708,
+        3.5255432,
+        2.0673053
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        -0.041562796,
+        3.5255432,
+        2.1065257
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        3.0650005,
+        1.0625
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        -1.1875,
+        -0.28125
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.3125,
+        0.3125,
+        0.3125
+      ],
+      "translation": [
+        -0.33145618,
+        0.16171479,
+        -6.3692
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        4.8619666,
+        -20.121819,
+        5.7942653
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0.0,
+        11.25,
+        -1.125
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -0.1791246,
+        2.9581275,
+        1.6159884
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -1.7385349,
+        2.6323605,
+        1.2009143
+      ]
+    }
+  },
+  "groups": [
+    {
+      "model": "hbm:models/turrets/turret_chekhov.obj",
+      "parts": [
+        "Base"
+      ],
+      "texture": "base"
+    },
+    {
+      "model": "hbm:models/turrets/turret_chekhov.obj",
+      "parts": [
+        "Carriage"
+      ],
+      "texture": "carriage"
+    },
+    {
+      "parts": [
+        "Cannon",
+        "Rotor"
+      ],
+      "texture": "tauon"
+    }
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/turrets/turret_tauon.obj",
+  "offset_x": -0.09375,
+  "offset_y": -0.4375,
+  "textures": {
+    "base": "hbm:block/models/turrets/base",
+    "carriage": "hbm:block/models/turrets/carriage",
+    "particle": "hbm:block/models/turrets/base",
+    "tauon": "hbm:block/models/turrets/tauon"
+  }
+}

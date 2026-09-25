@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": "#hbm:ingots/any_rubber",
+    "R": "hbm:rag"
+  },
+  "pattern": [
+    "R R",
+    "P P"
+  ],
+  "result": {
+    "id": "hbm:robes_boots"
+  }
+}

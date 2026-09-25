@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "hbm:jackt2"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "hbm:jackt2"
+      }
+    ]
+  }
+}

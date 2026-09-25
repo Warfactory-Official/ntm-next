@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/workers_alloy"
+    }
+  ],
+  "order": 9,
+  "output_items": [
+    "hbm:ingot_bscco"
+  ]
+}

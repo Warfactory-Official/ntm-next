@@ -1,0 +1,29 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:egg_glyphid"
+    }
+  ],
+  "order": 255,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:glyphid_meat"
+    },
+    {
+      "chance": 0.5,
+      "id": "hbm:glyphid_meat"
+    },
+    {
+      "chance": 0.75,
+      "id": "minecraft:bone"
+    },
+    {
+      "chance": 0.5,
+      "id": "minecraft:experience_bottle"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 1
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/radium_226"
+    }
+  ],
+  "order": 23,
+  "output_items": [
+    "hbm:ingot_polonium"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "double_sided": [
+    "Condenser"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Fan1",
+    "Fan2"
+  ],
+  "model": "hbm:models/machines/condenser.obj",
+  "skins": {
+    "all": [
+      "Condenser"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/condenser",
+    "particle": "hbm:block/models/machines/condenser"
+  }
+}

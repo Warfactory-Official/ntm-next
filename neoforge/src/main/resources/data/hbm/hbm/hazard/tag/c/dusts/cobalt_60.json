@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 90.0
+    },
+    {
+      "type": "hbm:hot",
+      "level": 3.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:dusts/cobalt_60"
+}

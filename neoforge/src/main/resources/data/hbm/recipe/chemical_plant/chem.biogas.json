@@ -1,0 +1,34 @@
+{
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 60,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:biogas",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:gas_tank"
+  },
+  "input_fluids": [
+    {
+      "type": "hbm:air",
+      "amount": 4000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbm:biomass"
+    }
+  ],
+  "order": 10,
+  "output_fluids": [
+    {
+      "type": "hbm:biogas",
+      "amount": 2000
+    }
+  ],
+  "power": 100
+}

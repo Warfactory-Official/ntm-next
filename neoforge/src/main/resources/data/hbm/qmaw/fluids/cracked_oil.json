@@ -1,0 +1,37 @@
+{
+  "content": {
+    "en_us": "Cracked oil can first be obtained through [[cracking|Catalytic Cracking Tower]] [[heated|Boiler]] [[crude oil|Crude Oil]]. When [[refined|Oil Refinery]], it produces byproducts such as: <br>[[Cracked Naphtha]] <br>[[Cracked Light Oil]] <br>[[Aromatic Hydrocarbons]] <br>[[Unsaturated Hydrocarbons]]<br><br>It may also later be [[hydrotreated|Hydrotreater]] to obtain [[desfulfurized cracked oil|Desulfurized Cracked Oil]] for further processing.<br><br>{{hbm:fluids/template_oil2}}"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:crackoil",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -16645630
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Cracked Oil",
+  "title": {
+    "en_us": "Cracked Oil"
+  },
+  "trigger": [
+    {
+      "items": "hbm:fluid_icon",
+      "predicates": {
+        "hbm:fluid_content": "hbm:crackoil"
+      }
+    },
+    {
+      "items": "hbm:fluid_icon",
+      "predicates": {
+        "hbm:fluid_content": "hbm:hotcrackoil"
+      }
+    }
+  ]
+}

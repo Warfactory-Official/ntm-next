@@ -1,0 +1,21 @@
+{
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/funnel.obj",
+  "skins": {
+    "bottom": [
+      "Bottom"
+    ],
+    "side": [
+      "Side"
+    ],
+    "top": [
+      "Top"
+    ]
+  },
+  "textures": {
+    "bottom": "hbm:block/machine_funnel_bottom",
+    "particle": "hbm:block/machine_funnel_side",
+    "side": "hbm:block/machine_funnel_side",
+    "top": "hbm:block/machine_funnel_top"
+  }
+}

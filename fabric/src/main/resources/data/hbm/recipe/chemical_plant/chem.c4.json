@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528_pressurized"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/saltpeter"
+    }
+  ],
+  "order": 75,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:ingot_c4"
+    }
+  ],
+  "power": 1000
+}

@@ -1,0 +1,22 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "double_sided": [
+    "Compressor"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Pump",
+    "Fan"
+  ],
+  "model": "hbm:models/machines/compressor.obj",
+  "skins": {
+    "all": [
+      "Compressor"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/compressor",
+    "particle": "hbm:block/models/machines/compressor"
+  }
+}

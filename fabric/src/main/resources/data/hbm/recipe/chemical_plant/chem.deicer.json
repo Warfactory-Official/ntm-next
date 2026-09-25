@@ -1,0 +1,19 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 40,
+  "input_fluids": [
+    {
+      "type": "hbm:gas",
+      "amount": 100
+    },
+    {
+      "type": "hbm:hydrogen",
+      "amount": 50
+    }
+  ],
+  "order": 18,
+  "output_items": [
+    "hbm:fuel_additive_deicer"
+  ],
+  "power": 100
+}

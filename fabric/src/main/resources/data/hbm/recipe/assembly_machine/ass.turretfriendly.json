@@ -1,0 +1,41 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.bmg"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:battery_pack_battery_lead"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "ingredient": "hbm:circuit_basic"
+    },
+    {
+      "count": 3,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "ingredient": "#hbm:gun_mechanisms/gun_metal"
+    },
+    {
+      "ingredient": "hbm:crate_iron"
+    },
+    {
+      "ingredient": "hbm:crt_display"
+    }
+  ],
+  "order": 326,
+  "output_items": [
+    "hbm:turret_friendly"
+  ],
+  "power": 100
+}

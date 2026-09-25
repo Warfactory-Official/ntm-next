@@ -1,0 +1,27 @@
+{
+  "parent": "hbm:bosscreeper",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "kind": "meltdown"
+      },
+      "trigger": "hbm:boss_killed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.bossMeltdown.desc"
+    },
+    "icon": {
+      "id": "hbm:coin_radiation"
+    },
+    "title": {
+      "translate": "achievement.bossMeltdown"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

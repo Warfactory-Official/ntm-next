@@ -1,0 +1,6 @@
+{
+  "textures": {
+    "connected": "hbm:block/ctm_lib/deco_rusty_steel_ct",
+    "particle": "hbm:block/deco_rusty_steel"
+  }
+}

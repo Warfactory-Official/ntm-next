@@ -1,0 +1,40 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:pwr_block",
+    "hbm:pwr_controller"
+  ],
+  "ctm_textures": {
+    "hbm:block/pwr_block": "hbm:block/ctm_lib/pwr_block",
+    "hbm:block/pwr_casing_port": "hbm:block/ctm_lib/pwr_casing_port"
+  },
+  "variants": {
+    "part=casing": {
+      "model": "hbm:block/pwr_block"
+    },
+    "part=channel": {
+      "model": "hbm:block/pwr_block"
+    },
+    "part=control": {
+      "model": "hbm:block/pwr_block"
+    },
+    "part=fuel": {
+      "model": "hbm:block/pwr_block"
+    },
+    "part=heatex": {
+      "model": "hbm:block/pwr_block"
+    },
+    "part=heatsink": {
+      "model": "hbm:block/pwr_block"
+    },
+    "part=neutron_source": {
+      "model": "hbm:block/pwr_block"
+    },
+    "part=port": {
+      "model": "hbm:block/pwr_casing_port"
+    },
+    "part=reflector": {
+      "model": "hbm:block/pwr_block"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:conveyor",
+    "C": "#c:ingots/steel"
+  },
+  "pattern": [
+    "CCC",
+    "C C",
+    "CBC"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:crane_inserter"
+  }
+}

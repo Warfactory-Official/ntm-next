@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "hbm:concrete_ext_machine",
+      "hbm:concrete_ext_machine_stripe",
+      "hbm:concrete_ext_indigo",
+      "hbm:concrete_ext_purple",
+      "hbm:concrete_ext_pink",
+      "hbm:concrete_ext_hazard",
+      "hbm:concrete_ext_sand",
+      "hbm:concrete_ext_bronze"
+    ]
+  ],
+  "result": {
+    "id": "hbm:concrete_smooth"
+  }
+}

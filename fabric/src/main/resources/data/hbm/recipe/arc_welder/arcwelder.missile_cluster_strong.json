@@ -1,0 +1,20 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:warhead_cluster_medium"
+    },
+    {
+      "ingredient": "hbm:fuel_tank_medium"
+    },
+    {
+      "ingredient": "hbm:thruster_medium"
+    }
+  ],
+  "order": 32,
+  "output_items": [
+    "hbm:missile_cluster_strong"
+  ],
+  "power": 10000
+}

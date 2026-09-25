@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/turret_friendly_east"
+    },
+    "facing=north": {
+      "model": "hbm:block/turret_friendly_north"
+    },
+    "facing=south": {
+      "model": "hbm:block/turret_friendly_south"
+    },
+    "facing=west": {
+      "model": "hbm:block/turret_friendly_west"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_vacuum_tube"
+    }
+  ],
+  "order": 58,
+  "output_items": [
+    "hbm:machine_assembly_machine"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

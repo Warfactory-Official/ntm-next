@@ -1,0 +1,23 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Base"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Piston",
+    "Arms",
+    "Rotor"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/pump.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/pump_electric",
+    "particle": "hbm:block/models/machines/pump_electric"
+  }
+}

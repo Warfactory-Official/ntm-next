@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools": [
+    "alt.circuit"
+  ],
+  "custom_localization": true,
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_pcb"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:fine_wires/tungsten"
+    },
+    {
+      "ingredient": "#c:ingots/niobium"
+    }
+  ],
+  "name": "ass.analogAlt",
+  "order": 33,
+  "output_items": [
+    "hbm:circuit_analog"
+  ],
+  "power": 250
+}

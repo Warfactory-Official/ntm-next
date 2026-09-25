@@ -1,0 +1,48 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:precision_assembler",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_chip"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_capacitor_tantalium"
+    },
+    {
+      "ingredient": "hbm:upgrade_afterburn_1"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_plastic"
+    }
+  ],
+  "order": 39,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:upgrade_afterburn_2"
+        },
+        "weight": 500
+      },
+      {
+        "data": {
+          "components": {
+            "hbm:broken_item_source": "hbm:upgrade_afterburn_2"
+          },
+          "id": "hbm:broken_item"
+        },
+        "weight": 500
+      }
+    ]
+  ],
+  "power": 10000
+}

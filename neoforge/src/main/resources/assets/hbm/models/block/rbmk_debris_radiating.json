@@ -1,0 +1,10 @@
+{
+  "parent": "hbm:block/rbmk_debris_radiating_base",
+  "loader": "hbm:obj",
+  "model": "hbm:models/rbmk/pribris_radiating.obj",
+  "skins": {
+    "all": [
+      "Cube"
+    ]
+  }
+}

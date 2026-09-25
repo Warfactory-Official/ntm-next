@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:annihilator",
+  "item": "#hbm:billets/uranium",
+  "milestones": [
+    {
+      "amount": "256",
+      "payout": {
+        "components": {
+          "hbm:blueprint_pool": "528.gascent"
+        },
+        "id": "hbm:blueprints"
+      }
+    }
+  ]
+}

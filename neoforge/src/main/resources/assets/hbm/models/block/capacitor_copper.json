@@ -1,0 +1,30 @@
+{
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/capacitor.obj",
+  "offset_y": 0.5,
+  "skins": {
+    "bottom": [
+      "Bottom"
+    ],
+    "inner_side": [
+      "InnerSide"
+    ],
+    "inner_top": [
+      "InnerTop"
+    ],
+    "side": [
+      "Side"
+    ],
+    "top": [
+      "Top"
+    ]
+  },
+  "textures": {
+    "bottom": "hbm:block/capacitor_copper_bottom",
+    "inner_side": "hbm:block/capacitor_copper_inner_side",
+    "inner_top": "hbm:block/capacitor_copper_inner_top",
+    "particle": "hbm:block/block_copper",
+    "side": "hbm:block/capacitor_copper_side",
+    "top": "hbm:block/capacitor_copper_top"
+  }
+}

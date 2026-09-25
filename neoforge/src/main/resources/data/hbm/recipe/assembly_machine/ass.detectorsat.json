@@ -1,0 +1,34 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 1200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#hbm:plates_cast/gold"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:photo_panel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:wires_dense/bscco"
+    },
+    {
+      "count": 24,
+      "ingredient": "hbm:circuit_bismoid"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:part_generic_lde"
+    },
+    {
+      "ingredient": "hbm:circuit_controller_advanced"
+    }
+  ],
+  "order": 428,
+  "output_items": [
+    "hbm:satellite_detector"
+  ],
+  "power": 25000
+}

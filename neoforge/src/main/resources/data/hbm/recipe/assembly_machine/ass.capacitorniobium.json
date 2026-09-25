@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 24,
+      "ingredient": "#hbm:wires_dense/niobium"
+    }
+  ],
+  "order": 195,
+  "output_items": [
+    "hbm:battery_pack_capacitor_niobium"
+  ],
+  "power": 1000
+}

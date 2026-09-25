@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "cover_side": "hbm:block/rbmk/rbmk_blank_cover_side",
+    "cover_top": "hbm:block/rbmk/rbmk_blank_cover_top",
+    "glass_side": "hbm:block/rbmk/rbmk_blank_glass_side",
+    "glass_top": "hbm:block/rbmk/rbmk_blank_glass_top",
+    "particle": "hbm:block/rbmk/rbmk_blank_side",
+    "side": "hbm:block/rbmk/rbmk_blank_side",
+    "top": "hbm:block/rbmk/rbmk_blank_top"
+  }
+}

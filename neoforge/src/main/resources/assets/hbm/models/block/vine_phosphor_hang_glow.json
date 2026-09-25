@@ -1,0 +1,19 @@
+{
+  "ambientocclusion": false,
+  "emissive": [
+    "Cross"
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/vine_phosphor.obj",
+  "skins": {
+    "all": [
+      "Cross"
+    ]
+  },
+  "smooth": false,
+  "textures": {
+    "all": "hbm:block/vine_phosphor_spots_hang",
+    "particle": "hbm:block/vine_phosphor_spots_hang"
+  }
+}

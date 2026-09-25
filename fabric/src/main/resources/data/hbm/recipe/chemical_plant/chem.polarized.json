@@ -1,0 +1,23 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:petroleum",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:glass_panes"
+    }
+  ],
+  "order": 79,
+  "output_items": [
+    {
+      "count": 16,
+      "id": "hbm:part_generic_glass_polarized"
+    }
+  ],
+  "power": 500
+}

@@ -1,0 +1,12 @@
+{
+  "pack": {
+    "description": {
+      "translate": "pack.hbm.ctm",
+      "with": [
+        "Continuity"
+      ]
+    },
+    "max_format": 88,
+    "min_format": 88
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528_pressurized"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:aromatics",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/saltpeter"
+    }
+  ],
+  "order": 72,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:ball_tnt"
+    }
+  ],
+  "power": 1000
+}

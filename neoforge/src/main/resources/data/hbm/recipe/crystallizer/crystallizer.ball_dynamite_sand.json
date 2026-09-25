@@ -1,0 +1,22 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:nitroglycerin",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:sand_quartz"
+    }
+  ],
+  "order": 283,
+  "output_items": [
+    {
+      "count": 16,
+      "id": "hbm:ball_dynamite"
+    }
+  ]
+}

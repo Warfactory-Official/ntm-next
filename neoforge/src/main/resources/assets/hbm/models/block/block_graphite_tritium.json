@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "hbm:block/block_graphite_tritium",
+    "side": "hbm:block/block_graphite"
+  }
+}

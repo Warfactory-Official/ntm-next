@@ -1,0 +1,14 @@
+{
+  "type": "liquid",
+  "color": "#6e5222",
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 2,
+    "react": 1
+  },
+  "symbol": "NONE",
+  "temperature": 20
+}

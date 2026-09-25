@@ -1,0 +1,28 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:filing_cabinet_green"
+    }
+  ],
+  "order": 232,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:plate_steel"
+    },
+    {
+      "chance": 0.5,
+      "count": 2,
+      "id": "hbm:plate_steel"
+    },
+    {
+      "chance": 0.25,
+      "count": 2,
+      "id": "hbm:plate_polymer"
+    },
+    "hbm:scrap"
+  ],
+  "overlay": "recycling",
+  "tier": 1
+}

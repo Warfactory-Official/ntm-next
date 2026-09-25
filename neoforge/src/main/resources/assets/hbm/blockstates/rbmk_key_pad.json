@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/rbmk_key_pad_east"
+    },
+    "facing=north": {
+      "model": "hbm:block/rbmk_key_pad_north"
+    },
+    "facing=south": {
+      "model": "hbm:block/rbmk_key_pad_south"
+    },
+    "facing=west": {
+      "model": "hbm:block/rbmk_key_pad_west"
+    }
+  }
+}

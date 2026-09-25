@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "E": "hbm:hazmat_cloth"
+  },
+  "pattern": [
+    "EEE",
+    "E E",
+    "E E"
+  ],
+  "result": {
+    "id": "hbm:hazmat_legs"
+  }
+}

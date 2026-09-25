@@ -1,0 +1,21 @@
+{
+  "type": "hbm:mixer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:sunfloweroil",
+      "amount": 500
+    },
+    {
+      "type": "hbm:woodoil",
+      "amount": 500
+    }
+  ],
+  "order": 28,
+  "output_fluids": [
+    {
+      "type": "hbm:biofuel",
+      "amount": 200
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Blades",
+    "Afterburner"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/turbofan.obj",
+  "skins": {
+    "all": [
+      "Body"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/turbofan",
+    "particle": "hbm:block/models/machines/turbofan"
+  }
+}

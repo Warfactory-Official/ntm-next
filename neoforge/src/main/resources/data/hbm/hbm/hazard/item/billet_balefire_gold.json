@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 250.0
+    }
+  ],
+  "targets": "hbm:billet_balefire_gold"
+}

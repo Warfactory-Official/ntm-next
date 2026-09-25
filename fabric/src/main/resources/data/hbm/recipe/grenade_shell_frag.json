@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:bolts/steel",
+    "P": "#c:plates/aluminum",
+    "S": "#hbm:shells/steel"
+  },
+  "pattern": [
+    "B",
+    "P",
+    "S"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:grenade_shell_frag"
+  }
+}

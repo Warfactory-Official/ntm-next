@@ -1,0 +1,27 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "count": 6,
+      "ingredient": "#c:nuggets/lead"
+    },
+    "B": {
+      "ingredient": "minecraft:gunpowder"
+    },
+    "C": {
+      "ingredient": "hbm:casing_shotshell"
+    }
+  },
+  "order": 41,
+  "output_items": [
+    {
+      "count": 6,
+      "id": "hbm:ammo_standard_g12_bp"
+    }
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

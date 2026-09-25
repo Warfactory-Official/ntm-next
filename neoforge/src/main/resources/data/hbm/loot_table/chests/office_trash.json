@@ -1,0 +1,156 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 12.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:paper",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:twinkie",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:coffee",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:flame_politics",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:ring_pull",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:can_empty",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:can_creature",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:can_smart",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:can_mrsugar",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 16.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:cap_nuka",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:book_guide_starter",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:deco_computer",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:blueprint_folder",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:coin_token",
+          "weight": 2
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/office_trash"
+}

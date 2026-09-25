@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/launchpad_soyuz_east"
+    },
+    "facing=north": {
+      "model": "hbm:block/launchpad_soyuz_north"
+    },
+    "facing=south": {
+      "model": "hbm:block/launchpad_soyuz_south"
+    },
+    "facing=west": {
+      "model": "hbm:block/launchpad_soyuz_west"
+    }
+  }
+}

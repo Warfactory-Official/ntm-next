@@ -1,0 +1,8 @@
+{
+  "values": [
+    "hbm:block_insulator",
+    "hbm:block_fiberglass",
+    "hbm:block_asbestos",
+    "hbm:deco_asbestos"
+  ]
+}

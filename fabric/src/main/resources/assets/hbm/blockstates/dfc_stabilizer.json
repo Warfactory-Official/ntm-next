@@ -1,0 +1,29 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "hbm:block/dfc_stabilizer",
+      "x": 270,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "hbm:block/dfc_stabilizer",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "hbm:block/dfc_stabilizer",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "hbm:block/dfc_stabilizer"
+    },
+    "facing=up": {
+      "model": "hbm:block/dfc_stabilizer",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west": {
+      "model": "hbm:block/dfc_stabilizer",
+      "y": 90
+    }
+  }
+}

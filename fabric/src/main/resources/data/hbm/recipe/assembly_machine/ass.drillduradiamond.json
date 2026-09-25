@@ -1,0 +1,18 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "hbm:drillbit_hss"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:dusts/diamond"
+    }
+  ],
+  "order": 150,
+  "output_items": [
+    "hbm:drillbit_hss_diamond"
+  ],
+  "power": 100
+}

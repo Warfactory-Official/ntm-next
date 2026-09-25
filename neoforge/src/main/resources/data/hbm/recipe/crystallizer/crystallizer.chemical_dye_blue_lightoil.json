@@ -1,0 +1,23 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:lightoil",
+      "amount": 100
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/cobalt"
+    }
+  ],
+  "order": 327,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:chemical_dye_blue"
+    }
+  ],
+  "productivity": 0.15
+}

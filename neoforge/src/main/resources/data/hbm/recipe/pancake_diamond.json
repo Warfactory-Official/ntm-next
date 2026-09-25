@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/redstone",
+    "#c:dusts/diamond",
+    "minecraft:wheat",
+    "#c:bolts/steel",
+    "#c:fine_wires/copper",
+    "#c:plates/steel"
+  ],
+  "result": {
+    "id": "hbm:pancake"
+  }
+}

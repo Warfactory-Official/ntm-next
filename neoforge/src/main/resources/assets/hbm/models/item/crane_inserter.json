@@ -1,0 +1,45 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "rotation": 270,
+          "texture": "#down"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "up": {
+          "rotation": 90,
+          "texture": "#up"
+        },
+        "west": {
+          "texture": "#side"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "down": "hbm:block/crane_out",
+    "particle": "hbm:block/crane_in_side_up",
+    "side": "hbm:block/crane_in_side_up",
+    "up": "hbm:block/crane_in"
+  }
+}

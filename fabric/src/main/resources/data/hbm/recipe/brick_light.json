@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "minecraft:bricks",
+    "F": "minecraft:oak_fence"
+  },
+  "pattern": [
+    "FBF",
+    "BFB",
+    "FBF"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:brick_light"
+  }
+}

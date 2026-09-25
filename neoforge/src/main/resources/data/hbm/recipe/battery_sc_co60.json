@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:battery_sc_empty",
+    "#hbm:billets/cobalt_60",
+    "#hbm:billets/cobalt_60"
+  ],
+  "result": {
+    "id": "hbm:battery_sc_co60"
+  }
+}

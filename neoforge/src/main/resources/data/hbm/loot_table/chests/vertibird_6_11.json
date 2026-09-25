@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/vertibird"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 11.0,
+        "min": 6.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/vertibird_6_11"
+}

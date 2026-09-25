@@ -1,0 +1,26 @@
+{
+  "type": "hbm:precision_assembler",
+  "blueprint_pools": [
+    "discover..rpa"
+  ],
+  "duration": 3600,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "hbm:plate_armor_ajr"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/saturnite"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:plate_kevlar"
+    }
+  ],
+  "order": 57,
+  "output_items": [
+    "hbm:rpa_boots"
+  ],
+  "power": 25000
+}

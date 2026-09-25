@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/zirnox_destroyed"
+    },
+    "facing=north": {
+      "model": "hbm:block/zirnox_destroyed",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/zirnox_destroyed",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/zirnox_destroyed",
+      "y": 180
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "hbm:magic",
+  "input_items": [
+    {
+      "ingredient": "hbm:shimmer_handle"
+    },
+    {
+      "ingredient": "hbm:powder_dineutronium"
+    },
+    {
+      "ingredient": "hbm:blades_desh"
+    },
+    {
+      "ingredient": "hbm:diamond_gavel"
+    }
+  ],
+  "order": 6,
+  "output_items": [
+    "hbm:mese_gavel"
+  ]
+}

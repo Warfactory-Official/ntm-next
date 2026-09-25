@@ -1,0 +1,15 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": true,
+  "gui_light": "side",
+  "model": "hbm:models/blocks/conservecrate.obj",
+  "skins": {
+    "all": [
+      "Cube.001"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/crate_can",
+    "particle": "hbm:block/crate_can"
+  }
+}

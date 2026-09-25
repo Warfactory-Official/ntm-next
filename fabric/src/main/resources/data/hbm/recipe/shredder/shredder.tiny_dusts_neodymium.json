@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:tiny_dusts/neodymium"
+    }
+  ],
+  "order": 239,
+  "output_items": [
+    "hbm:dust_tiny"
+  ]
+}

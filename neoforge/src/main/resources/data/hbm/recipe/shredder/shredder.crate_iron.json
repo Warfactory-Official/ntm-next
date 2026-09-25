@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:crate_iron"
+    }
+  ],
+  "order": 135,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:powder_iron"
+    }
+  ]
+}

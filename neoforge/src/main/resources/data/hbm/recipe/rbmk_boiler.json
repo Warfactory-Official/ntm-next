@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#hbm:pipes/copper",
+    "P": "#hbm:shells/copper",
+    "R": "hbm:rbmk_blank"
+  },
+  "pattern": [
+    "CPC",
+    "CRC",
+    "CPC"
+  ],
+  "result": {
+    "id": "hbm:rbmk_boiler"
+  }
+}

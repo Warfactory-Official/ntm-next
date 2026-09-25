@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/ore_tungsten_deepslate"
+      },
+      {
+        "model": "hbm:block/ore_tungsten_deepslate_mirrored"
+      },
+      {
+        "model": "hbm:block/ore_tungsten_deepslate",
+        "y": 180
+      },
+      {
+        "model": "hbm:block/ore_tungsten_deepslate_mirrored",
+        "y": 180
+      }
+    ]
+  }
+}

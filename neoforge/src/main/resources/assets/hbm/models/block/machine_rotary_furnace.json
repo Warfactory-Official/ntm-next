@@ -1,0 +1,19 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Piston",
+    "Plane"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/rotary_furnace.obj",
+  "skins": {
+    "all": [
+      "Furnace"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/rotary_furnace",
+    "particle": "hbm:block/models/machines/rotary_furnace"
+  }
+}

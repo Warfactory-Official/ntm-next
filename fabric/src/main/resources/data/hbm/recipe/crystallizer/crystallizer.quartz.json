@@ -1,0 +1,23 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:oxygen",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/silicon"
+    }
+  ],
+  "order": 258,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "minecraft:quartz"
+    }
+  ],
+  "productivity": 0.1
+}

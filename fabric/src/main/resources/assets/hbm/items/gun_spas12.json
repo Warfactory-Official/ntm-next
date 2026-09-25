@@ -1,0 +1,78 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_spas12_base",
+    "draws": [
+      {
+        "matrix": [
+          -1.0,
+          0.0,
+          -8.742278E-8,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          8.742278E-8,
+          0.0,
+          -1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "MainBody",
+          "PumpGrip"
+        ]
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -8.742278E-8,
+          0.0,
+          1.0,
+          9.616506E-7,
+          0.0,
+          1.0,
+          0.0,
+          1.5,
+          -1.0,
+          0.0,
+          -8.742278E-8,
+          11.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -10.0,
+      42.5,
+      -0.0,
+      -10.0,
+      0.0,
+      5.0,
+      10.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/spas-12.obj",
+    "texture": "hbm:textures/models/weapons/spas-12.png"
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:ballistic_gauntlet",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:armor_polish",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:bandaid",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:serum",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:quartz_plutonium",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:morning_glory",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:spider_milk",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:ink",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:heart_container",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:black_diamond",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:scrumpy",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:wild_p",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:card_aos",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:card_qos",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:starmetal_sword",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gem_alexandrite",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:crackpipe",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:flask_infusion_shield",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:boxcar",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:book_of_",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_hangman",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_mas36",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:item_secret_folly",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:weapon_mod_special_nickel",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:weapon_mod_special_doubloons",
+          "weight": 1
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/red_pedestal"
+}

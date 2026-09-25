@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:ingots/tantalum"
+    }
+  ],
+  "order": 196,
+  "output_items": [
+    "hbm:battery_pack_capacitor_tantalum"
+  ],
+  "power": 10000
+}

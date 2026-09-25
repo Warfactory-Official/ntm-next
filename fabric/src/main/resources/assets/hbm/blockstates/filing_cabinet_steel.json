@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/filing_cabinet_steel_body",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "hbm:block/filing_cabinet_steel_body",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "hbm:block/filing_cabinet_steel_body"
+    },
+    "facing=west": {
+      "model": "hbm:block/filing_cabinet_steel_body",
+      "y": 90
+    }
+  }
+}

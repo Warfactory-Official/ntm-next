@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "hbm:block/pneumatic_storage_exporter"
+    }
+  }
+}

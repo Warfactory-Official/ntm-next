@@ -1,0 +1,28 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:item_expensive_lead_plating"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_welded/zirconium"
+    }
+  ],
+  "name": "ass.pwrfuelEx",
+  "order": 234,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:pwr_fuel"
+    }
+  ],
+  "power": 500
+}

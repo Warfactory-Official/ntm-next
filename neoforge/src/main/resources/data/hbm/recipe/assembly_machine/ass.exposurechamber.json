@@ -1,0 +1,51 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.chip_quantum"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#hbm:plates_cast/aluminum"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 32,
+      "ingredient": "#hbm:wires_dense/gold"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_bismoid"
+    },
+    {
+      "ingredient": "hbm:battery_pack_capacitor_tantalum"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:glass_quartz"
+    }
+  ],
+  "order": 223,
+  "output_items": [
+    "hbm:machine_exposure_chamber"
+  ],
+  "power": 100
+}

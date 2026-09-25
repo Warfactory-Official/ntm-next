@@ -1,0 +1,39 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:ingots/copper"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:wires_dense/gold"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:canister",
+      "predicates": {
+        "hbm:fluid_content": "minecraft:empty"
+      }
+    },
+    {
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 174,
+  "output_items": [
+    "hbm:machine_combustion_engine"
+  ],
+  "power": 100
+}

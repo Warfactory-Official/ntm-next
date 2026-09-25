@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "hbm:block/multiblock_geometry_cell_static_h3_r18"
+    }
+  }
+}

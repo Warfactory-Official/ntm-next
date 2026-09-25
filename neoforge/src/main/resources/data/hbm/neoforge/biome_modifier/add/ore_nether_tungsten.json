@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_nether",
+  "features": "hbm:ore_nether_tungsten",
+  "step": "underground_ores"
+}

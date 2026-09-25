@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/steel"
+    }
+  ],
+  "order": 35,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:deco_steel"
+    }
+  ],
+  "overlay": "construction",
+  "tier": 1
+}

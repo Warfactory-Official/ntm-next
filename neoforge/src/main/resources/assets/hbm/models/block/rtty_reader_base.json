@@ -1,0 +1,8 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "textures": {
+    "all": "hbm:block/rtty_reader",
+    "particle": "hbm:block/rtty_reader"
+  }
+}

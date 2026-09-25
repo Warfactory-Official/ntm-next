@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#hbm:billets/silicon"
+    }
+  ],
+  "order": 39,
+  "output_items": [
+    "hbm:circuit_silicon"
+  ],
+  "stamp": "circuit"
+}

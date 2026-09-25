@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "directional": "hbm:block/crane_in_top",
+    "directional_down": "hbm:block/crane_in_side_down",
+    "directional_up": "hbm:block/crane_in_side_up",
+    "in": "hbm:block/crane_in",
+    "out": "hbm:block/crane_out",
+    "particle": "hbm:block/crane_top",
+    "side": "hbm:block/crane_side",
+    "side_down_turn_left": "hbm:block/crane_in_side_down_turn_left",
+    "side_down_turn_right": "hbm:block/crane_in_side_down_turn_right",
+    "side_in": "hbm:block/crane_side_in",
+    "side_left_turn_down": "hbm:block/crane_in_side_left_turn_down",
+    "side_left_turn_up": "hbm:block/crane_in_side_left_turn_up",
+    "side_out": "hbm:block/crane_side_out",
+    "side_right_turn_down": "hbm:block/crane_in_side_right_turn_down",
+    "side_right_turn_up": "hbm:block/crane_in_side_right_turn_up",
+    "side_up_turn_left": "hbm:block/crane_in_side_up_turn_left",
+    "side_up_turn_right": "hbm:block/crane_in_side_up_turn_right",
+    "top": "hbm:block/crane_top",
+    "turn_left": "hbm:block/crane_in_top_left",
+    "turn_right": "hbm:block/crane_in_top_right"
+  }
+}

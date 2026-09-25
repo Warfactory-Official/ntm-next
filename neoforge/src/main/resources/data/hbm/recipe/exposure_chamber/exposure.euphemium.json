@@ -1,0 +1,15 @@
+{
+  "type": "hbm:exposure_chamber",
+  "input_items": [
+    {
+      "ingredient": "hbm:particle_dark"
+    },
+    {
+      "ingredient": "#c:ingots/plutonium"
+    }
+  ],
+  "order": 2,
+  "output_items": [
+    "hbm:ingot_euphemium"
+  ]
+}

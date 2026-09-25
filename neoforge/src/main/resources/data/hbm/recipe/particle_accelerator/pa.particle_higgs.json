@@ -1,0 +1,16 @@
+{
+  "type": "hbm:particle_accelerator",
+  "input_items": [
+    {
+      "ingredient": "hbm:particle_hydrogen"
+    },
+    {
+      "ingredient": "hbm:particle_lead"
+    }
+  ],
+  "momentum": 6500,
+  "order": 4,
+  "output_items": [
+    "hbm:particle_higgs"
+  ]
+}

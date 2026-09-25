@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "hbm:block/fissure_bomb_bottom",
+    "side": "hbm:block/fissure_bomb_side",
+    "top": "hbm:block/fissure_bomb_top"
+  }
+}

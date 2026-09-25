@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "R": "#c:fine_wires/mingrade",
+    "W": "hbm:plate_polymer"
+  },
+  "pattern": [
+    " W ",
+    "RRR",
+    " W "
+  ],
+  "result": {
+    "count": 16,
+    "id": "hbm:cable"
+  }
+}

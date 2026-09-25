@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:deco_aluminium"
+    }
+  ],
+  "order": 208,
+  "output_items": [
+    "hbm:ingot_aluminium"
+  ],
+  "overlay": "recycling",
+  "tier": 1
+}

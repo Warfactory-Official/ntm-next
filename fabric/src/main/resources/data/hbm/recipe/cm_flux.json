@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:reactor_core",
+    "N": "hbm:neutron_reflector",
+    "Z": "#hbm:plates_cast/zirconium"
+  },
+  "pattern": [
+    "NNN",
+    "ZCZ",
+    "NNN"
+  ],
+  "result": {
+    "id": "hbm:cm_flux"
+  }
+}

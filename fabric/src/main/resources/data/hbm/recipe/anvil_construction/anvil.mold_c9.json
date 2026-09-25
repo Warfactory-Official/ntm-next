@@ -1,0 +1,18 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:mold_base"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:ingots/iron"
+    }
+  ],
+  "order": 175,
+  "output_items": [
+    "hbm:mold_c9"
+  ],
+  "overlay": "construction",
+  "tier": 1
+}

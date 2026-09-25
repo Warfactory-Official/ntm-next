@@ -1,0 +1,29 @@
+{
+  "parent": "hbm:horizonsstart",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "item": {
+          "items": "hbm:sat_gerald"
+        }
+      },
+      "trigger": "hbm:satellite_action"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.horizonsEnd.desc"
+    },
+    "icon": {
+      "id": "hbm:sat_gerald"
+    },
+    "title": {
+      "translate": "achievement.horizonsEnd"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

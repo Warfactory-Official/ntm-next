@@ -1,0 +1,27 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:cobblestones"
+    },
+    {
+      "count": 16,
+      "ingredient": "#minecraft:planks"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:pipes/lead"
+    }
+  ],
+  "order": 60,
+  "output_items": [
+    "hbm:pump_steam"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

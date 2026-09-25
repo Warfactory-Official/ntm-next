@@ -1,0 +1,22 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/dura_steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "ingredient": "hbm:motor"
+    }
+  ],
+  "order": 38,
+  "output_items": [
+    "hbm:centrifuge_element"
+  ],
+  "power": 100
+}

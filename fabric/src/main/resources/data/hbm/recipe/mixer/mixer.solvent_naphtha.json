@@ -1,0 +1,21 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:naphtha",
+      "amount": 500
+    },
+    {
+      "type": "hbm:aromatics",
+      "amount": 500
+    }
+  ],
+  "order": 15,
+  "output_fluids": [
+    {
+      "type": "hbm:solvent",
+      "amount": 1000
+    }
+  ]
+}

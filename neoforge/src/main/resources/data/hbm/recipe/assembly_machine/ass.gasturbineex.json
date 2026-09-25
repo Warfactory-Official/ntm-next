@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:wires_dense/gold"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:pipes/dura_steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:turbine_tungsten"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.gasturbineEx",
+  "order": 183,
+  "output_items": [
+    "hbm:machine_turbinegas"
+  ],
+  "power": 100
+}

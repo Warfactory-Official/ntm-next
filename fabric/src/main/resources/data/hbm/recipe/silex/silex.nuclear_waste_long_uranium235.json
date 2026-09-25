@@ -1,0 +1,40 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": "hbm:nuclear_waste_long_uranium235"
+    }
+  ],
+  "laser_strength": "ir",
+  "order": 270,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_neptunium"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_pu239"
+        },
+        "weight": 45
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_pu240"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_technetium"
+        },
+        "weight": 15
+      }
+    ]
+  ]
+}

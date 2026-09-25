@@ -1,0 +1,59 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_hangman_base",
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          2.0,
+          0.0,
+          0.0,
+          2.0,
+          0.0,
+          0.0,
+          -2.0,
+          0.0,
+          -0.0,
+          29.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -2.5,
+      0.0,
+      -0.0,
+      -2.5,
+      0.0,
+      0.0,
+      2.5,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/hangman.obj",
+    "parts": [
+      "Bullets",
+      "Internals",
+      "Magazine",
+      "Lid",
+      "Rifle"
+    ],
+    "texture": "hbm:textures/models/weapons/hangman.png"
+  }
+}

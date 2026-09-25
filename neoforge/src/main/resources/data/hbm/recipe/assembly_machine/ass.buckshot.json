@@ -1,0 +1,15 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 50,
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "#c:nuggets/lead"
+    }
+  ],
+  "order": 289,
+  "output_items": [
+    "hbm:pellet_buckshot"
+  ],
+  "power": 100
+}

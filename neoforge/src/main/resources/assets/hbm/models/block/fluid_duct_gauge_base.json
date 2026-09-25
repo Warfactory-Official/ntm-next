@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "base": "hbm:block/deco_steel",
+    "gauge": "hbm:block/pipe_gauge",
+    "overlay": "hbm:block/fluid_duct_paintable_overlay",
+    "particle": "hbm:block/deco_steel"
+  }
+}

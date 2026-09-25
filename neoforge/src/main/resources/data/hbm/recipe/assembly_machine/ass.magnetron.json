@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 40,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:fine_wires/tungsten"
+    }
+  ],
+  "order": 43,
+  "output_items": [
+    "hbm:magnetron"
+  ],
+  "power": 100
+}

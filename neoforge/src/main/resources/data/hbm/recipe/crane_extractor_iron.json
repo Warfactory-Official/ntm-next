@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:conveyor_wand_regular",
+    "C": "#c:ingots/iron",
+    "P": "hbm:part_generic_piston_pneumatic"
+  },
+  "pattern": [
+    "CCC",
+    "CPC",
+    "CBC"
+  ],
+  "result": {
+    "count": 2,
+    "id": "hbm:crane_extractor"
+  }
+}

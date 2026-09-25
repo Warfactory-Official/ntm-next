@@ -1,0 +1,20 @@
+{
+  "type": "gaseous",
+  "color": "#483fc1",
+  "nfpa": {
+    "flame": 4,
+    "health": 0,
+    "react": 2
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "combustible": {
+      "energy": 15000,
+      "grade": "GAS"
+    },
+    "flammable": {
+      "energy": 5000
+    }
+  }
+}

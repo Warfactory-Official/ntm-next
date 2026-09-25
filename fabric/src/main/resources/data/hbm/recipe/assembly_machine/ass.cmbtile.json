@@ -1,0 +1,22 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:concretes"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/cmbsteel"
+    }
+  ],
+  "order": 57,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:cmb_brick"
+    }
+  ],
+  "power": 100
+}

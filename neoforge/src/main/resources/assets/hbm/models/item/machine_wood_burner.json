@@ -1,0 +1,171 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -0.0,
+        -85.0,
+        25.00001
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        -0.44390845,
+        2.9045067,
+        -5.073893
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -0.0,
+        -85.0,
+        25.00001
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.09141817,
+        5.768655,
+        1.0449164
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        9.252501,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        1.90625,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30.0,
+        -45.000008,
+        -0.0
+      ],
+      "scale": [
+        0.21875001,
+        0.21874999,
+        0.21875
+      ],
+      "translation": [
+        -2.3841858E-7,
+        0.5033549,
+        -6.554687
+      ]
+    },
+    "head": {
+      "rotation": [
+        -148.67021,
+        -35.63104,
+        19.52547
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        2.6968994,
+        -29.47462,
+        3.2140398
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0.0,
+        23.625,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        141.87373,
+        -71.3061,
+        127.868614
+      ],
+      "scale": [
+        0.140625,
+        0.140625,
+        0.14062499
+      ],
+      "translation": [
+        -1.816134,
+        5.278166,
+        0.2525252
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        141.87373,
+        -71.3061,
+        127.868614
+      ],
+      "scale": [
+        0.140625,
+        0.140625,
+        0.14062499
+      ],
+      "translation": [
+        -2.1258087,
+        4.86578,
+        1.7396177
+      ]
+    }
+  },
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/wood_burner.obj",
+  "offset_y": -1.46875,
+  "skins": {
+    "all": [
+      "Cylinder"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/wood_burner",
+    "particle": "hbm:block/models/machines/wood_burner"
+  }
+}

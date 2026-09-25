@@ -1,0 +1,13 @@
+{
+  "type": "hbm:single_piece",
+  "biomes": [
+    "minecraft:badlands",
+    "minecraft:desert",
+    "minecraft:eroded_badlands",
+    "minecraft:wooded_badlands"
+  ],
+  "height_offset": -7,
+  "spawn_overrides": {},
+  "start_pool": "hbm:single/desert_shack_2",
+  "step": "strongholds"
+}

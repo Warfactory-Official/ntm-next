@@ -1,0 +1,21 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Canister",
+    "Hatch"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/combustion_engine.obj",
+  "offset_x": -0.5,
+  "offset_z": 3.0,
+  "skins": {
+    "all": [
+      "Engine"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/combustion_engine",
+    "particle": "hbm:block/models/machines/combustion_engine"
+  }
+}

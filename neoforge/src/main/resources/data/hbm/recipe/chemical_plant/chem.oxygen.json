@@ -1,0 +1,28 @@
+{
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 20,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:oxygen",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:gas_tank"
+  },
+  "input_fluids": [
+    {
+      "type": "hbm:air",
+      "amount": 8000
+    }
+  ],
+  "order": 2,
+  "output_fluids": [
+    {
+      "type": "hbm:oxygen",
+      "amount": 500
+    }
+  ],
+  "power": 400
+}

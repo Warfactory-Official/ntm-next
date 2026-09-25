@@ -1,0 +1,32 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_rubber"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:part_generic_piston_hydraulic"
+    },
+    {
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 140,
+  "output_items": [
+    "hbm:machine_epress"
+  ],
+  "power": 100
+}

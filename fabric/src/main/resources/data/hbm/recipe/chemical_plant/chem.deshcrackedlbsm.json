@@ -1,0 +1,28 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "lbsm_simple_chemistry"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:lightoil_crack",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_desh_mix"
+    }
+  ],
+  "name": "chem.deshcrackedLbsm",
+  "order": 37,
+  "output_items": [
+    "hbm:ingot_desh"
+  ],
+  "power": 100
+}

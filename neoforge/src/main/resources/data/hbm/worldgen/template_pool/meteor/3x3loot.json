@@ -1,0 +1,149 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-bale",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-blank",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-block",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-crab",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-crab-tesla",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-crate",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-dirt",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-lead",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-ooze",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-pillar",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-star",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-tesla",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-book",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-mku",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-statue",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/loot3x3/meteor-3-glow",
+        "processors": "hbm:no_rules",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "hbm:meteor/3x3loot"
+}

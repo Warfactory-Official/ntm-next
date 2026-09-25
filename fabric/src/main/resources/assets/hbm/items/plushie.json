@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "hbm:plushie",
+    "base": "hbm:item/plushie_base"
+  }
+}

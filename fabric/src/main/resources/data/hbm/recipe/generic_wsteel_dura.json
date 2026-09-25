@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:plates/weapon_steel",
+    "#hbm:plates_cast/weapon_steel",
+    "hbm:ducttape"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_generic_wsteel_dura"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": "#c:fine_wires/copper"
+  },
+  "pattern": [
+    "W ",
+    " W",
+    " W"
+  ],
+  "result": {
+    "id": "hbm:pin"
+  }
+}

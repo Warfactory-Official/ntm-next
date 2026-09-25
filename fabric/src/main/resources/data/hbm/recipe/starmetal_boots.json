@@ -1,0 +1,26 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!lbsm_simple_armor"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:cobalt_boots",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "E": "#c:ingots/starmetal"
+  },
+  "pattern": [
+    "E E",
+    "ECE"
+  ],
+  "result": {
+    "id": "hbm:starmetal_boots"
+  }
+}

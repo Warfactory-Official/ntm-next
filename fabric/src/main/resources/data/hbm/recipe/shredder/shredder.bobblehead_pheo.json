@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:bobblehead_pheo"
+    }
+  ],
+  "order": 191,
+  "output_items": [
+    "hbm:scrap_plastic_mem_16k_b"
+  ]
+}

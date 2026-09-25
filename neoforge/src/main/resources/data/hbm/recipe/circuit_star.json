@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:circuit_star_component_chipset",
+    "hbm:circuit_star_component_cpu",
+    "hbm:circuit_star_component_ram",
+    "hbm:circuit_star_component_card",
+    "hbm:circuit_star_piece_board_transistor",
+    "hbm:circuit_star_piece_board_converter",
+    "hbm:circuit_star_piece_board_blank"
+  ],
+  "result": {
+    "id": "hbm:circuit_star"
+  }
+}

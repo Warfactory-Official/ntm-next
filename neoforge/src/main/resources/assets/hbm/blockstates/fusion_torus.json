@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "tilted=false": {
+      "model": "hbm:block/fusion_torus"
+    },
+    "tilted=true": {
+      "model": "hbm:block/fusion_torus_tilted"
+    }
+  }
+}

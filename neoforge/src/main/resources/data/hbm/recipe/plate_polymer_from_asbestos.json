@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#c:ingots/asbestos"
+  },
+  "pattern": [
+    "DD"
+  ],
+  "result": {
+    "count": 16,
+    "id": "hbm:plate_polymer"
+  }
+}

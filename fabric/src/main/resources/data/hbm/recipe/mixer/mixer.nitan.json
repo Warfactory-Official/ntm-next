@@ -1,0 +1,26 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:kerosene",
+      "amount": 600
+    },
+    {
+      "type": "hbm:mercury",
+      "amount": 200
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_nitan_mix"
+    }
+  ],
+  "order": 2,
+  "output_fluids": [
+    {
+      "type": "hbm:nitan",
+      "amount": 1000
+    }
+  ]
+}

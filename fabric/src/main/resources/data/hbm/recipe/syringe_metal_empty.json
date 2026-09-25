@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "minecraft:iron_bars",
+    "C": "hbm:rod_empty",
+    "P": "#c:plates/iron"
+  },
+  "pattern": [
+    "P",
+    "C",
+    "B"
+  ],
+  "result": {
+    "count": 6,
+    "id": "hbm:syringe_metal_empty"
+  }
+}

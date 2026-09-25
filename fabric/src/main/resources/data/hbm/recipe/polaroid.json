@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:dusts/lapis",
+    "C": "#c:dusts/coal",
+    "P": "minecraft:paper",
+    "R": "#c:dusts/mingrade",
+    "Y": "#c:dusts/gold"
+  },
+  "pattern": [
+    " C ",
+    "RPY",
+    " B "
+  ],
+  "result": {
+    "id": "hbm:polaroid"
+  }
+}

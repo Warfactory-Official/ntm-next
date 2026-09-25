@@ -1,0 +1,31 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools": [
+    "secret.psalm"
+  ],
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:casing_large_steel"
+    },
+    {
+      "count": 24,
+      "ingredient": "#hbm:dusts/any_smokeless"
+    },
+    {
+      "ingredient": "hbm:item_secret_selenium_steel"
+    },
+    {
+      "ingredient": "hbm:black_diamond"
+    }
+  ],
+  "order": 410,
+  "output_items": [
+    {
+      "count": 12,
+      "id": "hbm:ammo_secret_bmg50_black"
+    }
+  ],
+  "power": 100
+}

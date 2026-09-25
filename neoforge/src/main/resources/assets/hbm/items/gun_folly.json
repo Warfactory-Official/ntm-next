@@ -1,0 +1,33 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_folly_base",
+    "mod_table": [
+      0.0,
+      0.0,
+      -8.75,
+      0.0,
+      -0.0,
+      -8.75,
+      0.0,
+      8.75,
+      8.75,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/folly.obj",
+    "parts": [
+      "Cannon",
+      "Barrel",
+      "Shell",
+      "Breech",
+      "Cog"
+    ],
+    "texture": "hbm:textures/models/weapons/moonlight.png"
+  }
+}

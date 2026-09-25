@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_redstone"
+    }
+  ],
+  "order": 100,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "minecraft:redstone"
+    }
+  ]
+}

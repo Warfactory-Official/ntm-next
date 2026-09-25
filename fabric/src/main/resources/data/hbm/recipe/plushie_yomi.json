@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:rag",
+    "L": "minecraft:carrot",
+    "R": "hbm:circuit_vacuum_tube"
+  },
+  "pattern": [
+    "LCR"
+  ],
+  "result": {
+    "id": "hbm:plushie_yomi"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "efficiency": 0.85,
+  "input_tank_capacity": 64000,
+  "maximum_steam_per_tick": 6000,
+  "output_tank_capacity": 128000,
+  "power_capacity": 1000000
+}

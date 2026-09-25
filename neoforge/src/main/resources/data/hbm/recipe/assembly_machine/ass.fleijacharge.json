@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/schrabidium"
+    }
+  ],
+  "order": 321,
+  "output_items": [
+    "hbm:fleija_propellant"
+  ],
+  "power": 100
+}

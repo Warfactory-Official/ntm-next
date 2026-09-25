@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:storage_blocks/steel",
+    "G": "#c:ingots/gun_metal",
+    "I": "#c:ingots/titanium",
+    "L": "#hbm:ingots/any_rubber",
+    "P": "hbm:piston_selenium"
+  },
+  "pattern": [
+    " GL",
+    "IBP",
+    " GL"
+  ],
+  "result": {
+    "id": "hbm:gun_drill"
+  }
+}

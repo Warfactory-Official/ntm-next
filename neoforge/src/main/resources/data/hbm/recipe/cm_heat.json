@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:ingots/copper",
+    "P": "hbm:plate_polymer"
+  },
+  "pattern": [
+    "PCP",
+    "PCP",
+    "PCP"
+  ],
+  "result": {
+    "id": "hbm:cm_heat"
+  }
+}

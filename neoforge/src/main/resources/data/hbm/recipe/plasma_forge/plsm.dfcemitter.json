@@ -1,0 +1,30 @@
+{
+  "type": "hbm:plasma_forge",
+  "duration": 1200,
+  "ignition_temp": 50000000,
+  "input_fluids": [
+    {
+      "type": "hbm:stellar_flux",
+      "amount": 4000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#hbm:plates_welded/osmiridium"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:wires_dense/starmetal"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_controller_quantum"
+    }
+  ],
+  "order": 43,
+  "output_items": [
+    "hbm:dfc_emitter"
+  ],
+  "power": 10000000
+}

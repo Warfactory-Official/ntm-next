@@ -1,0 +1,47 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.plastic"
+  ],
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:concrete_smooth"
+    },
+    {
+      "ingredient": "hbm:drill_titanium"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "count": 24,
+      "ingredient": "hbm:plate_desh"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_capacitor"
+    }
+  ],
+  "order": 112,
+  "output_items": [
+    "hbm:machine_fracking_tower"
+  ],
+  "power": 100
+}

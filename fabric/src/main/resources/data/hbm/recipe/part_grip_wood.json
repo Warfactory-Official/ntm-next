@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": "#minecraft:planks"
+  },
+  "pattern": [
+    "W ",
+    " W",
+    " W"
+  ],
+  "result": {
+    "id": "hbm:part_grip_wood"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "parent": "hbm:chemplant",
+  "criteria": {
+    "crafted_hbm_ingot_desh_from_block": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_desh_from_block"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_ingot_desh_from_electrode": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_desh_from_electrode"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_ingot_desh_from_powder": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_desh_from_powder"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": "hbm:ingot_desh"
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.desh.desc"
+    },
+    "icon": {
+      "id": "hbm:ingot_desh"
+    },
+    "title": {
+      "translate": "achievement.desh"
+    }
+  },
+  "requirements": [
+    [
+      "crafted_hbm_ingot_desh_from_block",
+      "crafted_hbm_ingot_desh_from_powder",
+      "crafted_hbm_ingot_desh_from_electrode",
+      "produced"
+    ]
+  ]
+}

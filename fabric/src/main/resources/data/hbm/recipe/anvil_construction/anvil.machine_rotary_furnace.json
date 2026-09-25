@@ -1,0 +1,27 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "minecraft:stone_bricks"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:ingot_firebrick"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/iron"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/copper"
+    }
+  ],
+  "order": 70,
+  "output_items": [
+    "hbm:machine_rotary_furnace"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

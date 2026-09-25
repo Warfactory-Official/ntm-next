@@ -1,0 +1,67 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    },
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:precision_assembler",
+  "duration": 400,
+  "icon": {
+    "components": {
+      "hbm:broken_item_source": "hbm:circuit_controller"
+    },
+    "id": "hbm:broken_item"
+  },
+  "input_items": [
+    {
+      "components": {
+        "hbm:broken_item_source": "hbm:circuit_controller"
+      },
+      "ingredient": "hbm:broken_item"
+    }
+  ],
+  "name_wrapper": "precass.recycle",
+  "order": 15,
+  "output_fluids": [
+    {
+      "type": "hbm:perfluoromethyl",
+      "amount": 900
+    }
+  ],
+  "output_items": [
+    {
+      "chance": 0.9,
+      "count": 32,
+      "id": "hbm:circuit_chip"
+    },
+    {
+      "chance": 0.9,
+      "count": 32,
+      "id": "hbm:circuit_capacitor"
+    },
+    {
+      "chance": 0.9,
+      "count": 16,
+      "id": "hbm:circuit_capacitor_tantalium"
+    },
+    {
+      "chance": 0.9,
+      "id": "hbm:circuit_controller_chassis"
+    },
+    {
+      "chance": 0.9,
+      "id": "hbm:upgrade_speed_1"
+    },
+    {
+      "chance": 0.9,
+      "count": 16,
+      "id": "hbm:wire_fine_lead"
+    }
+  ],
+  "power": 15000
+}

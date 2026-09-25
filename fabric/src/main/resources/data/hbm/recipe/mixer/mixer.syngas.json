@@ -1,0 +1,21 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:coaloil",
+      "amount": 500
+    },
+    {
+      "type": "hbm:steam",
+      "amount": 500
+    }
+  ],
+  "order": 32,
+  "output_fluids": [
+    {
+      "type": "hbm:syngas",
+      "amount": 1000
+    }
+  ]
+}

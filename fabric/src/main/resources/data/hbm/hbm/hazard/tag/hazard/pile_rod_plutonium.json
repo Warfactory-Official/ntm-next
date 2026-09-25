@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 6.425
+    }
+  ],
+  "targets": "#hbm:hazard/pile_rod_plutonium"
+}

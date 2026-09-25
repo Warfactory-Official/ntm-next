@@ -1,0 +1,92 @@
+name: Build NTM
+
+on:
+  push:
+    branches: [master]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    container: gcc:16.2.0-trixie
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Build both loaders and their source jars
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends cmake ninja-build
+          chmod +x gradlew
+          ./gradlew build :fabric:sourcesJar :neoforge:sourcesJar --stacktrace
+
+  natives:
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))
+    uses: ./.github/workflows/natives.yml
+
+  publish:
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))
+    needs: [check, natives]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: ntm-natives-*
+          merge-multiple: true
+          path: build/native/native-supplied
+      - name: Build both loaders and their source jars
+        run: |
+          chmod +x gradlew
+          ./gradlew :fabric:build :neoforge:build :fabric:sourcesJar :neoforge:sourcesJar -Phbm.native.platforms=all --stacktrace
+      - name: Publish snapshot to Warfactory Maven
+        if: github.ref == 'refs/heads/master' && github.repository == 'Warfactory-Official/ntm-next'
+        env:
+          MAVEN_USER: ${{ secrets.MAVEN_USER }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+        run: |
+          if [ -z "$MAVEN_USER" ] || [ -z "$MAVEN_PASSWORD" ]; then
+            echo '::notice::Configure MAVEN_USER and MAVEN_PASSWORD to publish snapshots'
+            exit 0
+          fi
+          ./gradlew :fabric:publishMavenJarPublicationToWarfactoryRepository \
+            :neoforge:publishMavenJarPublicationToWarfactoryRepository \
+            -Phbm.native.platforms=all --stacktrace
+      - name: Check release tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          mod_version=$(sed -n 's/^mod_version=//p' gradle.properties)
+          minecraft_version=$(sed -n 's/^minecraft_version=//p' gradle.properties)
+          expected="v${mod_version}+mc${minecraft_version}"
+          if [ "$GITHUB_REF_NAME" != "$expected" ]; then
+            echo "::error::Expected tag $expected, got $GITHUB_REF_NAME"
+            exit 1
+          fi
+      - name: Publish both loaders to Warfactory Maven
+        if: startsWith(github.ref, 'refs/tags/v') && github.repository == 'Warfactory-Official/ntm-next'
+        env:
+          MAVEN_USER: ${{ secrets.MAVEN_USER }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+        run: |
+          test -n "$MAVEN_USER" && test -n "$MAVEN_PASSWORD" || {
+            echo '::error::MAVEN_USER and MAVEN_PASSWORD must be configured'
+            exit 1
+          }
+          ./gradlew :fabric:publishMavenJarPublicationToWarfactoryRepository \
+            :neoforge:publishMavenJarPublicationToWarfactoryRepository \
+            -Phbm.native.platforms=all -Pbuild.release=true --stacktrace

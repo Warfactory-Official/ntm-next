@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:ingot_chainsteel",
+    "#c:ingots/asbestos",
+    "hbm:gem_alexandrite"
+  ],
+  "result": {
+    "id": "hbm:parts_legendary_tier1"
+  }
+}

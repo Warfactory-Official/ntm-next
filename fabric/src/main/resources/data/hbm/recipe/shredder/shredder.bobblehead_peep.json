@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:bobblehead_peep"
+    }
+  ],
+  "order": 199,
+  "output_items": [
+    "hbm:scrap_plastic_card_board"
+  ]
+}

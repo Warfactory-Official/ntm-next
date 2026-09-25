@@ -1,0 +1,26 @@
+{
+  "type": "hbm:catalytic_reformer",
+  "duration": 1,
+  "input_fluids": [
+    {
+      "type": "hbm:cholesterol",
+      "amount": 100
+    }
+  ],
+  "order": 8,
+  "output_fluids": [
+    {
+      "type": "hbm:estradiol",
+      "amount": 50
+    },
+    {
+      "type": "hbm:reformgas",
+      "amount": 35
+    },
+    {
+      "type": "hbm:hydrogen",
+      "amount": 15
+    }
+  ],
+  "power": 20000
+}

@@ -1,0 +1,21 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_10"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/dura_steel"
+    },
+    {
+      "ingredient": "hbm:arc_electrode_graphite"
+    }
+  ],
+  "order": 366,
+  "output_items": [
+    "hbm:mp_thruster_10_xenon"
+  ],
+  "power": 100
+}

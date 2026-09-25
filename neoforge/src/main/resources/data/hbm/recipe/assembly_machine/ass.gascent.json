@@ -1,0 +1,39 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.gascent"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:centrifuge_element"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:ingots/workers_alloy"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "ingredient": "hbm:circuit_advanced"
+    }
+  ],
+  "order": 99,
+  "output_items": [
+    "hbm:machine_gascent"
+  ],
+  "power": 100
+}

@@ -1,0 +1,26 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:ingots/iron"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:ingots/copper"
+    },
+    {
+      "ingredient": "hbm:circuit_vacuum_tube"
+    }
+  ],
+  "order": 81,
+  "output_items": [
+    "hbm:machine_thresher"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

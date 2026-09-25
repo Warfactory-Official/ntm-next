@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#c:plates/aluminum",
+    "S": "#c:plates/steel"
+  },
+  "pattern": [
+    "SAS",
+    "   ",
+    "SAS"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:fluid_pipe"
+  }
+}

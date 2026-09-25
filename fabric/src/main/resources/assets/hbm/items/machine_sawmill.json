@@ -1,0 +1,20 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/machine_sawmill_no_blade"
+        },
+        "when": false
+      }
+    ],
+    "component": "hbm:has_blade",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:item/machine_sawmill"
+    },
+    "property": "minecraft:component"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "earned": {
+      "trigger": "hbm:room_opened"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.redRoom.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:key_red"
+    },
+    "title": {
+      "translate": "achievement.redRoom"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

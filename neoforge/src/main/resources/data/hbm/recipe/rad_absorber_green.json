@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:powder_desh_mix",
+    "I": "#hbm:ingots/any_plastic",
+    "P": "hbm:rad_absorber_red"
+  },
+  "pattern": [
+    "ICI",
+    "CPC",
+    "ICI"
+  ],
+  "result": {
+    "id": "hbm:rad_absorber_green"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "block_state_property": "variant",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:block/platemetal_base"
+        },
+        "when": "base"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:block/platemetal_black"
+        },
+        "when": "black"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:block/platemetal_white"
+        },
+        "when": "white"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:block/platemetal_red"
+        },
+        "when": "red"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:block/platemetal_green"
+        },
+        "when": "green"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:block/platemetal_light_gray"
+        },
+        "when": "light_gray"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:block/platemetal_blue"
+        },
+        "when": "blue"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:block/platemetal_purple"
+        },
+        "when": "purple"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:block/platemetal_cyan"
+        },
+        "when": "cyan"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:block/platemetal_pink"
+        },
+        "when": "pink"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:block/platemetal_lime"
+        },
+        "when": "lime"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:block/platemetal_yellow"
+        },
+        "when": "yellow"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:block/platemetal_light_blue"
+        },
+        "when": "light_blue"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:block/platemetal_magenta"
+        },
+        "when": "magenta"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:block/platemetal_orange"
+        },
+        "when": "orange"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:block/platemetal_base"
+    },
+    "property": "minecraft:block_state"
+  }
+}

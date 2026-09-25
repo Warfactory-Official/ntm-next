@@ -1,0 +1,31 @@
+{
+  "type": "hbm:purex",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 1000
+    },
+    {
+      "type": "hbm:hydrogen",
+      "amount": 4000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:billet_uranium_fuel"
+    },
+    {
+      "count": 3,
+      "ingredient": "#hbm:billets/zirconium"
+    }
+  ],
+  "order": 0,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:billet_uzh"
+    }
+  ],
+  "power": 1000
+}

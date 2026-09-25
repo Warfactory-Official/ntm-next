@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "hbm:gun_flamer",
+    "M": "#hbm:gun_mechanisms/weapon_steel"
+  },
+  "pattern": [
+    " M ",
+    "MAM",
+    " M "
+  ],
+  "result": {
+    "id": "hbm:gun_flamer_topaz"
+  }
+}

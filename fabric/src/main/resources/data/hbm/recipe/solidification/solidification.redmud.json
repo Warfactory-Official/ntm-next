@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:redmud",
+      "amount": 450
+    }
+  ],
+  "order": 5,
+  "output_items": [
+    "minecraft:iron_ingot"
+  ]
+}

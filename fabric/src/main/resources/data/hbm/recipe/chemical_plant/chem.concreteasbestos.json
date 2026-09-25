@@ -1,0 +1,38 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!lbsm_simple_chemistry"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 2000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:powder_cement"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/asbestos"
+    },
+    {
+      "count": 8,
+      "ingredient": "#minecraft:sand"
+    }
+  ],
+  "order": 24,
+  "output_items": [
+    {
+      "count": 16,
+      "id": "hbm:concrete_asbestos"
+    }
+  ],
+  "power": 100
+}

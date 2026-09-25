@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:string",
+    "minecraft:string",
+    "minecraft:string"
+  ],
+  "result": {
+    "id": "hbm:plant_item_rope"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/snow_height14",
+  "textures": {
+    "particle": "hbm:block/oil_spill",
+    "texture": "hbm:block/oil_spill"
+  }
+}

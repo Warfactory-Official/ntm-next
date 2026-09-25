@@ -1,0 +1,31 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.tcalloy"
+  ],
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "hbm:item_expensive_lead_plating"
+    },
+    {
+      "ingredient": "#hbm:plates_welded/any_resistant_alloy"
+    }
+  ],
+  "name": "ass.watzcasingEx",
+  "order": 282,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:watz_end"
+    }
+  ],
+  "power": 100
+}

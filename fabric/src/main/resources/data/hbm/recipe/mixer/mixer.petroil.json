@@ -1,0 +1,21 @@
+{
+  "type": "hbm:mixer",
+  "duration": 30,
+  "input_fluids": [
+    {
+      "type": "hbm:reclaimed",
+      "amount": 800
+    },
+    {
+      "type": "hbm:lubricant",
+      "amount": 200
+    }
+  ],
+  "order": 23,
+  "output_fluids": [
+    {
+      "type": "hbm:petroil",
+      "amount": 1000
+    }
+  ]
+}

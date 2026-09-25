@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:woodoil",
+      "amount": 1000
+    }
+  ],
+  "order": 18,
+  "output_items": [
+    "hbm:oil_tar_wood"
+  ]
+}

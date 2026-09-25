@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:brick"
+    }
+  ],
+  "order": 30,
+  "output_items": [
+    "minecraft:clay_ball"
+  ]
+}

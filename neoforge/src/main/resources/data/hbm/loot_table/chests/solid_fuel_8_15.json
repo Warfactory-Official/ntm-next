@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/solid_fuel"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 15.0,
+        "min": 8.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/solid_fuel_8_15"
+}

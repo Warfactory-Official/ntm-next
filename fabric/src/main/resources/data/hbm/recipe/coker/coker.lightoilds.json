@@ -1,0 +1,19 @@
+{
+  "type": "hbm:coker",
+  "input_fluids": [
+    {
+      "type": "hbm:lightoil_ds",
+      "amount": 180
+    }
+  ],
+  "order": 15,
+  "output_fluids": [
+    {
+      "type": "hbm:gas_coker",
+      "amount": 18
+    }
+  ],
+  "output_items": [
+    "hbm:coke_petroleum"
+  ]
+}

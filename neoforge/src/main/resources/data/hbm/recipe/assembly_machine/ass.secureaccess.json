@@ -1,0 +1,31 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:plate_polymer"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:bolts/dura_steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:dyes/red"
+    }
+  ],
+  "order": 73,
+  "output_items": [
+    "hbm:secure_access_door"
+  ],
+  "power": 100
+}

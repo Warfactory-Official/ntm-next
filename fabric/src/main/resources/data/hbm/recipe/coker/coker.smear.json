@@ -1,0 +1,19 @@
+{
+  "type": "hbm:coker",
+  "input_fluids": [
+    {
+      "type": "hbm:smear",
+      "amount": 7900
+    }
+  ],
+  "order": 3,
+  "output_fluids": [
+    {
+      "type": "hbm:oil_coker",
+      "amount": 790
+    }
+  ],
+  "output_items": [
+    "hbm:coke_petroleum"
+  ]
+}

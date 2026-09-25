@@ -1,0 +1,31 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "minecraft:stone_bricks"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/iron"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/copper"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:steel_grate"
+    }
+  ],
+  "order": 68,
+  "output_items": [
+    "hbm:furnace_steel"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

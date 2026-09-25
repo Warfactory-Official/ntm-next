@@ -1,0 +1,43 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:pile_block"
+  ],
+  "ctm_textures": {
+    "hbm:block/pile_block": "hbm:block/ctm_lib/pile_block",
+    "hbm:block/pile_block_control_top": "hbm:block/ctm_lib/pile_block_control_top",
+    "hbm:block/pile_block_core": "hbm:block/ctm_lib/pile_block_core",
+    "hbm:block/pile_block_input": "hbm:block/ctm_lib/pile_block_input",
+    "hbm:block/pile_block_output": "hbm:block/ctm_lib/pile_block_output",
+    "hbm:block/pile_block_top": "hbm:block/ctm_lib/pile_block_top"
+  },
+  "variants": {
+    "role=air_in": {
+      "model": "hbm:block/pile_block_input"
+    },
+    "role=air_out": {
+      "model": "hbm:block/pile_block_output"
+    },
+    "role=channel": {
+      "model": "hbm:block/pile_block"
+    },
+    "role=control": {
+      "model": "hbm:block/pile_block_control"
+    },
+    "role=core": {
+      "model": "hbm:block/pile_block_core"
+    },
+    "role=dummy": {
+      "model": "hbm:block/pile_block"
+    },
+    "role=edge": {
+      "model": "hbm:block/pile_block"
+    },
+    "role=fuel_in": {
+      "model": "hbm:block/pile_block_input"
+    },
+    "role=fuel_out": {
+      "model": "hbm:block/pile_block_output"
+    }
+  }
+}

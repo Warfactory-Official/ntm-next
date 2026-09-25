@@ -1,0 +1,17 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/iron"
+    }
+  ],
+  "order": 0,
+  "output_items": [
+    "hbm:powder_iron",
+    "hbm:powder_iron",
+    "hbm:powder_iron",
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

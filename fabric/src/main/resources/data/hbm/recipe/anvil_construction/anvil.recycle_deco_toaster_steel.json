@@ -1,0 +1,34 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:deco_toaster_steel"
+    }
+  ],
+  "order": 226,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:plate_steel"
+    },
+    "hbm:scrap",
+    {
+      "count": 2,
+      "id": "hbm:coil_tungsten"
+    },
+    {
+      "chance": 0.5,
+      "id": "minecraft:bread"
+    },
+    {
+      "chance": 0.1,
+      "id": "hbm:battery_sc_ra226"
+    },
+    {
+      "chance": 0.05,
+      "id": "hbm:fusion_core"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

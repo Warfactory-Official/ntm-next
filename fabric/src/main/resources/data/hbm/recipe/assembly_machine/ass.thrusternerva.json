@@ -1,0 +1,27 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 32,
+      "ingredient": "#c:ingots/dura_steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/boron"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:plates/lead"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/steel"
+    }
+  ],
+  "order": 359,
+  "output_items": [
+    "hbm:thruster_nuclear"
+  ],
+  "power": 100
+}

@@ -1,0 +1,36 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.plastic"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbm:steel_scaffold"
+    },
+    {
+      "count": 6,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:ingots/workers_alloy"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/niobium"
+    }
+  ],
+  "order": 118,
+  "output_items": [
+    "hbm:machine_cracking_tower"
+  ],
+  "power": 100
+}

@@ -1,0 +1,30 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 120,
+  "input_fluids": [
+    {
+      "type": "hbm:gas",
+      "amount": 1000
+    },
+    {
+      "type": "hbm:oxygen",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_coltan"
+    },
+    {
+      "ingredient": "#c:dusts/fluorite"
+    }
+  ],
+  "order": 65,
+  "output_fluids": [
+    {
+      "type": "hbm:pain",
+      "amount": 1000
+    }
+  ],
+  "power": 100
+}

@@ -1,0 +1,70 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:platemetal"
+  ],
+  "ctm_textures": {
+    "hbm:block/platemetal.base": "hbm:block/ctm_lib/platemetal.base",
+    "hbm:block/platemetal.black": "hbm:block/ctm_lib/platemetal.black",
+    "hbm:block/platemetal.blue": "hbm:block/ctm_lib/platemetal.blue",
+    "hbm:block/platemetal.cyan": "hbm:block/ctm_lib/platemetal.cyan",
+    "hbm:block/platemetal.green": "hbm:block/ctm_lib/platemetal.green",
+    "hbm:block/platemetal.light_blue": "hbm:block/ctm_lib/platemetal.light_blue",
+    "hbm:block/platemetal.light_gray": "hbm:block/ctm_lib/platemetal.light_gray",
+    "hbm:block/platemetal.lime": "hbm:block/ctm_lib/platemetal.lime",
+    "hbm:block/platemetal.magenta": "hbm:block/ctm_lib/platemetal.magenta",
+    "hbm:block/platemetal.orange": "hbm:block/ctm_lib/platemetal.orange",
+    "hbm:block/platemetal.pink": "hbm:block/ctm_lib/platemetal.pink",
+    "hbm:block/platemetal.purple": "hbm:block/ctm_lib/platemetal.purple",
+    "hbm:block/platemetal.red": "hbm:block/ctm_lib/platemetal.red",
+    "hbm:block/platemetal.white": "hbm:block/ctm_lib/platemetal.white",
+    "hbm:block/platemetal.yellow": "hbm:block/ctm_lib/platemetal.yellow"
+  },
+  "variants": {
+    "variant=base": {
+      "model": "hbm:block/platemetal_base"
+    },
+    "variant=black": {
+      "model": "hbm:block/platemetal_black"
+    },
+    "variant=blue": {
+      "model": "hbm:block/platemetal_blue"
+    },
+    "variant=cyan": {
+      "model": "hbm:block/platemetal_cyan"
+    },
+    "variant=green": {
+      "model": "hbm:block/platemetal_green"
+    },
+    "variant=light_blue": {
+      "model": "hbm:block/platemetal_light_blue"
+    },
+    "variant=light_gray": {
+      "model": "hbm:block/platemetal_light_gray"
+    },
+    "variant=lime": {
+      "model": "hbm:block/platemetal_lime"
+    },
+    "variant=magenta": {
+      "model": "hbm:block/platemetal_magenta"
+    },
+    "variant=orange": {
+      "model": "hbm:block/platemetal_orange"
+    },
+    "variant=pink": {
+      "model": "hbm:block/platemetal_pink"
+    },
+    "variant=purple": {
+      "model": "hbm:block/platemetal_purple"
+    },
+    "variant=red": {
+      "model": "hbm:block/platemetal_red"
+    },
+    "variant=white": {
+      "model": "hbm:block/platemetal_white"
+    },
+    "variant=yellow": {
+      "model": "hbm:block/platemetal_yellow"
+    }
+  }
+}

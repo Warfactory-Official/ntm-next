@@ -1,0 +1,123 @@
+{
+  "parent": "hbm:desh",
+  "criteria": {
+    "crafted_hbm_ingot_schrabidium": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_schrabidium"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_ingot_schrabidium_from_block": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_schrabidium_from_block"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_ingot_schrabidium_from_crystal_schrabidium": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_schrabidium_from_crystal_schrabidium"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_ingot_schrabidium_from_ore_gneiss_schrabidium": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_schrabidium_from_ore_gneiss_schrabidium"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_ingot_schrabidium_from_ore_nether_schrabidium": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_schrabidium_from_ore_nether_schrabidium"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_ingot_schrabidium_from_ore_schrabidium": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_schrabidium_from_ore_schrabidium"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_ingot_schrabidium_from_powder": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_schrabidium_from_powder"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_ingot_schrabidium_from_raw_schrabidium": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_schrabidium_from_raw_schrabidium"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_ingot_schrabidium_from_raw_schrabidium_blasting": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_schrabidium_from_raw_schrabidium_blasting"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_ingot_schrabidium_from_wire": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_schrabidium_from_wire"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_nugget_schrabidium_from_crystal_schraranium": {
+      "conditions": {
+        "recipe_id": "hbm:nugget_schrabidium_from_crystal_schraranium"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_nugget_schrabidium_from_ingot": {
+      "conditions": {
+        "recipe_id": "hbm:nugget_schrabidium_from_ingot"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_nugget_schrabidium_from_ingot_schraranium": {
+      "conditions": {
+        "recipe_id": "hbm:nugget_schrabidium_from_ingot_schraranium"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": [
+            "hbm:ingot_schrabidium",
+            "hbm:nugget_schrabidium"
+          ]
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.schrab.desc"
+    },
+    "icon": {
+      "id": "hbm:ingot_schrabidium"
+    },
+    "title": {
+      "translate": "achievement.schrab"
+    }
+  },
+  "requirements": [
+    [
+      "crafted_hbm_ingot_schrabidium_from_wire",
+      "crafted_hbm_ingot_schrabidium",
+      "crafted_hbm_ingot_schrabidium_from_block",
+      "crafted_hbm_ingot_schrabidium_from_raw_schrabidium",
+      "crafted_hbm_ingot_schrabidium_from_raw_schrabidium_blasting",
+      "crafted_hbm_ingot_schrabidium_from_ore_schrabidium",
+      "crafted_hbm_ingot_schrabidium_from_ore_nether_schrabidium",
+      "crafted_hbm_ingot_schrabidium_from_ore_gneiss_schrabidium",
+      "crafted_hbm_ingot_schrabidium_from_powder",
+      "crafted_hbm_ingot_schrabidium_from_crystal_schrabidium",
+      "crafted_hbm_nugget_schrabidium_from_ingot",
+      "crafted_hbm_nugget_schrabidium_from_ingot_schraranium",
+      "crafted_hbm_nugget_schrabidium_from_crystal_schraranium",
+      "produced"
+    ]
+  ]
+}

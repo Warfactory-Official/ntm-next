@@ -1,0 +1,16 @@
+{
+  "type": "hbm:particle_accelerator",
+  "input_items": [
+    {
+      "ingredient": "hbm:particle_hydrogen"
+    },
+    {
+      "ingredient": "hbm:particle_amat"
+    }
+  ],
+  "momentum": 2500,
+  "order": 3,
+  "output_items": [
+    "hbm:particle_muon"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "parent": "hbm:block/fluid_pipe_base",
+  "hidden": [
+    "pY",
+    "nnn",
+    "nnp",
+    "pnp",
+    "pnn",
+    "ppn",
+    "npn",
+    "npp",
+    "ppp",
+    "nY"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/pipe_neo.obj",
+  "offset_y": 0.5,
+  "overlay": true,
+  "overlay_tint": 1,
+  "skins": {
+    "all": [
+      "pZ",
+      "pX",
+      "nZ",
+      "nX"
+    ]
+  }
+}

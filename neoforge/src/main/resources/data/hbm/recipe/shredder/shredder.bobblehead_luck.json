@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:bobblehead_luck"
+    }
+  ],
+  "order": 184,
+  "output_items": [
+    "hbm:scrap_plastic_bridge_cmos"
+  ]
+}

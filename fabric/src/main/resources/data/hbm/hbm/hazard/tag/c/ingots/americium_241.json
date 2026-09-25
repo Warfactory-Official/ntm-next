@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 8.5
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:ingots/americium_241"
+}

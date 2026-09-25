@@ -1,0 +1,30 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:plates/lead"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:ingots/any_rubber"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:bolts/dura_steel"
+    },
+    {
+      "ingredient": "hbm:motor"
+    }
+  ],
+  "order": 64,
+  "output_items": [
+    "hbm:blast_door"
+  ],
+  "power": 100
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "hbm:block/machine_icf_press_top",
+    "side": "hbm:block/machine_icf_press_side"
+  }
+}

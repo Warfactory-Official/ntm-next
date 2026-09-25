@@ -1,0 +1,33 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:plasma_forge",
+  "blueprint_pools_528": [
+    "528.chlorophyte"
+  ],
+  "duration": 800,
+  "ignition_temp": 1000000,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/any_bismoid_bronze"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/saturnite"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    }
+  ],
+  "order": 23,
+  "output_items": [
+    "hbm:icf_casing"
+  ],
+  "power": 10000000
+}

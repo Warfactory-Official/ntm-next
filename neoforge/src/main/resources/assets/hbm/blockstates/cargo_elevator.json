@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "part=assembling": {
+      "model": "hbm:block/cargo_elevator_section"
+    },
+    "part=cell": {
+      "model": "hbm:block/cargo_elevator_cell"
+    },
+    "part=core": {
+      "model": "hbm:block/cargo_elevator"
+    },
+    "part=section": {
+      "model": "hbm:block/cargo_elevator_section"
+    }
+  }
+}

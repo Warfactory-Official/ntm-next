@@ -1,0 +1,36 @@
+{
+  "parent": "hbm:watz",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "kinds": [
+          "watz"
+        ]
+      },
+      "trigger": "hbm:detonation"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.watzBoom.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "components": {
+        "hbm:fluid_content": {
+          "type": "hbm:watz_mud",
+          "amount": 1000
+        }
+      },
+      "id": "hbm:fluid_bucket"
+    },
+    "title": {
+      "translate": "achievement.watzBoom"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

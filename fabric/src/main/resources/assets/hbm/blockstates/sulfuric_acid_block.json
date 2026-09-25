@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "hbm:block/sulfuric_acid_block"
+    }
+  }
+}

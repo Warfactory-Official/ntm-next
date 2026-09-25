@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "minecraft:block/stone",
+    "side": "hbm:block/stone_keyhole",
+    "top": "minecraft:block/stone"
+  }
+}

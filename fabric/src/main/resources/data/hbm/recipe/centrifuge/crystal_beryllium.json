@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_beryllium"
+    }
+  ],
+  "order": 149,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_beryllium"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_beryllium"
+    },
+    "hbm:powder_quartz",
+    "hbm:powder_lithium_tiny"
+  ],
+  "power": 200
+}

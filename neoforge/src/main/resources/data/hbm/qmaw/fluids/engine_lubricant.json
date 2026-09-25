@@ -1,0 +1,31 @@
+{
+  "content": {
+    "en_us": "Engine lubricant is primarily obtained from [[fractioning|Fractioning Tower]] [[industrial oil|Industrial Oil]]. It can be used to produce [[parrafin wax|Parrafin Wax]] which allows for early production of [[high-performance solvent|High-Performance Solvent]] or the production of [[petroil|Petroil]]. It is also required to lubricate the [[combined cycle gas turbine|Combined Cycle Gas Turbine]].<br><br>{{hbm:fluids/template_oil1}}",
+    "ru_ru": "Машинная смазка в основном получается из [[промышленного масла|Industrial Oil]] путём [[ректификации|Fractioning Tower]]. Её можно использовать для производства [[парафинового воска|Parrafin Wax]], что позволяет на ранних этапах начать производство [[высокоэффективного растворителя|High-Performance Solvent]] или [[бензина|Petroil]]. Она также необходима для смазки [[газовой турбины комбинированного цикла|Combined Cycle Gas Turbine]].<br><br>{{hbm:fluids/template_oil1}}"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:lubricant",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -10461088
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Engine Lubricant",
+  "title": {
+    "en_us": "Engine Lubricant",
+    "ru_ru": "Машинная смазка"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:lubricant"
+    }
+  }
+}

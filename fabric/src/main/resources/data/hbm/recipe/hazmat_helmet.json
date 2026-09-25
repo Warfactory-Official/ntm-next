@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "E": "hbm:hazmat_cloth",
+    "I": "#c:glass_panes",
+    "P": "#c:plates/iron"
+  },
+  "pattern": [
+    "EEE",
+    "EIE",
+    " P "
+  ],
+  "result": {
+    "id": "hbm:hazmat_helmet"
+  }
+}

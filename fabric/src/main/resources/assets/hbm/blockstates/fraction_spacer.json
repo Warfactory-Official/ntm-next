@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/fraction_spacer"
+    },
+    "facing=north": {
+      "model": "hbm:block/fraction_spacer"
+    },
+    "facing=south": {
+      "model": "hbm:block/fraction_spacer"
+    },
+    "facing=west": {
+      "model": "hbm:block/fraction_spacer"
+    }
+  }
+}

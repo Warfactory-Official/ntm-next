@@ -1,0 +1,77 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "hbm:block/fence_metal_post_core_x"
+      },
+      "when": {
+        "OR": [
+          {
+            "east": "true"
+          },
+          {
+            "west": "true"
+          },
+          {
+            "east": "false",
+            "north": "false",
+            "south": "false",
+            "west": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "hbm:block/fence_metal_post_arm_west"
+      },
+      "when": {
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "hbm:block/fence_metal_post_arm_east"
+      },
+      "when": {
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "hbm:block/fence_metal_post_core_z"
+      },
+      "when": {
+        "OR": [
+          {
+            "north": "true"
+          },
+          {
+            "south": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "hbm:block/fence_metal_post_arm_north"
+      },
+      "when": {
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "hbm:block/fence_metal_post_arm_south"
+      },
+      "when": {
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "hbm:block/fence_metal_post_post"
+      }
+    }
+  ]
+}

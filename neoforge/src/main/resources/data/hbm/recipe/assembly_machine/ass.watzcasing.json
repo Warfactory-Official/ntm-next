@@ -1,0 +1,34 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.tcalloy"
+  ],
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "#hbm:plates_welded/any_resistant_alloy"
+    },
+    {
+      "count": 3,
+      "ingredient": "#c:ingots/boron"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_welded/steel"
+    }
+  ],
+  "order": 281,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:watz_end"
+    }
+  ],
+  "power": 100
+}

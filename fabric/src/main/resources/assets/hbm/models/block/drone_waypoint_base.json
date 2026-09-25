@@ -1,0 +1,8 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "textures": {
+    "all": "hbm:block/drone_waypoint",
+    "particle": "hbm:block/drone_waypoint"
+  }
+}

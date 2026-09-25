@@ -1,0 +1,25 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:fine_wires/mingrade"
+    },
+    {
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "ingredient": "hbm:coil_gold"
+    }
+  ],
+  "order": 322,
+  "output_items": [
+    "hbm:solinium_igniter"
+  ],
+  "power": 100
+}

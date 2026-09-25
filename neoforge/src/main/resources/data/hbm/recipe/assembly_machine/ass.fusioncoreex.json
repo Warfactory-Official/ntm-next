@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.tcalloy"
+  ],
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_ferro_plating"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_plastic"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_bismoid"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:drive_flash_particlesim"
+    }
+  ],
+  "name": "ass.fusioncoreEx",
+  "order": 256,
+  "output_items": [
+    "hbm:struct_torus_core"
+  ],
+  "power": 100
+}

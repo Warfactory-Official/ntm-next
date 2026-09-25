@@ -1,0 +1,23 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:woodoil",
+      "amount": 100
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/coal"
+    }
+  ],
+  "order": 310,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:chemical_dye_black"
+    }
+  ],
+  "productivity": 0.15
+}

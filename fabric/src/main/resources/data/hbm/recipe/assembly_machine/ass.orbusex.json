@@ -1,0 +1,33 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_ferro_plating"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:plates_cast/saturnite"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:wires_dense/bscco"
+    },
+    {
+      "ingredient": "hbm:battery_sc_po210"
+    }
+  ],
+  "name": "ass.orbusEx",
+  "order": 204,
+  "output_items": [
+    "hbm:machine_orbus"
+  ],
+  "power": 100
+}

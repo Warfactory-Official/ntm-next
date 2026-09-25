@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#hbm:ingots/any_bismoid_bronze",
+    "P": "#hbm:plates_cast/any_bismoid_bronze"
+  },
+  "pattern": [
+    " I ",
+    "IPI",
+    " I "
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:cm_block_alloy"
+  }
+}

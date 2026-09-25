@@ -1,0 +1,64 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "hbm:mesh",
+          "base": "hbm:item/gun_fireext_base",
+          "mesh": "hbm:models/weapons/fireext.obj",
+          "pose_suffix": {
+            "gui": [
+              4.5,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              4.5,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              -4.5,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "skin_source": "magazine",
+          "skins": [
+            "hbm:textures/models/weapons/fireext_normal.png",
+            "hbm:textures/models/weapons/fireext_foam.png",
+            "hbm:textures/models/weapons/fireext_sand.png"
+          ],
+          "spin": {
+            "axis": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "divisor": 10,
+            "modulus": 360,
+            "rate": 1.0
+          }
+        },
+        "when": [
+          "gui",
+          "thirdperson_righthand",
+          "thirdperson_lefthand",
+          "firstperson_righthand",
+          "firstperson_lefthand",
+          "ground",
+          "fixed"
+        ]
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:item/gun_fireext_flat"
+    },
+    "property": "minecraft:display_context"
+  }
+}

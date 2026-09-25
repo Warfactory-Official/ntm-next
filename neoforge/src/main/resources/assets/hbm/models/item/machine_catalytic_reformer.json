@@ -1,0 +1,172 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        0.11043799,
+        5.292844,
+        1.2659749
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        0.11107314,
+        5.292844,
+        1.2659189
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        7.9400005,
+        0.4992051
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.09375,
+        0.09375,
+        0.09375
+      ],
+      "translation": [
+        0.0,
+        1.25,
+        3.976822E-4
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999992,
+        -180.0
+      ],
+      "scale": [
+        0.109375,
+        0.10937499,
+        0.10937501
+      ],
+      "translation": [
+        3.2746792E-4,
+        0.70649326,
+        -6.437784
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "translation": [
+        3.2681139,
+        -27.571913,
+        3.8947861
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        21.0,
+        0.0015897751
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07031249,
+        0.0703125,
+        0.0703125
+      ],
+      "translation": [
+        -0.84176713,
+        4.643104,
+        1.9452595
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07031249,
+        0.0703125,
+        0.0703125
+      ],
+      "translation": [
+        -2.0009935,
+        4.4009376,
+        1.6367043
+      ]
+    }
+  },
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/catalytic_reformer.obj",
+  "offset_x": 2.6500225E-4,
+  "offset_y": -3.0,
+  "skins": {
+    "all": [
+      "Cylinder.002"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/catalytic_reformer",
+    "particle": "hbm:block/models/machines/catalytic_reformer"
+  }
+}

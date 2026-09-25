@@ -1,0 +1,24 @@
+{
+  "values": [
+    "hbm:brick_concrete",
+    "hbm:concrete",
+    "hbm:concrete_smooth",
+    "hbm:concrete_asbestos",
+    "hbm:concrete_white",
+    "hbm:concrete_orange",
+    "hbm:concrete_magenta",
+    "hbm:concrete_light_blue",
+    "hbm:concrete_yellow",
+    "hbm:concrete_lime",
+    "hbm:concrete_pink",
+    "hbm:concrete_gray",
+    "hbm:concrete_silver",
+    "hbm:concrete_cyan",
+    "hbm:concrete_purple",
+    "hbm:concrete_blue",
+    "hbm:concrete_brown",
+    "hbm:concrete_green",
+    "hbm:concrete_red",
+    "hbm:concrete_black"
+  ]
+}

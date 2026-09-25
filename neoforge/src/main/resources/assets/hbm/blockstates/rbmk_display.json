@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/rbmk_display_east"
+    },
+    "facing=north": {
+      "model": "hbm:block/rbmk_display_north"
+    },
+    "facing=south": {
+      "model": "hbm:block/rbmk_display_south"
+    },
+    "facing=west": {
+      "model": "hbm:block/rbmk_display_west"
+    }
+  }
+}

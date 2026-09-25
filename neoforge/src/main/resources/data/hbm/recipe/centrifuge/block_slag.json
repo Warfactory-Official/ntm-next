@@ -1,0 +1,17 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:block_slag"
+    }
+  ],
+  "order": 34,
+  "output_items": [
+    "minecraft:gravel",
+    "hbm:powder_fire",
+    "hbm:powder_calcium",
+    "hbm:dust"
+  ],
+  "power": 200
+}

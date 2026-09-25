@@ -1,0 +1,8 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "textures": {
+    "all": "hbm:block/models/machines/tower_small",
+    "particle": "hbm:block/brick_concrete"
+  }
+}

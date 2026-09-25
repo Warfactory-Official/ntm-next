@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:blades_titanium",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "P": "hbm:plate_desh"
+  },
+  "pattern": [
+    " P ",
+    "PBP",
+    " P "
+  ],
+  "result": {
+    "id": "hbm:blades_desh"
+  }
+}

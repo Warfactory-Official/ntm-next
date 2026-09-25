@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:rbmk_display_blank",
+    "C": "hbm:circuit_numitron",
+    "R": "hbm:radio_torch_receiver"
+  },
+  "pattern": [
+    " R ",
+    "CCC",
+    " B "
+  ],
+  "result": {
+    "id": "hbm:rbmk_numitron"
+  }
+}

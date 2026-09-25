@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:stone_resource_limestone"
+    }
+  ],
+  "order": 36,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:powder_limestone"
+    }
+  ]
+}

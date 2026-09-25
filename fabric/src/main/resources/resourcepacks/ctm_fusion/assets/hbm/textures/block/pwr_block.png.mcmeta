@@ -1,0 +1,20 @@
+{
+  "fusion": {
+    "type": "connecting",
+    "connections": {
+      "type": "or",
+      "predicates": [
+        {
+          "type": "is_same_block"
+        },
+        {
+          "type": "match_block",
+          "blocks": [
+            "hbm:pwr_controller"
+          ]
+        }
+      ]
+    },
+    "layout": "full"
+  }
+}

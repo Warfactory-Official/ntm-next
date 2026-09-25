@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 0.9
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:nuggets/americium_rg"
+}

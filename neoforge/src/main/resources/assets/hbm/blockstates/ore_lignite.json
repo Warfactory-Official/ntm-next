@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/ore_lignite"
+      },
+      {
+        "model": "hbm:block/ore_lignite_mirrored"
+      },
+      {
+        "model": "hbm:block/ore_lignite",
+        "y": 180
+      },
+      {
+        "model": "hbm:block/ore_lignite_mirrored",
+        "y": 180
+      }
+    ]
+  }
+}

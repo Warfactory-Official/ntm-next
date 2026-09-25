@@ -1,0 +1,38 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:turbine_titanium"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:wires_dense/gold"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:pipes/dura_steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.iturbineEx",
+  "order": 187,
+  "output_items": [
+    "hbm:machine_industrial_turbine"
+  ],
+  "power": 100
+}

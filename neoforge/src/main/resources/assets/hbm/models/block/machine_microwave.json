@@ -1,0 +1,22 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "plate_Cylinder"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/microwave.obj",
+  "offset_x": -0.5,
+  "offset_y": -0.785,
+  "offset_z": 0.65,
+  "skins": {
+    "all": [
+      "window_Cube.002",
+      "mainbody_Cube.001"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/microwave",
+    "particle": "hbm:block/models/machines/microwave"
+  }
+}

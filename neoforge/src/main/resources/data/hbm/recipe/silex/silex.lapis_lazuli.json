@@ -1,0 +1,37 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 100,
+  "input_items": [
+    {
+      "ingredient": [
+        "minecraft:lapis_lazuli",
+        "hbm:powder_lapis"
+      ]
+    }
+  ],
+  "laser_strength": "ir",
+  "order": 11,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:sulfur"
+        },
+        "weight": 4
+      },
+      {
+        "data": {
+          "id": "hbm:powder_aluminium"
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "hbm:powder_cobalt"
+        },
+        "weight": 3
+      }
+    ]
+  ]
+}

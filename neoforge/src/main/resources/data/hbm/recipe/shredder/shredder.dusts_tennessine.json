@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/tennessine"
+    }
+  ],
+  "order": 462,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

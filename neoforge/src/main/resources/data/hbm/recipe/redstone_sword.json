@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "R": "#c:storage_blocks/redstone",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "R",
+    "R",
+    "S"
+  ],
+  "result": {
+    "id": "hbm:redstone_sword"
+  }
+}

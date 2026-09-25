@@ -1,0 +1,18 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "ingredient": "minecraft:glowstone_dust"
+    }
+  ],
+  "order": 9,
+  "output_fluids": [
+    {
+      "type": "hbm:chlorine",
+      "amount": 100
+    }
+  ],
+  "output_items": [
+    "hbm:sulfur"
+  ]
+}

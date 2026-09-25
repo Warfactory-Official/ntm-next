@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:poisonous_potato"
+    }
+  ],
+  "order": 72,
+  "output_items": [
+    "hbm:powder_poison"
+  ]
+}

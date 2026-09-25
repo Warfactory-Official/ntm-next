@@ -1,0 +1,35 @@
+{
+  "type": "hbm:chemical_plant",
+  "blueprint_pools": [
+    "alt.xenonoxy"
+  ],
+  "custom_localization": true,
+  "duration": 20,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:xenon",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:gas_tank"
+  },
+  "input_fluids": [
+    {
+      "type": "hbm:air",
+      "amount": 8000
+    },
+    {
+      "type": "hbm:oxygen",
+      "amount": 250
+    }
+  ],
+  "order": 4,
+  "output_fluids": [
+    {
+      "type": "hbm:xenon",
+      "amount": 50
+    }
+  ],
+  "power": 1000
+}

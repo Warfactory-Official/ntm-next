@@ -1,0 +1,118 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 48,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:watz_end"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 64,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:bolt_dura_steel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 64,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:bolt_dura_steel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 64,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:bolt_dura_steel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 36,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:watz_element"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 26,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:watz_cooler"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 1,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:struct_watz_core"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:blocks/watz"
+}

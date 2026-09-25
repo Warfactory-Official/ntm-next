@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 15.0
+    }
+  ],
+  "targets": "#hbm:hazard/crystal_schraranium"
+}

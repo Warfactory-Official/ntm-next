@@ -1,0 +1,26 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_fluorite"
+    }
+  ],
+  "order": 148,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:fluorite"
+    },
+    {
+      "count": 4,
+      "id": "hbm:fluorite"
+    },
+    {
+      "count": 2,
+      "id": "hbm:gem_sodalite"
+    },
+    "hbm:powder_lithium_tiny"
+  ],
+  "power": 200
+}

@@ -1,0 +1,16 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:rbmk_control_auto"
+    }
+  ],
+  "order": 242,
+  "output_items": [
+    "hbm:rbmk_control",
+    "hbm:circuit_advanced",
+    "hbm:crt_display"
+  ],
+  "overlay": "recycling",
+  "tier": 4
+}

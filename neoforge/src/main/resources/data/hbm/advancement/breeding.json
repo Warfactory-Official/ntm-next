@@ -1,0 +1,47 @@
+{
+  "parent": "hbm:rbmk",
+  "criteria": {
+    "crafted_hbm_nugget_am241_from_ingot": {
+      "conditions": {
+        "recipe_id": "hbm:nugget_am241_from_ingot"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_nugget_am242_from_ingot": {
+      "conditions": {
+        "recipe_id": "hbm:nugget_am242_from_ingot"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": [
+            "hbm:nugget_am241",
+            "hbm:nugget_am242"
+          ]
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.breeding.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:ingot_am_mix"
+    },
+    "title": {
+      "translate": "achievement.breeding"
+    }
+  },
+  "requirements": [
+    [
+      "crafted_hbm_nugget_am241_from_ingot",
+      "crafted_hbm_nugget_am242_from_ingot",
+      "produced"
+    ]
+  ]
+}

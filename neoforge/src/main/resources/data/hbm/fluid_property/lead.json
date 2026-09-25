@@ -1,0 +1,37 @@
+{
+  "type": "liquid",
+  "color": "#666672",
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 4,
+    "react": 0
+  },
+  "shares": [
+    "#c:lead",
+    "#c:molten_lead"
+  ],
+  "symbol": "NONE",
+  "temperature": 350,
+  "traits": {
+    "heatable": {
+      "efficiency": {
+        "ICF": 4.0,
+        "PWR": 0.75
+      },
+      "steps": [
+        {
+          "amount_produced": 1,
+          "amount_req": 1,
+          "heat_req": 800,
+          "produces": "hbm:lead_hot"
+        }
+      ]
+    },
+    "pwrmoderator": {
+      "multiplier": 0.75
+    }
+  }
+}

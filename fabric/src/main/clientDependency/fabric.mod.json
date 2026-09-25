@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "hbm_client",
+  "version": "${version}",
+  "name": "NTM Client",
+  "license": "LGPL-3.0-only",
+  "environment": "client",
+  "depends": {
+    "crankshaft": ">=1.5.3"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:injector_5htp",
+    {
+      "fabric:type": "fabric:components",
+      "base": "minecraft:iron_sword",
+      "components": {
+        "minecraft:damage": 0
+      }
+    }
+  ],
+  "result": {
+    "id": "hbm:injector_knife"
+  }
+}

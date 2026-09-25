@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,window=false": {
+      "model": "hbm:block/pa_beamline"
+    },
+    "facing=east,window=true": {
+      "model": "hbm:block/pa_beamline_window"
+    },
+    "facing=north,window=false": {
+      "model": "hbm:block/pa_beamline",
+      "y": 270
+    },
+    "facing=north,window=true": {
+      "model": "hbm:block/pa_beamline_window",
+      "y": 270
+    },
+    "facing=south,window=false": {
+      "model": "hbm:block/pa_beamline",
+      "y": 90
+    },
+    "facing=south,window=true": {
+      "model": "hbm:block/pa_beamline_window",
+      "y": 90
+    },
+    "facing=west,window=false": {
+      "model": "hbm:block/pa_beamline",
+      "y": 180
+    },
+    "facing=west,window=true": {
+      "model": "hbm:block/pa_beamline_window",
+      "y": 180
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "type": "hbm:sellafield_crater",
+  "biomes": "minecraft:desert",
+  "spawn_overrides": {},
+  "step": "strongholds"
+}

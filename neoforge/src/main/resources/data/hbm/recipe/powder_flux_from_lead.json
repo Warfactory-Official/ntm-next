@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/lead",
+    "#c:dusts/sulfur",
+    "#minecraft:sand"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:powder_flux"
+  }
+}

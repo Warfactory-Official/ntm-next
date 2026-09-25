@@ -1,0 +1,26 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 250
+    },
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/chlorocalcite"
+    }
+  ],
+  "order": 41,
+  "output_fluids": [
+    {
+      "type": "hbm:chlorocalcite_solution",
+      "amount": 500
+    }
+  ]
+}

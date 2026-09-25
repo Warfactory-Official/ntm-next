@@ -1,0 +1,58 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 600,
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_pellet": {
+          "depletion": 4,
+          "xenon": true
+        }
+      },
+      "ingredient": "hbm:rbmk_pellet_mox"
+    }
+  ],
+  "laser_strength": "ir",
+  "order": 244,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:powder_xe135_tiny"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_mox_fuel"
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_pu_mix"
+        },
+        "weight": 22
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_long_tiny_uranium235"
+        },
+        "weight": 14
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_short_tiny_uranium235"
+        },
+        "weight": 23
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_short_tiny_plutonium239"
+        },
+        "weight": 37
+      }
+    ]
+  ]
+}

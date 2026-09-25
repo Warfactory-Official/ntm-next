@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "hbm:ducttape",
+    "P": "hbm:pads_rubber",
+    "S": "#c:slime_balls"
+  },
+  "pattern": [
+    "SPS",
+    "DSD",
+    "SPS"
+  ],
+  "result": {
+    "id": "hbm:pads_slime"
+  }
+}

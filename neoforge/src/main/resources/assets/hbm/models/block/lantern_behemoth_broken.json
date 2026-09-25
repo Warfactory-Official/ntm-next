@@ -1,0 +1,7 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "textures": {
+    "particle": "hbm:block/block_rust"
+  }
+}

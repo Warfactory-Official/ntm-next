@@ -1,0 +1,18 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:stamp_desh_flat"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/weapon_steel"
+    }
+  ],
+  "order": 173,
+  "output_items": [
+    "hbm:stamp_desh_9"
+  ],
+  "overlay": "construction",
+  "tier": 4
+}

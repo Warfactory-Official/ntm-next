@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:starmetal_legs"
+    },
+    "D": "#hbm:billets/polonium_210",
+    "M": "hbm:motor_desh",
+    "P": "hbm:plate_armor_fau"
+  },
+  "pattern": [
+    "MPM",
+    "PBP",
+    "PDP"
+  ],
+  "result": {
+    "id": "hbm:fau_legs"
+  }
+}

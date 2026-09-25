@@ -1,0 +1,19 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:coal_infernal"
+    }
+  ],
+  "order": 264,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

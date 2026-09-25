@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:steel_helmet",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "E": "#hbm:billets/cobalt"
+  },
+  "pattern": [
+    "ECE"
+  ],
+  "result": {
+    "id": "hbm:cobalt_helmet"
+  }
+}

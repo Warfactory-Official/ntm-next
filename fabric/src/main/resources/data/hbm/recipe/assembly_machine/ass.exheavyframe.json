@@ -1,0 +1,30 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_welded/copper"
+    },
+    {
+      "ingredient": "#c:ingots/workers_alloy"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:bolts/dura_steel"
+    }
+  ],
+  "order": 18,
+  "output_items": [
+    "hbm:item_expensive_heavy_frame"
+  ],
+  "power": 800
+}

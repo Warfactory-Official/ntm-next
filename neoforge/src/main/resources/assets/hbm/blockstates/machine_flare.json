@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "facing=east,tilted=false": {
+      "model": "hbm:block/machine_flare",
+      "y": 180
+    },
+    "facing=east,tilted=true": {
+      "model": "hbm:block/machine_flare_tilted",
+      "y": 180
+    },
+    "facing=north,tilted=false": {
+      "model": "hbm:block/machine_flare",
+      "y": 180
+    },
+    "facing=north,tilted=true": {
+      "model": "hbm:block/machine_flare_tilted",
+      "y": 180
+    },
+    "facing=south,tilted=false": {
+      "model": "hbm:block/machine_flare",
+      "y": 180
+    },
+    "facing=south,tilted=true": {
+      "model": "hbm:block/machine_flare_tilted",
+      "y": 180
+    },
+    "facing=west,tilted=false": {
+      "model": "hbm:block/machine_flare",
+      "y": 180
+    },
+    "facing=west,tilted=true": {
+      "model": "hbm:block/machine_flare_tilted",
+      "y": 180
+    }
+  }
+}

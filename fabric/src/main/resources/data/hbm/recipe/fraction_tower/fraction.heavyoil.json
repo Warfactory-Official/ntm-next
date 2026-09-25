@@ -1,0 +1,20 @@
+{
+  "type": "hbm:fraction_tower",
+  "input_fluids": [
+    {
+      "type": "hbm:heavyoil",
+      "amount": 100
+    }
+  ],
+  "order": 0,
+  "output_fluids": [
+    {
+      "type": "hbm:bitumen",
+      "amount": 30
+    },
+    {
+      "type": "hbm:smear",
+      "amount": 70
+    }
+  ]
+}

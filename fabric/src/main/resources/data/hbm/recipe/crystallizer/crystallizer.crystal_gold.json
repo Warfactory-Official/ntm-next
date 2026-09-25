@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/gold"
+    }
+  ],
+  "order": 227,
+  "output_items": [
+    "hbm:crystal_gold"
+  ],
+  "productivity": 0.05
+}

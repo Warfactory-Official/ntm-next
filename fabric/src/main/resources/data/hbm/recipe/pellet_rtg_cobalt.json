@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#hbm:billets/cobalt_60",
+    "#hbm:billets/cobalt_60",
+    "#hbm:billets/cobalt_60",
+    "#c:plates/iron"
+  ],
+  "result": {
+    "id": "hbm:pellet_rtg_cobalt"
+  }
+}

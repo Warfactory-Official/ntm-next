@@ -1,0 +1,33 @@
+{
+  "feature": "hbm:ore_nether_tungsten",
+  "placement": [
+    {
+      "type": "hbm:world_config",
+      "switches": [
+        "nether_ores"
+      ]
+    },
+    {
+      "type": "minecraft:count",
+      "count": 10
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "below_top": 1
+        },
+        "min_inclusive": {
+          "above_bottom": 0
+        }
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

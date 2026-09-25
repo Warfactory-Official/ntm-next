@@ -1,0 +1,26 @@
+{
+  "values": [
+    "hbm:red_pylon_medium_wood",
+    "hbm:red_pylon_medium_wood_transformer",
+    "hbm:radio_telex",
+    "hbm:wood_barrier",
+    "hbm:wood_structure_roof",
+    "hbm:wood_structure_scaffold",
+    "hbm:wood_structure_ceiling",
+    "hbm:mush_block",
+    "hbm:mush_block_stem",
+    "hbm:rail_wood",
+    "hbm:crate",
+    "hbm:crate_weapon",
+    "hbm:crate_can",
+    "hbm:crate_supply",
+    "hbm:pink_log",
+    "hbm:pink_planks",
+    "hbm:waste_planks",
+    "hbm:frozen_log",
+    "hbm:frozen_planks",
+    "hbm:waste_log",
+    "hbm:pink_slab",
+    "hbm:pink_stairs"
+  ]
+}

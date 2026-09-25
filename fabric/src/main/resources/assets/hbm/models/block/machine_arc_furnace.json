@@ -1,0 +1,35 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Electrode1Short",
+    "Electrode2Short",
+    "Electrode3Short",
+    "Electrode3Hot",
+    "Electrode2Hot",
+    "Electrode1Hot",
+    "Electrode1",
+    "Electrode2",
+    "Ring1",
+    "Ring2",
+    "Cable2",
+    "Cable1",
+    "Cable3",
+    "Lid",
+    "Electrode3",
+    "Ring3",
+    "ContentsCold",
+    "ContentsHot"
+  ],
+  "model": "hbm:models/machines/arc_furnace.obj",
+  "skins": {
+    "all": [
+      "Furnace"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/arc_furnace",
+    "particle": "hbm:block/models/machines/arc_furnace"
+  }
+}

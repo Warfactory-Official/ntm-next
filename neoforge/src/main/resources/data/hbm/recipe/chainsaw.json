@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:blades_steel"
+    },
+    "C": "hbm:dungeon_chain",
+    "E": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "!hbm:fluid_content": {}
+      },
+      "items": "hbm:canister"
+    },
+    "H": "#hbm:shells/steel",
+    "P": "hbm:piston_selenium"
+  },
+  "pattern": [
+    "CCH",
+    "BBP",
+    "CCE"
+  ],
+  "result": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "minecraft:empty",
+        "amount": 0,
+        "pressure": 0
+      }
+    },
+    "id": "hbm:chainsaw"
+  }
+}

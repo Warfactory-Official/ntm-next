@@ -1,0 +1,35 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 1200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbm:cmb_brick_reinforced"
+    },
+    {
+      "count": 64,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 36,
+      "ingredient": "#hbm:ingots/any_rubber"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:storage_blocks/steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:dyes/yellow"
+    }
+  ],
+  "order": 66,
+  "output_items": [
+    "hbm:transition_seal"
+  ],
+  "power": 100
+}

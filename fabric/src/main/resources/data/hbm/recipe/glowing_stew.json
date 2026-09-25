@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:bowl",
+    "hbm:mush",
+    "hbm:mush"
+  ],
+  "result": {
+    "id": "hbm:glowing_stew"
+  }
+}

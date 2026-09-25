@@ -1,0 +1,22 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:fishoil",
+      "amount": 4000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/cadmium"
+    }
+  ],
+  "order": 275,
+  "output_items": [
+    {
+      "count": 16,
+      "id": "hbm:ingot_rubber"
+    }
+  ]
+}

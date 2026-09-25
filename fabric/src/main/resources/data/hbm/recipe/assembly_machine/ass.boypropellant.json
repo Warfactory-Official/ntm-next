@@ -1,0 +1,27 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:cordite"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/iron"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/aluminum"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:fine_wires/mingrade"
+    }
+  ],
+  "order": 312,
+  "output_items": [
+    "hbm:boy_propellant"
+  ],
+  "power": 100
+}

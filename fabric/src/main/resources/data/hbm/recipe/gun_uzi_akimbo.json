@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "M": "#hbm:gun_mechanisms/weapon_steel",
+    "U": "hbm:gun_uzi"
+  },
+  "pattern": [
+    "UMU"
+  ],
+  "result": {
+    "id": "hbm:gun_uzi_akimbo"
+  }
+}

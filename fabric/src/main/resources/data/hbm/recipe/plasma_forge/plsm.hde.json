@@ -1,0 +1,28 @@
+{
+  "type": "hbm:plasma_forge",
+  "duration": 600,
+  "ignition_temp": 10000000,
+  "input_fluids": [
+    {
+      "type": "hbm:stellar_flux",
+      "amount": 4000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/any_bismoid_bronze"
+    },
+    {
+      "ingredient": "#hbm:plates_welded/cmbsteel"
+    },
+    {
+      "ingredient": "hbm:ingot_cft"
+    }
+  ],
+  "order": 2,
+  "output_items": [
+    "hbm:part_generic_hde"
+  ],
+  "power": 25000000
+}

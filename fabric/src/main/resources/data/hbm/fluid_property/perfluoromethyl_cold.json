@@ -1,0 +1,26 @@
+{
+  "type": "liquid",
+  "color": "#99dade",
+  "nfpa": {
+    "flame": 0,
+    "health": 1,
+    "react": 1
+  },
+  "symbol": "NONE",
+  "temperature": -150,
+  "traits": {
+    "heatable": {
+      "efficiency": {
+        "PA": 1.0
+      },
+      "steps": [
+        {
+          "amount_produced": 1,
+          "amount_req": 1,
+          "heat_req": 300,
+          "produces": "hbm:perfluoromethyl"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#bottom"
+        },
+        "up": {
+          "texture": "#bottom"
+        }
+      },
+      "from": [
+        5,
+        0,
+        0
+      ],
+      "to": [
+        11,
+        2,
+        6
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "texture": "#inner"
+        },
+        "up": {
+          "texture": "#top"
+        },
+        "west": {
+          "texture": "#side"
+        }
+      },
+      "from": [
+        5,
+        0,
+        0
+      ],
+      "to": [
+        6,
+        8,
+        6
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "texture": "#side"
+        },
+        "up": {
+          "texture": "#top"
+        },
+        "west": {
+          "texture": "#inner"
+        }
+      },
+      "from": [
+        10,
+        0,
+        0
+      ],
+      "to": [
+        11,
+        8,
+        6
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "hbm:block/foundry_channel_bottom",
+    "inner": "hbm:block/foundry_channel_inner",
+    "particle": "hbm:block/foundry_channel_side",
+    "side": "hbm:block/foundry_channel_side",
+    "top": "hbm:block/foundry_channel_top"
+  }
+}

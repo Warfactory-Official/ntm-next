@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#minecraft:planks"
+    }
+  ],
+  "order": 88,
+  "output_items": [
+    "hbm:powder_sawdust"
+  ]
+}

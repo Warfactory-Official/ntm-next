@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 337.5
+    }
+  ],
+  "targets": "#hbm:hazard/pile_rod_mk2_po210be"
+}

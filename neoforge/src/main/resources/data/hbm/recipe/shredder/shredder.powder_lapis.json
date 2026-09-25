@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_lapis"
+    }
+  ],
+  "order": 90,
+  "output_items": [
+    "hbm:powder_cobalt_tiny"
+  ]
+}

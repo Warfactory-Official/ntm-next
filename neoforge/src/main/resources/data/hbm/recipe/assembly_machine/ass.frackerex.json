@@ -1,0 +1,48 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.plastic"
+  ],
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_ferro_plating"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:concrete_smooth"
+    },
+    {
+      "ingredient": "hbm:drill_titanium"
+    },
+    {
+      "count": 5,
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.frackerEx",
+  "order": 113,
+  "output_items": [
+    "hbm:machine_fracking_tower"
+  ],
+  "power": 100
+}

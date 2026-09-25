@@ -1,0 +1,30 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 3,
+      "ingredient": "#hbm:pipes/copper"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "ingredient": "hbm:circuit_analog"
+    }
+  ],
+  "order": 157,
+  "output_items": [
+    "hbm:machine_ore_slopper"
+  ],
+  "power": 100
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/workers_alloy",
+    "P": "#hbm:plates_cast/workers_alloy"
+  },
+  "pattern": [
+    " I ",
+    "IPI",
+    " I "
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:cm_block_desh"
+  }
+}

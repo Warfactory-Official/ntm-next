@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_pcb",
+    "P": "#hbm:ingots/any_plastic"
+  },
+  "pattern": [
+    "PPP",
+    "CCC",
+    "PPP"
+  ],
+  "result": {
+    "id": "hbm:machine_tape_drive"
+  }
+}

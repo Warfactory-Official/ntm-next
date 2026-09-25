@@ -1,0 +1,45 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 600,
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_pellet": {
+          "depletion": 4
+        }
+      },
+      "ingredient": "hbm:rbmk_pellet_zfb_pu241"
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 266,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_u235"
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_pu240"
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_pu241"
+        },
+        "weight": 130
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_zirconium"
+        },
+        "weight": 150
+      }
+    ]
+  ]
+}

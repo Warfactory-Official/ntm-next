@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:coin_worm",
+    "G": "#hbm:billets/polonium_210",
+    "H": "hbm:heart_booster",
+    "M": "#hbm:gems/any_coke"
+  },
+  "pattern": [
+    "GHG",
+    "MCM",
+    "GHG"
+  ],
+  "result": {
+    "id": "hbm:heart_fab"
+  }
+}

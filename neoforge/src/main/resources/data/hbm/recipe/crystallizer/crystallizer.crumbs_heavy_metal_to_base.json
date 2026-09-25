@@ -1,0 +1,33 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:slop",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "heavy_metal",
+          "grade": "crumbs"
+        }
+      },
+      "count": 64,
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 76,
+  "output_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "heavy_metal"
+        }
+      },
+      "id": "hbm:bedrock_ore"
+    }
+  ]
+}

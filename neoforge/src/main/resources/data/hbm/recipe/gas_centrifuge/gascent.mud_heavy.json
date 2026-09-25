@@ -1,0 +1,13 @@
+{
+  "type": "hbm:gas_centrifuge",
+  "consumed": 500,
+  "duration": 150,
+  "order": 6,
+  "output_items": [
+    "hbm:powder_iron",
+    "hbm:dust",
+    "hbm:nuclear_waste_tiny"
+  ],
+  "power": 200,
+  "stage": "mud_heavy"
+}

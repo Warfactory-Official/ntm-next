@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:ingots/cobalt",
+    "G": "hbm:glass_boron",
+    "I": "#c:ingots/steel"
+  },
+  "pattern": [
+    "GIG",
+    "GCG"
+  ],
+  "result": {
+    "id": "hbm:chemistry_set_boron"
+  }
+}

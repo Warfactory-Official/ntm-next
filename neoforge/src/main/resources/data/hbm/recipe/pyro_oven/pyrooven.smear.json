@@ -1,0 +1,14 @@
+{
+  "type": "hbm:pyro_oven",
+  "duration": 60,
+  "input_fluids": [
+    {
+      "type": "hbm:smear",
+      "amount": 8700
+    }
+  ],
+  "order": 0,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

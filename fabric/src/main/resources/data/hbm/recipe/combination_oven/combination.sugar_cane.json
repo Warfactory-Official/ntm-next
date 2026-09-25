@@ -1,0 +1,21 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "ingredient": "minecraft:sugar_cane"
+    }
+  ],
+  "order": 21,
+  "output_fluids": [
+    {
+      "type": "hbm:ethanol",
+      "amount": 50
+    }
+  ],
+  "output_items": [
+    {
+      "count": 2,
+      "id": "minecraft:sugar"
+    }
+  ]
+}

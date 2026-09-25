@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "fabric:type": "hbm:fluid_content",
+      "amount": 1000,
+      "fluid": "hbm:kerosene"
+    },
+    "T": "#c:ingots/steel"
+  },
+  "pattern": [
+    " S ",
+    "STS",
+    " S "
+  ],
+  "result": {
+    "id": "hbm:flame_conspiracy"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/red_phosphorus"
+    }
+  ],
+  "order": 435,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

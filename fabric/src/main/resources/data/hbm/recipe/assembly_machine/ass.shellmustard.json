@@ -1,0 +1,23 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:mustardgas",
+      "amount": 4000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:ammo_arty"
+    },
+    {
+      "ingredient": "#hbm:ingots/any_plastic"
+    }
+  ],
+  "order": 413,
+  "output_items": [
+    "hbm:ammo_arty_mustard_gas"
+  ],
+  "power": 1000
+}

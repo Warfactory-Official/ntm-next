@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:block/fence_metal_post_inventory"
+  }
+}

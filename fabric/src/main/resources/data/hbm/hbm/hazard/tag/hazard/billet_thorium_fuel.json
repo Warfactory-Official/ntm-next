@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 0.875
+    }
+  ],
+  "targets": "#hbm:hazard/billet_thorium_fuel"
+}

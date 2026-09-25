@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_basic",
+    "I": "#hbm:ingots/any_plastic",
+    "P": "hbm:plate_polymer",
+    "W": "#c:fine_wires/copper"
+  },
+  "pattern": [
+    "WIW",
+    "PCP",
+    "WIW"
+  ],
+  "result": {
+    "id": "hbm:upgrade_template"
+  }
+}

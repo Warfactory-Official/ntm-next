@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_analog",
+    "D": "hbm:ducttape",
+    "N": "hbm:ammo_standard_nuke_demo"
+  },
+  "pattern": [
+    "CDN"
+  ],
+  "result": {
+    "id": "hbm:mine_fat"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:bobblehead_microwave"
+    }
+  ],
+  "order": 198,
+  "output_items": [
+    "hbm:scrap_plastic_board_converter"
+  ]
+}

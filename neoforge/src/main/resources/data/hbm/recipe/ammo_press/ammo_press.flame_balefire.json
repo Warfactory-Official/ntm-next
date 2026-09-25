@@ -1,0 +1,27 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#c:plates/steel"
+    },
+    "B": {
+      "ingredient": {
+        "neoforge:ingredient_type": "hbm:fluid_content",
+        "amount": 1000,
+        "fluid": "hbm:balefire_fuel"
+      }
+    },
+    "C": {
+      "ingredient": "#c:plates/steel"
+    }
+  },
+  "order": 74,
+  "output_items": [
+    "hbm:ammo_standard_flame_balefire"
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

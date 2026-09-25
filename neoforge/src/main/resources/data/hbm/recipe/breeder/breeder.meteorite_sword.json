@@ -1,0 +1,13 @@
+{
+  "type": "hbm:breeder",
+  "flux": 1000,
+  "input_items": [
+    {
+      "ingredient": "hbm:meteorite_sword_etched"
+    }
+  ],
+  "order": 30,
+  "output_items": [
+    "hbm:meteorite_sword_bred"
+  ]
+}

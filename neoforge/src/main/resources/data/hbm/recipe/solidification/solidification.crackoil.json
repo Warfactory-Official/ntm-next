@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:crackoil",
+      "amount": 200
+    }
+  ],
+  "order": 12,
+  "output_items": [
+    "hbm:oil_tar_crack"
+  ]
+}

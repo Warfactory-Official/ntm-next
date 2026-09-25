@@ -1,0 +1,18 @@
+{
+  "type": "hbm:assembly_machine",
+  "auto_switch_group": "autoswitch.cyclotron",
+  "duration": 40,
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/beryllium"
+    }
+  ],
+  "order": 53,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:part_beryllium"
+    }
+  ],
+  "power": 100
+}

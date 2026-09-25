@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/calcium",
+    "#minecraft:sand"
+  ],
+  "result": {
+    "count": 12,
+    "id": "hbm:powder_flux"
+  }
+}

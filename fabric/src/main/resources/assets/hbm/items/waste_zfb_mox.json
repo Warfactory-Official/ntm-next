@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/waste_zfb_mox",
+    "tints": [
+      {
+        "type": "hbm:waste_cooling"
+      }
+    ]
+  }
+}

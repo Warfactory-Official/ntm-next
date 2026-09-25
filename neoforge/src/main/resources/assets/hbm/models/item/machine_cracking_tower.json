@@ -1,0 +1,173 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        -0.04075086,
+        10.440474,
+        -0.46579465
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        -0.04075277,
+        10.440474,
+        -0.46579435
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        1.5,
+        21.44,
+        0.50000143
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.09375,
+        0.09375,
+        0.09375
+      ],
+      "translation": [
+        -0.75,
+        8.0,
+        -9.536743E-7
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.05625,
+        0.05625,
+        0.056250002
+      ],
+      "translation": [
+        0.3181985,
+        1.0451938,
+        -5.874432
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "translation": [
+        -0.7618478,
+        -47.147617,
+        -4.6416707
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        -3.0,
+        48.0,
+        -2.861023E-6
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07031249,
+        0.0703125,
+        0.0703125
+      ],
+      "translation": [
+        -2.2330635,
+        9.27763,
+        3.5361
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07031249,
+        0.0703125,
+        0.0703125
+      ],
+      "translation": [
+        -3.392854,
+        9.035345,
+        3.227394
+      ]
+    }
+  },
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/cracking_tower.obj",
+  "offset_x": -4.7683716E-7,
+  "offset_y": -7.5,
+  "offset_z": 0.5,
+  "skins": {
+    "all": [
+      "Cube"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/cracking_tower",
+    "particle": "hbm:block/models/machines/cracking_tower"
+  }
+}

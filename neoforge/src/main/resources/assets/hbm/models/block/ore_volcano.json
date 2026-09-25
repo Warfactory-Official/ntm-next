@@ -1,0 +1,123 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#bedrock"
+        },
+        "east": {
+          "cullface": "east",
+          "texture": "#bedrock"
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#bedrock"
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#bedrock"
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#bedrock"
+        },
+        "west": {
+          "cullface": "west",
+          "texture": "#bedrock"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#overlay",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "cullface": "east",
+          "texture": "#overlay",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#overlay",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#overlay",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#overlay",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "west": {
+          "cullface": "west",
+          "texture": "#overlay",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        }
+      },
+      "from": [
+        -0.001,
+        -0.001,
+        -0.001
+      ],
+      "to": [
+        16.001,
+        16.001,
+        16.001
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bedrock": "minecraft:block/bedrock",
+    "overlay": "hbm:block/molten_overlay",
+    "particle": "minecraft:block/bedrock"
+  }
+}

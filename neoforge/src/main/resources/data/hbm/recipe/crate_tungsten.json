@@ -1,0 +1,17 @@
+{
+  "type": "hbm:container_upgrade",
+  "carrier": "hbm:crate_steel",
+  "key": {
+    "B": "#c:storage_blocks/tungsten",
+    "C": "hbm:crate_steel",
+    "P": "#hbm:plates_cast/copper"
+  },
+  "pattern": [
+    "BPB",
+    "PCP",
+    "BPB"
+  ],
+  "result": {
+    "id": "hbm:crate_tungsten"
+  }
+}

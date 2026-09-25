@@ -1,0 +1,18 @@
+{
+  "type": "hbm:assembly_machine",
+  "auto_switch_group": "autoswitch.plates",
+  "blueprint_pools": [
+    "alt.plates"
+  ],
+  "duration": 60,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/copper"
+    }
+  ],
+  "order": 6,
+  "output_items": [
+    "hbm:plate_copper"
+  ],
+  "power": 100
+}

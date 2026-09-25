@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "minecraft:block/netherrack",
+    "side": "minecraft:block/netherrack",
+    "top": "hbm:block/geysir_nether"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_vacuum_tube",
+    "G": "#c:plates/gold",
+    "I": "#c:plates/iron"
+  },
+  "pattern": [
+    "G",
+    "C",
+    "I"
+  ],
+  "result": {
+    "id": "hbm:gas_tester"
+  }
+}

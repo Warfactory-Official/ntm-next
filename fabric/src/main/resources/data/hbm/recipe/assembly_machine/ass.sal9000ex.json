@@ -1,0 +1,38 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_plastic"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:wires_dense/gold"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_computer"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_bismoid"
+    }
+  ],
+  "name": "ass.sal9000Ex",
+  "order": 96,
+  "output_items": [
+    "hbm:machine_supercomputer"
+  ],
+  "power": 1000
+}

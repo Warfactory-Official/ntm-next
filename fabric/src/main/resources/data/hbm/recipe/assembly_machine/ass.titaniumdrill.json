@@ -1,0 +1,18 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "#hbm:plates_cast/dura_steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/titanium"
+    }
+  ],
+  "order": 44,
+  "output_items": [
+    "hbm:drill_titanium"
+  ],
+  "power": 100
+}

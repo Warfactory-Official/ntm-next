@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hbm:item/bedrock_ore_sulfuric_rare",
+    "layer1": "hbm:item/bedrock_ore_overlay_centrifuged",
+    "layer2": "hbm:item/bedrock_ore_overlay_sulfuric"
+  }
+}

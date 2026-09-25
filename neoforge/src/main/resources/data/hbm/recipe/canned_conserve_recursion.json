@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:canned_recursion"
+  ],
+  "result": {
+    "id": "hbm:canned_recursion"
+  }
+}

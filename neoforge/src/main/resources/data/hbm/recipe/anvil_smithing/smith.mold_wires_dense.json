@@ -1,0 +1,18 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "count": 9,
+      "ingredient": "#hbm:wires_dense/mingrade"
+    },
+    {
+      "ingredient": "hbm:mold_base"
+    }
+  ],
+  "kind": "mold",
+  "order": 55,
+  "output_items": [
+    "hbm:mold_wires_dense"
+  ],
+  "shape": "wires_dense"
+}

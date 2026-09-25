@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/lignite"
+    }
+  ],
+  "order": 7,
+  "output_fluids": [
+    {
+      "type": "hbm:coaloil",
+      "amount": 150
+    }
+  ]
+}

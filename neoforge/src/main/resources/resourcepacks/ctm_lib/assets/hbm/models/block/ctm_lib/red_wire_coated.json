@@ -1,0 +1,6 @@
+{
+  "textures": {
+    "connected": "hbm:block/ctm_lib/red_wire_coated_ct",
+    "particle": "hbm:block/red_wire_coated"
+  }
+}

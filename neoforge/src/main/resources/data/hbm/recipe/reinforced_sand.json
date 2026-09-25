@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": [
+      "minecraft:sandstone",
+      "minecraft:chiseled_sandstone",
+      "minecraft:cut_sandstone"
+    ],
+    "F": "minecraft:iron_bars"
+  },
+  "pattern": [
+    "FBF",
+    "BFB",
+    "FBF"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:reinforced_sand"
+  }
+}

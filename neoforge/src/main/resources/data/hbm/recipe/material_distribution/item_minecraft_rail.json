@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 27,
+      "material": "iron"
+    }
+  ],
+  "targets": "minecraft:rail"
+}

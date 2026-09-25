@@ -1,0 +1,32 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:item_expensive_lead_plating"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:concretes"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/steel"
+    }
+  ],
+  "name": "ass.pwrportEx",
+  "order": 252,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:pwr_port"
+    }
+  ],
+  "power": 500
+}

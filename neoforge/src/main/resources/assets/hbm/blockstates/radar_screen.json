@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/radar_screen"
+    },
+    "facing=north": {
+      "model": "hbm:block/radar_screen",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/radar_screen",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/radar_screen",
+      "y": 180
+    }
+  }
+}

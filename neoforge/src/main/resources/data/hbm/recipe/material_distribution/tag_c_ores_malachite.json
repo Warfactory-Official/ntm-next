@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 432,
+      "material": "malachite"
+    }
+  ],
+  "targets": "#c:ores/malachite"
+}

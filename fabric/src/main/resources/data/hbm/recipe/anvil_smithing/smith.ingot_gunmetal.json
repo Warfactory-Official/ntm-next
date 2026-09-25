@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/copper"
+    },
+    {
+      "ingredient": "#c:ingots/aluminum"
+    }
+  ],
+  "order": 38,
+  "output_items": [
+    "hbm:ingot_gunmetal"
+  ]
+}

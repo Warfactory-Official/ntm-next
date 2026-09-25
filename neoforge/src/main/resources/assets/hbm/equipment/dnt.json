@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "hbm:dnt"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "hbm:dnt"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "hbm:dnt"
+      }
+    ]
+  }
+}

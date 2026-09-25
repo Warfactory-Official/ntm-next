@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_vacuum_tube",
+    "G": "#c:dusts/glowstone",
+    "R": "minecraft:redstone_torch"
+  },
+  "pattern": [
+    "G",
+    "R",
+    "C"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:radio_torch_counter"
+  }
+}

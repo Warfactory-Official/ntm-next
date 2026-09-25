@@ -1,0 +1,104 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 12.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:nugget_u238",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 8.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:nugget_pu240",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 4.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:nugget_neptunium",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_u238",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_dual_u238",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_quad_u238",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:bottle_quantum",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:damage": 60
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "hbm:gas_mask_m65",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:hazmat_kit",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gas_mask_filter",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:yellow_barrel",
+          "weight": 2
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/nuke_trash"
+}

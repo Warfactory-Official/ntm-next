@@ -1,0 +1,22 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:rbmk_blank",
+    "G": "hbm:steel_grate",
+    "I": "hbm:plate_polymer"
+  },
+  "pattern": [
+    "IGI",
+    "GCG",
+    "IGI"
+  ],
+  "result": {
+    "id": "hbm:rbmk_cooler"
+  }
+}

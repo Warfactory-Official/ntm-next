@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": "#c:dusts/fluorite",
+    "P": "hbm:powder_poison"
+  },
+  "pattern": [
+    "PFP"
+  ],
+  "result": {
+    "id": "hbm:plan_c"
+  }
+}

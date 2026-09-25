@@ -1,0 +1,36 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_welded/steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "#hbm:shells/titanium"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/workers_alloy"
+    },
+    {
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 103,
+  "output_items": [
+    "hbm:machine_crystallizer"
+  ],
+  "power": 100
+}

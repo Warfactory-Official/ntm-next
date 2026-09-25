@@ -1,0 +1,44 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    },
+    {
+      "ingredient": "hbm:sphere_steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_chip_bismoid"
+    }
+  ],
+  "order": 124,
+  "output_items": [
+    "hbm:machine_vacuum_distill"
+  ],
+  "power": 100
+}

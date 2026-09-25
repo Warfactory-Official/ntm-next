@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/anvil_arsenic_bronze"
+    },
+    "facing=north": {
+      "model": "hbm:block/anvil_arsenic_bronze",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/anvil_arsenic_bronze",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/anvil_arsenic_bronze",
+      "y": 180
+    }
+  }
+}

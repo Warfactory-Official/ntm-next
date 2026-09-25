@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "hbm:crucible",
+    "base": "hbm:item/crucible_base"
+  }
+}

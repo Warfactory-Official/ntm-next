@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#hbm:ingots/any_rubber",
+    "minecraft:wheat",
+    "minecraft:rotten_flesh",
+    "#minecraft:saplings"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:definitelyfood"
+  }
+}

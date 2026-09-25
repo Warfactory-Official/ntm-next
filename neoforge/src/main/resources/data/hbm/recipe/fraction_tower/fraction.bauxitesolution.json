@@ -1,0 +1,20 @@
+{
+  "type": "hbm:fraction_tower",
+  "input_fluids": [
+    {
+      "type": "hbm:bauxite_solution",
+      "amount": 100
+    }
+  ],
+  "order": 18,
+  "output_fluids": [
+    {
+      "type": "hbm:redmud",
+      "amount": 50
+    },
+    {
+      "type": "hbm:sodium_aluminate",
+      "amount": 50
+    }
+  ]
+}

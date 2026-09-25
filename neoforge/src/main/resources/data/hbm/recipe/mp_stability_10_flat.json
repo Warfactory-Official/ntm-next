@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": "#c:plates/steel",
+    "S": "hbm:steel_scaffold"
+  },
+  "pattern": [
+    "PSP",
+    "P P"
+  ],
+  "result": {
+    "id": "hbm:mp_stability_10_flat"
+  }
+}

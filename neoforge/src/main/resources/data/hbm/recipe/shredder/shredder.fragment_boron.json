@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:fragment_boron"
+    }
+  ],
+  "order": 44,
+  "output_items": [
+    "hbm:powder_boron_tiny"
+  ]
+}

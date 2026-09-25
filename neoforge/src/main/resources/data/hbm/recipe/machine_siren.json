@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_vacuum_tube",
+    "I": "#hbm:ingots/any_rubber",
+    "R": "#c:dusts/redstone",
+    "S": "#c:plates/steel"
+  },
+  "pattern": [
+    "SIS",
+    "ICI",
+    "SRS"
+  ],
+  "result": {
+    "id": "hbm:machine_siren"
+  }
+}

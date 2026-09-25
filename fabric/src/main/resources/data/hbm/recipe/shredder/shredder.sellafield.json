@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:sellafield"
+    }
+  ],
+  "order": 144,
+  "output_items": [
+    "hbm:scrap_nuclear"
+  ]
+}

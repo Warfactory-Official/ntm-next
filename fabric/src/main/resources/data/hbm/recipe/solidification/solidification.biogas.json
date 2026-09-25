@@ -1,0 +1,16 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:biogas",
+      "amount": 250
+    }
+  ],
+  "order": 2,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:biomass_compressed"
+    }
+  ]
+}

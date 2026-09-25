@@ -1,0 +1,22 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "double_sided": [
+    "Chamber"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Magnets",
+    "Core"
+  ],
+  "model": "hbm:models/machines/exposure_chamber.obj",
+  "skins": {
+    "all": [
+      "Chamber"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/exposure_chamber",
+    "particle": "hbm:block/models/machines/exposure_chamber"
+  }
+}

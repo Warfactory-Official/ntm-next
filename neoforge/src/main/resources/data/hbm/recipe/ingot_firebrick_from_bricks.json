@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "lbsm_simple_crafting"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "minecraft:brick",
+    "N": "minecraft:nether_brick"
+  },
+  "pattern": [
+    "BN",
+    "NB"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:ingot_firebrick"
+  }
+}

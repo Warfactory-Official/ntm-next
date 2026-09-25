@@ -1,0 +1,27 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 1000
+    },
+    {
+      "type": "minecraft:water",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/sulfur"
+    }
+  ],
+  "order": 59,
+  "output_fluids": [
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 2000
+    }
+  ],
+  "power": 100
+}

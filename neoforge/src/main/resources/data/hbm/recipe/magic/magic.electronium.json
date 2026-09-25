@@ -1,0 +1,21 @@
+{
+  "type": "hbm:magic",
+  "input_items": [
+    {
+      "ingredient": "hbm:pellet_charged"
+    },
+    {
+      "ingredient": "hbm:pellet_charged"
+    },
+    {
+      "ingredient": "hbm:ingot_dineutronium"
+    },
+    {
+      "ingredient": "hbm:ingot_dineutronium"
+    }
+  ],
+  "order": 4,
+  "output_items": [
+    "hbm:ingot_electronium"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#minecraft:planks"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/copper"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/iron"
+    },
+    {
+      "ingredient": "hbm:sawblade"
+    }
+  ],
+  "order": 74,
+  "output_items": [
+    "hbm:machine_sawmill"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

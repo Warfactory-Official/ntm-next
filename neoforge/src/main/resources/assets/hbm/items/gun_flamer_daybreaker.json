@@ -1,0 +1,32 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_flamer_daybreaker_base",
+    "mod_table": [
+      0.0,
+      0.0,
+      -7.5,
+      -7.5,
+      -0.0,
+      -7.5,
+      0.0,
+      0.0,
+      7.5,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/flamethrower.obj",
+    "parts": [
+      "Gun",
+      "Tank",
+      "Gauge",
+      "HeatShield"
+    ],
+    "texture": "hbm:textures/models/weapons/flamethrower_daybreaker.png"
+  }
+}

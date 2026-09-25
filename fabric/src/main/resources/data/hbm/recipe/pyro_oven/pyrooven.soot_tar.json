@@ -1,0 +1,20 @@
+{
+  "type": "hbm:pyro_oven",
+  "duration": 40,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:any_tar"
+    }
+  ],
+  "order": 62,
+  "output_fluids": [
+    {
+      "type": "hbm:carbondioxide",
+      "amount": 1000
+    }
+  ],
+  "output_items": [
+    "hbm:powder_ash_soot"
+  ]
+}

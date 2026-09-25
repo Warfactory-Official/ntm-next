@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 500.0
+    },
+    {
+      "type": "hbm:hot",
+      "level": 5.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:ingots/gold_198"
+}

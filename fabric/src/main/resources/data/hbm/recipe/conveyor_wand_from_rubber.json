@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/iron",
+    "L": "#hbm:ingots/any_rubber"
+  },
+  "pattern": [
+    "LLL",
+    "I I",
+    "LLL"
+  ],
+  "result": {
+    "count": 64,
+    "id": "hbm:conveyor_wand_regular"
+  }
+}

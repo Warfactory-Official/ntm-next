@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/cmbsteel"
+    }
+  ],
+  "order": 4,
+  "output_items": [
+    "hbm:ingot_dineutronium"
+  ]
+}

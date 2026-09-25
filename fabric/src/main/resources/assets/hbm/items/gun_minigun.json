@@ -1,0 +1,57 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_minigun_base",
+    "equipped_muzzles": [
+      {
+        "duration": 50,
+        "kind": "normal",
+        "length": 7.55,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.5,
+          0.0,
+          0.0,
+          1.5,
+          0.0,
+          0.5,
+          -1.5,
+          0.0,
+          -0.0,
+          12.25,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -6.25,
+      0.0,
+      -0.0,
+      -6.25,
+      0.0,
+      0.0,
+      6.25,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/minigun.obj",
+    "parts": [
+      "Gun",
+      "Grip",
+      "Barrels"
+    ],
+    "texture": "hbm:textures/models/weapons/minigun.png"
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 12.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:nugget_u235",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 12.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:nugget_pu238",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:nugget_ra226",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_u235",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_dual_u235",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_quad_u235",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_zirnox_uranium_fuel",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_zirnox_mox_fuel",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_zirnox_lithium_fuel",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_zirnox_thorium_fuel",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_dual_thf",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_zirnox_tritium",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_zirnox_u233_fuel",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_zirnox_u235_fuel",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:pellet_rtg",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:powder_thorium",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:powder_neptunium",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:powder_strontium",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:powder_cobalt",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:bottle_quantum",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:damage": 60
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "hbm:gas_mask_m65",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:hazmat_kit",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gas_mask_filter",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:yellow_barrel",
+          "weight": 3
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/nuke_misc"
+}

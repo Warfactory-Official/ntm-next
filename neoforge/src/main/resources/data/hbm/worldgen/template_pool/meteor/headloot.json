@@ -1,0 +1,41 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/room10/headloot/loot-chest",
+        "processors": "hbm:meteor_crates",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/room10/headloot/loot-tesla",
+        "processors": "hbm:meteor_crates",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/room10/headloot/loot-trap",
+        "processors": "hbm:meteor_crates",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:meteor/room10/headloot/loot-crate-crab",
+        "processors": "hbm:meteor_crates",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "hbm:meteor/headback"
+}

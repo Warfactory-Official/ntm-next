@@ -1,0 +1,26 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:plasma_forge",
+  "blueprint_pools_528": [
+    "528.chlorophyte"
+  ],
+  "duration": 800,
+  "ignition_temp": 1000000,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_steel_plating"
+    }
+  ],
+  "name": "plsm.icfscaffoldEx",
+  "order": 30,
+  "output_items": [
+    "hbm:icf_component"
+  ],
+  "power": 10000000
+}

@@ -1,0 +1,39 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 24,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 48,
+      "ingredient": "hbm:rocket_fuel"
+    },
+    {
+      "count": 6,
+      "ingredient": "hbm:ball_tatb"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:nuggets/plutonium_239"
+    },
+    {
+      "count": 12,
+      "ingredient": "hbm:neutron_reflector"
+    },
+    {
+      "count": 6,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 339,
+  "output_items": [
+    "hbm:ammo_himars_standard_mini_nuke"
+  ],
+  "power": 100
+}

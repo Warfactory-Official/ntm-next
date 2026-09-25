@@ -1,0 +1,12 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "ingredient": "minecraft:clay"
+    }
+  ],
+  "order": 22,
+  "output_items": [
+    "minecraft:bricks"
+  ]
+}

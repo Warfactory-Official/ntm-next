@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:powder_desh_mix",
+    "hbm:nugget_mercury",
+    "hbm:nugget_mercury",
+    "#c:dusts/coal"
+  ],
+  "result": {
+    "id": "hbm:powder_desh_ready"
+  }
+}

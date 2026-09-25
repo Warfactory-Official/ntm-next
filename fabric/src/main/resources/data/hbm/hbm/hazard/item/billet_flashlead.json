@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 6250.0
+    },
+    {
+      "type": "hbm:hot",
+      "level": 7.0
+    }
+  ],
+  "targets": "hbm:billet_flashlead"
+}

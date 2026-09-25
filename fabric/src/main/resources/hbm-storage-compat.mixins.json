@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "com.hbm.mixin.compat.storage",
+  "mixins": [
+    "MixinTomsFilingCabinet",
+    "MixinTomsCraftingTerminal"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

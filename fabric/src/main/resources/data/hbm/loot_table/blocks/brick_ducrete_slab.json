@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "conditions": [
+                {
+                  "block": "hbm:brick_ducrete_slab",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "type": "double"
+                  }
+                }
+              ],
+              "count": 2,
+              "function": "minecraft:set_count"
+            },
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ],
+          "name": "hbm:brick_ducrete_slab"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:blocks/brick_ducrete_slab"
+}

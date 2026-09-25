@@ -1,0 +1,178 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -180.0,
+        -45.000008,
+        180.0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ],
+      "translation": [
+        0.70710754,
+        -0.9967997,
+        0.7071061
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -180.0,
+        -45.000008,
+        -180.0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ],
+      "translation": [
+        0.7071061,
+        -0.9967997,
+        0.70710707
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -89.99999,
+        0.0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ],
+      "translation": [
+        1.5625005,
+        -2.1175003,
+        0.49999952
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -180.0,
+        -5.008956E-6,
+        -180.0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "translation": [
+        -1.1920929E-7,
+        -4.623,
+        0.6250002
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ],
+      "translation": [
+        -1.1048541,
+        -1.9012614,
+        0.17808151
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -89.99999,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "translation": [
+        2.5000007,
+        -2.4920006,
+        0.0
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        89.99999,
+        0.0
+      ],
+      "scale": [
+        1.25,
+        1.25,
+        1.25
+      ],
+      "translation": [
+        -3.125,
+        -3.1149998,
+        -9.536743E-7
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -110.00001,
+        44.999996,
+        180.0
+      ],
+      "scale": [
+        0.37499997,
+        0.37500003,
+        0.37499997
+      ],
+      "translation": [
+        1.2164745,
+        -0.70859694,
+        -0.00862515
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -110.00001,
+        44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.37499997,
+        0.37500003,
+        0.37499997
+      ],
+      "translation": [
+        -0.66291285,
+        1.0574489,
+        -0.6514133
+      ]
+    }
+  },
+  "gui_light": "side",
+  "model": "hbm:models/blocks/anvil_iron.obj",
+  "offset_y": 0.15575,
+  "offset_z": 0.15625,
+  "skins": {
+    "all": [
+      "anvil_iron",
+      "Back",
+      "Bottom",
+      "Top",
+      "Left",
+      "Right",
+      "Front"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/anvil_osmiridium",
+    "particle": "hbm:block/anvil_osmiridium"
+  }
+}

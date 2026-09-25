@@ -1,0 +1,33 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_fluids": [
+    {
+      "type": "hbm:lubricant",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_cast/lead"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:ingots/boron"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:bolts/tungsten"
+    }
+  ],
+  "order": 20,
+  "output_items": [
+    "hbm:item_expensive_lead_plating"
+  ],
+  "power": 4000
+}

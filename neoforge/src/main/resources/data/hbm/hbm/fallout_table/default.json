@@ -1,0 +1,2346 @@
+{
+  "rules": [
+    {
+      "max_distance_percent": 65.0,
+      "preserve": [
+        "axis"
+      ],
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:waste_log",
+            "Properties": {
+              "axis": "y"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "#minecraft:logs"
+    },
+    {
+      "max_distance_percent": 65.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:waste_log",
+            "Properties": {
+              "axis": "y"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "minecraft:mushroom_stem"
+    },
+    {
+      "max_distance_percent": 65.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "minecraft:air"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "minecraft:red_mushroom_block"
+    },
+    {
+      "max_distance_percent": 65.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "minecraft:air"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "minecraft:brown_mushroom_block"
+    },
+    {
+      "max_distance_percent": 65.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "minecraft:air"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "minecraft:snow"
+    },
+    {
+      "max_distance_percent": 65.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:waste_planks"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "#minecraft:planks"
+    },
+    {
+      "max_distance_percent": 65.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "minecraft:air"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "#minecraft:mineable/axe"
+    },
+    {
+      "max_distance_percent": 65.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "minecraft:air"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "#minecraft:leaves"
+    },
+    {
+      "max_distance_percent": 65.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "minecraft:air"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "hbm:leaves_layer"
+    },
+    {
+      "max_distance_percent": 65.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "minecraft:air"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "#minecraft:flowers"
+    },
+    {
+      "max_distance_percent": 65.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "minecraft:air"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "#minecraft:saplings"
+    },
+    {
+      "max_distance_percent": 65.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "minecraft:air"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "#minecraft:bee_growables"
+    },
+    {
+      "max_distance_percent": 65.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "minecraft:air"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": [
+        "minecraft:oak_sapling",
+        "minecraft:spruce_sapling",
+        "minecraft:birch_sapling",
+        "minecraft:jungle_sapling",
+        "minecraft:acacia_sapling",
+        "minecraft:cherry_sapling",
+        "minecraft:dark_oak_sapling",
+        "minecraft:pale_oak_sapling",
+        "minecraft:mangrove_propagule",
+        "minecraft:short_grass",
+        "minecraft:fern",
+        "minecraft:dead_bush",
+        "minecraft:bush",
+        "minecraft:short_dry_grass",
+        "minecraft:tall_dry_grass",
+        "minecraft:seagrass",
+        "minecraft:tall_seagrass",
+        "minecraft:dandelion",
+        "minecraft:golden_dandelion",
+        "minecraft:torchflower",
+        "minecraft:poppy",
+        "minecraft:blue_orchid",
+        "minecraft:allium",
+        "minecraft:azure_bluet",
+        "minecraft:red_tulip",
+        "minecraft:orange_tulip",
+        "minecraft:white_tulip",
+        "minecraft:pink_tulip",
+        "minecraft:oxeye_daisy",
+        "minecraft:cornflower",
+        "minecraft:wither_rose",
+        "minecraft:lily_of_the_valley",
+        "minecraft:brown_mushroom",
+        "minecraft:red_mushroom",
+        "minecraft:wheat",
+        "minecraft:cactus_flower",
+        "minecraft:attached_pumpkin_stem",
+        "minecraft:attached_melon_stem",
+        "minecraft:pumpkin_stem",
+        "minecraft:melon_stem",
+        "minecraft:lily_pad",
+        "minecraft:nether_wart",
+        "minecraft:carrots",
+        "minecraft:potatoes",
+        "minecraft:sunflower",
+        "minecraft:lilac",
+        "minecraft:rose_bush",
+        "minecraft:peony",
+        "minecraft:tall_grass",
+        "minecraft:large_fern",
+        "minecraft:torchflower_crop",
+        "minecraft:pitcher_crop",
+        "minecraft:pitcher_plant",
+        "minecraft:beetroots",
+        "minecraft:sea_pickle",
+        "minecraft:sweet_berry_bush",
+        "minecraft:warped_fungus",
+        "minecraft:warped_roots",
+        "minecraft:nether_sprouts",
+        "minecraft:crimson_fungus",
+        "minecraft:crimson_roots",
+        "minecraft:azalea",
+        "minecraft:flowering_azalea",
+        "minecraft:pink_petals",
+        "minecraft:wildflowers",
+        "minecraft:leaf_litter",
+        "minecraft:small_dripleaf",
+        "minecraft:open_eyeblossom",
+        "minecraft:closed_eyeblossom",
+        "minecraft:firefly_bush",
+        "hbm:plant_dead",
+        "hbm:plant_dead_grass",
+        "hbm:plant_dead_flower",
+        "hbm:plant_dead_bigflower",
+        "hbm:plant_dead_fern",
+        "hbm:plant_flower_foxglove",
+        "hbm:plant_flower_tobacco",
+        "hbm:plant_flower_nightshade",
+        "hbm:plant_flower_weed",
+        "hbm:plant_flower_cd0",
+        "hbm:plant_flower_cd1",
+        "hbm:plant_tall_weed",
+        "hbm:plant_tall_cd2",
+        "hbm:plant_tall_cd3",
+        "hbm:plant_tall_cd4",
+        "hbm:mush",
+        "minecraft:sugar_cane",
+        "hbm:plant_reeds"
+      ]
+    },
+    {
+      "max_distance_percent": 65.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "minecraft:air"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "hbm:waste_leaves"
+    },
+    {
+      "min_distance_percent": 60.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:waste_leaves"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "#minecraft:leaves"
+    },
+    {
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:glyphid_base_rad"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": [
+        "hbm:glyphid_base",
+        "hbm:glyphid_base_infested",
+        "hbm:glyphid_base_rad"
+      ]
+    },
+    {
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:glyphid_spawner_rad"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": [
+        "hbm:glyphid_spawner",
+        "hbm:glyphid_spawner_infested",
+        "hbm:glyphid_spawner_rad"
+      ]
+    },
+    {
+      "primary": [
+        {
+          "state": {
+            "Name": "minecraft:coal_ore"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "minecraft:mossy_cobblestone"
+    },
+    {
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_nether_schrabidium"
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_nether_uranium_scorched"
+          },
+          "weight": 99
+        }
+      ],
+      "targets": "hbm:ore_nether_uranium"
+    },
+    {
+      "primary": [
+        {
+          "state": {
+            "Name": "minecraft:terracotta"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "minecraft:clay"
+    },
+    {
+      "chance": 0.5,
+      "max_distance_percent": 5.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 2
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:coal_ore"
+    },
+    {
+      "chance": 0.2,
+      "max_distance_percent": 5.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_lignite"
+    },
+    {
+      "max_distance_percent": 5.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_beryllium"
+    },
+    {
+      "max_distance_percent": 5.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_schrabidium",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_uranium_scorched",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 9
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_uranium"
+    },
+    {
+      "max_distance_percent": 5.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_schrabidium",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_uranium_scorched",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 9
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_gneiss_uranium"
+    },
+    {
+      "max_distance_percent": 5.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_radgem",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:diamond_ore"
+    },
+    {
+      "max_distance_percent": 5.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:bedrock"
+    },
+    {
+      "max_distance_percent": 5.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock"
+    },
+    {
+      "max_distance_percent": 5.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock_oil"
+    },
+    {
+      "max_distance_percent": 5.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:sellafield_bedrock"
+    },
+    {
+      "max_distance_percent": 5.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/pickaxe"
+    },
+    {
+      "max_distance_percent": 5.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/shovel"
+    },
+    {
+      "chance": 0.5,
+      "max_distance_percent": 10.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 2
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:coal_ore"
+    },
+    {
+      "chance": 0.2,
+      "max_distance_percent": 10.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_lignite"
+    },
+    {
+      "max_distance_percent": 10.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_beryllium"
+    },
+    {
+      "max_distance_percent": 10.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_schrabidium",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_uranium_scorched",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 9
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_uranium"
+    },
+    {
+      "max_distance_percent": 10.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_schrabidium",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_uranium_scorched",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 9
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_gneiss_uranium"
+    },
+    {
+      "max_distance_percent": 10.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_radgem",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:diamond_ore"
+    },
+    {
+      "max_distance_percent": 10.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:bedrock"
+    },
+    {
+      "max_distance_percent": 10.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock"
+    },
+    {
+      "max_distance_percent": 10.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock_oil"
+    },
+    {
+      "max_distance_percent": 10.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:sellafield_bedrock"
+    },
+    {
+      "max_distance_percent": 10.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/pickaxe"
+    },
+    {
+      "max_distance_percent": 10.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/shovel"
+    },
+    {
+      "chance": 0.5,
+      "max_distance_percent": 15.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 2
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:coal_ore"
+    },
+    {
+      "chance": 0.2,
+      "max_distance_percent": 15.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_lignite"
+    },
+    {
+      "max_distance_percent": 15.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_beryllium"
+    },
+    {
+      "max_distance_percent": 15.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_schrabidium",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_uranium_scorched",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 9
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_uranium"
+    },
+    {
+      "max_distance_percent": 15.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_schrabidium",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_uranium_scorched",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 9
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_gneiss_uranium"
+    },
+    {
+      "max_distance_percent": 15.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_radgem",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:diamond_ore"
+    },
+    {
+      "max_distance_percent": 15.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:bedrock"
+    },
+    {
+      "max_distance_percent": 15.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock"
+    },
+    {
+      "max_distance_percent": 15.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock_oil"
+    },
+    {
+      "max_distance_percent": 15.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:sellafield_bedrock"
+    },
+    {
+      "max_distance_percent": 15.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/pickaxe"
+    },
+    {
+      "max_distance_percent": 15.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/shovel"
+    },
+    {
+      "chance": 0.5,
+      "max_distance_percent": 20.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 2
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:coal_ore"
+    },
+    {
+      "chance": 0.2,
+      "max_distance_percent": 20.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_lignite"
+    },
+    {
+      "max_distance_percent": 20.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_beryllium"
+    },
+    {
+      "max_distance_percent": 20.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_schrabidium",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_uranium_scorched",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 9
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_uranium"
+    },
+    {
+      "max_distance_percent": 20.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_schrabidium",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_uranium_scorched",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 9
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_gneiss_uranium"
+    },
+    {
+      "max_distance_percent": 20.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_radgem",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:diamond_ore"
+    },
+    {
+      "max_distance_percent": 20.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:bedrock"
+    },
+    {
+      "max_distance_percent": 20.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock"
+    },
+    {
+      "max_distance_percent": 20.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock_oil"
+    },
+    {
+      "max_distance_percent": 20.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:sellafield_bedrock"
+    },
+    {
+      "max_distance_percent": 20.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/pickaxe"
+    },
+    {
+      "max_distance_percent": 20.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/shovel"
+    },
+    {
+      "chance": 0.5,
+      "max_distance_percent": 25.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 2
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:coal_ore"
+    },
+    {
+      "chance": 0.2,
+      "max_distance_percent": 25.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_lignite"
+    },
+    {
+      "max_distance_percent": 25.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_beryllium"
+    },
+    {
+      "max_distance_percent": 25.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_schrabidium",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_uranium_scorched",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 9
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_uranium"
+    },
+    {
+      "max_distance_percent": 25.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_schrabidium",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_uranium_scorched",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 9
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_gneiss_uranium"
+    },
+    {
+      "max_distance_percent": 25.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_radgem",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:diamond_ore"
+    },
+    {
+      "max_distance_percent": 25.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:bedrock"
+    },
+    {
+      "max_distance_percent": 25.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock"
+    },
+    {
+      "max_distance_percent": 25.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock_oil"
+    },
+    {
+      "max_distance_percent": 25.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:sellafield_bedrock"
+    },
+    {
+      "max_distance_percent": 25.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/pickaxe"
+    },
+    {
+      "max_distance_percent": 25.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/shovel"
+    },
+    {
+      "chance": 0.5,
+      "max_distance_percent": 30.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "4"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "4"
+            }
+          },
+          "weight": 2
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:coal_ore"
+    },
+    {
+      "chance": 0.2,
+      "max_distance_percent": 30.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "4"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_lignite"
+    },
+    {
+      "max_distance_percent": 30.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "4"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_beryllium"
+    },
+    {
+      "max_distance_percent": 30.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_radgem",
+            "Properties": {
+              "shade": "4"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:diamond_ore"
+    },
+    {
+      "max_distance_percent": 30.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "4"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:bedrock"
+    },
+    {
+      "max_distance_percent": 30.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "4"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock"
+    },
+    {
+      "max_distance_percent": 30.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "4"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock_oil"
+    },
+    {
+      "max_distance_percent": 30.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "4"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:sellafield_bedrock"
+    },
+    {
+      "max_distance_percent": 30.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "4"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/pickaxe"
+    },
+    {
+      "max_distance_percent": 30.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "4"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/shovel"
+    },
+    {
+      "chance": 0.5,
+      "max_distance_percent": 35.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "3"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "3"
+            }
+          },
+          "weight": 2
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:coal_ore"
+    },
+    {
+      "chance": 0.2,
+      "max_distance_percent": 35.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "3"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_lignite"
+    },
+    {
+      "max_distance_percent": 35.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "3"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_beryllium"
+    },
+    {
+      "max_distance_percent": 35.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_radgem",
+            "Properties": {
+              "shade": "3"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:diamond_ore"
+    },
+    {
+      "max_distance_percent": 35.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "3"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:bedrock"
+    },
+    {
+      "max_distance_percent": 35.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "3"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock"
+    },
+    {
+      "max_distance_percent": 35.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "3"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock_oil"
+    },
+    {
+      "max_distance_percent": 35.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "3"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:sellafield_bedrock"
+    },
+    {
+      "max_distance_percent": 35.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "3"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/pickaxe"
+    },
+    {
+      "max_distance_percent": 35.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "3"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/shovel"
+    },
+    {
+      "chance": 0.5,
+      "max_distance_percent": 40.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "2"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "2"
+            }
+          },
+          "weight": 2
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:coal_ore"
+    },
+    {
+      "chance": 0.2,
+      "max_distance_percent": 40.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "2"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_lignite"
+    },
+    {
+      "max_distance_percent": 40.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "2"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_beryllium"
+    },
+    {
+      "max_distance_percent": 40.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_radgem",
+            "Properties": {
+              "shade": "2"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:diamond_ore"
+    },
+    {
+      "max_distance_percent": 40.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "2"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:bedrock"
+    },
+    {
+      "max_distance_percent": 40.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "2"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock"
+    },
+    {
+      "max_distance_percent": 40.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "2"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock_oil"
+    },
+    {
+      "max_distance_percent": 40.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "2"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:sellafield_bedrock"
+    },
+    {
+      "max_distance_percent": 40.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "2"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/pickaxe"
+    },
+    {
+      "max_distance_percent": 40.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "2"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/shovel"
+    },
+    {
+      "chance": 0.5,
+      "max_distance_percent": 45.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "1"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "1"
+            }
+          },
+          "weight": 2
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:coal_ore"
+    },
+    {
+      "chance": 0.2,
+      "max_distance_percent": 45.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "1"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_lignite"
+    },
+    {
+      "max_distance_percent": 45.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "1"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_beryllium"
+    },
+    {
+      "max_distance_percent": 45.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_radgem",
+            "Properties": {
+              "shade": "1"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:diamond_ore"
+    },
+    {
+      "max_distance_percent": 45.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "1"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:bedrock"
+    },
+    {
+      "max_distance_percent": 45.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "1"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock"
+    },
+    {
+      "max_distance_percent": 45.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "1"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock_oil"
+    },
+    {
+      "max_distance_percent": 45.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "1"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:sellafield_bedrock"
+    },
+    {
+      "max_distance_percent": 45.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "1"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/pickaxe"
+    },
+    {
+      "max_distance_percent": 45.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "1"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/shovel"
+    },
+    {
+      "chance": 0.5,
+      "max_distance_percent": 50.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "0"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "0"
+            }
+          },
+          "weight": 2
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:coal_ore"
+    },
+    {
+      "chance": 0.2,
+      "max_distance_percent": 50.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_diamond",
+            "Properties": {
+              "shade": "0"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_lignite"
+    },
+    {
+      "max_distance_percent": 50.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_emerald",
+            "Properties": {
+              "shade": "0"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_beryllium"
+    },
+    {
+      "max_distance_percent": 50.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_radgem",
+            "Properties": {
+              "shade": "0"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:diamond_ore"
+    },
+    {
+      "max_distance_percent": 50.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "0"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "minecraft:bedrock"
+    },
+    {
+      "max_distance_percent": 50.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "0"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock"
+    },
+    {
+      "max_distance_percent": 50.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "0"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_bedrock_oil"
+    },
+    {
+      "max_distance_percent": 50.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_bedrock",
+            "Properties": {
+              "shade": "0"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:sellafield_bedrock"
+    },
+    {
+      "max_distance_percent": 50.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "0"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/pickaxe"
+    },
+    {
+      "max_distance_percent": 50.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "0"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "#minecraft:mineable/shovel"
+    },
+    {
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:waste_mycelium"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "minecraft:mycelium"
+    },
+    {
+      "chance": 0.05,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:waste_trinitite"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "minecraft:sand"
+    },
+    {
+      "chance": 0.05,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:waste_trinitite_red"
+          },
+          "weight": 1
+        }
+      ],
+      "targets": "minecraft:red_sand"
+    }
+  ]
+}

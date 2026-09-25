@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "rotation=0": {
+      "model": "hbm:block/deco_toaster_iron",
+      "y": 270
+    },
+    "rotation=1": {
+      "model": "hbm:block/deco_toaster_iron"
+    },
+    "rotation=2": {
+      "model": "hbm:block/deco_toaster_iron",
+      "y": 90
+    },
+    "rotation=3": {
+      "model": "hbm:block/deco_toaster_iron",
+      "y": 180
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#hbm:ingots/any_rubber"
+  },
+  "pattern": [
+    "DD"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:plate_polymer"
+  }
+}

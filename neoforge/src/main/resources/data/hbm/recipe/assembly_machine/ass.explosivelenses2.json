@@ -1,0 +1,31 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:plates/aluminum"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_plasticexplosive"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:neutron_reflector"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:ball_tatb"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:ingots/rubber"
+    }
+  ],
+  "order": 306,
+  "output_items": [
+    "hbm:explosive_lenses"
+  ],
+  "power": 100
+}

@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:syngas",
+      "amount": 1000
+    }
+  ],
+  "order": 39,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "type": "hbm:fusion",
+  "blue": 0.1,
+  "custom_localization": true,
+  "duration": 100,
+  "green": 0.4,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:stellar_flux",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -1900289
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "ignition_temp": 10000000,
+  "input_fluids": [
+    {
+      "type": "hbm:stellar_flux",
+      "amount": 10
+    }
+  ],
+  "neutron_flux": 10000.0,
+  "order": 9,
+  "output_items": [
+    "hbm:powder_gold"
+  ],
+  "output_temp": 50000000,
+  "power": 25000
+}

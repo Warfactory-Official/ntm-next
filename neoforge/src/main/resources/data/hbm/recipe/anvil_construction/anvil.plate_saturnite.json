@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/saturnite"
+    }
+  ],
+  "order": 9,
+  "output_items": [
+    "hbm:plate_saturnite"
+  ],
+  "overlay": "smithing",
+  "tier": 3
+}

@@ -1,0 +1,19 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 1000
+    },
+    {
+      "type": "minecraft:lava",
+      "amount": 25
+    }
+  ],
+  "order": 19,
+  "output_items": [
+    "minecraft:cobblestone"
+  ],
+  "power": 100
+}

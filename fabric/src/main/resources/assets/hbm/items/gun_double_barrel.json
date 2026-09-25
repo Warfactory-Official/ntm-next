@@ -1,0 +1,110 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_double_barrel_base",
+    "draws": [
+      {
+        "excludes_mods": [
+          {
+            "id": 203
+          }
+        ],
+        "parts": [
+          "Stock",
+          "BarrelShort",
+          "Barrel",
+          "Buckle",
+          "Lever",
+          "Shells"
+        ]
+      },
+      {
+        "parts": [
+          "Stock",
+          "BarrelShort",
+          "Buckle",
+          "Lever",
+          "Shells"
+        ],
+        "requires_mods": [
+          {
+            "id": 203
+          }
+        ]
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 5.0,
+        "matrix": [
+          -0.0,
+          0.0,
+          2.0,
+          0.0,
+          0.0,
+          2.0,
+          0.0,
+          0.0,
+          -2.0,
+          0.0,
+          -0.0,
+          8.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -8.75,
+      0.0,
+      -0.0,
+      -8.75,
+      0.0,
+      0.0,
+      8.75,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/sacred_dragon.obj",
+    "pose_overrides": [
+      {
+        "gui": [
+          1.4545453,
+          -5.9604645E-8,
+          1.1920929E-7,
+          -2.9090912,
+          5.9604645E-8,
+          1.4545453,
+          -5.9604645E-8,
+          0.22727227,
+          1.1920929E-7,
+          5.9604645E-8,
+          1.4545453,
+          2.3841858E-7,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "requires_mods": [
+          {
+            "id": 203
+          }
+        ]
+      }
+    ],
+    "texture": "hbm:textures/models/weapons/double_barrel.png"
+  }
+}

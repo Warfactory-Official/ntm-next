@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_advanced",
+    "E": "#c:ingots/euphemium",
+    "S": "#c:plates/steel",
+    "W": "#c:fine_wires/schrabidium"
+  },
+  "pattern": [
+    " W",
+    "SC",
+    "CE"
+  ],
+  "result": {
+    "id": "hbm:igniter"
+  }
+}

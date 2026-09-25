@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:wires_dense/mingrade",
+    "M": "hbm:horseshoe_magnet",
+    "S": "#c:ingots/steel"
+  },
+  "pattern": [
+    "SMS",
+    " B ",
+    "SMS"
+  ],
+  "result": {
+    "id": "hbm:industrial_magnet"
+  }
+}

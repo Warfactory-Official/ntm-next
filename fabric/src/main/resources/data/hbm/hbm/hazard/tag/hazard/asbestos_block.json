@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:asbestos",
+      "level": 1.0
+    }
+  ],
+  "targets": "#hbm:hazard/asbestos_block"
+}

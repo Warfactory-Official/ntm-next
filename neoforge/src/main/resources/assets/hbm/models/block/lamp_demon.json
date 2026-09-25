@@ -1,0 +1,15 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/demon_lamp.obj",
+  "skins": {
+    "all": [
+      "Sphere"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/demon_lamp",
+    "particle": "hbm:block/lamp_demon"
+  }
+}

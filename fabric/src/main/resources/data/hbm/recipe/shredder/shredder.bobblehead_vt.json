@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:bobblehead_vt"
+    }
+  ],
+  "order": 188,
+  "output_items": [
+    "hbm:scrap_plastic_cpu_ext"
+  ]
+}

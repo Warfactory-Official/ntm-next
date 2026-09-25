@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:boxcar"
+    }
+  ],
+  "order": 67,
+  "output_items": [
+    {
+      "count": 32,
+      "id": "hbm:powder_steel"
+    }
+  ]
+}

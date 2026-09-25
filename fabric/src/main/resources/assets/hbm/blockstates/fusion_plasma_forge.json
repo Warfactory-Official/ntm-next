@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/fusion_plasma_forge",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "hbm:block/fusion_plasma_forge",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "hbm:block/fusion_plasma_forge"
+    },
+    "facing=west": {
+      "model": "hbm:block/fusion_plasma_forge",
+      "y": 90
+    }
+  }
+}

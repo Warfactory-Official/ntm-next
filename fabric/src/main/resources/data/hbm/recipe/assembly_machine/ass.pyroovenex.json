@@ -1,0 +1,45 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.hardplastic"
+  ],
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "hbm:item_expensive_bronze_tubes"
+    },
+    {
+      "count": 32,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:ingot_cft"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:motor_bismuth"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_bismoid"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_computer"
+    }
+  ],
+  "name": "ass.pyroovenEx",
+  "order": 131,
+  "output_items": [
+    "hbm:machine_pyrooven"
+  ],
+  "power": 100
+}

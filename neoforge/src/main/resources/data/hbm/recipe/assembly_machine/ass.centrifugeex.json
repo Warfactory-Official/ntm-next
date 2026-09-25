@@ -1,0 +1,36 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:centrifuge_element"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/copper"
+    },
+    {
+      "ingredient": "hbm:circuit_analog"
+    }
+  ],
+  "name": "ass.centrifugeEx",
+  "order": 98,
+  "output_items": [
+    "hbm:machine_centrifuge"
+  ],
+  "power": 100
+}

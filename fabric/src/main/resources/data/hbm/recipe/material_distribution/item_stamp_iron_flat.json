@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 216,
+      "material": "iron"
+    }
+  ],
+  "targets": "hbm:stamp_iron_flat"
+}

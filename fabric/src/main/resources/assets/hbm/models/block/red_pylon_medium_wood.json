@@ -1,0 +1,18 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Transformer"
+  ],
+  "model": "hbm:models/network/pylon_medium.obj",
+  "skins": {
+    "all": [
+      "Pylon"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/network/pylon_medium",
+    "particle": "hbm:block/models/network/pylon_medium"
+  }
+}

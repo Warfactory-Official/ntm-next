@@ -1,0 +1,56 @@
+{
+  "processors": [
+    {
+      "marker": {
+        "Name": "hbm:meteor_brick"
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:meteor_brick"
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:meteor_brick_mossy"
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "hbm:meteor_brick_cracked"
+          },
+          "weight": 3
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "hbm:concrete_lime"
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:toxic_block",
+            "Properties": {
+              "level": "0"
+            }
+          },
+          "weight": 8
+        },
+        {
+          "data": {
+            "Name": "hbm:meteor_polished"
+          },
+          "weight": 2
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "processor_type": "hbm:loot_pile"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "hbm:rotary_furnace",
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/iron"
+    },
+    {
+      "ingredient": "#c:gems/coal"
+    }
+  ],
+  "order": 0,
+  "output_material": {
+    "amount": 72,
+    "material": "steel"
+  },
+  "steam": 100
+}

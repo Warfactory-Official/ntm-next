@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:block_meteor"
+    }
+  ],
+  "order": 46,
+  "output_items": [
+    {
+      "count": 10,
+      "id": "hbm:powder_meteorite"
+    }
+  ]
+}

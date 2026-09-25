@@ -1,0 +1,23 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "minecraft:bone"
+    },
+    {
+      "count": 4,
+      "ingredient": "minecraft:leather"
+    },
+    {
+      "count": 24,
+      "ingredient": "minecraft:feather"
+    }
+  ],
+  "order": 84,
+  "output_items": [
+    "hbm:wings_limp"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

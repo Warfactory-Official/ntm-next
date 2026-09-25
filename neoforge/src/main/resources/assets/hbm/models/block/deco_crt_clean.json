@@ -1,0 +1,16 @@
+{
+  "ambientocclusion": true,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/crt.obj",
+  "skins": {
+    "all": [
+      "Screen",
+      "Monitor"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/crt_clean",
+    "particle": "hbm:block/crt_clean"
+  }
+}

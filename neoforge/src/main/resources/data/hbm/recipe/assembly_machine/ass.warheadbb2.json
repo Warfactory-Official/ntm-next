@@ -1,0 +1,18 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:warhead_generic_medium"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    }
+  ],
+  "order": 354,
+  "output_items": [
+    "hbm:warhead_buster_medium"
+  ],
+  "power": 100
+}

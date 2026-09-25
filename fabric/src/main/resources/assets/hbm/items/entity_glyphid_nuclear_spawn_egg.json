@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/entity_glyphid_nuclear_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 2522880
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 10526880
+      }
+    ]
+  }
+}

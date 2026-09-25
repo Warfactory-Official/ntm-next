@@ -1,0 +1,17 @@
+{
+  "type": "hbm:depth_deposit",
+  "config": {
+    "core": {
+      "Name": "hbm:ore_depth_nether_neodymium"
+    },
+    "fill": 0.6,
+    "filler": {
+      "Name": "hbm:stone_depth_nether"
+    },
+    "replaceable": {
+      "block": "minecraft:netherrack",
+      "predicate_type": "minecraft:block_match"
+    },
+    "size": 7
+  }
+}

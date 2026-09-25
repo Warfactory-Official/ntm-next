@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/book_guide"
+    },
+    "facing=north": {
+      "model": "hbm:block/book_guide_north"
+    },
+    "facing=south": {
+      "model": "hbm:block/book_guide_south"
+    },
+    "facing=west": {
+      "model": "hbm:block/book_guide_west"
+    }
+  }
+}

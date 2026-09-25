@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "hbm:flame_pony",
+    "P": "hbm:polaroid",
+    "S": "#c:plates/steel"
+  },
+  "pattern": [
+    "P",
+    "I",
+    "S"
+  ],
+  "result": {
+    "id": "hbm:obj_tester"
+  }
+}

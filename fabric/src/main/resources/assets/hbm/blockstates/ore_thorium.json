@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/ore_thorium"
+      },
+      {
+        "model": "hbm:block/ore_thorium_mirrored"
+      },
+      {
+        "model": "hbm:block/ore_thorium",
+        "y": 180
+      },
+      {
+        "model": "hbm:block/ore_thorium_mirrored",
+        "y": 180
+      }
+    ]
+  }
+}

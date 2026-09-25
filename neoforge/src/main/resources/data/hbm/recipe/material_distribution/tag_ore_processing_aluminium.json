@@ -1,0 +1,18 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 144,
+      "material": "aluminum"
+    },
+    {
+      "amount": 24,
+      "material": "sodium"
+    },
+    {
+      "amount": 162,
+      "material": "stone"
+    }
+  ],
+  "targets": "#hbm:ore_processing/aluminium"
+}

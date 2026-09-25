@@ -1,0 +1,47 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 24,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 48,
+      "ingredient": "hbm:rocket_fuel"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:ball_tatb"
+    },
+    {
+      "count": 12,
+      "ingredient": {
+        "fabric:type": "hbm:fluid_content",
+        "amount": 1000,
+        "fluid": "hbm:kerosene_reform"
+      }
+    },
+    {
+      "count": 12,
+      "ingredient": {
+        "fabric:type": "hbm:fluid_content",
+        "amount": 1000,
+        "fluid": "hbm:peroxide"
+      }
+    },
+    {
+      "count": 6,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 338,
+  "output_items": [
+    "hbm:ammo_himars_standard_tb"
+  ],
+  "power": 100
+}

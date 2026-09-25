@@ -1,0 +1,33 @@
+{
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/crane_buffer.obj",
+  "skins": {
+    "back": [
+      "Back"
+    ],
+    "belt": [
+      "Belt"
+    ],
+    "inner": [
+      "Inner"
+    ],
+    "inner_side": [
+      "InnerSide"
+    ],
+    "side": [
+      "Side"
+    ],
+    "top": [
+      "Top_Top.001"
+    ]
+  },
+  "textures": {
+    "back": "hbm:block/crane_partitioner_back",
+    "belt": "hbm:block/crane_splitter_belt",
+    "inner": "hbm:block/crane_splitter_inner",
+    "inner_side": "hbm:block/crane_splitter_inner_side",
+    "particle": "hbm:block/crane_partitioner_side",
+    "side": "hbm:block/crane_partitioner_side",
+    "top": "hbm:block/crane_top"
+  }
+}

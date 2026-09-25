@@ -1,0 +1,29 @@
+{
+  "content": {
+    "en_us": "High-cetane cracked diesel is made by mixing [[reformate|Reformate]] and [[cracked diesel|Cracked Diesel]]. It is used as a combustible [[fuel|Fuels]] source. It may also be [[hydrotreated|Hydrotreater]] to obtain [[high-cetane diesel|High-Cetane Diesel]].<br><br>{{hbm:fluids/template_oil3}}"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:diesel_crack_reform",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -3292212
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "High-Cetane Cracked Diesel",
+  "title": {
+    "en_us": "High-Cetane Cracked Diesel"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:diesel_crack_reform"
+    }
+  }
+}

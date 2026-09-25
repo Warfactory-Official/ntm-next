@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:asbestos",
+      "level": 1.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:ingots/asbestos"
+}

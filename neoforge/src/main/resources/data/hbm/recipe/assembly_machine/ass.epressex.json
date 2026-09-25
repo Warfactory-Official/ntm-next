@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:part_generic_piston_hydraulic"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "name": "ass.epressEx",
+  "order": 141,
+  "output_items": [
+    "hbm:machine_epress"
+  ],
+  "power": 100
+}

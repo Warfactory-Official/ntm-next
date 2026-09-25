@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "hbm:block/models/doors/silo_hatch_large"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "hbm:electrolyser_metal",
+  "duration": 20,
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "heavy_metal",
+          "grade": "crumbs"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 23,
+  "output_material": {
+    "amount": 144,
+    "material": "tungsten"
+  },
+  "output_material_2": {
+    "amount": 144,
+    "material": "lead"
+  }
+}

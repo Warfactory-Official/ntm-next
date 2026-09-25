@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:bj_helmet",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "C": "hbm:circuit_quantum",
+    "P": "hbm:plate_armor_dnt",
+    "S": "hbm:ingot_chainsteel"
+  },
+  "pattern": [
+    "PCP",
+    "PBP",
+    "PSP"
+  ],
+  "result": {
+    "id": "hbm:dns_helmet"
+  }
+}

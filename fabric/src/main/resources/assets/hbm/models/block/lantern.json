@@ -1,0 +1,21 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": true,
+  "double_sided": [
+    "Lantern"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Light"
+  ],
+  "model": "hbm:models/trinkets/lantern.obj",
+  "skins": {
+    "all": [
+      "Lantern"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/lantern",
+    "particle": "hbm:block/lantern"
+  }
+}

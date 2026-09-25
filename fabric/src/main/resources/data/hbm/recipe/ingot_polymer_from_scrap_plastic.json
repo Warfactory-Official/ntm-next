@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": [
+    "hbm:scrap_plastic_board_blank",
+    "hbm:scrap_plastic_board_transistor",
+    "hbm:scrap_plastic_board_converter",
+    "hbm:scrap_plastic_bridge_north",
+    "hbm:scrap_plastic_bridge_south",
+    "hbm:scrap_plastic_bridge_io",
+    "hbm:scrap_plastic_bridge_bus",
+    "hbm:scrap_plastic_bridge_chipset",
+    "hbm:scrap_plastic_bridge_cmos",
+    "hbm:scrap_plastic_bridge_bios",
+    "hbm:scrap_plastic_cpu_register",
+    "hbm:scrap_plastic_cpu_clock",
+    "hbm:scrap_plastic_cpu_logic",
+    "hbm:scrap_plastic_cpu_cache",
+    "hbm:scrap_plastic_cpu_ext",
+    "hbm:scrap_plastic_cpu_socket",
+    "hbm:scrap_plastic_mem_socket",
+    "hbm:scrap_plastic_mem_16k_a",
+    "hbm:scrap_plastic_mem_16k_b",
+    "hbm:scrap_plastic_mem_16k_c",
+    "hbm:scrap_plastic_mem_16k_d",
+    "hbm:scrap_plastic_card_board",
+    "hbm:scrap_plastic_card_processor"
+  ],
+  "result": {
+    "id": "hbm:ingot_polymer"
+  }
+}

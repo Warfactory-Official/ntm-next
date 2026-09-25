@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:deco_titanium"
+    }
+  ],
+  "order": 205,
+  "output_items": [
+    "hbm:ingot_titanium"
+  ],
+  "overlay": "recycling",
+  "tier": 1
+}

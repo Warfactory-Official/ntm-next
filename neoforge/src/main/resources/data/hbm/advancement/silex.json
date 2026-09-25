@@ -1,0 +1,29 @@
+{
+  "parent": "hbm:acidizer",
+  "criteria": {
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": "hbm:machine_silex"
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.SILEX.desc"
+    },
+    "icon": {
+      "id": "hbm:machine_silex"
+    },
+    "title": {
+      "translate": "achievement.SILEX"
+    }
+  },
+  "requirements": [
+    [
+      "produced"
+    ]
+  ]
+}

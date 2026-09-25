@@ -1,0 +1,62 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_congolake_base",
+    "equipped_muzzles": [
+      {
+        "duration": 150,
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.5,
+          0.0,
+          0.0,
+          0.5,
+          0.0,
+          1.75,
+          -0.5,
+          0.0,
+          -0.0,
+          4.25,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -15.0,
+      0.0,
+      -0.0,
+      -15.0,
+      0.0,
+      18.75,
+      15.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/congolake.obj",
+    "parts": [
+      "Gun",
+      "Pump",
+      "Sight",
+      "Loop",
+      "GuardOuter",
+      "GuardInner",
+      "Shell",
+      "ShellFore"
+    ],
+    "texture": "hbm:textures/models/weapons/congolake.png"
+  }
+}

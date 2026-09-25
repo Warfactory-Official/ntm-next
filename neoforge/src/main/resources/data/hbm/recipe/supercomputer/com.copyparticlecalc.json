@@ -1,0 +1,33 @@
+{
+  "type": "hbm:supercomputer",
+  "duration": 18000,
+  "input_items": [
+    {
+      "ingredient": "hbm:drive_flash_particlesim"
+    },
+    {
+      "ingredient": "hbm:drive_flash_empty"
+    }
+  ],
+  "name_wrapper": "com.copy",
+  "order": 13,
+  "output_items": [
+    [
+      {
+        "data": {
+          "count": 2,
+          "id": "hbm:drive_flash_particlesim"
+        },
+        "weight": 95
+      },
+      {
+        "data": {
+          "count": 2,
+          "id": "hbm:drive_flash_broken"
+        },
+        "weight": 5
+      }
+    ]
+  ],
+  "power": 10000
+}

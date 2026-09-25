@@ -1,0 +1,23 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "minecraft:stone"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/iron"
+    }
+  ],
+  "order": 64,
+  "output_items": [
+    "hbm:machine_ashpit"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

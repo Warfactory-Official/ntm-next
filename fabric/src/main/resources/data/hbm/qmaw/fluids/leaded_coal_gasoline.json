@@ -1,0 +1,29 @@
+{
+  "content": {
+    "en_us": "Leaded coal gasoline can be obtained by mixing [[tetraethyllead antiknock agent|Tetraethyllead Antiknock Agent]] with [[coal gasoline|Coal Gasoline]]. It can be used as a combustible [[fuel|Fuels]].<br><br>See also:<br>[[Basic Oil Processing]]"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:coalgas_leaded",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -12298382
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Leaded Coal Gasoline",
+  "title": {
+    "en_us": "Leaded Coal Gasoline"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:coalgas_leaded"
+    }
+  }
+}

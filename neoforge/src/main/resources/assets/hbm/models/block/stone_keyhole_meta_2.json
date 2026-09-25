@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "hbm:block/brick_base",
+    "east": "hbm:block/brick_base",
+    "north": "hbm:block/stone_keyhole_meta",
+    "particle": "hbm:block/brick_base",
+    "south": "hbm:block/brick_base",
+    "up": "hbm:block/brick_base",
+    "west": "hbm:block/brick_base"
+  }
+}

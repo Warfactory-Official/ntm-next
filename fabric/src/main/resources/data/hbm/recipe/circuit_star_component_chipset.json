@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:circuit_star_piece_bridge_bios",
+    "hbm:circuit_star_piece_bridge_bus",
+    "hbm:circuit_star_piece_bridge_chipset",
+    "hbm:circuit_star_piece_bridge_cmos",
+    "hbm:circuit_star_piece_bridge_io",
+    "hbm:circuit_star_piece_bridge_north",
+    "hbm:circuit_star_piece_bridge_south"
+  ],
+  "result": {
+    "id": "hbm:circuit_star_component_chipset"
+  }
+}

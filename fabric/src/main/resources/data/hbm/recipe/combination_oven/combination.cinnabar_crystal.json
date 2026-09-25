@@ -1,0 +1,18 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "ingredient": "#c:crystals/cinnabar"
+    }
+  ],
+  "order": 8,
+  "output_fluids": [
+    {
+      "type": "hbm:mercury",
+      "amount": 100
+    }
+  ],
+  "output_items": [
+    "hbm:sulfur"
+  ]
+}

@@ -1,0 +1,199 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -0.0,
+        -85.0,
+        25.00001
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.09127353,
+        4.80383,
+        -6.009768
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -0.0,
+        -85.0,
+        25.00001
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.62660015,
+        7.6679783,
+        0.109040916
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        14.49168,
+        -1.0367785
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        4.52584,
+        0.76838875
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30.000004,
+        -45.000008,
+        -0.0
+      ],
+      "scale": [
+        0.09375001,
+        0.09375,
+        0.09375
+      ],
+      "translation": [
+        0.27166736,
+        0.09557879,
+        -7.10381
+      ]
+    },
+    "head": {
+      "rotation": [
+        -148.67021,
+        -35.63104,
+        19.52547
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        1.8521422,
+        -38.11107,
+        2.2072973
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0.0,
+        34.10336,
+        3.073557
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        141.87373,
+        -71.3061,
+        127.868614
+      ],
+      "scale": [
+        0.140625,
+        0.140625,
+        0.14062499
+      ],
+      "translation": [
+        -1.7673469,
+        7.247978,
+        0.8089341
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        141.87373,
+        -71.3061,
+        127.868614
+      ],
+      "scale": [
+        0.140625,
+        0.140625,
+        0.14062499
+      ],
+      "translation": [
+        -2.0770226,
+        6.8355913,
+        2.2960267
+      ]
+    }
+  },
+  "groups": [
+    {
+      "parts": [
+        "Frame"
+      ],
+      "texture": "silo_hatch_large"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.5,
+        0.8660254,
+        3.677323,
+        0.0,
+        -0.8660254,
+        -0.5,
+        -3.771234,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Hatch"
+      ],
+      "texture": "silo_hatch_large"
+    }
+  ],
+  "gui_light": "side",
+  "model": "hbm:models/doors/silo_hatch_large.obj",
+  "offset_y": -2.3419466,
+  "offset_z": 1.2561297,
+  "textures": {
+    "particle": "hbm:block/models/doors/silo_hatch_large",
+    "silo_hatch_large": "hbm:block/models/doors/silo_hatch_large"
+  }
+}

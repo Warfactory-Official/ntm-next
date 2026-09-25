@@ -1,0 +1,34 @@
+{
+  "feature": "hbm:ore_nether_plutonium",
+  "placement": [
+    {
+      "type": "hbm:world_config",
+      "switches": [
+        "nether_ores",
+        "nether_plutonium"
+      ]
+    },
+    {
+      "type": "minecraft:count",
+      "count": 8
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "below_top": 1
+        },
+        "min_inclusive": {
+          "above_bottom": 0
+        }
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#bottom",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#side",
+          "uv": [
+            0,
+            8,
+            16,
+            16
+          ]
+        },
+        "north": {
+          "texture": "#side",
+          "uv": [
+            0,
+            8,
+            16,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#side",
+          "uv": [
+            0,
+            8,
+            16,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#top",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#side",
+          "uv": [
+            0,
+            8,
+            16,
+            16
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        8,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "up": {
+          "texture": "#bottom",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        2,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "texture": "#inner",
+          "uv": [
+            0,
+            8,
+            16,
+            16
+          ]
+        }
+      },
+      "from": [
+        2,
+        0,
+        0
+      ],
+      "to": [
+        2,
+        8,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "west": {
+          "texture": "#inner",
+          "uv": [
+            0,
+            8,
+            16,
+            16
+          ]
+        }
+      },
+      "from": [
+        14,
+        0,
+        0
+      ],
+      "to": [
+        14,
+        8,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "south": {
+          "texture": "#inner",
+          "uv": [
+            0,
+            8,
+            16,
+            16
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        2
+      ],
+      "to": [
+        16,
+        8,
+        2
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#inner",
+          "uv": [
+            0,
+            8,
+            16,
+            16
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        14
+      ],
+      "to": [
+        16,
+        8,
+        14
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "hbm:block/foundry_mold_bottom",
+    "inner": "hbm:block/foundry_mold_inner",
+    "particle": "hbm:block/foundry_mold_side",
+    "side": "hbm:block/foundry_mold_side",
+    "top": "hbm:block/foundry_mold_top"
+  }
+}

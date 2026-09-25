@@ -1,0 +1,46 @@
+{
+  "parent": "hbm:chemplant",
+  "criteria": {
+    "crafted_hbm_concrete_smooth_from_colored": {
+      "conditions": {
+        "recipe_id": "hbm:concrete_smooth_from_colored"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_concrete_smooth_from_colored_ext": {
+      "conditions": {
+        "recipe_id": "hbm:concrete_smooth_from_colored_ext"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": [
+            "hbm:concrete_smooth",
+            "hbm:concrete_asbestos"
+          ]
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.concrete.desc"
+    },
+    "icon": {
+      "id": "hbm:concrete"
+    },
+    "title": {
+      "translate": "achievement.concrete"
+    }
+  },
+  "requirements": [
+    [
+      "crafted_hbm_concrete_smooth_from_colored",
+      "crafted_hbm_concrete_smooth_from_colored_ext",
+      "produced"
+    ]
+  ]
+}

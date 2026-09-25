@@ -1,0 +1,19 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "lbsm_simple_armor"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": "#c:ingots/schrabidium"
+  },
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
+  "result": {
+    "id": "hbm:schrabidium_helmet"
+  }
+}

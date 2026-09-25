@@ -1,0 +1,30 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    },
+    "B": {
+      "ingredient": "#c:ingots/ferrouranium"
+    },
+    "C": {
+      "count": 6,
+      "ingredient": "#hbm:dusts/any_smokeless"
+    },
+    "D": {
+      "ingredient": "hbm:casing_large_steel"
+    }
+  },
+  "order": 40,
+  "output_items": [
+    {
+      "count": 12,
+      "id": "hbm:ammo_standard_bmg50_he"
+    }
+  ],
+  "pattern": [
+    "AB ",
+    " C ",
+    " D "
+  ]
+}

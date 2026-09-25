@@ -1,0 +1,7 @@
+{
+  "rate": {
+    "type": "fixed",
+    "emission": -0.25
+  },
+  "targets": "hbm:rad_absorber"
+}

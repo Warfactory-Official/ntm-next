@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "hbm:boltgun",
+    "base": "hbm:item/boltgun_base"
+  }
+}

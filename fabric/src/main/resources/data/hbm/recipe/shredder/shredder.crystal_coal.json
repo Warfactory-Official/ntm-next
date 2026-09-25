@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_coal"
+    }
+  ],
+  "order": 97,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:powder_coal"
+    }
+  ]
+}

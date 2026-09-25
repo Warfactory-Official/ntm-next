@@ -1,0 +1,28 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!lbsm_simple_tools"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:cobalt_decorated_axe",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "I": "#c:ingots/starmetal",
+    "S": "hbm:ring_starmetal"
+  },
+  "pattern": [
+    "IS",
+    "IB",
+    " I"
+  ],
+  "result": {
+    "id": "hbm:starmetal_axe"
+  }
+}

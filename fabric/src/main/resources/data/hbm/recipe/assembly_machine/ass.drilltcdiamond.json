@@ -1,0 +1,18 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "hbm:drillbit_tcalloy"
+    },
+    {
+      "count": 48,
+      "ingredient": "#c:dusts/diamond"
+    }
+  ],
+  "order": 154,
+  "output_items": [
+    "hbm:drillbit_tcalloy_diamond"
+  ],
+  "power": 100
+}

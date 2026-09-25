@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:ingots/gold",
+    "N": "#c:nuggets/gold",
+    "S": "hbm:battery_pack_battery_quantum"
+  },
+  "pattern": [
+    "NSN",
+    "NGN",
+    "G G"
+  ],
+  "result": {
+    "id": "hbm:ams_core_thingy"
+  }
+}

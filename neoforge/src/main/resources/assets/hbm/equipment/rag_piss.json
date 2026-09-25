@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "hbm:rag_piss"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "hbm:rag_piss"
+      }
+    ]
+  }
+}

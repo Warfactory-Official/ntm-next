@@ -1,0 +1,28 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "count": 2,
+      "ingredient": "#c:ingots/lead"
+    },
+    "B": {
+      "count": 3,
+      "ingredient": "#hbm:dusts/any_smokeless"
+    },
+    "C": {
+      "ingredient": "hbm:casing_large"
+    }
+  },
+  "order": 35,
+  "output_items": [
+    {
+      "count": 12,
+      "id": "hbm:ammo_standard_bmg50_sp"
+    }
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

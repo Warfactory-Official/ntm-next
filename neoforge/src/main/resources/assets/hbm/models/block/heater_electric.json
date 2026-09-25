@@ -1,0 +1,15 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/electric_heater.obj",
+  "skins": {
+    "all": [
+      "Plane"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/electric_heater",
+    "particle": "hbm:block/models/machines/electric_heater"
+  }
+}

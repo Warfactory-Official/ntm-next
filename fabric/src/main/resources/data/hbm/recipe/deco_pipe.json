@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": "#hbm:pipes/steel"
+  },
+  "pattern": [
+    "PP"
+  ],
+  "result": {
+    "count": 6,
+    "id": "hbm:deco_pipe"
+  }
+}

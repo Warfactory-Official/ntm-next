@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:glass_polonium"
+  ],
+  "ctm_textures": {
+    "hbm:block/glass_polonium": "hbm:block/ctm_lib/glass_polonium"
+  },
+  "variants": {
+    "": {
+      "model": "hbm:block/glass_polonium"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Blade4",
+    "Blade2",
+    "Slider3",
+    "Slider2",
+    "Slider1",
+    "Slider4",
+    "ArmLower4",
+    "ArmLower1",
+    "ArmLower2",
+    "ArmLower3",
+    "ArmUpper3",
+    "ArmUpper4",
+    "ArmUpper1",
+    "ArmUpper2",
+    "Head2",
+    "Head4",
+    "Striker4",
+    "Striker2",
+    "Head3",
+    "Head1",
+    "Striker3",
+    "Striker1",
+    "Frame"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/assembly_factory.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/assembly_factory",
+    "particle": "hbm:block/models/machines/assembly_factory"
+  }
+}

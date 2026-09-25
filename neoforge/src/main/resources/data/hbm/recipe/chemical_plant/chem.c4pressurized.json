@@ -1,0 +1,31 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528_pressurized"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 500,
+      "pressure": 1
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/saltpeter"
+    }
+  ],
+  "name": "chem.c4Pressurized",
+  "order": 76,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:ingot_c4"
+    }
+  ],
+  "power": 1000
+}

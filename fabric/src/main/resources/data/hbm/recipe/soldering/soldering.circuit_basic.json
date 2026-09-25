@@ -1,0 +1,27 @@
+{
+  "type": "hbm:soldering",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_chip"
+    }
+  ],
+  "order": 1,
+  "output_items": [
+    "hbm:circuit_basic"
+  ],
+  "pcb": [
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_pcb"
+    }
+  ],
+  "power": 250,
+  "solder": [
+    {
+      "count": 4,
+      "ingredient": "#c:fine_wires/lead"
+    }
+  ]
+}

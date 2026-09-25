@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/turret_maxwell_east"
+    },
+    "facing=north": {
+      "model": "hbm:block/turret_maxwell_north"
+    },
+    "facing=south": {
+      "model": "hbm:block/turret_maxwell_south"
+    },
+    "facing=west": {
+      "model": "hbm:block/turret_maxwell_west"
+    }
+  }
+}

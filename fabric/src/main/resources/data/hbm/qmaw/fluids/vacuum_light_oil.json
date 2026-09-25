@@ -1,0 +1,29 @@
+{
+  "content": {
+    "en_us": "Vacuum light oil can be obtained by [[vacuum refining|Vacuum Refinery]] [[pressurized|Compressor]] [[crude oil|Crude Oil]]. It is primarily [[fractioned|Fractioning Tower]] into [[kerosene|Kerosene]] and [[reformate gas|Reformate Gas]].<br><br>{{hbm:fluids/template_oil3}}"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:lightoil_vacuum",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -7567279
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Vacuum Light Oil",
+  "title": {
+    "en_us": "Vacuum Light Oil"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:lightoil_vacuum"
+    }
+  }
+}

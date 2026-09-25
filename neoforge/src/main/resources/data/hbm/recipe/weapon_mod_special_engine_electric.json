@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#hbm:ingots/any_plastic",
+    "P": "#hbm:wires_dense/gold",
+    "S": "hbm:battery_pack_capacitor_gold"
+  },
+  "pattern": [
+    "DSD",
+    "PPP",
+    "DSD"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_special_engine_electric"
+  }
+}

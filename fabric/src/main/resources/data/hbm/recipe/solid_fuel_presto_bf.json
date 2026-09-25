@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": "minecraft:paper",
+    "R": "#c:dusts/redstone",
+    "S": "hbm:solid_fuel_bf"
+  },
+  "pattern": [
+    " P ",
+    "SRS",
+    " P "
+  ],
+  "result": {
+    "id": "hbm:solid_fuel_presto_bf"
+  }
+}

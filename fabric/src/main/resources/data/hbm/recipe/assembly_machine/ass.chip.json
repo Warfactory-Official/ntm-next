@@ -1,0 +1,26 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 50,
+  "input_items": [
+    {
+      "ingredient": "hbm:plate_polymer"
+    },
+    {
+      "ingredient": "hbm:circuit_silicon"
+    },
+    {
+      "ingredient": "#c:fine_wires/gold"
+    }
+  ],
+  "order": 29,
+  "output_items": [
+    "hbm:circuit_chip"
+  ],
+  "power": 250
+}

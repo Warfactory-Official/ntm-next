@@ -1,0 +1,22 @@
+{
+  "type": "hbm:mixer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:xpjuice",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/diamond"
+    }
+  ],
+  "order": 5,
+  "output_fluids": [
+    {
+      "type": "hbm:enderjuice",
+      "amount": 100
+    }
+  ]
+}

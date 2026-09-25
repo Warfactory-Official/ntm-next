@@ -1,0 +1,13 @@
+{
+  "type": "hbm:breeder",
+  "flux": 900,
+  "input_items": [
+    {
+      "ingredient": "hbm:rod_quad_u235"
+    }
+  ],
+  "order": 14,
+  "output_items": [
+    "hbm:rod_quad_np237"
+  ]
+}

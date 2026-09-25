@@ -1,0 +1,18 @@
+{
+  "ambientocclusion": true,
+  "double_sided": [
+    "Cube.001"
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/geiger_counter.obj",
+  "skins": {
+    "all": [
+      "Cube.001"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/tools/geiger",
+    "particle": "hbm:block/models/tools/geiger"
+  }
+}

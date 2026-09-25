@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/redstone"
+    }
+  ],
+  "order": 235,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

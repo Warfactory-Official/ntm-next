@@ -1,0 +1,25 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "#hbm:shells/aluminum"
+    },
+    {
+      "ingredient": "#hbm:plates_cast/dura_steel"
+    },
+    {
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:fine_wires/mingrade"
+    }
+  ],
+  "order": 313,
+  "output_items": [
+    "hbm:boy_igniter"
+  ],
+  "power": 100
+}

@@ -1,0 +1,82 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_pepperbox_base",
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 15.0,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.5,
+          0.0,
+          -0.0,
+          0.5,
+          0.0,
+          0.5,
+          -0.5,
+          0.0,
+          0.0,
+          7.0,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      },
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 15.0,
+        "matrix": [
+          -0.0,
+          0.35355338,
+          0.35355338,
+          0.0,
+          -0.0,
+          0.35355338,
+          -0.35355338,
+          0.5,
+          -0.5,
+          0.0,
+          0.0,
+          7.0,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -7.5,
+      0.0,
+      -0.0,
+      -7.5,
+      0.0,
+      0.0,
+      7.5,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/pepperbox.obj",
+    "parts": [
+      "Grip",
+      "Cylinder",
+      "Hammer",
+      "Trigger"
+    ],
+    "texture": "hbm:textures/models/weapons/pepperbox.png"
+  }
+}

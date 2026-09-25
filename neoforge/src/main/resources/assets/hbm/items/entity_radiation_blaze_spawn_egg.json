@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/entity_radiation_blaze_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 3158064
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 32768
+      }
+    ]
+  }
+}

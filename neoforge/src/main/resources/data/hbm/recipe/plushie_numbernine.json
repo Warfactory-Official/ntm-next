@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:rag",
+    "L": "hbm:cigarette",
+    "R": "#c:gems/coal"
+  },
+  "pattern": [
+    " C ",
+    "LCR",
+    " C "
+  ],
+  "result": {
+    "id": "hbm:plushie_numbernine"
+  }
+}

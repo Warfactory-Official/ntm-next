@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#minecraft:sand"
+    }
+  ],
+  "order": 35,
+  "output_items": [
+    "hbm:ingot_fiberglass"
+  ]
+}

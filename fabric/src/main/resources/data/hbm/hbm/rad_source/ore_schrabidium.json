@@ -1,0 +1,7 @@
+{
+  "rate": {
+    "type": "fixed",
+    "emission": 0.005
+  },
+  "targets": "hbm:ore_schrabidium"
+}

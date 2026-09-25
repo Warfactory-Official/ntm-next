@@ -1,0 +1,33 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 600,
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_pellet": {
+          "depletion": 3
+        }
+      },
+      "ingredient": "hbm:rbmk_pellet_hep241"
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 186,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_pu241"
+        },
+        "weight": 25
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_short_tiny_plutonium241"
+        },
+        "weight": 75
+      }
+    ]
+  ]
+}

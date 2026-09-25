@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": "minecraft:lever",
+    "W": "hbm:fluid_duct_paintable"
+  },
+  "pattern": [
+    "S",
+    "W"
+  ],
+  "result": {
+    "id": "hbm:fluid_valve"
+  }
+}

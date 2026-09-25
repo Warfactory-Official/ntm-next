@@ -1,0 +1,26 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#c:ingots/steel"
+    },
+    "B": {
+      "ingredient": "#hbm:pipes/steel"
+    },
+    "C": {
+      "ingredient": "#hbm:dusts/any_smokeless"
+    }
+  },
+  "order": 87,
+  "output_items": [
+    {
+      "count": 16,
+      "id": "hbm:ammo_standard_ct_hook"
+    }
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

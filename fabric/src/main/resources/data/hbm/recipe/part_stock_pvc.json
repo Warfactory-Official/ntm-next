@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": "#c:ingots/pvc"
+  },
+  "pattern": [
+    "WWW",
+    "  W"
+  ],
+  "result": {
+    "id": "hbm:part_stock_pvc"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Belt",
+    "Piston"
+  ],
+  "model": "hbm:models/machines/conveyor_press.obj",
+  "skins": {
+    "all": [
+      "Press"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/conveyor_press",
+    "particle": "hbm:block/models/machines/conveyor_press"
+  }
+}

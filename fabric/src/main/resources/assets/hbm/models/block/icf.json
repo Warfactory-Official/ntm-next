@@ -1,0 +1,15 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbm:models/reactors/icf.obj",
+  "skins": {
+    "all": [
+      "Circle"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/icf",
+    "particle": "hbm:block/models/machines/icf"
+  }
+}

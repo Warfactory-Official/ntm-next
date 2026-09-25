@@ -1,0 +1,18 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 144,
+      "material": "uranium"
+    },
+    {
+      "amount": 24,
+      "material": "lead"
+    },
+    {
+      "amount": 162,
+      "material": "stone"
+    }
+  ],
+  "targets": "#hbm:ore_processing/uranium"
+}

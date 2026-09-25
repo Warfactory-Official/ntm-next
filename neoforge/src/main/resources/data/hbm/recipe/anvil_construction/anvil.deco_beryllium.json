@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/beryllium"
+    }
+  ],
+  "order": 32,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:deco_beryllium"
+    }
+  ],
+  "overlay": "construction",
+  "tier": 1
+}

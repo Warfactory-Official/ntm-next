@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:rune_blank",
+    "hbm:powder_spark_mix",
+    "hbm:singularity_super_heated"
+  ],
+  "result": {
+    "id": "hbm:rune_hagalaz"
+  }
+}

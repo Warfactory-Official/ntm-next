@@ -1,0 +1,19 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:tags_populated",
+      "registry": "minecraft:item",
+      "values": [
+        "c:ingots/nickel"
+      ]
+    }
+  ],
+  "type": "hbm:tag_result",
+  "ingredients": [
+    "hbm:pellet_rtg_depleted_nickel"
+  ],
+  "result": {
+    "count": 2,
+    "tag": "c:ingots/nickel"
+  }
+}

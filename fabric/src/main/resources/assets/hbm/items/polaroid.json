@@ -1,0 +1,138 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_1"
+        },
+        "when": "1"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_2"
+        },
+        "when": "2"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_3"
+        },
+        "when": "3"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_4"
+        },
+        "when": "4"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_5"
+        },
+        "when": "5"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_6"
+        },
+        "when": "6"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_7"
+        },
+        "when": "7"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_8"
+        },
+        "when": "8"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_9"
+        },
+        "when": "9"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_10"
+        },
+        "when": "10"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_11"
+        },
+        "when": "11"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_12"
+        },
+        "when": "12"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_13"
+        },
+        "when": "13"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_14"
+        },
+        "when": "14"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_15"
+        },
+        "when": "15"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_16"
+        },
+        "when": "16"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_17"
+        },
+        "when": "17"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/polaroid_18"
+        },
+        "when": "18"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:item/polaroid_1"
+    },
+    "property": "hbm:polaroid"
+  }
+}

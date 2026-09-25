@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_fensu"
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_fensu",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_fensu",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_fensu",
+      "y": 180
+    }
+  }
+}

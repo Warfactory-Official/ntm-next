@@ -1,0 +1,27 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:rtg_unit"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:fine_wires/mingrade"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_plastic"
+    }
+  ],
+  "order": 107,
+  "output_items": [
+    "hbm:machine_rtg_grey"
+  ],
+  "power": 100
+}

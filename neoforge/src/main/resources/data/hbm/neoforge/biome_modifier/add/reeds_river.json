@@ -1,0 +1,9 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:river",
+    "minecraft:frozen_river"
+  ],
+  "features": "hbm:reeds_river",
+  "step": "vegetal_decoration"
+}

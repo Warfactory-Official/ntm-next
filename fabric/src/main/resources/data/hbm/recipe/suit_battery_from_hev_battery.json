@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:hev_battery"
+  ],
+  "result": {
+    "id": "hbm:suit_battery"
+  }
+}

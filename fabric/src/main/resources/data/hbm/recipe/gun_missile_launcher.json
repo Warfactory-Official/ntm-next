@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_heavy/any_resistant_alloy",
+    "C": "hbm:circuit_advanced",
+    "G": "#hbm:grips/any_plastic",
+    "M": "#hbm:gun_mechanisms/weapon_steel"
+  },
+  "pattern": [
+    " CM",
+    "BBB",
+    "G  "
+  ],
+  "result": {
+    "id": "hbm:gun_missile_launcher"
+  }
+}

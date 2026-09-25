@@ -1,0 +1,17 @@
+{
+  "content": {
+    "en_us": "Separates items, can be used as a more efficient way of ore processing. Initially mainly used for gathering [[mercury|Mercury]] from redstone ore, required for making [[desh|Desh]].<br><br>Raw metals work as well as their ore blocks, so Silk Touch is not required.",
+    "ru_ru": "Разделяет предметы, позволяет куда эффективнее перерабатывать руду. Одно из первых применений — получение из руды красного камня [[ртути|Mercury]], необходимой для производства [[деш|Desh]].<br><br>Необработанные металлы подходят так же, как блоки их руды, так что Шёлковое касание не требуется.",
+    "zh_cn": "用于分离物品，可作为一种更高效的矿物处理手段。最初主要用于从红石矿石中 收集制作[[Desh]]需要的[[水银|Mercury]]。<br><br>粗金属也能像对应的矿石方块一样处理，因此不需要精准采集。"
+  },
+  "icon": "hbm:machine_centrifuge",
+  "name": "Centrifuge",
+  "title": {
+    "en_us": "Centrifuge",
+    "ru_ru": "Центрифуга",
+    "zh_cn": "离心机"
+  },
+  "trigger": {
+    "items": "hbm:machine_centrifuge"
+  }
+}

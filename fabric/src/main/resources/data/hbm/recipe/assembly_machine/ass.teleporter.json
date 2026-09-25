@@ -1,0 +1,29 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:plates/dura_steel"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:fine_wires/gold"
+    },
+    {
+      "ingredient": "hbm:entanglement_kit"
+    },
+    {
+      "ingredient": "hbm:battery_pack_battery_lithium"
+    }
+  ],
+  "order": 160,
+  "output_items": [
+    "hbm:machine_teleporter"
+  ],
+  "power": 100
+}

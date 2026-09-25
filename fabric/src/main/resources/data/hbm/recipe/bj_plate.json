@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_advanced",
+    "M": "hbm:motor_desh",
+    "N": "hbm:plate_armor_lunar",
+    "S": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:starmetal_plate",
+      "components": {
+        "minecraft:damage": 0
+      }
+    }
+  },
+  "pattern": [
+    "N N",
+    "MSM",
+    "NCN"
+  ],
+  "result": {
+    "id": "hbm:bj_plate"
+  }
+}

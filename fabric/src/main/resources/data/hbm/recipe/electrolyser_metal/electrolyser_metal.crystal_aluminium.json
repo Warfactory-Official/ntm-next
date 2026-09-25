@@ -1,0 +1,28 @@
+{
+  "type": "hbm:electrolyser_metal",
+  "duration": 600,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_aluminium"
+    }
+  ],
+  "order": 8,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:chunk_ore_cryolite"
+    },
+    {
+      "count": 3,
+      "id": "hbm:powder_lithium_tiny"
+    }
+  ],
+  "output_material": {
+    "amount": 144,
+    "material": "aluminum"
+  },
+  "output_material_2": {
+    "amount": 144,
+    "material": "iron"
+  }
+}

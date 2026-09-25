@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/waste_trinitite_red"
+      },
+      {
+        "model": "hbm:block/waste_trinitite_red_1"
+      },
+      {
+        "model": "hbm:block/waste_trinitite_red_2"
+      },
+      {
+        "model": "hbm:block/waste_trinitite_red_3"
+      }
+    ]
+  }
+}

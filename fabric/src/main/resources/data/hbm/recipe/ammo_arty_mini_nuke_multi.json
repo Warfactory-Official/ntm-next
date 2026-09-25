@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:det_cord",
+    "D": "hbm:neutron_reflector",
+    "S": "hbm:ammo_arty_mini_nuke"
+  },
+  "pattern": [
+    "DSD",
+    "SCS",
+    "DSD"
+  ],
+  "result": {
+    "id": "hbm:ammo_arty_mini_nuke_multi"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "E": "minecraft:egg",
+    "M": "minecraft:milk_bucket",
+    "P": "hbm:man_core",
+    "W": "minecraft:wheat"
+  },
+  "pattern": [
+    "WEW",
+    "MPM",
+    "WEW"
+  ],
+  "result": {
+    "id": "hbm:bomb_waffle"
+  }
+}

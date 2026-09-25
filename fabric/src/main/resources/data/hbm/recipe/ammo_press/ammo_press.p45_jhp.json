@@ -1,0 +1,29 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    "B": {
+      "ingredient": "#c:ingots/copper"
+    },
+    "C": {
+      "ingredient": "#hbm:dusts/any_smokeless"
+    },
+    "D": {
+      "ingredient": "hbm:casing_small"
+    }
+  },
+  "order": 22,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:ammo_standard_p45_jhp"
+    }
+  ],
+  "pattern": [
+    "AB ",
+    " C ",
+    " D "
+  ]
+}

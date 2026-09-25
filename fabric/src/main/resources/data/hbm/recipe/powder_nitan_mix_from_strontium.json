@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/strontium",
+    "#c:dusts/cobalt",
+    "#c:dusts/bromine",
+    "#c:dusts/tennessine",
+    "#c:dusts/niobium",
+    "#c:dusts/cerium"
+  ],
+  "result": {
+    "count": 6,
+    "id": "hbm:powder_nitan_mix"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_bolter_base",
+    "draws": [
+      {
+        "matrix": [
+          -1.0,
+          0.0,
+          -8.742278E-8,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          8.742278E-8,
+          0.0,
+          -1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Body",
+          "Mag",
+          "Bullet",
+          "Casing"
+        ]
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -12.5,
+      0.0,
+      -0.0,
+      -12.5,
+      0.0,
+      6.25,
+      12.5,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/bolter.obj",
+    "texture": "hbm:textures/models/weapons/bolter.png"
+  }
+}

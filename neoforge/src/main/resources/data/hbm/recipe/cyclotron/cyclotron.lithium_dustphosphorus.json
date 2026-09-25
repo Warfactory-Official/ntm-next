@@ -1,0 +1,16 @@
+{
+  "type": "hbm:cyclotron",
+  "amat": 50,
+  "input_items": [
+    {
+      "ingredient": "hbm:part_lithium"
+    },
+    {
+      "ingredient": "#c:dusts/red_phosphorus"
+    }
+  ],
+  "order": 4,
+  "output_items": [
+    "hbm:sulfur"
+  ]
+}

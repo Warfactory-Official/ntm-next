@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:polished_sulfur_wall"
+    }
+  ],
+  "order": 61,
+  "output_items": [
+    "hbm:sulfur"
+  ]
+}

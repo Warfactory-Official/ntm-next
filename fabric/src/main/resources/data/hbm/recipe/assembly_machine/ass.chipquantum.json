@@ -1,0 +1,32 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "ingredient": "#hbm:wires_dense/bscco"
+    },
+    {
+      "ingredient": "hbm:pellet_charged"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:fine_wires/gold"
+    }
+  ],
+  "name": "ass.chipQuantum",
+  "order": 31,
+  "output_items": [
+    "hbm:circuit_chip_quantum"
+  ],
+  "power": 15000
+}

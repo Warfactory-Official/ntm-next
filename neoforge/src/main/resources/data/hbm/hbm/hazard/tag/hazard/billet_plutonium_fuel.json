@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 2.125
+    }
+  ],
+  "targets": "#hbm:hazard/billet_plutonium_fuel"
+}

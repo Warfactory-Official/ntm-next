@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "E": "hbm:hazmat_cloth_red"
+  },
+  "pattern": [
+    "E E",
+    "E E"
+  ],
+  "result": {
+    "id": "hbm:hazmat_boots_red"
+  }
+}

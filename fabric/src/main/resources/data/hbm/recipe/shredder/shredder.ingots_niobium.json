@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/niobium"
+    }
+  ],
+  "order": 352,
+  "output_items": [
+    "hbm:powder_niobium"
+  ]
+}

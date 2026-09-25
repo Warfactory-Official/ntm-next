@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/steel",
+    "P": "#c:plates/steel"
+  },
+  "pattern": [
+    " PP",
+    "PII",
+    " PP"
+  ],
+  "result": {
+    "id": "hbm:fins_small_steel"
+  }
+}

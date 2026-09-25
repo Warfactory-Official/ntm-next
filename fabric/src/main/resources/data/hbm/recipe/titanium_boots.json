@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": "#c:ingots/titanium"
+  },
+  "pattern": [
+    "X X",
+    "X X"
+  ],
+  "result": {
+    "id": "hbm:titanium_boots"
+  }
+}

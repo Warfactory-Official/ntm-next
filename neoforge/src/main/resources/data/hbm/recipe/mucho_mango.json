@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:potion_contents": "minecraft:water"
+      },
+      "items": "minecraft:potion"
+    },
+    "minecraft:sugar",
+    "minecraft:sugar",
+    "#c:dyes/orange"
+  ],
+  "result": {
+    "id": "hbm:mucho_mango"
+  }
+}

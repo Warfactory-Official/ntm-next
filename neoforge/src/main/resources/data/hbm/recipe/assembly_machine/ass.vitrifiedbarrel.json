@@ -1,0 +1,22 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "ingredient": "hbm:tank_steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:plates/lead"
+    },
+    {
+      "count": 10,
+      "ingredient": "hbm:nuclear_waste_vitrified"
+    }
+  ],
+  "order": 62,
+  "output_items": [
+    "hbm:vitrified_barrel"
+  ],
+  "power": 400
+}

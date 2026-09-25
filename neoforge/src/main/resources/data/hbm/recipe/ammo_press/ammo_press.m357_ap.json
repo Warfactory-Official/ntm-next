@@ -1,0 +1,27 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#c:ingots/weapon_steel"
+    },
+    "B": {
+      "count": 2,
+      "ingredient": "#hbm:dusts/any_smokeless"
+    },
+    "C": {
+      "ingredient": "hbm:casing_small_steel"
+    }
+  },
+  "order": 4,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:ammo_standard_m357_ap"
+    }
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

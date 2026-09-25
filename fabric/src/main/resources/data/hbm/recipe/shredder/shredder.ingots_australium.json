@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/australium"
+    }
+  ],
+  "order": 439,
+  "output_items": [
+    "hbm:powder_australium"
+  ]
+}

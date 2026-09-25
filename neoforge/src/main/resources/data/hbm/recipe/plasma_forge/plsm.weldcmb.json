@@ -1,0 +1,23 @@
+{
+  "type": "hbm:plasma_forge",
+  "auto_switch_group": "autoswitch.weldPlates",
+  "duration": 600,
+  "ignition_temp": 500000,
+  "input_fluids": [
+    {
+      "type": "hbm:reformgas",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/cmbsteel"
+    }
+  ],
+  "order": 12,
+  "output_items": [
+    "hbm:plate_welded_cmbsteel"
+  ],
+  "power": 10000000
+}

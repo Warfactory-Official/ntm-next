@@ -1,0 +1,10 @@
+{
+  "values": [
+    "hbm:ingot_semtex",
+    "hbm:ingot_c4",
+    "hbm:glyphid_meat",
+    "hbm:glyphid_meat_grilled",
+    "hbm:schnitzel_vegan",
+    "hbm:mucho_mango"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_welded/any_resistant_alloy"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:wires_dense/bscco"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_bismoid"
+    }
+  ],
+  "order": 273,
+  "output_items": [
+    "hbm:fusion_coupler"
+  ],
+  "power": 100
+}

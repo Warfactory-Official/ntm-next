@@ -1,0 +1,22 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:nuggets/bismuth",
+    "G": "#c:storage_blocks/graphite",
+    "R": "hbm:rbmk_fuel_rod"
+  },
+  "pattern": [
+    "BGB",
+    "GRG",
+    "BGB"
+  ],
+  "result": {
+    "id": "hbm:rbmk_fuel_rod_moderated"
+  }
+}

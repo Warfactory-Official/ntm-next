@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:ingots/graphite",
+    "M": "hbm:motor",
+    "S": "#hbm:shells/steel"
+  },
+  "pattern": [
+    "S",
+    "G",
+    "M"
+  ],
+  "result": {
+    "id": "hbm:fluid_pump"
+  }
+}

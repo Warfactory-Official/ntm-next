@@ -1,0 +1,36 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 60,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 250
+    },
+    {
+      "type": "hbm:hydrogen",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#c:dusts/coltan"
+    },
+    {
+      "ingredient": "#c:dusts/coal"
+    }
+  ],
+  "order": 64,
+  "output_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 500
+    }
+  ],
+  "output_items": [
+    "hbm:powder_coltan",
+    "hbm:powder_niobium",
+    "hbm:dust"
+  ],
+  "power": 100
+}

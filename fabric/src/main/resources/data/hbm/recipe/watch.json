@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "E": "#c:ingots/euphemium",
+    "L": "#c:dyes/blue",
+    "W": "minecraft:clock",
+    "Y": "hbm:billet_yharonite"
+  },
+  "pattern": [
+    "LYL",
+    "EWE",
+    "LYL"
+  ],
+  "result": {
+    "id": "hbm:watch"
+  }
+}

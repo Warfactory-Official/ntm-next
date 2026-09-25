@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": "#c:ingots/polycarbonate"
+  },
+  "pattern": [
+    "WWW",
+    "  W"
+  ],
+  "result": {
+    "id": "hbm:part_stock_polycarbonate"
+  }
+}

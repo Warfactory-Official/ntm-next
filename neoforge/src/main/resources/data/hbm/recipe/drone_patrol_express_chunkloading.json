@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "hbm:drone_patrol_express",
+    "E": "minecraft:ender_pearl"
+  },
+  "pattern": [
+    "E",
+    "D"
+  ],
+  "result": {
+    "id": "hbm:drone_patrol_express_chunkloading"
+  }
+}

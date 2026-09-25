@@ -1,0 +1,22 @@
+{
+  "type": "hbm:rotary_furnace",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 9,
+      "ingredient": "#hbm:bedrock_ore_fragments/iron"
+    },
+    {
+      "ingredient": "#hbm:gems/any_coke"
+    },
+    {
+      "ingredient": "hbm:powder_flux"
+    }
+  ],
+  "order": 4,
+  "output_material": {
+    "amount": 288,
+    "material": "steel"
+  },
+  "steam": 25
+}

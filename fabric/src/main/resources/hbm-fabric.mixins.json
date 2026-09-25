@@ -1,0 +1,35 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "com.hbm.fabric.mixin",
+  "mixins": [
+    "ChunkMapUnloadMixin",
+    "FurnaceResultSlotMixin",
+    "ItemWasteEntityMixin",
+    "PlayerDropArmorModMixin",
+    "LivingEntityArmorModMixin",
+    "LivingEntityAcceptedDamageMixin",
+    "ServerDamageEventsMixin",
+    "BaseSpawnerImpactMixin",
+    "NaturalSpawnerImpactMixin",
+    "NaturalSpawnerRampantScoutMixin",
+    "ServerLevelCapCacheMixin",
+    "MixinServerPlayer"
+  ],
+  "client": [
+    "MixinCreativeModeInventoryScreen",
+    "HudShieldMixin",
+    "MixinGuiRenderer",
+    "MixinFluidVariantRendering",
+
+    "SectionRegionGeometryMixin",
+    "SectionCompilerGeometryMixin",
+    "AvatarRendererMixin",
+    "IndigoFlatLighterMixin",
+    "IndigoAoLighterMixin",
+    "HumanoidModelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

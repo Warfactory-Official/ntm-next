@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": "#c:nuggets/uranium_238"
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "id": "hbm:billet_u238"
+  }
+}

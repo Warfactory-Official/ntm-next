@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 24,
+      "material": "carbon"
+    }
+  ],
+  "targets": "minecraft:charcoal"
+}

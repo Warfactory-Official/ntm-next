@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/tape_recorder"
+    },
+    "facing=north": {
+      "model": "hbm:block/tape_recorder",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/tape_recorder",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/tape_recorder",
+      "y": 180
+    }
+  }
+}

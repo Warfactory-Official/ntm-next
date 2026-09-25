@@ -1,0 +1,62 @@
+{
+  "processors": [
+    {
+      "marker": {
+        "Name": "minecraft:chiseled_bookshelf",
+        "Properties": {
+          "facing": "east",
+          "slot_0_occupied": "false",
+          "slot_1_occupied": "false",
+          "slot_2_occupied": "false",
+          "slot_3_occupied": "false",
+          "slot_4_occupied": "false",
+          "slot_5_occupied": "false"
+        }
+      },
+      "probability": 0.05,
+      "processor_type": "hbm:maybe_place",
+      "result": {
+        "Name": "minecraft:gravel"
+      }
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "0",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_concrete"
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy"
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked"
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken"
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "processor_type": "hbm:loot_pile"
+    }
+  ]
+}

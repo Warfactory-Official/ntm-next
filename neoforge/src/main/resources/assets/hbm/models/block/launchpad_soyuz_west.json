@@ -1,0 +1,60 @@
+{
+  "groups": [
+    {
+      "matrix": [
+        -1.0,
+        0.0,
+        -8.742278E-8,
+        4.5000005,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        8.742278E-8,
+        0.0,
+        -1.0,
+        4.4999995,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Launchpad"
+      ],
+      "texture": "launchpad_soyuz"
+    }
+  ],
+  "hidden": [
+    "Wheel_4_4",
+    "Wheel_4_3",
+    "Wheel_4_2",
+    "Wheel_4_1",
+    "Wheel_3_4",
+    "Wheel_3_3",
+    "Wheel_3_2",
+    "Wheel_3_1",
+    "Wheel_2_4",
+    "Wheel_2_3",
+    "Wheel_2_2",
+    "Wheel_2_1",
+    "Wheel_1_4",
+    "Wheel_1_3",
+    "Wheel_1_2",
+    "Wheel_1_1",
+    "Carriage",
+    "Mount",
+    "Rotor",
+    "Strut5",
+    "Strut4",
+    "Strut3",
+    "Strut2",
+    "Strut1"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/launchpad_soyuz.obj",
+  "textures": {
+    "launchpad_soyuz": "hbm:block/models/machines/launchpad_soyuz",
+    "particle": "hbm:block/block_steel"
+  }
+}

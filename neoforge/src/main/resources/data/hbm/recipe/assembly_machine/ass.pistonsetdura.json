@@ -1,0 +1,27 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#c:ingots/dura_steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/tungsten"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:bolts/dura_steel"
+    }
+  ],
+  "order": 177,
+  "output_items": [
+    "hbm:piston_set_dura"
+  ],
+  "power": 100
+}

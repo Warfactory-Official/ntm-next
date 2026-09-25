@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/lead"
+    }
+  ],
+  "order": 16,
+  "output_items": [
+    "hbm:plate_lead"
+  ],
+  "stamp": "plate"
+}

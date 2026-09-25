@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "rotation=0": {
+      "model": "hbm:block/deco_toaster_wood",
+      "y": 270
+    },
+    "rotation=1": {
+      "model": "hbm:block/deco_toaster_wood"
+    },
+    "rotation=2": {
+      "model": "hbm:block/deco_toaster_wood",
+      "y": 90
+    },
+    "rotation=3": {
+      "model": "hbm:block/deco_toaster_wood",
+      "y": 180
+    }
+  }
+}

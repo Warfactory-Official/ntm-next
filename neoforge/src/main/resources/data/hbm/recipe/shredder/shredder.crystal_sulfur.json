@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_sulfur"
+    }
+  ],
+  "order": 107,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:sulfur"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "type": "liquid",
+  "color": "#300900",
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 3,
+    "health": 2,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 350,
+  "traits": {
+    "coolable": {
+      "amount_produced": 1,
+      "amount_req": 1,
+      "cools_to": "hbm:oil",
+      "efficiency": {
+        "HEATEXCHANGER": 1.0
+      },
+      "heat_energy": 10
+    },
+    "polluting": {
+      "burn": {
+        "SOOT": 0.004
+      },
+      "release": {
+        "POISON": 5.0E-5
+      }
+    }
+  }
+}

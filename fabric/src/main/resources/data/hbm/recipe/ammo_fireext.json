@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:bolts/steel",
+    "D": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:fluid_tank",
+      "components": {
+        "hbm:fluid_content": {
+          "type": "minecraft:water",
+          "amount": 1000,
+          "pressure": 0
+        }
+      }
+    },
+    "P": "#c:plates/steel"
+  },
+  "pattern": [
+    " P ",
+    "BDB",
+    " P "
+  ],
+  "result": {
+    "id": "hbm:ammo_fireext"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/xenon_135"
+    }
+  ],
+  "order": 455,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

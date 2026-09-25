@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": "#hbm:ingots/any_plastic",
+    "A": "#c:plates/lead",
+    "B": "hbm:circuit_advanced",
+    "C": "hbm:designator"
+  },
+  "pattern": [
+    "  A",
+    "#C#",
+    "#B#"
+  ],
+  "result": {
+    "id": "hbm:designator_manual"
+  }
+}

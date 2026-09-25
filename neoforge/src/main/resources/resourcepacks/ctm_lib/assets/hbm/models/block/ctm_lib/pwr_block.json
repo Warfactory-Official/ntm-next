@@ -1,0 +1,6 @@
+{
+  "textures": {
+    "connected": "hbm:block/ctm_lib/pwr_block_ct",
+    "particle": "hbm:block/pwr_block"
+  }
+}

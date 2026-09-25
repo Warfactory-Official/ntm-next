@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "hbm:ingot_meteorite"
+    },
+    {
+      "ingredient": "hbm:ingot_meteorite"
+    }
+  ],
+  "kind": "hot",
+  "order": 28,
+  "output_items": [
+    "hbm:ingot_meteorite_forged"
+  ],
+  "tier": 3
+}

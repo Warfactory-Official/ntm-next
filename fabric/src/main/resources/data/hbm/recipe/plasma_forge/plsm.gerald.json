@@ -1,0 +1,65 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:plasma_forge",
+  "duration": 12000,
+  "ignition_temp": 25000000,
+  "input_items": [
+    {
+      "count": 64,
+      "ingredient": "#hbm:plates_cast/schrabidate"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:plates_cast/schrabidate"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:wires_dense/bscco"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:wires_dense/bscco"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:det_nuke"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:part_generic_hde"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:part_generic_hde"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:part_generic_hde"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:part_generic_hde"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:circuit_controller_quantum"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:drive_disk_orbitdata_processed"
+    },
+    {
+      "ingredient": "hbm:coin_ufo"
+    }
+  ],
+  "order": 40,
+  "output_items": [
+    "hbm:sat_gerald"
+  ],
+  "power": 50000000
+}

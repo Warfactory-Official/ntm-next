@@ -1,0 +1,42 @@
+{
+  "model": {
+    "type": "hbm:mesh",
+    "base": "hbm:item/mp_stability_10_space_base",
+    "mesh": "hbm:models/missile_parts/mp_s_10_space.obj",
+    "pose_suffix": {
+      "gui": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "skins": [
+      "hbm:textures/models/missile_parts/stability/mp_s_10_space.png"
+    ],
+    "smooth": false,
+    "spin": {
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "divisor": 25,
+      "modulus": 360,
+      "rate": 1.0
+    }
+  },
+  "oversized_in_gui": true
+}

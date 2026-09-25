@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/coal",
+    "minecraft:milk_bucket",
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:potion_contents": "minecraft:water"
+      },
+      "items": "minecraft:potion"
+    },
+    "minecraft:sugar"
+  ],
+  "result": {
+    "id": "hbm:coffee"
+  }
+}

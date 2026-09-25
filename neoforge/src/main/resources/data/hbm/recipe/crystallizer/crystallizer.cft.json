@@ -1,0 +1,21 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:xylene",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:powder_ash_fullerene"
+    }
+  ],
+  "order": 251,
+  "output_items": [
+    "hbm:ingot_cft"
+  ],
+  "productivity": 0.1
+}

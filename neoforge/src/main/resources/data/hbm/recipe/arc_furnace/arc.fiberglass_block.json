@@ -1,0 +1,21 @@
+{
+  "type": "hbm:arc_furnace",
+  "input_items": [
+    {
+      "ingredient": "#c:storage_blocks/fiberglass"
+    }
+  ],
+  "order": 6,
+  "output_items": [
+    {
+      "count": 40,
+      "id": "hbm:nugget_silicon"
+    }
+  ],
+  "output_materials": [
+    {
+      "amount": 324,
+      "material": "silicon"
+    }
+  ]
+}

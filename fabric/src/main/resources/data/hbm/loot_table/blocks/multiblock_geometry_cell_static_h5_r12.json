@@ -1,0 +1,5 @@
+{
+  "type": "minecraft:block",
+  "pools": [],
+  "random_sequence": "hbm:blocks/multiblock_geometry_cell_static_h5_r12"
+}

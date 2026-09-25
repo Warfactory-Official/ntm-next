@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "minecraft:book",
+    "I": "#c:dyes/black",
+    "L": "#c:dyes/blue"
+  },
+  "pattern": [
+    "IBI",
+    "LBL",
+    "IBI"
+  ],
+  "result": {
+    "id": "hbm:book_guide"
+  }
+}

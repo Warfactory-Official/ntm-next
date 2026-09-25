@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:plates/weapon_steel",
+    "L": "#hbm:ingots/any_rubber",
+    "M": "#hbm:gun_mechanisms/weapon_steel"
+  },
+  "pattern": [
+    "LLL",
+    "MGM",
+    "LLL"
+  ],
+  "result": {
+    "id": "hbm:ammo_bag"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.tcalloy"
+  ],
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_welded/any_resistant_alloy"
+    },
+    {
+      "count": 32,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_bismoid"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:drive_flash_particlesim"
+    }
+  ],
+  "order": 255,
+  "output_items": [
+    "hbm:struct_torus_core"
+  ],
+  "power": 100
+}

@@ -1,0 +1,40 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": "hbm:ore_tikite"
+    }
+  ],
+  "laser_strength": "uv",
+  "order": 9,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:powder_plutonium"
+        },
+        "weight": 2
+      },
+      {
+        "data": {
+          "id": "hbm:powder_cobalt"
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "hbm:powder_niobium"
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "hbm:powder_nitan_mix"
+        },
+        "weight": 2
+      }
+    ]
+  ]
+}

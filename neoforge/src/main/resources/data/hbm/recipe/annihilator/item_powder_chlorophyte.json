@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:annihilator",
+  "item": "hbm:powder_chlorophyte",
+  "milestones": [
+    {
+      "amount": "1024",
+      "payout": {
+        "components": {
+          "hbm:blueprint_pool": "528.chlorophyte"
+        },
+        "id": "hbm:blueprints"
+      }
+    }
+  ]
+}

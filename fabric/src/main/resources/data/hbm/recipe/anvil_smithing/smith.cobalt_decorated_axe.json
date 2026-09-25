@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "hbm:cobalt_axe"
+    },
+    {
+      "ingredient": "hbm:ingot_meteorite"
+    }
+  ],
+  "kind": "hot",
+  "order": 33,
+  "output_items": [
+    "hbm:cobalt_decorated_axe"
+  ],
+  "tier": 3
+}

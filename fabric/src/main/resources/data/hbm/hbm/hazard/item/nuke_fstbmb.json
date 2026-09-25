@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:digamma",
+      "level": 0.01
+    }
+  ],
+  "targets": "hbm:nuke_fstbmb"
+}

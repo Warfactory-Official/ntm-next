@@ -1,0 +1,43 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 600,
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_pellet": {}
+      },
+      "ingredient": "hbm:rbmk_pellet_zfb_bismuth"
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 60,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_uranium"
+        },
+        "weight": 50
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_pu241"
+        },
+        "weight": 50
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_bismuth"
+        },
+        "weight": 50
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_zirconium"
+        },
+        "weight": 150
+      }
+    ]
+  ]
+}

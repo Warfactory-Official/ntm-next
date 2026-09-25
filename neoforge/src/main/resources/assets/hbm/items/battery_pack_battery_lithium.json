@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/battery_pack_battery_lithium"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "hbm:cyclotron",
+  "amat": 100,
+  "input_items": [
+    {
+      "ingredient": "hbm:part_plutonium"
+    },
+    {
+      "ingredient": "hbm:powder_tennessine"
+    }
+  ],
+  "order": 33,
+  "output_items": [
+    "hbm:powder_australium"
+  ]
+}

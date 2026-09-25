@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:ore_rare_deepslate"
+    }
+  ],
+  "order": 55,
+  "output_items": [
+    "hbm:powder_desh_mix"
+  ]
+}

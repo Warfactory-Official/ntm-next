@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:ore_nether_fire"
+    }
+  ],
+  "order": 11,
+  "output_items": [
+    {
+      "count": 6,
+      "id": "hbm:powder_fire"
+    }
+  ]
+}

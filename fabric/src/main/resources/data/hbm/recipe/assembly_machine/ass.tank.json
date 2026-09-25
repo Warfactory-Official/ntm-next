@@ -1,0 +1,25 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:shells/steel"
+    }
+  ],
+  "order": 199,
+  "output_items": [
+    "hbm:machine_fluidtank"
+  ],
+  "power": 100
+}

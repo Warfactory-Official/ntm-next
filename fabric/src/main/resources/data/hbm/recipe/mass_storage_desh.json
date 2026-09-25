@@ -1,0 +1,17 @@
+{
+  "type": "hbm:container_upgrade",
+  "carrier": "hbm:mass_storage_iron",
+  "key": {
+    "C": "hbm:circuit_chip",
+    "M": "hbm:mass_storage_iron",
+    "P": "#c:ingots/workers_alloy"
+  },
+  "pattern": [
+    " C ",
+    "PMP",
+    " P "
+  ],
+  "result": {
+    "id": "hbm:mass_storage_desh"
+  }
+}

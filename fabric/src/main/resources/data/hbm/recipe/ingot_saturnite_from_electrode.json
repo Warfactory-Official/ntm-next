@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 3.0,
+  "ingredient": "hbm:arc_electrode_burnt_saturnite",
+  "result": {
+    "id": "hbm:ingot_saturnite"
+  }
+}

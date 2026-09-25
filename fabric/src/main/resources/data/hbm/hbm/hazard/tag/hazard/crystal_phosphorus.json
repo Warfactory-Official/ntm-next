@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:hot",
+      "level": 20.0
+    }
+  ],
+  "targets": "#hbm:hazard/crystal_phosphorus"
+}

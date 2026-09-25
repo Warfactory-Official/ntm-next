@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/lithium"
+    }
+  ],
+  "order": 411,
+  "output_items": [
+    "hbm:powder_lithium"
+  ]
+}

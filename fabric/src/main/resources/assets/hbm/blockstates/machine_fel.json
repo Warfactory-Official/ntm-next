@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_fel",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_fel"
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_fel",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_fel",
+      "y": 270
+    }
+  }
+}

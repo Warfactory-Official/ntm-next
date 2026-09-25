@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#hbm:pipes/lead"
+  },
+  "pattern": [
+    "II",
+    " I",
+    " I"
+  ],
+  "result": {
+    "id": "hbm:weapon_pipe_lead"
+  }
+}

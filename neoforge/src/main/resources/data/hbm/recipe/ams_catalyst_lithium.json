@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:ams_catalyst_blank",
+    "hbm:rune_isa",
+    "hbm:rune_isa",
+    "hbm:rune_jera",
+    "hbm:rune_jera",
+    "#c:dusts/lithium",
+    "#c:dusts/lithium",
+    "#c:dusts/lithium",
+    "#c:dusts/lithium"
+  ],
+  "result": {
+    "id": "hbm:ams_catalyst_lithium"
+  }
+}

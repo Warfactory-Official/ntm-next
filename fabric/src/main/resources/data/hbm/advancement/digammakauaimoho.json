@@ -1,0 +1,30 @@
+{
+  "parent": "hbm:digammaknow",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "kinds": [
+          "digamma_spear"
+        ]
+      },
+      "trigger": "hbm:detonation"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.digammaKauaiMoho.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:achievement_icon_digammakauaimoho"
+    },
+    "title": {
+      "translate": "achievement.digammaKauaiMoho"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:nuggets/zirconium",
+    "#c:nuggets/zirconium",
+    "#c:nuggets/zirconium",
+    "#c:nuggets/plutonium_241",
+    "#c:nuggets/plutonium_241",
+    "#c:nuggets/americium_rg"
+  ],
+  "result": {
+    "id": "hbm:billet_zfb_am_mix"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:ingots/any_bismoid",
+    "C": "#c:dusts/cobalt",
+    "P": "#hbm:ingots/any_hard_plastic"
+  },
+  "pattern": [
+    "PCP",
+    "PBP",
+    "PCP"
+  ],
+  "result": {
+    "id": "hbm:catalytic_converter"
+  }
+}

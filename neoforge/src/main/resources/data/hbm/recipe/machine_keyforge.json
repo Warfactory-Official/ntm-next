@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:padlock",
+    "P": "#c:plates/steel",
+    "S": "#c:ingots/tungsten",
+    "W": "#minecraft:planks"
+  },
+  "pattern": [
+    "PCP",
+    "WSW",
+    "WSW"
+  ],
+  "result": {
+    "id": "hbm:machine_keyforge"
+  }
+}

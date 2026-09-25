@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/chlorocalcite"
+    }
+  ],
+  "order": 418,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

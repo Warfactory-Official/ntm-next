@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:bottle2_empty",
+    "hbm:syringe_metal_empty",
+    "hbm:ducttape",
+    "hbm:powder_magic",
+    "#c:nuggets/schrabidium",
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:potion_contents": "minecraft:water"
+      },
+      "items": "minecraft:potion"
+    }
+  ],
+  "result": {
+    "id": "hbm:syringe_taint"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.tcalloy"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:item_expensive_ferro_plating"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:ingots/saturnite"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    }
+  ],
+  "name": "ass.watzrodEx",
+  "order": 278,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:watz_element"
+    }
+  ],
+  "power": 100
+}

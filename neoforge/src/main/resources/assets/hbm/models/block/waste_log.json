@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "hbm:block/waste_log_top",
+    "side": "hbm:block/waste_log_side"
+  }
+}

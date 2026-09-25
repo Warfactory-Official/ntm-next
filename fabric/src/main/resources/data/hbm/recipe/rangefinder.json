@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_basic",
+    "G": "#c:glass_panes",
+    "R": "#c:dusts/redstone",
+    "S": "#c:plates/steel"
+  },
+  "pattern": [
+    "GRC",
+    "  S"
+  ],
+  "result": {
+    "id": "hbm:rangefinder"
+  }
+}

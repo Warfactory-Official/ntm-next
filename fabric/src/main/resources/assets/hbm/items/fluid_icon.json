@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/fluid_icon",
+    "tints": [
+      {
+        "type": "hbm:fluid_color"
+      }
+    ]
+  }
+}

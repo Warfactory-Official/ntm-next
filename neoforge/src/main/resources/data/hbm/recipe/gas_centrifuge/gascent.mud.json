@@ -1,0 +1,29 @@
+{
+  "type": "hbm:gas_centrifuge",
+  "consumed": 1000,
+  "duration": 150,
+  "feed": "hbm:watz_mud",
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:watz_mud",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -7969474
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "next": "mud_heavy",
+  "order": 5,
+  "output_items": [
+    "hbm:powder_lead",
+    "hbm:dust"
+  ],
+  "power": 200,
+  "produced": 500,
+  "stage": "mud"
+}

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_basic",
+    "S": "#c:plates/steel"
+  },
+  "pattern": [
+    "C",
+    "S"
+  ],
+  "result": {
+    "id": "hbm:detonator"
+  }
+}

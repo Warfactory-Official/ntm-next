@@ -1,0 +1,15 @@
+{
+  "type": "hbm:exposure_chamber",
+  "input_items": [
+    {
+      "ingredient": "hbm:particle_higgs"
+    },
+    {
+      "ingredient": "#c:ingots/uranium"
+    }
+  ],
+  "order": 0,
+  "output_items": [
+    "hbm:ingot_schraranium"
+  ]
+}

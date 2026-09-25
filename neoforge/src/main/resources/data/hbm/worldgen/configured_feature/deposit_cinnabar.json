@@ -1,0 +1,17 @@
+{
+  "type": "hbm:depth_deposit",
+  "config": {
+    "core": {
+      "Name": "hbm:ore_depth_cinnabar"
+    },
+    "fill": 0.8,
+    "filler": {
+      "Name": "hbm:stone_depth"
+    },
+    "replaceable": {
+      "predicate_type": "minecraft:tag_match",
+      "tag": "minecraft:deepslate_ore_replaceables"
+    },
+    "size": 5
+  }
+}

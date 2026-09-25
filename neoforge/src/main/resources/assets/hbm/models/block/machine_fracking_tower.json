@@ -1,0 +1,48 @@
+{
+  "parent": "hbm:block/machine_fracking_tower_base",
+  "double_sided": [
+    "Cube_Cube.001",
+    "pX",
+    "nX",
+    "pZ",
+    "nZ"
+  ],
+  "groups": [
+    {
+      "parts": [
+        "Cube_Cube.001"
+      ],
+      "texture": "all"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.5,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "model": "hbm:models/blocks/pipe_neo.obj",
+      "parts": [
+        "pX",
+        "nX",
+        "pZ",
+        "nZ"
+      ],
+      "texture": "pipe"
+    }
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/fracking_tower.obj"
+}

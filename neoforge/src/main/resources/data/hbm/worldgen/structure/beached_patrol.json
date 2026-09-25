@@ -1,0 +1,10 @@
+{
+  "type": "hbm:single_piece",
+  "biomes": "#c:is_beach",
+  "height_offset": -5,
+  "max_height": 67,
+  "min_height": 58,
+  "spawn_overrides": {},
+  "start_pool": "hbm:single/beached_patrol",
+  "step": "strongholds"
+}

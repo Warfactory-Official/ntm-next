@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/emerald"
+    }
+  ],
+  "order": 28,
+  "output_items": [
+    "minecraft:emerald"
+  ],
+  "overlay": "smithing",
+  "tier": 3
+}

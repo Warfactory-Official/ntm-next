@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 4.25
+    }
+  ],
+  "targets": "#hbm:hazard/ingot_plutonium_fuel"
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:wheat",
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "hbm:roasted": true
+      },
+      "items": "hbm:marshmallow"
+    },
+    "minecraft:cocoa_beans"
+  ],
+  "result": {
+    "id": "hbm:ingot_smore"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:ore_nether_fire"
+    }
+  ],
+  "order": 247,
+  "output_items": [
+    "hbm:crystal_phosphorus"
+  ],
+  "productivity": 0.05
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "hbm:block/block_graphite_rod_out_aluminum",
+    "side": "hbm:block/block_graphite"
+  }
+}

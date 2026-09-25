@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 112.5
+    }
+  ],
+  "targets": "hbm:billet_po210be"
+}

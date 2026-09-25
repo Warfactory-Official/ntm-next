@@ -1,0 +1,71 @@
+{
+  "fabric:type": "hbm:obj",
+  "parent": "hbm:block/cable_diode_base",
+  "boxes": [
+    {
+      "from": [
+        0,
+        14,
+        0
+      ],
+      "texture": "housing",
+      "to": [
+        16,
+        16,
+        16
+      ]
+    },
+    {
+      "from": [
+        2,
+        2,
+        2
+      ],
+      "texture": "pad",
+      "to": [
+        14,
+        14,
+        14
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "matrix": [
+        -1.0,
+        0.0,
+        -8.742278E-8,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        8.742278E-8,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "posX",
+        "negX",
+        "negY",
+        "posZ",
+        "negZ"
+      ],
+      "texture": "stub"
+    }
+  ],
+  "hidden": [
+    "posY",
+    "Core",
+    "CZ",
+    "CX",
+    "CY"
+  ],
+  "model": "hbm:models/blocks/cable_neo.obj",
+  "offset_y": 0.5
+}

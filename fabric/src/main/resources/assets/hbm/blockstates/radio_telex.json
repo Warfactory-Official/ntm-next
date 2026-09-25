@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/radio_telex"
+    },
+    "facing=north": {
+      "model": "hbm:block/radio_telex",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/radio_telex",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/radio_telex",
+      "y": 180
+    }
+  }
+}

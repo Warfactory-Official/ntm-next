@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "#c:storage_blocks/iron"
+    },
+    {
+      "ingredient": "hbm:mold_base"
+    }
+  ],
+  "kind": "mold",
+  "order": 53,
+  "output_items": [
+    "hbm:mold_block"
+  ],
+  "shape": "storage_blocks"
+}

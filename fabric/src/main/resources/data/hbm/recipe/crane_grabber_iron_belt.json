@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:conveyor",
+    "C": "#c:ingots/iron",
+    "P": "hbm:part_generic_piston_pneumatic"
+  },
+  "pattern": [
+    "C C",
+    "P P",
+    "CBC"
+  ],
+  "result": {
+    "count": 2,
+    "id": "hbm:crane_grabber"
+  }
+}

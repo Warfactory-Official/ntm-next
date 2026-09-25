@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:steel_legs"
+    },
+    "E": "#hbm:billets/cobalt"
+  },
+  "pattern": [
+    "ECE",
+    "E E"
+  ],
+  "result": {
+    "id": "hbm:cobalt_legs"
+  }
+}

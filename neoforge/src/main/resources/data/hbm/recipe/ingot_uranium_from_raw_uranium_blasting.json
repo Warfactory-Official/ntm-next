@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 6.0,
+  "ingredient": "hbm:raw_uranium",
+  "result": {
+    "id": "hbm:ingot_uranium"
+  }
+}

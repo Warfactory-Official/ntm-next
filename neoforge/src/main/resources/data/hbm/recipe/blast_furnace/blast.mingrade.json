@@ -1,0 +1,19 @@
+{
+  "type": "hbm:blast_furnace",
+  "duration": 400,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/copper"
+    },
+    {
+      "ingredient": "#c:dusts/redstone"
+    }
+  ],
+  "order": 4,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:ingot_red_copper"
+    }
+  ]
+}

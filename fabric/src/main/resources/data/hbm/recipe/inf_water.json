@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "1": {
+      "fabric:type": "hbm:fluid_content",
+      "amount": 1000,
+      "fluid": "minecraft:water"
+    },
+    "2": "#c:plates/aluminum",
+    "3": "minecraft:diamond"
+  },
+  "pattern": [
+    "222",
+    "131",
+    "222"
+  ],
+  "result": {
+    "id": "hbm:inf_water"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "hbm:lantern",
+    "base": "hbm:item/lantern_base"
+  }
+}

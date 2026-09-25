@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "minecraft:lava",
+      "amount": 1000
+    }
+  ],
+  "order": 1,
+  "output_items": [
+    "minecraft:obsidian"
+  ]
+}

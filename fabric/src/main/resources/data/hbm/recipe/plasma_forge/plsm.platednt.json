@@ -1,0 +1,26 @@
+{
+  "type": "hbm:plasma_forge",
+  "duration": 600,
+  "ignition_temp": 1000000,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/dineutronium"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:powder_spark_mix"
+    },
+    {
+      "ingredient": "#c:ingots/workers_alloy"
+    }
+  ],
+  "order": 1,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:plate_dineutronium"
+    }
+  ],
+  "power": 10000000
+}

@@ -1,0 +1,491 @@
+{
+  "fabric:type": "hbm:obj",
+  "parent": "hbm:block/rbmk_item_display",
+  "boxes": [
+    {
+      "faces": {
+        "east": "side",
+        "north": "side",
+        "south": "side",
+        "west": "side"
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "uvs": {
+        "east": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "north": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "south": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "west": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ]
+      }
+    },
+    {
+      "faces": {
+        "east": "side",
+        "north": "side",
+        "south": "side",
+        "west": "side"
+      },
+      "from": [
+        0,
+        16,
+        0
+      ],
+      "to": [
+        16,
+        32,
+        16
+      ],
+      "uvs": {
+        "east": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "north": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "south": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "west": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ]
+      }
+    },
+    {
+      "faces": {
+        "east": "side",
+        "north": "side",
+        "south": "side",
+        "west": "side"
+      },
+      "from": [
+        0,
+        32,
+        0
+      ],
+      "to": [
+        16,
+        48,
+        16
+      ],
+      "uvs": {
+        "east": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "north": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "south": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "west": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ]
+      }
+    },
+    {
+      "faces": {
+        "east": "side",
+        "north": "side",
+        "south": "side",
+        "west": "side"
+      },
+      "from": [
+        0,
+        48,
+        0
+      ],
+      "to": [
+        16,
+        64,
+        16
+      ],
+      "uvs": {
+        "east": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "north": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "south": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "west": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ]
+      }
+    }
+  ],
+  "groups": [
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Inner"
+      ],
+      "texture": "inner"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Cap"
+      ],
+      "texture": "top"
+    },
+    {
+      "color": "0x304825",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "model": "hbm:models/rbmk/rbmk_element_rods.obj",
+      "parts": [
+        "Rods"
+      ],
+      "texture": "fuel"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Inner"
+      ],
+      "texture": "inner"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Cap"
+      ],
+      "texture": "top"
+    },
+    {
+      "color": "0x304825",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "model": "hbm:models/rbmk/rbmk_element_rods.obj",
+      "parts": [
+        "Rods"
+      ],
+      "texture": "fuel"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        2.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Inner"
+      ],
+      "texture": "inner"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        2.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Cap"
+      ],
+      "texture": "top"
+    },
+    {
+      "color": "0x304825",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        2.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "model": "hbm:models/rbmk/rbmk_element_rods.obj",
+      "parts": [
+        "Rods"
+      ],
+      "texture": "fuel"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        3.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Inner"
+      ],
+      "texture": "inner"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        3.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Cap"
+      ],
+      "texture": "top"
+    },
+    {
+      "color": "0x304825",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        3.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "model": "hbm:models/rbmk/rbmk_element_rods.obj",
+      "parts": [
+        "Rods"
+      ],
+      "texture": "fuel"
+    }
+  ],
+  "hidden": [
+    "Rods"
+  ],
+  "model": "hbm:models/rbmk/rbmk_element.obj",
+  "textures": {
+    "fuel": "hbm:block/rbmk/rbmk_element_reasim_mod_fuel",
+    "inner": "hbm:block/rbmk/rbmk_element_reasim_mod_inner",
+    "particle": "hbm:block/rbmk/rbmk_element_reasim_mod_side",
+    "side": "hbm:block/rbmk/rbmk_element_reasim_mod_side",
+    "top": "hbm:block/rbmk/rbmk_element_reasim_mod_top"
+  }
+}

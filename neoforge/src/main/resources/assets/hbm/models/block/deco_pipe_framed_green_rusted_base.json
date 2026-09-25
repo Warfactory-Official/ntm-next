@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "hbm:block/pipe_top_green_rusty",
+    "side": "hbm:block/pipe_side_green_rusty",
+    "top": "hbm:block/pipe_top_green_rusty"
+  }
+}

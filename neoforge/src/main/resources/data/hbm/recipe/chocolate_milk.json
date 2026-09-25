@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:glass_panes",
+    "minecraft:cocoa_beans",
+    "minecraft:milk_bucket",
+    {
+      "neoforge:ingredient_type": "hbm:fluid_content",
+      "amount": 1000,
+      "fluid": "hbm:nitroglycerin"
+    }
+  ],
+  "result": {
+    "id": "hbm:chocolate_milk"
+  }
+}

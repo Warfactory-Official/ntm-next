@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": "minecraft:lever",
+    "W": "hbm:red_wire_coated"
+  },
+  "pattern": [
+    "S",
+    "W"
+  ],
+  "result": {
+    "id": "hbm:cable_switch"
+  }
+}

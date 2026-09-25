@@ -1,0 +1,34 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:plate_polymer"
+    },
+    {
+      "count": 5,
+      "ingredient": "hbm:circuit_analog"
+    }
+  ],
+  "name": "ass.refineryEx",
+  "order": 117,
+  "output_items": [
+    "hbm:machine_refinery"
+  ],
+  "power": 100
+}

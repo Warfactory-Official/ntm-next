@@ -1,0 +1,28 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:neutron_reflector"
+    }
+  ],
+  "order": 243,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:pwr_reflector"
+    }
+  ],
+  "power": 500
+}

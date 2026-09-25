@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/glyphid_base_infested"
+      },
+      {
+        "model": "hbm:block/glyphid_base_infested_alt"
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "minecraft:sunflower"
+    }
+  ],
+  "order": 29,
+  "output_fluids": [
+    {
+      "type": "hbm:sunfloweroil",
+      "amount": 100
+    }
+  ]
+}

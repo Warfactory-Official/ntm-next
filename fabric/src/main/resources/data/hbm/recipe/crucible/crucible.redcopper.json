@@ -1,0 +1,24 @@
+{
+  "type": "hbm:crucible",
+  "frequency": 2,
+  "icon": {
+    "id": "hbm:ingot_red_copper"
+  },
+  "input_materials": [
+    {
+      "amount": 8,
+      "material": "copper"
+    },
+    {
+      "amount": 8,
+      "material": "redstone"
+    }
+  ],
+  "order": 3,
+  "output_materials": [
+    {
+      "amount": 16,
+      "material": "mingrade"
+    }
+  ]
+}

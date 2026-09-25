@@ -1,0 +1,20 @@
+{
+  "type": "hbm:electrolyser_fluid",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:potassium_chloride",
+      "amount": 250
+    }
+  ],
+  "order": 6,
+  "output_fluids": [
+    {
+      "type": "hbm:chlorine",
+      "amount": 125
+    }
+  ],
+  "output_items": [
+    "hbm:dust"
+  ]
+}

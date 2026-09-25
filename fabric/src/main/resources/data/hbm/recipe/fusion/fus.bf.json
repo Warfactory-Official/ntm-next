@@ -1,0 +1,40 @@
+{
+  "type": "hbm:fusion",
+  "blue": 0.2,
+  "custom_localization": true,
+  "duration": 100,
+  "green": 1.0,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:balefire_fuel",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -14098386
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "ignition_temp": 1000000,
+  "input_fluids": [
+    {
+      "type": "hbm:balefire_fuel",
+      "amount": 15
+    },
+    {
+      "type": "hbm:amat",
+      "amount": 5
+    }
+  ],
+  "neutron_flux": 2000.0,
+  "order": 8,
+  "output_items": [
+    "hbm:powder_balefire"
+  ],
+  "output_temp": 12500000,
+  "power": 25000,
+  "red": 0.2
+}

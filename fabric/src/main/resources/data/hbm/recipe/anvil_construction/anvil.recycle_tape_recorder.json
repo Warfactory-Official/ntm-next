@@ -1,0 +1,18 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:tape_recorder"
+    }
+  ],
+  "order": 229,
+  "output_items": [
+    "hbm:ingot_steel",
+    {
+      "chance": 0.25,
+      "id": "hbm:ingot_tungsten"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

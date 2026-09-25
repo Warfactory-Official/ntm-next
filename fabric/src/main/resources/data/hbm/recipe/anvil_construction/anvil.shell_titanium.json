@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/titanium"
+    }
+  ],
+  "order": 39,
+  "output_items": [
+    "hbm:shell_titanium"
+  ],
+  "overlay": "smithing",
+  "tier": 1
+}

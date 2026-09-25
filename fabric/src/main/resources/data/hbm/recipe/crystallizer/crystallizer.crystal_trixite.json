@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:ore_tikite"
+    }
+  ],
+  "order": 248,
+  "output_items": [
+    "hbm:crystal_trixite"
+  ],
+  "productivity": 0.05
+}

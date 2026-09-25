@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=2": {
+      "model": "hbm:block/nuke_tsar",
+      "y": 270
+    },
+    "facing=3": {
+      "model": "hbm:block/nuke_tsar",
+      "y": 90
+    },
+    "facing=4": {
+      "model": "hbm:block/nuke_tsar",
+      "y": 180
+    },
+    "facing=5": {
+      "model": "hbm:block/nuke_tsar"
+    }
+  }
+}

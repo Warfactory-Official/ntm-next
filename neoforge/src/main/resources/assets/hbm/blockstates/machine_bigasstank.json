@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=east,tilted=false": {
+      "model": "hbm:block/machine_bigasstank_east"
+    },
+    "facing=east,tilted=true": {
+      "model": "hbm:block/machine_bigasstank_east_tilted"
+    },
+    "facing=north,tilted=false": {
+      "model": "hbm:block/machine_bigasstank_north"
+    },
+    "facing=north,tilted=true": {
+      "model": "hbm:block/machine_bigasstank_north_tilted"
+    },
+    "facing=south,tilted=false": {
+      "model": "hbm:block/machine_bigasstank_south"
+    },
+    "facing=south,tilted=true": {
+      "model": "hbm:block/machine_bigasstank_south_tilted"
+    },
+    "facing=west,tilted=false": {
+      "model": "hbm:block/machine_bigasstank_west"
+    },
+    "facing=west,tilted=true": {
+      "model": "hbm:block/machine_bigasstank_west_tilted"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:bitumen",
+      "amount": 100
+    }
+  ],
+  "order": 16,
+  "output_items": [
+    "hbm:oil_tar_crude"
+  ]
+}

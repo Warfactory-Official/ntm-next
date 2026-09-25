@@ -1,0 +1,16 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbm:red_cable_box_2"
+    }
+  ],
+  "order": 148,
+  "output_items": [
+    "hbm:ingot_red_copper",
+    "hbm:plate_polymer"
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

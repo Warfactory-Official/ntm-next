@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "hbm:crayon_lime",
+      "hbm:chemical_dye_lime"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:lime_dye"
+  }
+}

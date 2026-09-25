@@ -1,0 +1,18 @@
+{
+  "type": "liquid",
+  "color": "#808080",
+  "nfpa": {
+    "flame": 0,
+    "health": 2,
+    "react": 0
+  },
+  "shares": "#c:mercury",
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "poison": {
+      "level": 2,
+      "withering": false
+    }
+  }
+}

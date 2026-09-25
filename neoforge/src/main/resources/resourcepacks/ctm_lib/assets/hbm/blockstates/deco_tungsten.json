@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:deco_tungsten"
+  ],
+  "ctm_textures": {
+    "hbm:block/deco_tungsten": "hbm:block/ctm_lib/deco_tungsten"
+  },
+  "variants": {
+    "": {
+      "model": "hbm:block/deco_tungsten"
+    }
+  }
+}

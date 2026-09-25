@@ -1,0 +1,20 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Laser",
+    "Pivot"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/mining_laser.obj",
+  "offset_y": -1.0,
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/mining_laser_base",
+    "particle": "hbm:block/machine_mining_laser"
+  }
+}

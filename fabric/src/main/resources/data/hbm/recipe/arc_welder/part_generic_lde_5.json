@@ -1,0 +1,22 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/aluminum"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/fiberglass"
+    },
+    {
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    }
+  ],
+  "order": 1,
+  "output_items": [
+    "hbm:part_generic_lde"
+  ],
+  "power": 5000
+}

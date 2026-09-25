@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:syringe_empty",
+    "L": "hbm:powder_poison",
+    "S": "minecraft:spider_eye"
+  },
+  "pattern": [
+    "SLS",
+    "LCL",
+    "SLS"
+  ],
+  "result": {
+    "id": "hbm:syringe_poison"
+  }
+}

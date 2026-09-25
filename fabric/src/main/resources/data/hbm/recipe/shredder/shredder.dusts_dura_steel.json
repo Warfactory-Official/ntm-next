@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/dura_steel"
+    }
+  ],
+  "order": 295,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

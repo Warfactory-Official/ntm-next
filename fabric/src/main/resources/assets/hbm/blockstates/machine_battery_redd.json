@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_battery_redd",
+      "y": 180
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_battery_redd",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_battery_redd",
+      "y": 270
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_battery_redd"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/boron",
+    "#c:dusts/boron",
+    "#c:dusts/lanthanum",
+    "#c:dusts/lanthanum",
+    "#c:dusts/cerium",
+    "#c:dusts/cobalt",
+    "#c:dusts/lithium",
+    "#c:dusts/neodymium",
+    "#c:dusts/niobium"
+  ],
+  "result": {
+    "count": 9,
+    "id": "hbm:powder_desh_mix"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:ore_oil_empty"
+    }
+  ],
+  "order": 23,
+  "output_items": [
+    "minecraft:gravel"
+  ]
+}

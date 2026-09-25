@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_controller",
+    "R": "hbm:rangefinder",
+    "T": "hbm:ammo_standard_nuke_high"
+  },
+  "pattern": [
+    "TRC"
+  ],
+  "result": {
+    "id": "hbm:bomb_caller_atomic_bomb"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "double_sided": [
+    "Soda"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Obamna"
+  ],
+  "model": "hbm:models/machines/vending_machine.obj",
+  "skins": {
+    "all": [
+      "Soda"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/vending_machine",
+    "particle": "hbm:block/block_steel"
+  }
+}

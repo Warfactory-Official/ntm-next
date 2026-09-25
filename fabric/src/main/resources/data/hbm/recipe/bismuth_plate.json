@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:laser_crystal_bismuth",
+    "F": "hbm:rag",
+    "P": "hbm:plate_bismuth",
+    "R": "hbm:crystal_rare",
+    "S": "hbm:ring_starmetal",
+    "W": "#c:fine_wires/gold"
+  },
+  "pattern": [
+    "RWR",
+    "PCP",
+    "SFS"
+  ],
+  "result": {
+    "id": "hbm:bismuth_plate"
+  }
+}

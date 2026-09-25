@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/circuit_star_piece_board_transistor"
+  }
+}

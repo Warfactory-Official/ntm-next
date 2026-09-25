@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:inf_water",
+    "P": "#hbm:pipes/steel",
+    "T": "#hbm:shells/steel"
+  },
+  "pattern": [
+    "BPB",
+    "PTP",
+    "BPB"
+  ],
+  "result": {
+    "id": "hbm:inf_water_mk2"
+  }
+}

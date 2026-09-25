@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 15.0
+    },
+    {
+      "type": "hbm:hot",
+      "level": 0.5
+    }
+  ],
+  "mutex": 1,
+  "targets": "#hbm:billets/cobalt_60"
+}

@@ -1,0 +1,28 @@
+{
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 50,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:ethanol",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:canister"
+  },
+  "input_items": [
+    {
+      "count": 10,
+      "ingredient": "minecraft:sugar"
+    }
+  ],
+  "order": 9,
+  "output_fluids": [
+    {
+      "type": "hbm:ethanol",
+      "amount": 1000
+    }
+  ],
+  "power": 100
+}

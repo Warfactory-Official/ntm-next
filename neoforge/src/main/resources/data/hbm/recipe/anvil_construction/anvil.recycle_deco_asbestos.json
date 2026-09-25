@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:deco_asbestos"
+    }
+  ],
+  "order": 213,
+  "output_items": [
+    "hbm:ingot_asbestos"
+  ],
+  "overlay": "recycling",
+  "tier": 1
+}

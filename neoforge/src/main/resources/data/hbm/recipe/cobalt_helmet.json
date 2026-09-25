@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:steel_helmet"
+    },
+    "E": "#hbm:billets/cobalt"
+  },
+  "pattern": [
+    "ECE"
+  ],
+  "result": {
+    "id": "hbm:cobalt_helmet"
+  }
+}

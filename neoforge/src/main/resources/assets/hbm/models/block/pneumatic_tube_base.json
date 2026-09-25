@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "base": "hbm:block/pneumatic_tube",
+    "connector": "hbm:block/pneumatic_tube_connector",
+    "in": "hbm:block/pneumatic_tube_in",
+    "out": "hbm:block/pneumatic_tube_out",
+    "particle": "hbm:block/pneumatic_tube",
+    "straight": "hbm:block/pneumatic_tube_straight"
+  }
+}

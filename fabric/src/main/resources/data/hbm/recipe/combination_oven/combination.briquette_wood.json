@@ -1,0 +1,18 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "ingredient": "hbm:briquette_wood"
+    }
+  ],
+  "order": 16,
+  "output_fluids": [
+    {
+      "type": "hbm:woodoil",
+      "amount": 500
+    }
+  ],
+  "output_items": [
+    "minecraft:charcoal"
+  ]
+}

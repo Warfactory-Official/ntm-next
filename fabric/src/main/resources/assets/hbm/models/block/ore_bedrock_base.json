@@ -1,0 +1,18 @@
+{
+  "ambientocclusion": true,
+  "gui_light": "side",
+  "textures": {
+    "all": "minecraft:block/bedrock",
+    "overlay0": "hbm:block/ore_random_1",
+    "overlay1": "hbm:block/ore_random_2",
+    "overlay2": "hbm:block/ore_random_3",
+    "overlay3": "hbm:block/ore_random_4",
+    "overlay4": "hbm:block/ore_random_5",
+    "overlay5": "hbm:block/ore_random_6",
+    "overlay6": "hbm:block/ore_random_7",
+    "overlay7": "hbm:block/ore_random_8",
+    "overlay8": "hbm:block/ore_random_9",
+    "overlay9": "hbm:block/ore_random_10",
+    "particle": "minecraft:block/bedrock"
+  }
+}

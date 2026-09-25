@@ -1,0 +1,24 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:rbmk_fuel_rod"
+    }
+  ],
+  "order": 247,
+  "output_items": [
+    "hbm:rbmk_blank",
+    {
+      "count": 2,
+      "id": "hbm:shell_steel"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 4
+}

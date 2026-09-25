@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "hbm:meteorite_sword_seared"
+    },
+    {
+      "ingredient": "hbm:ingot_meteorite_forged"
+    }
+  ],
+  "kind": "hot",
+  "order": 30,
+  "output_items": [
+    "hbm:meteorite_sword_reforged"
+  ],
+  "tier": 3
+}

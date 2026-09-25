@@ -1,0 +1,22 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:machine_turbine"
+    }
+  ],
+  "order": 252,
+  "output_items": [
+    "hbm:turbine_titanium",
+    {
+      "count": 2,
+      "id": "hbm:coil_copper"
+    },
+    {
+      "count": 4,
+      "id": "hbm:ingot_steel"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 3
+}

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:blueprint_folder",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:blueprint_folder_discover",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:blueprint_folder",
+          "weight": 1
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/blueprints"
+}

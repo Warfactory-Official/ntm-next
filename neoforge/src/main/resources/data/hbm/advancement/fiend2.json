@@ -1,0 +1,43 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:equipment": {
+                "chest": {
+                  "items": "hbm:jackt2"
+                },
+                "mainhand": {
+                  "items": "hbm:shimmer_axe"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.fiend2.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:shimmer_axe"
+    },
+    "title": {
+      "translate": "achievement.fiend2"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

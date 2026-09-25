@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": "hbm:powder_fire",
+    "S": "#c:plates/steel",
+    "U": "hbm:upgrade_template"
+  },
+  "pattern": [
+    "SPS",
+    "PUP",
+    "SPS"
+  ],
+  "result": {
+    "id": "hbm:upgrade_nullifier"
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -0.0,
+        -85.0,
+        25.00001
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        -0.73093736,
+        8.306079,
+        -7.494125
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -0.0,
+        -85.0,
+        25.00001
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        -0.20745951,
+        11.106833,
+        -1.5107472
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        -0.1875,
+        24.065,
+        0.6875
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.09375,
+        0.09375,
+        0.09375
+      ],
+      "translation": [
+        0.09375,
+        9.3125,
+        -0.09375
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30.0,
+        -45.000008,
+        -0.0
+      ],
+      "scale": [
+        0.050781254,
+        0.05078125,
+        0.05078125
+      ],
+      "translation": [
+        -0.07181555,
+        0.99725986,
+        -6.2695312
+      ]
+    },
+    "head": {
+      "rotation": [
+        -148.67021,
+        -35.63104,
+        19.52547
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "translation": [
+        -4.145882,
+        -50.827324,
+        -4.4741507
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.375,
+        53.25,
+        -0.375
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        141.87373,
+        -71.3061,
+        127.868614
+      ],
+      "scale": [
+        0.0703125,
+        0.0703125,
+        0.07031249
+      ],
+      "translation": [
+        -3.3020093,
+        10.492575,
+        1.4635333
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        141.87373,
+        -71.3061,
+        127.868614
+      ],
+      "scale": [
+        0.0703125,
+        0.0703125,
+        0.07031249
+      ],
+      "translation": [
+        -3.584018,
+        10.117033,
+        2.8177643
+      ]
+    }
+  },
+  "groups": [
+    {
+      "parts": [
+        "Pad"
+      ],
+      "texture": "pad"
+    },
+    {
+      "parts": [
+        "Atlas_Pad",
+        "Atlas_Erector",
+        "Atlas_Pivot"
+      ],
+      "texture": "erector_atlas"
+    }
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "V2_Erector",
+    "V2_Pivot",
+    "V2_Rope",
+    "V2_Pad",
+    "Micro_Pad",
+    "Micro_Erector",
+    "Micro_Pivot",
+    "Micro_Rope",
+    "Strong_Erector",
+    "Strong_Pivot",
+    "Strong_Rope",
+    "Strong_Pad",
+    "Huge_Pad",
+    "Huge_Erector",
+    "Huge_Pivot",
+    "Huge_Rope",
+    "Atlas_Rope",
+    "ABM_Pad",
+    "ABM_Erector",
+    "ABM_Rope",
+    "ABM_Pivot"
+  ],
+  "model": "hbm:models/weapons/launch_pad_erector.obj",
+  "offset_x": 0.0625,
+  "offset_y": -8.375,
+  "offset_z": -0.0625,
+  "textures": {
+    "erector_atlas": "hbm:block/models/launchpad/erector_atlas",
+    "pad": "hbm:block/models/launchpad/pad",
+    "particle": "hbm:block/models/launchpad/pad"
+  }
+}

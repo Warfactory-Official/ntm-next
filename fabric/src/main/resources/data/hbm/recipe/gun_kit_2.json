@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "fabric:type": "fabric:components",
+      "base": "hbm:gun_kit_1",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    {
+      "fabric:type": "fabric:components",
+      "base": "hbm:wrench",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "hbm:ducttape",
+    {
+      "fabric:type": "hbm:fluid_content",
+      "amount": 1000,
+      "fluid": "hbm:lubricant"
+    }
+  ],
+  "result": {
+    "id": "hbm:gun_kit_2"
+  }
+}

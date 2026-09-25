@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:titanium_helmet",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "C": "hbm:circuit_basic",
+    "F": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:gas_mask_filter",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "I": "#hbm:ingots/any_plastic",
+    "P": "hbm:plate_armor_hev"
+  },
+  "pattern": [
+    "PPC",
+    "PBP",
+    "IFI"
+  ],
+  "result": {
+    "id": "hbm:hev_helmet"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/copper"
+    }
+  ],
+  "order": 7,
+  "output_items": [
+    "hbm:ingot_red_copper"
+  ]
+}

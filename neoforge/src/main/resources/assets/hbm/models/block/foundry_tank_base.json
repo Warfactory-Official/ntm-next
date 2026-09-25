@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "bottom": "hbm:block/foundry_tank_bottom",
+    "inner": "hbm:block/foundry_tank_inner",
+    "particle": "hbm:block/foundry_tank_side",
+    "side": "hbm:block/foundry_tank_side",
+    "side_outlet": "hbm:block/foundry_tank_side_outlet",
+    "top": "hbm:block/foundry_tank_top",
+    "upper": "hbm:block/foundry_tank_upper",
+    "upper_outlet": "hbm:block/foundry_tank_upper_outlet"
+  }
+}

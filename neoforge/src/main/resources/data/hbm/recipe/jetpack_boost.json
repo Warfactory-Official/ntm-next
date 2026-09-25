@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#hbm:plates_cast/copper",
+    "C": "hbm:circuit_advanced",
+    "D": "#c:ingots/workers_alloy",
+    "J": "hbm:jetpack_vector",
+    "P": "#c:plates/saturnite"
+  },
+  "pattern": [
+    "PCP",
+    "DJD",
+    "PAP"
+  ],
+  "result": {
+    "id": "hbm:jetpack_boost"
+  }
+}

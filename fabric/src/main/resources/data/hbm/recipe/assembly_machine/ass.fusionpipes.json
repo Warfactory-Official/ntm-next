@@ -1,0 +1,38 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.tcalloy"
+  ],
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:pipes/copper"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 261,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:fusion_component_motor"
+    }
+  ],
+  "power": 100
+}

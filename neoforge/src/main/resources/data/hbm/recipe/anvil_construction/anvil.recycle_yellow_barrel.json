@@ -1,0 +1,22 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:yellow_barrel"
+    }
+  ],
+  "order": 253,
+  "output_items": [
+    "hbm:tank_steel",
+    {
+      "count": 2,
+      "id": "hbm:plate_lead"
+    },
+    {
+      "count": 10,
+      "id": "hbm:nuclear_waste"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 3
+}

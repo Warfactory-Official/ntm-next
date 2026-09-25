@@ -1,0 +1,17 @@
+{
+  "type": "hbm:particle_accelerator",
+  "input_items": [
+    {
+      "ingredient": "minecraft:chicken"
+    },
+    {
+      "ingredient": "minecraft:chicken"
+    }
+  ],
+  "momentum": 100,
+  "order": 10,
+  "output_items": [
+    "hbm:nugget",
+    "hbm:nugget"
+  ]
+}

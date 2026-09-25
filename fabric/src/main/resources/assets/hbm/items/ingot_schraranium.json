@@ -1,0 +1,19 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/ingot_nikonium"
+        },
+        "when": "true"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:item/ingot_schraranium"
+    },
+    "property": "hbm:full_schrab"
+  }
+}

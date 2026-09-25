@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_pcb",
+    "G": "#c:glass_panes",
+    "I": "hbm:plate_polymer",
+    "P": "#hbm:billets/silicon"
+  },
+  "pattern": [
+    " G ",
+    "IPI",
+    " C "
+  ],
+  "result": {
+    "id": "hbm:photo_panel"
+  }
+}

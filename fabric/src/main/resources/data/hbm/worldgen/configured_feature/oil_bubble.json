@@ -1,0 +1,15 @@
+{
+  "type": "hbm:oil_bubble",
+  "config": {
+    "core": {
+      "Name": "hbm:ore_oil"
+    },
+    "fuzzy": false,
+    "max_size": 16,
+    "min_size": 8,
+    "replaceable": {
+      "predicate_type": "minecraft:tag_match",
+      "tag": "minecraft:stone_ore_replaceables"
+    }
+  }
+}

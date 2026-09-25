@@ -1,0 +1,41 @@
+{
+  "ambientocclusion": false,
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#wall"
+        },
+        "east": {
+          "texture": "#wall"
+        },
+        "north": {
+          "texture": "#wall"
+        },
+        "south": {
+          "texture": "#wall"
+        },
+        "up": {
+          "texture": "#wall"
+        },
+        "west": {
+          "texture": "#wall"
+        }
+      },
+      "from": [
+        0,
+        0,
+        14
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "hbm:block/steel_wall",
+    "wall": "hbm:block/steel_wall"
+  }
+}

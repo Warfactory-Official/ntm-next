@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:glass_boron"
+  ],
+  "ctm_textures": {
+    "hbm:block/glass_boron": "hbm:block/ctm_lib/glass_boron"
+  },
+  "variants": {
+    "": {
+      "model": "hbm:block/glass_boron"
+    }
+  }
+}

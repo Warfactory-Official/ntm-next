@@ -1,0 +1,24 @@
+{
+  "type": "hbm:electrolyser_metal",
+  "duration": 600,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_rare"
+    }
+  ],
+  "order": 13,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:powder_desh_mix"
+    }
+  ],
+  "output_material": {
+    "amount": 48,
+    "material": "zirconium"
+  },
+  "output_material_2": {
+    "amount": 16,
+    "material": "boron"
+  }
+}

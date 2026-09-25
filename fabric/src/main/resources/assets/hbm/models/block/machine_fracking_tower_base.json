@@ -1,0 +1,9 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "textures": {
+    "all": "hbm:block/models/machines/fracking_tower",
+    "particle": "hbm:block/models/machines/fracking_tower",
+    "pipe": "hbm:block/fluid_pipe_silver"
+  }
+}

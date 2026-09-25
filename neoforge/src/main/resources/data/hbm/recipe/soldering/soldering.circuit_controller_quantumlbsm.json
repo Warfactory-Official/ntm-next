@@ -1,0 +1,54 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528"
+    },
+    {
+      "type": "hbm:flag",
+      "name": "lbsm_simple_crafting"
+    }
+  ],
+  "type": "hbm:soldering",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:perfluoromethyl_cold",
+      "amount": 6000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_chip_quantum"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_chip_bismoid"
+    },
+    {
+      "ingredient": "hbm:circuit_atomic_clock"
+    }
+  ],
+  "name": "soldering.circuit_controller_quantumLbsm",
+  "order": 14,
+  "output_items": [
+    "hbm:circuit_controller_quantum"
+  ],
+  "pcb": [
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_controller_advanced"
+    },
+    {
+      "ingredient": "hbm:upgrade_speed_3"
+    }
+  ],
+  "power": 250000,
+  "solder": [
+    {
+      "count": 32,
+      "ingredient": "#c:fine_wires/lead"
+    }
+  ]
+}

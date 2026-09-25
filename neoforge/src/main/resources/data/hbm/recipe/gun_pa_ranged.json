@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_basic",
+    "P": "#hbm:ingots/any_plastic",
+    "W": "#hbm:wires_dense/gold"
+  },
+  "pattern": [
+    "C",
+    "W",
+    "P"
+  ],
+  "result": {
+    "id": "hbm:gun_pa_ranged"
+  }
+}

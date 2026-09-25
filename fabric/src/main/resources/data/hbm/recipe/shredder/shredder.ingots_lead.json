@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/lead"
+    }
+  ],
+  "order": 276,
+  "output_items": [
+    "hbm:powder_lead"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "buff_mob_threshold": 15,
+  "disable_asbestos": false,
+  "disable_blinding": false,
+  "disable_coal": false,
+  "disable_cold": false,
+  "disable_explosive": false,
+  "disable_hot": false,
+  "disable_hydro": false,
+  "disable_toxic": false,
+  "enable_lead_from_blocks": true,
+  "enable_lead_poisoning": true,
+  "enable_poison": true,
+  "enable_pollution": true,
+  "enable_soot_fog": true,
+  "pollution_mult": 1,
+  "soot_fog_divisor": 120,
+  "soot_fog_threshold": 35
+}

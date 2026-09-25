@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "hbm:block/teleporter_bottom",
+    "side": "hbm:block/teleporter_side",
+    "top": "hbm:block/teleporter_top"
+  }
+}

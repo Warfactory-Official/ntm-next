@@ -1,0 +1,61 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "predicates": {
+                      "minecraft:enchantments": [
+                        {
+                          "enchantments": "minecraft:silk_touch",
+                          "levels": {
+                            "min": 1
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ],
+              "name": "hbm:mush_block"
+            },
+            {
+              "type": "minecraft:item",
+              "functions": [
+                {
+                  "count": {
+                    "type": "minecraft:uniform",
+                    "max": 2,
+                    "min": -7
+                  },
+                  "function": "minecraft:set_count"
+                },
+                {
+                  "function": "minecraft:limit_count",
+                  "limit": {
+                    "min": 0
+                  }
+                },
+                {
+                  "function": "minecraft:explosion_decay"
+                }
+              ],
+              "name": "hbm:mush"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:blocks/mush_block"
+}

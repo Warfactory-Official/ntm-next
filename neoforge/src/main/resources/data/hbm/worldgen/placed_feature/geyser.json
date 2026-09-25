@@ -1,0 +1,18 @@
+{
+  "feature": "hbm:geyser",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 3000
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "hbm:light_blocking_height"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "hbm:breeder",
+  "flux": 100,
+  "input_items": [
+    {
+      "ingredient": "hbm:rod_co"
+    }
+  ],
+  "order": 3,
+  "output_items": [
+    "hbm:rod_co60"
+  ]
+}

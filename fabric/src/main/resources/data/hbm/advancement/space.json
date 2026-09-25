@@ -1,0 +1,30 @@
+{
+  "parent": "hbm:desh",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "item": {
+          "items": "hbm:flame_pony"
+        }
+      },
+      "trigger": "hbm:orbit"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.space.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:missile_soyuz_0"
+    },
+    "title": {
+      "translate": "achievement.space"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

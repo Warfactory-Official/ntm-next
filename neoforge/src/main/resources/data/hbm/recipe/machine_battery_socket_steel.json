@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": "#c:plates/steel",
+    "R": "#c:ingots/mingrade"
+  },
+  "pattern": [
+    "PRP"
+  ],
+  "result": {
+    "id": "hbm:machine_battery_socket"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/tc_alloy"
+    }
+  ],
+  "order": 3,
+  "output_items": [
+    "hbm:ingot_combine_steel"
+  ]
+}

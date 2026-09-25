@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:asphalt_light"
+  ],
+  "result": {
+    "id": "hbm:asphalt"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/network/pylon_medium.obj",
+  "skins": {
+    "all": [
+      "Transformer",
+      "Pylon"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/network/pylon_medium_steel",
+    "particle": "hbm:block/models/network/pylon_medium_steel"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:pipes/copper"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:plate_polymer"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:coil_tungsten"
+    },
+    {
+      "ingredient": "hbm:circuit_analog"
+    }
+  ],
+  "order": 87,
+  "output_items": [
+    "hbm:machine_chemical_plant"
+  ],
+  "power": 100
+}

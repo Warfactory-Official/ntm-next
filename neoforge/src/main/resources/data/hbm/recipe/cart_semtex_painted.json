@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "hbm:cart_base": "painted"
+      },
+      "items": "hbm:cart_empty"
+    },
+    "S": "hbm:semtex"
+  },
+  "pattern": [
+    "S",
+    "C"
+  ],
+  "result": {
+    "components": {
+      "hbm:cart_base": "painted"
+    },
+    "id": "hbm:cart_semtex"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:definitelyfood",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:canned_beef",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:canned_tube",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:twinkie",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:chocolate",
+          "weight": 10
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/snacks"
+}

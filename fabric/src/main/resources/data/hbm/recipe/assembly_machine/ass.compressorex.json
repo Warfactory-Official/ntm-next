@@ -1,0 +1,34 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:circuit_analog"
+    }
+  ],
+  "name": "ass.compressorEx",
+  "order": 137,
+  "output_items": [
+    "hbm:machine_compressor"
+  ],
+  "power": 100
+}

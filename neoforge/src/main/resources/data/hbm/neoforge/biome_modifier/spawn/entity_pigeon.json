@@ -1,0 +1,16 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:or",
+    "values": [
+      "#c:is_plains",
+      "#c:is_savanna"
+    ]
+  },
+  "spawners": {
+    "type": "hbm:entity_pigeon",
+    "maxCount": 10,
+    "minCount": 5,
+    "weight": 1
+  }
+}

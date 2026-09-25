@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/schrabidium"
+    }
+  ],
+  "order": 23,
+  "output_items": [
+    "hbm:plate_schrabidium"
+  ],
+  "stamp": "plate"
+}

@@ -1,0 +1,19 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:estradiol",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:oil_tar_paraffin"
+    }
+  ],
+  "order": 252,
+  "output_items": [
+    "hbm:pill_red"
+  ]
+}

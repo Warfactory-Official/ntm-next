@@ -1,0 +1,54 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_chemthrower_base",
+    "draws": [
+      {
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          -1.0,
+          0.0,
+          -0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "Hose",
+          "Nozzle",
+          "Gauge"
+        ]
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -10.0,
+      5.0,
+      -0.0,
+      -10.0,
+      0.0,
+      5.0,
+      10.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/chemthrower.obj",
+    "texture": "hbm:textures/models/weapons/chemthrower.png"
+  }
+}

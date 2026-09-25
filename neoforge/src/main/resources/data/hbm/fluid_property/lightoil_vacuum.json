@@ -1,0 +1,33 @@
+{
+  "type": "liquid",
+  "color": "#8c8851",
+  "containers": {
+    "canister": {
+      "color": "#b46b52"
+    }
+  },
+  "nfpa": {
+    "flame": 2,
+    "health": 1,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "combustible": {
+      "energy": 4500000,
+      "grade": "MEDIUM"
+    },
+    "flammable": {
+      "energy": 3000000
+    },
+    "polluting": {
+      "burn": {
+        "SOOT": 0.001
+      },
+      "release": {
+        "POISON": 5.0E-5
+      }
+    }
+  }
+}

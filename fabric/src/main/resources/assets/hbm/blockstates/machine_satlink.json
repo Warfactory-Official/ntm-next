@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_satlink_east"
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_satlink_north"
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_satlink_south"
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_satlink_west"
+    }
+  }
+}

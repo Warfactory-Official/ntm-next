@@ -1,0 +1,45 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.bmg"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:battery_pack_battery_lead"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "count": 3,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "#hbm:gun_mechanisms/weapon_steel"
+    },
+    {
+      "ingredient": "hbm:crate_steel"
+    },
+    {
+      "ingredient": "hbm:crt_display"
+    }
+  ],
+  "order": 327,
+  "output_items": [
+    "hbm:turret_jeremy"
+  ],
+  "power": 100
+}

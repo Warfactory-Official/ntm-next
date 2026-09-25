@@ -1,0 +1,61 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_stg77_base",
+    "equipped_muzzles": [
+      {
+        "duration": 0,
+        "kind": "gap",
+        "length": 0.0,
+        "matrix": [
+          -0.0,
+          -0.021788934,
+          0.24904868,
+          0.0,
+          0.0,
+          0.24904868,
+          0.021788934,
+          0.0,
+          -0.25,
+          0.0,
+          0.0,
+          7.5,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 10
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -7.5,
+      0.0,
+      -0.0,
+      -7.5,
+      0.0,
+      0.0,
+      7.5,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/stg77.obj",
+    "parts": [
+      "Gun",
+      "Barrel",
+      "Lever",
+      "Magazine",
+      "Safety",
+      "Handle",
+      "Breech"
+    ],
+    "texture": "hbm:textures/models/weapons/stg77.png"
+  }
+}

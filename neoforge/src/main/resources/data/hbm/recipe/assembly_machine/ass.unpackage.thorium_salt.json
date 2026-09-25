@@ -1,0 +1,37 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 40,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:thorium_salt",
+        "amount": 32000
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -8759998
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "input_items": [
+    {
+      "ingredient": "hbm:fluid_pack",
+      "predicates": {
+        "hbm:fluid_content": "hbm:thorium_salt"
+      }
+    }
+  ],
+  "order": 484,
+  "output_fluids": [
+    {
+      "type": "hbm:thorium_salt",
+      "amount": 32000
+    }
+  ],
+  "output_items": [
+    "hbm:fluid_pack"
+  ],
+  "power": 100
+}

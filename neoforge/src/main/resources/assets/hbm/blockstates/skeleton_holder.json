@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=2": {
+      "model": "hbm:block/skeleton_holder",
+      "y": 180
+    },
+    "facing=3": {
+      "model": "hbm:block/skeleton_holder"
+    },
+    "facing=4": {
+      "model": "hbm:block/skeleton_holder",
+      "y": 90
+    },
+    "facing=5": {
+      "model": "hbm:block/skeleton_holder",
+      "y": 270
+    }
+  }
+}

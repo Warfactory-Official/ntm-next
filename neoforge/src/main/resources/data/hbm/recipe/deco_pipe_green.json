@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:dyes/green",
+    "P": "hbm:deco_pipe"
+  },
+  "pattern": [
+    "PPP",
+    "PCP",
+    "PPP"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:deco_pipe_green"
+  }
+}

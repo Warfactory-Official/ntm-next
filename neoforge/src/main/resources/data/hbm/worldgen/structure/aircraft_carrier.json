@@ -1,0 +1,9 @@
+{
+  "type": "hbm:single_piece",
+  "biomes": "#c:is_ocean",
+  "height_offset": -6,
+  "max_height": 42,
+  "spawn_overrides": {},
+  "start_pool": "hbm:single/aircraft_carrier",
+  "step": "strongholds"
+}

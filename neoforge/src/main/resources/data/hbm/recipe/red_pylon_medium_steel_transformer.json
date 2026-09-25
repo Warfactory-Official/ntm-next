@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:red_pylon_medium_steel",
+    "hbm:plate_polymer",
+    "hbm:coil_copper"
+  ],
+  "result": {
+    "id": "hbm:red_pylon_medium_steel_transformer"
+  }
+}

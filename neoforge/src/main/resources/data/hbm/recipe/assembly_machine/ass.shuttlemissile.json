@@ -1,0 +1,48 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:missile_generic"
+    },
+    {
+      "ingredient": "hbm:missile_strong"
+    },
+    {
+      "count": 5,
+      "ingredient": "#c:dyes/orange"
+    },
+    {
+      "count": 24,
+      "ingredient": "hbm:canister",
+      "predicates": {
+        "hbm:fluid_content": "hbm:gasoline_leaded"
+      }
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:ingots/fiberglass"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:circuit_basic"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_plasticexplosive"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:glass_panes"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/steel"
+    }
+  ],
+  "order": 361,
+  "output_items": [
+    "hbm:missile_shuttle"
+  ],
+  "power": 100
+}

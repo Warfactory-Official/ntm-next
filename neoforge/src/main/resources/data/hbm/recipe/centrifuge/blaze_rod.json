@@ -1,0 +1,17 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "minecraft:blaze_rod"
+    }
+  ],
+  "order": 132,
+  "output_items": [
+    "minecraft:blaze_powder",
+    "minecraft:blaze_powder",
+    "hbm:powder_fire",
+    "hbm:powder_fire"
+  ],
+  "power": 200
+}

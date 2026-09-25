@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/weapon_steel",
+    "M": "#hbm:gun_mechanisms/gun_metal",
+    "P": "#c:ingots/rubber"
+  },
+  "pattern": [
+    " IP",
+    "IIM",
+    " IP"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_special_drill_weaponsteel"
+  }
+}

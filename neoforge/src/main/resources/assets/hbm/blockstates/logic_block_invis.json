@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "hbm:block/logic_block_invis"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:barbed_wire",
+    "C": "hbm:powder_yellowcake",
+    "I": "hbm:nuclear_waste"
+  },
+  "pattern": [
+    "BCB",
+    "CIC",
+    "BCB"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:barbed_wire_ultradeath"
+  }
+}

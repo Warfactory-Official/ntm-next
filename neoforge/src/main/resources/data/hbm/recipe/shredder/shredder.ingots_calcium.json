@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/calcium"
+    }
+  ],
+  "order": 379,
+  "output_items": [
+    "hbm:powder_calcium"
+  ]
+}

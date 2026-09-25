@@ -1,0 +1,27 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/lead"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/beryllium"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/dura_steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/asbestos"
+    }
+  ],
+  "order": 39,
+  "output_items": [
+    "hbm:reactor_core"
+  ],
+  "power": 100
+}

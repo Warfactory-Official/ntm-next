@@ -1,0 +1,40 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": "hbm:nuclear_waste_long_depleted_thorium"
+    }
+  ],
+  "laser_strength": "ir",
+  "order": 285,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_lead"
+        },
+        "weight": 35
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_bismuth"
+        },
+        "weight": 40
+      },
+      {
+        "data": {
+          "id": "hbm:dust_tiny"
+        },
+        "weight": 15
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_tiny"
+        },
+        "weight": 10
+      }
+    ]
+  ]
+}

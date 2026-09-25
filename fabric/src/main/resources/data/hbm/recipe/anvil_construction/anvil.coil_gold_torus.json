@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:coil_gold"
+    }
+  ],
+  "order": 53,
+  "output_items": [
+    "hbm:coil_gold_torus"
+  ],
+  "overlay": "construction",
+  "tier": 1
+}

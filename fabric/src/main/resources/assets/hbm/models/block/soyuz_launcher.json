@@ -1,0 +1,47 @@
+{
+  "fabric:type": "hbm:obj",
+  "double_sided": [
+    "Cube.003_Cube.009",
+    "Cube_Cube.001",
+    "Cube.007_Cube",
+    "Plane"
+  ],
+  "groups": [
+    {
+      "parts": [
+        "Cube.003_Cube.009"
+      ],
+      "texture": "launcher_leg"
+    },
+    {
+      "model": "hbm:models/launch_table/soyuz_launcher_table.obj",
+      "parts": [
+        "Cube_Cube.001"
+      ],
+      "texture": "launcher_table"
+    },
+    {
+      "model": "hbm:models/launch_table/soyuz_launcher_tower_base.obj",
+      "parts": [
+        "Cube.007_Cube"
+      ],
+      "texture": "launcher_tower_base"
+    },
+    {
+      "model": "hbm:models/launch_table/soyuz_launcher_support_base.obj",
+      "parts": [
+        "Plane"
+      ],
+      "texture": "launcher_support_base"
+    }
+  ],
+  "model": "hbm:models/launch_table/soyuz_launcher_legs.obj",
+  "offset_y": -4.0,
+  "textures": {
+    "launcher_leg": "hbm:models/soyuz_launcher/launcher_leg",
+    "launcher_support_base": "hbm:models/soyuz_launcher/launcher_support_base",
+    "launcher_table": "hbm:models/soyuz_launcher/launcher_table",
+    "launcher_tower_base": "hbm:models/soyuz_launcher/launcher_tower_base",
+    "particle": "hbm:block/soyuz_launcher"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "hbm:egg_balefire_shard"
+    },
+    "B": {
+      "ingredient": "hbm:assembly_nuke"
+    }
+  },
+  "order": 86,
+  "output_items": [
+    "hbm:ammo_standard_nuke_balefire"
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    "   "
+  ]
+}

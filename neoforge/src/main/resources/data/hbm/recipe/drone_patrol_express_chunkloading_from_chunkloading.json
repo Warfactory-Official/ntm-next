@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "hbm:drone_patrol_chunkloading",
+    "K": {
+      "neoforge:ingredient_type": "hbm:fluid_content",
+      "amount": 1000,
+      "fluid": "hbm:kerosene"
+    },
+    "P": "#hbm:plates_welded/titanium"
+  },
+  "pattern": [
+    " P ",
+    "KDK",
+    " P "
+  ],
+  "result": {
+    "id": "hbm:drone_patrol_express_chunkloading"
+  }
+}

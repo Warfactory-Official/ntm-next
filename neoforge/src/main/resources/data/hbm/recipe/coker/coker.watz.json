@@ -1,0 +1,16 @@
+{
+  "type": "hbm:coker",
+  "input_fluids": [
+    {
+      "type": "hbm:watz_mud",
+      "amount": 4000
+    }
+  ],
+  "order": 30,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:ingot_mud"
+    }
+  ]
+}

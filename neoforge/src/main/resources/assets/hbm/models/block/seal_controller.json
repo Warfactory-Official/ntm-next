@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "hbm:block/seal_frame",
+    "east": "hbm:block/seal_frame",
+    "north": "hbm:block/seal_controller",
+    "particle": "hbm:block/seal_frame",
+    "south": "hbm:block/seal_frame",
+    "up": "hbm:block/seal_frame",
+    "west": "hbm:block/seal_frame"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "type": "hbm:plasma_forge",
+  "duration": 6000,
+  "ignition_temp": 25000000,
+  "input_items": [
+    {
+      "count": 35,
+      "ingredient": "#c:storage_blocks/schrabidium"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:billet_yharonite"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:billet_yharonite"
+    },
+    {
+      "ingredient": "hbm:coin_ufo"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:fragment_meteorite"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:fragment_meteorite"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:fragment_meteorite"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:fragment_meteorite"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:fragment_meteorite"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:fragment_meteorite"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:fragment_meteorite"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:fragment_meteorite"
+    }
+  ],
+  "order": 37,
+  "output_items": [
+    "hbm:schrabidium_hammer"
+  ],
+  "power": 10000000
+}

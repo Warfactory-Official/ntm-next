@@ -1,0 +1,45 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/dura_steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/boron"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 168,
+  "output_items": [
+    "hbm:machine_assembly_factory"
+  ],
+  "power": 100
+}

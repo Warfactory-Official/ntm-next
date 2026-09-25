@@ -1,0 +1,25 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:helium4",
+      "amount": 8000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#c:dusts/schrabidium"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_cast/any_bismoid_bronze"
+    }
+  ],
+  "order": 32,
+  "output_items": [
+    "hbm:battery_pack_battery_schrabidium"
+  ],
+  "power": 25000
+}

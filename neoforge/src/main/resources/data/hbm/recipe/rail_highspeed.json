@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:plates/iron",
+    "S": "#c:ingots/steel"
+  },
+  "pattern": [
+    "S S",
+    "SIS",
+    "S S"
+  ],
+  "result": {
+    "count": 16,
+    "id": "hbm:rail_highspeed"
+  }
+}

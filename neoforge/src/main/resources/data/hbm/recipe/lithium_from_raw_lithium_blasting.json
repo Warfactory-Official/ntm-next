@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 10.0,
+  "ingredient": "hbm:raw_lithium",
+  "result": {
+    "id": "hbm:lithium"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:plates/copper",
+    "D": "#c:ingots/workers_alloy",
+    "X": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:steel_boots"
+    }
+  },
+  "pattern": [
+    "C C",
+    "DXD"
+  ],
+  "result": {
+    "id": "hbm:steamsuit_boots"
+  }
+}

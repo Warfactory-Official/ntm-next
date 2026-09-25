@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:bolts/tungsten",
+    "I": "#c:ingots/tungsten",
+    "P": "#hbm:ingots/any_rubber"
+  },
+  "pattern": [
+    "BIB",
+    "P P",
+    "B B"
+  ],
+  "result": {
+    "id": "hbm:reacher"
+  }
+}

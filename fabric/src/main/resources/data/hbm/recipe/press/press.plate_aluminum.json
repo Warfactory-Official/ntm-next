@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/aluminum"
+    }
+  ],
+  "order": 14,
+  "output_items": [
+    "hbm:plate_aluminium"
+  ],
+  "stamp": "plate"
+}

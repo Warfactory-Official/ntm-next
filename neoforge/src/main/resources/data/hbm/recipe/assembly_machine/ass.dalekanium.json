@@ -1,0 +1,14 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:block_meteor"
+    }
+  ],
+  "order": 14,
+  "output_items": [
+    "hbm:plate_dalekanium"
+  ],
+  "power": 100
+}

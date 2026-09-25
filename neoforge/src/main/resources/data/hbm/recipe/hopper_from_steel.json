@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": "#c:ingots/steel"
+  },
+  "pattern": [
+    "S S",
+    "S S",
+    " S "
+  ],
+  "result": {
+    "id": "minecraft:hopper"
+  }
+}

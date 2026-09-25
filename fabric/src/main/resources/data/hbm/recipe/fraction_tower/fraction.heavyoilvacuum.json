@@ -1,0 +1,20 @@
+{
+  "type": "hbm:fraction_tower",
+  "input_fluids": [
+    {
+      "type": "hbm:heavyoil_vacuum",
+      "amount": 100
+    }
+  ],
+  "order": 1,
+  "output_fluids": [
+    {
+      "type": "hbm:smear",
+      "amount": 40
+    },
+    {
+      "type": "hbm:heatingoil_vacuum",
+      "amount": 60
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 2000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_cement"
+    },
+    {
+      "count": 8,
+      "ingredient": "minecraft:gravel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#minecraft:sand"
+    }
+  ],
+  "order": 23,
+  "output_items": [
+    {
+      "count": 16,
+      "id": "hbm:concrete_smooth"
+    }
+  ],
+  "power": 100
+}

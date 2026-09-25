@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:wheat",
+    {
+      "fabric:type": "fabric:components",
+      "base": "hbm:marshmallow",
+      "components": {
+        "hbm:roasted": true
+      }
+    },
+    "minecraft:cocoa_beans"
+  ],
+  "result": {
+    "id": "hbm:ingot_smore"
+  }
+}

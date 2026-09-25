@@ -1,0 +1,18 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:gear_large"
+    }
+  ],
+  "order": 221,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:plate_iron"
+    },
+    "minecraft:copper_ingot"
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

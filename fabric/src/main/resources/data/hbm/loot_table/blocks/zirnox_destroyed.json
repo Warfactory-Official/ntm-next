@@ -1,0 +1,70 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 6,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:concrete_smooth"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 6,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:debris_metal"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 2,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:debris_graphite"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 4,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:falloutitem"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:blocks/zirnox_destroyed"
+}

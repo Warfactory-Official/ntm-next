@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/copper"
+    }
+  ],
+  "order": 6,
+  "output_items": [
+    "hbm:plate_copper"
+  ],
+  "overlay": "smithing",
+  "tier": 3
+}

@@ -1,0 +1,31 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "minecraft:stone_bricks"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/lead"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_vacuum_tube"
+    }
+  ],
+  "order": 61,
+  "output_items": [
+    "hbm:pump_electric"
+  ],
+  "overlay": "construction",
+  "tier": 3
+}

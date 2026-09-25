@@ -1,0 +1,33 @@
+{
+  "type": "liquid",
+  "color": "#68a09a",
+  "containers": {
+    "gastank": {
+      "bottle_color": "#68a09a",
+      "label_color": "#edcf27"
+    }
+  },
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 4,
+    "health": 1,
+    "react": 1
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "flammable": {
+      "energy": 458000
+    },
+    "polluting": {
+      "burn": {
+        "SOOT": 2.0E-4
+      },
+      "release": {
+        "POISON": 5.0E-5
+      }
+    }
+  }
+}

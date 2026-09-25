@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/entity_mob_nuclear_creeper_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 2113841
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 7720448
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "net/minecraft/client/multiplayer/ClientLevel": ["com/hbm/interfaces/injected/IClientLevelExtension"],
+  "net/minecraft/server/level/ServerLevel": ["com/hbm/interfaces/injected/IServerLevelExtension"],
+  "net/minecraft/world/level/chunk/ChunkAccess": ["com/hbm/interfaces/injected/IChunkExtension"],
+  "net/minecraft/world/level/chunk/storage/SerializableChunkData": ["com/hbm/interfaces/injected/IChunkExtension"],
+  "net/minecraft/world/entity/player/Player": ["com/hbm/interfaces/injected/PlayerAppearance"],
+  "net/minecraft/client/renderer/entity/state/AvatarRenderState": ["com/hbm/interfaces/injected/PlayerAppearance"],
+  "net/minecraft/world/level/block/piston/PistonMovingBlockEntity": ["com/hbm/interfaces/injected/MovedBlockEntityData"],
+  "net/minecraft/client/resources/model/geometry/BakedQuad$MaterialInfo": ["com/hbm/interfaces/injected/IQuadLightOrigin"]
+}

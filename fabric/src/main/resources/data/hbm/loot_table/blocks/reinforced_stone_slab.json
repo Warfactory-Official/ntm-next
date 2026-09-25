@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "conditions": [
+                {
+                  "block": "hbm:reinforced_stone_slab",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "type": "double"
+                  }
+                }
+              ],
+              "count": 2,
+              "function": "minecraft:set_count"
+            },
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ],
+          "name": "hbm:reinforced_stone_slab"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:blocks/reinforced_stone_slab"
+}

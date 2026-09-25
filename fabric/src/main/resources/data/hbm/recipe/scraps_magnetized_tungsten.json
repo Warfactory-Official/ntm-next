@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/tungsten",
+    "#c:nuggets/schrabidium"
+  ],
+  "result": {
+    "components": {
+      "hbm:scrap": {
+        "amount": 72,
+        "material": 38
+      }
+    },
+    "id": "hbm:scraps"
+  }
+}

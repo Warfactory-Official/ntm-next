@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:obsidian"
+    }
+  ],
+  "order": 21,
+  "output_items": [
+    "hbm:gravel_obsidian"
+  ]
+}

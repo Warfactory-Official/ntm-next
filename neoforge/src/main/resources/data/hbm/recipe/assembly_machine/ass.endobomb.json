@@ -1,0 +1,26 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:powder_ice"
+    },
+    {
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:coil_gold"
+    }
+  ],
+  "order": 303,
+  "output_items": [
+    "hbm:therm_endo"
+  ],
+  "power": 100
+}

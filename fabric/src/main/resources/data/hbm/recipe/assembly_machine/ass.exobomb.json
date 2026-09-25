@@ -1,0 +1,26 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:dusts/red_phosphorus"
+    },
+    {
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:coil_gold"
+    }
+  ],
+  "order": 304,
+  "output_items": [
+    "hbm:therm_exo"
+  ],
+  "power": 100
+}

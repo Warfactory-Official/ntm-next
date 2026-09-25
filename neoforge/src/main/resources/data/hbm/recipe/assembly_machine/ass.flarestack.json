@@ -1,0 +1,36 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.plastic"
+  ],
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:thermo_element"
+    }
+  ],
+  "order": 114,
+  "output_items": [
+    "hbm:machine_flare"
+  ],
+  "power": 100
+}

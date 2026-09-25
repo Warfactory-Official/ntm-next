@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#c:plates/aluminum",
+    "P": "#c:plates/steel",
+    "S": "hbm:steel_scaffold"
+  },
+  "pattern": [
+    "A A",
+    "PSP",
+    "PSP"
+  ],
+  "result": {
+    "id": "hbm:mp_stability_15_thin"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 72,
+      "material": "iron"
+    },
+    {
+      "amount": 12,
+      "material": "redstone"
+    }
+  ],
+  "targets": "minecraft:detector_rail"
+}

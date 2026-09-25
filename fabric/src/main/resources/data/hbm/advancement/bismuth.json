@@ -1,0 +1,36 @@
+{
+  "parent": "hbm:rbmk",
+  "criteria": {
+    "crafted_hbm_nugget_bismuth_from_ingot": {
+      "conditions": {
+        "recipe_id": "hbm:nugget_bismuth_from_ingot"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": "hbm:nugget_bismuth"
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.bismuth.desc"
+    },
+    "icon": {
+      "id": "hbm:ingot_bismuth"
+    },
+    "title": {
+      "translate": "achievement.bismuth"
+    }
+  },
+  "requirements": [
+    [
+      "crafted_hbm_nugget_bismuth_from_ingot",
+      "produced"
+    ]
+  ]
+}

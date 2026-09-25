@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:crate_tungsten"
+    }
+  ],
+  "order": 137,
+  "output_items": [
+    {
+      "count": 36,
+      "id": "hbm:powder_tungsten"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "type": "hbm:fusion",
+  "blue": 1.0,
+  "custom_localization": true,
+  "duration": 100,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:helium3",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:gas_tank"
+  },
+  "ignition_temp": 500000,
+  "input_fluids": [
+    {
+      "type": "hbm:helium3",
+      "amount": 20
+    }
+  ],
+  "order": 4,
+  "output_fluids": [
+    {
+      "type": "hbm:helium4",
+      "amount": 1000
+    }
+  ],
+  "output_temp": 3750000,
+  "power": 25000,
+  "red": 0.2
+}

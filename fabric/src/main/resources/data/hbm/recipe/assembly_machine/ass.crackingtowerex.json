@@ -1,0 +1,37 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.plastic"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/niobium"
+    }
+  ],
+  "name": "ass.crackingtowerEx",
+  "order": 119,
+  "output_items": [
+    "hbm:machine_cracking_tower"
+  ],
+  "power": 100
+}

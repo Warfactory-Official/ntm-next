@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:coil_copper",
+    "I": "hbm:plate_polymer",
+    "S": "#c:ingots/steel"
+  },
+  "pattern": [
+    "C",
+    "I",
+    "S"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:red_connector"
+  }
+}

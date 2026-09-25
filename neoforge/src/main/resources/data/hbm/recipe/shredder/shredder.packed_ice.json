@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:packed_ice"
+    }
+  ],
+  "order": 12,
+  "output_items": [
+    "hbm:powder_ice"
+  ]
+}

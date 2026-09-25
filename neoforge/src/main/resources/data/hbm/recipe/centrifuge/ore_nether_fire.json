@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:ore_nether_fire"
+    }
+  ],
+  "order": 12,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "minecraft:blaze_powder"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_fire"
+    },
+    "hbm:ingot_phosphorus",
+    "minecraft:netherrack"
+  ],
+  "power": 200
+}

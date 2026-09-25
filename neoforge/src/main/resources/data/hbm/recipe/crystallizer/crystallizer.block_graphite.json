@@ -1,0 +1,19 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:storage_blocks/coal"
+    }
+  ],
+  "order": 262,
+  "output_items": [
+    "hbm:block_graphite"
+  ]
+}

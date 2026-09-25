@@ -1,0 +1,13 @@
+{
+  "fabric:type": "hbm:obj",
+  "parent": "hbm:block/machine_tower_small_base",
+  "double_sided": [
+    "Cube_Cube.001"
+  ],
+  "model": "hbm:models/machines/tower_small.obj",
+  "skins": {
+    "all": [
+      "Cube_Cube.001"
+    ]
+  }
+}

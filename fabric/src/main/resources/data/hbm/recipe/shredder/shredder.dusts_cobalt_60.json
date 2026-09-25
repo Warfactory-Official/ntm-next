@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/cobalt_60"
+    }
+  ],
+  "order": 337,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 25,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:helium3",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:gas_tank"
+  },
+  "input_items": [
+    {
+      "ingredient": "hbm:moon_turf"
+    }
+  ],
+  "order": 5,
+  "output_fluids": [
+    {
+      "type": "hbm:helium3",
+      "amount": 500
+    }
+  ],
+  "power": 2000
+}

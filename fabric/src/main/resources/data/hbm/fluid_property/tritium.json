@@ -1,0 +1,30 @@
+{
+  "type": "gaseous",
+  "color": "#000099",
+  "containers": {
+    "gastank": {
+      "bottle_color": "#000099",
+      "label_color": "#e9ffaa"
+    }
+  },
+  "nfpa": {
+    "flame": 4,
+    "health": 3,
+    "react": 0
+  },
+  "shares": "#c:tritium",
+  "symbol": "RADIATION",
+  "temperature": 20,
+  "traits": {
+    "combustible": {
+      "energy": 10000,
+      "grade": "HIGH"
+    },
+    "flammable": {
+      "energy": 5000
+    },
+    "ventradiation": {
+      "rad_per_mb": 0.001
+    }
+  }
+}

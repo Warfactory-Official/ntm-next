@@ -1,0 +1,39 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:chunk_ore_rare"
+    }
+  ],
+  "order": 204,
+  "output_items": [
+    "hbm:fragment_boron",
+    {
+      "chance": 0.5,
+      "id": "hbm:fragment_boron"
+    },
+    {
+      "chance": 0.1,
+      "id": "hbm:fragment_lanthanium"
+    },
+    "hbm:fragment_cobalt",
+    {
+      "chance": 0.5,
+      "id": "hbm:fragment_cobalt"
+    },
+    {
+      "chance": 0.1,
+      "id": "hbm:fragment_cerium"
+    },
+    {
+      "chance": 0.5,
+      "id": "hbm:fragment_neodymium"
+    },
+    {
+      "chance": 0.5,
+      "id": "hbm:fragment_niobium"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

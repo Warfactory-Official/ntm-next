@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:plates_cast/any_resistant_alloy",
+    "C": "hbm:circuit_advanced",
+    "H": "hbm:watz_cooler"
+  },
+  "pattern": [
+    "CBC",
+    "BHB",
+    "CBC"
+  ],
+  "result": {
+    "id": "hbm:struct_watz_core"
+  }
+}

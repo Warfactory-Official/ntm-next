@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/entity_mob_mask_man_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 8488306
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 13091255
+      }
+    ]
+  }
+}

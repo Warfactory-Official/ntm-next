@@ -1,0 +1,35 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:upgrade_speed_3"
+    },
+    {
+      "ingredient": "hbm:upgrade_effect_3"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/saturnite"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_advanced"
+    }
+  ],
+  "order": 283,
+  "output_items": [
+    "hbm:upgrade_overdrive_1"
+  ],
+  "power": 100
+}

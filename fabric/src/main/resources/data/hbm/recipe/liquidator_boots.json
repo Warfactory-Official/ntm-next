@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:hazmat_boots_grey",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "C": "hbm:cladding_lead",
+    "I": "#hbm:ingots/any_rubber"
+  },
+  "pattern": [
+    "ICI",
+    "IBI"
+  ],
+  "result": {
+    "id": "hbm:liquidator_boots"
+  }
+}

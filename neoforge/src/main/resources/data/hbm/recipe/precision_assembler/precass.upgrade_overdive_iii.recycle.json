@@ -1,0 +1,60 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    },
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:precision_assembler",
+  "duration": 1200,
+  "icon": {
+    "components": {
+      "hbm:broken_item_source": "hbm:upgrade_overdrive_3"
+    },
+    "id": "hbm:broken_item"
+  },
+  "input_items": [
+    {
+      "components": {
+        "hbm:broken_item_source": "hbm:upgrade_overdrive_3"
+      },
+      "ingredient": "hbm:broken_item"
+    }
+  ],
+  "name_wrapper": "precass.recycle",
+  "order": 50,
+  "output_items": [
+    {
+      "chance": 0.75,
+      "id": "hbm:upgrade_overdrive_2"
+    },
+    {
+      "chance": 0.75,
+      "id": "hbm:upgrade_speed_3"
+    },
+    {
+      "chance": 0.75,
+      "id": "hbm:upgrade_effect_3"
+    },
+    {
+      "chance": 0.75,
+      "count": 16,
+      "id": "hbm:ingot_bismuth_bronze"
+    },
+    {
+      "chance": 0.75,
+      "count": 16,
+      "id": "hbm:ingot_cft"
+    },
+    {
+      "chance": 0.75,
+      "count": 16,
+      "id": "hbm:circuit_bismoid"
+    }
+  ],
+  "power": 100000
+}

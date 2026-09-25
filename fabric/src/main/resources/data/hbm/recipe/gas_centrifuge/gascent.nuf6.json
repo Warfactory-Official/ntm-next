@@ -1,0 +1,28 @@
+{
+  "type": "hbm:gas_centrifuge",
+  "consumed": 400,
+  "duration": 150,
+  "feed": "hbm:uf6",
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:uf6",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -3027266
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "next": "leuf6",
+  "order": 0,
+  "output_items": [
+    "hbm:nugget_u238"
+  ],
+  "power": 200,
+  "produced": 300,
+  "stage": "nuf6"
+}

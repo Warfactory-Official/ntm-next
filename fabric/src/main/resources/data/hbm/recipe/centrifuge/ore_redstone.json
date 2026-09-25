@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!lbsm_simple_centrifuge"
+    }
+  ],
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#c:ores/redstone"
+    }
+  ],
+  "order": 9,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "minecraft:redstone"
+    },
+    {
+      "count": 3,
+      "id": "minecraft:redstone"
+    },
+    "hbm:nugget_mercury",
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

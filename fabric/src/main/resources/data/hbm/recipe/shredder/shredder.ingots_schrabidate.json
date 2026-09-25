@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/schrabidate"
+    }
+  ],
+  "order": 340,
+  "output_items": [
+    "hbm:powder_schrabidate"
+  ]
+}

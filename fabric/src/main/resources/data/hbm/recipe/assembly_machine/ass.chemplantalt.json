@@ -1,0 +1,33 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:plates/dura_steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/copper"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "name": "ass.chemplantAlt",
+  "order": 89,
+  "output_items": [
+    "hbm:machine_chemical_plant"
+  ],
+  "power": 100
+}

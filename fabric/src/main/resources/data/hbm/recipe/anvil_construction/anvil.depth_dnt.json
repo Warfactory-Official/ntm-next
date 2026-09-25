@@ -1,0 +1,18 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/dineutronium"
+    },
+    {
+      "ingredient": "hbm:depth_brick"
+    }
+  ],
+  "order": 38,
+  "output_items": [
+    "hbm:depth_dnt"
+  ],
+  "overlay": "construction",
+  "tier": 1916169
+}

@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "minecraft:cobblestone"
+    }
+  ],
+  "order": 13,
+  "output_fluids": [
+    {
+      "type": "minecraft:lava",
+      "amount": 250
+    }
+  ]
+}

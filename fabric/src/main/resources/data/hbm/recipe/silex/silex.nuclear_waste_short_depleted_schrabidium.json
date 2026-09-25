@@ -1,0 +1,52 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": "hbm:nuclear_waste_short_depleted_schrabidium"
+    }
+  ],
+  "laser_strength": "ir",
+  "order": 293,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_bismuth"
+        },
+        "weight": 7
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_mercury_tiny"
+        },
+        "weight": 12
+      },
+      {
+        "data": {
+          "id": "hbm:powder_cerium_tiny"
+        },
+        "weight": 14
+      },
+      {
+        "data": {
+          "id": "hbm:powder_lanthanium_tiny"
+        },
+        "weight": 15
+      },
+      {
+        "data": {
+          "id": "hbm:dust_tiny"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_tiny"
+        },
+        "weight": 32
+      }
+    ]
+  ]
+}

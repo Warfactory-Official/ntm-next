@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/office_trash"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 24.0,
+        "min": 12.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/office_trash_12_24"
+}

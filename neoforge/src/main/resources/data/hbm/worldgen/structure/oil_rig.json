@@ -1,0 +1,16 @@
+{
+  "type": "hbm:single_piece",
+  "biomes": [
+    "minecraft:cold_ocean",
+    "minecraft:frozen_ocean",
+    "minecraft:lukewarm_ocean",
+    "minecraft:ocean",
+    "minecraft:warm_ocean"
+  ],
+  "height_offset": -20,
+  "max_height": 12,
+  "min_height": 11,
+  "spawn_overrides": {},
+  "start_pool": "hbm:single/oil_rig",
+  "step": "strongholds"
+}

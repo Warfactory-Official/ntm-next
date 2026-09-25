@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/red_pylon"
+    },
+    "facing=north": {
+      "model": "hbm:block/red_pylon"
+    },
+    "facing=south": {
+      "model": "hbm:block/red_pylon"
+    },
+    "facing=west": {
+      "model": "hbm:block/red_pylon"
+    }
+  }
+}

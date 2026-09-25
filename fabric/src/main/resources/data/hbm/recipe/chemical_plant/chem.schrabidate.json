@@ -1,0 +1,20 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 150,
+  "input_fluids": [
+    {
+      "type": "hbm:schrabidic",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/iron"
+    }
+  ],
+  "order": 63,
+  "output_items": [
+    "hbm:powder_schrabidate"
+  ],
+  "power": 5000
+}

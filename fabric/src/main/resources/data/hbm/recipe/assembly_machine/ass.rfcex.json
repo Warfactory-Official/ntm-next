@@ -1,0 +1,41 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.chip_quantum"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:pa_beamline"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_lead_plating"
+    },
+    {
+      "count": 64,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:magnetron"
+    }
+  ],
+  "name": "ass.rfcEx",
+  "order": 210,
+  "output_items": [
+    "hbm:pa_rfc"
+  ],
+  "power": 100
+}

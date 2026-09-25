@@ -1,0 +1,16 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/silex.obj",
+  "skins": {
+    "all": [
+      "Cube_Cube.001"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/silex",
+    "particle": "hbm:block/models/machines/silex"
+  },
+  "translucent": true
+}

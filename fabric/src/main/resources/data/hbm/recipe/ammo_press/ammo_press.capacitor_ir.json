@@ -1,0 +1,26 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    "B": {
+      "ingredient": "#c:ingots/niobium"
+    },
+    "C": {
+      "ingredient": "#hbm:ingots/any_plastic"
+    }
+  },
+  "order": 77,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:ammo_standard_capacitor_ir"
+    }
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

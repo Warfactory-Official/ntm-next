@@ -1,0 +1,14 @@
+{
+  "type": "liquid",
+  "color": "#32ffff",
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 2,
+    "react": 0
+  },
+  "symbol": "CRYOGENIC",
+  "temperature": -170
+}

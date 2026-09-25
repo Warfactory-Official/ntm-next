@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "hbm:deposit_coltan",
+  "step": "underground_ores"
+}

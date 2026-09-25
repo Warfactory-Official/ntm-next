@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:rbmk_display_blank",
+    "C": "hbm:crt_display"
+  },
+  "pattern": [
+    "C",
+    "B"
+  ],
+  "result": {
+    "id": "hbm:rbmk_display"
+  }
+}

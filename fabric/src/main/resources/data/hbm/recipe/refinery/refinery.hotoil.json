@@ -1,0 +1,31 @@
+{
+  "type": "hbm:refinery",
+  "input_fluids": [
+    {
+      "type": "hbm:hotoil",
+      "amount": 100
+    }
+  ],
+  "order": 0,
+  "output_fluids": [
+    {
+      "type": "hbm:heavyoil",
+      "amount": 50
+    },
+    {
+      "type": "hbm:naphtha",
+      "amount": 25
+    },
+    {
+      "type": "hbm:lightoil",
+      "amount": 15
+    },
+    {
+      "type": "hbm:petroleum",
+      "amount": 10
+    }
+  ],
+  "output_items": [
+    "hbm:sulfur"
+  ]
+}

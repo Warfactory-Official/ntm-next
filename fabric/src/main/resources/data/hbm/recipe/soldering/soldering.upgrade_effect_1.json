@@ -1,0 +1,27 @@
+{
+  "type": "hbm:soldering",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_vacuum_tube"
+    },
+    {
+      "ingredient": "hbm:circuit_capacitor"
+    }
+  ],
+  "order": 17,
+  "output_items": [
+    "hbm:upgrade_effect_1"
+  ],
+  "pcb": [
+    {
+      "ingredient": "hbm:upgrade_template"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:dusts/emerald"
+    }
+  ],
+  "power": 1000
+}

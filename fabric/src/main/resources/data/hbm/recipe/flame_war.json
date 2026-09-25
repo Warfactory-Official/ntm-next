@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:flame_conspiracy",
+    "H": "hbm:flame_pony",
+    "O": "hbm:flame_opinion",
+    "P": "hbm:flame_politics",
+    "T": "minecraft:tnt",
+    "W": "minecraft:oak_planks"
+  },
+  "pattern": [
+    "WHW",
+    "CTP",
+    "WOW"
+  ],
+  "result": {
+    "id": "hbm:flame_war"
+  }
+}

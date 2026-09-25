@@ -1,0 +1,16 @@
+{
+  "type": "hbm:cyclotron",
+  "amat": 25,
+  "input_items": [
+    {
+      "ingredient": "hbm:part_beryllium"
+    },
+    {
+      "ingredient": "hbm:powder_strontium"
+    }
+  ],
+  "order": 17,
+  "output_items": [
+    "hbm:powder_niobium"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:steel_grate"
+    }
+  ],
+  "order": 140,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:powder_steel_tiny"
+    }
+  ]
+}

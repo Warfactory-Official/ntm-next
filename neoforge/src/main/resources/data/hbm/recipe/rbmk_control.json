@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:motor",
+    "G": "#c:ingots/graphite",
+    "R": "hbm:rbmk_absorber"
+  },
+  "pattern": [
+    " B ",
+    "GRG",
+    " B "
+  ],
+  "result": {
+    "id": "hbm:rbmk_control"
+  }
+}

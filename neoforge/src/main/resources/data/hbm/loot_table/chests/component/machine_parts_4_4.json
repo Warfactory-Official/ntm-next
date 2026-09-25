@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/machine_parts"
+        }
+      ],
+      "rolls": {
+        "type": "hbm:config_scaled",
+        "value": 4.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/component/machine_parts_4_4"
+}

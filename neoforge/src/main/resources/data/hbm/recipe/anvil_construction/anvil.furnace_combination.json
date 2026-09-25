@@ -1,0 +1,27 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "minecraft:stone_bricks"
+    },
+    {
+      "count": 16,
+      "ingredient": "#minecraft:logs"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/copper"
+    },
+    {
+      "count": 16,
+      "ingredient": "minecraft:brick"
+    }
+  ],
+  "order": 69,
+  "output_items": [
+    "hbm:furnace_combination"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:can_empty"
+    }
+  ],
+  "order": 78,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_aluminium"
+    }
+  ]
+}

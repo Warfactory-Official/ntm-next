@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:pellet_gas",
+    "D": "minecraft:dispenser",
+    "G": "minecraft:iron_bars",
+    "I": "#c:plates/iron"
+  },
+  "pattern": [
+    "IGI",
+    "ICI",
+    "IDI"
+  ],
+  "result": {
+    "id": "hbm:vent_chlorine"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "hbm:euphemium"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "hbm:euphemium"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "hbm:euphemium"
+      }
+    ]
+  }
+}

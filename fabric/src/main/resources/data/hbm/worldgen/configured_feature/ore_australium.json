@@ -1,0 +1,26 @@
+{
+  "type": "hbm:windowed_ore",
+  "config": {
+    "attempts": 4,
+    "maximum_center_radius": 700,
+    "min_y": 15,
+    "minimum_center_radius": 350,
+    "vein": {
+      "discard_chance_on_air_exposure": 0.0,
+      "size": 50,
+      "targets": [
+        {
+          "state": {
+            "Name": "hbm:ore_australium"
+          },
+          "target": {
+            "predicate_type": "minecraft:tag_match",
+            "tag": "minecraft:stone_ore_replaceables"
+          }
+        }
+      ]
+    },
+    "window_size": 101,
+    "y_range": 15
+  }
+}

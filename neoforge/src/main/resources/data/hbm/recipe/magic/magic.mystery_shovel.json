@@ -1,0 +1,21 @@
+{
+  "type": "hbm:magic",
+  "input_items": [
+    {
+      "ingredient": "minecraft:iron_shovel"
+    },
+    {
+      "ingredient": "minecraft:bone"
+    },
+    {
+      "ingredient": "hbm:ingot_starmetal"
+    },
+    {
+      "ingredient": "hbm:ducttape"
+    }
+  ],
+  "order": 3,
+  "output_items": [
+    "hbm:mysteryshovel"
+  ]
+}

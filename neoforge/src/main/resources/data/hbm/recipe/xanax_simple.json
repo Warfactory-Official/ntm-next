@@ -1,0 +1,17 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "lbsm_simple_medicine"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/coal",
+    "#c:dusts/saltpeter",
+    "#c:dusts/nether_quartz"
+  ],
+  "result": {
+    "id": "hbm:xanax"
+  }
+}

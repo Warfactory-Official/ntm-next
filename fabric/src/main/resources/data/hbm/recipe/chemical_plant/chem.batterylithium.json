@@ -1,0 +1,29 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:oxygen",
+      "amount": 2000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#c:dusts/lithium"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:dusts/cobalt"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_plastic"
+    }
+  ],
+  "order": 30,
+  "output_items": [
+    "hbm:battery_pack_battery_lithium"
+  ],
+  "power": 1000
+}

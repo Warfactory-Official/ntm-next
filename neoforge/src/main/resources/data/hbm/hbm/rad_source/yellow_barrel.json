@@ -1,0 +1,8 @@
+{
+  "rate": {
+    "type": "fixed",
+    "emission": 0.25,
+    "saturation": 100.0
+  },
+  "targets": "hbm:yellow_barrel"
+}

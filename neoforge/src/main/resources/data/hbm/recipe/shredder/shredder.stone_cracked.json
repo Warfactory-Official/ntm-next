@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:stone_cracked"
+    }
+  ],
+  "order": 149,
+  "output_items": [
+    "hbm:scrap_oil"
+  ]
+}

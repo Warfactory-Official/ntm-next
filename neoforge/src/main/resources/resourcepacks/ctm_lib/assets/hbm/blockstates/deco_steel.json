@@ -1,0 +1,15 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:deco_steel",
+    "hbm:deco_rusty_steel"
+  ],
+  "ctm_textures": {
+    "hbm:block/deco_steel": "hbm:block/ctm_lib/deco_steel"
+  },
+  "variants": {
+    "": {
+      "model": "hbm:block/deco_steel"
+    }
+  }
+}

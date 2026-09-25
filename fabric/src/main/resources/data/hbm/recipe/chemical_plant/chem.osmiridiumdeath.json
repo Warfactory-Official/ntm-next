@@ -1,0 +1,32 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 240,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 1000,
+      "pressure": 5
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_paleogenite"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:dusts/fluorite"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:nugget_bismuth"
+    }
+  ],
+  "order": 86,
+  "output_fluids": [
+    {
+      "type": "hbm:death",
+      "amount": 1000
+    }
+  ],
+  "power": 1000
+}

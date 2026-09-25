@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:bolts/dura_steel",
+    "M": "hbm:motor_desh",
+    "P": "hbm:plate_desh",
+    "S": "hbm:servo_set"
+  },
+  "pattern": [
+    "MBM",
+    "PSP",
+    "MBM"
+  ],
+  "result": {
+    "id": "hbm:servo_set_desh"
+  }
+}

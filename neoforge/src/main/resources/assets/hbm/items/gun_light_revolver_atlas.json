@@ -1,0 +1,58 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_light_revolver_atlas_base",
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          1.5,
+          -1.0,
+          0.0,
+          -0.0,
+          9.25,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -5.0,
+      0.0,
+      -0.0,
+      -5.0,
+      0.0,
+      -7.5,
+      5.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/bio_revolver.obj",
+    "parts": [
+      "Barrel",
+      "Latch",
+      "Hammer",
+      "Drum",
+      "Grip"
+    ],
+    "texture": "hbm:textures/models/weapons/bio_revolver_atlas.png"
+  }
+}

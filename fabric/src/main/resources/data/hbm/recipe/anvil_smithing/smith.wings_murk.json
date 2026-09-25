@@ -1,0 +1,16 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "hbm:wings_limp"
+    },
+    {
+      "ingredient": "hbm:particle_tachyon"
+    }
+  ],
+  "order": 36,
+  "output_items": [
+    "hbm:wings_murk"
+  ],
+  "tier": 1916169
+}

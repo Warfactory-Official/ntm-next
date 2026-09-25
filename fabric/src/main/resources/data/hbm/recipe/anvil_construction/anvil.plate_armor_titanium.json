@@ -1,0 +1,22 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:bolts/steel"
+    }
+  ],
+  "order": 96,
+  "output_items": [
+    "hbm:plate_armor_titanium"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

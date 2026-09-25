@@ -1,0 +1,42 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 3,
+      "ingredient": "#hbm:shells/titanium"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:ingot_firebrick"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:coil_copper"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.electrolyzerEx",
+  "order": 106,
+  "output_items": [
+    "hbm:machine_electrolyser"
+  ],
+  "power": 100
+}

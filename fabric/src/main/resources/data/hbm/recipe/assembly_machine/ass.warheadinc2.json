@@ -1,0 +1,18 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:warhead_generic_medium"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:dusts/red_phosphorus"
+    }
+  ],
+  "order": 348,
+  "output_items": [
+    "hbm:warhead_incendiary_medium"
+  ],
+  "power": 100
+}

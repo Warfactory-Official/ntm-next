@@ -1,0 +1,31 @@
+{
+  "parent": "hbm:radpoison",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "fatal": true,
+        "level": {
+          "min": 1000.0
+        }
+      },
+      "trigger": "hbm:radiation"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.radDeath.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "minecraft:skeleton_skull"
+    },
+    "title": {
+      "translate": "achievement.radDeath"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

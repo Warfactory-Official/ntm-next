@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#hbm:plates_cast/saturnite",
+    "S": "hbm:powder_power",
+    "T": "hbm:crystal_trixite",
+    "W": "#hbm:wires_dense/magnetized_tungsten"
+  },
+  "pattern": [
+    " W ",
+    "DTD",
+    "DSD"
+  ],
+  "result": {
+    "id": "hbm:battery_trixite"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:wood_gavel",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "I": "#c:ingots/lead",
+    "P": "hbm:pellet_buckshot"
+  },
+  "pattern": [
+    "PIP",
+    "IGI",
+    "PIP"
+  ],
+  "result": {
+    "id": "hbm:lead_gavel"
+  }
+}

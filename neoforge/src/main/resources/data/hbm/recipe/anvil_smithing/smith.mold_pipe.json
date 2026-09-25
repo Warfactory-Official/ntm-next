@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "ingredient": "hbm:mold_base"
+    }
+  ],
+  "kind": "mold",
+  "order": 50,
+  "output_items": [
+    "hbm:mold_pipe"
+  ],
+  "shape": "pipes"
+}

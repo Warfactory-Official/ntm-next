@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:annihilator",
+  "item": "hbm:circuit_controller",
+  "milestones": [
+    {
+      "amount": "128",
+      "payout": {
+        "components": {
+          "hbm:blueprint_pool": "528.controller"
+        },
+        "id": "hbm:blueprints"
+      }
+    }
+  ]
+}

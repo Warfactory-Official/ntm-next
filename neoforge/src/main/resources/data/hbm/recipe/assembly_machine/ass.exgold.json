@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 64,
+      "ingredient": "#c:dusts/gold"
+    },
+    {
+      "count": 64,
+      "ingredient": "#c:dusts/gold"
+    }
+  ],
+  "order": 25,
+  "output_items": [
+    "hbm:item_expensive_gold_dust"
+  ],
+  "power": 10000
+}

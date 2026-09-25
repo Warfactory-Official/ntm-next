@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ores/borax"
+    }
+  ],
+  "order": 242,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_borax"
+    }
+  ]
+}

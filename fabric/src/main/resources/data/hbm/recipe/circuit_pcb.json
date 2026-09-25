@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "hbm:plate_polymer",
+    "P": "#c:plates/copper"
+  },
+  "pattern": [
+    "I",
+    "P"
+  ],
+  "result": {
+    "id": "hbm:circuit_pcb"
+  }
+}

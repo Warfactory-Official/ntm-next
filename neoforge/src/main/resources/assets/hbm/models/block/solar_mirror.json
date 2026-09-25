@@ -1,0 +1,18 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Mirror"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/solar_mirror.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/solar_mirror",
+    "particle": "hbm:block/models/machines/solar_mirror"
+  }
+}

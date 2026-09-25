@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:reformate",
+      "amount": 750
+    }
+  ],
+  "order": 45,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

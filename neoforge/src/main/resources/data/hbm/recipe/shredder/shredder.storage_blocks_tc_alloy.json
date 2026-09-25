@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:storage_blocks/tc_alloy"
+    }
+  ],
+  "order": 227,
+  "output_items": [
+    {
+      "count": 9,
+      "id": "hbm:powder_tcalloy"
+    }
+  ]
+}

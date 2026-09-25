@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "hbm:block/lamp_demon_down"
+    },
+    "facing=east": {
+      "model": "hbm:block/lamp_demon_east"
+    },
+    "facing=north": {
+      "model": "hbm:block/lamp_demon_north"
+    },
+    "facing=south": {
+      "model": "hbm:block/lamp_demon_south"
+    },
+    "facing=up": {
+      "model": "hbm:block/lamp_demon"
+    },
+    "facing=west": {
+      "model": "hbm:block/lamp_demon_west"
+    }
+  }
+}

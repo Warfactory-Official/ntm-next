@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/plutonium_240"
+    }
+  ],
+  "order": 20,
+  "output_items": [
+    "hbm:ingot_pu241"
+  ]
+}

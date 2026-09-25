@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 6.25
+    }
+  ],
+  "targets": "hbm:pwr_fuel_mep"
+}

@@ -1,0 +1,22 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 60,
+  "input_items": [
+    {
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:fine_wires/mingrade"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:dusts/nether_quartz"
+    }
+  ],
+  "order": 40,
+  "output_items": [
+    "hbm:thermo_element"
+  ],
+  "power": 100
+}

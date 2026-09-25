@@ -1,0 +1,18 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 9,
+      "ingredient": "#c:nuggets/solinium"
+    },
+    {
+      "ingredient": "#c:nuggets/euphemium"
+    }
+  ],
+  "order": 323,
+  "output_items": [
+    "hbm:solinium_core"
+  ],
+  "power": 100
+}

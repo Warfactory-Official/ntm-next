@@ -1,0 +1,8 @@
+{
+  "rate": {
+    "type": "fixed",
+    "emission": 0.025,
+    "saturation": 100.0
+  },
+  "targets": "hbm:vitrified_barrel"
+}

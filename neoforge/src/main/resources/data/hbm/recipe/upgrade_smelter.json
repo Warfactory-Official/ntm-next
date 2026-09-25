@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:coil_tungsten",
+    "D": "hbm:coil_copper",
+    "H": "minecraft:hopper",
+    "P": "#c:plates/copper",
+    "T": "hbm:machine_transformer",
+    "U": "hbm:upgrade_template"
+  },
+  "pattern": [
+    "PHP",
+    "CUC",
+    "DTD"
+  ],
+  "result": {
+    "id": "hbm:upgrade_smelter"
+  }
+}

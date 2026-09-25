@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#hbm:ingots/any_plastic",
+    "K": "hbm:plate_kevlar",
+    "W": "#minecraft:wool"
+  },
+  "pattern": [
+    "KWK",
+    "IKI",
+    "WKW"
+  ],
+  "result": {
+    "id": "hbm:security_plate"
+  }
+}

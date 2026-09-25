@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 141421356,
+    "separation": 7,
+    "spacing": 22
+  },
+  "structures": [
+    {
+      "structure": "hbm:desert_atom",
+      "weight": 1
+    }
+  ]
+}

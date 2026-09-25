@@ -1,0 +1,18 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:mold_base"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/steel"
+    }
+  ],
+  "order": 181,
+  "output_items": [
+    "hbm:mold_grip"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 5.85
+    }
+  ],
+  "targets": "#hbm:hazard/ingot_les"
+}

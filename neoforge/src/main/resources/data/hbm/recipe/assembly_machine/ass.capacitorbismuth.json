@@ -1,0 +1,22 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:ingots/bismuth"
+    },
+    {
+      "ingredient": "hbm:circuit_chip_quantum"
+    }
+  ],
+  "order": 197,
+  "output_items": [
+    "hbm:battery_pack_capacitor_bismuth"
+  ],
+  "power": 25000
+}

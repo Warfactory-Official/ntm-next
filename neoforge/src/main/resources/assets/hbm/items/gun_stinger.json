@@ -1,0 +1,56 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_stinger_base",
+    "equipped_muzzles": [
+      {
+        "duration": 150,
+        "kind": "normal",
+        "length": 10.0,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          3.5,
+          -0.75,
+          0.0,
+          -0.0,
+          -10.3795,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      7.5,
+      0.0,
+      0.0,
+      -7.5,
+      0.0,
+      30.0,
+      -7.5,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/stinger.obj",
+    "parts": [
+      "Mag_Cube.002",
+      "Cube.001_Cube.002"
+    ],
+    "texture": "hbm:textures/models/weapons/stinger.png"
+  }
+}

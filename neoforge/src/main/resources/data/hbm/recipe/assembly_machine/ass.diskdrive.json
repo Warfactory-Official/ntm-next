@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "ingredient": "hbm:circuit_basic"
+    },
+    {
+      "ingredient": "#hbm:wires_dense/neodymium"
+    }
+  ],
+  "order": 37,
+  "output_items": [
+    "hbm:drive_disk_empty"
+  ],
+  "power": 250
+}

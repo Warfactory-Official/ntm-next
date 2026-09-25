@@ -1,0 +1,26 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:chlorocalcite_cleaned",
+      "amount": 500
+    },
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 8000
+    }
+  ],
+  "order": 8,
+  "output_fluids": [
+    {
+      "type": "hbm:potassium_chloride",
+      "amount": 250
+    },
+    {
+      "type": "hbm:calcium_chloride",
+      "amount": 250
+    }
+  ],
+  "power": 100
+}

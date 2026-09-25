@@ -1,0 +1,30 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/copper"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:coil_tungsten"
+    },
+    {
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 66,
+  "output_items": [
+    "hbm:heater_electric"
+  ],
+  "overlay": "construction",
+  "tier": 3
+}

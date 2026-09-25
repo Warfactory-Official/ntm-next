@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hbm:item/bedrock_ore_primary_rare",
+    "layer1": "hbm:item/bedrock_ore_overlay_roasted"
+  }
+}

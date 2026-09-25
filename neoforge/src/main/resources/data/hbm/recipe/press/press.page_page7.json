@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "minecraft:paper"
+    }
+  ],
+  "order": 46,
+  "output_items": [
+    "hbm:page_of_page7"
+  ],
+  "stamp": "printing7"
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "hbm:radaway",
+    "L": "minecraft:leather",
+    "S": "hbm:syringe_metal_super"
+  },
+  "pattern": [
+    "LL",
+    "SI",
+    "LL"
+  ],
+  "result": {
+    "id": "hbm:med_bag"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:diesel_crack",
+      "amount": 900
+    },
+    {
+      "type": "hbm:reformate",
+      "amount": 100
+    }
+  ],
+  "order": 39,
+  "output_fluids": [
+    {
+      "type": "hbm:diesel_crack_reform",
+      "amount": 1000
+    }
+  ]
+}

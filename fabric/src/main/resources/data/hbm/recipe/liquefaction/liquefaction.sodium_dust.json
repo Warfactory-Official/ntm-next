@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/sodium"
+    }
+  ],
+  "order": 8,
+  "output_fluids": [
+    {
+      "type": "hbm:sodium",
+      "amount": 100
+    }
+  ]
+}

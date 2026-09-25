@@ -1,0 +1,36 @@
+{
+  "parent": "hbm:centrifuge",
+  "criteria": {
+    "crafted_hbm_nugget_technetium_from_ingot": {
+      "conditions": {
+        "recipe_id": "hbm:nugget_technetium_from_ingot"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": "hbm:nugget_technetium"
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.technetium.desc"
+    },
+    "icon": {
+      "id": "hbm:ingot_tcalloy"
+    },
+    "title": {
+      "translate": "achievement.technetium"
+    }
+  },
+  "requirements": [
+    [
+      "crafted_hbm_nugget_technetium_from_ingot",
+      "produced"
+    ]
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "hbm:biomass"
+    }
+  ],
+  "order": 4,
+  "output_items": [
+    "hbm:biomass_compressed"
+  ],
+  "stamp": "flat"
+}

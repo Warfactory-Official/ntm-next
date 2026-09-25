@@ -1,0 +1,25 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:item_expensive_lead_plating"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.pwrcontrollerEx",
+  "order": 250,
+  "output_items": [
+    "hbm:pwr_controller"
+  ],
+  "power": 500
+}

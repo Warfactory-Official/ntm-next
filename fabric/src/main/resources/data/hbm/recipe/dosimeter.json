@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:ingots/beryllium",
+    "C": "hbm:circuit_vacuum_tube",
+    "G": "#c:glass_panes",
+    "W": "#minecraft:planks"
+  },
+  "pattern": [
+    "WGW",
+    "WCW",
+    "WBW"
+  ],
+  "result": {
+    "id": "hbm:dosimeter"
+  }
+}

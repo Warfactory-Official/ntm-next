@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:dusts/glowstone",
+    "Q": "#c:gems/quartz",
+    "R": "minecraft:redstone_torch"
+  },
+  "pattern": [
+    "G",
+    "R",
+    "Q"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:radio_torch_sender"
+  }
+}

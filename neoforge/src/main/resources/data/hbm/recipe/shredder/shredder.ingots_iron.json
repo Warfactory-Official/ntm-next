@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/iron"
+    }
+  ],
+  "order": 248,
+  "output_items": [
+    "hbm:powder_iron"
+  ]
+}

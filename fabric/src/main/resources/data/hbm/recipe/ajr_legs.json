@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:titanium_legs",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "M": "hbm:motor_desh",
+    "P": "hbm:plate_armor_ajr"
+  },
+  "pattern": [
+    "MPM",
+    "PBP",
+    "P P"
+  ],
+  "result": {
+    "id": "hbm:ajr_legs"
+  }
+}

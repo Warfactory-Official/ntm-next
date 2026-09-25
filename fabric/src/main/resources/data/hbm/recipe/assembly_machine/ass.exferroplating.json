@@ -1,0 +1,29 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 1200,
+  "input_fluids": [
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:item_expensive_lead_plating"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/ferrouranium"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    }
+  ],
+  "order": 21,
+  "output_items": [
+    "hbm:item_expensive_ferro_plating"
+  ],
+  "power": 10000
+}

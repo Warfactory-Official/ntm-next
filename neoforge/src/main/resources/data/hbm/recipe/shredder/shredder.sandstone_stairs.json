@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:sandstone_stairs"
+    }
+  ],
+  "order": 32,
+  "output_items": [
+    {
+      "count": 6,
+      "id": "minecraft:sand"
+    }
+  ]
+}

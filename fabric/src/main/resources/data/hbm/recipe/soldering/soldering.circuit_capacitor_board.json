@@ -1,0 +1,32 @@
+{
+  "type": "hbm:soldering",
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:circuit_capacitor_tantalium"
+    }
+  ],
+  "order": 4,
+  "output_items": [
+    "hbm:circuit_capacitor_board"
+  ],
+  "pcb": [
+    {
+      "ingredient": "hbm:circuit_pcb"
+    }
+  ],
+  "power": 300,
+  "solder": [
+    {
+      "count": 3,
+      "ingredient": "#c:fine_wires/lead"
+    }
+  ]
+}

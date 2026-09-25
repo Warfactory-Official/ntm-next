@@ -1,0 +1,34 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.tcalloy"
+  ],
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "hbm:item_expensive_plastic"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/copper"
+    },
+    {
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.fusionpipesEx",
+  "order": 262,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:fusion_component_motor"
+    }
+  ],
+  "power": 100
+}

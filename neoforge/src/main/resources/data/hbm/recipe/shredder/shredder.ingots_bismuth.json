@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/bismuth"
+    }
+  ],
+  "order": 229,
+  "output_items": [
+    "hbm:powder_bismuth"
+  ]
+}

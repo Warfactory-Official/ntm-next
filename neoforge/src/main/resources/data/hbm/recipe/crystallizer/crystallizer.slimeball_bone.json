@@ -1,0 +1,22 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "minecraft:bone"
+    }
+  ],
+  "order": 267,
+  "output_items": [
+    {
+      "count": 16,
+      "id": "minecraft:slime_ball"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "part=casing": {
+      "model": "hbm:block/pwr_block"
+    },
+    "part=channel": {
+      "model": "hbm:block/pwr_block"
+    },
+    "part=control": {
+      "model": "hbm:block/pwr_block"
+    },
+    "part=fuel": {
+      "model": "hbm:block/pwr_block"
+    },
+    "part=heatex": {
+      "model": "hbm:block/pwr_block"
+    },
+    "part=heatsink": {
+      "model": "hbm:block/pwr_block"
+    },
+    "part=neutron_source": {
+      "model": "hbm:block/pwr_block"
+    },
+    "part=port": {
+      "model": "hbm:block/pwr_casing_port"
+    },
+    "part=reflector": {
+      "model": "hbm:block/pwr_block"
+    }
+  }
+}

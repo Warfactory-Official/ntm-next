@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:catalytic_converter"
+  ],
+  "result": {
+    "id": "hbm:crackpipe"
+  }
+}

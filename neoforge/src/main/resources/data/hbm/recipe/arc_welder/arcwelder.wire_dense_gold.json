@@ -1,0 +1,15 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:fine_wires/gold"
+    }
+  ],
+  "order": 6,
+  "output_items": [
+    "hbm:wire_dense_gold"
+  ],
+  "power": 10000
+}

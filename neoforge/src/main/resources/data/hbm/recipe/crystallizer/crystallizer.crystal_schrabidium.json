@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/schrabidium"
+    }
+  ],
+  "order": 243,
+  "output_items": [
+    "hbm:crystal_schrabidium"
+  ],
+  "productivity": 0.05
+}

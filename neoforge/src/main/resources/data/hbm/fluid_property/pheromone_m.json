@@ -1,0 +1,16 @@
+{
+  "type": "liquid",
+  "color": "#48c9b0",
+  "nfpa": {
+    "flame": 0,
+    "health": 0,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "pheromone": {
+      "type": 2
+    }
+  }
+}

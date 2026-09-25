@@ -1,0 +1,26 @@
+{
+  "type": "hbm:mixer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:sas3",
+      "amount": 8000
+    },
+    {
+      "type": "hbm:peroxide",
+      "amount": 6000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:pellet_charged"
+    }
+  ],
+  "order": 22,
+  "output_fluids": [
+    {
+      "type": "hbm:schrabidic",
+      "amount": 16000
+    }
+  ]
+}

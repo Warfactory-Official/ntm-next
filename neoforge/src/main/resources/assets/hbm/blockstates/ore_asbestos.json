@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/ore_asbestos"
+      },
+      {
+        "model": "hbm:block/ore_asbestos_mirrored"
+      },
+      {
+        "model": "hbm:block/ore_asbestos",
+        "y": 180
+      },
+      {
+        "model": "hbm:block/ore_asbestos_mirrored",
+        "y": 180
+      }
+    ]
+  }
+}

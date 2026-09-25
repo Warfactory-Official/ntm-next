@@ -1,0 +1,29 @@
+{
+  "parent": "hbm:assembly",
+  "criteria": {
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": "hbm:machine_chemical_plant"
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.chemplant.desc"
+    },
+    "icon": {
+      "id": "hbm:machine_chemical_plant"
+    },
+    "title": {
+      "translate": "achievement.chemplant"
+    }
+  },
+  "requirements": [
+    [
+      "produced"
+    ]
+  ]
+}

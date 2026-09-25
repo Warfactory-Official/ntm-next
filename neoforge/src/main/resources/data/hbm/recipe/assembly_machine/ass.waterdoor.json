@@ -1,0 +1,22 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:bolts/dura_steel"
+    },
+    {
+      "ingredient": "#c:dyes/red"
+    }
+  ],
+  "order": 69,
+  "output_items": [
+    "hbm:water_door"
+  ],
+  "power": 100
+}

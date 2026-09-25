@@ -1,0 +1,16 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:salient",
+      "amount": 1280
+    }
+  ],
+  "order": 3,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:bio_wafer"
+    }
+  ]
+}

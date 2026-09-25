@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "hbm:block/pink_log",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "hbm:block/pink_log"
+    },
+    "axis=z": {
+      "model": "hbm:block/pink_log",
+      "x": 90
+    }
+  }
+}

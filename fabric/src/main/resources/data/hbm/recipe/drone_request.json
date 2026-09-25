@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "hbm:drone_patrol",
+    "E": "hbm:circuit_chip"
+  },
+  "pattern": [
+    "E",
+    "D"
+  ],
+  "result": {
+    "id": "hbm:drone_request"
+  }
+}

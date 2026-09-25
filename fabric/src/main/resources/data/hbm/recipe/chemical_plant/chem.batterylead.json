@@ -1,0 +1,25 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 8000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/lead"
+    }
+  ],
+  "order": 29,
+  "output_items": [
+    "hbm:battery_pack_battery_lead"
+  ],
+  "power": 100
+}

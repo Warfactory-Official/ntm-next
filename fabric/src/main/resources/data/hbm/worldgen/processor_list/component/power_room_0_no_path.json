@@ -1,0 +1,231 @@
+{
+  "processors": [
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "0",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_concrete"
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy"
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked"
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken"
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "0",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "minecraft:lever",
+            "Properties": {
+              "face": "wall",
+              "facing": "south",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "minecraft:lever",
+            "Properties": {
+              "face": "wall",
+              "facing": "south",
+              "powered": "true"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "1",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "lower",
+              "hinge": "right",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "lower",
+              "hinge": "right",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "1",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "upper",
+              "hinge": "right",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "upper",
+              "hinge": "right",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "2",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "lower",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "lower",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "2",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "upper",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "upper",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "processor_type": "hbm:loot_pile"
+    }
+  ]
+}

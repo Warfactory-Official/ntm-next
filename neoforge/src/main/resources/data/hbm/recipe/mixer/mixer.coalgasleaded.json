@@ -1,0 +1,22 @@
+{
+  "type": "hbm:mixer",
+  "duration": 40,
+  "input_fluids": [
+    {
+      "type": "hbm:coalgas",
+      "amount": 10000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:fuel_additive_antiknock"
+    }
+  ],
+  "order": 37,
+  "output_fluids": [
+    {
+      "type": "hbm:coalgas_leaded",
+      "amount": 12000
+    }
+  ]
+}

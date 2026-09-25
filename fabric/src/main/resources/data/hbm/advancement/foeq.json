@@ -1,0 +1,30 @@
+{
+  "parent": "hbm:desh",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "item": {
+          "items": "hbm:satellite_relay"
+        }
+      },
+      "trigger": "hbm:orbit"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.FOEQ.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:satellite_relay"
+    },
+    "title": {
+      "translate": "achievement.FOEQ"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

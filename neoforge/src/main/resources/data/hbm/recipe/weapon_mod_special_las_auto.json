@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_chip_bismoid",
+    "F": "#hbm:receivers_heavy/any_bismoid_bronze",
+    "R": "hbm:crystal_redstone"
+  },
+  "pattern": [
+    " C ",
+    "RFR",
+    " C "
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_special_las_auto"
+  }
+}

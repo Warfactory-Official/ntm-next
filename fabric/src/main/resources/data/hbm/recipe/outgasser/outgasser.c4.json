@@ -1,0 +1,19 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/pvc"
+    }
+  ],
+  "order": 16,
+  "output_fluids": [
+    {
+      "type": "hbm:colloid",
+      "amount": 250
+    }
+  ],
+  "output_items": [
+    "hbm:ingot_c4"
+  ]
+}

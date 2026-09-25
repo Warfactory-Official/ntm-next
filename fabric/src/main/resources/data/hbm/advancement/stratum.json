@@ -1,0 +1,25 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "impossible": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.stratum.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:stone_gneiss"
+    },
+    "title": {
+      "translate": "achievement.stratum"
+    }
+  },
+  "requirements": [
+    [
+      "impossible"
+    ]
+  ]
+}

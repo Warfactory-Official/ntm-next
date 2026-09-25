@@ -1,0 +1,35 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.steel"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "ingredient": "hbm:drill_titanium"
+    }
+  ],
+  "name": "ass.pumpjackEx",
+  "order": 111,
+  "output_items": [
+    "hbm:machine_pumpjack"
+  ],
+  "power": 100
+}

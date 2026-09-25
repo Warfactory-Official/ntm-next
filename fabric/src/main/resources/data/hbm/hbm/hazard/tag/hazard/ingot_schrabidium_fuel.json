@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 5.85
+    },
+    {
+      "type": "hbm:blinding",
+      "level": 5.0
+    }
+  ],
+  "targets": "#hbm:hazard/ingot_schrabidium_fuel"
+}

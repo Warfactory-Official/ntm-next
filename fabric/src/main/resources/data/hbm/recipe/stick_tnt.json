@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "hbm:ball_tnt",
+    "P": "minecraft:paper",
+    "S": "hbm:det_cord"
+  },
+  "pattern": [
+    " S ",
+    "PDP",
+    "PDP"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:stick_tnt"
+  }
+}

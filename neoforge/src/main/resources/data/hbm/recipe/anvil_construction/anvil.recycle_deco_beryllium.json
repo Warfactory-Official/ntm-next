@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:deco_beryllium"
+    }
+  ],
+  "order": 212,
+  "output_items": [
+    "hbm:ingot_beryllium"
+  ],
+  "overlay": "recycling",
+  "tier": 1
+}

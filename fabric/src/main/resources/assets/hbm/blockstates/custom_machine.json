@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/custom_machine",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "hbm:block/custom_machine"
+    },
+    "facing=south": {
+      "model": "hbm:block/custom_machine",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "hbm:block/custom_machine",
+      "y": 270
+    }
+  }
+}

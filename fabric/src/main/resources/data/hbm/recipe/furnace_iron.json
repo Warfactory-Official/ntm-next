@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "minecraft:stone_bricks",
+    "F": "minecraft:furnace",
+    "I": "#c:ingots/iron"
+  },
+  "pattern": [
+    "III",
+    "IFI",
+    "BBB"
+  ],
+  "result": {
+    "id": "hbm:furnace_iron"
+  }
+}

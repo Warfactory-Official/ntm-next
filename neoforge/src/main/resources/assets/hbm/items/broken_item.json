@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "minecraft:composite",
+    "models": [
+      {
+        "type": "hbm:broken_item_source"
+      },
+      {
+        "type": "minecraft:model",
+        "model": "hbm:item/broken_item"
+      }
+    ]
+  }
+}

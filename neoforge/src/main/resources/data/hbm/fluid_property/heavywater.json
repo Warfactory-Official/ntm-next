@@ -1,0 +1,30 @@
+{
+  "type": "liquid",
+  "color": "#00a0b0",
+  "nfpa": {
+    "flame": 0,
+    "health": 1,
+    "react": 0
+  },
+  "shares": "#c:heavy_water",
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "heatable": {
+      "efficiency": {
+        "PWR": 1.0
+      },
+      "steps": [
+        {
+          "amount_produced": 1,
+          "amount_req": 1,
+          "heat_req": 300,
+          "produces": "hbm:heavywater_hot"
+        }
+      ]
+    },
+    "pwrmoderator": {
+      "multiplier": 1.25
+    }
+  }
+}

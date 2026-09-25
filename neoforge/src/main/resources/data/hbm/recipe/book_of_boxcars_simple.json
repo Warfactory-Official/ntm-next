@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "lbsm_simple_crafting"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "minecraft:book",
+    "B": "hbm:egg_balefire_shard",
+    "G": "#c:ingots/gold"
+  },
+  "pattern": [
+    "BGB",
+    "GAG",
+    "BGB"
+  ],
+  "result": {
+    "id": "hbm:book_of_"
+  }
+}

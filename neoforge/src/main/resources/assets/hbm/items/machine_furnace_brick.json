@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:block/machine_furnace_brick_off"
+  }
+}

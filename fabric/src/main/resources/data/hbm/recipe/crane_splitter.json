@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_vacuum_tube",
+    "I": "#c:ingots/steel",
+    "P": "hbm:part_generic_piston_pneumatic"
+  },
+  "pattern": [
+    "III",
+    "PCP",
+    "III"
+  ],
+  "result": {
+    "id": "hbm:crane_splitter"
+  }
+}

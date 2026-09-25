@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "hbm:block/barbed_wire",
+      "y": 180
+    },
+    "axis=z": {
+      "model": "hbm:block/barbed_wire",
+      "y": 90
+    }
+  }
+}

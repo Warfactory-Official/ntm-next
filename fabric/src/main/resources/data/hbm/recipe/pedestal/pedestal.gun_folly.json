@@ -1,0 +1,52 @@
+{
+  "type": "hbm:pedestal",
+  "extra": "full_moon",
+  "key": {
+    "A": {
+      "count": 4,
+      "ingredient": "hbm:item_secret_folly"
+    },
+    "B": {
+      "count": 2,
+      "ingredient": "hbm:item_secret_controller"
+    },
+    "C": {
+      "count": 4,
+      "ingredient": "hbm:item_secret_folly"
+    },
+    "D": {
+      "count": 16,
+      "ingredient": "#c:ingots/bscco"
+    },
+    "E": {
+      "count": 64,
+      "ingredient": "#c:storage_blocks/starmetal"
+    },
+    "F": {
+      "count": 16,
+      "ingredient": "#c:ingots/bscco"
+    },
+    "G": {
+      "count": 4,
+      "ingredient": "hbm:item_secret_folly"
+    },
+    "H": {
+      "count": 2,
+      "ingredient": "hbm:item_secret_controller"
+    },
+    "I": {
+      "count": 4,
+      "ingredient": "hbm:item_secret_folly"
+    }
+  },
+  "order": 10,
+  "output_items": [
+    "hbm:gun_folly"
+  ],
+  "pattern": [
+    "ABC",
+    "DEF",
+    "GHI"
+  ],
+  "recipe_set": 1
+}

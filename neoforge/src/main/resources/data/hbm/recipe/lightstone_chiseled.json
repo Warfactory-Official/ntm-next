@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:lightstone_unrefined"
+  ],
+  "result": {
+    "id": "hbm:lightstone_chiseled"
+  }
+}

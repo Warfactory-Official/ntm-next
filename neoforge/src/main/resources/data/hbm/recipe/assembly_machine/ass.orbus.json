@@ -1,0 +1,32 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_welded/any_resistant_alloy"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/saturnite"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:wires_dense/bscco"
+    },
+    {
+      "ingredient": "hbm:battery_sc_po210"
+    }
+  ],
+  "order": 203,
+  "output_items": [
+    "hbm:machine_orbus"
+  ],
+  "power": 100
+}

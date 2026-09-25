@@ -1,0 +1,27 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.controller"
+  ],
+  "duration": 300,
+  "input_items": [
+    {
+      "ingredient": "#hbm:shells/aluminum"
+    },
+    {
+      "ingredient": "hbm:fins_quad_titanium"
+    },
+    {
+      "ingredient": "hbm:circuit_controller"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:dyes/white"
+    }
+  ],
+  "order": 297,
+  "output_items": [
+    "hbm:nuke_fleija"
+  ],
+  "power": 100
+}

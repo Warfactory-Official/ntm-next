@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:coaloil",
+      "amount": 200
+    }
+  ],
+  "order": 13,
+  "output_items": [
+    "hbm:oil_tar_coal"
+  ]
+}

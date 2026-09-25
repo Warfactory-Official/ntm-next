@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "hbm:liquidator"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "hbm:liquidator"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "hbm:liquidator"
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#c:ingots/dura_steel",
+    "P": "hbm:part_generic_piston_pneumatic",
+    "R": "#c:ingots/rubber",
+    "S": "#hbm:shells/steel"
+  },
+  "pattern": [
+    "DPS",
+    " RD",
+    " D "
+  ],
+  "result": {
+    "id": "hbm:boltgun"
+  }
+}

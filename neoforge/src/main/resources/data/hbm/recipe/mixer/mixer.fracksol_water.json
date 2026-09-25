@@ -1,0 +1,26 @@
+{
+  "type": "hbm:mixer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 1000
+    },
+    {
+      "type": "hbm:petroleum",
+      "amount": 100
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/sulfur"
+    }
+  ],
+  "order": 4,
+  "output_fluids": [
+    {
+      "type": "hbm:fracksol",
+      "amount": 1000
+    }
+  ]
+}

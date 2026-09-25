@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/iron"
+    }
+  ],
+  "order": 0,
+  "output_items": [
+    "hbm:plate_iron"
+  ],
+  "overlay": "smithing",
+  "tier": 3
+}

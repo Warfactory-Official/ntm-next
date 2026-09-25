@@ -1,0 +1,36 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "enable_528_pressurized"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 250,
+      "pressure": 2
+    },
+    {
+      "type": "hbm:chlorine",
+      "amount": 250,
+      "pressure": 2
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/cadmium"
+    }
+  ],
+  "name": "chem.pvcPressurized",
+  "order": 47,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:ingot_pvc"
+    }
+  ],
+  "power": 1000
+}

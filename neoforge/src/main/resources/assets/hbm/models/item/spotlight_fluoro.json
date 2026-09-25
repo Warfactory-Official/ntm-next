@@ -1,0 +1,177 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -0.0,
+        -45.0,
+        0.0
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        -0.42426395,
+        0.0,
+        -0.42426395
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -0.0,
+        -45.0,
+        -0.0
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        0.42426395,
+        0.0,
+        0.42426395
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.9375,
+        0.9375,
+        0.9375
+      ],
+      "translation": [
+        0.9375,
+        -0.55999947,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        -4.0,
+        0.375
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -45.0,
+        -180.0
+      ],
+      "scale": [
+        0.9375,
+        0.93749994,
+        0.9375
+      ],
+      "translation": [
+        -0.66291237,
+        -0.33145618,
+        0.5740986
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        1.5,
+        1.5,
+        1.5
+      ],
+      "translation": [
+        1.5,
+        0.0,
+        0.0
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        1.875,
+        1.875,
+        1.875
+      ],
+      "translation": [
+        -1.875,
+        0.0,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -110.00001,
+        -45.0,
+        180.0
+      ],
+      "scale": [
+        0.5625,
+        0.5625,
+        0.5625
+      ],
+      "translation": [
+        -1.4816377,
+        0.60771537,
+        0.5067502
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -110.00001,
+        -45.0,
+        -180.0
+      ],
+      "scale": [
+        0.5625,
+        0.5625,
+        0.5625
+      ],
+      "translation": [
+        -0.39774752,
+        1.6262393,
+        0.1360377
+      ]
+    }
+  },
+  "gui_light": "side",
+  "hidden": [
+    "FluoroCap",
+    "FluoroMid"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/lights/fluorescent_lamp.obj",
+  "offset_x": -0.0625,
+  "offset_y": 0.5,
+  "skins": {
+    "all": [
+      "FluoroSingle"
+    ]
+  },
+  "smooth": false,
+  "textures": {
+    "all": "hbm:block/fluorescent_lamp",
+    "particle": "hbm:block/fluorescent_lamp"
+  }
+}

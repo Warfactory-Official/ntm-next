@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.75,
+  "ingredient": "hbm:sand_polonium",
+  "result": {
+    "id": "hbm:glass_polonium"
+  }
+}

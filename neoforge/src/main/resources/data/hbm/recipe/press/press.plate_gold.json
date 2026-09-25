@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/gold"
+    }
+  ],
+  "order": 12,
+  "output_items": [
+    "hbm:plate_gold"
+  ],
+  "stamp": "plate"
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:steel_beam",
+    "G": "#c:plates/gold",
+    "P": "#c:plates/steel",
+    "S": "hbm:steel_scaffold"
+  },
+  "pattern": [
+    "PGP",
+    "SSS",
+    "BBB"
+  ],
+  "result": {
+    "id": "hbm:seg_20"
+  }
+}

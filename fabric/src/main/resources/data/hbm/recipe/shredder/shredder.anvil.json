@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:anvil"
+    }
+  ],
+  "order": 138,
+  "output_items": [
+    {
+      "count": 31,
+      "id": "hbm:powder_iron"
+    }
+  ]
+}

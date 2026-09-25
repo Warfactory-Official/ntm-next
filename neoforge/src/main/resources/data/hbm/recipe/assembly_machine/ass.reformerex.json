@@ -1,0 +1,48 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.hardplastic"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_bronze_tubes"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/niobium"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:pipes/dura_steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_bismoid"
+    },
+    {
+      "ingredient": "hbm:item_expensive_computer"
+    }
+  ],
+  "name": "ass.reformerEx",
+  "order": 127,
+  "output_items": [
+    "hbm:machine_catalytic_reformer"
+  ],
+  "power": 100
+}

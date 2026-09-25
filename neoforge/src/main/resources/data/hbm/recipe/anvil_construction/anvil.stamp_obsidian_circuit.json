@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:stamp_obsidian_flat"
+    }
+  ],
+  "order": 167,
+  "output_items": [
+    "hbm:stamp_obsidian_circuit"
+  ],
+  "overlay": "smithing",
+  "tier": 2
+}

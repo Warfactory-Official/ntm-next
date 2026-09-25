@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 32,
+      "ingredient": "#hbm:wires_dense/bscco"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:item_expensive_ferro_plating"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_plastic"
+    },
+    {
+      "ingredient": "hbm:item_expensive_computer"
+    }
+  ],
+  "name": "ass.fusionklystronEx",
+  "order": 264,
+  "output_items": [
+    "hbm:fusion_klystron"
+  ],
+  "power": 100
+}

@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/glyphid_base_rad"
+      },
+      {
+        "model": "hbm:block/glyphid_base_rad_alt"
+      }
+    ]
+  }
+}

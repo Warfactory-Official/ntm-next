@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "hbm:block/brick_jungle",
+    "side": "hbm:block/brick_jungle_glyph_11"
+  }
+}

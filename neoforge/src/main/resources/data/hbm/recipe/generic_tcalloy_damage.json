@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#hbm:gun_mechanisms/weapon_steel",
+    "#hbm:plates_cast/any_resistant_alloy",
+    "#hbm:plates_cast/any_resistant_alloy",
+    "#hbm:plates_cast/any_resistant_alloy",
+    "hbm:ducttape"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_generic_tcalloy_damage"
+  }
+}

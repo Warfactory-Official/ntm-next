@@ -1,0 +1,27 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:pole_satellite_receiver"
+    }
+  ],
+  "order": 231,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:ingot_steel"
+    },
+    {
+      "chance": 0.5,
+      "count": 2,
+      "id": "hbm:ingot_steel"
+    },
+    {
+      "chance": 0.5,
+      "id": "hbm:circuit_vacuum_tube"
+    },
+    "hbm:wire_fine_mingrade"
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

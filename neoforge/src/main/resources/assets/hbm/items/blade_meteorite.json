@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "hbm:hot",
+    "model": "hbm:item/blade_meteorite"
+  }
+}

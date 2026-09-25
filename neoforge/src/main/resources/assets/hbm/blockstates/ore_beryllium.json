@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/ore_beryllium"
+      },
+      {
+        "model": "hbm:block/ore_beryllium_mirrored"
+      },
+      {
+        "model": "hbm:block/ore_beryllium",
+        "y": 180
+      },
+      {
+        "model": "hbm:block/ore_beryllium_mirrored",
+        "y": 180
+      }
+    ]
+  }
+}

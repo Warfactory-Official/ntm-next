@@ -1,0 +1,26 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/magnetized_tungsten"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:ducrete"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:cmb_brick"
+    }
+  ],
+  "order": 58,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:cmb_brick_reinforced"
+    }
+  ],
+  "power": 100
+}

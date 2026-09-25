@@ -1,0 +1,15 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/icf_pellet",
+    "tints": [
+      {
+        "type": "hbm:icf_pellet_color"
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "type": "hbm:pedestal",
+  "key": {
+    "A": {
+      "ingredient": "#c:ingots/starmetal"
+    },
+    "B": {
+      "ingredient": "#hbm:plates_cast/aluminum"
+    },
+    "C": {
+      "ingredient": "#c:ingots/starmetal"
+    },
+    "D": {
+      "ingredient": "#hbm:plates_cast/aluminum"
+    },
+    "E": {
+      "ingredient": "hbm:gun_amat"
+    },
+    "F": {
+      "ingredient": "#hbm:plates_cast/aluminum"
+    },
+    "G": {
+      "ingredient": "#c:ingots/starmetal"
+    },
+    "H": {
+      "ingredient": "#hbm:plates_cast/aluminum"
+    },
+    "I": {
+      "ingredient": "#c:ingots/starmetal"
+    }
+  },
+  "order": 4,
+  "output_items": [
+    "hbm:gun_amat_subtlety"
+  ],
+  "pattern": [
+    "ABC",
+    "DEF",
+    "GHI"
+  ]
+}

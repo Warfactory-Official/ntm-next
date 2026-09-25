@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/strontium"
+    }
+  ],
+  "order": 247,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

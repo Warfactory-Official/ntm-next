@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:conveyor_wand_regular",
+    "C": "minecraft:stone_bricks",
+    "P": "hbm:part_generic_piston_pneumatic"
+  },
+  "pattern": [
+    "C C",
+    "P P",
+    "CBC"
+  ],
+  "result": {
+    "id": "hbm:crane_grabber"
+  }
+}

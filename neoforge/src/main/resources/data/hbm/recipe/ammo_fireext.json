@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:bolts/steel",
+    "D": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "hbm:fluid_content": {
+          "type": "minecraft:water",
+          "amount": 1000,
+          "pressure": 0
+        }
+      },
+      "items": "hbm:fluid_tank"
+    },
+    "P": "#c:plates/steel"
+  },
+  "pattern": [
+    " P ",
+    "BDB",
+    " P "
+  ],
+  "result": {
+    "id": "hbm:ammo_fireext"
+  }
+}

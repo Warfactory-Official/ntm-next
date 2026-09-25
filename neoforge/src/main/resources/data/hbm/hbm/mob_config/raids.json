@@ -1,0 +1,10 @@
+{
+  "amount": 15,
+  "attack_delay": 40,
+  "attack_distance": 32,
+  "attack_reach": 2,
+  "chance": 3,
+  "delay": 108000,
+  "drones": 5,
+  "enabled": false
+}

@@ -1,0 +1,28 @@
+{
+  "parent": "hbm:bossmaskman",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "kind": "worm"
+      },
+      "trigger": "hbm:boss_killed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.bossWorm.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:coin_worm"
+    },
+    "title": {
+      "translate": "achievement.bossWorm"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

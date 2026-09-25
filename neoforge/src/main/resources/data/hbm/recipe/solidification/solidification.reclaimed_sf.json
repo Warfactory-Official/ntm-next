@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:reclaimed",
+      "amount": 15000
+    }
+  ],
+  "order": 24,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

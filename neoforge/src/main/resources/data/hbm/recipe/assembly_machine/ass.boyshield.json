@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "hbm:neutron_reflector"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/steel"
+    }
+  ],
+  "order": 309,
+  "output_items": [
+    "hbm:boy_shielding"
+  ],
+  "power": 100
+}

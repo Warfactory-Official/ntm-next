@@ -1,0 +1,17 @@
+{
+  "type": "hbm:blast_furnace",
+  "duration": 1200,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/cobalt"
+    },
+    {
+      "ingredient": "hbm:meteorite_sword_hardened"
+    }
+  ],
+  "name": "blast.meteorSword",
+  "order": 9,
+  "output_items": [
+    "hbm:meteorite_sword_alloyed"
+  ]
+}

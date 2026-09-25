@@ -1,0 +1,15 @@
+{
+  "type": "hbm:fuel_pool",
+  "input_items": [
+    {
+      "components": {
+        "hbm:decay_heat": true
+      },
+      "ingredient": "hbm:waste_schrabidium"
+    }
+  ],
+  "order": 7,
+  "output_items": [
+    "hbm:waste_schrabidium"
+  ]
+}

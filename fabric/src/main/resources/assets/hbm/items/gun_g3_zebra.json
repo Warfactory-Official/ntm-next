@@ -1,0 +1,104 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_g3_zebra_base",
+    "draws": [
+      {
+        "parts": [
+          "Rifle",
+          "Magazine",
+          "Guide_And_Bolt",
+          "Handle",
+          "Trigger"
+        ]
+      },
+      {
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.8660254,
+          0.5,
+          1.6327722,
+          0.0,
+          -0.5,
+          0.8660254,
+          -0.9064112,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Selector"
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 205
+          }
+        ],
+        "parts": [
+          "Stock"
+        ]
+      },
+      {
+        "parts": [
+          "Silencer",
+          "Scope"
+        ],
+        "texture": "hbm:textures/models/weapons/g3_attachments.png"
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -5.0,
+      2.5,
+      -0.0,
+      -5.0,
+      0.0,
+      -2.5,
+      5.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/g3.obj",
+    "pose_overrides": [
+      {
+        "gui": [
+          1.280822,
+          -1.1920929E-7,
+          0.11205736,
+          2.4520555,
+          1.4901161E-7,
+          1.2857145,
+          -1.3411045E-7,
+          0.14285755,
+          -0.11205757,
+          1.1920929E-7,
+          1.2808219,
+          -0.28014517,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "requires_mods": [
+          {
+            "id": 205
+          }
+        ]
+      }
+    ],
+    "texture": "hbm:textures/models/weapons/g3_zebra.png"
+  }
+}

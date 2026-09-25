@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:heatingoil_vacuum",
+      "amount": 1300
+    }
+  ],
+  "order": 23,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

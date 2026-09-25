@@ -1,0 +1,29 @@
+{
+  "content": {
+    "en_us": "LPG can be produced by [[compressing|Compressor]] [[petroleum gas|Petroleum Gas]] to '1PU'. It is primarily used as a combustible [[fuel|Fuels]] source.<br><br>See also:<br>[[Advanced Oil Processing]]"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:lpg",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -12105750
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "LPG",
+  "title": {
+    "en_us": "LPG"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:lpg"
+    }
+  }
+}

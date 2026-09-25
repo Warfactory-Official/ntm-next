@@ -1,0 +1,23 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Barrels",
+    "Body",
+    "Carriage",
+    "Connectors"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/turrets/turret_chekhov.obj",
+  "offset_x": -0.5,
+  "offset_z": -0.5,
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/turrets/base",
+    "particle": "hbm:block/block_steel"
+  }
+}

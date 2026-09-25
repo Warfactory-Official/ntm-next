@@ -1,0 +1,42 @@
+{
+  "model": {
+    "type": "hbm:mesh",
+    "base": "hbm:item/mp_fuselage_10_long_solid_bullet_base",
+    "mesh": "hbm:models/missile_parts/mp_f_10_long_kerosene.obj",
+    "pose_suffix": {
+      "gui": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "skins": [
+      "hbm:textures/models/missile_parts/fuselages/contest/mp_f_10_long_solid_bullet.png"
+    ],
+    "smooth": false,
+    "spin": {
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "divisor": 25,
+      "modulus": 360,
+      "rate": 1.0
+    }
+  },
+  "oversized_in_gui": true
+}

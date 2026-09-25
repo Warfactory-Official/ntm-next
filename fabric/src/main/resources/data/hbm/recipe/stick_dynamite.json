@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "hbm:ball_dynamite",
+    "P": "minecraft:paper",
+    "S": "hbm:safety_fuse"
+  },
+  "pattern": [
+    " S ",
+    "PDP",
+    "PDP"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:stick_dynamite"
+  }
+}

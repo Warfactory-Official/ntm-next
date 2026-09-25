@@ -1,0 +1,16 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "lbsm_simple_crafting"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:ore_uranium_scorched",
+    "minecraft:water_bucket"
+  ],
+  "result": {
+    "id": "hbm:ore_uranium"
+  }
+}

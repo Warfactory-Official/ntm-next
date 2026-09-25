@@ -1,0 +1,27 @@
+{
+  "content": {
+    "en_us": "Tantalium ('Tantalum') can be extracted out of [[coltan|Coltan]] which is only found within one specific area in the world. Used mainly for tantalium capacitors, which are crucial for the control units used by most nuclear bombs.",
+    "ru_ru": "Тантал ('Tantalum') добывается из [[колтана|Coltan]], который встречается только в одной определённой области мира. В основном используется для танталовых конденсаторов, которые критически важны для блоков управления, используемых в большинстве ядерных бомб.",
+    "uk_ua": "Тантал ('Танталій') можна отримати з [[колтану|Coltan]] який зустрічається лише в одному конкретному регіоні світу. Використовується переважно для танталових конденсаторів, які є критично важливими для блоків керування, що використовуються в більшості ядерних бомб.",
+    "zh_cn": "钽可从仅生成在特定区域的[[钶钽铁矿|Coltan]]中提取。 主要用于制作钽电容器，钽电容器可作为大多数核弹所需的控制单元的重要原料。"
+  },
+  "icon": "hbm:ingot_tantalium",
+  "name": "Tantalium",
+  "title": {
+    "en_us": "Tantalium",
+    "ru_ru": "Тантал",
+    "uk_ua": "Тантал",
+    "zh_cn": "钽"
+  },
+  "trigger": [
+    {
+      "items": "hbm:ingot_tantalium"
+    },
+    {
+      "items": "hbm:powder_tantalium"
+    },
+    {
+      "items": "hbm:nugget_tantalium"
+    }
+  ]
+}

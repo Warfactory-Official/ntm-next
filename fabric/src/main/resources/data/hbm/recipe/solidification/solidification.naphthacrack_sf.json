@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:naphtha_crack",
+      "amount": 20000
+    }
+  ],
+  "order": 27,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

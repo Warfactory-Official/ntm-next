@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/diamond"
+    }
+  ],
+  "order": 2,
+  "output_items": [
+    "minecraft:diamond"
+  ],
+  "stamp": "flat"
+}

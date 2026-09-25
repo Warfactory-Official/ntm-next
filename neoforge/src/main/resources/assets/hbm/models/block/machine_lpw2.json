@@ -1,0 +1,43 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "WireLeft",
+    "WireRight",
+    "Center",
+    "SuspensionBackCenter",
+    "SuspensionBackOuter",
+    "SuspensionLeft",
+    "SuspensionRight",
+    "SuspensionBottom",
+    "SuspensionTop",
+    "SuspensionCoverBack",
+    "Server4",
+    "Server3",
+    "Server2",
+    "Server1",
+    "Monitor",
+    "Screen",
+    "SuspensionCoverFront",
+    "Cover",
+    "Piston",
+    "Flap",
+    "TurbineBack",
+    "TurbineFront",
+    "Rotor",
+    "ShroudV",
+    "ShroudH",
+    "Engine"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/lpw2.obj",
+  "skins": {
+    "all": [
+      "Frame"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/lpw2",
+    "particle": "hbm:block/block_steel"
+  }
+}

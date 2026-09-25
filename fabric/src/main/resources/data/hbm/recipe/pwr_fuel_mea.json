@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": "#hbm:billets/americium_rg",
+    "I": "hbm:plate_polymer"
+  },
+  "pattern": [
+    "F",
+    "I",
+    "F"
+  ],
+  "result": {
+    "id": "hbm:pwr_fuel_mea"
+  }
+}

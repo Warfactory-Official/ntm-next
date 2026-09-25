@@ -1,0 +1,20 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_aluminium"
+    }
+  ],
+  "order": 147,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:chunk_ore_cryolite"
+    },
+    "hbm:powder_titanium",
+    "hbm:powder_iron",
+    "hbm:powder_lithium_tiny"
+  ],
+  "power": 200
+}

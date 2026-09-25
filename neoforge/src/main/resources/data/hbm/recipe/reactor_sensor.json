@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_basic",
+    "M": "hbm:magnetron",
+    "P": "#c:plates/lead",
+    "W": "#c:fine_wires/tungsten"
+  },
+  "pattern": [
+    "WPW",
+    "CMC",
+    "PPP"
+  ],
+  "result": {
+    "id": "hbm:reactor_sensor"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "hbm:pyro_oven",
+  "duration": 60,
+  "input_fluids": [
+    {
+      "type": "hbm:gas_coker",
+      "amount": 4000
+    }
+  ],
+  "order": 68,
+  "output_fluids": [
+    {
+      "type": "hbm:reformgas",
+      "amount": 100
+    }
+  ]
+}

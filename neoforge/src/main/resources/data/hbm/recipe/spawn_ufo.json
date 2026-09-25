@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:coin_worm",
+    "D": "#c:ingots/dineutronium",
+    "M": "hbm:ingot_meteorite"
+  },
+  "pattern": [
+    "MMM",
+    "DCD",
+    "MMM"
+  ],
+  "result": {
+    "id": "hbm:spawn_ufo"
+  }
+}

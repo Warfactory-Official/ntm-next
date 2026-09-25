@@ -1,0 +1,21 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "On",
+    "Off"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/furnace_iron.obj",
+  "offset_x": -0.5,
+  "offset_z": -0.5,
+  "skins": {
+    "all": [
+      "Main"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/furnace_iron",
+    "particle": "hbm:block/models/machines/furnace_iron"
+  }
+}

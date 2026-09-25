@@ -1,0 +1,31 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#hbm:plates_cast/titanium"
+    },
+    {
+      "count": 6,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:det_nuke"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:storage_blocks/uranium_238"
+    },
+    {
+      "count": 5,
+      "ingredient": "hbm:circuit_capacitor_board"
+    }
+  ],
+  "order": 358,
+  "output_items": [
+    "hbm:warhead_volcano"
+  ],
+  "power": 100
+}

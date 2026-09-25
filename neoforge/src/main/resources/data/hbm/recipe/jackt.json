@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#hbm:ingots/any_rubber",
+    "L": "minecraft:leather",
+    "S": "#c:plates/steel"
+  },
+  "pattern": [
+    "S S",
+    "LIL",
+    "LIL"
+  ],
+  "result": {
+    "id": "hbm:jackt"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "minecraft:iron_sword"
+    },
+    {
+      "ingredient": "minecraft:name_tag"
+    }
+  ],
+  "kind": "rename",
+  "order": 57,
+  "output_items": [
+    "minecraft:iron_sword"
+  ]
+}

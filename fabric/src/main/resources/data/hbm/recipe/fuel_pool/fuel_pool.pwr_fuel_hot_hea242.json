@@ -1,0 +1,12 @@
+{
+  "type": "hbm:fuel_pool",
+  "input_items": [
+    {
+      "ingredient": "hbm:pwr_fuel_hot_hea242"
+    }
+  ],
+  "order": 26,
+  "output_items": [
+    "hbm:pwr_fuel_depleted_hea242"
+  ]
+}

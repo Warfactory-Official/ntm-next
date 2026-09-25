@@ -1,0 +1,8 @@
+{
+  "rate": {
+    "type": "fixed",
+    "emission": 1.6666666666666667,
+    "saturation": 51200.0
+  },
+  "targets": "hbm:corium_block"
+}

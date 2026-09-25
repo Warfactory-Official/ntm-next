@@ -1,0 +1,31 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "hbm:mesh",
+          "base": "hbm:item/shimmer_sledge_base",
+          "cull": false,
+          "mesh": "hbm:models/shimmer_sledge.obj",
+          "skins": [
+            "hbm:textures/models/shimmer_sledge.png"
+          ]
+        },
+        "when": [
+          "thirdperson_righthand",
+          "thirdperson_lefthand",
+          "firstperson_righthand",
+          "firstperson_lefthand",
+          "ground",
+          "fixed"
+        ]
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:item/shimmer_sledge_flat"
+    },
+    "property": "minecraft:display_context"
+  }
+}

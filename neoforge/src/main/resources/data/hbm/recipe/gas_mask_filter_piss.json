@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": "hbm:rag_piss",
+    "I": "#c:ingots/iron"
+  },
+  "pattern": [
+    "I",
+    "F"
+  ],
+  "result": {
+    "id": "hbm:gas_mask_filter_piss"
+  }
+}

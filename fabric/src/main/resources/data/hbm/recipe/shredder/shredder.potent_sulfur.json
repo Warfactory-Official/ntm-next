@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:potent_sulfur"
+    }
+  ],
+  "order": 65,
+  "output_items": [
+    {
+      "count": 9,
+      "id": "hbm:sulfur"
+    }
+  ]
+}

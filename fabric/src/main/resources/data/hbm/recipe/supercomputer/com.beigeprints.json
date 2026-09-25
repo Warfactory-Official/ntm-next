@@ -1,0 +1,33 @@
+{
+  "type": "hbm:supercomputer",
+  "duration": 18000,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "minecraft:paper"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:gems/cinnabar"
+    }
+  ],
+  "order": 16,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:blueprint_folder_discover"
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "count": 24,
+          "id": "minecraft:paper"
+        },
+        "weight": 90
+      }
+    ]
+  ],
+  "power": 50000
+}

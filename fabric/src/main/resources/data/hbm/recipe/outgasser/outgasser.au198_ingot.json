@@ -1,0 +1,13 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/gold"
+    }
+  ],
+  "order": 4,
+  "output_items": [
+    "hbm:ingot_au198"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "type": "hbm:mixer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:reformgas",
+      "amount": 750
+    },
+    {
+      "type": "hbm:chlorine",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/sulfur"
+    }
+  ],
+  "order": 9,
+  "output_fluids": [
+    {
+      "type": "hbm:mustardgas",
+      "amount": 1000
+    }
+  ]
+}

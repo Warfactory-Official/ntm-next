@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/saturnite"
+    }
+  ],
+  "order": 22,
+  "output_items": [
+    "hbm:plate_saturnite"
+  ],
+  "stamp": "plate"
+}

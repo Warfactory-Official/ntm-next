@@ -1,0 +1,22 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_ash_coal"
+    }
+  ],
+  "order": 35,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_coal_tiny"
+    },
+    "hbm:powder_boron_tiny",
+    {
+      "count": 6,
+      "id": "hbm:dust_tiny"
+    }
+  ],
+  "power": 200
+}

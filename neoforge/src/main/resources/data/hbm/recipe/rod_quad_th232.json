@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:rod_quad_empty",
+    "#hbm:billets/thorium",
+    "#hbm:billets/thorium",
+    "#hbm:billets/thorium",
+    "#hbm:billets/thorium"
+  ],
+  "result": {
+    "id": "hbm:rod_quad_th232"
+  }
+}

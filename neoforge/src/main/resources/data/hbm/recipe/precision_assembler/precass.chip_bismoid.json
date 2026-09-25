@@ -1,0 +1,58 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:precision_assembler",
+  "blueprint_pools": [
+    "528.chip_bismoid"
+  ],
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:perfluoromethyl",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_silicon"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:plate_polymer"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:nuggets/any_bismoid"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:fine_wires/gold"
+    }
+  ],
+  "order": 5,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:circuit_chip_bismoid"
+        },
+        "weight": 750
+      },
+      {
+        "data": {
+          "components": {
+            "hbm:broken_item_source": "hbm:circuit_chip_bismoid"
+          },
+          "id": "hbm:broken_item"
+        },
+        "weight": 250
+      }
+    ]
+  ],
+  "power": 1000
+}

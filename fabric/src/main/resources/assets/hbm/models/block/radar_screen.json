@@ -1,0 +1,18 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "double_sided": [
+    "Plane"
+  ],
+  "gui_light": "side",
+  "model": "hbm:models/machines/radar_screen.obj",
+  "skins": {
+    "all": [
+      "Plane"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/radar_screen",
+    "particle": "hbm:block/block_steel"
+  }
+}

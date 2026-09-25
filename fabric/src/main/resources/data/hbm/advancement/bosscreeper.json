@@ -1,0 +1,29 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "kinds": [
+          "nuclear_creeper"
+        ]
+      },
+      "trigger": "hbm:detonation"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.bossCreeper.desc"
+    },
+    "icon": {
+      "id": "hbm:coin_creeper"
+    },
+    "title": {
+      "translate": "achievement.bossCreeper"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

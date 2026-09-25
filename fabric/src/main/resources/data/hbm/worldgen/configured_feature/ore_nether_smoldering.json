@@ -1,0 +1,12 @@
+{
+  "type": "hbm:nether_surface",
+  "config": {
+    "attempts": 30,
+    "d_range": 96,
+    "min_d": 16,
+    "scan_down": 5,
+    "state": {
+      "Name": "hbm:ore_nether_smoldering"
+    }
+  }
+}

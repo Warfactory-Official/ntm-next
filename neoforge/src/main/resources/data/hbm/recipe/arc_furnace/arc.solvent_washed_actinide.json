@@ -1,0 +1,29 @@
+{
+  "type": "hbm:arc_furnace",
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "actinide",
+          "grade": "solvent_washed"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 71,
+  "output_materials": [
+    {
+      "amount": 48,
+      "material": "radium_226"
+    },
+    {
+      "amount": 48,
+      "material": "radium_226"
+    },
+    {
+      "amount": 48,
+      "material": "polonium_210"
+    }
+  ]
+}

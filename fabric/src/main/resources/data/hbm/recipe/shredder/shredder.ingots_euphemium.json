@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/euphemium"
+    }
+  ],
+  "order": 436,
+  "output_items": [
+    "hbm:powder_euphemium"
+  ]
+}

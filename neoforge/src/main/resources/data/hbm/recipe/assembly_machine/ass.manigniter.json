@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:fine_wires/gold"
+    }
+  ],
+  "order": 314,
+  "output_items": [
+    "hbm:man_igniter"
+  ],
+  "power": 100
+}

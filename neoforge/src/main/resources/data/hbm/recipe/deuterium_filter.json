@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:catalyst_clay",
+    "S": "#c:dusts/sulfur",
+    "T": "#hbm:ingots/any_resistant_alloy"
+  },
+  "pattern": [
+    "TST",
+    "SCS",
+    "TST"
+  ],
+  "result": {
+    "id": "hbm:deuterium_filter"
+  }
+}

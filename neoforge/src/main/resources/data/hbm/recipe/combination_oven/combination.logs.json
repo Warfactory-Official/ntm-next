@@ -1,0 +1,18 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "ingredient": "#minecraft:logs"
+    }
+  ],
+  "order": 14,
+  "output_fluids": [
+    {
+      "type": "hbm:woodoil",
+      "amount": 250
+    }
+  ],
+  "output_items": [
+    "minecraft:charcoal"
+  ]
+}

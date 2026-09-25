@@ -1,0 +1,27 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 2000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/schrabidium"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:dusts/sulfur"
+    }
+  ],
+  "order": 83,
+  "output_fluids": [
+    {
+      "type": "hbm:sas3",
+      "amount": 1000
+    }
+  ],
+  "power": 5000
+}

@@ -1,0 +1,24 @@
+{
+  "type": "hbm:arc_furnace",
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "grade": "primary_second"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 53,
+  "output_materials": [
+    {
+      "amount": 144,
+      "material": "iron"
+    },
+    {
+      "amount": 360,
+      "material": "copper"
+    }
+  ]
+}

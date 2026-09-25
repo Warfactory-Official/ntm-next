@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_light/dura_steel",
+    "G": "#hbm:grips/wood",
+    "M": "#hbm:gun_mechanisms/gun_metal",
+    "R": "#hbm:receivers_light/dura_steel",
+    "S": "#hbm:stocks/wood"
+  },
+  "pattern": [
+    "BRS",
+    "GMG"
+  ],
+  "result": {
+    "id": "hbm:gun_am180"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "E": "#c:ingots/euphemium",
+    "T": "#c:dusts/tennessine"
+  },
+  "pattern": [
+    "TET",
+    "ETE",
+    "TET"
+  ],
+  "result": {
+    "id": "hbm:ams_catalyst_blank"
+  }
+}

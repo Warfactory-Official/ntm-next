@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": "#hbm:ingots/any_plastic",
+    "S": "#c:storage_blocks/steel",
+    "T": "#c:storage_blocks/tungsten"
+  },
+  "pattern": [
+    "STS",
+    "SPS",
+    " P "
+  ],
+  "result": {
+    "id": "hbm:smashing_hammer"
+  }
+}

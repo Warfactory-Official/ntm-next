@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": "minecraft:paper",
+    "R": "#c:dyes/red"
+  },
+  "pattern": [
+    " R ",
+    "RPR",
+    " R "
+  ],
+  "result": {
+    "id": "hbm:flame_opinion"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "liquid",
+  "color": "#ff7fed",
+  "nfpa": {
+    "flame": 3,
+    "health": 3,
+    "react": 3
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "corrosive": {
+      "rating": 65
+    },
+    "polluting": {
+      "release": {
+        "POISON": 2.0000001E-5
+      }
+    }
+  }
+}

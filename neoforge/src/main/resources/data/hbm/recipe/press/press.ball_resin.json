@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "minecraft:jungle_log"
+    }
+  ],
+  "order": 7,
+  "output_items": [
+    "hbm:ball_resin"
+  ],
+  "stamp": "flat"
+}

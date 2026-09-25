@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#c:dyes/pink",
+    "O": "#c:dyes/yellow",
+    "P": "minecraft:paper"
+  },
+  "pattern": [
+    " O ",
+    "DPD",
+    " O "
+  ],
+  "result": {
+    "id": "hbm:flame_pony"
+  }
+}

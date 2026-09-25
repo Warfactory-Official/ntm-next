@@ -1,0 +1,26 @@
+{
+  "type": "hbm:custom_machine",
+  "duration": 60,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_sawdust"
+    }
+  ],
+  "order": 0,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "minecraft:paper"
+    }
+  ],
+  "pollution_amount": 0.03,
+  "pollution_type": "SOOT",
+  "power": 10,
+  "recipe_key": "paperPress"
+}

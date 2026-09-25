@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:bolts/steel",
+    "P": "#c:plates/iron",
+    "R": "#c:dusts/redstone"
+  },
+  "pattern": [
+    "BPB",
+    "PRP",
+    "BPB"
+  ],
+  "result": {
+    "id": "hbm:fan"
+  }
+}

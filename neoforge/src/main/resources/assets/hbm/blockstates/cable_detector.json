@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "open=false": {
+      "model": "hbm:block/cable_detector_off"
+    },
+    "open=true": {
+      "model": "hbm:block/cable_detector_on"
+    }
+  }
+}

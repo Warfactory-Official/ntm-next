@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "role=air_in": {
+      "model": "hbm:block/pile_block_input"
+    },
+    "role=air_out": {
+      "model": "hbm:block/pile_block_output"
+    },
+    "role=channel": {
+      "model": "hbm:block/pile_block"
+    },
+    "role=control": {
+      "model": "hbm:block/pile_block_control"
+    },
+    "role=core": {
+      "model": "hbm:block/pile_block_core"
+    },
+    "role=dummy": {
+      "model": "hbm:block/pile_block"
+    },
+    "role=edge": {
+      "model": "hbm:block/pile_block"
+    },
+    "role=fuel_in": {
+      "model": "hbm:block/pile_block_input"
+    },
+    "role=fuel_out": {
+      "model": "hbm:block/pile_block_output"
+    }
+  }
+}

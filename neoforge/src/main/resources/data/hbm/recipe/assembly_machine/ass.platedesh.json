@@ -1,0 +1,25 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/workers_alloy"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:dusts/any_plastic"
+    },
+    {
+      "ingredient": "#c:ingots/dura_steel"
+    }
+  ],
+  "order": 15,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:plate_desh"
+    }
+  ],
+  "power": 100
+}

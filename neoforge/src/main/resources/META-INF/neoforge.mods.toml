@@ -1,0 +1,90 @@
+modLoader = "javafml"
+loaderVersion = "[0,)"
+license = "LGPL-3.0-only"
+
+[[mods]]
+modId = "hbm"
+version = "${file.jarVersion}"
+displayName = "NTM"
+description = "Nuclear Tech Mod, ported to Minecraft 26.2 for Fabric and NeoForge."
+authors = "HbmMods (The Bobcat), movblock"
+credits = "HbmMods (The Bobcat): creating the original mod. movblock: porting to 26.2. Raw ore textures: MrNorwood (thorium, cobalt, lithium, schrabidium); Mr. Morgan and NuclearGrandFather (aluminium, beryllium, lead, plutonium, titanium, tungsten, uranium)."
+displayTest = "IGNORE_ALL_VERSION"
+enumExtensions = "META-INF/enumextensions.json"
+
+[[mixins]]
+config = "hbm-common.mixins.json"
+
+[[mixins]]
+config = "hbm-compat.mixins.json"
+
+[[mixins]]
+config = "hbm-storage-compat.mixins.json"
+
+[[mixins]]
+config = "hbm-network-compat.mixins.json"
+
+[[mixins]]
+config = "hbm-neoforge-storage.mixins.json"
+
+[[mixins]]
+config = "hbm-neoforge.mixins.json"
+
+[[accessTransformers]]
+file = "META-INF/accesstransformer.cfg"
+
+[[dependencies.hbm]]
+modId = "minecraft"
+type = "required"
+versionRange = "[26.2,26.3)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hbm]]
+modId = "crankshaft"
+type = "required"
+versionRange = "[1.5.3,)"
+ordering = "AFTER"
+side = "CLIENT"
+
+[[dependencies.hbm]]
+modId = "ctm"
+type = "optional"
+versionRange = "[26.2.0.1]"
+ordering = "AFTER"
+side = "CLIENT"
+
+[[dependencies.hbm]]
+modId = "scalablelux"
+type = "optional"
+versionRange = "[0.3.0-alpha.0.16,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hbm]]
+modId = "lithium"
+type = "optional"
+versionRange = "[0.25.3,0.26)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hbm]]
+modId = "iris"
+type = "incompatible"
+versionRange = "(,1.11.4+mc26.2)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.hbm]]
+modId = "sodium"
+type = "incompatible"
+versionRange = "(,0.9.2-beta.1+mc26.2)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.hbm]]
+modId = "neoforge"
+type = "required"
+versionRange = "[26.2.0.7-beta,26.3)"
+ordering = "NONE"
+side = "BOTH"

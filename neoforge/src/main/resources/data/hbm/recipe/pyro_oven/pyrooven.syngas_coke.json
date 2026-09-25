@@ -1,0 +1,22 @@
+{
+  "type": "hbm:pyro_oven",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:steam",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#hbm:gems/any_coke"
+    }
+  ],
+  "order": 60,
+  "output_fluids": [
+    {
+      "type": "hbm:syngas",
+      "amount": 1000
+    }
+  ]
+}

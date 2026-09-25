@@ -1,0 +1,24 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "earned": {
+      "trigger": "hbm:bled_out"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.someWounds.desc"
+    },
+    "icon": {
+      "id": "hbm:injector_knife"
+    },
+    "title": {
+      "translate": "achievement.someWounds"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

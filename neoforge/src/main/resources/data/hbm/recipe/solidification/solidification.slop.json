@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:slop",
+      "amount": 250
+    }
+  ],
+  "order": 6,
+  "output_items": [
+    "hbm:ore_oil_sand"
+  ]
+}

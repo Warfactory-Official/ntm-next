@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:cable",
+    "D": [
+      "hbm:fluid_pipe",
+      "hbm:fluid_pipe_silver",
+      "hbm:fluid_pipe_colored"
+    ],
+    "S": [
+      "hbm:steel_scaffold",
+      "hbm:steel_scaffold_red",
+      "hbm:steel_scaffold_white",
+      "hbm:steel_scaffold_yellow"
+    ]
+  },
+  "pattern": [
+    "SSS",
+    "DCD",
+    "SSS"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:struct_scaffold"
+  }
+}

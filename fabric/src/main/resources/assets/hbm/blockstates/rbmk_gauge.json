@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/rbmk_gauge_east"
+    },
+    "facing=north": {
+      "model": "hbm:block/rbmk_gauge_north"
+    },
+    "facing=south": {
+      "model": "hbm:block/rbmk_gauge_south"
+    },
+    "facing=west": {
+      "model": "hbm:block/rbmk_gauge_west"
+    }
+  }
+}

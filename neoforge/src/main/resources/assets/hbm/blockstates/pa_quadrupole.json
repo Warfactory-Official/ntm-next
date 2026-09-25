@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/pa_quadrupole"
+    },
+    "facing=north": {
+      "model": "hbm:block/pa_quadrupole",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/pa_quadrupole",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/pa_quadrupole",
+      "y": 180
+    }
+  }
+}

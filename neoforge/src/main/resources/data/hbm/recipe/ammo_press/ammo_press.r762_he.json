@@ -1,0 +1,31 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    },
+    "B": {
+      "ingredient": "#c:ingots/ferrouranium"
+    },
+    "C": {
+      "count": 4,
+      "ingredient": "#hbm:dusts/any_smokeless"
+    },
+    "D": {
+      "count": 2,
+      "ingredient": "hbm:casing_small_steel"
+    }
+  },
+  "order": 34,
+  "output_items": [
+    {
+      "count": 12,
+      "id": "hbm:ammo_standard_r762_he"
+    }
+  ],
+  "pattern": [
+    "AB ",
+    " C ",
+    " D "
+  ]
+}

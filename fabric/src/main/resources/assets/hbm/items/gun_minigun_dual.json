@@ -1,0 +1,143 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "akimbo_base": "hbm:item/gun_minigun_dual_akimbo_base",
+    "akimbo_draws": [
+      {
+        "parts": [
+          "GunDual",
+          "Barrels"
+        ]
+      }
+    ],
+    "akimbo_muzzles": [
+      {
+        "duration": 50,
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.5,
+          0.0,
+          0.0,
+          1.5,
+          0.0,
+          0.5,
+          -1.5,
+          0.0,
+          -0.0,
+          12.25,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "akimbo_shot_config": 0,
+    "base": "hbm:item/gun_minigun_dual_base",
+    "equipped_muzzles": [
+      {
+        "duration": 50,
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.5,
+          0.0,
+          0.0,
+          1.5,
+          0.0,
+          0.5,
+          -1.5,
+          0.0,
+          -0.0,
+          12.25,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "equipped_shot_config": 1,
+    "gui_draws": [
+      {
+        "matrix": [
+          0.50000006,
+          0.7071067,
+          -0.50000006,
+          0.0,
+          0.49999994,
+          -0.7071069,
+          -0.49999994,
+          0.0,
+          -0.70710677,
+          0.0,
+          -0.70710677,
+          0.0,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "GunDual",
+          "Barrels"
+        ]
+      },
+      {
+        "matrix": [
+          0.49999994,
+          -0.7071069,
+          0.49999994,
+          0.0,
+          -0.50000006,
+          -0.7071067,
+          -0.50000006,
+          0.0,
+          0.70710677,
+          0.0,
+          -0.70710677,
+          8.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "Barrels"
+        ]
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -6.25,
+      0.0,
+      -0.0,
+      -6.25,
+      0.0,
+      0.0,
+      6.25,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/minigun.obj",
+    "parts": [
+      "Gun",
+      "Barrels"
+    ],
+    "texture": "hbm:textures/models/weapons/minigun_dual.png"
+  }
+}

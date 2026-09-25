@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:deco_beryllium"
+  ],
+  "ctm_textures": {
+    "hbm:block/deco_beryllium": "hbm:block/ctm_lib/deco_beryllium"
+  },
+  "variants": {
+    "": {
+      "model": "hbm:block/deco_beryllium"
+    }
+  }
+}

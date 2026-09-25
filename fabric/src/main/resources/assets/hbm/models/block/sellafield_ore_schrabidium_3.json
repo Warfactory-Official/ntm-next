@@ -1,0 +1,7 @@
+{
+  "parent": "hbm:block/sellafield_ore_overlay_base",
+  "textures": {
+    "base": "hbm:block/sellafield_slaked_3",
+    "overlay": "hbm:block/ore_overlay_schrabidium"
+  }
+}

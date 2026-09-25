@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbm:ingot_firebrick"
+    },
+    {
+      "count": 6,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_welded/copper"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:concretes"
+    }
+  ],
+  "order": 166,
+  "output_items": [
+    "hbm:machine_strand_caster"
+  ],
+  "power": 100
+}

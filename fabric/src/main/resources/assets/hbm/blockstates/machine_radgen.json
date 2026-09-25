@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_radgen"
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_radgen",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_radgen",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_radgen",
+      "y": 180
+    }
+  }
+}

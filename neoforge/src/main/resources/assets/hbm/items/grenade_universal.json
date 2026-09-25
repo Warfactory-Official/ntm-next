@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "hbm:grenade",
+    "base": "hbm:item/grenade_universal_base"
+  }
+}

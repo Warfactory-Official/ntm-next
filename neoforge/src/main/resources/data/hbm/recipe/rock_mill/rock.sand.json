@@ -1,0 +1,48 @@
+{
+  "type": "hbm:rock_mill",
+  "auto_switch_group": "autoswitch.crushing",
+  "duration": 100,
+  "icon_from_input": true,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#minecraft:sand"
+    }
+  ],
+  "name_wrapper": "rock.crushing",
+  "order": 2,
+  "output_fluids": [
+    {
+      "type": "hbm:colloid",
+      "amount": 250
+    }
+  ],
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:dust"
+        },
+        "weight": 90
+      },
+      {
+        "data": {
+          "id": "hbm:powder_calcium"
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "id": "hbm:fluorite"
+        },
+        "weight": 5
+      }
+    ]
+  ],
+  "power": 25
+}

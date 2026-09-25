@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "lbsm_simple_crafting"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": "#c:ingots/schrabidium"
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 24,
+    "id": "hbm:wire_fine_schrabidium"
+  }
+}

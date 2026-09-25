@@ -1,0 +1,60 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_henry_base",
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 5.0,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          1.0,
+          -1.0,
+          0.0,
+          -0.0,
+          8.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -7.5,
+      0.0,
+      -0.0,
+      -7.5,
+      0.0,
+      0.0,
+      7.5,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/henry.obj",
+    "parts": [
+      "Sight",
+      "Bullet",
+      "Front",
+      "Hammer",
+      "Lever",
+      "Gun"
+    ],
+    "texture": "hbm:textures/models/weapons/henry.png"
+  }
+}

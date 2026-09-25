@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:ingots/beryllium",
+    "Z": "#c:nuggets/zirconium"
+  },
+  "pattern": [
+    "Z Z",
+    "ZBZ",
+    "Z Z"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:rod_zirnox_empty"
+  }
+}

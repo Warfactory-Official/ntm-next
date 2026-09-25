@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "hbm:block/nr_planks",
+    "side": "hbm:block/nr_planks",
+    "top": "hbm:block/nr_planks"
+  }
+}

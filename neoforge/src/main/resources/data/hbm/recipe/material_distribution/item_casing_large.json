@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 36,
+      "material": "gun_metal"
+    }
+  ],
+  "targets": "hbm:casing_large"
+}

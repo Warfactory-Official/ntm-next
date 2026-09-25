@@ -1,0 +1,13 @@
+{
+  "parent": "hbm:block/lox_barrel_base",
+  "hidden": [
+    "Connector"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/barrel.obj",
+  "skins": {
+    "all": [
+      "Barrel"
+    ]
+  }
+}

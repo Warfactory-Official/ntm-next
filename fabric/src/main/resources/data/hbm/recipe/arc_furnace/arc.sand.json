@@ -1,0 +1,18 @@
+{
+  "type": "hbm:arc_furnace",
+  "input_items": [
+    {
+      "ingredient": "#minecraft:sand"
+    }
+  ],
+  "order": 0,
+  "output_items": [
+    "hbm:nugget_silicon"
+  ],
+  "output_materials": [
+    {
+      "amount": 8,
+      "material": "silicon"
+    }
+  ]
+}

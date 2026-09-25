@@ -1,0 +1,17 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_diamond"
+    }
+  ],
+  "order": 138,
+  "output_items": [
+    "hbm:powder_diamond",
+    "hbm:powder_diamond",
+    "hbm:powder_diamond",
+    "hbm:powder_diamond"
+  ],
+  "power": 200
+}

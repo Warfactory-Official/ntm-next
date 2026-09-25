@@ -1,0 +1,20 @@
+{
+  "type": "hbm:purex",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:wastefluid",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:sand_lead"
+    }
+  ],
+  "order": 50,
+  "output_items": [
+    "hbm:nuclear_waste_vitrified"
+  ],
+  "power": 1000
+}

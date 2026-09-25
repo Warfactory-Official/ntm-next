@@ -1,0 +1,19 @@
+{
+  "type": "hbm:coker",
+  "input_fluids": [
+    {
+      "type": "hbm:reformate",
+      "amount": 130
+    }
+  ],
+  "order": 20,
+  "output_fluids": [
+    {
+      "type": "hbm:gas_coker",
+      "amount": 13
+    }
+  ],
+  "output_items": [
+    "hbm:coke_petroleum"
+  ]
+}

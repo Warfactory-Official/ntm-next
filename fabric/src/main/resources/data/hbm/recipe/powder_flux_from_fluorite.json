@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/fluorite",
+    "#minecraft:sand"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:powder_flux"
+  }
+}

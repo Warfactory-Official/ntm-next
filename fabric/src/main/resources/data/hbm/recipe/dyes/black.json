@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "hbm:powder_coal",
+      "hbm:oil_tar_crude",
+      "hbm:oil_tar_crack",
+      "hbm:powder_ash_coal",
+      "hbm:powder_ash_soot",
+      "hbm:crayon_black",
+      "hbm:chemical_dye_black"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:black_dye"
+  }
+}

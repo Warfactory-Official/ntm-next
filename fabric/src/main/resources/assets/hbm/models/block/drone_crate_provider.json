@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "hbm:block/drone_crate_provider_bottom",
+    "side": "hbm:block/drone_crate_provider_side",
+    "top": "hbm:block/drone_crate_provider_top"
+  }
+}

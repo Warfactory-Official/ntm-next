@@ -1,0 +1,34 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 1200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/zirconium"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_capacitor_board"
+    }
+  ],
+  "name": "ass.precassEx",
+  "order": 94,
+  "output_items": [
+    "hbm:machine_precass"
+  ],
+  "power": 100
+}

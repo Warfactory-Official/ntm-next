@@ -1,0 +1,23 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Slider",
+    "Hydraulics",
+    "Bucket",
+    "BladesRight",
+    "BladesLeft",
+    "Fan"
+  ],
+  "model": "hbm:models/machines/ore_slopper.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/ore_slopper",
+    "particle": "hbm:block/models/machines/ore_slopper"
+  }
+}

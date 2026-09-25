@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:deepslate_diamond_ore"
+    }
+  ],
+  "order": 57,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:gravel_diamond"
+    }
+  ]
+}

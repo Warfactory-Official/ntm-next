@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 75.0
+    },
+    {
+      "type": "hbm:hot",
+      "level": 3.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:ingots/polonium_210"
+}

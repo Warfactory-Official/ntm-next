@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/fusion_klystron"
+    },
+    "facing=north": {
+      "model": "hbm:block/fusion_klystron",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/fusion_klystron",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/fusion_klystron",
+      "y": 180
+    }
+  }
+}

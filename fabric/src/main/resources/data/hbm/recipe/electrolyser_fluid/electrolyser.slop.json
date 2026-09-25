@@ -1,0 +1,28 @@
+{
+  "type": "hbm:electrolyser_fluid",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:slop",
+      "amount": 1000
+    }
+  ],
+  "order": 3,
+  "output_fluids": [
+    {
+      "type": "hbm:mercury",
+      "amount": 250
+    }
+  ],
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:niter"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_limestone"
+    },
+    "hbm:sulfur"
+  ]
+}

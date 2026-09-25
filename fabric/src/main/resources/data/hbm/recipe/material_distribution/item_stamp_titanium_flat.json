@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 216,
+      "material": "titanium"
+    }
+  ],
+  "targets": "hbm:stamp_titanium_flat"
+}

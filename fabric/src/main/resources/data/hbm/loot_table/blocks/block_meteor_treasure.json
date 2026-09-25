@@ -1,0 +1,72 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:match_tool",
+          "predicate": {
+            "predicates": {
+              "minecraft:enchantments": [
+                {
+                  "enchantments": "minecraft:silk_touch",
+                  "levels": {
+                    "min": 1
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:block_meteor_treasure"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:inverted",
+          "term": {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "predicates": {
+                "minecraft:enchantments": [
+                  {
+                    "enchantments": "minecraft:silk_touch",
+                    "levels": {
+                      "min": 1
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "conditions": [
+            {
+              "condition": "minecraft:survives_explosion"
+            }
+          ],
+          "value": "hbm:chests/meteorite_treasure"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 3,
+        "min": 1
+      }
+    }
+  ],
+  "random_sequence": "hbm:blocks/block_meteor_treasure"
+}

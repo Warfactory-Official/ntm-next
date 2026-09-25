@@ -1,0 +1,23 @@
+{
+  "type": "hbm:gas_centrifuge",
+  "consumed": 200,
+  "dead_end_items": [
+    {
+      "count": 6,
+      "id": "hbm:nugget_uranium_fuel"
+    },
+    {
+      "id": "hbm:fluorite"
+    }
+  ],
+  "dead_end_volume": 600,
+  "duration": 150,
+  "next": "heuf6",
+  "order": 2,
+  "output_items": [
+    "hbm:nugget_u238"
+  ],
+  "power": 200,
+  "produced": 100,
+  "stage": "meuf6"
+}

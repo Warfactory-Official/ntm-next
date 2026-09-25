@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "N": "hbm:nitra"
+  },
+  "pattern": [
+    "NN",
+    "NN"
+  ],
+  "result": {
+    "id": "hbm:ammo_container_alt"
+  }
+}

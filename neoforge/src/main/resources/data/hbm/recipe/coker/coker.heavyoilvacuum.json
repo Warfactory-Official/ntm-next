@@ -1,0 +1,19 @@
+{
+  "type": "hbm:coker",
+  "input_fluids": [
+    {
+      "type": "hbm:heavyoil_vacuum",
+      "amount": 3500
+    }
+  ],
+  "order": 1,
+  "output_fluids": [
+    {
+      "type": "hbm:reformate",
+      "amount": 350
+    }
+  ],
+  "output_items": [
+    "hbm:coke_petroleum"
+  ]
+}

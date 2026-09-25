@@ -1,0 +1,34 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/niobium"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:glass_quartz"
+    }
+  ],
+  "name": "ass.hephaestusEx",
+  "order": 185,
+  "output_items": [
+    "hbm:machine_hephaestus"
+  ],
+  "power": 100
+}

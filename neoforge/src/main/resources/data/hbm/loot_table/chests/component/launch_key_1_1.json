@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/launch_key"
+        }
+      ],
+      "rolls": {
+        "type": "hbm:config_scaled",
+        "value": 1.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/component/launch_key_1_1"
+}

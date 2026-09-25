@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:nuggets/americium_241",
+    "#c:nuggets/americium_241",
+    "#c:nuggets/americium_241",
+    "#c:nuggets/americium_242",
+    "#c:nuggets/americium_242",
+    "#c:nuggets/americium_242",
+    "#c:nuggets/americium_242",
+    "#c:nuggets/americium_242",
+    "#c:nuggets/americium_242"
+  ],
+  "result": {
+    "id": "hbm:ingot_am_mix"
+  }
+}

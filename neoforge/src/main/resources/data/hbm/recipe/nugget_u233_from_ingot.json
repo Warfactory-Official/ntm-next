@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:ingot_u233"
+  ],
+  "result": {
+    "count": 9,
+    "id": "hbm:nugget_u233"
+  }
+}

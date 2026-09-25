@@ -1,0 +1,26 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:chlorocalcite_solution",
+      "amount": 500
+    },
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_flux"
+    }
+  ],
+  "order": 42,
+  "output_fluids": [
+    {
+      "type": "hbm:chlorocalcite_mix",
+      "amount": 1000
+    }
+  ]
+}

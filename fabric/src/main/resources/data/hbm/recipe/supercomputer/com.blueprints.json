@@ -1,0 +1,33 @@
+{
+  "type": "hbm:supercomputer",
+  "duration": 18000,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "minecraft:paper"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:dyes/blue"
+    }
+  ],
+  "order": 15,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:blueprint_folder"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "count": 16,
+          "id": "minecraft:paper"
+        },
+        "weight": 80
+      }
+    ]
+  ],
+  "power": 50000
+}

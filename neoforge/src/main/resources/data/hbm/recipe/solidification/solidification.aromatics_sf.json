@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:aromatics",
+      "amount": 3900
+    }
+  ],
+  "order": 43,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

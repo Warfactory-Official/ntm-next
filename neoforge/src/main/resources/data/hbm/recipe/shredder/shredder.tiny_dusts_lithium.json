@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:tiny_dusts/lithium"
+    }
+  ],
+  "order": 415,
+  "output_items": [
+    "hbm:dust_tiny"
+  ]
+}

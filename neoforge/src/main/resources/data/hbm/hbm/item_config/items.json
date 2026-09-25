@@ -1,0 +1,5 @@
+{
+  "crate_keeps_contents": true,
+  "enable_mku": true,
+  "taint_trails": false
+}

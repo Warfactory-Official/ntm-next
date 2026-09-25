@@ -1,0 +1,34 @@
+{
+  "type": "hbm:pedestal",
+  "extra": "full_moon",
+  "key": {
+    "A": {
+      "count": 4,
+      "ingredient": "hbm:powder_magic"
+    },
+    "B": {
+      "count": 4,
+      "ingredient": "hbm:item_secret_selenium_steel"
+    },
+    "C": {
+      "ingredient": "hbm:gun_minigun"
+    },
+    "D": {
+      "count": 4,
+      "ingredient": "hbm:item_secret_selenium_steel"
+    },
+    "E": {
+      "count": 4,
+      "ingredient": "hbm:powder_magic"
+    }
+  },
+  "order": 8,
+  "output_items": [
+    "hbm:gun_minigun_lacunae"
+  ],
+  "pattern": [
+    " A ",
+    "BCD",
+    " E "
+  ]
+}

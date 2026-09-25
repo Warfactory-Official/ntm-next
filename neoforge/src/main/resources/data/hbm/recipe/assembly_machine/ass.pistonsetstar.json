@@ -1,0 +1,31 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#c:ingots/starmetal"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:plates/saturnite"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/niobium"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/dura_steel"
+    }
+  ],
+  "order": 179,
+  "output_items": [
+    "hbm:piston_set_starmetal"
+  ],
+  "power": 100
+}

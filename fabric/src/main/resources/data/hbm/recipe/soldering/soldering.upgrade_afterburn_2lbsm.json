@@ -1,0 +1,39 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528"
+    },
+    {
+      "condition": "hbm:flag",
+      "name": "lbsm_simple_crafting"
+    }
+  ],
+  "type": "hbm:soldering",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_chip"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_capacitor"
+    }
+  ],
+  "name": "soldering.upgrade_afterburn_2Lbsm",
+  "order": 40,
+  "output_items": [
+    "hbm:upgrade_afterburn_2"
+  ],
+  "pcb": [
+    {
+      "ingredient": "hbm:upgrade_afterburn_1"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_plastic"
+    }
+  ],
+  "power": 10000
+}

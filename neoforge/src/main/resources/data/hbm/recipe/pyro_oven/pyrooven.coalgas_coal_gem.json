@@ -1,0 +1,22 @@
+{
+  "type": "hbm:pyro_oven",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:heavyoil",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:gems/coal"
+    }
+  ],
+  "order": 65,
+  "output_fluids": [
+    {
+      "type": "hbm:coalgas",
+      "amount": 1000
+    }
+  ]
+}

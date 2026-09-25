@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "M": "hbm:meteor_polished",
+    "S": "#c:storage_blocks/starmetal",
+    "W": "#c:fine_wires/schrabidium"
+  },
+  "pattern": [
+    "MSM",
+    "MWM",
+    "MSM"
+  ],
+  "result": {
+    "id": "hbm:meteor_battery"
+  }
+}

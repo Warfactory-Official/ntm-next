@@ -1,0 +1,21 @@
+{
+  "type": "hbm:blast_furnace",
+  "duration": 800,
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/limestone"
+    },
+    {
+      "count": 6,
+      "ingredient": "minecraft:clay_ball"
+    }
+  ],
+  "name": "blast.firebrickLimestone",
+  "order": 14,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:ingot_firebrick"
+    }
+  ]
+}

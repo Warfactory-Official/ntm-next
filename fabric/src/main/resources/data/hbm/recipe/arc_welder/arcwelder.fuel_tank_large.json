@@ -1,0 +1,23 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_welded/aluminum"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:plates/saturnite"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:steel_scaffold"
+    }
+  ],
+  "order": 23,
+  "output_items": [
+    "hbm:fuel_tank_large"
+  ],
+  "power": 5000
+}

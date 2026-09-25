@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "#c:plates/aluminum"
+    }
+  ],
+  "order": 47,
+  "output_items": [
+    "hbm:pipe_aluminum"
+  ],
+  "overlay": "smithing",
+  "tier": 1
+}

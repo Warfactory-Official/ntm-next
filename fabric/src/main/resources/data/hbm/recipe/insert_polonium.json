@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "hbm:ducttape",
+    "P": "#c:plates/iron",
+    "S": "#c:storage_blocks/polonium_210"
+  },
+  "pattern": [
+    "DPD",
+    "PSP",
+    "DPD"
+  ],
+  "result": {
+    "id": "hbm:insert_polonium"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "impossible": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.hidden.desc"
+    },
+    "icon": {
+      "id": "hbm:achievement_icon_questionmark"
+    },
+    "title": {
+      "translate": "achievement.hidden"
+    }
+  },
+  "requirements": [
+    [
+      "impossible"
+    ]
+  ]
+}

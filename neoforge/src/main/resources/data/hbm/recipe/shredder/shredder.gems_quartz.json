@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:gems/quartz"
+    }
+  ],
+  "order": 216,
+  "output_items": [
+    "hbm:powder_quartz"
+  ]
+}

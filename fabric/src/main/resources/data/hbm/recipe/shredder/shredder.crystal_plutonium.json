@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_plutonium"
+    }
+  ],
+  "order": 104,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:powder_plutonium"
+    }
+  ]
+}

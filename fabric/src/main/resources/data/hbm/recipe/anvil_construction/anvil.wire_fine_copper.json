@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/copper"
+    }
+  ],
+  "order": 16,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:wire_fine_copper"
+    }
+  ],
+  "overlay": "smithing",
+  "tier": 4
+}

@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "com.hbm.neoforge.mixin",
+  "mixins": [
+    "EntityFluidInteractionMixin",
+    "LivingEntityAcceptedDamageMixin",
+    "LivingEntityEarlyDamageMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

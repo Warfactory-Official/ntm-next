@@ -1,0 +1,11 @@
+{
+  "type": "liquid",
+  "color": "#127766",
+  "nfpa": {
+    "flame": 0,
+    "health": 0,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 20
+}

@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 1.0
+    }
+  ],
+  "targets": "hbm:pwr_fuel_heu235"
+}

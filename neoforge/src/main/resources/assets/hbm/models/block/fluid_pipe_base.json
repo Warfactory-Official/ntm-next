@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "all": "hbm:block/fluid_pipe",
+    "overlay": "hbm:block/fluid_pipe_overlay",
+    "particle": "hbm:block/fluid_pipe"
+  }
+}

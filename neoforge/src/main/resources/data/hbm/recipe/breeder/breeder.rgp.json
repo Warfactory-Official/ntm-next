@@ -1,0 +1,13 @@
+{
+  "type": "hbm:breeder",
+  "flux": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:rod_rgp"
+    }
+  ],
+  "order": 27,
+  "output_items": [
+    "hbm:rod_waste"
+  ]
+}

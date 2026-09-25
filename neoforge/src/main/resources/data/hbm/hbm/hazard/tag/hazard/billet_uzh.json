@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 0.0625
+    }
+  ],
+  "targets": "#hbm:hazard/billet_uzh"
+}

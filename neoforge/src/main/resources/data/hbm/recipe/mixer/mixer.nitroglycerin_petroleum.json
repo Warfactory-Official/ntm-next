@@ -1,0 +1,21 @@
+{
+  "type": "hbm:mixer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:petroleum",
+      "amount": 1000
+    },
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 1000
+    }
+  ],
+  "order": 29,
+  "output_fluids": [
+    {
+      "type": "hbm:nitroglycerin",
+      "amount": 1000
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:block_waste_painted"
+  ],
+  "result": {
+    "count": 9,
+    "id": "hbm:nuclear_waste"
+  }
+}

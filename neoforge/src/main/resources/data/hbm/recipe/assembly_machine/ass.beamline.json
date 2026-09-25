@@ -1,0 +1,32 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.chip_quantum"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:wires_dense/gold"
+    }
+  ],
+  "order": 207,
+  "output_items": [
+    "hbm:pa_beamline"
+  ],
+  "power": 100
+}

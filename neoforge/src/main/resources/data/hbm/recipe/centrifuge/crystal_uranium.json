@@ -1,0 +1,26 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_uranium"
+    }
+  ],
+  "order": 139,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_uranium"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_uranium"
+    },
+    {
+      "count": 2,
+      "id": "hbm:nugget_ra226"
+    },
+    "hbm:powder_lithium_tiny"
+  ],
+  "power": 200
+}

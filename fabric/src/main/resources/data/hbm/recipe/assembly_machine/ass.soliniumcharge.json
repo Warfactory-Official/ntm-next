@@ -1,0 +1,31 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:neutron_reflector"
+    },
+    {
+      "count": 6,
+      "ingredient": "hbm:plate_polymer"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:fine_wires/tungsten"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:biomass_compressed"
+    }
+  ],
+  "order": 324,
+  "output_items": [
+    "hbm:solinium_propellant"
+  ],
+  "power": 100
+}

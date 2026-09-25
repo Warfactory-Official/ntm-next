@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "minecraft:custom_name",
+                "minecraft:container",
+                "hbm:lock_state",
+                "hbm:locked_contents",
+                "hbm:spiders",
+                "hbm:stacklock"
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "hbm:crate_iron"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:blocks/crate_iron"
+}

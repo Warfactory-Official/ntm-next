@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/beryllium"
+    }
+  ],
+  "order": 356,
+  "output_items": [
+    "hbm:powder_beryllium"
+  ]
+}

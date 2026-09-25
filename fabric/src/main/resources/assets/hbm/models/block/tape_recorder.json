@@ -1,0 +1,15 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": true,
+  "gui_light": "side",
+  "model": "hbm:models/blocks/taperecorder.obj",
+  "skins": {
+    "all": [
+      "Cube_Cube.001"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/tape_recorder",
+    "particle": "hbm:block/tape_recorder"
+  }
+}

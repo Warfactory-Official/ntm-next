@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 15.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#hbm:billets/actinium_227"
+}

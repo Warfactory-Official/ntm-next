@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#minecraft:logs"
+    }
+  ],
+  "order": 87,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:powder_sawdust"
+    }
+  ]
+}

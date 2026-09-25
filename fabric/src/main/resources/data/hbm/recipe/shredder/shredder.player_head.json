@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:player_head"
+    }
+  ],
+  "order": 94,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:biomass"
+    }
+  ]
+}

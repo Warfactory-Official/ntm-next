@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:billet_ra226be"
+    }
+  ],
+  "order": 233,
+  "output_items": [
+    "hbm:pile_rod_mk2_ra226be"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

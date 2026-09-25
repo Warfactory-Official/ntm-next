@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:can_empty",
+    {
+      "fabric:type": "fabric:components",
+      "base": "minecraft:potion",
+      "components": {
+        "minecraft:potion_contents": "minecraft:water"
+      }
+    },
+    "minecraft:sugar",
+    {
+      "fabric:type": "hbm:fluid_content",
+      "amount": 1000,
+      "fluid": "hbm:diesel"
+    }
+  ],
+  "result": {
+    "id": "hbm:can_creature"
+  }
+}

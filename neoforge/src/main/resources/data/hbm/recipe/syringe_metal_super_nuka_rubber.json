@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "L": "#hbm:ingots/any_rubber",
+    "N": "hbm:bottle_nuka",
+    "P": "#c:plates/steel",
+    "S": "hbm:syringe_metal_stimpak"
+  },
+  "pattern": [
+    " N ",
+    "PSP",
+    "L L"
+  ],
+  "result": {
+    "id": "hbm:syringe_metal_super"
+  }
+}

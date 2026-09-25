@@ -1,0 +1,30 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "hbm:item_expensive_ferro_plating"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:steel_scaffold"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:any_tar"
+    }
+  ],
+  "name": "ass.bigasstankEx",
+  "order": 202,
+  "output_items": [
+    "hbm:machine_bigasstank"
+  ],
+  "power": 100
+}

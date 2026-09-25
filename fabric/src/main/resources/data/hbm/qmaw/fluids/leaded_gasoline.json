@@ -1,0 +1,29 @@
+{
+  "content": {
+    "en_us": "Leaded gasoline can be obtained by mixing [[tetraethyllead antiknock agent|Tetraethyllead Antiknock Agent]] with [[gasoline|Gasoline]]. Leaded gasoline can be used as a combustible [[fuel|Fuels]].<br><br>See also:<br>[[Basic Oil Processing]]"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:gasoline_leaded",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -12298382
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Leaded Gasoline",
+  "title": {
+    "en_us": "Leaded Gasoline"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:gasoline_leaded"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 5.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:ingots/ghiorsium_336"
+}

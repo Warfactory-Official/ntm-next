@@ -1,0 +1,15 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 18,
+      "ingredient": "#c:nuggets/uranium_235"
+    }
+  ],
+  "order": 310,
+  "output_items": [
+    "hbm:boy_target"
+  ],
+  "power": 100
+}

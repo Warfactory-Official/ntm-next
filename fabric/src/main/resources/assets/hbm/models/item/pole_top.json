@@ -1,0 +1,171 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -0.0,
+        45.0,
+        0.0
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "translation": [
+        -0.0,
+        -0.19999981,
+        0.0
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -0.0,
+        45.0,
+        -0.0
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "translation": [
+        0.0,
+        -0.19999981,
+        0.0
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.46875,
+        0.46875,
+        0.46875
+      ],
+      "translation": [
+        0.0,
+        -0.87249994,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        -4.125,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30.0,
+        -45.0,
+        -0.0
+      ],
+      "scale": [
+        0.46875,
+        0.46874997,
+        0.46875
+      ],
+      "translation": [
+        0.0,
+        -0.27063298,
+        -0.15624976
+      ]
+    },
+    "head": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0.0,
+        -0.5,
+        0.0
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.9375,
+        0.9375,
+        0.9375
+      ],
+      "translation": [
+        0.0,
+        -0.625,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        69.99999,
+        -45.0,
+        0.0
+      ],
+      "scale": [
+        0.28125,
+        0.28125,
+        0.28125
+      ],
+      "translation": [
+        1.8793863,
+        0.16982734,
+        0.46659523
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        69.99999,
+        -45.0,
+        -0.0
+      ],
+      "scale": [
+        0.28125,
+        0.28125,
+        0.28125
+      ],
+      "translation": [
+        0.0,
+        1.9358723,
+        -0.17619282
+      ]
+    }
+  },
+  "gui_light": "side",
+  "model": "hbm:models/blocks/antenna_top.obj",
+  "offset_y": -0.125,
+  "skins": {
+    "all": [
+      "Cube_Cube.001"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/pole_top",
+    "particle": "hbm:block/pole_top"
+  }
+}

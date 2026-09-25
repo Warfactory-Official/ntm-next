@@ -1,0 +1,128 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_carbine_base",
+    "draws": [
+      {
+        "excludes_mods": [
+          {
+            "id": 202
+          }
+        ],
+        "parts": [
+          "Gun",
+          "Slide",
+          "Magazine",
+          "IronSight"
+        ]
+      },
+      {
+        "parts": [
+          "Gun",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 202
+          }
+        ]
+      },
+      {
+        "parts": [
+          "Scope"
+        ],
+        "requires_mods": [
+          {
+            "id": 202
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/carbine_scope.png"
+      },
+      {
+        "parts": [
+          "Bayonet"
+        ],
+        "requires_mods": [
+          {
+            "id": 219
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/carbine_bayonet.png"
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.5,
+          0.0,
+          0.0,
+          0.5,
+          0.0,
+          1.0,
+          -0.5,
+          0.0,
+          -0.0,
+          8.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -7.75,
+      13.5625,
+      -0.0,
+      -7.75,
+      0.0,
+      0.0,
+      7.75,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/carbine.obj",
+    "pose_overrides": [
+      {
+        "gui": [
+          0.86363626,
+          -1.4901161E-8,
+          2.9802322E-8,
+          1.795454,
+          2.9802322E-8,
+          0.86363626,
+          -2.9802322E-8,
+          0.0,
+          2.9802322E-8,
+          1.4901161E-8,
+          0.86363626,
+          9.536743E-7,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "requires_mods": [
+          {
+            "id": 219
+          }
+        ]
+      }
+    ],
+    "texture": "hbm:textures/models/weapons/huntsman.png"
+  }
+}

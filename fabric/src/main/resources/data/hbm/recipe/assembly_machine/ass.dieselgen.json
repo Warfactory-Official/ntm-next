@@ -1,0 +1,28 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/copper"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:coil_copper"
+    }
+  ],
+  "order": 172,
+  "output_items": [
+    "hbm:machine_diesel"
+  ],
+  "power": 100
+}

@@ -1,0 +1,144 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_uzi_base",
+    "draws": [
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          }
+        ],
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ]
+      },
+      {
+        "parts": [
+          "Gun",
+          "StockBack",
+          "StockFront",
+          "Slide",
+          "Magazine"
+        ],
+        "requires_mods": [
+          {
+            "id": 215
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 215
+          }
+        ],
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ]
+      },
+      {
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          },
+          {
+            "id": 215
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.75,
+          -1.0,
+          0.0,
+          -0.0,
+          8.5,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -6.25,
+      25.0,
+      -0.0,
+      -6.25,
+      0.0,
+      -6.25,
+      6.25,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/uzi.obj",
+    "pose_overrides": [
+      {
+        "gui": [
+          0.625,
+          -1.4901161E-8,
+          2.9802322E-8,
+          0.0,
+          0.0,
+          0.62500006,
+          0.0,
+          0.0,
+          2.9802322E-8,
+          1.4901161E-8,
+          0.625,
+          -2.5,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ]
+      }
+    ],
+    "texture": "hbm:textures/models/weapons/uzi.png"
+  }
+}

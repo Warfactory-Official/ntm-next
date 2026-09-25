@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "minecraft:crafting_table",
+    "P": "#c:plates/steel",
+    "S": "#c:storage_blocks/steel",
+    "T": "#c:ingots/tungsten"
+  },
+  "pattern": [
+    "PPP",
+    "TCT",
+    "TST"
+  ],
+  "result": {
+    "id": "hbm:machine_armor_table"
+  }
+}

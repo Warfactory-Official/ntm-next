@@ -1,0 +1,177 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.5305095,
+        177.88249
+      ],
+      "scale": [
+        0.45,
+        0.45,
+        0.44999996
+      ],
+      "translation": [
+        -1.0350976,
+        3.937633,
+        2.976417
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.5305095,
+        177.88249
+      ],
+      "scale": [
+        0.45,
+        0.45,
+        0.44999996
+      ],
+      "translation": [
+        1.5362239,
+        3.937633,
+        2.7514558
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        1.125,
+        1.125,
+        1.125
+      ],
+      "translation": [
+        2.2026634,
+        3.1746078,
+        -2.726431
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.5625,
+        0.5625,
+        0.5625
+      ],
+      "translation": [
+        -1.1013317,
+        -1.1326962,
+        1.6132154
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.9375,
+        0.93749994,
+        0.93749994
+      ],
+      "translation": [
+        0.37069702,
+        0.39033842,
+        -10.58251
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        1.8000001,
+        1.8000001,
+        1.8000001
+      ],
+      "translation": [
+        11.045738,
+        -22.842794,
+        7.681019
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        2.25,
+        2.25,
+        2.25
+      ],
+      "translation": [
+        -4.405327,
+        11.469215,
+        6.452862
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.34681,
+        165.04486
+      ],
+      "scale": [
+        0.42187494,
+        0.42187497,
+        0.421875
+      ],
+      "translation": [
+        -1.6979289,
+        2.4993758,
+        2.046749
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.34681,
+        165.04486
+      ],
+      "scale": [
+        0.42187494,
+        0.42187497,
+        0.421875
+      ],
+      "translation": [
+        -0.56555605,
+        2.7359328,
+        2.3481574
+      ]
+    }
+  },
+  "gui_light": "side",
+  "hidden": [
+    "plate_Cylinder"
+  ],
+  "model": "hbm:models/machines/microwave.obj",
+  "offset_x": -0.4874205,
+  "offset_y": -0.48525596,
+  "offset_z": 0.4557035,
+  "skins": {
+    "all": [
+      "window_Cube.002",
+      "mainbody_Cube.001"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/microwave",
+    "particle": "hbm:block/models/machines/microwave"
+  }
+}

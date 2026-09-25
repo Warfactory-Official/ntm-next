@@ -1,0 +1,28 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "crafted_hbm_battery_potatos": {
+      "conditions": {
+        "recipe_id": "hbm:battery_potatos"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.potato.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:battery_potatos"
+    },
+    "title": {
+      "translate": "achievement.potato"
+    }
+  },
+  "requirements": [
+    [
+      "crafted_hbm_battery_potatos"
+    ]
+  ]
+}

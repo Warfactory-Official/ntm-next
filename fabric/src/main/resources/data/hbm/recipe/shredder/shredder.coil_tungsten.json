@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:coil_tungsten"
+    }
+  ],
+  "order": 133,
+  "output_items": [
+    "hbm:powder_tungsten"
+  ]
+}

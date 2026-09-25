@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:storage_blocks/redstone"
+    }
+  ],
+  "order": 259,
+  "output_items": [
+    "hbm:nugget_mercury"
+  ],
+  "productivity": 0.25
+}

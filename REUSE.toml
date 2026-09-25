@@ -1,0 +1,268 @@
+version = 1
+
+[[annotations]]
+path = "**"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 movblock <admin@movblock.mov>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = [
+    "**/src/main/resources/assets/**",
+    "**/src/main/resources/data/**",
+    "**/src/main/resources/resourcepacks/**",
+    "**/src/main/resources/hbm/item_pools.json",
+]
+precedence = "override"
+SPDX-FileCopyrightText = [
+    "HbmMods (The Bobcat)",
+    "Contributors to Hbm's Nuclear Tech Mod",
+    "2026 movblock <admin@movblock.mov>",
+]
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = [
+    "**/src/main/resources/assets/hbm/textures/item/raw_thorium.png",
+    "**/src/main/resources/assets/hbm/textures/item/raw_cobalt.png",
+    "**/src/main/resources/assets/hbm/textures/item/raw_lithium.png",
+    "**/src/main/resources/assets/hbm/textures/item/raw_schrabidium.png",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "MrNorwood"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = [
+    "**/src/main/resources/assets/hbm/textures/item/raw_aluminium.png",
+    "**/src/main/resources/assets/hbm/textures/item/raw_beryllium.png",
+    "**/src/main/resources/assets/hbm/textures/item/raw_lead.png",
+    "**/src/main/resources/assets/hbm/textures/item/raw_plutonium.png",
+    "**/src/main/resources/assets/hbm/textures/item/raw_titanium.png",
+    "**/src/main/resources/assets/hbm/textures/item/raw_tungsten.png",
+    "**/src/main/resources/assets/hbm/textures/item/raw_uranium.png",
+]
+precedence = "override"
+SPDX-FileCopyrightText = ["Mr. Morgan", "NuclearGrandFather"]
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = [
+    "**/src/main/resources/assets/hbm/textures/block/ore_nether_coal.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_nether_cobalt.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_nether_fire.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_nether_plutonium.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_nether_schrabidium.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_nether_smoldering.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_nether_sulfur.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_nether_tungsten.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_nether_uranium_scorched.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_tikite.png",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 movblock <admin@movblock.mov>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = [
+    "**/src/main/resources/assets/hbm/textures/block/ore_aluminium.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_aluminium_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_aluminium_deepslate_top.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_asbestos.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_asbestos_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_asbestos_deepslate_top.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_beryllium.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_beryllium_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_beryllium_deepslate_top.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_cinnabar.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_cinnabar_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_cinnabar_deepslate_top.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_cobalt.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_cobalt_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_cobalt_deepslate_top.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_coltan.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_coltan_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_coltan_deepslate_top.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_fluorite.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_fluorite_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_fluorite_deepslate_top.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_lead.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_lead_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_lead_deepslate_top.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_lignite.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_lignite_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_lignite_deepslate_top.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_niter.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_niter_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_niter_deepslate_top.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_rare.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_rare_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_rare_deepslate_top.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_sulfur.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_sulfur_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_sulfur_deepslate_top.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_thorium.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_thorium_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_thorium_deepslate_top.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_titanium.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_titanium_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_titanium_deepslate_top.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_tungsten.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_tungsten_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_tungsten_deepslate_top.png",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 movblock <admin@movblock.mov>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = [
+    "**/src/main/resources/assets/hbm/textures/block/cluster_aluminium.png",
+    "**/src/main/resources/assets/hbm/textures/block/cluster_copper.png",
+    "**/src/main/resources/assets/hbm/textures/block/cluster_iron.png",
+    "**/src/main/resources/assets/hbm/textures/block/cluster_titanium.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_nether_uranium.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_uranium_deepslate.png",
+    "**/src/main/resources/assets/hbm/textures/block/ore_uranium_deepslate_top.png",
+]
+precedence = "override"
+SPDX-FileCopyrightText = ["HbmMods (The Bobcat)", "Contributors to Hbm's Nuclear Tech Mod", "2026 movblock <admin@movblock.mov>"]
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = [
+    "**/src/main/resources/assets/hbm/textures/block/ore_uranium.png",
+]
+precedence = "override"
+SPDX-FileCopyrightText = ["HbmMods (The Bobcat)", "Contributors to Hbm's Nuclear Tech Mod"]
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = [
+    "**/src/main/resources/assets/hbm/textures/effect/white.png",
+    "**/src/main/resources/assets/hbm/textures/item/fluid_bucket_fill.png",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 movblock <admin@movblock.mov>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = "THIRD_PARTY_NOTICES"
+precedence = "override"
+SPDX-FileCopyrightText = "2026 movblock <admin@movblock.mov>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = [
+    "**/src/main/resources/data/computercraft/**",
+    "**/src/main/resources/data/hbm/structure/barrel.nbt",
+    "**/src/main/resources/data/hbm/structure/desert_atom.nbt",
+    "**/src/main/resources/data/hbm/structure/library_dungeon.nbt",
+    "**/src/main/resources/data/hbm/structure/spaceship.nbt",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 movblock <admin@movblock.mov>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = [
+    "**/src/main/resources/assets/hbm/flywheel/**",
+    "**/src/main/resources/assets/hbm/uv/**",
+    "**/src/main/resources/assets/hbm/shaders/core/tracer_ribbon*.fsh",
+    "**/src/main/resources/assets/hbm/shaders/core/tracer_ribbon*.vsh",
+    "**/src/main/resources/assets/hbm/shaders/include/tracer_ribbon*.glsl",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 movblock <admin@movblock.mov>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = "native/**"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 movblock <admin@movblock.mov>"
+SPDX-License-Identifier = "LicenseRef-All-Rights-Reserved"
+
+[[annotations]]
+path = [
+    "**/src/main/resources/assets/hbm/textures/item/spawn_egg.png",
+    "**/src/main/resources/assets/hbm/textures/item/spawn_egg_overlay.png",
+]
+precedence = "override"
+SPDX-FileCopyrightText = ["HbmMods (The Bobcat)", "Contributors to Hbm's Nuclear Tech Mod"]
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = [
+    "**/src/main/resources/assets/hbm/shaders/core/entity_fade.fsh",
+    "**/src/main/resources/assets/hbm/shaders/core/entity_nofog.fsh",
+    "**/src/main/resources/assets/hbm/shaders/core/entity_nofog.vsh",
+    "**/src/main/resources/assets/hbm/shaders/core/particle_cutout.fsh",
+    "**/src/main/resources/assets/hbm/shaders/core/particle_fade.fsh",
+    "**/src/main/resources/assets/hbm/shaders/core/particle_nofog.fsh",
+    "**/src/main/resources/assets/hbm/shaders/core/particle_nofog.vsh",
+    "**/src/main/resources/assets/hbm/shaders/core/rendertype_lightning_nofog.fsh",
+    "**/src/main/resources/assets/hbm/shaders/core/rendertype_lightning_nofog.vsh",
+    "**/src/main/resources/assets/hbm/shaders/core/rendertype_lines_nofog.fsh",
+    "**/src/main/resources/assets/hbm/shaders/core/rendertype_lines_nofog.vsh",
+    "**/src/main/resources/assets/hbm/shaders/core/text_fade.fsh",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 movblock <admin@movblock.mov>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = ["gradlew", "gradlew.bat", "gradle/wrapper/gradle-wrapper.jar"]
+precedence = "override"
+SPDX-FileCopyrightText = "Gradle authors"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = [
+    "**/src/main/java/com/hbm/lib/queues/**",
+    "**/src/main/java/com/hbm/lib/maps/NonBlockingHashMapLong.java",
+    "**/src/main/java/com/hbm/lib/maps/ConcurrentAutoTable.java",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = ["JCTools contributors", "2026 movblock <admin@movblock.mov>"]
+SPDX-License-Identifier = "Apache-2.0 AND LGPL-3.0-only"
+
+[[annotations]]
+path = "**/src/main/java/com/hbm/platform/FabricTrustedLookupProvider.java"
+precedence = "closest"
+SPDX-FileCopyrightText = [
+    "2025 Burning_TNT <pangyl08@163.com>",
+    "2026 movblock <admin@movblock.mov>",
+]
+SPDX-License-Identifier = "MIT AND LGPL-3.0-only"
+
+[[annotations]]
+path = "**/src/main/java/com/hbm/client/render/ModelCrab.java"
+precedence = "closest"
+SPDX-FileCopyrightText = [
+    "HbmMods (The Bobcat)",
+    "Contributors to Hbm's Nuclear Tech Mod",
+    "2026 movblock <admin@movblock.mov>",
+]
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = [
+    "**/src/main/resources/assets/hbm/models/blocks/mine_fat.obj",
+    "**/src/main/resources/assets/hbm/models/pheodoors/cargo_door.obj",
+]
+precedence = "override"
+SPDX-FileCopyrightText = [
+    "HbmMods (The Bobcat)",
+    "Contributors to Hbm's Nuclear Tech Mod",
+    "2026 movblock <admin@movblock.mov>",
+]
+SPDX-License-Identifier = "LGPL-3.0-only"
+
+[[annotations]]
+path = "**/src/main/resources/assets/hbm/sounds/**/*.ogg"
+precedence = "override"
+SPDX-FileCopyrightText = [
+    "HbmMods (The Bobcat)",
+    "Contributors to Hbm's Nuclear Tech Mod",
+]
+SPDX-License-Identifier = "LGPL-3.0-only"

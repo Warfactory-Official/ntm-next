@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:gems/volcanic"
+    }
+  ],
+  "order": 33,
+  "output_items": [
+    "hbm:gem_rad"
+  ]
+}

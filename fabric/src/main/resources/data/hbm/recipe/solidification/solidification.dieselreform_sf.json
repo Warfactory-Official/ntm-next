@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:diesel_reform",
+      "amount": 1300
+    }
+  ],
+  "order": 29,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

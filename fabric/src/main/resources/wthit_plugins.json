@@ -1,0 +1,9 @@
+{
+  "hbm:main": {
+    "entrypoints": {
+      "common": "com.hbm.integration.wthit.NTMWthitPlugin",
+      "client": "com.hbm.integration.wthit.NTMWthitPlugin"
+    },
+    "side": "*"
+  }
+}

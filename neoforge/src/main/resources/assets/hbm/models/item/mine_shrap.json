@@ -1,0 +1,174 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.25164425,
+        1.8262161,
+        2.87631
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.25164473,
+        1.8262161,
+        2.8763106
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.46875,
+        0.46875,
+        0.46875
+      ],
+      "translation": [
+        0.0,
+        -1.6225,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.234375,
+        0.234375,
+        0.234375
+      ],
+      "translation": [
+        0.0,
+        -3.53125,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ],
+      "translation": [
+        0.0,
+        -0.9174681,
+        -7.374999
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.0,
+        154.99998
+      ],
+      "scale": [
+        0.75000006,
+        0.75,
+        0.75000006
+      ],
+      "translation": [
+        7.4236765,
+        -13.704866,
+        8.847195
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.9375,
+        0.9375,
+        0.9375
+      ],
+      "translation": [
+        0.0,
+        1.875,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.17578124,
+        0.17578125,
+        0.17578125
+      ],
+      "translation": [
+        0.0658263,
+        1.2560234,
+        1.1949867
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.17578124,
+        0.17578125,
+        0.17578125
+      ],
+      "translation": [
+        -1.0939659,
+        1.0137382,
+        0.8862804
+      ]
+    }
+  },
+  "double_sided": [
+    "Circle"
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/ap_mine.obj",
+  "offset_y": 0.375,
+  "skins": {
+    "all": [
+      "Circle"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/bombs/mine_shrapnel",
+    "particle": "hbm:block/models/bombs/mine_shrapnel"
+  }
+}

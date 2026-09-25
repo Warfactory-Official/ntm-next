@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:glass_ash"
+  ],
+  "ctm_textures": {
+    "hbm:block/glass_ash": "hbm:block/ctm_lib/glass_ash"
+  },
+  "variants": {
+    "": {
+      "model": "hbm:block/glass_ash"
+    }
+  }
+}

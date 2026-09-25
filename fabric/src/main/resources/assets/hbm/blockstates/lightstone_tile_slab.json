@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "hbm:block/lightstone_tile_slab"
+    },
+    "type=double": {
+      "model": "hbm:block/lightstone_tile_slab_double"
+    },
+    "type=top": {
+      "model": "hbm:block/lightstone_tile_slab_top"
+    }
+  }
+}

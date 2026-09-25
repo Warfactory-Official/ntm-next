@@ -1,0 +1,20 @@
+{
+  "type": "hbm:fraction_tower",
+  "input_fluids": [
+    {
+      "type": "hbm:naphtha_coker",
+      "amount": 100
+    }
+  ],
+  "order": 15,
+  "output_fluids": [
+    {
+      "type": "hbm:naphtha_crack",
+      "amount": 75
+    },
+    {
+      "type": "hbm:lightoil_crack",
+      "amount": 25
+    }
+  ]
+}

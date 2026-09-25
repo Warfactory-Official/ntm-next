@@ -1,0 +1,48 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:machine_reactor_small"
+    }
+  ],
+  "order": 251,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:ingot_steel"
+    },
+    {
+      "count": 4,
+      "id": "hbm:ingot_tcalloy"
+    },
+    {
+      "count": 2,
+      "id": "hbm:motor_desh"
+    },
+    {
+      "count": 5,
+      "id": "hbm:ingot_boron"
+    },
+    {
+      "count": 8,
+      "id": "hbm:plate_lead"
+    },
+    {
+      "count": 3,
+      "id": "hbm:crt_display"
+    },
+    "hbm:circuit_basic",
+    {
+      "chance": 0.5,
+      "id": "hbm:circuit_basic"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 4
+}

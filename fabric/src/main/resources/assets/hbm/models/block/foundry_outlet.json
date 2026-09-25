@@ -1,0 +1,96 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#bottom"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "north": {
+          "texture": "#front"
+        },
+        "south": {
+          "texture": "#front"
+        },
+        "up": {
+          "texture": "#top"
+        },
+        "west": {
+          "texture": "#side"
+        }
+      },
+      "from": [
+        5,
+        0,
+        10
+      ],
+      "to": [
+        11,
+        8,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "up": {
+          "texture": "#bottom"
+        }
+      },
+      "from": [
+        5,
+        0,
+        10
+      ],
+      "to": [
+        11,
+        2,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "texture": "#inner"
+        }
+      },
+      "from": [
+        6,
+        0,
+        10
+      ],
+      "to": [
+        6,
+        8,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "west": {
+          "texture": "#inner"
+        }
+      },
+      "from": [
+        10,
+        0,
+        10
+      ],
+      "to": [
+        10,
+        8,
+        16
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "hbm:block/foundry_outlet_bottom",
+    "front": "hbm:block/foundry_outlet_front",
+    "inner": "hbm:block/foundry_outlet_inner",
+    "particle": "hbm:block/foundry_outlet_side",
+    "side": "hbm:block/foundry_outlet_side",
+    "top": "hbm:block/foundry_outlet_top"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "#c:nuggets/gold"
+    }
+  ],
+  "order": 5,
+  "output_items": [
+    "hbm:nugget_au198"
+  ]
+}

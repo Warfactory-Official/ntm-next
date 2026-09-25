@@ -1,0 +1,22 @@
+{
+  "content": {
+    "en_us": "Standard shot, creates many low-damage pellets with considerable spread. Sometimes it's hard to beat the classics.<br><br>{{hbm:weapon/template_shotshell}}",
+    "ru_ru": "Стандартный боеприпас. Создаёт множество наносящих малый урон дробин с внушительным рассеиванием. Классику ничем не заменить.<br><br>{{hbm:weapon/template_shotshell}}",
+    "zh_cn": "标准霰弹，能够射出多个大范围散布的低伤害弹丸。有时鹿弹打不过经典弹药。<br><br>{{hbm:weapon/template_shotshell}}"
+  },
+  "icon": "hbm:ammo_standard_g12",
+  "name": "Buckshot",
+  "title": {
+    "en_us": "Buckshot",
+    "ru_ru": "Картечь",
+    "zh_cn": "鹿弹"
+  },
+  "trigger": [
+    {
+      "items": "hbm:ammo_standard_g12"
+    },
+    {
+      "items": "hbm:ammo_standard_g10"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "hbm:meteorite_sword_reforged"
+    }
+  ],
+  "order": 6,
+  "output_items": [
+    "hbm:meteorite_sword_hardened"
+  ],
+  "stamp": "flat"
+}

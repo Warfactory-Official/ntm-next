@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "chain": "hbm:block/chain",
+    "end": "hbm:block/chain_end",
+    "particle": "hbm:block/chain"
+  }
+}

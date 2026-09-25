@@ -1,0 +1,18 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Cylinder"
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/bombs/ivymike.obj",
+  "skins": {
+    "all": [
+      "Cylinder"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/bombs/ivymike",
+    "particle": "hbm:block/models/bombs/ivymike"
+  }
+}

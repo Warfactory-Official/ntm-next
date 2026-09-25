@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:debris_shrapnel"
+    }
+  ],
+  "order": 203,
+  "output_items": [
+    {
+      "count": 5,
+      "id": "hbm:powder_steel_tiny"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:plates/copper",
+    "D": "#c:ingots/workers_alloy",
+    "F": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:gas_mask_filter"
+    },
+    "X": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:steel_helmet"
+    }
+  },
+  "pattern": [
+    "DCD",
+    "CXC",
+    " F "
+  ],
+  "result": {
+    "id": "hbm:steamsuit_helmet"
+  }
+}

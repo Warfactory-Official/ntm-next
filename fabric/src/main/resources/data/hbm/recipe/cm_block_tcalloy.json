@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#hbm:ingots/any_resistant_alloy",
+    "P": "#hbm:plates_cast/any_resistant_alloy"
+  },
+  "pattern": [
+    " I ",
+    "IPI",
+    " I "
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:cm_block_tcalloy"
+  }
+}

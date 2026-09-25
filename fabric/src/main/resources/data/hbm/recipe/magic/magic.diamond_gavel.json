@@ -1,0 +1,21 @@
+{
+  "type": "hbm:magic",
+  "input_items": [
+    {
+      "ingredient": "hbm:gravel_diamond"
+    },
+    {
+      "ingredient": "hbm:gravel_diamond"
+    },
+    {
+      "ingredient": "hbm:gravel_diamond"
+    },
+    {
+      "ingredient": "hbm:lead_gavel"
+    }
+  ],
+  "order": 5,
+  "output_items": [
+    "hbm:diamond_gavel"
+  ]
+}

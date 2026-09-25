@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:storage_blocks/red_phosphorus"
+    }
+  ],
+  "order": 434,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:powder_fire"
+    }
+  ]
+}

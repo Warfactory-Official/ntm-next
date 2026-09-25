@@ -1,0 +1,22 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 10,
+      "ingredient": "#c:ingots/dura_steel"
+    },
+    {
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:ingots/tungsten_carbide"
+    }
+  ],
+  "order": 20,
+  "output_items": [
+    "hbm:thruster_large"
+  ],
+  "power": 5000
+}

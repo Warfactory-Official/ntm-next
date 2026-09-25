@@ -1,0 +1,25 @@
+{
+  "type": "liquid",
+  "color": "#e2adc1",
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 2,
+    "health": 1,
+    "react": 3
+  },
+  "symbol": "NONE",
+  "temperature": 1200,
+  "traits": {
+    "coolable": {
+      "amount_produced": 1,
+      "amount_req": 1,
+      "cools_to": "hbm:sodium",
+      "efficiency": {
+        "HEATEXCHANGER": 1.0
+      },
+      "heat_energy": 400
+    }
+  }
+}

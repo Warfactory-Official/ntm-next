@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/supplies"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 7.0,
+        "min": 4.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/supplies_4_7"
+}

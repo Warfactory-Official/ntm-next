@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:fragment_cerium"
+    }
+  ],
+  "order": 41,
+  "output_items": [
+    "hbm:powder_cerium_tiny"
+  ]
+}

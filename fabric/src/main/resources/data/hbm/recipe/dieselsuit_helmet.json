@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_analog",
+    "S": "#c:ingots/steel",
+    "W": "minecraft:red_wool"
+  },
+  "pattern": [
+    "W W",
+    "W W",
+    "SCS"
+  ],
+  "result": {
+    "id": "hbm:dieselsuit_helmet"
+  }
+}

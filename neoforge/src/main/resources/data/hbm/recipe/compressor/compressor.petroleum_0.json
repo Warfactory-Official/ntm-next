@@ -1,0 +1,18 @@
+{
+  "type": "hbm:compressor",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:petroleum",
+      "amount": 2000
+    }
+  ],
+  "order": 0,
+  "output_fluids": [
+    {
+      "type": "hbm:petroleum",
+      "amount": 2000,
+      "pressure": 1
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:missile_assembly",
+    "hbm:ducttape",
+    "hbm:ammo_standard_nuke_high"
+  ],
+  "result": {
+    "id": "hbm:missile_micro"
+  }
+}

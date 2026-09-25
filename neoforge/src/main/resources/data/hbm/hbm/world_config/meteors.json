@@ -1,0 +1,9 @@
+{
+  "enable_showers": true,
+  "enable_special": true,
+  "enable_strikes": true,
+  "enable_tails": true,
+  "shower_chance": 18000,
+  "shower_duration": 36000,
+  "strike_chance": 360000
+}

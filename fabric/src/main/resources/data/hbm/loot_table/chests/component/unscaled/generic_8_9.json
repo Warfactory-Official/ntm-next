@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/generic"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 9.0,
+        "min": 8.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/component/unscaled/generic_8_9"
+}

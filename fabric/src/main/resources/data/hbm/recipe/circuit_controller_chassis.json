@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:circuit_pcb",
+    "C": "hbm:crt_display",
+    "P": "#hbm:ingots/any_plastic"
+  },
+  "pattern": [
+    "PPP",
+    "CBB",
+    "PPP"
+  ],
+  "result": {
+    "id": "hbm:circuit_controller_chassis"
+  }
+}

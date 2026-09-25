@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": "#minecraft:planks",
+    "S": "#c:plates/steel"
+  },
+  "pattern": [
+    "S",
+    "P"
+  ],
+  "result": {
+    "id": "hbm:bottle_opener"
+  }
+}

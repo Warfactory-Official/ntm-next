@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_chip",
+    "F": "hbm:safety_fuse"
+  },
+  "pattern": [
+    "C",
+    "F"
+  ],
+  "result": {
+    "id": "hbm:grenade_extra_proxy_fuze"
+  }
+}

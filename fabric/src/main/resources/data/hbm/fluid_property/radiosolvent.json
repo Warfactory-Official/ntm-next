@@ -1,0 +1,19 @@
+{
+  "type": "liquid",
+  "color": "#a4d7dd",
+  "nfpa": {
+    "flame": 3,
+    "health": 3,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "corrosive": {
+      "rating": 50
+    },
+    "flammable": {
+      "energy": 150000
+    }
+  }
+}

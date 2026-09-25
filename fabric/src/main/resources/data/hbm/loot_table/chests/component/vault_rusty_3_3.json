@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/vault_rusty"
+        }
+      ],
+      "rolls": {
+        "type": "hbm:config_scaled",
+        "value": 3.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/component/vault_rusty_3_3"
+}

@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:exposure_chamber",
+  "input_items": [
+    {
+      "ingredient": "hbm:particle_sparkticle"
+    },
+    {
+      "ingredient": "#c:ingots/schrabidate"
+    }
+  ],
+  "order": 3,
+  "output_items": [
+    "hbm:ingot_dineutronium"
+  ]
+}

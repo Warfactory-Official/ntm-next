@@ -1,0 +1,13 @@
+{
+  "fabric:type": "hbm:obj",
+  "parent": "hbm:block/chimney_industrial_base",
+  "double_sided": [
+    "Plane"
+  ],
+  "model": "hbm:models/machines/chimney_industrial.obj",
+  "skins": {
+    "all": [
+      "Plane"
+    ]
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_amat_subtlety_base",
+    "draws": [
+      {
+        "parts": [
+          "Gun",
+          "Bolt",
+          "Magazine",
+          "BipodLeft",
+          "BipodHingeLeft",
+          "BipodRight",
+          "BipodHingeRight",
+          "Scope",
+          "MuzzleBrake"
+        ]
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 0,
+        "kind": "gap",
+        "length": 0.0,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.5,
+          -0.75,
+          0.0,
+          -0.0,
+          11.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -5.75,
+      8.625,
+      -0.0,
+      -5.75,
+      0.0,
+      1.4375,
+      5.75,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/amat.obj",
+    "texture": "hbm:textures/models/weapons/amat_subtlety.png"
+  }
+}

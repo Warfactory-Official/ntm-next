@@ -1,0 +1,20 @@
+{
+  "type": "hbm:fraction_tower",
+  "input_fluids": [
+    {
+      "type": "hbm:gas_coker",
+      "amount": 100
+    }
+  ],
+  "order": 16,
+  "output_fluids": [
+    {
+      "type": "hbm:aromatics",
+      "amount": 25
+    },
+    {
+      "type": "hbm:carbondioxide",
+      "amount": 75
+    }
+  ]
+}

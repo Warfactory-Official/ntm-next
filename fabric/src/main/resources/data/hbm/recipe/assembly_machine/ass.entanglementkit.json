@@ -1,0 +1,29 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:xenon",
+      "amount": 8000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/dura_steel"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:wires_dense/gold"
+    }
+  ],
+  "order": 45,
+  "output_items": [
+    "hbm:entanglement_kit"
+  ],
+  "power": 100
+}

@@ -1,0 +1,15 @@
+{
+  "type": "liquid",
+  "color": "#92aca6",
+  "nfpa": {
+    "flame": 4,
+    "health": 0,
+    "react": 0
+  },
+  "shares": [
+    "#c:nitroglycerin",
+    "#c:glyceryl_trinitrate"
+  ],
+  "symbol": "NONE",
+  "temperature": 20
+}

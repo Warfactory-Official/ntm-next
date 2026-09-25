@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 5.0
+    }
+  ],
+  "targets": "#hbm:hazard/demon_core_open"
+}

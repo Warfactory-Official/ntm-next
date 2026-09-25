@@ -1,0 +1,36 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.tcalloy"
+  ],
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "#hbm:wires_dense/bscco"
+    },
+    {
+      "ingredient": "#hbm:pipes/copper"
+    },
+    {
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_plastic"
+    }
+  ],
+  "order": 257,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:fusion_component"
+    }
+  ],
+  "power": 100
+}

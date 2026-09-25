@@ -1,0 +1,21 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:kerosene",
+      "amount": 900
+    },
+    {
+      "type": "hbm:reformate",
+      "amount": 100
+    }
+  ],
+  "order": 40,
+  "output_fluids": [
+    {
+      "type": "hbm:kerosene_reform",
+      "amount": 1000
+    }
+  ]
+}

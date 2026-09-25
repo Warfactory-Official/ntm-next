@@ -1,0 +1,21 @@
+{
+  "type": "hbm:mixer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 900
+    },
+    {
+      "type": "hbm:petroleum",
+      "amount": 100
+    }
+  ],
+  "order": 3,
+  "output_fluids": [
+    {
+      "type": "hbm:fracksol",
+      "amount": 1000
+    }
+  ]
+}

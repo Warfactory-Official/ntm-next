@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "L": "#c:plates/lead",
+    "S": "#c:plates/steel"
+  },
+  "pattern": [
+    "SSS",
+    "L L",
+    "SSS"
+  ],
+  "result": {
+    "count": 16,
+    "id": "hbm:rod_empty"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.0,
+  "ingredient": "hbm:gravel_obsidian",
+  "result": {
+    "id": "minecraft:obsidian"
+  }
+}

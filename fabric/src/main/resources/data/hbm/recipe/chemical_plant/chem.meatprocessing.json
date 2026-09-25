@@ -1,0 +1,38 @@
+{
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 200,
+  "icon": {
+    "id": "hbm:glyphid_meat"
+  },
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "#hbm:glyphid_meat"
+    }
+  ],
+  "order": 52,
+  "output_fluids": [
+    {
+      "type": "hbm:salient",
+      "amount": 250
+    }
+  ],
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:sulfur"
+    },
+    {
+      "count": 3,
+      "id": "hbm:niter"
+    }
+  ],
+  "power": 200
+}

@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:exposure_chamber",
+  "input_items": [
+    {
+      "ingredient": "hbm:particle_sparkticle"
+    },
+    {
+      "ingredient": "hbm:item_expensive_degenerate_matter"
+    }
+  ],
+  "name": "exposure.dineutroniumEx",
+  "order": 4,
+  "output_items": [
+    "hbm:ingot_dineutronium"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:sand_dirty_red"
+    }
+  ],
+  "order": 148,
+  "output_items": [
+    "hbm:scrap_oil"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/steel",
+    "P": "#c:plates/steel"
+  },
+  "pattern": [
+    "P P",
+    "IPI"
+  ],
+  "result": {
+    "components": {
+      "hbm:cart_base": "steel"
+    },
+    "id": "hbm:cart_empty"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 400,
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_pellet": {}
+      },
+      "ingredient": "hbm:rbmk_pellet_balefire"
+    }
+  ],
+  "laser_strength": "uv",
+  "order": 51,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:powder_balefire"
+        },
+        "weight": 90
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_tiny"
+        },
+        "weight": 10
+      }
+    ]
+  ]
+}

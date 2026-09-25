@@ -1,0 +1,14 @@
+{
+  "parent": "hbm:block/filing_cabinet_green_base",
+  "hidden": [
+    "LowerDrawer",
+    "UpperDrawer"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/file_cabinet.obj",
+  "skins": {
+    "all": [
+      "Cabinet"
+    ]
+  }
+}

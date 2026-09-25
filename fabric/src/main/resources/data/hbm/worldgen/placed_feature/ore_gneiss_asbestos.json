@@ -1,0 +1,33 @@
+{
+  "feature": "hbm:ore_gneiss_asbestos",
+  "placement": [
+    {
+      "type": "hbm:world_config",
+      "switches": [
+        "overworld_ores"
+      ]
+    },
+    {
+      "type": "minecraft:count",
+      "count": 6
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "absolute": 39
+        },
+        "min_inclusive": {
+          "absolute": 30
+        }
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

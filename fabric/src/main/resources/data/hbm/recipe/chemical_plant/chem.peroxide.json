@@ -1,0 +1,18 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 1000
+    }
+  ],
+  "order": 58,
+  "output_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 1000
+    }
+  ],
+  "power": 100
+}

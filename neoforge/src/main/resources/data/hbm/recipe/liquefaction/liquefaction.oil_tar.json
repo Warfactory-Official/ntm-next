@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "hbm:oil_tar_crude"
+    }
+  ],
+  "order": 0,
+  "output_fluids": [
+    {
+      "type": "hbm:bitumen",
+      "amount": 75
+    }
+  ]
+}

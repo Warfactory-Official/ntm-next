@@ -1,0 +1,14 @@
+{
+  "type": "hbm:gas_centrifuge",
+  "consumed": 300,
+  "duration": 150,
+  "next": "meuf6",
+  "order": 1,
+  "output_items": [
+    "hbm:nugget_u238",
+    "hbm:fluorite"
+  ],
+  "power": 200,
+  "produced": 200,
+  "stage": "leuf6"
+}

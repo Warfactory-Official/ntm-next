@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:glass_blocks",
+    "#c:dusts/red_phosphorus",
+    {
+      "neoforge:ingredient_type": "hbm:fluid_content",
+      "amount": 1000,
+      "fluid": "hbm:tritium"
+    },
+    "#c:dusts/sulfur"
+  ],
+  "result": {
+    "id": "hbm:lamp_tritium_green"
+  }
+}

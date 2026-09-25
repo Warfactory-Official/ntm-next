@@ -1,0 +1,20 @@
+{
+  "type": "hbm:cracking_tower",
+  "input_fluids": [
+    {
+      "type": "hbm:reformate",
+      "amount": 100
+    }
+  ],
+  "order": 10,
+  "output_fluids": [
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 40
+    },
+    {
+      "type": "hbm:reformgas",
+      "amount": 60
+    }
+  ]
+}

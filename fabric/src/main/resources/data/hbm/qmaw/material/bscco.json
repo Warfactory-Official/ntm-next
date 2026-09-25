@@ -1,0 +1,24 @@
+{
+  "content": {
+    "en_us": "Powerful superconductor, used in high tier circuits and coils for the [[particle accelerator|Particle Accelerator]] as well as the [[fusion reactor|Fusion Reactor Vessel]]. Requires [[bismuth|Bismuth]], and is therefore only obtainable after building an [[RBMK]].",
+    "ru_ru": "Мощный сверхпроводник, используемый в высокоуровневых процессорах и катушках для [[ускорителя частиц|Particle Accelerator]], а также для [[термоядерного реактора|Fusion Reactor Vessel]]. Требует [[висмут|Bismuth]], и поэтому доступен только после постройки [[РБМК|RBMK]].",
+    "uk_ua": "Потужний надпровідник, що використовується у високоякісних платах та котушках для [[прискорювача часток|Particle Accelerator]]. Потребує [[вісмут|Bismuth]], і тому доступний лише після побудови [[РБМК|RBMK]].",
+    "zh_cn": "强力的超导体，用于制作高等级的电路及用于[[粒子加速器|Particle Accelerator]]的线圈。需要[[铋|Bismuth]]制作，因此只能在建造[[RBMK]]后获得。"
+  },
+  "icon": "hbm:ingot_bscco",
+  "name": "BSCCO",
+  "title": {
+    "en_us": "BSCCO",
+    "ru_ru": "BSCCO",
+    "uk_ua": "Вісмут стронцій кальцій мідь оксид (BSCCO)",
+    "zh_cn": "BSCCO超导体"
+  },
+  "trigger": [
+    {
+      "items": "hbm:ingot_bscco"
+    },
+    {
+      "items": "hbm:wire_dense_bscco"
+    }
+  ]
+}

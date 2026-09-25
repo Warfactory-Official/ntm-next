@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:plates/cmbsteel",
+    "S": "hbm:singularity",
+    "T": "#c:ingots/magnetized_tungsten"
+  },
+  "pattern": [
+    "CTC",
+    "TST",
+    "CTC"
+  ],
+  "result": {
+    "id": "hbm:singularity_counter_resonant"
+  }
+}

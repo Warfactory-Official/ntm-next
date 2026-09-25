@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/tungsten"
+    }
+  ],
+  "order": 343,
+  "output_items": [
+    "hbm:powder_tungsten"
+  ]
+}

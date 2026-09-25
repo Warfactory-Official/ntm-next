@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:particle_empty",
+    "#c:dusts/copper",
+    "hbm:pellet_charged"
+  ],
+  "result": {
+    "id": "hbm:particle_copper"
+  }
+}

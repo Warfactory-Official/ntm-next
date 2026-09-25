@@ -1,0 +1,117 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_am180_base",
+    "draws": [
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "parts": [
+          "Gun",
+          "Trigger",
+          "Bolt",
+          "Mag",
+          "MagPlate"
+        ]
+      },
+      {
+        "parts": [
+          "Gun",
+          "Trigger",
+          "Bolt",
+          "Mag",
+          "MagPlate",
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ]
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 50,
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          1.875,
+          -0.75,
+          0.0,
+          -0.0,
+          12.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      },
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 5.0,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.5,
+          0.0,
+          0.0,
+          0.5,
+          0.0,
+          1.875,
+          -0.5,
+          0.0,
+          -0.0,
+          16.75,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90,
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ]
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -5.0,
+      10.0,
+      -0.0,
+      -5.0,
+      0.0,
+      0.0,
+      5.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/am180.obj",
+    "texture": "hbm:textures/models/weapons/am180.png"
+  }
+}

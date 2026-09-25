@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:storage_blocks/redstone"
+    }
+  ],
+  "order": 234,
+  "output_items": [
+    {
+      "count": 9,
+      "id": "minecraft:redstone"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/actinium_227"
+    }
+  ],
+  "order": 332,
+  "output_items": [
+    "hbm:powder_actinium"
+  ]
+}

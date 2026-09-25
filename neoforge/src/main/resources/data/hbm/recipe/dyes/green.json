@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "hbm:crayon_green",
+      "hbm:chemical_dye_green"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:green_dye"
+  }
+}

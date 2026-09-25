@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 1.5
+    }
+  ],
+  "targets": "hbm:nuclear_waste_tiny"
+}

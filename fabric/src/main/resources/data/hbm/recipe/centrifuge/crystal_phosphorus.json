@@ -1,0 +1,29 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_phosphorus"
+    }
+  ],
+  "order": 154,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:powder_fire"
+    },
+    {
+      "count": 3,
+      "id": "hbm:powder_fire"
+    },
+    {
+      "count": 2,
+      "id": "hbm:ingot_phosphorus"
+    },
+    {
+      "count": 2,
+      "id": "minecraft:blaze_powder"
+    }
+  ],
+  "power": 200
+}

@@ -1,0 +1,28 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 20,
+  "input_items": [
+    {
+      "ingredient": "#minecraft:planks"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/graphite"
+    },
+    {
+      "ingredient": "#c:plates/steel"
+    }
+  ],
+  "name": "ass.pileblockEx",
+  "order": 226,
+  "output_items": [
+    "hbm:pile_brick"
+  ],
+  "power": 250
+}

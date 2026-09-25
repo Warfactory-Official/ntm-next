@@ -1,0 +1,16 @@
+{
+  "type": "hbm:cyclotron",
+  "amat": 50,
+  "input_items": [
+    {
+      "ingredient": "hbm:part_lithium"
+    },
+    {
+      "ingredient": "#c:dusts/gold"
+    }
+  ],
+  "order": 7,
+  "output_items": [
+    "hbm:nugget_mercury"
+  ]
+}

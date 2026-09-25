@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 8,
+      "material": "carbon"
+    }
+  ],
+  "targets": "hbm:powder_ash_wood"
+}

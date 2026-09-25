@@ -1,0 +1,28 @@
+{
+  "type": "hbm:electrolyser_metal",
+  "duration": 600,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_starmetal"
+    }
+  ],
+  "order": 16,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:powder_astatine"
+    },
+    {
+      "count": 8,
+      "id": "hbm:nugget_mercury"
+    }
+  ],
+  "output_material": {
+    "amount": 288,
+    "material": "dura_steel"
+  },
+  "output_material_2": {
+    "amount": 288,
+    "material": "cobalt"
+  }
+}

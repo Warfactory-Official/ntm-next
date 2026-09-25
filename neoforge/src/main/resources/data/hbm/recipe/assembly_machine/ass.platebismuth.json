@@ -1,0 +1,22 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:nugget_bismuth"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:billets/uranium_238"
+    },
+    {
+      "ingredient": "#c:dusts/niobium"
+    }
+  ],
+  "order": 16,
+  "output_items": [
+    "hbm:plate_bismuth"
+  ],
+  "power": 100
+}

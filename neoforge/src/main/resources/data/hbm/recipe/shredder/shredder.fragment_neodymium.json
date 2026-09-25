@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:fragment_neodymium"
+    }
+  ],
+  "order": 38,
+  "output_items": [
+    "hbm:powder_neodymium_tiny"
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -0.0,
+        -85.0,
+        25.00001
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        -0.42223775,
+        0.9516105,
+        -4.8262105
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -0.0,
+        -85.0,
+        25.00001
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        0.20787615,
+        4.322899,
+        2.376025
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        1.5,
+        4.5650005,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.09375,
+        0.09375,
+        0.09375
+      ],
+      "translation": [
+        -0.75,
+        -0.4375,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        29.999998,
+        44.999992,
+        -0.0
+      ],
+      "scale": [
+        0.109375,
+        0.10937499,
+        0.10937501
+      ],
+      "translation": [
+        -0.08838785,
+        -0.3357457,
+        -8.570073
+      ]
+    },
+    "head": {
+      "rotation": [
+        -148.67021,
+        -35.63104,
+        19.52547
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "translation": [
+        6.5728087,
+        -22.677313,
+        4.099433
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        -3.0,
+        14.25,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        141.87373,
+        -71.3061,
+        127.868614
+      ],
+      "scale": [
+        0.0703125,
+        0.0703125,
+        0.07031249
+      ],
+      "translation": [
+        -1.2607028,
+        3.7651792,
+        -0.64674
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        141.87373,
+        -71.3061,
+        127.868614
+      ],
+      "scale": [
+        0.0703125,
+        0.0703125,
+        0.07031249
+      ],
+      "translation": [
+        -1.7917187,
+        3.0580401,
+        1.9032489
+      ]
+    }
+  },
+  "gui_light": "side",
+  "hidden": [
+    "Pipes"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/fusion/klystron.obj",
+  "offset_x": -0.5,
+  "offset_y": -1.875,
+  "skins": {
+    "all": [
+      "Rotor",
+      "Klystron"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/fusion/klystron",
+    "particle": "hbm:block/models/fusion/klystron"
+  }
+}

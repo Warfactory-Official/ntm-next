@@ -1,0 +1,60 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:precision_assembler",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:perfluoromethyl",
+      "amount": 4000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_chip_bismoid"
+    },
+    {
+      "count": 48,
+      "ingredient": "hbm:circuit_capacitor_tantalium"
+    },
+    {
+      "ingredient": "hbm:circuit_atomic_clock"
+    },
+    {
+      "ingredient": "hbm:circuit_controller_chassis"
+    },
+    {
+      "ingredient": "hbm:upgrade_speed_3"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:fine_wires/lead"
+    }
+  ],
+  "order": 17,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:circuit_controller_advanced"
+        },
+        "weight": 500
+      },
+      {
+        "data": {
+          "components": {
+            "hbm:broken_item_source": "hbm:circuit_controller_advanced"
+          },
+          "id": "hbm:broken_item"
+        },
+        "weight": 500
+      }
+    ]
+  ],
+  "power": 25000
+}

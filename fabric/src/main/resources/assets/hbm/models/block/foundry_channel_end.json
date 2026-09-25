@@ -1,0 +1,34 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#inner"
+        },
+        "up": {
+          "texture": "#top"
+        }
+      },
+      "from": [
+        5,
+        0,
+        5
+      ],
+      "to": [
+        11,
+        8,
+        6
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "inner": "hbm:block/foundry_channel_inner",
+    "particle": "hbm:block/foundry_channel_side",
+    "side": "hbm:block/foundry_channel_side",
+    "top": "hbm:block/foundry_channel_top"
+  }
+}

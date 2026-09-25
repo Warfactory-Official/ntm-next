@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_advanced",
+    "G": "#c:ingots/gold",
+    "P": "#hbm:ingots/any_plastic",
+    "S": "#c:plates/steel",
+    "W": "#c:fine_wires/gold"
+  },
+  "pattern": [
+    "SWS",
+    " G ",
+    "PCP"
+  ],
+  "result": {
+    "id": "hbm:survey_scanner"
+  }
+}

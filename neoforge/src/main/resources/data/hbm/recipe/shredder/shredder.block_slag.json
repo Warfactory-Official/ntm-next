@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:block_slag"
+    }
+  ],
+  "order": 81,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:powder_cement"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:plates/copper"
+    }
+  ],
+  "order": 283,
+  "output_items": [
+    "hbm:powder_copper"
+  ]
+}

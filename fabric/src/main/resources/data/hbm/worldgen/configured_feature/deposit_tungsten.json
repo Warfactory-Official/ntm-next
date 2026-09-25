@@ -1,0 +1,17 @@
+{
+  "type": "hbm:depth_deposit",
+  "config": {
+    "core": {
+      "Name": "hbm:cluster_depth_tungsten"
+    },
+    "fill": 0.6,
+    "filler": {
+      "Name": "hbm:stone_depth"
+    },
+    "replaceable": {
+      "predicate_type": "minecraft:tag_match",
+      "tag": "minecraft:deepslate_ore_replaceables"
+    },
+    "size": 5
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:redmud",
+      "amount": 75
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_calcium"
+    }
+  ],
+  "order": 285,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:powder_cement"
+    }
+  ],
+  "productivity": 0.1
+}

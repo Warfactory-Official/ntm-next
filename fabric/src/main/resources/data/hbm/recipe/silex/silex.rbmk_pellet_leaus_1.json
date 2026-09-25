@@ -1,0 +1,39 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 600,
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_pellet": {
+          "depletion": 1
+        }
+      },
+      "ingredient": "hbm:rbmk_pellet_leaus"
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 92,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_australium_lesser"
+        },
+        "weight": 70
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_lead"
+        },
+        "weight": 18
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_pb209"
+        },
+        "weight": 12
+      }
+    ]
+  ]
+}

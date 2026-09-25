@@ -1,0 +1,36 @@
+{
+  "type": "gaseous",
+  "color": "#cfc4a4",
+  "containers": {
+    "gastank": {
+      "bottle_color": "#cfc4a4",
+      "label_color": "#361414"
+    }
+  },
+  "nfpa": {
+    "flame": 0,
+    "health": 4,
+    "react": 1
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "polluting": {
+      "release": {
+        "POISON": 5.0E-4
+      }
+    },
+    "toxin": {
+      "entries": [
+        {
+          "amount": 4.0,
+          "damage": "hbm:cloud",
+          "delay": 20,
+          "full_body": false,
+          "hazard": "GAS_LUNG",
+          "kind": "direct_damage"
+        }
+      ]
+    }
+  }
+}

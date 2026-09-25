@@ -1,0 +1,55 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "predicates": {
+                      "minecraft:enchantments": [
+                        {
+                          "enchantments": "minecraft:silk_touch",
+                          "levels": {
+                            "min": 1
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ],
+              "name": "hbm:block_meteor_broken"
+            },
+            {
+              "type": "minecraft:item",
+              "functions": [
+                {
+                  "count": {
+                    "type": "minecraft:uniform",
+                    "max": 3,
+                    "min": 1
+                  },
+                  "function": "minecraft:set_count"
+                },
+                {
+                  "function": "minecraft:explosion_decay"
+                }
+              ],
+              "name": "hbm:fragment_meteorite"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:blocks/block_meteor_broken"
+}

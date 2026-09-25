@@ -1,0 +1,54 @@
+{
+  "type": "hbm:rock_mill",
+  "auto_switch_group": "autoswitch.crushing",
+  "duration": 100,
+  "icon_from_input": true,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "minecraft:netherrack"
+    }
+  ],
+  "name_wrapper": "rock.crushing",
+  "order": 3,
+  "output_fluids": [
+    {
+      "type": "minecraft:lava",
+      "amount": 100
+    }
+  ],
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "minecraft:gravel"
+        },
+        "weight": 50
+      },
+      {
+        "data": {
+          "id": "minecraft:soul_sand"
+        },
+        "weight": 25
+      },
+      {
+        "data": {
+          "id": "minecraft:glowstone_dust"
+        },
+        "weight": 15
+      },
+      {
+        "data": {
+          "id": "hbm:powder_quartz"
+        },
+        "weight": 10
+      }
+    ]
+  ],
+  "power": 25
+}

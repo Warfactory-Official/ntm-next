@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#hbm:plates_welded/zirconium"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:billet_ra226be"
+    }
+  ],
+  "order": 253,
+  "output_items": [
+    "hbm:pwr_neutron_source"
+  ],
+  "power": 500
+}

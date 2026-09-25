@@ -1,0 +1,10 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "textures": {
+    "particle": "hbm:block/models/pheodoors/vault/vault_door_3",
+    "sheet0": "hbm:block/models/pheodoors/vault/vault_door_3",
+    "sheet1": "hbm:block/models/pheodoors/vault/vault_door_4",
+    "sheet2": "hbm:block/models/pheodoors/vault/vault_door_s"
+  }
+}

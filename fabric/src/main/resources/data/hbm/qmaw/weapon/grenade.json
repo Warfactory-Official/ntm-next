@@ -1,0 +1,22 @@
+{
+  "content": {
+    "en_us": "Standard ammunition for grenade and rocket launchers. Deals splash damage in a moderate area.<br><br>{{hbm:weapon/template_explosives}}",
+    "ru_ru": "Стандартные боеприпасы для гранатомётов и ракетных установок. Наносят урон по площади в умеренном радиусе.<br><br>{{hbm:weapon/template_explosives}}",
+    "zh_cn": "榴弹和火箭弹的标准类型，在中等范围内造成爆炸伤害。<br><br>{{hbm:weapon/template_explosives}}"
+  },
+  "icon": "hbm:ammo_standard_rocket_he",
+  "name": "High-Explosives",
+  "title": {
+    "en_us": "High-Explosives",
+    "ru_ru": "Осколочно-фугасные",
+    "zh_cn": "高爆"
+  },
+  "trigger": [
+    {
+      "items": "hbm:ammo_standard_g40_he"
+    },
+    {
+      "items": "hbm:ammo_standard_rocket_he"
+    }
+  ]
+}

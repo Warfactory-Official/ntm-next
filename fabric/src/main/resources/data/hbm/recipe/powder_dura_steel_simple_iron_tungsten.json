@@ -1,0 +1,19 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "lbsm_simple_crafting"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/iron",
+    "#c:dusts/coal",
+    "#c:dusts/tungsten",
+    "#c:dusts/tungsten"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:powder_dura_steel"
+  }
+}

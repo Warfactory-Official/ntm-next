@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/copper",
+    "#c:dusts/redstone"
+  ],
+  "result": {
+    "components": {
+      "hbm:scrap": {
+        "amount": 144,
+        "material": 31
+      }
+    },
+    "id": "hbm:scraps"
+  }
+}

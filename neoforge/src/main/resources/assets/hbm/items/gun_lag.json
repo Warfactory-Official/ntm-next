@@ -1,0 +1,79 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_lag_base",
+    "draws": [
+      {
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          -1.0,
+          0.0,
+          -0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Grip",
+          "Slide",
+          "Hammer"
+        ]
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          1.0,
+          -1.0,
+          0.0,
+          -0.0,
+          10.25,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -7.5,
+      15.0,
+      -0.0,
+      -7.5,
+      0.0,
+      -3.75,
+      7.5,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/mike_hawk.obj",
+    "texture": "hbm:textures/models/weapons/lag.png"
+  }
+}

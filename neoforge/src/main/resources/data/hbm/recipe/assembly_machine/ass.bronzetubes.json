@@ -1,0 +1,37 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 3000,
+  "input_fluids": [
+    {
+      "type": "hbm:perfluoromethyl_cold",
+      "amount": 4000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "ingredient": "hbm:item_expensive_ferro_plating"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/any_bismoid_bronze"
+    },
+    {
+      "ingredient": "#hbm:plates_welded/zirconium"
+    }
+  ],
+  "order": 23,
+  "output_fluids": [
+    {
+      "type": "hbm:perfluoromethyl",
+      "amount": 4000
+    }
+  ],
+  "output_items": [
+    "hbm:item_expensive_bronze_tubes"
+  ],
+  "power": 250000
+}

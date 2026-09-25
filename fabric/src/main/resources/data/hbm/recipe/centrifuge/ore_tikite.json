@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:ore_tikite"
+    }
+  ],
+  "order": 30,
+  "output_items": [
+    "hbm:powder_plutonium",
+    {
+      "count": 2,
+      "id": "hbm:powder_cobalt"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_niobium"
+    },
+    "minecraft:end_stone"
+  ],
+  "power": 200
+}

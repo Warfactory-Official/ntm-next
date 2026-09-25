@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 0.42500000000000004
+    }
+  ],
+  "targets": "#hbm:hazard/nugget_plutonium_fuel"
+}

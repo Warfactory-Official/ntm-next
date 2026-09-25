@@ -1,0 +1,21 @@
+{
+  "type": "hbm:arc_furnace",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/borax"
+    }
+  ],
+  "order": 11,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:powder_boron_tiny"
+    }
+  ],
+  "output_materials": [
+    {
+      "amount": 24,
+      "material": "boron"
+    }
+  ]
+}

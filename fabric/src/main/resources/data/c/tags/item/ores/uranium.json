@@ -1,0 +1,12 @@
+{
+  "values": [
+    "hbm:ore_uranium",
+    "hbm:ore_uranium_scorched",
+    "hbm:ore_nether_uranium",
+    "hbm:ore_nether_uranium_scorched",
+    "hbm:ore_gneiss_uranium",
+    "hbm:ore_gneiss_uranium_scorched",
+    "hbm:ore_uranium_deepslate",
+    "hbm:ore_sellafield_uranium_scorched"
+  ]
+}

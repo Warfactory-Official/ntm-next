@@ -1,0 +1,17 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "lbsm_simple_crafting"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/redstone",
+    "#c:dusts/copper"
+  ],
+  "result": {
+    "count": 2,
+    "id": "hbm:powder_red_copper"
+  }
+}

@@ -1,0 +1,769 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_wood"
+        },
+        "when": "wood"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_bone"
+        },
+        "when": "bone"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_stone"
+        },
+        "when": "stone"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_carbon"
+        },
+        "when": "carbon"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_coal"
+        },
+        "when": "coal"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_lignite"
+        },
+        "when": "lignite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_coke"
+        },
+        "when": "coke"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_pet_coke"
+        },
+        "when": "pet_coke"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_lignite_coke"
+        },
+        "when": "lignite_coke"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_graphite"
+        },
+        "when": "graphite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_diamond"
+        },
+        "when": "diamond"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_iron"
+        },
+        "when": "iron"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_gold"
+        },
+        "when": "gold"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_redstone"
+        },
+        "when": "redstone"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_hematite"
+        },
+        "when": "hematite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_malachite"
+        },
+        "when": "malachite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_bauxite"
+        },
+        "when": "bauxite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_cryolite"
+        },
+        "when": "cryolite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_uranium"
+        },
+        "when": "uranium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_uranium_233"
+        },
+        "when": "uranium_233"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_uranium_235"
+        },
+        "when": "uranium_235"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_uranium_238"
+        },
+        "when": "uranium_238"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_thorium"
+        },
+        "when": "thorium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_plutonium"
+        },
+        "when": "plutonium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_plutonium_rg"
+        },
+        "when": "plutonium_rg"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_plutonium_238"
+        },
+        "when": "plutonium_238"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_plutonium_239"
+        },
+        "when": "plutonium_239"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_plutonium_240"
+        },
+        "when": "plutonium_240"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_plutonium_241"
+        },
+        "when": "plutonium_241"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_americium_rg"
+        },
+        "when": "americium_rg"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_americium_241"
+        },
+        "when": "americium_241"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_americium_242"
+        },
+        "when": "americium_242"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_neptunium_237"
+        },
+        "when": "neptunium_237"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_polonium_210"
+        },
+        "when": "polonium_210"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_technetium_99"
+        },
+        "when": "technetium_99"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_radium_226"
+        },
+        "when": "radium_226"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_actinium_227"
+        },
+        "when": "actinium_227"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_cobalt_60"
+        },
+        "when": "cobalt_60"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_gold_198"
+        },
+        "when": "gold_198"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_lead_209"
+        },
+        "when": "lead_209"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_schrabidium"
+        },
+        "when": "schrabidium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_solinium"
+        },
+        "when": "solinium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_schrabidate"
+        },
+        "when": "schrabidate"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_ghiorsium_336"
+        },
+        "when": "ghiorsium_336"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_titanium"
+        },
+        "when": "titanium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_copper"
+        },
+        "when": "copper"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_tungsten"
+        },
+        "when": "tungsten"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_aluminum"
+        },
+        "when": "aluminum"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_lead"
+        },
+        "when": "lead"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_bismuth"
+        },
+        "when": "bismuth"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_arsenic"
+        },
+        "when": "arsenic"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_tantalum"
+        },
+        "when": "tantalum"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_neodymium"
+        },
+        "when": "neodymium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_niobium"
+        },
+        "when": "niobium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_beryllium"
+        },
+        "when": "beryllium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_emerald"
+        },
+        "when": "emerald"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_cobalt"
+        },
+        "when": "cobalt"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_boron"
+        },
+        "when": "boron"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_borax"
+        },
+        "when": "borax"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_lanthanum"
+        },
+        "when": "lanthanum"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_zirconium"
+        },
+        "when": "zirconium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_sodium"
+        },
+        "when": "sodium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_sodalite"
+        },
+        "when": "sodalite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_strontium"
+        },
+        "when": "strontium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_calcium"
+        },
+        "when": "calcium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_lithium"
+        },
+        "when": "lithium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_sulfur"
+        },
+        "when": "sulfur"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_saltpeter"
+        },
+        "when": "saltpeter"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_fluorite"
+        },
+        "when": "fluorite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_red_phosphorus"
+        },
+        "when": "red_phosphorus"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_iodine"
+        },
+        "when": "iodine"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_chlorocalcite"
+        },
+        "when": "chlorocalcite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_molysite"
+        },
+        "when": "molysite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_cinnabar"
+        },
+        "when": "cinnabar"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_cadmium"
+        },
+        "when": "cadmium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_silicon"
+        },
+        "when": "silicon"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_asbestos"
+        },
+        "when": "asbestos"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_osmiridium"
+        },
+        "when": "osmiridium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_steel"
+        },
+        "when": "steel"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_mingrade"
+        },
+        "when": "mingrade"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_dura_steel"
+        },
+        "when": "dura_steel"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_workers_alloy"
+        },
+        "when": "workers_alloy"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_starmetal"
+        },
+        "when": "starmetal"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_ferrouranium"
+        },
+        "when": "ferrouranium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_tc_alloy"
+        },
+        "when": "tc_alloy"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_cd_alloy"
+        },
+        "when": "cd_alloy"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_bismuth_bronze"
+        },
+        "when": "bismuth_bronze"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_arsenic_bronze"
+        },
+        "when": "arsenic_bronze"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_bscco"
+        },
+        "when": "bscco"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_magnetized_tungsten"
+        },
+        "when": "magnetized_tungsten"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_cmbsteel"
+        },
+        "when": "cmbsteel"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_dineutronium"
+        },
+        "when": "dineutronium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_flux"
+        },
+        "when": "flux"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_slag"
+        },
+        "when": "slag"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_watz_mud"
+        },
+        "when": "watz_mud"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_gun_metal"
+        },
+        "when": "gun_metal"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_weapon_steel"
+        },
+        "when": "weapon_steel"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_saturnite"
+        },
+        "when": "saturnite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_rare_earth"
+        },
+        "when": "rare_earth"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_polymer"
+        },
+        "when": "polymer"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_bakelite"
+        },
+        "when": "bakelite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_rubber"
+        },
+        "when": "rubber"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_polycarbonate"
+        },
+        "when": "polycarbonate"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_pvc"
+        },
+        "when": "pvc"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_liquid",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_additive",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "additive"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:item/scraps",
+      "tints": [
+        {
+          "type": "hbm:scraps_color"
+        }
+      ]
+    },
+    "property": "hbm:scrap_material"
+  }
+}

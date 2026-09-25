@@ -1,0 +1,36 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "rare_earth",
+          "grade": "primary_norad"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 78,
+  "output_items": [
+    {
+      "count": 5,
+      "id": "hbm:bedrock_ore_fragment_cobalt"
+    },
+    {
+      "count": 5,
+      "id": "hbm:bedrock_ore_fragment_rare_earth"
+    },
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "rare_earth",
+          "grade": "crumbs"
+        }
+      },
+      "id": "hbm:bedrock_ore"
+    }
+  ],
+  "power": 200
+}

@@ -1,0 +1,23 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:phosgene",
+      "amount": 4000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:ammo_arty"
+    },
+    {
+      "ingredient": "#hbm:ingots/any_plastic"
+    }
+  ],
+  "order": 412,
+  "output_items": [
+    "hbm:ammo_arty_phosgene"
+  ],
+  "power": 1000
+}

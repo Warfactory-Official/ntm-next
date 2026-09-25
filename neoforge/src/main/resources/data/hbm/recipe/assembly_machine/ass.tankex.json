@@ -1,0 +1,26 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:any_tar"
+    }
+  ],
+  "name": "ass.tankEx",
+  "order": 200,
+  "output_items": [
+    "hbm:machine_fluidtank"
+  ],
+  "power": 100
+}

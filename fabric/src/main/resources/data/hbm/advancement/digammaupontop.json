@@ -1,0 +1,25 @@
+{
+  "parent": "hbm:digammakauaimoho",
+  "criteria": {
+    "impossible": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.digammaUpOnTop.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:achievement_icon_digammaupontop"
+    },
+    "title": {
+      "translate": "achievement.digammaUpOnTop"
+    }
+  },
+  "requirements": [
+    [
+      "impossible"
+    ]
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Engine",
+    "ArmLower",
+    "Front",
+    "ArmUpper",
+    "Wheel"
+  ],
+  "model": "hbm:models/machines/thresher.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/thresher",
+    "particle": "hbm:block/models/machines/thresher"
+  }
+}

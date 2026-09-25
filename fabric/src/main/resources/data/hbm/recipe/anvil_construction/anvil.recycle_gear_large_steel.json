@@ -1,0 +1,18 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:gear_large_steel"
+    }
+  ],
+  "order": 220,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:plate_steel"
+    },
+    "hbm:ingot_titanium"
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

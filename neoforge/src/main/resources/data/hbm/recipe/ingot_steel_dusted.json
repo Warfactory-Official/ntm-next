@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:ingots/steel",
+    "#c:dusts/coal"
+  ],
+  "result": {
+    "id": "hbm:ingot_steel_dusted"
+  }
+}

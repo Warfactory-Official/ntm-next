@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 490
+    }
+  ],
+  "order": 44,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:precision_assembler",
+  "blueprint_pools": [
+    "528.strontium"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_chip"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:fine_wires/zirconium"
+    },
+    {
+      "ingredient": "#c:dusts/strontium"
+    }
+  ],
+  "order": 11,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:circuit_atomic_clock"
+        },
+        "weight": 500
+      },
+      {
+        "data": {
+          "components": {
+            "hbm:broken_item_source": "hbm:circuit_atomic_clock"
+          },
+          "id": "hbm:broken_item"
+        },
+        "weight": 500
+      }
+    ]
+  ],
+  "power": 2000
+}

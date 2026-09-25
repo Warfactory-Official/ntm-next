@@ -1,0 +1,21 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 60,
+  "input_items": [
+    {
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:fine_wires/gold"
+    },
+    {
+      "ingredient": "#hbm:billets/silicon"
+    }
+  ],
+  "order": 41,
+  "output_items": [
+    "hbm:thermo_element"
+  ],
+  "power": 100
+}

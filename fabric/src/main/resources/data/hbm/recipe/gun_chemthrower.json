@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "H": "#hbm:pipes/rubber",
+    "M": "#hbm:gun_mechanisms/weapon_steel",
+    "P": "#hbm:barrels_heavy/weapon_steel",
+    "S": "#hbm:shells/weapon_steel",
+    "W": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:wrench",
+      "components": {
+        "minecraft:damage": 0
+      }
+    }
+  },
+  "pattern": [
+    "MHW",
+    "PSS"
+  ],
+  "result": {
+    "id": "hbm:gun_chemthrower"
+  }
+}

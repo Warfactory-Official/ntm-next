@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:ingots/gold",
+    "#c:ingots/gold",
+    "#c:nuggets/gold",
+    "#c:nuggets/gold",
+    "minecraft:paper"
+  ],
+  "result": {
+    "id": "hbm:tem_flakes_expensive"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:single_piece",
+  "biomes": [
+    "minecraft:savanna",
+    "minecraft:savanna_plateau",
+    "minecraft:wooded_badlands"
+  ],
+  "height_offset": -9,
+  "spawn_overrides": {},
+  "start_pool": "hbm:single/broadcasting_tower",
+  "step": "strongholds"
+}

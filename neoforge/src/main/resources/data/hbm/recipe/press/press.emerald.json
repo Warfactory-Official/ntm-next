@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/emerald"
+    }
+  ],
+  "order": 3,
+  "output_items": [
+    "minecraft:emerald"
+  ],
+  "stamp": "flat"
+}

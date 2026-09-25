@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 24.0,
+  "ingredient": "hbm:raw_plutonium",
+  "result": {
+    "id": "hbm:ingot_plutonium"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/pa_source"
+    },
+    "facing=north": {
+      "model": "hbm:block/pa_source",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/pa_source",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/pa_source",
+      "y": 180
+    }
+  }
+}

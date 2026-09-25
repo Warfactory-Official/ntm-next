@@ -1,0 +1,93 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_n_i_4_n_i_base",
+    "custom_texture": "hbm:textures/models/weapons/n_i_4_n_i_greyscale.png",
+    "draws": [
+      {
+        "color": "ni4ni_light",
+        "parts": [
+          "FrameLight",
+          "Cylinder"
+        ]
+      },
+      {
+        "color": "ni4ni_grip",
+        "parts": [
+          "Grip"
+        ]
+      },
+      {
+        "color": "ni4ni_dark",
+        "parts": [
+          "FrameDark"
+        ]
+      },
+      {
+        "fullbright": true,
+        "parts": [
+          "CylinderHighlights",
+          "Barrel"
+        ]
+      },
+      {
+        "color": "ni4ni_coin",
+        "fullbright": true,
+        "parts": [
+          "Coin1",
+          "Coin2",
+          "Coin3",
+          "Coin4"
+        ],
+        "untextured": true
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "color": 16777215,
+        "duration": 75,
+        "kind": "laser",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.125,
+          0.0,
+          0.0,
+          0.125,
+          0.0,
+          0.75,
+          -0.125,
+          0.0,
+          -0.0,
+          4.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -15.0,
+      0.0,
+      -0.0,
+      -15.0,
+      0.0,
+      7.5,
+      15.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/n_i_4_n_i.obj",
+    "texture": "hbm:textures/models/weapons/n_i_4_n_i.png"
+  }
+}

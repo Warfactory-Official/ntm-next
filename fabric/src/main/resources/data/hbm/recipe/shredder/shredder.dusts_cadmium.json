@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/cadmium"
+    }
+  ],
+  "order": 383,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

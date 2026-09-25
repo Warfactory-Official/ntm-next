@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:lightoil_crack",
+      "amount": 1900
+    }
+  ],
+  "order": 33,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

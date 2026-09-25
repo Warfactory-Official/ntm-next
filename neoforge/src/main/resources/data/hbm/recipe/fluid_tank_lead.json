@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "L": "#c:plates/lead",
+    "T": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "!hbm:fluid_content": {}
+      },
+      "items": "hbm:fluid_tank"
+    },
+    "U": "#hbm:billets/uranium_238"
+  },
+  "pattern": [
+    "LUL",
+    "LTL",
+    "LUL"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:fluid_tank_lead"
+  }
+}

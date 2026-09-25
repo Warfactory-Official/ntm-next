@@ -1,0 +1,26 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_20"
+    },
+    {
+      "count": 6,
+      "ingredient": "#hbm:pipes/dura_steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/tungsten"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:plates/steel"
+    }
+  ],
+  "order": 381,
+  "output_items": [
+    "hbm:mp_thruster_20_solid_multi"
+  ],
+  "power": 100
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "minecraft:flint",
+    "G": "minecraft:gunpowder",
+    "P": "minecraft:paper"
+  },
+  "pattern": [
+    "C",
+    "P",
+    "G"
+  ],
+  "result": {
+    "count": 6,
+    "id": "hbm:ammo_standard_stone_ap"
+  }
+}

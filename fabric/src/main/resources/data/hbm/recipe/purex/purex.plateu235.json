@@ -1,0 +1,36 @@
+{
+  "type": "hbm:purex",
+  "auto_switch_group": "autoswitch.plate",
+  "duration": 100,
+  "icon_from_input": true,
+  "input_fluids": [
+    {
+      "type": "hbm:kerosene",
+      "amount": 500
+    },
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "components": {
+        "hbm:decay_heat": false
+      },
+      "ingredient": "hbm:waste_plate_u235"
+    }
+  ],
+  "name_wrapper": "purex.recycle",
+  "order": 22,
+  "output_items": [
+    "hbm:nugget_neptunium",
+    "hbm:nugget_pu238",
+    "hbm:nugget_technetium",
+    {
+      "count": 6,
+      "id": "hbm:nuclear_waste_tiny"
+    }
+  ],
+  "power": 1500
+}

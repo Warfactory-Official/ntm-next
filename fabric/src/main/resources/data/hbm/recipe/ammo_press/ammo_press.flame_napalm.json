@@ -1,0 +1,23 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#c:plates/steel"
+    },
+    "B": {
+      "ingredient": "hbm:canister_napalm"
+    },
+    "C": {
+      "ingredient": "#c:plates/steel"
+    }
+  },
+  "order": 72,
+  "output_items": [
+    "hbm:ammo_standard_flame_napalm"
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

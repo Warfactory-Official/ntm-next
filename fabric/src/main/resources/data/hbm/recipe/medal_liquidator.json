@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:ingots/boron",
+    "F": "hbm:debris_fuel",
+    "G": "#c:nuggets/gold_198"
+  },
+  "pattern": [
+    "GBG",
+    "BFB",
+    "GBG"
+  ],
+  "result": {
+    "id": "hbm:medal_liquidator"
+  }
+}

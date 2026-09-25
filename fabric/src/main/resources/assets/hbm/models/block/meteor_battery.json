@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "hbm:block/meteor_power",
+    "side": "hbm:block/meteor_spawner_side"
+  }
+}

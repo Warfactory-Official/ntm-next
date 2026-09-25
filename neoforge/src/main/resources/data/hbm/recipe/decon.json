@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "hbm:rad_absorber",
+    "B": "#c:ingots/beryllium",
+    "G": "minecraft:iron_bars",
+    "S": "#c:ingots/steel"
+  },
+  "pattern": [
+    "BGB",
+    "SAS",
+    "BSB"
+  ],
+  "result": {
+    "id": "hbm:decon"
+  }
+}

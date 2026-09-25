@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_heavy/dura_steel",
+    "G": "#hbm:grips/dura_steel",
+    "M": "#hbm:gun_mechanisms/gun_metal",
+    "R": "#hbm:receivers_heavy/dura_steel"
+  },
+  "pattern": [
+    " MG",
+    "BBR",
+    " GM"
+  ],
+  "result": {
+    "id": "hbm:gun_flamer"
+  }
+}

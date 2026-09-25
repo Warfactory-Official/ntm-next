@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/repair_materials"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 31.0,
+        "min": 18.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/repair_materials_18_31"
+}

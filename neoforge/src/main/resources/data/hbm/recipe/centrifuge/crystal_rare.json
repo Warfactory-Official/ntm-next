@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_rare"
+    }
+  ],
+  "order": 153,
+  "output_items": [
+    "hbm:powder_desh_mix",
+    "hbm:powder_desh_mix",
+    {
+      "count": 2,
+      "id": "hbm:nugget_zirconium"
+    },
+    {
+      "count": 2,
+      "id": "hbm:nugget_zirconium"
+    }
+  ],
+  "power": 200
+}

@@ -1,0 +1,24 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 50,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "ingredient": "hbm:neutron_reflector"
+    },
+    {
+      "ingredient": "#c:plates/saturnite"
+    }
+  ],
+  "order": 13,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:plate_mixed"
+    }
+  ],
+  "power": 100
+}

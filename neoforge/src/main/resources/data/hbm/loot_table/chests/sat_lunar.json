@@ -1,0 +1,91 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:constant",
+                "value": 48.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:moon_turf",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:constant",
+                "value": 32.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:moon_turf",
+          "weight": 7
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:constant",
+                "value": 16.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:moon_turf",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:constant",
+                "value": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:powder_lithium",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:constant",
+                "value": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:powder_iron",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:crystal_iron",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:crystal_lithium",
+          "weight": 1
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/sat_lunar"
+}

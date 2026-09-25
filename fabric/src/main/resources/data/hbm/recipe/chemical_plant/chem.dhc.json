@@ -1,0 +1,40 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 400,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:dhc",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -2969601
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "input_fluids": [
+    {
+      "type": "hbm:deuterium",
+      "amount": 500
+    },
+    {
+      "type": "hbm:reformgas",
+      "amount": 250
+    },
+    {
+      "type": "hbm:syngas",
+      "amount": 250
+    }
+  ],
+  "order": 85,
+  "output_fluids": [
+    {
+      "type": "hbm:dhc",
+      "amount": 500
+    }
+  ],
+  "power": 500
+}

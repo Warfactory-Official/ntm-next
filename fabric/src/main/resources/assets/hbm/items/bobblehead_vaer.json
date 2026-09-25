@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "hbm:bobble",
+    "base": "hbm:item/bobblehead_vaer_base"
+  }
+}

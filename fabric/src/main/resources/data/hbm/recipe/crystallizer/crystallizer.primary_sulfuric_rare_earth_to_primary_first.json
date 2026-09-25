@@ -1,0 +1,33 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:hydrogen",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "rare_earth",
+          "grade": "primary_sulfuric"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 101,
+  "output_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "rare_earth",
+          "grade": "primary_first"
+        }
+      },
+      "id": "hbm:bedrock_ore"
+    }
+  ]
+}

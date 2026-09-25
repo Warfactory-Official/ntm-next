@@ -1,0 +1,41 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "V2_Erector",
+    "V2_Pivot",
+    "V2_Rope",
+    "V2_Pad",
+    "Micro_Pad",
+    "Micro_Erector",
+    "Micro_Pivot",
+    "Micro_Rope",
+    "Strong_Erector",
+    "Strong_Pivot",
+    "Strong_Rope",
+    "Strong_Pad",
+    "Huge_Pad",
+    "Huge_Erector",
+    "Huge_Pivot",
+    "Huge_Rope",
+    "Atlas_Pad",
+    "Atlas_Erector",
+    "Atlas_Pivot",
+    "Atlas_Rope",
+    "ABM_Pad",
+    "ABM_Erector",
+    "ABM_Rope",
+    "ABM_Pivot"
+  ],
+  "model": "hbm:models/weapons/launch_pad_erector.obj",
+  "skins": {
+    "all": [
+      "Pad"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/launchpad/pad",
+    "particle": "hbm:block/block_steel"
+  }
+}

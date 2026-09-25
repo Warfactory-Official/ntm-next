@@ -1,0 +1,19 @@
+{
+  "type": "hbm:coker",
+  "input_fluids": [
+    {
+      "type": "hbm:diesel_crack",
+      "amount": 640
+    }
+  ],
+  "order": 12,
+  "output_fluids": [
+    {
+      "type": "hbm:gas_coker",
+      "amount": 64
+    }
+  ],
+  "output_items": [
+    "hbm:coke_petroleum"
+  ]
+}

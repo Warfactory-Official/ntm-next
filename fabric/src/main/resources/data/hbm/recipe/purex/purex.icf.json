@@ -1,0 +1,24 @@
+{
+  "type": "hbm:purex",
+  "duration": 300,
+  "icon_from_input": true,
+  "input_items": [
+    {
+      "ingredient": "hbm:icf_pellet_depleted"
+    }
+  ],
+  "name_wrapper": "purex.recycle",
+  "order": 49,
+  "output_fluids": [
+    {
+      "type": "hbm:helium4",
+      "amount": 1250
+    }
+  ],
+  "output_items": [
+    "hbm:icf_pellet_empty",
+    "hbm:pellet_charged",
+    "hbm:powder_iron"
+  ],
+  "power": 10000
+}

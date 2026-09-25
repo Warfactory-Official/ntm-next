@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:can_empty",
+    {
+      "fabric:type": "fabric:components",
+      "base": "minecraft:potion",
+      "components": {
+        "minecraft:potion_contents": "minecraft:water"
+      }
+    },
+    "minecraft:sugar",
+    "hbm:pellet_cluster"
+  ],
+  "result": {
+    "id": "hbm:can_redbomb"
+  }
+}

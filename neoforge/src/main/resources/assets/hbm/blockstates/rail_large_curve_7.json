@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/rail_large_curve_7_east"
+    },
+    "facing=north": {
+      "model": "hbm:block/rail_large_curve_7_north"
+    },
+    "facing=south": {
+      "model": "hbm:block/rail_large_curve_7_south"
+    },
+    "facing=west": {
+      "model": "hbm:block/rail_large_curve_7_west"
+    }
+  }
+}

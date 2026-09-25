@@ -1,0 +1,419 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_g3_base",
+    "draws": [
+      {
+        "excludes_mods": [
+          {
+            "id": 211
+          },
+          {
+            "id": 212
+          }
+        ],
+        "parts": [
+          "Rifle",
+          "Magazine",
+          "Guide_And_Bolt",
+          "Handle",
+          "Trigger"
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 211
+          },
+          {
+            "id": 212
+          }
+        ],
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.8660254,
+          0.5,
+          1.6327722,
+          0.0,
+          -0.5,
+          0.8660254,
+          -0.9064112,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Selector"
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 205
+          },
+          {
+            "id": 211
+          },
+          {
+            "id": 212
+          }
+        ],
+        "parts": [
+          "Stock"
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          },
+          {
+            "id": 211
+          },
+          {
+            "id": 212
+          }
+        ],
+        "parts": [
+          "Flash_Hider"
+        ]
+      },
+      {
+        "parts": [
+          "Rifle",
+          "Magazine",
+          "Guide_And_Bolt",
+          "Handle",
+          "Trigger"
+        ],
+        "requires_mods": [
+          {
+            "id": 211
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/g3_polymer_green.png"
+      },
+      {
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.8660254,
+          0.5,
+          1.6327722,
+          0.0,
+          -0.5,
+          0.8660254,
+          -0.9064112,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Selector"
+        ],
+        "requires_mods": [
+          {
+            "id": 211
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/g3_polymer_green.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 205
+          }
+        ],
+        "parts": [
+          "Stock"
+        ],
+        "requires_mods": [
+          {
+            "id": 211
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/g3_polymer_green.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "parts": [
+          "Flash_Hider"
+        ],
+        "requires_mods": [
+          {
+            "id": 211
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/g3_polymer_green.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 211
+          }
+        ],
+        "parts": [
+          "Rifle",
+          "Magazine",
+          "Guide_And_Bolt",
+          "Handle",
+          "Trigger"
+        ],
+        "requires_mods": [
+          {
+            "id": 212
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/g3_polymer_black.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 211
+          }
+        ],
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.8660254,
+          0.5,
+          1.6327722,
+          0.0,
+          -0.5,
+          0.8660254,
+          -0.9064112,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Selector"
+        ],
+        "requires_mods": [
+          {
+            "id": 212
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/g3_polymer_black.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 205
+          },
+          {
+            "id": 211
+          }
+        ],
+        "parts": [
+          "Stock"
+        ],
+        "requires_mods": [
+          {
+            "id": 212
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/g3_polymer_black.png"
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          },
+          {
+            "id": 211
+          }
+        ],
+        "parts": [
+          "Flash_Hider"
+        ],
+        "requires_mods": [
+          {
+            "id": 212
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/g3_polymer_black.png"
+      },
+      {
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/g3_attachments.png"
+      },
+      {
+        "parts": [
+          "Scope"
+        ],
+        "requires_mods": [
+          {
+            "id": 202
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/g3_attachments.png"
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "kind": "normal",
+        "length": 10.0,
+        "matrix": [
+          -0.0,
+          -0.3169637,
+          0.67973083,
+          0.0,
+          0.0,
+          0.67973083,
+          0.3169637,
+          0.0,
+          -0.75,
+          0.0,
+          0.0,
+          12.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 10
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -5.0,
+      2.5,
+      -0.0,
+      -5.0,
+      0.0,
+      -2.5,
+      5.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/g3.obj",
+    "pose_overrides": [
+      {
+        "excludes_mods": [
+          {
+            "id": 205
+          }
+        ],
+        "gui": [
+          0.9961947,
+          0.0,
+          0.08715573,
+          1.2471452,
+          -1.4901161E-8,
+          1.0000001,
+          1.4901161E-8,
+          -2.3841858E-7,
+          -0.08715573,
+          0.0,
+          0.9961947,
+          -0.06536627,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "gui": [
+          1.2857144,
+          -1.4901161E-7,
+          -5.9604645E-8,
+          3.7142859,
+          1.1920929E-7,
+          1.2857145,
+          -1.1920929E-7,
+          0.14285779,
+          -5.9604645E-8,
+          1.4901161E-7,
+          1.2857144,
+          -4.7683716E-7,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "requires_mods": [
+          {
+            "id": 205
+          }
+        ]
+      },
+      {
+        "gui": [
+          1.2661815,
+          -1.4901161E-7,
+          0.22326186,
+          3.6654544,
+          1.1920929E-7,
+          1.2857145,
+          -1.0430813E-7,
+          0.14285707,
+          -0.22326195,
+          1.4901161E-7,
+          1.2661815,
+          -0.558156,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "requires_mods": [
+          {
+            "id": 205
+          },
+          {
+            "id": 201
+          }
+        ]
+      }
+    ],
+    "texture": "hbm:textures/models/weapons/g3.png"
+  }
+}

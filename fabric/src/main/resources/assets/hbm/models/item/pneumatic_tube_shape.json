@@ -1,0 +1,51 @@
+{
+  "parent": "hbm:block/pneumatic_tube_base",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "rotation": 90,
+          "texture": "#straight",
+          "uv": [
+            0,
+            11,
+            16,
+            5
+          ]
+        },
+        "east": {
+          "texture": "#straight"
+        },
+        "north": {
+          "texture": "#connector"
+        },
+        "south": {
+          "texture": "#connector"
+        },
+        "up": {
+          "rotation": 90,
+          "texture": "#straight",
+          "uv": [
+            16,
+            11,
+            0,
+            5
+          ]
+        },
+        "west": {
+          "texture": "#straight"
+        }
+      },
+      "from": [
+        5,
+        5,
+        0
+      ],
+      "to": [
+        11,
+        11,
+        16
+      ]
+    }
+  ]
+}

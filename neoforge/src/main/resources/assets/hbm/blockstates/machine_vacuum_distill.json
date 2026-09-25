@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_vacuum_distill"
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_vacuum_distill"
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_vacuum_distill"
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_vacuum_distill"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Engine"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/dieselgen.obj",
+  "skins": {
+    "all": [
+      "Generator"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/dieselgen",
+    "particle": "hbm:block/models/machines/dieselgen"
+  }
+}

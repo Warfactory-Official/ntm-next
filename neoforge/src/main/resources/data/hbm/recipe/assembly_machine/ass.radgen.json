@@ -1,0 +1,50 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools": [
+    "discover.radgen"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 6,
+      "ingredient": "hbm:coil_magnetized_tungsten"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:fine_wires/magnetized_tungsten"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_basic"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:reactor_core"
+    },
+    {
+      "ingredient": "#c:ingots/starmetal"
+    },
+    {
+      "ingredient": "#c:dyes/red"
+    }
+  ],
+  "order": 190,
+  "output_items": [
+    "hbm:machine_radgen"
+  ],
+  "power": 100
+}

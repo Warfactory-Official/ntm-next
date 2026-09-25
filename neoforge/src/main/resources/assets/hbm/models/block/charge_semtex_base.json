@@ -1,0 +1,8 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "textures": {
+    "all": "hbm:block/charge_semtex",
+    "particle": "hbm:block/charge_semtex"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_supercomputer",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_supercomputer",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_supercomputer"
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_supercomputer",
+      "y": 270
+    }
+  }
+}

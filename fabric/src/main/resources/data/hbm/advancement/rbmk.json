@@ -1,0 +1,27 @@
+{
+  "parent": "hbm:concrete",
+  "criteria": {
+    "crafted_hbm_rbmk_fuel_empty": {
+      "conditions": {
+        "recipe_id": "hbm:rbmk_fuel_empty"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.RBMK.desc"
+    },
+    "icon": {
+      "id": "hbm:rbmk_fuel_ueu"
+    },
+    "title": {
+      "translate": "achievement.RBMK"
+    }
+  },
+  "requirements": [
+    [
+      "crafted_hbm_rbmk_fuel_empty"
+    ]
+  ]
+}

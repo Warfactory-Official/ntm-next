@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/turret_tauon_east"
+    },
+    "facing=north": {
+      "model": "hbm:block/turret_tauon_north"
+    },
+    "facing=south": {
+      "model": "hbm:block/turret_tauon_south"
+    },
+    "facing=west": {
+      "model": "hbm:block/turret_tauon_west"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:fragment_cobalt"
+    }
+  ],
+  "order": 39,
+  "output_items": [
+    "hbm:powder_cobalt_tiny"
+  ]
+}

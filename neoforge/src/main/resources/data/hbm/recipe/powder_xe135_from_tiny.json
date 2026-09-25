@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "T": "hbm:powder_xe135_tiny"
+  },
+  "pattern": [
+    "TTT",
+    "TTT",
+    "TTT"
+  ],
+  "result": {
+    "id": "hbm:powder_xe135"
+  }
+}

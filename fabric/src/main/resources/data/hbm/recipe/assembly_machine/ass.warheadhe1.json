@@ -1,0 +1,22 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:ball_dynamite"
+    },
+    {
+      "ingredient": "hbm:circuit_chip"
+    }
+  ],
+  "order": 344,
+  "output_items": [
+    "hbm:warhead_generic_small"
+  ],
+  "power": 100
+}

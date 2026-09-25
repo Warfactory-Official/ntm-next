@@ -1,0 +1,32 @@
+{
+  "type": "hbm:crucible",
+  "frequency": 3,
+  "icon": {
+    "id": "hbm:ingot_bscco"
+  },
+  "input_materials": [
+    {
+      "amount": 16,
+      "material": "bismuth"
+    },
+    {
+      "amount": 16,
+      "material": "strontium"
+    },
+    {
+      "amount": 16,
+      "material": "calcium"
+    },
+    {
+      "amount": 24,
+      "material": "copper"
+    }
+  ],
+  "order": 12,
+  "output_materials": [
+    {
+      "amount": 72,
+      "material": "bscco"
+    }
+  ]
+}

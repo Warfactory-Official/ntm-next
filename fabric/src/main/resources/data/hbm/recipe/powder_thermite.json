@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/iron",
+    "#c:dusts/iron",
+    "#c:dusts/iron",
+    "#c:dusts/aluminum"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:powder_thermite"
+  }
+}

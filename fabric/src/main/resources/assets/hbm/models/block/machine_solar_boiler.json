@@ -1,0 +1,20 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Overglow_3",
+    "Overglow_2",
+    "Overglow_1"
+  ],
+  "model": "hbm:models/machines/solar_boiler.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/solar_boiler",
+    "particle": "hbm:block/models/machines/solar_boiler"
+  }
+}

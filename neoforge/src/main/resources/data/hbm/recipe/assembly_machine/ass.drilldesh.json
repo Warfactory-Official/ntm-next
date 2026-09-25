@@ -1,0 +1,23 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/workers_alloy"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/niobium"
+    }
+  ],
+  "order": 151,
+  "output_items": [
+    "hbm:drillbit_desh"
+  ],
+  "power": 100
+}

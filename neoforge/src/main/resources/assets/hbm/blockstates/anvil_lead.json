@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/anvil_lead"
+    },
+    "facing=north": {
+      "model": "hbm:block/anvil_lead",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/anvil_lead",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/anvil_lead",
+      "y": 180
+    }
+  }
+}

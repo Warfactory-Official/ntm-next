@@ -1,0 +1,141 @@
+{
+  "double_sided": [
+    "Plane"
+  ],
+  "groups": [
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        2.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Plane"
+      ],
+      "smooth": false,
+      "texture": "rail_narrow_neo"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Plane"
+      ],
+      "smooth": false,
+      "texture": "rail_narrow_neo"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Plane"
+      ],
+      "smooth": false,
+      "texture": "rail_narrow_neo"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Plane"
+      ],
+      "smooth": false,
+      "texture": "rail_narrow_neo"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        -2.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Plane"
+      ],
+      "smooth": false,
+      "texture": "rail_narrow_neo"
+    }
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/rail_narrow.obj",
+  "textures": {
+    "particle": "hbm:block/rail_narrow_neo",
+    "rail_narrow_neo": "hbm:block/rail_narrow_neo"
+  },
+  "tiled": [
+    "Plane"
+  ]
+}

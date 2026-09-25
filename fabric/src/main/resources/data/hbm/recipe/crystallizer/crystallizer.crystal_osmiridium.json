@@ -1,0 +1,19 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:schrabidic",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_impure_osmiridium"
+    }
+  ],
+  "order": 250,
+  "output_items": [
+    "hbm:crystal_osmiridium"
+  ]
+}

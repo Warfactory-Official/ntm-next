@@ -1,0 +1,28 @@
+{
+  "type": "hbm:soldering",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_chip"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_capacitor"
+    }
+  ],
+  "order": 21,
+  "output_items": [
+    "hbm:upgrade_radius"
+  ],
+  "pcb": [
+    {
+      "ingredient": "hbm:upgrade_template"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:dusts/glowstone"
+    }
+  ],
+  "power": 1000
+}

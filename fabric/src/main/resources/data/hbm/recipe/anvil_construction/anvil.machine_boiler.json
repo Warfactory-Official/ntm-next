@@ -1,0 +1,23 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:plate_polymer"
+    }
+  ],
+  "order": 76,
+  "output_items": [
+    "hbm:machine_boiler"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

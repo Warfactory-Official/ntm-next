@@ -1,0 +1,18 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "lbsm_simple_crafting"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:slime_ball",
+    "minecraft:tnt",
+    "#c:dusts/saltpeter"
+  ],
+  "result": {
+    "count": 3,
+    "id": "hbm:ingot_semtex"
+  }
+}

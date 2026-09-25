@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/coal",
+    "minecraft:milk_bucket",
+    {
+      "fabric:type": "fabric:components",
+      "base": "minecraft:potion",
+      "components": {
+        "minecraft:potion_contents": "minecraft:water"
+      }
+    },
+    "minecraft:sugar"
+  ],
+  "result": {
+    "id": "hbm:coffee"
+  }
+}

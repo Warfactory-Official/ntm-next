@@ -1,0 +1,133 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:constant",
+                "value": 12.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ammo_standard_m357_sp",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:constant",
+                "value": 6.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ammo_standard_m357_fmj",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:constant",
+                "value": 12.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ammo_standard_m44_sp",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:constant",
+                "value": 6.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ammo_standard_m44_fmj",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:constant",
+                "value": 12.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ammo_standard_p9_sp",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:constant",
+                "value": 6.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ammo_standard_p9_fmj",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:constant",
+                "value": 6.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ammo_standard_r762_sp",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:constant",
+                "value": 6.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ammo_standard_g12_bp",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:ammo_standard_rocket_he",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:ammo_container",
+          "weight": 1
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/ammo"
+}

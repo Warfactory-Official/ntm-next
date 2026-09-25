@@ -1,0 +1,21 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Fan2",
+    "Fan1",
+    "Frame",
+    "Plane.001"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/chemical_factory.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/chemical_factory",
+    "particle": "hbm:block/models/machines/chemical_factory"
+  }
+}

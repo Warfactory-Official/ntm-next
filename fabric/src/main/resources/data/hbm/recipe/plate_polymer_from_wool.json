@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": "minecraft:string",
+    "W": "#minecraft:wool"
+  },
+  "pattern": [
+    "SWS"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:plate_polymer"
+  }
+}

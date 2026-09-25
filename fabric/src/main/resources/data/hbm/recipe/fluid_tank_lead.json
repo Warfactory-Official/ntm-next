@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "L": "#c:plates/lead",
+    "T": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:fluid_tank",
+      "components": {
+        "!hbm:fluid_content": {}
+      }
+    },
+    "U": "#hbm:billets/uranium_238"
+  },
+  "pattern": [
+    "LUL",
+    "LTL",
+    "LUL"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:fluid_tank_lead"
+  }
+}

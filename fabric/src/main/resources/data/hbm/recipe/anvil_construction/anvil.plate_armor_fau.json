@@ -1,0 +1,21 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:ingot_meteorite_forged"
+    },
+    {
+      "ingredient": "#c:ingots/workers_alloy"
+    },
+    {
+      "ingredient": "hbm:billet_yharonite"
+    }
+  ],
+  "order": 100,
+  "output_items": [
+    "hbm:plate_armor_fau"
+  ],
+  "overlay": "construction",
+  "tier": 6
+}

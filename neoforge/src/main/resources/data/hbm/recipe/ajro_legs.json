@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:ajr_legs"
+    },
+    "#c:dyes/red",
+    "#c:dyes/black"
+  ],
+  "result": {
+    "id": "hbm:ajro_legs"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "hbm:block/lamp_tritium_blue"
+    },
+    "lit=true": {
+      "model": "hbm:block/lamp_tritium_blue_on"
+    }
+  }
+}

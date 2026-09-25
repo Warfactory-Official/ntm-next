@@ -1,0 +1,27 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!lbsm_simple_armor"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "E": "#c:ingots/schrabidium",
+    "P": "hbm:pellet_charged",
+    "S": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:starmetal_boots",
+      "components": {
+        "minecraft:damage": 0
+      }
+    }
+  },
+  "pattern": [
+    "EPE",
+    "ESE"
+  ],
+  "result": {
+    "id": "hbm:schrabidium_boots"
+  }
+}

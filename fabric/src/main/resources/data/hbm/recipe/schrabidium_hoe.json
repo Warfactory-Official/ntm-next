@@ -1,0 +1,22 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!lbsm_simple_tools"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/schrabidium",
+    "S": "#hbm:ingots/any_plastic",
+    "W": "hbm:desh_hoe"
+  },
+  "pattern": [
+    "IW",
+    " S",
+    " S"
+  ],
+  "result": {
+    "id": "hbm:schrabidium_hoe"
+  }
+}

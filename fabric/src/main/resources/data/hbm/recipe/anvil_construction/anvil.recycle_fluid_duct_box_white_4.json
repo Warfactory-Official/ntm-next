@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:fluid_duct_box_white_4"
+    }
+  ],
+  "order": 140,
+  "output_items": [
+    "hbm:plate_aluminium"
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

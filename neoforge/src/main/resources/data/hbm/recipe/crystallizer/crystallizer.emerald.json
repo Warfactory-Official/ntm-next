@@ -1,0 +1,19 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/emerald"
+    }
+  ],
+  "order": 270,
+  "output_items": [
+    "minecraft:emerald"
+  ]
+}

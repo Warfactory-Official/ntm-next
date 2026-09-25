@@ -1,0 +1,137 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_amat_base",
+    "draws": [
+      {
+        "parts": [
+          "Gun",
+          "Bolt",
+          "Magazine",
+          "BipodLeft",
+          "BipodHingeLeft",
+          "BipodRight",
+          "BipodHingeRight",
+          "Scope"
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "parts": [
+          "MuzzleBrake"
+        ]
+      },
+      {
+        "matrix": [
+          1.25,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.25,
+          0.0,
+          0.625,
+          0.0,
+          0.0,
+          1.25,
+          -4.3125,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "obj": "hbm:models/weapons/g3.obj",
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/g3_attachments.png"
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 0,
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "kind": "gap",
+        "length": 0.0,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.5,
+          -0.75,
+          0.0,
+          -0.0,
+          11.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -5.75,
+      8.625,
+      -0.0,
+      -5.75,
+      0.0,
+      1.4375,
+      5.75,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/amat.obj",
+    "pose_overrides": [
+      {
+        "gui": [
+          0.87200004,
+          2.9802322E-8,
+          0.0,
+          0.06400061,
+          -4.4703484E-8,
+          0.8719999,
+          4.4703484E-8,
+          -0.06399965,
+          0.0,
+          -2.9802322E-8,
+          0.87200004,
+          -0.8720002,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ]
+      }
+    ],
+    "texture": "hbm:textures/models/weapons/amat.png"
+  }
+}

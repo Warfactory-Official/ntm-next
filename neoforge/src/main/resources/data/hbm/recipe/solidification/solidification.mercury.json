@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:mercury",
+      "amount": 125
+    }
+  ],
+  "order": 10,
+  "output_items": [
+    "hbm:nugget_mercury"
+  ]
+}

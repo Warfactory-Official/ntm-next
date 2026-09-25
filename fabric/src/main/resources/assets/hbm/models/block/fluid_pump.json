@@ -1,0 +1,15 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbm:models/network/fluid_diode.obj",
+  "skins": {
+    "all": [
+      "Cylinder"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/network/fluid_diode",
+    "particle": "hbm:block/models/network/fluid_diode"
+  }
+}

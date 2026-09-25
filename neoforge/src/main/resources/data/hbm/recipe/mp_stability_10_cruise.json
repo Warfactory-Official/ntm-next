@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#c:plates/titanium",
+    "P": "#c:plates/steel",
+    "S": "hbm:steel_scaffold"
+  },
+  "pattern": [
+    "ASA",
+    " S ",
+    "PSP"
+  ],
+  "result": {
+    "id": "hbm:mp_stability_10_cruise"
+  }
+}

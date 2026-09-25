@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/gold"
+    }
+  ],
+  "order": 11,
+  "output_items": [
+    "hbm:ingot_bismuth"
+  ]
+}

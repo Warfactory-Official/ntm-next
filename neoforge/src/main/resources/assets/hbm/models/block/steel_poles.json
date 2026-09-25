@@ -1,0 +1,15 @@
+{
+  "ambientocclusion": true,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/pole.obj",
+  "skins": {
+    "all": [
+      "Cube_Cube.001"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/steel_beam",
+    "particle": "hbm:block/steel_beam"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_fraction_tower"
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_fraction_tower"
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_fraction_tower"
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_fraction_tower"
+    }
+  }
+}

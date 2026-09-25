@@ -1,0 +1,33 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": {
+        "fabric:type": "hbm:fluid_content",
+        "amount": 1000,
+        "fluid": "hbm:diesel"
+      }
+    },
+    "B": {
+      "ingredient": "hbm:ball_dynamite"
+    },
+    "C": {
+      "ingredient": "hbm:casing_large"
+    },
+    "D": {
+      "ingredient": "hbm:rocket_fuel"
+    }
+  },
+  "order": 68,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:ammo_standard_rocket_inc"
+    }
+  ],
+  "pattern": [
+    "AB ",
+    " C ",
+    " D "
+  ]
+}

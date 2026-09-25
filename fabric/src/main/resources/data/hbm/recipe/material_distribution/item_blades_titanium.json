@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 288,
+      "material": "titanium"
+    }
+  ],
+  "targets": "hbm:blades_titanium"
+}

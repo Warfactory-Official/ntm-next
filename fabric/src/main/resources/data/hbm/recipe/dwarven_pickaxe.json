@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:ingots/copper",
+    "I": "#c:ingots/iron",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "CIC",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "id": "hbm:dwarven_pickaxe"
+  }
+}

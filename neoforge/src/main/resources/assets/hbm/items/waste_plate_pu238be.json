@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/waste_plate_pu238be",
+    "tints": [
+      {
+        "type": "hbm:waste_cooling"
+      }
+    ]
+  }
+}

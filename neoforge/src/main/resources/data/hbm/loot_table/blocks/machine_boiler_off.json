@@ -1,0 +1,40 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6,
+                "min": 3
+              },
+              "function": "minecraft:set_count"
+            },
+            {
+              "components": {
+                "hbm:scrap": {
+                  "amount": 72,
+                  "material": 30
+                }
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "hbm:scraps"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:blocks/machine_boiler_off"
+}

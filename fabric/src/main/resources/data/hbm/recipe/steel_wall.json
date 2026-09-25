@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": "#c:ingots/steel"
+  },
+  "pattern": [
+    "SSS",
+    "SSS"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:steel_wall"
+  }
+}

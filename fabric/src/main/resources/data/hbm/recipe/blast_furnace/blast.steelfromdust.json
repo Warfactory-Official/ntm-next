@@ -1,0 +1,22 @@
+{
+  "type": "hbm:blast_furnace",
+  "duration": 800,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#c:dusts/iron"
+    },
+    {
+      "ingredient": "#minecraft:sand"
+    }
+  ],
+  "name": "blast.steelFromDust",
+  "order": 1,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:ingot_steel"
+    },
+    "hbm:ingot_raw_slag"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 360,
+      "material": "iron"
+    }
+  ],
+  "targets": "minecraft:minecart"
+}

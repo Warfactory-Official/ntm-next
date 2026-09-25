@@ -1,0 +1,28 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "components": {
+        "hbm:forge_count": 1
+      },
+      "ingredient": "hbm:ingot_steel_dusted"
+    },
+    {
+      "components": {
+        "hbm:forge_count": 1
+      },
+      "ingredient": "hbm:ingot_steel_dusted"
+    }
+  ],
+  "kind": "hot",
+  "order": 19,
+  "output_items": [
+    {
+      "components": {
+        "hbm:forge_count": 2
+      },
+      "id": "hbm:ingot_steel_dusted"
+    }
+  ],
+  "tier": 3
+}

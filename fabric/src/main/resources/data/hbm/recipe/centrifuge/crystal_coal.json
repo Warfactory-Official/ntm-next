@@ -1,0 +1,26 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_coal"
+    }
+  ],
+  "order": 133,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:powder_coal"
+    },
+    {
+      "count": 3,
+      "id": "hbm:powder_coal"
+    },
+    {
+      "count": 3,
+      "id": "hbm:powder_coal"
+    },
+    "hbm:powder_lithium_tiny"
+  ],
+  "power": 200
+}

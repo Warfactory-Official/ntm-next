@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "cracked=false": {
+      "model": "hbm:block/block_slag"
+    },
+    "cracked=true": {
+      "model": "hbm:block/block_slag_cracked"
+    }
+  }
+}

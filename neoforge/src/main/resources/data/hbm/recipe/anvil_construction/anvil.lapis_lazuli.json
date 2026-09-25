@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/lapis"
+    }
+  ],
+  "order": 26,
+  "output_items": [
+    "minecraft:lapis_lazuli"
+  ],
+  "overlay": "smithing",
+  "tier": 3
+}

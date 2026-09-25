@@ -1,0 +1,23 @@
+{
+  "type": "hbm:plasma_forge",
+  "auto_switch_group": "autoswitch.weldPlates",
+  "duration": 600,
+  "ignition_temp": 500000,
+  "input_fluids": [
+    {
+      "type": "hbm:oxygen",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/cd_alloy"
+    }
+  ],
+  "order": 10,
+  "output_items": [
+    "hbm:plate_welded_cd_alloy"
+  ],
+  "power": 1000000
+}

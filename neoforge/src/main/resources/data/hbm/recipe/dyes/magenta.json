@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "hbm:powder_ash_fullerene",
+      "hbm:crayon_magenta",
+      "hbm:chemical_dye_magenta"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:magenta_dye"
+  }
+}

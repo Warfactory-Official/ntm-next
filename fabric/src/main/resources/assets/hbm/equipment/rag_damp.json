@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "hbm:rag_damp"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "hbm:rag_damp"
+      }
+    ]
+  }
+}

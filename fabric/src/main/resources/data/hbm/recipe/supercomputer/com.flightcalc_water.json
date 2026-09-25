@@ -1,0 +1,39 @@
+{
+  "type": "hbm:supercomputer",
+  "duration": 18000,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 16000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:drive_flash_empty"
+    }
+  ],
+  "order": 0,
+  "output_fluids": [
+    {
+      "type": "hbm:spentsteam",
+      "amount": 16000
+    }
+  ],
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:drive_flash_flightsim"
+        },
+        "weight": 95
+      },
+      {
+        "data": {
+          "id": "hbm:drive_flash_broken"
+        },
+        "weight": 5
+      }
+    ]
+  ],
+  "power": 10000
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_light/any_resistant_alloy",
+    "G": "#hbm:grips/any_plastic",
+    "M": "#hbm:gun_mechanisms/weapon_steel",
+    "R": "#hbm:receivers_light/any_resistant_alloy"
+  },
+  "pattern": [
+    "BRM",
+    "  G"
+  ],
+  "result": {
+    "id": "hbm:gun_lag"
+  }
+}

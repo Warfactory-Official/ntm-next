@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!lbsm_simple_centrifuge"
+    }
+  ],
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/lead"
+    }
+  ],
+  "order": 20,
+  "output_items": [
+    "hbm:powder_lead",
+    "hbm:powder_lead",
+    "hbm:powder_gold",
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

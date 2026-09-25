@@ -1,0 +1,26 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_trixite"
+    }
+  ],
+  "order": 155,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_plutonium"
+    },
+    {
+      "count": 3,
+      "id": "hbm:powder_cobalt"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_niobium"
+    },
+    "hbm:powder_nitan_mix"
+  ],
+  "power": 200
+}

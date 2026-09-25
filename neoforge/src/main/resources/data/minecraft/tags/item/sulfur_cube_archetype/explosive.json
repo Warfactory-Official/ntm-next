@@ -1,0 +1,17 @@
+{
+  "values": [
+    "hbm:block_semtex",
+    "hbm:block_c4",
+    "hbm:dynamite",
+    "hbm:tnt",
+    "hbm:semtex",
+    "hbm:c4",
+    "hbm:fissure_bomb",
+    "hbm:det_charge",
+    "hbm:det_nuke",
+    "hbm:det_miner",
+    "hbm:flame_war",
+    "hbm:therm_endo",
+    "hbm:therm_exo"
+  ]
+}

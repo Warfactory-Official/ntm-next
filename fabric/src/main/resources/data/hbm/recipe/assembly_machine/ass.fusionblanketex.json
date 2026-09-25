@@ -1,0 +1,35 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.tcalloy"
+  ],
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_welded/tungsten"
+    },
+    {
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/beryllium"
+    }
+  ],
+  "name": "ass.fusionblanketEx",
+  "order": 260,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:fusion_component_blanket"
+    }
+  ],
+  "power": 100
+}

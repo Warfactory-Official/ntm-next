@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "hbm:block/stone_biome_top_woodland",
+    "side": "hbm:block/stone_biome_side_exposed_woodland",
+    "top": "hbm:block/stone_biome_top_woodland"
+  }
+}

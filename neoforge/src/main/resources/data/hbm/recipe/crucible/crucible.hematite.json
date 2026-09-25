@@ -1,0 +1,28 @@
+{
+  "type": "hbm:crucible",
+  "frequency": 6,
+  "icon": {
+    "id": "hbm:stone_resource_hematite"
+  },
+  "input_materials": [
+    {
+      "amount": 144,
+      "material": "hematite"
+    },
+    {
+      "amount": 16,
+      "material": "flux"
+    }
+  ],
+  "order": 1,
+  "output_materials": [
+    {
+      "amount": 72,
+      "material": "iron"
+    },
+    {
+      "amount": 24,
+      "material": "slag"
+    }
+  ]
+}

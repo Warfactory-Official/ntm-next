@@ -1,0 +1,20 @@
+{
+  "type": "hbm:blast_furnace",
+  "duration": 400,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/copper"
+    },
+    {
+      "ingredient": "#c:ingots/redstone"
+    }
+  ],
+  "name": "blast.mingradeIngot",
+  "order": 6,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:ingot_red_copper"
+    }
+  ]
+}

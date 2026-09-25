@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_advanced",
+    "P": "#hbm:ingots/any_rubber",
+    "S": "hbm:steel_scaffold"
+  },
+  "pattern": [
+    "P",
+    "C",
+    "S"
+  ],
+  "result": {
+    "id": "hbm:mp_c_4"
+  }
+}

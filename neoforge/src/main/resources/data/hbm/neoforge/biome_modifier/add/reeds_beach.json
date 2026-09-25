@@ -1,0 +1,9 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:beach",
+    "minecraft:snowy_beach"
+  ],
+  "features": "hbm:reeds_beach",
+  "step": "vegetal_decoration"
+}

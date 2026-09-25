@@ -1,0 +1,18 @@
+{
+  "type": "hbm:container_upgrade",
+  "carrier": "hbm:crate_steel",
+  "key": {
+    "C": "hbm:crate_steel",
+    "S": "minecraft:minecart"
+  },
+  "pattern": [
+    "C",
+    "S"
+  ],
+  "result": {
+    "components": {
+      "hbm:cart_base": "vanilla"
+    },
+    "id": "hbm:cart_crate"
+  }
+}

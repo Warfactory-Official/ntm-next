@@ -1,0 +1,36 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.controller"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_10"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:plates/weapon_steel"
+    },
+    {
+      "count": 6,
+      "ingredient": "#hbm:billets/plutonium_239"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:neutron_reflector"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    },
+    {
+      "ingredient": "hbm:circuit_controller"
+    }
+  ],
+  "order": 401,
+  "output_items": [
+    "hbm:mp_warhead_10_nuclear_large"
+  ],
+  "power": 100
+}

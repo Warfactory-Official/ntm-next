@@ -1,0 +1,31 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "impossible": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.tasteofblood.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "components": {
+        "hbm:fluid_content": {
+          "type": "hbm:aschrab",
+          "amount": 0
+        }
+      },
+      "id": "hbm:fluid_icon"
+    },
+    "title": {
+      "translate": "achievement.tasteofblood"
+    }
+  },
+  "requirements": [
+    [
+      "impossible"
+    ]
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "hbm:ducttape",
+    "K": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:insert_esapi",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "P": "#c:ingots/asbestos",
+    "S": "#c:plates/saturnite"
+  },
+  "pattern": [
+    "PKP",
+    "DSD",
+    "PKP"
+  ],
+  "result": {
+    "id": "hbm:insert_xsapi"
+  }
+}

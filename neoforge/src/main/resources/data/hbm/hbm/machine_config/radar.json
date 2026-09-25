@@ -1,0 +1,9 @@
+{
+  "chunk_load_cap": 10,
+  "generate_chunks": false,
+  "power_capacity": 100000,
+  "power_consumption": 500,
+  "radar_altitude": 55,
+  "radar_buffer": 30,
+  "radar_range": 1000
+}

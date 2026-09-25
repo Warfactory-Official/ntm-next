@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!lbsm_simple_centrifuge"
+    }
+  ],
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/tungsten"
+    }
+  ],
+  "order": 17,
+  "output_items": [
+    "hbm:powder_tungsten",
+    "hbm:powder_tungsten",
+    "hbm:powder_iron",
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

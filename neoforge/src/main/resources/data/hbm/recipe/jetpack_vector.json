@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:bolts/dura_steel",
+    "C": "hbm:circuit_advanced",
+    "J": "hbm:jetpack_break",
+    "M": "hbm:motor",
+    "T": "hbm:tank_steel"
+  },
+  "pattern": [
+    "TCT",
+    "MJM",
+    "B B"
+  ],
+  "result": {
+    "id": "hbm:jetpack_vector"
+  }
+}

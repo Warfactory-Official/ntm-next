@@ -1,0 +1,29 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "level": {
+          "min": 0.0
+        }
+      },
+      "trigger": "hbm:digamma"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.digammaSee.desc"
+    },
+    "icon": {
+      "id": "hbm:achievement_icon_digammasee"
+    },
+    "title": {
+      "translate": "achievement.digammaSee"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/schrabidium"
+    }
+  ],
+  "order": 30,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:wire_fine_schrabidium"
+    }
+  ],
+  "stamp": "wire"
+}

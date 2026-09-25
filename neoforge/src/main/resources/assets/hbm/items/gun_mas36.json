@@ -1,0 +1,128 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_mas36_base",
+    "draws": [
+      {
+        "parts": [
+          "Gun",
+          "Stock",
+          "Bolt"
+        ]
+      },
+      {
+        "parts": [
+          "Scope"
+        ],
+        "requires_mods": [
+          {
+            "id": 202
+          }
+        ]
+      },
+      {
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          -1.0,
+          0.0,
+          0.0,
+          1.0,
+          -6.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Bayonet"
+        ],
+        "requires_mods": [
+          {
+            "id": 213
+          }
+        ]
+      }
+    ],
+    "equipped_draws": [
+      {
+        "parts": [
+          "Gun",
+          "Stock",
+          "Bolt"
+        ]
+      },
+      {
+        "parts": [
+          "Scope"
+        ],
+        "requires_mods": [
+          {
+            "id": 202
+          }
+        ]
+      },
+      {
+        "parts": [
+          "Bayonet"
+        ],
+        "requires_mods": [
+          {
+            "id": 213
+          }
+        ]
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 10.0,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.5,
+          0.0,
+          0.0,
+          0.5,
+          0.0,
+          1.0,
+          -0.5,
+          0.0,
+          -0.0,
+          8.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -7.5,
+      18.75,
+      -0.0,
+      -7.5,
+      0.0,
+      1.875,
+      7.5,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/mas36.obj",
+    "texture": "hbm:textures/models/weapons/mas36.png"
+  }
+}

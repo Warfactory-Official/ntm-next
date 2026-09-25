@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "level=0": {
+      "model": "hbm:block/corium_block_0"
+    },
+    "level=1": {
+      "model": "hbm:block/corium_block_1"
+    },
+    "level=2": {
+      "model": "hbm:block/corium_block_2"
+    },
+    "level=3": {
+      "model": "hbm:block/corium_block_3"
+    },
+    "level=4": {
+      "model": "hbm:block/corium_block_4"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:asbestos",
+      "level": 3.0
+    }
+  ],
+  "targets": "#hbm:hazard/powder_coltan_ore"
+}

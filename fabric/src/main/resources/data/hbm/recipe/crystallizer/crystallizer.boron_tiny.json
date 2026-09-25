@@ -1,0 +1,23 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/borax"
+    }
+  ],
+  "order": 261,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:powder_boron_tiny"
+    }
+  ],
+  "productivity": 0.25
+}

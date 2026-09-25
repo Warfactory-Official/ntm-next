@@ -1,0 +1,30 @@
+{
+  "parent": "hbm:slimeball",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "item": {
+          "items": "minecraft:slime_ball"
+        }
+      },
+      "trigger": "hbm:item_dissolved"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.sulfuric.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:achievement_icon_balls"
+    },
+    "title": {
+      "translate": "achievement.sulfuric"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

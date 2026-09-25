@@ -1,0 +1,16 @@
+{
+  "type": "hbm:cyclotron",
+  "amat": 25,
+  "input_items": [
+    {
+      "ingredient": "hbm:part_beryllium"
+    },
+    {
+      "ingredient": "#c:dusts/thorium"
+    }
+  ],
+  "order": 19,
+  "output_items": [
+    "hbm:powder_uranium"
+  ]
+}

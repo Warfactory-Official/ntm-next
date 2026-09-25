@@ -1,0 +1,15 @@
+{
+  "type": "hbm:nether_surface",
+  "config": {
+    "attempts": 1,
+    "d_range": 96,
+    "min_d": 16,
+    "scan_down": 5,
+    "state": {
+      "Name": "hbm:geysir_nether",
+      "Properties": {
+        "active": "false"
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:ingot_firebrick"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:concretes"
+    }
+  ],
+  "name": "ass.strandcasterEx",
+  "order": 167,
+  "output_items": [
+    "hbm:machine_strand_caster"
+  ],
+  "power": 100
+}

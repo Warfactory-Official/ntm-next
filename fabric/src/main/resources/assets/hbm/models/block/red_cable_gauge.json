@@ -1,0 +1,66 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#base"
+        },
+        "east": {
+          "cullface": "east",
+          "texture": "#base"
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#base"
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#base"
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#base"
+        },
+        "west": {
+          "cullface": "west",
+          "texture": "#base"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#dial"
+        }
+      },
+      "from": [
+        0.0,
+        0.0,
+        -0.01
+      ],
+      "to": [
+        16.0,
+        16.0,
+        -0.01
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "base": "hbm:block/deco_red_copper_plain",
+    "dial": "hbm:block/cable_gauge",
+    "particle": "hbm:block/deco_red_copper_plain"
+  }
+}

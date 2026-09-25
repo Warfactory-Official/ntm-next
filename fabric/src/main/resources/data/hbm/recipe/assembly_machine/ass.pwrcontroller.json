@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/lead"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 249,
+  "output_items": [
+    "hbm:pwr_controller"
+  ],
+  "power": 500
+}

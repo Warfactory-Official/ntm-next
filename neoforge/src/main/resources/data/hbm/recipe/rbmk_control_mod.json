@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:nuggets/bismuth",
+    "G": "#c:storage_blocks/graphite",
+    "R": "hbm:rbmk_control"
+  },
+  "pattern": [
+    "BGB",
+    "GRG",
+    "BGB"
+  ],
+  "result": {
+    "id": "hbm:rbmk_control_mod"
+  }
+}

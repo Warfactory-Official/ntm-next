@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 0.25
+    }
+  ],
+  "targets": "#hbm:hazard/nugget_mox_fuel"
+}

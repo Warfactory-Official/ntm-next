@@ -1,0 +1,25 @@
+{
+  "type": "hbm:electrolyser_fluid",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:vitriol",
+      "amount": 1000
+    }
+  ],
+  "order": 2,
+  "output_fluids": [
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 500
+    },
+    {
+      "type": "hbm:chlorine",
+      "amount": 500
+    }
+  ],
+  "output_items": [
+    "hbm:powder_iron",
+    "hbm:nugget_mercury"
+  ]
+}

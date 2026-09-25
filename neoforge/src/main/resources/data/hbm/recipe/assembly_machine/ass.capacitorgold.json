@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:wires_dense/gold"
+    }
+  ],
+  "order": 194,
+  "output_items": [
+    "hbm:battery_pack_capacitor_gold"
+  ],
+  "power": 100
+}

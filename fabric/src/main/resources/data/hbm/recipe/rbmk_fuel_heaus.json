@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:rbmk_fuel_empty",
+    "hbm:billet_australium_greater",
+    "hbm:billet_australium_greater",
+    "hbm:billet_australium_greater",
+    "hbm:billet_australium_greater",
+    "hbm:billet_australium_greater",
+    "hbm:billet_australium_greater",
+    "hbm:billet_australium_greater",
+    "hbm:billet_australium_greater"
+  ],
+  "result": {
+    "id": "hbm:rbmk_fuel_heaus"
+  }
+}

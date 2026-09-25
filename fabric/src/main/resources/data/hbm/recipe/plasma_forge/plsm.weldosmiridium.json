@@ -1,0 +1,23 @@
+{
+  "type": "hbm:plasma_forge",
+  "auto_switch_group": "autoswitch.weldPlates",
+  "duration": 3000,
+  "ignition_temp": 500000,
+  "input_fluids": [
+    {
+      "type": "hbm:reformgas",
+      "amount": 16000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/osmiridium"
+    }
+  ],
+  "order": 13,
+  "output_items": [
+    "hbm:plate_welded_osmiridium"
+  ],
+  "power": 50000000
+}

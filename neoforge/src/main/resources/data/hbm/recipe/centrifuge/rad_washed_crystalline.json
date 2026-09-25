@@ -1,0 +1,40 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "crystalline",
+          "grade": "rad_washed"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 131,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:bedrock_ore_fragment_borax"
+    },
+    {
+      "count": 3,
+      "id": "hbm:bedrock_ore_fragment_molysite"
+    },
+    {
+      "count": 9,
+      "id": "hbm:bedrock_ore_fragment_sodalite"
+    },
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "crystalline",
+          "grade": "crumbs"
+        }
+      },
+      "id": "hbm:bedrock_ore"
+    }
+  ],
+  "power": 200
+}

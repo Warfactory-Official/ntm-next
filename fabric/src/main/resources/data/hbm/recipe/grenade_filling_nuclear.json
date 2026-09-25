@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:plates/weapon_steel",
+    "P": "#c:nuggets/plutonium_239",
+    "T": "hbm:ball_tatb"
+  },
+  "pattern": [
+    " T ",
+    "CPC",
+    " T "
+  ],
+  "result": {
+    "id": "hbm:grenade_filling_nuclear"
+  }
+}

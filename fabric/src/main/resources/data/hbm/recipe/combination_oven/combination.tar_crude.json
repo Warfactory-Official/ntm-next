@@ -1,0 +1,12 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "ingredient": "hbm:oil_tar_crude"
+    }
+  ],
+  "order": 17,
+  "output_items": [
+    "hbm:coke_petroleum"
+  ]
+}

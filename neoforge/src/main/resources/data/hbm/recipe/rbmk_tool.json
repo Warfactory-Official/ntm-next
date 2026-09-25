@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#c:ingots/lead",
+    "I": "#c:ingots/iron"
+  },
+  "pattern": [
+    " A ",
+    " IA",
+    "I  "
+  ],
+  "result": {
+    "id": "hbm:rbmk_tool"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_fluids": [
+    {
+      "type": "hbm:puf6",
+      "amount": 0
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 5,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_pu238"
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_pu239"
+        },
+        "weight": 4
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_pu240"
+        },
+        "weight": 2
+      }
+    ]
+  ]
+}

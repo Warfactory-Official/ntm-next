@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:can_empty",
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:potion_contents": "minecraft:water"
+      },
+      "items": "minecraft:potion"
+    },
+    "minecraft:sugar",
+    "#c:dusts/saltpeter"
+  ],
+  "result": {
+    "id": "hbm:can_smart"
+  }
+}

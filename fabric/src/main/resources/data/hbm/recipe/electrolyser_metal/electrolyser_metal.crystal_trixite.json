@@ -1,0 +1,28 @@
+{
+  "type": "hbm:electrolyser_metal",
+  "duration": 600,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_trixite"
+    }
+  ],
+  "order": 14,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:powder_niobium"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_nitan_mix"
+    }
+  ],
+  "output_material": {
+    "amount": 216,
+    "material": "plutonium"
+  },
+  "output_material_2": {
+    "amount": 288,
+    "material": "cobalt"
+  }
+}

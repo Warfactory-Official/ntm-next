@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/gold"
+    }
+  ],
+  "order": 1,
+  "output_items": [
+    "hbm:plate_gold"
+  ],
+  "overlay": "smithing",
+  "tier": 3
+}

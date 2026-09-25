@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "hbm:blades_steel",
+    "P": "#c:plates/steel"
+  },
+  "pattern": [
+    "PIP"
+  ],
+  "result": {
+    "id": "hbm:blades_steel"
+  }
+}

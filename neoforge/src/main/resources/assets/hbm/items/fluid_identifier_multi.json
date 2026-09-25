@@ -1,0 +1,15 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/fluid_identifier_multi",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "hbm:fluid_identifier_color"
+      }
+    ]
+  }
+}

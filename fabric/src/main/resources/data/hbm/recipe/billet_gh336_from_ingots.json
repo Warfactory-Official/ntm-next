@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": "hbm:ingot_gh336"
+  },
+  "pattern": [
+    "##"
+  ],
+  "result": {
+    "count": 3,
+    "id": "hbm:billet_gh336"
+  }
+}

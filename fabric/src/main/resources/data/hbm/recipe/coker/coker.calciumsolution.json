@@ -1,0 +1,19 @@
+{
+  "type": "hbm:coker",
+  "input_fluids": [
+    {
+      "type": "hbm:calcium_solution",
+      "amount": 125
+    }
+  ],
+  "order": 31,
+  "output_fluids": [
+    {
+      "type": "hbm:spentsteam",
+      "amount": 100
+    }
+  ],
+  "output_items": [
+    "hbm:powder_calcium"
+  ]
+}

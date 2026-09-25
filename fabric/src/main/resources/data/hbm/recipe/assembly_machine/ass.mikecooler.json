@@ -1,0 +1,27 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:plates/dura_steel"
+    },
+    {
+      "count": 5,
+      "ingredient": "hbm:coil_copper"
+    },
+    {
+      "count": 5,
+      "ingredient": "hbm:coil_tungsten"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    }
+  ],
+  "order": 318,
+  "output_items": [
+    "hbm:mike_cooling_unit"
+  ],
+  "power": 100
+}

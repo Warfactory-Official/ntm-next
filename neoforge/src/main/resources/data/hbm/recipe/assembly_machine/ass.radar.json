@@ -1,0 +1,40 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:ingots/any_rubber"
+    },
+    {
+      "count": 5,
+      "ingredient": "hbm:magnetron"
+    },
+    {
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_basic"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:crt_display"
+    }
+  ],
+  "order": 161,
+  "output_items": [
+    "hbm:machine_radar"
+  ],
+  "power": 100
+}

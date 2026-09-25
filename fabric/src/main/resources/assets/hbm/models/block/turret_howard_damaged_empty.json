@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "hbm:block/models/turrets/rusted/base"
+  }
+}

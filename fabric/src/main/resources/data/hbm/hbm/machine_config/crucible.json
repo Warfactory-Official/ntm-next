@@ -1,0 +1,7 @@
+{
+  "diffusion": 0.25,
+  "heat_capacity": 100000,
+  "processing_heat": 20000,
+  "recipe_capacity": 10368,
+  "waste_capacity": 10368
+}

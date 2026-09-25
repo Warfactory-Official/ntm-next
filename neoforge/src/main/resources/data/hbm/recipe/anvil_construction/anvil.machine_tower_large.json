@@ -1,0 +1,27 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 128,
+      "ingredient": "hbm:concrete_smooth"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:steel_scaffold"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:machine_condenser"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:pipes/steel"
+    }
+  ],
+  "order": 83,
+  "output_items": [
+    "hbm:machine_tower_large"
+  ],
+  "overlay": "construction",
+  "tier": 4
+}

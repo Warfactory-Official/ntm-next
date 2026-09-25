@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "minecraft:diamond_block",
+    "G": "hbm:reinforced_glass",
+    "P": "hbm:plate_dineutronium"
+  },
+  "pattern": [
+    "PDP",
+    "GDG",
+    "PDP"
+  ],
+  "result": {
+    "id": "hbm:ams_lens"
+  }
+}

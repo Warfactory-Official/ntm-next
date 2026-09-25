@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:hazmat_boots_grey"
+    },
+    "C": "hbm:cladding_lead",
+    "I": "#hbm:ingots/any_rubber"
+  },
+  "pattern": [
+    "ICI",
+    "IBI"
+  ],
+  "result": {
+    "id": "hbm:liquidator_boots"
+  }
+}

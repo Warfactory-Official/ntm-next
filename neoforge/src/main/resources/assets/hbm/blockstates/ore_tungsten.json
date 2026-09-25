@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/ore_tungsten"
+      },
+      {
+        "model": "hbm:block/ore_tungsten_mirrored"
+      },
+      {
+        "model": "hbm:block/ore_tungsten",
+        "y": 180
+      },
+      {
+        "model": "hbm:block/ore_tungsten_mirrored",
+        "y": 180
+      }
+    ]
+  }
+}

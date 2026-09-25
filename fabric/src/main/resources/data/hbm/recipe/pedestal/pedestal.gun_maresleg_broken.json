@@ -1,0 +1,41 @@
+{
+  "type": "hbm:pedestal",
+  "key": {
+    "A": {
+      "ingredient": "hbm:barbed_wire"
+    },
+    "B": {
+      "ingredient": "#c:plates/weapon_steel"
+    },
+    "C": {
+      "ingredient": "hbm:barbed_wire"
+    },
+    "D": {
+      "ingredient": "#c:plates/weapon_steel"
+    },
+    "E": {
+      "ingredient": "hbm:gun_maresleg"
+    },
+    "F": {
+      "ingredient": "#c:plates/weapon_steel"
+    },
+    "G": {
+      "ingredient": "hbm:barbed_wire"
+    },
+    "H": {
+      "ingredient": "#c:plates/weapon_steel"
+    },
+    "I": {
+      "ingredient": "hbm:barbed_wire"
+    }
+  },
+  "order": 1,
+  "output_items": [
+    "hbm:gun_maresleg_broken"
+  ],
+  "pattern": [
+    "ABC",
+    "DEF",
+    "GHI"
+  ]
+}

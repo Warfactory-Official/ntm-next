@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:sugar",
+    "hbm:powder_sawdust",
+    "hbm:powder_sawdust",
+    "minecraft:potato",
+    "minecraft:potato",
+    "minecraft:potato",
+    "minecraft:potato",
+    "minecraft:potato",
+    "minecraft:potato"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:biomass"
+  }
+}

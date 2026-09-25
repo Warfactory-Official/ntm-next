@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:fragment_actinium"
+    }
+  ],
+  "order": 43,
+  "output_items": [
+    "hbm:powder_actinium_tiny"
+  ]
+}

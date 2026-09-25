@@ -1,0 +1,16 @@
+{
+  "type": "hbm:fluid_breeder",
+  "input_fluids": [
+    {
+      "type": "hbm:lightoil_crack",
+      "amount": 1000
+    }
+  ],
+  "order": 2,
+  "output_fluids": [
+    {
+      "type": "hbm:reformgas",
+      "amount": 1000
+    }
+  ]
+}

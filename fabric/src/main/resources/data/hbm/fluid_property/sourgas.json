@@ -1,0 +1,37 @@
+{
+  "type": "gaseous",
+  "color": "#c9be0d",
+  "containers": {
+    "gastank": {
+      "bottle_color": "#c9be0d",
+      "label_color": "#303030"
+    }
+  },
+  "nfpa": {
+    "flame": 4,
+    "health": 4,
+    "react": 0
+  },
+  "symbol": "ACID",
+  "temperature": 20,
+  "traits": {
+    "corrosive": {
+      "rating": 10
+    },
+    "flammable": {
+      "energy": 250000
+    },
+    "poison": {
+      "level": 1,
+      "withering": false
+    },
+    "polluting": {
+      "burn": {
+        "SOOT": 2.0E-4
+      },
+      "release": {
+        "POISON": 5.0E-4
+      }
+    }
+  }
+}

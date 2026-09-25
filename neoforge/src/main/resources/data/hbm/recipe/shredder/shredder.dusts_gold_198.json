@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/gold_198"
+    }
+  ],
+  "order": 339,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

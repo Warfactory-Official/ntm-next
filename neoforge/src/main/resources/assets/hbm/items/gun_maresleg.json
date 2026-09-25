@@ -1,0 +1,139 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_maresleg_base",
+    "draws": [
+      {
+        "excludes_mods": [
+          {
+            "id": 203
+          }
+        ],
+        "parts": [
+          "Gun",
+          "Lever",
+          "Stock",
+          "Barrel"
+        ]
+      },
+      {
+        "parts": [
+          "Gun",
+          "Lever"
+        ],
+        "requires_mods": [
+          {
+            "id": 203
+          }
+        ]
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "excludes_mods": [
+          {
+            "id": 203
+          }
+        ],
+        "kind": "normal",
+        "length": 5.0,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          1.0,
+          -1.0,
+          0.0,
+          -0.0,
+          8.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      },
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 5.0,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          1.0,
+          -1.0,
+          0.0,
+          -0.0,
+          3.75,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90,
+        "requires_mods": [
+          {
+            "id": 203
+          }
+        ]
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -8.75,
+      0.0,
+      -0.0,
+      -8.75,
+      0.0,
+      0.0,
+      8.75,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/maresleg.obj",
+    "pose_overrides": [
+      {
+        "gui": [
+          1.7391305,
+          -5.9604645E-8,
+          -5.9604645E-8,
+          -1.2391305,
+          0.0,
+          1.7391305,
+          0.0,
+          -0.50000024,
+          -5.9604645E-8,
+          5.9604645E-8,
+          1.7391305,
+          2.3841858E-7,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "requires_mods": [
+          {
+            "id": 203
+          }
+        ]
+      }
+    ],
+    "texture": "hbm:textures/models/weapons/maresleg.png"
+  }
+}

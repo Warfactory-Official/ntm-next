@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:deco_lead"
+    }
+  ],
+  "order": 211,
+  "output_items": [
+    "hbm:ingot_lead"
+  ],
+  "overlay": "recycling",
+  "tier": 1
+}

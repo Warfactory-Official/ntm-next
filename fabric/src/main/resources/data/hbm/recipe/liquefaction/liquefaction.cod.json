@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "minecraft:cod"
+    }
+  ],
+  "order": 25,
+  "output_fluids": [
+    {
+      "type": "hbm:fishoil",
+      "amount": 100
+    }
+  ]
+}

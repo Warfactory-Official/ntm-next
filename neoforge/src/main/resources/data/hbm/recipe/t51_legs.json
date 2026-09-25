@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:titanium_legs"
+    },
+    "M": "hbm:motor",
+    "P": "hbm:plate_armor_titanium"
+  },
+  "pattern": [
+    "MPM",
+    "PBP",
+    "P P"
+  ],
+  "result": {
+    "id": "hbm:t51_legs"
+  }
+}

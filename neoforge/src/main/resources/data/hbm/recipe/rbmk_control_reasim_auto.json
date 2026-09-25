@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_advanced",
+    "D": "hbm:crt_display",
+    "R": "hbm:rbmk_control"
+  },
+  "pattern": [
+    "C",
+    "R",
+    "D"
+  ],
+  "result": {
+    "id": "hbm:rbmk_control_reasim_auto"
+  }
+}

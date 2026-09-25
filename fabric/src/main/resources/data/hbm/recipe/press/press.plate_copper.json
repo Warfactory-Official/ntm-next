@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/copper"
+    }
+  ],
+  "order": 17,
+  "output_items": [
+    "hbm:plate_copper"
+  ],
+  "stamp": "plate"
+}

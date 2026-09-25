@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:bottle_empty",
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:potion_contents": "minecraft:water"
+      },
+      "items": "minecraft:potion"
+    },
+    "minecraft:sugar",
+    "hbm:trinitite"
+  ],
+  "result": {
+    "id": "hbm:bottle_quantum"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/lanthanum"
+    }
+  ],
+  "order": 374,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

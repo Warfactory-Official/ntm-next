@@ -1,0 +1,31 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": [
+        "hbm:ingot_uranium",
+        "hbm:powder_uranium"
+      ]
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 0,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_u235"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_u238"
+        },
+        "weight": 11
+      }
+    ]
+  ]
+}

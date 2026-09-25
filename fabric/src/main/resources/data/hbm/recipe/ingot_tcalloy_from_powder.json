@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredient": "hbm:powder_tcalloy",
+  "result": {
+    "id": "hbm:ingot_tcalloy"
+  }
+}

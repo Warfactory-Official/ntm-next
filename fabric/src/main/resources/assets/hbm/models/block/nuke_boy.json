@@ -1,0 +1,16 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbm:models/bombs/lilboy1.obj",
+  "offset_x": -2.0,
+  "skins": {
+    "all": [
+      "Cylinder_Cylinder.002"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/bombs/lilboy",
+    "particle": "hbm:block/models/bombs/lilboy"
+  }
+}

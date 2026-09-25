@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "cover_side": "hbm:block/rbmk/rbmk_element_reasim_cover_side",
+    "cover_top": "hbm:block/rbmk/rbmk_element_reasim_cover_top",
+    "glass_side": "hbm:block/rbmk/rbmk_element_reasim_glass_side",
+    "glass_top": "hbm:block/rbmk/rbmk_element_reasim_glass_top",
+    "inner": "hbm:block/rbmk/rbmk_element_reasim_inner",
+    "particle": "hbm:block/rbmk/rbmk_element_reasim_side",
+    "side": "hbm:block/rbmk/rbmk_element_reasim_side",
+    "top": "hbm:block/rbmk/rbmk_element_reasim_top"
+  }
+}

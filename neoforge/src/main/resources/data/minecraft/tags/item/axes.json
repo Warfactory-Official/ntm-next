@@ -1,0 +1,18 @@
+{
+  "values": [
+    "hbm:schrabidium_axe",
+    "hbm:titanium_axe",
+    "hbm:steel_axe",
+    "hbm:cmb_axe",
+    "hbm:desh_axe",
+    "hbm:cobalt_axe",
+    "hbm:cobalt_decorated_axe",
+    "hbm:starmetal_axe",
+    "hbm:bismuth_axe",
+    "hbm:volcanic_axe",
+    "hbm:chlorophyte_axe",
+    "hbm:mese_axe",
+    "hbm:chainsaw",
+    "hbm:elec_axe"
+  ]
+}

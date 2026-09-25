@@ -1,0 +1,26 @@
+{
+  "type": "hbm:catalytic_reformer",
+  "duration": 1,
+  "input_fluids": [
+    {
+      "type": "hbm:naphtha",
+      "amount": 100
+    }
+  ],
+  "order": 1,
+  "output_fluids": [
+    {
+      "type": "hbm:reformate",
+      "amount": 50
+    },
+    {
+      "type": "hbm:petroleum",
+      "amount": 15
+    },
+    {
+      "type": "hbm:hydrogen",
+      "amount": 10
+    }
+  ],
+  "power": 20000
+}

@@ -1,0 +1,24 @@
+{
+  "content": {
+    "en_us": "Alternative to [[polymer|Polymer]] made from [[aromatic hydrocarbons|Aromatic Hydrocarbons]] derived from [[cracked oil products|Advanced Oil Processing]]. Completely interchangeable in all recipes.",
+    "ru_ru": "Альтернатива [[полимеру|Polymer]], изготовленная из [[ароматических углеводородов|Aromatic Hydrocarbons]], полученных из [[продуктов крекинга нефти|Advanced Oil Processing]]. Полностью взаимозаменяема во всех рецептах.",
+    "uk_ua": "Карболіт (радянська назва бакеліту) — альтернатива [[полімеру|Polymer]], виготовлений з [[ароматичних вуглеводнів|Aromatic Hydrocarbons]], отриманих з [[продуктів крекінгу нафти|Advanced Oil Processing]]. Повністю взаємозамінний у всіх рецептах.",
+    "zh_cn": "[[聚合物|Polymer]]的替代品，使用处理[[裂化油|Advanced Oil Processing]]得到的产品之一[[芳香烃|Aromatic Hydrocarbons]]制作。在所有配方中与聚合物完全通用。"
+  },
+  "icon": "hbm:ingot_bakelite",
+  "name": "Bakelite",
+  "title": {
+    "en_us": "Bakelite",
+    "ru_ru": "Бакелит",
+    "uk_ua": "Карболіт",
+    "zh_cn": "电木"
+  },
+  "trigger": [
+    {
+      "items": "hbm:ingot_bakelite"
+    },
+    {
+      "items": "hbm:powder_bakelite"
+    }
+  ]
+}

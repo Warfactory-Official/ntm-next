@@ -1,0 +1,29 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Console_Coonsole"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Shotgun",
+    "Lamp2",
+    "Lamp1",
+    "Meter2",
+    "Joystick",
+    "Shotgun1",
+    "MiniNuke",
+    "Meter1"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/rbmk/crane_console.obj",
+  "offset_x": 0.5,
+  "skins": {
+    "all": [
+      "Console_Coonsole"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/crane_console",
+    "particle": "hbm:block/models/machines/crane_console"
+  }
+}

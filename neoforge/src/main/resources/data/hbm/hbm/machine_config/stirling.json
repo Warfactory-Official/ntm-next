@@ -1,0 +1,5 @@
+{
+  "diffusion": 0.1,
+  "efficiency": 0.5,
+  "overspeed_limit": 300
+}

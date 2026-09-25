@@ -1,0 +1,21 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:reformgas",
+      "amount": 750
+    },
+    {
+      "type": "hbm:chlorine",
+      "amount": 250
+    }
+  ],
+  "order": 21,
+  "output_fluids": [
+    {
+      "type": "hbm:radiosolvent",
+      "amount": 1000
+    }
+  ]
+}

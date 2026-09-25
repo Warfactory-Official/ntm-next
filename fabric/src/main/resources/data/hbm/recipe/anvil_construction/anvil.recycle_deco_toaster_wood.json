@@ -1,0 +1,42 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:deco_toaster_wood"
+    }
+  ],
+  "order": 227,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:powder_sawdust"
+    },
+    "hbm:scrap",
+    {
+      "count": 4,
+      "id": "hbm:coil_tungsten"
+    },
+    {
+      "chance": 0.5,
+      "id": "minecraft:bread"
+    },
+    {
+      "chance": 0.5,
+      "id": "hbm:fusion_core"
+    },
+    {
+      "chance": 0.5,
+      "id": "hbm:fusion_core"
+    },
+    {
+      "chance": 0.25,
+      "id": "hbm:gem_alexandrite"
+    },
+    {
+      "chance": 0.01,
+      "id": "hbm:flame_pony"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

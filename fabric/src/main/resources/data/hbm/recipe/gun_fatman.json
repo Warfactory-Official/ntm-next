@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_heavy/saturnite",
+    "G": "#hbm:grips/any_hard_plastic",
+    "M": "#hbm:gun_mechanisms/saturnite",
+    "P": "#c:plates/saturnite",
+    "R": "#hbm:receivers_heavy/saturnite",
+    "S": "#hbm:shells/saturnite"
+  },
+  "pattern": [
+    "PPP",
+    "BSR",
+    "G M"
+  ],
+  "result": {
+    "id": "hbm:gun_fatman"
+  }
+}

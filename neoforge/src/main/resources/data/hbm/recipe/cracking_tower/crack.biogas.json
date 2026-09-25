@@ -1,0 +1,20 @@
+{
+  "type": "hbm:cracking_tower",
+  "input_fluids": [
+    {
+      "type": "hbm:biogas",
+      "amount": 100
+    }
+  ],
+  "order": 11,
+  "output_fluids": [
+    {
+      "type": "hbm:petroleum",
+      "amount": 20
+    },
+    {
+      "type": "hbm:aromatics",
+      "amount": 20
+    }
+  ]
+}

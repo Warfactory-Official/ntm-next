@@ -1,0 +1,31 @@
+{
+  "content": {
+    "en_us": "Heating oil can first be obtained by [[fractioning|Fractioning Tower]] [[naphtha|Naphtha]] or [[industrial oil|Industrial Oil]]. It is primarily used as an ingredient in [[engine lubricant|Engine Lubricant]] or as an early [[fuel|Fuels]] source.<br><br>{{hbm:fluids/template_oil1}}",
+    "ru_ru": "Мазут можно впервые получить путём [[ректификации|Fractioning Tower]] [[нафты|Naphtha]] или [[промышленного масла|Industrial Oil]]. Он в основном используется в качестве ингредиента для [[машинной смазки|Engine Lubricant]] или как ранний источник топлива.<br><br>{{hbm:fluids/template_oil1}}"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:heatingoil",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -14608378
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Heating Oil",
+  "title": {
+    "en_us": "Heating Oil",
+    "ru_ru": "Мазут"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:heatingoil"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "hbm:electrolyser_fluid",
+  "duration": 10,
+  "input_fluids": [
+    {
+      "type": "hbm:heavywater",
+      "amount": 2000
+    }
+  ],
+  "order": 1,
+  "output_fluids": [
+    {
+      "type": "hbm:deuterium",
+      "amount": 200
+    },
+    {
+      "type": "hbm:oxygen",
+      "amount": 200
+    }
+  ]
+}

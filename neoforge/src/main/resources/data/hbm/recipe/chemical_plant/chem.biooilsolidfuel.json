@@ -1,0 +1,25 @@
+{
+  "type": "hbm:chemical_plant",
+  "blueprint_pools": [
+    "alt.biosolidfuel"
+  ],
+  "custom_localization": true,
+  "duration": 40,
+  "input_fluids": [
+    {
+      "type": "hbm:heatingoil",
+      "amount": 100
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:biomass_compressed"
+    }
+  ],
+  "order": 55,
+  "output_items": [
+    "hbm:solid_fuel"
+  ],
+  "power": 100
+}

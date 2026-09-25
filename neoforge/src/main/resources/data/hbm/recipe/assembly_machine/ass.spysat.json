@@ -1,0 +1,35 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 1200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#hbm:shells/aluminum"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:photo_panel"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_basic"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:part_generic_glass_polarized"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:part_generic_lde"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:circuit_controller"
+    }
+  ],
+  "order": 419,
+  "output_items": [
+    "hbm:satellite_spy"
+  ],
+  "power": 25000
+}

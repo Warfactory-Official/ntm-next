@@ -1,0 +1,26 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#c:plates/lead"
+    },
+    "B": {
+      "ingredient": "#c:ingots/uranium_238"
+    },
+    "C": {
+      "ingredient": "#c:plates/lead"
+    }
+  },
+  "order": 78,
+  "output_items": [
+    {
+      "count": 16,
+      "id": "hbm:ammo_standard_tau_uranium"
+    }
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "buried=false": {
+      "model": "hbm:block/stone_biome_woodland_exposed"
+    },
+    "buried=true": {
+      "model": "hbm:block/stone_biome_woodland_buried"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#hbm:shells/steel",
+    "R": "hbm:rbmk_blank",
+    "Z": "#c:ingots/zirconium"
+  },
+  "pattern": [
+    "ZCZ",
+    "ZRZ",
+    "ZCZ"
+  ],
+  "result": {
+    "id": "hbm:rbmk_fuel_rod_reasim"
+  }
+}

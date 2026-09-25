@@ -1,0 +1,42 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#still"
+        },
+        "east": {
+          "texture": "#still"
+        },
+        "north": {
+          "texture": "#still"
+        },
+        "south": {
+          "texture": "#still"
+        },
+        "up": {
+          "texture": "#still"
+        },
+        "west": {
+          "texture": "#still"
+        }
+      },
+      "from": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "shade": false,
+      "to": [
+        16.0,
+        6.4,
+        16.0
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "hbm:block/fluid/corium_still",
+    "still": "hbm:block/fluid/corium_still"
+  }
+}

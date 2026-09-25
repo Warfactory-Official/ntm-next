@@ -1,0 +1,19 @@
+{
+  "type": "hbm:coker",
+  "input_fluids": [
+    {
+      "type": "hbm:heatingoil",
+      "amount": 1600
+    }
+  ],
+  "order": 4,
+  "output_fluids": [
+    {
+      "type": "hbm:oil_coker",
+      "amount": 160
+    }
+  ],
+  "output_items": [
+    "hbm:coke_petroleum"
+  ]
+}

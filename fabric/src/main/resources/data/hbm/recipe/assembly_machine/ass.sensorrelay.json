@@ -1,0 +1,24 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_items": [
+    {
+      "ingredient": "#hbm:shells/aluminum"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:coil_gold"
+    },
+    {
+      "ingredient": "hbm:circuit_quantum"
+    },
+    {
+      "ingredient": "hbm:part_generic_lde"
+    }
+  ],
+  "order": 418,
+  "output_items": [
+    "hbm:satellite_science_sensor"
+  ],
+  "power": 25000
+}

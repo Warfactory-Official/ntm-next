@@ -1,0 +1,31 @@
+{
+  "type": "hbm:soldering",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_chip"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_capacitor"
+    }
+  ],
+  "order": 15,
+  "output_items": [
+    "hbm:sat_chip"
+  ],
+  "pcb": [
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_pcb"
+    }
+  ],
+  "power": 100,
+  "solder": [
+    {
+      "count": 4,
+      "ingredient": "#c:fine_wires/lead"
+    }
+  ]
+}

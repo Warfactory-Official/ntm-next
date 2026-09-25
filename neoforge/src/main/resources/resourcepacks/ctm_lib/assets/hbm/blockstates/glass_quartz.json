@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:glass_quartz"
+  ],
+  "ctm_textures": {
+    "hbm:block/glass_quartz": "hbm:block/ctm_lib/glass_quartz"
+  },
+  "variants": {
+    "": {
+      "model": "hbm:block/glass_quartz"
+    }
+  }
+}

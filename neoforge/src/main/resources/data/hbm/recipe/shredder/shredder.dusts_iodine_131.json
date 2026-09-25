@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/iodine_131"
+    }
+  ],
+  "order": 453,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

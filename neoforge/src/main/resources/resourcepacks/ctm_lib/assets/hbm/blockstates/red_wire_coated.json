@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:red_wire_coated"
+  ],
+  "ctm_textures": {
+    "hbm:block/red_wire_coated": "hbm:block/ctm_lib/red_wire_coated"
+  },
+  "variants": {
+    "": {
+      "model": "hbm:block/red_wire_coated"
+    }
+  }
+}

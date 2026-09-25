@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#c:ingots/copper",
+    "C": "#c:crystals/cinnabar",
+    "X": "minecraft:compass"
+  },
+  "pattern": [
+    "ACA",
+    "CXC",
+    "ACA"
+  ],
+  "result": {
+    "id": "hbm:coltan_tool"
+  }
+}

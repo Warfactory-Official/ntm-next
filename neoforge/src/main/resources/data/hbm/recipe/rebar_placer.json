@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "hbm:ducttape",
+    "R": "hbm:rebar",
+    "W": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:wrench"
+    }
+  },
+  "pattern": [
+    "RDR",
+    "DWD",
+    "RDR"
+  ],
+  "result": {
+    "id": "hbm:rebar_placer"
+  }
+}

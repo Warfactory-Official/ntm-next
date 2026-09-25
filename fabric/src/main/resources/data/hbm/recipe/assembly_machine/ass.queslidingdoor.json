@@ -1,0 +1,35 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:plate_polymer"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:bolts/dura_steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:dyes/white"
+    },
+    {
+      "count": 4,
+      "ingredient": "minecraft:glass"
+    }
+  ],
+  "order": 71,
+  "output_items": [
+    "hbm:qe_sliding_door"
+  ],
+  "power": 100
+}

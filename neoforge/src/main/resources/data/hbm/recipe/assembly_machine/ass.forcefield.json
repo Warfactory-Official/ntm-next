@@ -1,0 +1,43 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:plates/dura_steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:plate_desh"
+    },
+    {
+      "count": 6,
+      "ingredient": "hbm:coil_gold_torus"
+    },
+    {
+      "count": 12,
+      "ingredient": "hbm:coil_magnetized_tungsten"
+    },
+    {
+      "ingredient": "hbm:motor"
+    },
+    {
+      "ingredient": "hbm:upgrade_radius"
+    },
+    {
+      "ingredient": "hbm:upgrade_health"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "ingredient": "hbm:machine_transformer"
+    }
+  ],
+  "order": 165,
+  "output_items": [
+    "hbm:machine_forcefield"
+  ],
+  "power": 100
+}

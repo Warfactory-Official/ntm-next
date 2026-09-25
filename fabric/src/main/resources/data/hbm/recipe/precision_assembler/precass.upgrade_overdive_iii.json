@@ -1,0 +1,54 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:precision_assembler",
+  "duration": 1200,
+  "input_items": [
+    {
+      "ingredient": "hbm:upgrade_overdrive_2"
+    },
+    {
+      "ingredient": "hbm:upgrade_speed_3"
+    },
+    {
+      "ingredient": "hbm:upgrade_effect_3"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_bismoid_bronze"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:ingot_cft"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_bismoid"
+    }
+  ],
+  "order": 49,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:upgrade_overdrive_3"
+        },
+        "weight": 250
+      },
+      {
+        "data": {
+          "components": {
+            "hbm:broken_item_source": "hbm:upgrade_overdrive_3"
+          },
+          "id": "hbm:broken_item"
+        },
+        "weight": 750
+      }
+    ]
+  ],
+  "power": 100000
+}

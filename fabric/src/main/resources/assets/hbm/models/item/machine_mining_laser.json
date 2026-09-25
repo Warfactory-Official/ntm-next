@@ -1,0 +1,207 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.21733022,
+        3.380436,
+        2.4840763
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.21732831,
+        3.380436,
+        2.4840767
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.75,
+        2.315,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        -0.375,
+        -1.5625,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.18750001
+      ],
+      "translation": [
+        0.2651646,
+        -0.45465827,
+        -6.8016105
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        6.631511,
+        -19.414606,
+        6.036259
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        -1.5,
+        9.75,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -0.36310744,
+        2.5770383,
+        1.7696778
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -1.5228987,
+        2.334754,
+        1.4609717
+      ]
+    }
+  },
+  "groups": [
+    {
+      "parts": [
+        "Base"
+      ],
+      "texture": "mining_laser_base"
+    },
+    {
+      "parts": [
+        "Pivot"
+      ],
+      "texture": "mining_laser_pivot"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.0,
+        -1.0,
+        -1.0,
+        0.0,
+        1.0,
+        -0.0,
+        0.75,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Laser"
+      ],
+      "texture": "mining_laser_laser"
+    }
+  ],
+  "gui_light": "side",
+  "model": "hbm:models/machines/mining_laser.obj",
+  "offset_y": -0.3125,
+  "offset_z": 0.125,
+  "textures": {
+    "mining_laser_base": "hbm:block/models/machines/mining_laser_base",
+    "mining_laser_laser": "hbm:block/models/machines/mining_laser_laser",
+    "mining_laser_pivot": "hbm:block/models/machines/mining_laser_pivot",
+    "particle": "hbm:block/models/machines/mining_laser_base"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/tungsten"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:bolts/tungsten"
+    }
+  ],
+  "order": 176,
+  "output_items": [
+    "hbm:piston_set_steel"
+  ],
+  "power": 100
+}

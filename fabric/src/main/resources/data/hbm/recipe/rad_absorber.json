@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:dusts/coal",
+    "I": "#c:ingots/copper",
+    "P": "#c:dusts/lead"
+  },
+  "pattern": [
+    "ICI",
+    "CPC",
+    "ICI"
+  ],
+  "result": {
+    "id": "hbm:rad_absorber"
+  }
+}

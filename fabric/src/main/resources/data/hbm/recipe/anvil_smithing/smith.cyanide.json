@@ -1,0 +1,24 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "minecraft:bread"
+    },
+    {
+      "ingredient": [
+        "hbm:plan_c",
+        "hbm:pill_red"
+      ]
+    }
+  ],
+  "kind": "poison",
+  "order": 56,
+  "output_items": [
+    {
+      "components": {
+        "hbm:food_additives": 1
+      },
+      "id": "minecraft:bread"
+    }
+  ]
+}

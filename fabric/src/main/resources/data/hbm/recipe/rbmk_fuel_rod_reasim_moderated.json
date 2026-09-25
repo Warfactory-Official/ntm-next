@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:ingots/any_resistant_alloy",
+    "G": "#c:storage_blocks/graphite",
+    "R": "hbm:rbmk_fuel_rod_reasim"
+  },
+  "pattern": [
+    "BGB",
+    "GRG",
+    "BGB"
+  ],
+  "result": {
+    "id": "hbm:rbmk_fuel_rod_reasim_moderated"
+  }
+}

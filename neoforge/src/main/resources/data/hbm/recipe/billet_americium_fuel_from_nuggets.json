@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:nugget_am_mix",
+    "hbm:nugget_am_mix",
+    "#c:nuggets/uranium_238",
+    "#c:nuggets/uranium_238",
+    "#c:nuggets/uranium_238",
+    "#c:nuggets/uranium_238"
+  ],
+  "result": {
+    "id": "hbm:billet_americium_fuel"
+  }
+}

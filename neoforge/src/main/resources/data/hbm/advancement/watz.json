@@ -1,0 +1,27 @@
+{
+  "parent": "hbm:schrab",
+  "criteria": {
+    "crafted_hbm_struct_watz_core": {
+      "conditions": {
+        "recipe_id": "hbm:struct_watz_core"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.watz.desc"
+    },
+    "icon": {
+      "id": "hbm:watz_pellet_schrabidium"
+    },
+    "title": {
+      "translate": "achievement.watz"
+    }
+  },
+  "requirements": [
+    [
+      "crafted_hbm_struct_watz_core"
+    ]
+  ]
+}

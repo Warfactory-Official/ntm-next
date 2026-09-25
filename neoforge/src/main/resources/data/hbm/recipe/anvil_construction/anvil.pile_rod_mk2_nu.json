@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "#hbm:billets/uranium"
+    }
+  ],
+  "order": 236,
+  "output_items": [
+    "hbm:pile_rod_mk2_nu"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

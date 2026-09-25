@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:storage_blocks/starmetal",
+    "M": "hbm:motor_desh",
+    "N": "hbm:plate_armor_lunar",
+    "S": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:starmetal_legs",
+      "components": {
+        "minecraft:damage": 0
+      }
+    }
+  },
+  "pattern": [
+    "MBM",
+    "NSN",
+    "N N"
+  ],
+  "result": {
+    "id": "hbm:bj_legs"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "liquid",
+  "color": "#bb7a1e",
+  "nfpa": {
+    "flame": 0,
+    "health": 3,
+    "react": 2
+  },
+  "shares": "#c:nitric_acid",
+  "symbol": "OXIDIZER",
+  "temperature": 20,
+  "traits": {
+    "corrosive": {
+      "rating": 60
+    },
+    "polluting": {
+      "release": {
+        "POISON": 5.0E-4
+      }
+    }
+  }
+}

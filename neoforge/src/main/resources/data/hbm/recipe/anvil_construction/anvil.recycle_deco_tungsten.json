@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:deco_tungsten"
+    }
+  ],
+  "order": 207,
+  "output_items": [
+    "hbm:ingot_tungsten"
+  ],
+  "overlay": "recycling",
+  "tier": 1
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#c:plates/aluminum",
+    "C": "#hbm:shells/copper",
+    "M": "hbm:motor",
+    "S": "#hbm:plates_cast/steel"
+  },
+  "pattern": [
+    " M ",
+    "ACA",
+    " S "
+  ],
+  "result": {
+    "id": "hbm:pile_vent"
+  }
+}

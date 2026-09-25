@@ -1,0 +1,19 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Cylinder_Cylinder.002"
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/bombs/lilboy1.obj",
+  "offset_x": -2.0,
+  "skins": {
+    "all": [
+      "Cylinder_Cylinder.002"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/bombs/custom_nuke",
+    "particle": "hbm:block/models/bombs/custom_nuke"
+  }
+}

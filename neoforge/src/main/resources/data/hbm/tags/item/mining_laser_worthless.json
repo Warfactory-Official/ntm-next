@@ -1,0 +1,15 @@
+{
+  "values": [
+    "minecraft:dirt",
+    "minecraft:stone",
+    "minecraft:cobblestone",
+    "minecraft:sand",
+    "minecraft:sandstone",
+    "minecraft:gravel",
+    "minecraft:flint",
+    "minecraft:snowball",
+    "minecraft:wheat_seeds",
+    "hbm:basalt",
+    "hbm:stone_gneiss"
+  ]
+}

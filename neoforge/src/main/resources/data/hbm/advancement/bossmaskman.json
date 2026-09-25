@@ -1,0 +1,27 @@
+{
+  "parent": "hbm:bosscreeper",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "kind": "maskman"
+      },
+      "trigger": "hbm:boss_killed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.bossMaskman.desc"
+    },
+    "icon": {
+      "id": "hbm:coin_maskman"
+    },
+    "title": {
+      "translate": "achievement.bossMaskman"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

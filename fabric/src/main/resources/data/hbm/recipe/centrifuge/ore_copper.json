@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!lbsm_simple_centrifuge"
+    }
+  ],
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/copper"
+    }
+  ],
+  "order": 3,
+  "output_items": [
+    "hbm:powder_copper",
+    "hbm:powder_copper",
+    "hbm:powder_gold",
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

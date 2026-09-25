@@ -1,0 +1,205 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -180.0,
+        85.0,
+        155.0
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        -1.1137038,
+        1.0012617,
+        -4.1244025
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -180.0,
+        85.0,
+        155.0
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        -0.5783776,
+        3.865409,
+        1.9944046
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        4.0025005,
+        2.375
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.09375,
+        0.09375,
+        0.09375
+      ],
+      "translation": [
+        0.0,
+        -0.71875,
+        -0.9375
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        45.000008,
+        -180.0
+      ],
+      "scale": [
+        0.10937501,
+        0.10937499,
+        0.109375
+      ],
+      "translation": [
+        -0.7733983,
+        -0.8034963,
+        -6.416155
+      ]
+    },
+    "head": {
+      "rotation": [
+        31.329784,
+        35.63104,
+        160.47453
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "translation": [
+        3.2311015,
+        -20.59378,
+        3.8506775
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        13.125,
+        -3.75
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -38.126266,
+        71.3061,
+        52.13139
+      ],
+      "scale": [
+        0.0703125,
+        0.0703125,
+        0.07031249
+      ],
+      "translation": [
+        -1.9840329,
+        3.2794237,
+        -0.3367085
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -38.126266,
+        71.3061,
+        52.13139
+      ],
+      "scale": [
+        0.0703125,
+        0.0703125,
+        0.07031249
+      ],
+      "translation": [
+        -2.2937086,
+        2.8670387,
+        1.1503814
+      ]
+    }
+  },
+  "groups": [
+    {
+      "model": "hbm:models/turrets/turret_arty.obj",
+      "parts": [
+        "Base"
+      ],
+      "texture": "arty"
+    },
+    {
+      "parts": [
+        "Carriage",
+        "Launcher",
+        "Crane"
+      ],
+      "texture": "himars"
+    },
+    {
+      "parts": [
+        "TubeStandard"
+      ],
+      "texture": "himars_standard"
+    }
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "CapStandard6",
+    "CapStandard2",
+    "CapStandard4",
+    "RocketSingle",
+    "TubeSingle",
+    "CapSingle",
+    "RocketStandard",
+    "CapStandard1",
+    "CapStandard3",
+    "CapStandard5",
+    "Base"
+  ],
+  "model": "hbm:models/turrets/turret_himars.obj",
+  "offset_y": -1.6875,
+  "offset_z": 0.625,
+  "textures": {
+    "arty": "hbm:block/models/turrets/arty",
+    "himars": "hbm:block/models/turrets/himars",
+    "himars_standard": "hbm:models/projectiles/himars_standard",
+    "particle": "hbm:block/models/turrets/arty"
+  }
+}

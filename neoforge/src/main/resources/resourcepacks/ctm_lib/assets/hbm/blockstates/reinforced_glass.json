@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:reinforced_glass"
+  ],
+  "ctm_textures": {
+    "hbm:block/reinforced_glass": "hbm:block/ctm_lib/reinforced_glass"
+  },
+  "variants": {
+    "": {
+      "model": "hbm:block/reinforced_glass"
+    }
+  }
+}

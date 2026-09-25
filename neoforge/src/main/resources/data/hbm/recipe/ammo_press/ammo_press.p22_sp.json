@@ -1,0 +1,26 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#c:ingots/lead"
+    },
+    "B": {
+      "ingredient": "#hbm:dusts/any_smokeless"
+    },
+    "C": {
+      "ingredient": "hbm:casing_small"
+    }
+  },
+  "order": 12,
+  "output_items": [
+    {
+      "count": 24,
+      "id": "hbm:ammo_standard_p22_sp"
+    }
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

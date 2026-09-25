@@ -1,0 +1,19 @@
+{
+  "type": "hbm:stratum",
+  "config": {
+    "density": 1.0,
+    "domain": "hbm:noise/stratum_gneiss",
+    "max_range": 4,
+    "range_mult": 3,
+    "replaceable": {
+      "predicate_type": "minecraft:tag_match",
+      "tag": "minecraft:stone_ore_replaceables"
+    },
+    "scale": 0.01,
+    "state": {
+      "Name": "hbm:stone_gneiss"
+    },
+    "threshold": 5,
+    "y_level": 30
+  }
+}

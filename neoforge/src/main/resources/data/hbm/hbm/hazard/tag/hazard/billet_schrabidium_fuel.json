@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 2.925
+    },
+    {
+      "type": "hbm:blinding",
+      "level": 2.5
+    }
+  ],
+  "targets": "#hbm:hazard/billet_schrabidium_fuel"
+}

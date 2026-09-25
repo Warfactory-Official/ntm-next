@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:conveyor_wand_regular",
+    "L": {
+      "neoforge:ingredient_type": "hbm:fluid_content",
+      "amount": 1000,
+      "fluid": "hbm:lubricant"
+    }
+  },
+  "pattern": [
+    "CCC",
+    "CLC",
+    "CCC"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:conveyor_wand_express"
+  }
+}

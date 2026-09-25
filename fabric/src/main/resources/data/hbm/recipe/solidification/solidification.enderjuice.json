@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:enderjuice",
+      "amount": 100
+    }
+  ],
+  "order": 4,
+  "output_items": [
+    "minecraft:ender_pearl"
+  ]
+}

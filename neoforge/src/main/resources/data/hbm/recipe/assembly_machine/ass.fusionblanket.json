@@ -1,0 +1,34 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.tcalloy"
+  ],
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "#hbm:plates_welded/tungsten"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_welded/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/beryllium"
+    }
+  ],
+  "order": 259,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:fusion_component_blanket"
+    }
+  ],
+  "power": 100
+}

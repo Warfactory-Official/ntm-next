@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:hot",
+      "level": 5.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:ingots/white_phosphorus"
+}

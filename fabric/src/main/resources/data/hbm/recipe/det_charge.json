@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "hbm:det_cord",
+    "P": "#c:plates/steel",
+    "T": "#hbm:ingots/any_plasticexplosive"
+  },
+  "pattern": [
+    "PDP",
+    "DTD",
+    "PDP"
+  ],
+  "result": {
+    "id": "hbm:det_charge"
+  }
+}

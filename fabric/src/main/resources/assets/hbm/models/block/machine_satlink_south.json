@@ -1,0 +1,40 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "groups": [
+    {
+      "matrix": [
+        -1.0,
+        0.0,
+        -8.742278E-8,
+        -0.50000006,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        8.742278E-8,
+        0.0,
+        -1.0,
+        -0.49999997,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Base"
+      ],
+      "texture": "all"
+    }
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Rotor",
+    "Dish"
+  ],
+  "model": "hbm:models/machines/satlink.obj",
+  "textures": {
+    "all": "hbm:block/models/machines/satlink",
+    "particle": "hbm:block/block_steel"
+  }
+}

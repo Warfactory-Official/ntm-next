@@ -1,0 +1,24 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "component": "hbm:fluid_content",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "hbm:item/pipette_boron_empty"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "hbm:item/pipette_boron",
+      "tints": [
+        {
+          "type": "minecraft:constant",
+          "value": -1
+        },
+        {
+          "type": "hbm:fluid_color"
+        }
+      ]
+    },
+    "property": "minecraft:has_component"
+  }
+}

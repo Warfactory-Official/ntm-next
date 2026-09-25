@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_lithium"
+    }
+  ],
+  "order": 156,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_lithium"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_lithium"
+    },
+    "hbm:powder_quartz",
+    "hbm:fluorite"
+  ],
+  "power": 200
+}

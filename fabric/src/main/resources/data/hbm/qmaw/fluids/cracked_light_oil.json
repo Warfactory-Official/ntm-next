@@ -1,0 +1,31 @@
+{
+  "content": {
+    "en_us": "Obtained after [[refining|Oil Refinery]] [[heated|Boiler]] cracked crude oil. Cracked light oil has a variety of uses, it may be [[reformed|Catalytic Reformer]] or [[bred|Fusion Reactor Breeding Chamber]] to obtain [[reformate gas|Reformate Gas]] and other byproducts. It may also be used as an alternate to [[light oil|Light Oil]] in the production of [[desh|Desh]]. It can also be [[fractioned|Fractioning Tower]].<br><br>{{hbm:fluids/template_oil2}}",
+    "ru_ru": "Крекированная лёгкая нефть получается после [[пеработки|Oil Refinery]] [[нагретой|Boiler]] крекированной сырой нефти. Крекированная лёгкая нефть имеет разные применения: она может быть подвергнута [[реформингу|Catalytic Reformer]] или воспроизводству в [[размножителе|Fusion Reactor Breeding Chamber]] для получения [[реформированного газа|Reformate Gas]] и других побочных продуктов. Её также можно использовать в качестве замены [[лёгкой нефти|Light Oil]] при производстве [[деш|Desh]]. Её можно разделить в [[ректификационной колонне|Fractioning Tower]].<br><br>{{hbm:fluids/template_oil2}}"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:lightoil_crack",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -7572399
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Cracked Light Oil",
+  "title": {
+    "en_us": "Cracked Light Oil",
+    "ru_ru": "Крекированная лёгкая нефть"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:lightoil_crack"
+    }
+  }
+}

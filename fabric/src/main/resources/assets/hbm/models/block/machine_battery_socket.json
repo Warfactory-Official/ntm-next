@@ -1,0 +1,22 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Supports",
+    "Capacitor",
+    "Battery"
+  ],
+  "model": "hbm:models/machines/battery.obj",
+  "offset_x": -0.5,
+  "offset_z": 0.5,
+  "skins": {
+    "all": [
+      "Socket"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/battery_socket",
+    "particle": "hbm:block/models/machines/battery_socket"
+  }
+}

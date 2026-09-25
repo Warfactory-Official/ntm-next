@@ -1,0 +1,42 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:pipes/copper"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:plate_polymer"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:coil_tungsten"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:circuit_analog"
+    }
+  ],
+  "name": "ass.chemplantEx",
+  "order": 88,
+  "output_items": [
+    "hbm:machine_chemical_plant"
+  ],
+  "power": 100
+}

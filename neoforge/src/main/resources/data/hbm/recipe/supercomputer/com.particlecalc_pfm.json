@@ -1,0 +1,39 @@
+{
+  "type": "hbm:supercomputer",
+  "duration": 3000,
+  "input_fluids": [
+    {
+      "type": "hbm:perfluoromethyl_cold",
+      "amount": 16000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:drive_flash_empty"
+    }
+  ],
+  "order": 4,
+  "output_fluids": [
+    {
+      "type": "hbm:perfluoromethyl",
+      "amount": 16000
+    }
+  ],
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:drive_flash_particlesim"
+        },
+        "weight": 50
+      },
+      {
+        "data": {
+          "id": "hbm:drive_flash_broken"
+        },
+        "weight": 50
+      }
+    ]
+  ],
+  "power": 10000
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": "hbm:plant_flower_weed"
+  },
+  "pattern": [
+    "W",
+    "W",
+    "W"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:plant_item_rope"
+  }
+}

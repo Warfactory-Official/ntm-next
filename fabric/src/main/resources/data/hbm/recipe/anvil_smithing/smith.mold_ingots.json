@@ -1,0 +1,18 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "count": 9,
+      "ingredient": "#c:ingots/iron"
+    },
+    {
+      "ingredient": "hbm:mold_base"
+    }
+  ],
+  "kind": "mold",
+  "order": 51,
+  "output_items": [
+    "hbm:mold_ingots"
+  ],
+  "shape": "ingots"
+}

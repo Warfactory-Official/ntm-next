@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": "hbm:pink_log"
+  },
+  "pattern": [
+    "W"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:pink_planks"
+  }
+}

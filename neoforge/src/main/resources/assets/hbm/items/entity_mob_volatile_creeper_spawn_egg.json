@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/entity_mob_volatile_creeper_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 12747091
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 5060652
+      }
+    ]
+  }
+}

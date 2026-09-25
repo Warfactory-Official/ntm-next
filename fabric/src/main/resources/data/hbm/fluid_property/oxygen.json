@@ -1,0 +1,20 @@
+{
+  "type": "liquid",
+  "color": "#98bdf9",
+  "containers": {
+    "gastank": {
+      "bottle_color": "#98bdf9",
+      "label_color": "#ffffff"
+    }
+  },
+  "flags": [
+    "gaseous_art"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 3,
+    "react": 0
+  },
+  "symbol": "CRYOGENIC",
+  "temperature": -100
+}

@@ -1,0 +1,15 @@
+{
+  "content": {
+    "en_us": "Aesthetic [[redstone over radio|Redstone over Radio]] receiving device, needs to be configured with a scredriver first. Can represent numeric RoR values using a seven segment number display. Up to two displays can be enabled using the red buttons, each display can receive one value over its own RoR channel. Large values displayed will be shortened, using SI suffixes. Also useful for displaying item counts provided by an [[RoR item counter|Redstone-over-Radio Item Counter]].<br><br>{{hbm:ror/template_panels}}",
+    "ru_ru": "Информационное устройство приёма [[редстоун-по-радио|Redstone over Radio]], которое необходимо сначала настроить с помощью отвёртки. Может отображать числовые значения РпР с помощью семисегментного цифрового дисплея. С помощью красных кнопок можно активировать до двух дисплеев, каждый из которых может принимать одно значение по своему собственному каналу РпР. Большие отображаемые значения будут сокращены с использованием суффиксов СИ. Также полезно для отображения количества предметов, предоставляемого [[РпР предметного счётчика|Redstone-over-Radio Item Counter]].<br><br>{{hbm:ror/template_panels}}"
+  },
+  "icon": "hbm:rbmk_numitron",
+  "name": "Redstone-over-Radio Numeric Display",
+  "title": {
+    "en_us": "Redstone-over-Radio Numeric Display",
+    "ru_ru": "Редстоун-по-радио цифровой дисплей"
+  },
+  "trigger": {
+    "items": "hbm:rbmk_numitron"
+  }
+}

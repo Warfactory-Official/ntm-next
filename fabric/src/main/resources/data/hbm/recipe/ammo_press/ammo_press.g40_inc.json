@@ -1,0 +1,33 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": {
+        "fabric:type": "hbm:fluid_content",
+        "amount": 1000,
+        "fluid": "hbm:diesel"
+      }
+    },
+    "B": {
+      "ingredient": "hbm:ball_dynamite"
+    },
+    "C": {
+      "ingredient": "#hbm:dusts/any_smokeless"
+    },
+    "D": {
+      "ingredient": "hbm:casing_large"
+    }
+  },
+  "order": 59,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:ammo_standard_g40_inc"
+    }
+  ],
+  "pattern": [
+    "AB ",
+    " C ",
+    " D "
+  ]
+}

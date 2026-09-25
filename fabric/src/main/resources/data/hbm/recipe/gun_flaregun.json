@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_heavy/steel",
+    "G": "#hbm:grips/steel",
+    "M": "#hbm:gun_mechanisms/gun_metal",
+    "R": "#hbm:receivers_light/steel"
+  },
+  "pattern": [
+    "BRM",
+    "  G"
+  ],
+  "result": {
+    "id": "hbm:gun_flaregun"
+  }
+}

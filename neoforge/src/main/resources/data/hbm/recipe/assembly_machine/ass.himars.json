@@ -1,0 +1,47 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.arty"
+  ],
+  "duration": 1200,
+  "input_items": [
+    {
+      "ingredient": "hbm:battery_pack_battery_lithium"
+    },
+    {
+      "count": 64,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 64,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 5,
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:gun_mechanisms/saturnite"
+    },
+    {
+      "ingredient": "hbm:machine_radar"
+    },
+    {
+      "ingredient": "hbm:crt_display"
+    }
+  ],
+  "order": 334,
+  "output_items": [
+    "hbm:turret_himars"
+  ],
+  "power": 100
+}

@@ -1,0 +1,22 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:fine_wires/schrabidium"
+    },
+    {
+      "ingredient": "hbm:circuit_advanced"
+    }
+  ],
+  "order": 319,
+  "output_items": [
+    "hbm:fleija_igniter"
+  ],
+  "power": 100
+}

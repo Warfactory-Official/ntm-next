@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:red_wire_coated",
+    "#c:ingots/steel",
+    "hbm:circuit_basic"
+  ],
+  "result": {
+    "id": "hbm:red_cable_gauge"
+  }
+}

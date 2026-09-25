@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:ores/saltpeter"
+    }
+  ],
+  "order": 232,
+  "output_items": [
+    "hbm:crystal_niter"
+  ],
+  "productivity": 0.05
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:gneiss_tile"
+  ],
+  "result": {
+    "id": "hbm:gneiss_chiseled"
+  }
+}

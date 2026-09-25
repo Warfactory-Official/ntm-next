@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_analog",
+    "D": "hbm:machine_diesel",
+    "S": "#c:ingots/steel",
+    "W": "minecraft:red_wool"
+  },
+  "pattern": [
+    "W W",
+    "CDC",
+    "SWS"
+  ],
+  "result": {
+    "id": "hbm:dieselsuit_plate"
+  }
+}

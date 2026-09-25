@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:glass_uranium"
+  ],
+  "ctm_textures": {
+    "hbm:block/glass_uranium": "hbm:block/ctm_lib/glass_uranium"
+  },
+  "variants": {
+    "": {
+      "model": "hbm:block/glass_uranium"
+    }
+  }
+}

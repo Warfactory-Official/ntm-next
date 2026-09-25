@@ -1,0 +1,25 @@
+{
+  "type": "hbm:rotary_furnace",
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:gas_coker",
+      "amount": 100
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:powder_flux"
+    }
+  ],
+  "order": 7,
+  "output_material": {
+    "amount": 72,
+    "material": "weapon_steel"
+  },
+  "steam": 400
+}

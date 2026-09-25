@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:plates/dura_steel"
+    }
+  ],
+  "order": 293,
+  "output_items": [
+    "hbm:powder_dura_steel"
+  ]
+}

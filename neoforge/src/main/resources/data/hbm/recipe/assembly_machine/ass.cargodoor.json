@@ -1,0 +1,30 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 32,
+      "ingredient": "hbm:steel_beam"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:bolts/dura_steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "ingredient": "#c:dyes/gray"
+    }
+  ],
+  "order": 77,
+  "output_items": [
+    "hbm:cargo_door"
+  ],
+  "power": 100
+}

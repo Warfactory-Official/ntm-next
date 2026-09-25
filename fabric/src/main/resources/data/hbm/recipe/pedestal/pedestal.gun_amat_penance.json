@@ -1,0 +1,41 @@
+{
+  "type": "hbm:pedestal",
+  "key": {
+    "A": {
+      "ingredient": "#c:ingots/starmetal"
+    },
+    "B": {
+      "ingredient": "#hbm:plates_cast/dura_steel"
+    },
+    "C": {
+      "ingredient": "#c:ingots/starmetal"
+    },
+    "D": {
+      "ingredient": "hbm:weapon_mod_special_silencer"
+    },
+    "E": {
+      "ingredient": "hbm:gun_amat"
+    },
+    "F": {
+      "ingredient": "hbm:weapon_mod_special_furniture_black"
+    },
+    "G": {
+      "ingredient": "#c:ingots/starmetal"
+    },
+    "H": {
+      "ingredient": "#hbm:plates_cast/dura_steel"
+    },
+    "I": {
+      "ingredient": "#c:ingots/starmetal"
+    }
+  },
+  "order": 5,
+  "output_items": [
+    "hbm:gun_amat_penance"
+  ],
+  "pattern": [
+    "ABC",
+    "DEF",
+    "GHI"
+  ]
+}

@@ -1,0 +1,14 @@
+// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+// SPDX-License-Identifier: LGPL-3.0-only
+
+package com.hbm.entity.cart;
+
+import com.hbm.items.tool.ItemModMinecart.EnumCartBase;
+import net.minecraft.world.item.ItemStack;
+
+public interface ICartChassis {
+
+    EnumCartBase getBase();
+
+    ItemStack getCartItem();
+}

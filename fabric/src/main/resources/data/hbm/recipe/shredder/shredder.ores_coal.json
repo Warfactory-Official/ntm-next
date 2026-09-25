@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ores/coal"
+    }
+  ],
+  "order": 209,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_coal"
+    }
+  ]
+}

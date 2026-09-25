@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "hbm:plant_flower_cd0"
+    }
+  ],
+  "order": 36,
+  "output_fluids": [
+    {
+      "type": "hbm:ethanol",
+      "amount": 50
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "GearRight",
+    "GearLeft",
+    "Blade"
+  ],
+  "model": "hbm:models/machines/sawmill.obj",
+  "skins": {
+    "all": [
+      "Main"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/sawmill",
+    "particle": "hbm:block/models/machines/sawmill"
+  }
+}

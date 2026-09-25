@@ -1,0 +1,75 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_panzerschreck_base",
+    "draws": [
+      {
+        "excludes_mods": [
+          {
+            "id": 204
+          }
+        ],
+        "parts": [
+          "Tube",
+          "Shield"
+        ]
+      },
+      {
+        "parts": [
+          "Tube"
+        ],
+        "requires_mods": [
+          {
+            "id": 204
+          }
+        ]
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 150,
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          0.75,
+          0.0,
+          0.0,
+          -0.75,
+          0.0,
+          -0.0,
+          6.5,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -10.0,
+      0.0,
+      -0.0,
+      -10.0,
+      0.0,
+      0.0,
+      10.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/panzerschreck.obj",
+    "texture": "hbm:textures/models/weapons/panzerschreck.png"
+  }
+}

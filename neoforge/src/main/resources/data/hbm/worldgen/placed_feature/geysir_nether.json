@@ -1,0 +1,12 @@
+{
+  "feature": "hbm:geysir_nether",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 1
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

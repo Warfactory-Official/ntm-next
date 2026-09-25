@@ -1,0 +1,31 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "kinds": [
+          "refinery",
+          "fluid_tank"
+        ]
+      },
+      "trigger": "hbm:detonation"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.inferno.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:canister_napalm"
+    },
+    "title": {
+      "translate": "achievement.inferno"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

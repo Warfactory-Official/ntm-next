@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:raw_materials/uranium"
+    }
+  ],
+  "order": 304,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_uranium"
+    }
+  ]
+}

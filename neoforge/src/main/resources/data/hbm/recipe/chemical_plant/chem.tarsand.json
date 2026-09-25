@@ -1,0 +1,31 @@
+{
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 200,
+  "icon": {
+    "id": "hbm:ore_oil_sand"
+  },
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbm:ore_oil_sand"
+    },
+    {
+      "ingredient": "#hbm:any_tar"
+    }
+  ],
+  "order": 16,
+  "output_fluids": [
+    {
+      "type": "hbm:bitumen",
+      "amount": 1000
+    }
+  ],
+  "output_items": [
+    {
+      "count": 16,
+      "id": "minecraft:sand"
+    }
+  ],
+  "power": 100
+}

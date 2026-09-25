@@ -1,0 +1,18 @@
+{
+  "type": "hbm:magic",
+  "input_items": [
+    {
+      "ingredient": "hbm:hs_elements"
+    },
+    {
+      "ingredient": "hbm:hs_arsenic"
+    },
+    {
+      "ingredient": "hbm:hs_vault"
+    }
+  ],
+  "order": 0,
+  "output_items": [
+    "hbm:ingot_u238m2"
+  ]
+}

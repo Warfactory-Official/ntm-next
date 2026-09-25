@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "rotation=0": {
+      "model": "hbm:block/deco_crt_clean",
+      "y": 270
+    },
+    "rotation=1": {
+      "model": "hbm:block/deco_crt_clean"
+    },
+    "rotation=2": {
+      "model": "hbm:block/deco_crt_clean",
+      "y": 90
+    },
+    "rotation=3": {
+      "model": "hbm:block/deco_crt_clean",
+      "y": 180
+    }
+  }
+}

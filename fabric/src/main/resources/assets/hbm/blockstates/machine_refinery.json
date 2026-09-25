@@ -1,0 +1,68 @@
+{
+  "variants": {
+    "exploded=false,facing=east,tilted=false": {
+      "model": "hbm:block/machine_refinery",
+      "y": 180
+    },
+    "exploded=false,facing=east,tilted=true": {
+      "model": "hbm:block/machine_refinery_tilted",
+      "y": 180
+    },
+    "exploded=false,facing=north,tilted=false": {
+      "model": "hbm:block/machine_refinery",
+      "y": 180
+    },
+    "exploded=false,facing=north,tilted=true": {
+      "model": "hbm:block/machine_refinery_tilted",
+      "y": 180
+    },
+    "exploded=false,facing=south,tilted=false": {
+      "model": "hbm:block/machine_refinery",
+      "y": 180
+    },
+    "exploded=false,facing=south,tilted=true": {
+      "model": "hbm:block/machine_refinery_tilted",
+      "y": 180
+    },
+    "exploded=false,facing=west,tilted=false": {
+      "model": "hbm:block/machine_refinery",
+      "y": 180
+    },
+    "exploded=false,facing=west,tilted=true": {
+      "model": "hbm:block/machine_refinery_tilted",
+      "y": 180
+    },
+    "exploded=true,facing=east,tilted=false": {
+      "model": "hbm:block/machine_refinery_exploded",
+      "y": 180
+    },
+    "exploded=true,facing=east,tilted=true": {
+      "model": "hbm:block/machine_refinery_exploded_tilted",
+      "y": 180
+    },
+    "exploded=true,facing=north,tilted=false": {
+      "model": "hbm:block/machine_refinery_exploded",
+      "y": 180
+    },
+    "exploded=true,facing=north,tilted=true": {
+      "model": "hbm:block/machine_refinery_exploded_tilted",
+      "y": 180
+    },
+    "exploded=true,facing=south,tilted=false": {
+      "model": "hbm:block/machine_refinery_exploded",
+      "y": 180
+    },
+    "exploded=true,facing=south,tilted=true": {
+      "model": "hbm:block/machine_refinery_exploded_tilted",
+      "y": 180
+    },
+    "exploded=true,facing=west,tilted=false": {
+      "model": "hbm:block/machine_refinery_exploded",
+      "y": 180
+    },
+    "exploded=true,facing=west,tilted=true": {
+      "model": "hbm:block/machine_refinery_exploded_tilted",
+      "y": 180
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "type": "hbm:purex",
+  "auto_switch_group": "autoswitch.schrab",
+  "duration": 200,
+  "icon_from_input": true,
+  "input_fluids": [
+    {
+      "type": "hbm:solvent",
+      "amount": 4000
+    },
+    {
+      "type": "hbm:schrabidic",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "components": {
+        "hbm:decay_heat": false
+      },
+      "ingredient": "hbm:waste_plutonium"
+    }
+  ],
+  "name_wrapper": "purex.schrab",
+  "order": 54,
+  "output_items": [
+    "hbm:powder_schrabidium",
+    {
+      "count": 3,
+      "id": "hbm:nugget_technetium"
+    },
+    {
+      "count": 4,
+      "id": "hbm:nuclear_waste_tiny"
+    }
+  ],
+  "power": 50000
+}

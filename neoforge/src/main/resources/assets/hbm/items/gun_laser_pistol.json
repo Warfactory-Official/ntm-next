@@ -1,0 +1,80 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_laser_pistol_base",
+    "equipped_muzzles": [
+      {
+        "color": 16711680,
+        "duration": 150,
+        "kind": "laser",
+        "length": 1.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          2.0,
+          -1.0,
+          0.0,
+          -0.0,
+          4.75,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "color": 16744448,
+        "duration": 150,
+        "kind": "laser",
+        "length": 0.75,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          -0.25,
+          0.0,
+          1.0,
+          0.0,
+          2.0,
+          -1.0,
+          0.0,
+          -0.0,
+          4.75,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -10.0,
+      0.0,
+      -0.0,
+      -10.0,
+      0.0,
+      5.0,
+      10.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/laser_pistol.obj",
+    "parts": [
+      "Gun",
+      "Latch"
+    ],
+    "texture": "hbm:textures/models/weapons/laser_pistol.png"
+  }
+}

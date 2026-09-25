@@ -1,0 +1,22 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:nugget_bismuth"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:billets/uranium_238"
+    },
+    {
+      "ingredient": "#c:dusts/niobium"
+    }
+  ],
+  "order": 95,
+  "output_items": [
+    "hbm:plate_bismuth"
+  ],
+  "overlay": "construction",
+  "tier": 4
+}

@@ -1,0 +1,34 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 5,
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/copper"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "name": "ass.chemplantAltEx",
+  "order": 90,
+  "output_items": [
+    "hbm:machine_chemical_plant"
+  ],
+  "power": 100
+}

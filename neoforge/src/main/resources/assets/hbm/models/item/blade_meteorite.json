@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hbm:item/blade_meteorite",
+    "layer1": "hbm:item/blade_meteorite_hot"
+  }
+}

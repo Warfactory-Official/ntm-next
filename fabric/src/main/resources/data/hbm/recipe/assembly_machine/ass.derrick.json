@@ -1,0 +1,38 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.steel"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/copper"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "ingredient": "hbm:motor"
+    },
+    {
+      "ingredient": "hbm:drill_titanium"
+    }
+  ],
+  "order": 108,
+  "output_items": [
+    "hbm:machine_well"
+  ],
+  "power": 100
+}

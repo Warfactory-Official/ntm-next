@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:tiny_dusts/caesium_137"
+    }
+  ],
+  "order": 456,
+  "output_items": [
+    "hbm:dust_tiny"
+  ]
+}

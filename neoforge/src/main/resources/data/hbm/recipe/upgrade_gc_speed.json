@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "hbm:coil_gold",
+    "M": "hbm:motor",
+    "N": "#c:ingots/niobium",
+    "R": "#c:ingots/rubber",
+    "U": "hbm:upgrade_template"
+  },
+  "pattern": [
+    "GNG",
+    "RUR",
+    "GMG"
+  ],
+  "result": {
+    "id": "hbm:upgrade_gc_speed"
+  }
+}

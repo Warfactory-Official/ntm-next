@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 1944,
+      "material": "steel"
+    }
+  ],
+  "targets": "hbm:pipes_steel"
+}

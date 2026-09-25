@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_advanced",
+    "P": "#hbm:ingots/any_hard_plastic",
+    "R": "hbm:crystal_redstone"
+  },
+  "pattern": [
+    "PPP",
+    "RCR",
+    "PPP"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_special_las_shotgun"
+  }
+}

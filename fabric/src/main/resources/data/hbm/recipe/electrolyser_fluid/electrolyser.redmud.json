@@ -1,0 +1,35 @@
+{
+  "type": "hbm:electrolyser_fluid",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:redmud",
+      "amount": 450
+    }
+  ],
+  "order": 4,
+  "output_fluids": [
+    {
+      "type": "hbm:mercury",
+      "amount": 150
+    },
+    {
+      "type": "hbm:lye",
+      "amount": 50
+    }
+  ],
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:powder_titanium"
+    },
+    {
+      "count": 3,
+      "id": "hbm:powder_iron"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_aluminium"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 50,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/asbestos"
+    },
+    {
+      "count": 8,
+      "ingredient": "minecraft:string"
+    }
+  ],
+  "order": 27,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:asbestos_cloth"
+    }
+  ],
+  "power": 100
+}

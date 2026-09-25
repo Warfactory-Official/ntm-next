@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "bottom": "hbm:block/rbmk/rbmk_control_mod_top",
+    "particle": "hbm:block/rbmk/rbmk_control_mod_side",
+    "pipe_side": "hbm:block/rbmk/rbmk_control_mod_pipe_side",
+    "pipe_top": "hbm:block/rbmk/rbmk_control_mod_pipe_top",
+    "side": "hbm:block/rbmk/rbmk_control_mod_side",
+    "top": "hbm:block/rbmk/rbmk_control_mod_top"
+  }
+}

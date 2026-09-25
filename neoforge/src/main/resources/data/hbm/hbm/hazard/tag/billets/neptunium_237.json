@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 1.25
+    }
+  ],
+  "mutex": 1,
+  "targets": "#hbm:billets/neptunium_237"
+}

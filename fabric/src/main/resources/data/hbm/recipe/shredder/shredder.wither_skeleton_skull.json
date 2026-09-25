@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:wither_skeleton_skull"
+    }
+  ],
+  "order": 92,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:biomass"
+    }
+  ]
+}

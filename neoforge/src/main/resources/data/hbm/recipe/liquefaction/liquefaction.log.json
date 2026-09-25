@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "#minecraft:logs"
+    }
+  ],
+  "order": 3,
+  "output_fluids": [
+    {
+      "type": "hbm:mug",
+      "amount": 100
+    }
+  ]
+}

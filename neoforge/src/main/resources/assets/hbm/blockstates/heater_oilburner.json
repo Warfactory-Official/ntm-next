@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/heater_oilburner"
+    },
+    "facing=north": {
+      "model": "hbm:block/heater_oilburner"
+    },
+    "facing=south": {
+      "model": "hbm:block/heater_oilburner"
+    },
+    "facing=west": {
+      "model": "hbm:block/heater_oilburner"
+    }
+  }
+}

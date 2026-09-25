@@ -1,0 +1,70 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 414,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:struct_launcher"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 447,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:struct_scaffold"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 294,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:concrete_smooth"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 1,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:struct_soyuz_core"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:blocks/soyuz_launcher"
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#hbm:gun_mechanisms/weapon_steel",
+    "#hbm:plates_cast/weapon_steel",
+    "#hbm:plates_cast/weapon_steel",
+    "#hbm:plates_cast/weapon_steel",
+    "hbm:ducttape"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_generic_wsteel_damage"
+  }
+}

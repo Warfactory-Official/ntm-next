@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/tungsten"
+    }
+  ],
+  "order": 147,
+  "output_items": [
+    "hbm:drillbit_steel"
+  ],
+  "power": 100
+}

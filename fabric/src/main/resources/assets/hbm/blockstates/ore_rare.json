@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/ore_rare"
+      },
+      {
+        "model": "hbm:block/ore_rare_mirrored"
+      },
+      {
+        "model": "hbm:block/ore_rare",
+        "y": 180
+      },
+      {
+        "model": "hbm:block/ore_rare_mirrored",
+        "y": 180
+      }
+    ]
+  }
+}

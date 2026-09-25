@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "desert": "hbm:models/bombs/mine_ap_desert",
+    "grass": "hbm:block/models/bombs/mine_ap_grass",
+    "particle": "hbm:block/mine_ap",
+    "snow": "hbm:models/bombs/mine_ap_snow",
+    "stone": "hbm:models/bombs/mine_ap_stone"
+  }
+}

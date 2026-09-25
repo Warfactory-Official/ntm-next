@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "R": "hbm:rag_piss"
+  },
+  "pattern": [
+    "RRR"
+  ],
+  "result": {
+    "id": "hbm:mask_piss"
+  }
+}

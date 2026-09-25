@@ -1,0 +1,30 @@
+{
+  "parent": "hbm:bismuth",
+  "criteria": {
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": "hbm:struct_torus_core"
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.fusion.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:fusion_torus"
+    },
+    "title": {
+      "translate": "achievement.fusion"
+    }
+  },
+  "requirements": [
+    [
+      "produced"
+    ]
+  ]
+}

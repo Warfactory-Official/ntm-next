@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "#hbm:billets/uranium"
+    },
+    {
+      "ingredient": "hbm:mold_base"
+    }
+  ],
+  "kind": "mold",
+  "order": 40,
+  "output_items": [
+    "hbm:mold_billet"
+  ],
+  "shape": "billets"
+}

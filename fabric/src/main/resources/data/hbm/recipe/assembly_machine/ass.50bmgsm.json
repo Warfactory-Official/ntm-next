@@ -1,0 +1,28 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools": [
+    "discover.silverstorm"
+  ],
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "hbm:casing_large_steel"
+    },
+    {
+      "count": 6,
+      "ingredient": "#hbm:dusts/any_smokeless"
+    },
+    {
+      "count": 3,
+      "ingredient": "#c:ingots/starmetal"
+    }
+  ],
+  "order": 409,
+  "output_items": [
+    {
+      "count": 6,
+      "id": "hbm:ammo_standard_bmg50_sm"
+    }
+  ],
+  "power": 100
+}

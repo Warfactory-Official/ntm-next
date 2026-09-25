@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/steel",
+    "#c:nuggets/technetium_99"
+  ],
+  "result": {
+    "components": {
+      "hbm:scrap": {
+        "amount": 72,
+        "material": 36
+      }
+    },
+    "id": "hbm:scraps"
+  }
+}

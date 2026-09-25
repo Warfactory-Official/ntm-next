@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "lbsm_simple_centrifuge"
+    }
+  ],
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/titanium"
+    }
+  ],
+  "order": 16,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_titanium"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_titanium"
+    },
+    "hbm:powder_iron",
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

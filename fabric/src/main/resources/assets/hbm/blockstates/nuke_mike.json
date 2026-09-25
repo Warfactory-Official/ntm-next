@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=2": {
+      "model": "hbm:block/nuke_mike",
+      "y": 180
+    },
+    "facing=3": {
+      "model": "hbm:block/nuke_mike"
+    },
+    "facing=4": {
+      "model": "hbm:block/nuke_mike",
+      "y": 90
+    },
+    "facing=5": {
+      "model": "hbm:block/nuke_mike",
+      "y": 270
+    }
+  }
+}

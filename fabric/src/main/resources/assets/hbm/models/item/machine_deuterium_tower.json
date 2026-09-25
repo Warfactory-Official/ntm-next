@@ -1,0 +1,172 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -25.083786,
+        4.530514,
+        2.117508
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        0.031711638,
+        7.2377663,
+        0.36246648
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -25.083786,
+        4.530514,
+        2.117508
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        0.031712115,
+        7.2377663,
+        0.36246607
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0.0,
+        89.99999,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        1.2993773E-6,
+        13.30496,
+        0.49999988
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        -89.99999,
+        0.0
+      ],
+      "scale": [
+        0.09375,
+        0.09375,
+        0.09375
+      ],
+      "translation": [
+        -8.8810725E-7,
+        3.9324799,
+        5.9604645E-8
+      ]
+    },
+    "gui": {
+      "rotation": [
+        29.999998,
+        44.999996,
+        -0.0
+      ],
+      "scale": [
+        0.09375,
+        0.09375,
+        0.09375001
+      ],
+      "translation": [
+        3.5762787E-7,
+        0.5396028,
+        -6.533759
+      ]
+    },
+    "head": {
+      "rotation": [
+        179.99998,
+        50.000008,
+        25.000013
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "translation": [
+        0.9355144,
+        -35.351063,
+        1.1148989
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -0.0,
+        -89.99999,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        -2.5987547E-6,
+        31.72992,
+        -2.3841858E-7
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        15.499248,
+        -11.3468075,
+        14.955149
+      ],
+      "scale": [
+        0.07031249,
+        0.0703125,
+        0.0703125
+      ],
+      "translation": [
+        -1.3505223,
+        6.54349,
+        2.366312
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        15.499248,
+        -11.3468075,
+        14.955149
+      ],
+      "scale": [
+        0.07031249,
+        0.0703125,
+        0.0703125
+      ],
+      "translation": [
+        -2.5103142,
+        6.301204,
+        2.0576062
+      ]
+    }
+  },
+  "gui_light": "side",
+  "model": "hbm:models/machines/machine_deuterium_tower.obj",
+  "offset_y": -4.78832,
+  "offset_z": -4.7683716E-7,
+  "skins": {
+    "all": [
+      "Cube.007_Cube.009"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/machine_deuterium_tower",
+    "particle": "hbm:block/models/machines/machine_deuterium_tower"
+  }
+}

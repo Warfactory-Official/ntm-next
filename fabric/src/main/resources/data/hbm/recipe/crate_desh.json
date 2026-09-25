@@ -1,0 +1,16 @@
+{
+  "type": "hbm:container_upgrade",
+  "carrier": "hbm:crate_steel",
+  "key": {
+    "D": "hbm:plate_desh",
+    "S": "hbm:crate_steel"
+  },
+  "pattern": [
+    " D ",
+    "DSD",
+    " D "
+  ],
+  "result": {
+    "id": "hbm:crate_desh"
+  }
+}

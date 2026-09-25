@@ -1,0 +1,52 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": "hbm:nuclear_waste_short_plutonium241"
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 282,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_am241"
+        },
+        "weight": 25
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_am242"
+        },
+        "weight": 35
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_technetium"
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "id": "hbm:powder_i131_tiny"
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "hbm:powder_cs137_tiny"
+        },
+        "weight": 7
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_tiny"
+        },
+        "weight": 25
+      }
+    ]
+  ]
+}

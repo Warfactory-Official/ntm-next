@@ -1,0 +1,28 @@
+{
+  "type": "hbm:crucible",
+  "frequency": 20,
+  "icon": {
+    "id": "hbm:ingot_steel"
+  },
+  "input_materials": [
+    {
+      "amount": 16,
+      "material": "iron"
+    },
+    {
+      "amount": 24,
+      "material": "carbon"
+    },
+    {
+      "amount": 8,
+      "material": "flux"
+    }
+  ],
+  "order": 0,
+  "output_materials": [
+    {
+      "amount": 16,
+      "material": "steel"
+    }
+  ]
+}

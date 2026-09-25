@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/antenna"
+        }
+      ],
+      "rolls": 10.0
+    }
+  ],
+  "random_sequence": "hbm:chests/component/unscaled/antenna_10_10"
+}

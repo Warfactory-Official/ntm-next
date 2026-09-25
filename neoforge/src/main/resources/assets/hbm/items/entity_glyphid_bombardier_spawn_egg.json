@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/entity_glyphid_bombardier_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 14539033
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 14399389
+      }
+    ]
+  }
+}

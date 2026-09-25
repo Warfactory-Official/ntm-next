@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:stone_gneiss"
+    }
+  ],
+  "order": 37,
+  "output_items": [
+    "hbm:powder_lithium_tiny"
+  ]
+}

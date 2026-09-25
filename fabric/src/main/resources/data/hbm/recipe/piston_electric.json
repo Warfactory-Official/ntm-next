@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#hbm:ingots/any_plastic",
+    "I": "#hbm:ingots/any_resistant_alloy",
+    "P": "hbm:motor"
+  },
+  "pattern": [
+    " I ",
+    "CPC",
+    " I "
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:part_generic_piston_electric"
+  }
+}

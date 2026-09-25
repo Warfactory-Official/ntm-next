@@ -1,0 +1,16 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/carbon"
+    }
+  ],
+  "order": 28,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:wire_fine_carbon"
+    }
+  ],
+  "stamp": "wire"
+}

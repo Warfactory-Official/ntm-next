@@ -1,0 +1,13 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "minecraft:red_mushroom"
+    }
+  ],
+  "order": 11,
+  "output_items": [
+    "hbm:mush"
+  ]
+}

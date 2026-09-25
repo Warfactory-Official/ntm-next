@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "E": "hbm:ball_tatb",
+    "P": "#c:plates/weapon_steel",
+    "S": "#hbm:shells/weapon_steel",
+    "W": "#c:fine_wires/gold"
+  },
+  "pattern": [
+    " WP",
+    "SEP",
+    " WP"
+  ],
+  "result": {
+    "id": "hbm:assembly_nuke"
+  }
+}

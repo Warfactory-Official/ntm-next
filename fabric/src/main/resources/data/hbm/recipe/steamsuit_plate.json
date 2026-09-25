@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:plates/copper",
+    "D": "#c:ingots/workers_alloy",
+    "F": "hbm:tank_steel",
+    "X": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:steel_plate",
+      "components": {
+        "minecraft:damage": 0
+      }
+    }
+  },
+  "pattern": [
+    "C C",
+    "DXD",
+    "CFC"
+  ],
+  "result": {
+    "id": "hbm:steamsuit_plate"
+  }
+}

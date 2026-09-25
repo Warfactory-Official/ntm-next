@@ -1,0 +1,22 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "double_sided": [
+    "Lantern"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Light"
+  ],
+  "model": "hbm:models/trinkets/lantern.obj",
+  "skins": {
+    "all": [
+      "Lantern"
+    ]
+  },
+  "smooth": false,
+  "textures": {
+    "all": "hbm:block/models/trinkets/lantern_rusty",
+    "particle": "hbm:block/block_rust"
+  }
+}

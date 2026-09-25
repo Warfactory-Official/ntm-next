@@ -1,0 +1,22 @@
+{
+  "type": "hbm:mixer",
+  "duration": 80,
+  "input_fluids": [
+    {
+      "type": "hbm:lye",
+      "amount": 50
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:stone_resource_bauxite"
+    }
+  ],
+  "order": 44,
+  "output_fluids": [
+    {
+      "type": "hbm:bauxite_solution",
+      "amount": 300
+    }
+  ]
+}

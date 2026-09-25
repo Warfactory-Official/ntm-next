@@ -1,0 +1,18 @@
+{
+  "type": "hbm:stratum_3d",
+  "config": {
+    "domain_x": "hbm:noise/stratum_hematite/x",
+    "domain_y": "hbm:noise/stratum_hematite/y",
+    "domain_z": "hbm:noise/stratum_hematite/z",
+    "replaceable": {
+      "predicate_type": "minecraft:tag_match",
+      "tag": "minecraft:stone_ore_replaceables"
+    },
+    "scale_h": 0.04,
+    "scale_v": 0.25,
+    "state": {
+      "Name": "hbm:stone_resource_hematite"
+    },
+    "threshold": 230.0
+  }
+}

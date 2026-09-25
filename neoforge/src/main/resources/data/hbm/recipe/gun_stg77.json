@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_light/saturnite",
+    "D": "hbm:weapon_mod_special_scope",
+    "G": "#hbm:grips/any_hard_plastic",
+    "M": "#hbm:gun_mechanisms/saturnite",
+    "R": "#hbm:receivers_light/saturnite",
+    "S": "#hbm:stocks/any_hard_plastic"
+  },
+  "pattern": [
+    " D ",
+    "BRS",
+    "GGM"
+  ],
+  "result": {
+    "id": "hbm:gun_stg77"
+  }
+}

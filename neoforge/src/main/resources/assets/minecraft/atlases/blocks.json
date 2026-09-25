@@ -1,0 +1,1416 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "hbm:models/machines/epress_head"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "hbm:models/soyuz_launcher/launcher_leg"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "hbm:models/soyuz_launcher/launcher_table"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "hbm:models/soyuz_launcher/launcher_tower_base"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "hbm:particle/skeleton"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/ajr_arm"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/ajr_chest"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/ajr_helmet"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/ajr_leg"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/ajro_arm"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/ajro_chest"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/ajro_helmet"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/ajro_leg"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/bismuth"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/bj_arm"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/bj_chest"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/bj_eyepatch"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/bj_jetpack"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/bj_leg"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/bnuuy_arm"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/bnuuy_chest"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/bnuuy_helmet"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/bnuuy_leg"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/dnt_arm"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/dnt_chest"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/dnt_helmet"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/dnt_leg"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/envsuit_arm"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/envsuit_chest"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/envsuit_helmet"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/envsuit_leg"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/fau_arm"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/fau_cassette"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/fau_chest"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/fau_helmet"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/fau_leg"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/hev_arm"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/hev_chest"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/hev_helmet"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/hev_leg"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/ncrpa_arm"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/ncrpa_chest"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/ncrpa_helmet"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/ncrpa_leg"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/rpa_arm"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/rpa_chest"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/rpa_helmet"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/rpa_leg"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/steamsuit_arm"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/steamsuit_chest"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/steamsuit_helmet"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/steamsuit_leg"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/t51_arm"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/t51_chest"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/t51_helmet"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/t51_leg"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/taurun_arm"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/taurun_chest"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/taurun_helmet"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/taurun_leg"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/trenchmaster_arm"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/trenchmaster_chest"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/trenchmaster_helmet"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:armor/trenchmaster_leg"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/deco_computer"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/lantern"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/custom_nuke"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/dud_balefire"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/dud_conventional"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/dud_nuke"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/dud_salted"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/fatman"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/fleija"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/fstbmb"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/gadget"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/ivymike"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/lilboy"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/mine_ap_grass"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/mine_fat"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/mine_marelet"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/mine_naval_model"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/mine_shrapnel"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/tsar"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/bombs/ufp"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/boxcar"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/core_receiver"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/doors/silo_hatch"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/doors/silo_hatch_large"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/dropship"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/duchessgambit"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/fusion/boiler"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/fusion/breeder"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/fusion/collector"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/fusion/coupler"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/fusion/klystron"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/fusion/klystron_creative"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/fusion/mhdt"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/fusion/plasma_forge"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/fusion/torus"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/launchpad/erector_atlas"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/launchpad/erector_huge"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/launchpad/erector_micro"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/launchpad/erector_strong"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/launchpad/erector_v2"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/ammo_press"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/annihilator"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/annihilator_belt"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/arc_furnace"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/arc_welder"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/ashpit"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/assembly_factory"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/assembly_machine"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/autosaw"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/battery_lead"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/battery_lithium"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/battery_quantum"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/battery_redstone"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/battery_schrabidium"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/battery_socket"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/battery_sodium"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/bigasstank"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/blast_furnace"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/boiler"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/breeder"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/capacitor_bismuth"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/capacitor_copper"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/capacitor_gold"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/capacitor_niobium"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/capacitor_spark"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/capacitor_tantalum"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/cargo_pad"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/centrifuge"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/charger"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/chemical_factory"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/chemical_plant"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/chimney_brick"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/chimney_industrial"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/chungus"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/coker"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/combination_oven"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/combustion_engine"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/compressor"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/compressor_compact"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/condenser"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/conveyor_press"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/cracking_tower"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/crane_console"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/crucible_heat"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/crystallizer"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/cyclotron_ashes"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/cyclotron_ashes_filled"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/cyclotron_book"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/cyclotron_book_filled"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/cyclotron_coin"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/cyclotron_coin_filled"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/cyclotron_gavel"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/cyclotron_gavel_filled"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/demon_lamp"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/derrick"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/dieselgen"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/drain"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/drum_gray"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/electrolyser"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/elevator"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/exposure_chamber"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/fan"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/fel"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/fensu"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/fensu2"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/firebox"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/flare_stack"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/floodlight"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/fracking_tower"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/fraction_spacer"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/fraction_tower"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/furnace_iron"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/furnace_steel"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/gascent"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/heater_heatex"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/heating_oven"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/hephaestus"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/hydrotreater"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/icf"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/industrial_boiler"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/industrial_turbine"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/intake"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/launchpad_soyuz"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/liquefactor"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/lpw2"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/machine_deuterium_tower"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/microwave"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/mining_drill"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/mining_laser_laser"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/mining_laser_pivot"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/mixer"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/orbus"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/ore_slopper"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/piston_inserter"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/precass"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/press_body"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/pumpjack"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/purex"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/pyrooven"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/radar_base"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/radar_large"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/radar_screen"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/radgen"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/rbmk_autoloader"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/rbmk_console"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/refinery"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/rockmill"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/rotary_furnace"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/rtg"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/satlink"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/sawmill"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/silex"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/solar_boiler"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/solar_mirror"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/soldering_station"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/solidifier"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/steam_engine"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/strand_caster"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/supercomputer_scan"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/tank"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/tape_drive"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/thresher"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/tower_small"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/turbine"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/turbofan"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/turbofan_afterburner"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/turbofan_back"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/vacuum_distill"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/vending_machine"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/watz"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/watz_pump"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/wood_burner"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/zirnox"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/machines/zirnox_destroyed"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/missile/missile_atlas_doomsday_weathered"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/missile_parts/launch_table_large_scaffold_base"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/missile_parts/launch_table_small_scaffold_base"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/missile_parts/launch_table_small_scaffold_connector"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/network/connector"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/network/connector_super"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/network/fluid_diode"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/network/pylon"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/network/pylon_large"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/network/pylon_medium"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/network/pylon_medium_steel"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/network/pylon_steel"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/network/substation"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/particleaccelerator/detector"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/particleaccelerator/dipole"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/particleaccelerator/quadrupole"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/particleaccelerator/source"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/airlock_door"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/airlock_door_clean"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/airlock_door_green"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/blast_door"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/cargo_door"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/containment_door"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/containment_door_trefoil"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/containment_door_trefoil_yellow"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/fire_door"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/fire_door_black"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/fire_door_orange"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/fire_door_trefoil"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/fire_door_yellow"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/secure_door"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/secure_door_black"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/secure_door_grey"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/secure_door_yellow"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/sliding_door"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/vault/vault_door_3"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/vault/vault_door_4"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/vault/vault_door_s"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/vehicle_door"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/water_door"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pheodoors/water_door_clean"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pile/pile_control"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pile/pile_loader"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/pile/pile_vent"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/radiolysis"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/reactor_small_base"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/reactor_small_rods"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/tank/tank_inner"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/tank/tank_none"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/tools/geiger"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/trains/tram"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/trains/tram_trailer"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/trinkets/lantern_rusty"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/trinkets/socket"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/arty"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/base"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/base_friendly"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/carriage"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/carriage_ciws"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/carriage_friendly"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/chekhov"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/chekhov_barrels"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/connector"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/fritz"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/himars"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/howard"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/howard_barrels"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/jeremy"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/richard"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/rusted/base"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/rusted/carriage_ciws"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/rusted/howard"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/rusted/howard_barrels"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/sentry"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/models/turrets/sentry_damaged"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/pole_top"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:block/tape_recorder"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:effect/white"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/chlorine1"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/chlorine2"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/chlorine3"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/chlorine4"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/chlorine5"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/chlorine6"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/chlorine7"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/chlorine8"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/cloud1"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/cloud2"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/cloud3"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/cloud4"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/cloud5"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/cloud6"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/cloud7"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/cloud8"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/ingot_nikonium"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/pc1"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/pc2"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/pc3"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/pc4"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/pc5"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/pc6"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/pc7"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/pc8"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/rod_of_discord"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:item/wrench_flipped"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:models/bombs/mine_ap_desert"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:models/bombs/mine_ap_snow"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:models/bombs/mine_ap_stone"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:models/machines/press_head"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:models/network/gauge"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:models/network/terminal"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:models/projectiles/himars_standard"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:models/soyuz_capsule/soyuz_lander"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:models/soyuz_capsule/soyuz_lander_rust"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:models/soyuz_launcher/launcher_support_base"
+    }
+  ]
+}

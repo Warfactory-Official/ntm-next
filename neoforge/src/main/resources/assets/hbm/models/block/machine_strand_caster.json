@@ -1,0 +1,23 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "caster"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "plate"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/strand_caster.obj",
+  "offset_x": -0.5,
+  "offset_z": -0.5,
+  "skins": {
+    "all": [
+      "caster"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/strand_caster",
+    "particle": "hbm:block/brick_fire"
+  }
+}

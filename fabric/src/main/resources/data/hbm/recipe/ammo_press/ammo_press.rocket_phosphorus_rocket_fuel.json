@@ -1,0 +1,29 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#c:ingots/white_phosphorus"
+    },
+    "B": {
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    },
+    "C": {
+      "ingredient": "hbm:casing_large"
+    },
+    "D": {
+      "ingredient": "hbm:rocket_fuel"
+    }
+  },
+  "order": 70,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:ammo_standard_rocket_phosphorus"
+    }
+  ],
+  "pattern": [
+    "AB ",
+    " C ",
+    " D "
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbm:models/machines/vacuum_distill.obj",
+  "skins": {
+    "all": [
+      "Cylinder"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/vacuum_distill",
+    "particle": "hbm:block/models/machines/vacuum_distill"
+  }
+}

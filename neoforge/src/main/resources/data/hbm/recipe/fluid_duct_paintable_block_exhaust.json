@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "hbm:plate_polymer",
+    "S": "#c:ingots/iron"
+  },
+  "pattern": [
+    "SAS",
+    "A A",
+    "SAS"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:fluid_duct_paintable_block_exhaust"
+  }
+}

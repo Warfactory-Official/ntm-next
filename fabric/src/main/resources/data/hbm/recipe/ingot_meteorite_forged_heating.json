@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.0,
+  "ingredient": "hbm:ingot_meteorite_forged",
+  "result": {
+    "components": {
+      "hbm:hot_item_heat": 200
+    },
+    "id": "hbm:ingot_meteorite_forged"
+  }
+}

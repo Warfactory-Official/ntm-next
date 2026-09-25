@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!lbsm_simple_centrifuge"
+    }
+  ],
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/uranium"
+    }
+  ],
+  "order": 25,
+  "output_items": [
+    "hbm:powder_uranium",
+    "hbm:powder_uranium",
+    "hbm:nugget_ra226",
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

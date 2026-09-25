@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/actinium_227"
+    }
+  ],
+  "order": 335,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

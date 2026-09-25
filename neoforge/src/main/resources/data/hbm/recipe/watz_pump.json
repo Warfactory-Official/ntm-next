@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_bismoid",
+    "M": "hbm:motor_desh",
+    "P": "#hbm:plates_cast/any_resistant_alloy",
+    "S": "#hbm:pipes/dura_steel"
+  },
+  "pattern": [
+    "MPM",
+    "PCP",
+    "PSP"
+  ],
+  "result": {
+    "id": "hbm:watz_pump"
+  }
+}

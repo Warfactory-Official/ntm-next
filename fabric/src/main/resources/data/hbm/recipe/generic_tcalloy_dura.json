@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:plates/weapon_steel",
+    "#hbm:plates_cast/any_resistant_alloy",
+    "hbm:ducttape"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_generic_tcalloy_dura"
+  }
+}

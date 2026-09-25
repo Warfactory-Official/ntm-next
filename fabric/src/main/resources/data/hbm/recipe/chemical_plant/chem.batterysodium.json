@@ -1,0 +1,23 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#c:dusts/sodium"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:dusts/iron"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    }
+  ],
+  "order": 31,
+  "output_items": [
+    "hbm:battery_pack_battery_sodium"
+  ],
+  "power": 10000
+}

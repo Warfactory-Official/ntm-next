@@ -1,0 +1,26 @@
+{
+  "type": "hbm:catalytic_reformer",
+  "duration": 1,
+  "input_fluids": [
+    {
+      "type": "hbm:lightoil_crack",
+      "amount": 100
+    }
+  ],
+  "order": 5,
+  "output_fluids": [
+    {
+      "type": "hbm:aromatics",
+      "amount": 50
+    },
+    {
+      "type": "hbm:reformgas",
+      "amount": 5
+    },
+    {
+      "type": "hbm:hydrogen",
+      "amount": 20
+    }
+  ],
+  "power": 20000
+}

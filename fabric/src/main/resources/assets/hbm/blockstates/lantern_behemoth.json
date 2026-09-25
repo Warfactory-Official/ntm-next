@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "broken=false,facing=east": {
+      "model": "hbm:block/lantern_behemoth"
+    },
+    "broken=false,facing=north": {
+      "model": "hbm:block/lantern_behemoth"
+    },
+    "broken=false,facing=south": {
+      "model": "hbm:block/lantern_behemoth"
+    },
+    "broken=false,facing=west": {
+      "model": "hbm:block/lantern_behemoth"
+    },
+    "broken=true,facing=east": {
+      "model": "hbm:block/lantern_behemoth_broken"
+    },
+    "broken=true,facing=north": {
+      "model": "hbm:block/lantern_behemoth_broken"
+    },
+    "broken=true,facing=south": {
+      "model": "hbm:block/lantern_behemoth_broken"
+    },
+    "broken=true,facing=west": {
+      "model": "hbm:block/lantern_behemoth_broken"
+    }
+  }
+}

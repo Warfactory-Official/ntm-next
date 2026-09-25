@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 90.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:dusts/actinium_227"
+}

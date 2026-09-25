@@ -1,0 +1,39 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:deuterium_filter"
+    },
+    {
+      "count": 5,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:concrete_asbestos"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:steel_scaffold"
+    },
+    {
+      "count": 8,
+      "ingredient": {
+        "neoforge:ingredient_type": "hbm:fluid_content",
+        "amount": 1000,
+        "fluid": "hbm:sourgas"
+      }
+    }
+  ],
+  "order": 86,
+  "output_items": [
+    "hbm:machine_deuterium_tower"
+  ],
+  "overlay": "construction",
+  "tier": 4
+}

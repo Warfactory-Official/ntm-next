@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "hbm:gem_alexandrite",
+    "C": "#hbm:wires_dense/starmetal",
+    "I": "hbm:ingot_chainsteel",
+    "K": "hbm:key",
+    "R": "#c:dyes/red"
+  },
+  "pattern": [
+    "RCA",
+    "CIC",
+    "KCR"
+  ],
+  "result": {
+    "id": "hbm:key_red"
+  }
+}

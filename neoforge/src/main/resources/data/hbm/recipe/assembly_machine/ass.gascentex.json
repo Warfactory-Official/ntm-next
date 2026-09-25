@@ -1,0 +1,35 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.gascent"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:centrifuge_element"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_welded/steel"
+    },
+    {
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.gascentEx",
+  "order": 100,
+  "output_items": [
+    "hbm:machine_gascent"
+  ],
+  "power": 100
+}

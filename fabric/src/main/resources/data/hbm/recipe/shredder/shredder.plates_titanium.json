@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:plates/titanium"
+    }
+  ],
+  "order": 261,
+  "output_items": [
+    "hbm:powder_titanium"
+  ]
+}

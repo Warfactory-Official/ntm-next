@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "hbm:tinted_glint",
+    "base": "hbm:item/meteorite_sword_reforged",
+    "color": [
+      0.5,
+      1.0,
+      1.0
+    ]
+  }
+}

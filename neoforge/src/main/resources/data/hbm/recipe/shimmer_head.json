@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#c:storage_blocks/workers_alloy",
+    "S": "#c:ingots/steel",
+    "T": "#c:storage_blocks/tungsten"
+  },
+  "pattern": [
+    "SSS",
+    "DTD",
+    "SSS"
+  ],
+  "result": {
+    "id": "hbm:shimmer_head"
+  }
+}

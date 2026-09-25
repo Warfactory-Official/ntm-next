@@ -1,0 +1,40 @@
+{
+  "content": {
+    "en_us": "The \"default\" ammunition type for most guns. Soft point bullets do not change the gun's base damage, and don't have any armor-piercing properties.<br><br>Due to being expanding projectiles, soft points are prohibited for use in warfare under the Hague Conventions of 1899.<br><br>{{hbm:weapon/template_bullet}}",
+    "ru_ru": "Тип боеприпасов \"по умолчанию\" для большинства видов оружия. Полуоболочечные пули не изменяют базовый урон оружия и не обладают какими-либо бронебойными свойствами.<br><br>Поскольку эти пули являются деформирующимися, использование полуоболочечных пуль в военных действиях запрещено Гаагскими конвенциями 1899 года.<br><br>{{hbm:weapon/template_bullet}}",
+    "zh_cn": "“默认”的弹药类型。软尖弹不影响枪械的基础伤害，也不具有穿甲特性。<br><br>由于属于扩张型弹药，1889年的海牙公约禁止在战争中使用软尖弹。<br><br>{{hbm:weapon/template_bullet}}"
+  },
+  "icon": "hbm:ammo_standard_r762_sp",
+  "name": "Soft Point Bullet",
+  "title": {
+    "en_us": "Soft Point Bullet",
+    "ru_ru": "Полуоболочечная пуля",
+    "zh_cn": "软尖弹"
+  },
+  "trigger": [
+    {
+      "items": "hbm:ammo_standard_m357_sp"
+    },
+    {
+      "items": "hbm:ammo_standard_m44_sp"
+    },
+    {
+      "items": "hbm:ammo_standard_p22_sp"
+    },
+    {
+      "items": "hbm:ammo_standard_p9_sp"
+    },
+    {
+      "items": "hbm:ammo_standard_p45_sp"
+    },
+    {
+      "items": "hbm:ammo_standard_r556_sp"
+    },
+    {
+      "items": "hbm:ammo_standard_r762_sp"
+    },
+    {
+      "items": "hbm:ammo_standard_bmg50_sp"
+    }
+  ]
+}

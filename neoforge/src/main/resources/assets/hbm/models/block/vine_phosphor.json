@@ -1,0 +1,11 @@
+{
+  "parent": "hbm:block/vine_phosphor_base",
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/vine_phosphor.obj",
+  "skins": {
+    "all": [
+      "Cross"
+    ]
+  },
+  "smooth": false
+}

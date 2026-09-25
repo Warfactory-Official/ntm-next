@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 1200,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbm:moon_turf"
+    }
+  ],
+  "order": 328,
+  "output_items": [
+    "hbm:chunk_ore_moonstone"
+  ]
+}

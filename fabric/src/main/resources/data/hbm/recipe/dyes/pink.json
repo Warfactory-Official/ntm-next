@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "hbm:crayon_pink",
+      "hbm:chemical_dye_pink"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:pink_dye"
+  }
+}

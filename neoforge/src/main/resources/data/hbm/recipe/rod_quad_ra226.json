@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:rod_quad_empty",
+    "#hbm:billets/radium_226",
+    "#hbm:billets/radium_226",
+    "#hbm:billets/radium_226",
+    "#hbm:billets/radium_226"
+  ],
+  "result": {
+    "id": "hbm:rod_quad_ra226"
+  }
+}

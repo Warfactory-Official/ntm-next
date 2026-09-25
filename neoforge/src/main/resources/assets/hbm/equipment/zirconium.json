@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "hbm:zirconium"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "hbm:zirconium"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "hbm:zirconium"
+      }
+    ]
+  }
+}

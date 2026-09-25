@@ -1,0 +1,39 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 1200,
+  "input_items": [
+    {
+      "count": 20,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 20,
+      "ingredient": "#c:plates/aluminum"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:dyes/black"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:bolts/steel"
+    }
+  ],
+  "order": 360,
+  "output_items": [
+    "hbm:missile_stealth"
+  ],
+  "power": 100
+}

@@ -1,0 +1,28 @@
+{
+  "type": "hbm:electrolyser_metal",
+  "duration": 600,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_cobalt"
+    }
+  ],
+  "order": 17,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:powder_copper"
+    },
+    {
+      "count": 3,
+      "id": "hbm:powder_lithium_tiny"
+    }
+  ],
+  "output_material": {
+    "amount": 216,
+    "material": "cobalt"
+  },
+  "output_material_2": {
+    "amount": 288,
+    "material": "iron"
+  }
+}

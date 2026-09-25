@@ -1,0 +1,43 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 600,
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_pellet": {}
+      },
+      "ingredient": "hbm:rbmk_pellet_men"
+    }
+  ],
+  "laser_strength": "ir",
+  "order": 35,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_neptunium_fuel"
+        },
+        "weight": 84
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_pu239"
+        },
+        "weight": 6
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_long_tiny_neptunium"
+        },
+        "weight": 4
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_short_tiny_neptunium"
+        },
+        "weight": 6
+      }
+    ]
+  ]
+}

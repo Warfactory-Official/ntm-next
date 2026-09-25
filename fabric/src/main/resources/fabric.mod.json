@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "id": "hbm",
+  "version": "${version}",
+  "name": "NTM",
+  "description": "Nuclear Tech Mod, ported to Minecraft 26.2 for Fabric and NeoForge.",
+  "authors": [
+    "HbmMods (The Bobcat) - creating the original mod",
+    "movblock - porting to 26.2"
+  ],
+  "contributors": [
+    "MrNorwood - raw ore textures: thorium, cobalt, lithium, schrabidium",
+    "Mr. Morgan - raw ore textures: aluminium, beryllium, lead, plutonium, titanium, tungsten, uranium",
+    "NuclearGrandFather - raw ore textures: aluminium, beryllium, lead, plutonium, titanium, tungsten, uranium"
+  ],
+  "license": "LGPL-3.0-only",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.hbm.fabric.NuclearTechFabric"
+    ],
+    "client": [
+      "com.hbm.fabric.client.NuclearTechFabricClient"
+    ],
+    "fabric-datagen": [
+      "com.hbm.fabric.datagen.HbmDataGenerator"
+    ],
+    "jei_mod_plugin": [
+      "com.hbm.integration.jei.NTMJeiPlugin"
+    ],
+    "rei_client": [
+      "com.hbm.integration.rei.NTMReiClientPlugin",
+      "com.hbm.integration.rei.NTMReiCommonPlugin"
+    ],
+    "jade": [
+      "com.hbm.integration.jade.NTMJadePlugin"
+    ]
+  },
+  "mixins": [
+    "hbm-common.mixins.json",
+    "hbm-compat.mixins.json",
+    "hbm-storage-compat.mixins.json",
+    "hbm-network-compat.mixins.json",
+    "hbm-fabric-createfluid.mixins.json",
+    "hbm-fabric-storage.mixins.json",
+    "hbm-fabric-replay.mixins.json",
+    "hbm-fabric.mixins.json"
+  ],
+  "accessWidener": "hbm.classtweaker",
+  "jars": [
+    {
+      "file": "META-INF/jars/hbm-client-dependency.jar"
+    }
+  ],
+  "depends": {
+    "hbm_client": "*",
+    "fabricloader": ">=0.19.3",
+    "fabric-api": ">=0.153.0+26.2",
+    "minecraft": "~26.2"
+  },
+  "suggests": {
+    "team_reborn_energy": ">=5.0.0"
+  },
+  "breaks": {
+    "iris": "<1.11.4",
+    "sodium": "<0.9.2-beta.1",
+    "scalablelux": "<0.3.0-alpha.0.3",
+    "lithium": [
+      "<0.25.3",
+      ">=0.26"
+    ]
+  }
+}

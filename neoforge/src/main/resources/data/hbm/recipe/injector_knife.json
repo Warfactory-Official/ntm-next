@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:injector_5htp",
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "minecraft:iron_sword"
+    }
+  ],
+  "result": {
+    "id": "hbm:injector_knife"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "#c:ingots/rubber"
+    }
+  ],
+  "order": 51,
+  "output_items": [
+    "hbm:pipe_rubber"
+  ],
+  "overlay": "smithing",
+  "tier": 1
+}

@@ -1,0 +1,51 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!lbsm_simple_crafting"
+    }
+  ],
+  "type": "hbm:soldering",
+  "duration": 400,
+  "input_fluids": [
+    {
+      "type": "hbm:helium4",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_chip_quantum"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_chip_bismoid"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_atomic_clock"
+    }
+  ],
+  "order": 7,
+  "output_items": [
+    "hbm:circuit_quantum"
+  ],
+  "pcb": [
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_pcb"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    }
+  ],
+  "power": 100000,
+  "solder": [
+    {
+      "count": 16,
+      "ingredient": "#c:fine_wires/lead"
+    }
+  ]
+}

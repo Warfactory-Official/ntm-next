@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:vinyl_tile_large"
+  },
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:vinyl_tile_small"
+  }
+}

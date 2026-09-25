@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:titanium_plate",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "M": "hbm:motor",
+    "P": "hbm:plate_armor_titanium",
+    "T": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:gas_tank",
+      "components": {
+        "!hbm:fluid_content": {}
+      }
+    }
+  },
+  "pattern": [
+    "MPM",
+    "TBT",
+    "PPP"
+  ],
+  "result": {
+    "id": "hbm:t51_plate"
+  }
+}

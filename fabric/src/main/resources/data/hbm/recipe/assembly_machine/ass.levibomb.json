@@ -1,0 +1,27 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 3,
+      "ingredient": "#c:nuggets/schrabidium"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:wires_dense/gold"
+    }
+  ],
+  "order": 302,
+  "output_items": [
+    "hbm:float_bomb"
+  ],
+  "power": 100
+}

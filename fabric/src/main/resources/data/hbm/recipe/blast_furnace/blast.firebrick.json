@@ -1,0 +1,20 @@
+{
+  "type": "hbm:blast_furnace",
+  "duration": 800,
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/aluminum"
+    },
+    {
+      "count": 7,
+      "ingredient": "minecraft:clay_ball"
+    }
+  ],
+  "order": 13,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:ingot_firebrick"
+    }
+  ]
+}

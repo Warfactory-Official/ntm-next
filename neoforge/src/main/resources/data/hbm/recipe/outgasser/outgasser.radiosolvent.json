@@ -1,0 +1,16 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "hbm:oil_tar_wax"
+    }
+  ],
+  "order": 18,
+  "output_fluids": [
+    {
+      "type": "hbm:radiosolvent",
+      "amount": 100
+    }
+  ]
+}

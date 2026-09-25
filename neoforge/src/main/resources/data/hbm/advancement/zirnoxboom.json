@@ -1,0 +1,30 @@
+{
+  "parent": "hbm:centrifuge",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "kinds": [
+          "zirnox"
+        ]
+      },
+      "trigger": "hbm:detonation"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.ZIRNOXBoom.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:debris_element"
+    },
+    "title": {
+      "translate": "achievement.ZIRNOXBoom"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

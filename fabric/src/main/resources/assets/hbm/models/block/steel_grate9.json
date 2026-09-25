@@ -1,0 +1,44 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#end"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "up": {
+          "cullface": "down",
+          "texture": "#end"
+        },
+        "west": {
+          "texture": "#side"
+        }
+      },
+      "from": [
+        0,
+        -2,
+        0
+      ],
+      "to": [
+        16,
+        0,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "end": "hbm:block/grate_top",
+    "particle": "hbm:block/grate_top",
+    "side": "hbm:block/grate_side"
+  }
+}

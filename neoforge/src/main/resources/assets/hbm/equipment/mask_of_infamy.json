@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "hbm:mask_of_infamy"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "hbm:mask_of_infamy"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "hbm:mask_of_infamy"
+      }
+    ]
+  }
+}

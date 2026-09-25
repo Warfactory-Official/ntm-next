@@ -1,0 +1,478 @@
+{
+  "parent": "hbm:block/rbmk_piped_item_display",
+  "boxes": [
+    {
+      "faces": {
+        "down": "bottom",
+        "east": "side",
+        "north": "side",
+        "south": "side",
+        "up": "top",
+        "west": "side"
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "uvs": {
+        "down": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "east": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "north": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "south": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "up": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "west": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ]
+      }
+    },
+    {
+      "faces": {
+        "down": "bottom",
+        "east": "side",
+        "north": "side",
+        "south": "side",
+        "up": "top",
+        "west": "side"
+      },
+      "from": [
+        0,
+        16,
+        0
+      ],
+      "to": [
+        16,
+        32,
+        16
+      ],
+      "uvs": {
+        "down": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "east": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "north": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "south": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "up": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "west": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ]
+      }
+    },
+    {
+      "faces": {
+        "down": "bottom",
+        "east": "side",
+        "north": "side",
+        "south": "side",
+        "up": "top",
+        "west": "side"
+      },
+      "from": [
+        0,
+        32,
+        0
+      ],
+      "to": [
+        16,
+        48,
+        16
+      ],
+      "uvs": {
+        "down": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "east": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "north": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "south": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "up": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "west": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ]
+      }
+    },
+    {
+      "faces": {
+        "down": "bottom",
+        "east": "side",
+        "north": "side",
+        "south": "side",
+        "up": "top",
+        "west": "side"
+      },
+      "from": [
+        0,
+        48,
+        0
+      ],
+      "to": [
+        16,
+        64,
+        16
+      ],
+      "uvs": {
+        "down": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "east": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "north": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "south": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "up": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "west": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ]
+      }
+    },
+    {
+      "faces": {
+        "east": "pipe_side",
+        "north": "pipe_side",
+        "south": "pipe_side",
+        "up": "pipe_top",
+        "west": "pipe_side"
+      },
+      "from": [
+        1,
+        64,
+        1
+      ],
+      "to": [
+        7,
+        66,
+        7
+      ],
+      "uvs": {
+        "east": [
+          9.0,
+          14.0,
+          15.0,
+          16.0
+        ],
+        "north": [
+          9.0,
+          14.0,
+          15.0,
+          16.0
+        ],
+        "south": [
+          1.0,
+          14.0,
+          7.0,
+          16.0
+        ],
+        "up": [
+          1.0,
+          1.0,
+          7.0,
+          7.0
+        ],
+        "west": [
+          1.0,
+          14.0,
+          7.0,
+          16.0
+        ]
+      }
+    },
+    {
+      "faces": {
+        "east": "pipe_side",
+        "north": "pipe_side",
+        "south": "pipe_side",
+        "up": "pipe_top",
+        "west": "pipe_side"
+      },
+      "from": [
+        1,
+        64,
+        9
+      ],
+      "to": [
+        7,
+        66,
+        15
+      ],
+      "uvs": {
+        "east": [
+          1.0,
+          14.0,
+          7.0,
+          16.0
+        ],
+        "north": [
+          9.0,
+          14.0,
+          15.0,
+          16.0
+        ],
+        "south": [
+          1.0,
+          14.0,
+          7.0,
+          16.0
+        ],
+        "up": [
+          1.0,
+          9.0,
+          7.0,
+          15.0
+        ],
+        "west": [
+          9.0,
+          14.0,
+          15.0,
+          16.0
+        ]
+      }
+    },
+    {
+      "faces": {
+        "east": "pipe_side",
+        "north": "pipe_side",
+        "south": "pipe_side",
+        "up": "pipe_top",
+        "west": "pipe_side"
+      },
+      "from": [
+        9,
+        64,
+        9
+      ],
+      "to": [
+        15,
+        66,
+        15
+      ],
+      "uvs": {
+        "east": [
+          1.0,
+          14.0,
+          7.0,
+          16.0
+        ],
+        "north": [
+          1.0,
+          14.0,
+          7.0,
+          16.0
+        ],
+        "south": [
+          9.0,
+          14.0,
+          15.0,
+          16.0
+        ],
+        "up": [
+          9.0,
+          9.0,
+          15.0,
+          15.0
+        ],
+        "west": [
+          9.0,
+          14.0,
+          15.0,
+          16.0
+        ]
+      }
+    },
+    {
+      "faces": {
+        "east": "pipe_side",
+        "north": "pipe_side",
+        "south": "pipe_side",
+        "up": "pipe_top",
+        "west": "pipe_side"
+      },
+      "from": [
+        9,
+        64,
+        1
+      ],
+      "to": [
+        15,
+        66,
+        7
+      ],
+      "uvs": {
+        "east": [
+          9.0,
+          14.0,
+          15.0,
+          16.0
+        ],
+        "north": [
+          1.0,
+          14.0,
+          7.0,
+          16.0
+        ],
+        "south": [
+          9.0,
+          14.0,
+          15.0,
+          16.0
+        ],
+        "up": [
+          9.0,
+          1.0,
+          15.0,
+          7.0
+        ],
+        "west": [
+          1.0,
+          14.0,
+          7.0,
+          16.0
+        ]
+      }
+    }
+  ],
+  "groups": [
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        3.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "model": "hbm:models/rbmk/rbmk_rods.obj",
+      "parts": [
+        "Lid"
+      ],
+      "texture": "lid"
+    }
+  ],
+  "loader": "hbm:obj",
+  "textures": {
+    "bottom": "hbm:block/rbmk/rbmk_control_auto_top",
+    "lid": "hbm:block/rbmk/rbmk_control_auto_top",
+    "particle": "hbm:block/rbmk/rbmk_control_auto_side",
+    "pipe_side": "hbm:block/rbmk/rbmk_control_auto_pipe_side",
+    "pipe_top": "hbm:block/rbmk/rbmk_control_auto_pipe_top",
+    "side": "hbm:block/rbmk/rbmk_control_auto_side",
+    "top": "hbm:block/rbmk/rbmk_control_auto_top"
+  }
+}

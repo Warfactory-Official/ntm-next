@@ -1,0 +1,18 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbm:models/blocks/radiobox_on.obj",
+  "skins": {
+    "all": [
+      "Radio_Box",
+      "Radio_Plate",
+      "Radio_Lever"
+    ]
+  },
+  "smooth": false,
+  "textures": {
+    "all": "hbm:block/models/model_radio",
+    "particle": "hbm:block/radiobox"
+  }
+}

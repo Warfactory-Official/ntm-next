@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_vacuum_tube",
+    "M": "hbm:motor",
+    "S": "#c:plates/steel",
+    "W": "minecraft:crafting_table"
+  },
+  "pattern": [
+    "SCS",
+    "MWM",
+    "SCS"
+  ],
+  "result": {
+    "id": "hbm:machine_autocrafter"
+  }
+}

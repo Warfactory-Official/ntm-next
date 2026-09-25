@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/asbestos"
+    }
+  ],
+  "order": 384,
+  "output_items": [
+    "hbm:powder_asbestos"
+  ]
+}

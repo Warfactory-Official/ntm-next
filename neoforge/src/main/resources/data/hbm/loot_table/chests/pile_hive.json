@@ -1,0 +1,278 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:iron_ingot",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ingot_steel",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ingot_aluminium",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:scrap",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gas_mask_m65",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:steel_plate",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:steel_legs",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:steel_pickaxe",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:steel_shovel",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_maresleg",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gun_light_revolver",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "hbm:grenade": {
+                  "extra": "frag_sleeve",
+                  "filling": "he",
+                  "fuze": "s3",
+                  "shell": "frag"
+                },
+                "minecraft:max_stack_size": 4
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:grenade_universal",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "hbm:grenade": {
+                  "filling": "demo",
+                  "fuze": "impact",
+                  "shell": "stick"
+                },
+                "minecraft:max_stack_size": 4
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:grenade_universal",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:constant",
+                "value": 4.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ammo_standard_g12",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 12.0,
+                "min": 6.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:ammo_standard_m357_sp",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:ammo_standard_g40_he",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:bottle_nuka",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:bottle_quantum",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 12.0,
+                "min": 5.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:definitelyfood",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:egg_glyphid",
+          "weight": 30
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:syringe_metal_stimpak",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:iv_blood",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:experience_bottle",
+          "weight": 5
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/pile_hive"
+}

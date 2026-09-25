@@ -1,0 +1,23 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Frame"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Press",
+    "Shells",
+    "Bullets"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/ammo_press.obj",
+  "skins": {
+    "all": [
+      "Frame"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/ammo_press",
+    "particle": "hbm:block/models/machines/ammo_press"
+  }
+}

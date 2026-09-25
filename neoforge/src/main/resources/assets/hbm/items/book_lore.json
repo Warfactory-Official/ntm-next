@@ -1,0 +1,18 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/book_lore",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "hbm:lore_book_cover"
+      },
+      {
+        "type": "hbm:lore_book_title"
+      }
+    ]
+  }
+}

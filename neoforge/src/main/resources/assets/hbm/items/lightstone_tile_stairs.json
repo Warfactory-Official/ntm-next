@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:block/lightstone_tile_stairs"
+  }
+}

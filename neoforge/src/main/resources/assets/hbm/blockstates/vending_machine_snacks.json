@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/vending_machine_snacks"
+    },
+    "facing=north": {
+      "model": "hbm:block/vending_machine_snacks",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/vending_machine_snacks",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/vending_machine_snacks",
+      "y": 180
+    }
+  }
+}

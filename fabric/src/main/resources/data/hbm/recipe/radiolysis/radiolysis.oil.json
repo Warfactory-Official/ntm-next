@@ -1,0 +1,20 @@
+{
+  "type": "hbm:radiolysis",
+  "input_fluids": [
+    {
+      "type": "hbm:oil",
+      "amount": 100
+    }
+  ],
+  "order": 1,
+  "output_fluids": [
+    {
+      "type": "hbm:crackoil",
+      "amount": 80
+    },
+    {
+      "type": "hbm:petroleum",
+      "amount": 20
+    }
+  ]
+}

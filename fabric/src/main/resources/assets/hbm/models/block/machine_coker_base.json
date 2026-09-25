@@ -1,0 +1,8 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "textures": {
+    "all": "hbm:block/models/machines/coker",
+    "particle": "hbm:block/models/machines/coker"
+  }
+}

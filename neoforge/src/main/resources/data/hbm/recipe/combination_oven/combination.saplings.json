@@ -1,0 +1,18 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "ingredient": "#minecraft:saplings"
+    }
+  ],
+  "order": 15,
+  "output_fluids": [
+    {
+      "type": "hbm:woodoil",
+      "amount": 50
+    }
+  ],
+  "output_items": [
+    "hbm:powder_ash_wood"
+  ]
+}

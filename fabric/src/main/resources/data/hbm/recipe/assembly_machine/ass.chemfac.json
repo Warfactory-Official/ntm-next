@@ -1,0 +1,49 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/dura_steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:pipes/copper"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:coil_tungsten"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 170,
+  "output_items": [
+    "hbm:machine_chemical_factory"
+  ],
+  "power": 100
+}

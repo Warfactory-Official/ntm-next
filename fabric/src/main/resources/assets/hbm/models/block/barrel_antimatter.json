@@ -1,0 +1,13 @@
+{
+  "fabric:type": "hbm:obj",
+  "parent": "hbm:block/barrel_antimatter_base",
+  "hidden": [
+    "Connector"
+  ],
+  "model": "hbm:models/blocks/barrel.obj",
+  "skins": {
+    "all": [
+      "Barrel"
+    ]
+  }
+}

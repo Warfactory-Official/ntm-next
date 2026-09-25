@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/sellafield_ore_emerald_0"
+      },
+      {
+        "model": "hbm:block/sellafield_ore_emerald_1"
+      },
+      {
+        "model": "hbm:block/sellafield_ore_emerald_2"
+      },
+      {
+        "model": "hbm:block/sellafield_ore_emerald_3"
+      }
+    ]
+  }
+}

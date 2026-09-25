@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 40,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:ingots/any_plastic"
+    }
+  ],
+  "order": 432,
+  "output_items": [
+    "hbm:fluid_pack"
+  ],
+  "power": 100
+}

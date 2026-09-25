@@ -1,0 +1,29 @@
+{
+  "parent": "hbm:burnerpress",
+  "criteria": {
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": "hbm:machine_assembly_machine"
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.assembly.desc"
+    },
+    "icon": {
+      "id": "hbm:machine_assembly_machine"
+    },
+    "title": {
+      "translate": "achievement.assembly"
+    }
+  },
+  "requirements": [
+    [
+      "produced"
+    ]
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "type": "hbm:purex",
+  "auto_switch_group": "autoswitch.schrab",
+  "duration": 200,
+  "icon_from_input": true,
+  "input_fluids": [
+    {
+      "type": "hbm:solvent",
+      "amount": 4000
+    },
+    {
+      "type": "hbm:schrabidic",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:pwr_fuel_depleted_men"
+    }
+  ],
+  "name_wrapper": "purex.schrab",
+  "order": 56,
+  "output_items": [
+    "hbm:powder_schrabidium",
+    {
+      "count": 3,
+      "id": "hbm:nugget_technetium"
+    },
+    {
+      "count": 4,
+      "id": "hbm:nuclear_waste_tiny"
+    }
+  ],
+  "power": 50000
+}

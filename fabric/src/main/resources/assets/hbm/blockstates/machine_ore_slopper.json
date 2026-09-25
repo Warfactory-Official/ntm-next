@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_ore_slopper",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_ore_slopper"
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_ore_slopper",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_ore_slopper",
+      "y": 270
+    }
+  }
+}

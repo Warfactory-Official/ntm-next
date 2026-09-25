@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:battery_pack_battery_lead",
+    "M": "hbm:motor",
+    "P": "#hbm:ingots/any_plastic",
+    "R": "#c:bolts/dura_steel"
+  },
+  "pattern": [
+    "  P",
+    "RRM",
+    "  B"
+  ],
+  "result": {
+    "id": "hbm:elec_shovel"
+  }
+}

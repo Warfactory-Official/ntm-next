@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:ingots/beryllium",
+    "C": "hbm:circuit_basic",
+    "G": "#c:ingots/gold",
+    "P": "#hbm:ingots/any_rubber",
+    "S": "#c:plates/steel",
+    "W": "#c:fine_wires/gold"
+  },
+  "pattern": [
+    "GPP",
+    "WCS",
+    "WBB"
+  ],
+  "result": {
+    "id": "hbm:geiger_counter"
+  }
+}

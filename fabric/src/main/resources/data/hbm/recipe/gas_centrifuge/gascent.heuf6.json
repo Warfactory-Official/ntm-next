@@ -1,0 +1,17 @@
+{
+  "type": "hbm:gas_centrifuge",
+  "consumed": 300,
+  "duration": 150,
+  "order": 3,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:nugget_u238"
+    },
+    "hbm:nugget_u235",
+    "hbm:fluorite"
+  ],
+  "power": 200,
+  "requires_upgrade": true,
+  "stage": "heuf6"
+}

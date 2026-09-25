@@ -1,0 +1,16 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/copper"
+    }
+  ],
+  "order": 31,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:wire_fine_copper"
+    }
+  ],
+  "stamp": "wire"
+}

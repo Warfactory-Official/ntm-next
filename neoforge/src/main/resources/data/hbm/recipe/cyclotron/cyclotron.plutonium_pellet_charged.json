@@ -1,0 +1,16 @@
+{
+  "type": "hbm:cyclotron",
+  "amat": 1000,
+  "input_items": [
+    {
+      "ingredient": "hbm:part_plutonium"
+    },
+    {
+      "ingredient": "hbm:pellet_charged"
+    }
+  ],
+  "order": 34,
+  "output_items": [
+    "hbm:nugget_schrabidium"
+  ]
+}

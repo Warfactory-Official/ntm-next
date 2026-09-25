@@ -1,0 +1,31 @@
+{
+  "type": "hbm:gas_centrifuge",
+  "consumed": 300,
+  "duration": 150,
+  "feed": "hbm:puf6",
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:puf6",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -11776948
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "order": 4,
+  "output_items": [
+    "hbm:nugget_pu238",
+    {
+      "count": 2,
+      "id": "hbm:nugget_pu_mix"
+    },
+    "hbm:fluorite"
+  ],
+  "power": 200,
+  "stage": "pf6"
+}

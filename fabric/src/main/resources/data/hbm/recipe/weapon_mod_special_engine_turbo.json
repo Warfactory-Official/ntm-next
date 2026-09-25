@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#hbm:plates_cast/any_bismoid_bronze",
+    "P": "hbm:piston_selenium",
+    "S": "#hbm:gun_mechanisms/weapon_steel"
+  },
+  "pattern": [
+    "DSD",
+    "PPP",
+    "DSD"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_special_engine_turbo"
+  }
+}

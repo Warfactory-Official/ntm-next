@@ -1,0 +1,25 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "component": "hbm:toolbox_open",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "hbm:item/toolbox_empty"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "hbm:item/toolbox",
+      "tints": [
+        {
+          "type": "minecraft:constant",
+          "value": -1
+        },
+        {
+          "type": "minecraft:constant",
+          "value": -1
+        }
+      ]
+    },
+    "property": "minecraft:has_component"
+  }
+}

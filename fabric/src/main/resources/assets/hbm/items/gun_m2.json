@@ -1,0 +1,96 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_m2_base",
+    "draws": [
+      {
+        "matrix": [
+          -1.0,
+          0.0,
+          -8.742278E-8,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          8.742278E-8,
+          0.0,
+          -1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Cube_Cube.001",
+          "Cube.001_Cube.002",
+          "Cube.002_Cube.003",
+          "Cube.003_Cube.004",
+          "Cube.004_Cube.005",
+          "Cube.005_Cube.006",
+          "Cube.006_Cube.007",
+          "Cube.007_Cube.030",
+          "Cube.008_Cube.031",
+          "Cube.009_Cube",
+          "Cube.010_Cube.011",
+          "Cube.014_Cube.019",
+          "Cube.015_Cube.020",
+          "Cube.013_Cube.021",
+          "Cube.016_Cube.024",
+          "Cube.017_Cube.027",
+          "Cube.018_Cube.034",
+          "Cube.019_Cube.035",
+          "Cube.020_Cube.036",
+          "Cube.033_Cube.052"
+        ]
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.5,
+          0.0,
+          0.0,
+          0.5,
+          0.0,
+          1.625,
+          -0.5,
+          0.0,
+          -0.0,
+          5.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -15.0,
+      7.5,
+      -0.0,
+      -15.0,
+      0.0,
+      22.5,
+      15.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/m2_browning.obj",
+    "texture": "hbm:textures/models/weapons/m2_browning.png"
+  }
+}

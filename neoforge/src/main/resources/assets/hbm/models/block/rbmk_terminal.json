@@ -1,0 +1,95 @@
+{
+  "boxes": [
+    {
+      "faces": {
+        "down": "panel",
+        "east": "panel",
+        "north": "panel",
+        "south": "panel",
+        "up": "panel",
+        "west": "panel"
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        12,
+        16,
+        16
+      ],
+      "uvs": {
+        "down": [
+          0.0,
+          0.0,
+          12.0,
+          16.0
+        ],
+        "east": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "north": [
+          4.0,
+          0.0,
+          16.0,
+          16.0
+        ],
+        "south": [
+          0.0,
+          0.0,
+          12.0,
+          16.0
+        ],
+        "up": [
+          0.0,
+          0.0,
+          12.0,
+          16.0
+        ],
+        "west": [
+          0.0,
+          0.0,
+          16.0,
+          16.0
+        ]
+      }
+    }
+  ],
+  "groups": [
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.25,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Base"
+      ],
+      "texture": "terminal"
+    }
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/rbmk/terminal.obj",
+  "textures": {
+    "panel": "hbm:block/rbmk/rbmk_display",
+    "particle": "hbm:block/rbmk/rbmk_display",
+    "terminal": "hbm:models/network/terminal"
+  }
+}

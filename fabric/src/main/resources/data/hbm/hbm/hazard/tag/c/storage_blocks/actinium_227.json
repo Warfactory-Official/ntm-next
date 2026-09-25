@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 300.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:storage_blocks/actinium_227"
+}

@@ -1,0 +1,27 @@
+{
+  "type": "liquid",
+  "color": "#001802",
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 1,
+    "health": 2,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "flammable": {
+      "energy": 31200
+    },
+    "polluting": {
+      "burn": {
+        "SOOT": 0.004
+      },
+      "release": {
+        "POISON": 5.0E-5
+      }
+    }
+  }
+}

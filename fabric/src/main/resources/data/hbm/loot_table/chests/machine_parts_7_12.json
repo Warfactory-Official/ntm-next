@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/machine_parts"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 12.0,
+        "min": 7.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/machine_parts_7_12"
+}

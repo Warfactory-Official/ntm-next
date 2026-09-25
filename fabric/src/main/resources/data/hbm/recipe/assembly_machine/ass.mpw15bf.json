@@ -1,0 +1,41 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.controller"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_15"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:plates/weapon_steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:neutron_reflector"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:powder_magic"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:egg_balefire_shard"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_controller"
+    }
+  ],
+  "order": 408,
+  "output_items": [
+    "hbm:mp_warhead_15_balefire"
+  ],
+  "power": 100
+}

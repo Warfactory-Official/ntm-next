@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:ams_catalyst_blank",
+    "hbm:rune_isa",
+    "hbm:rune_isa",
+    "hbm:rune_thurisaz",
+    "hbm:rune_thurisaz",
+    "#c:dusts/caesium",
+    "#c:dusts/caesium",
+    "#c:dusts/caesium",
+    "#c:dusts/caesium"
+  ],
+  "result": {
+    "id": "hbm:ams_catalyst_caesium"
+  }
+}

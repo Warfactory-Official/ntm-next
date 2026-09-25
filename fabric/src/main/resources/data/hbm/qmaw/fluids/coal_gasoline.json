@@ -1,0 +1,29 @@
+{
+  "content": {
+    "en_us": "Coal gasoline is first obtained by [[fractioning|Fractioning Tower]] [[coal oil|Coal Oil]]. It is primarily used as a [[fuel|Fuels]] although it can be converted into [[leaded coal gasoline|Leaded Coal Gasoline]] for additional power output. It can also be obtained by performing [[pyrolysis|Pyrolysis Oven]] on [[heavy oil|Heavy Oil]] and coal.<br><br>See also:<br>[[Basic Oil Processing]]"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:coalgas",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -12298382
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Coal Gasoline",
+  "title": {
+    "en_us": "Coal Gasoline"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:coalgas"
+    }
+  }
+}

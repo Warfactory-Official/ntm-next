@@ -1,0 +1,17 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#c:ores/quartz"
+    }
+  ],
+  "order": 8,
+  "output_items": [
+    "hbm:powder_quartz",
+    "hbm:powder_quartz",
+    "hbm:powder_lithium_tiny",
+    "minecraft:netherrack"
+  ],
+  "power": 200
+}

@@ -1,0 +1,13 @@
+{
+  "cleanup_dead_dirt": false,
+  "diffusivity": 10,
+  "enable_chunk_rads": true,
+  "enable_contamination": true,
+  "enable_contamination_on_ground": true,
+  "fog_chance": 20,
+  "fog_rad": 100,
+  "half_life_seconds": 120,
+  "neutron_activation": false,
+  "neutron_activation_threshold": 15,
+  "world_rad_effects": true
+}

@@ -1,0 +1,24 @@
+{
+  "ambientocclusion": true,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/anvil_iron.obj",
+  "skins": {
+    "all": [
+      "anvil_iron",
+      "Back",
+      "Bottom",
+      "Left",
+      "Right",
+      "Front"
+    ],
+    "overlay": [
+      "Top"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/anvil_steel",
+    "overlay": "hbm:block/anvil_murky",
+    "particle": "hbm:block/anvil_steel"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#c:ingots/dura_steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/titanium"
+    }
+  ],
+  "order": 149,
+  "output_items": [
+    "hbm:drillbit_hss"
+  ],
+  "power": 100
+}

@@ -1,0 +1,34 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": "hbm:nuclear_waste_long_depleted_uranium235"
+    }
+  ],
+  "laser_strength": "ir",
+  "order": 271,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_lead"
+        },
+        "weight": 65
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_bismuth"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "hbm:dust_tiny"
+        },
+        "weight": 15
+      }
+    ]
+  ]
+}

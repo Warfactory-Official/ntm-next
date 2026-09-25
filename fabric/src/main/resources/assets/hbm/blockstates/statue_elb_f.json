@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/statue_elb_f",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "hbm:block/statue_elb_f",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "hbm:block/statue_elb_f"
+    },
+    "facing=west": {
+      "model": "hbm:block/statue_elb_f",
+      "y": 90
+    }
+  }
+}

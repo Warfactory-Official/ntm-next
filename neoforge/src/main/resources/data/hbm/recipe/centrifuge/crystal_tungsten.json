@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_tungsten"
+    }
+  ],
+  "order": 146,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_tungsten"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_tungsten"
+    },
+    "hbm:powder_iron",
+    "hbm:powder_lithium_tiny"
+  ],
+  "power": 200
+}

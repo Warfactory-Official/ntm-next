@@ -1,0 +1,21 @@
+{
+  "type": "hbm:mixer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 500
+    },
+    {
+      "type": "hbm:chlorine",
+      "amount": 500
+    }
+  ],
+  "order": 8,
+  "output_fluids": [
+    {
+      "type": "hbm:phosgene",
+      "amount": 1000
+    }
+  ]
+}

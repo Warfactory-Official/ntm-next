@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:lubricant",
+      "amount": 100
+    }
+  ],
+  "order": 19,
+  "output_items": [
+    "hbm:oil_tar_paraffin"
+  ]
+}

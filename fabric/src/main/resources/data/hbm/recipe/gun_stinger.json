@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_heavy/weapon_steel",
+    "G": "#hbm:grips/weapon_steel",
+    "M": "#hbm:gun_mechanisms/weapon_steel",
+    "P": "hbm:circuit_advanced"
+  },
+  "pattern": [
+    "BBB",
+    "PGM"
+  ],
+  "result": {
+    "id": "hbm:gun_stinger"
+  }
+}

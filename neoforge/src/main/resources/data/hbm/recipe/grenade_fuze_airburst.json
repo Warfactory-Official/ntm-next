@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_vacuum_tube",
+    "F": "hbm:safety_fuse",
+    "S": "#c:bolts/steel"
+  },
+  "pattern": [
+    "C",
+    "S",
+    "F"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:grenade_fuze_airburst"
+  }
+}

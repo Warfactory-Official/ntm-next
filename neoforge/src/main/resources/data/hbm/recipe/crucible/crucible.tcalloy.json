@@ -1,0 +1,24 @@
+{
+  "type": "hbm:crucible",
+  "frequency": 9,
+  "icon": {
+    "id": "hbm:ingot_tcalloy"
+  },
+  "input_materials": [
+    {
+      "amount": 64,
+      "material": "steel"
+    },
+    {
+      "amount": 8,
+      "material": "technetium_99"
+    }
+  ],
+  "order": 6,
+  "output_materials": [
+    {
+      "amount": 72,
+      "material": "tc_alloy"
+    }
+  ]
+}

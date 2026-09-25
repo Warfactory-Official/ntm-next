@@ -1,0 +1,31 @@
+{
+  "content": {
+    "en_us": "Reformate gas can be obtained by a variety of methods after setting up [[vacuum oil processing|Vacuum Oil Processing]]. Its primary uses include the production of [[high-performance solvent|High-Performance Solvent]] and [[welding|Arc Welder]] [[cast combine steel plates|Combine Steel]].<br><br>{{hbm:fluids/template_oil3}}",
+    "ru_ru": "Реформированный газ может быть получен различными методами после постройки [[вакуумной нефтепереработки|Vacuum Oil Processing]]. Его основные применения включают производство [[высокоэффективного растворителя|High-Performance Solvent]] и [[сваренных литых пластин|Combine Steel]] с помощью [[сварщика|Arc Welder]]."
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:reformgas",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -10263890
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Reformate Gas",
+  "title": {
+    "en_us": "Reformate Gas",
+    "ru_ru": "Реформированный газ"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:reformgas"
+    }
+  }
+}

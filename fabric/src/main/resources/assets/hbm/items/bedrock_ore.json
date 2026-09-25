@@ -1,0 +1,2358 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g0_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "base"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g0_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "base"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g0_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "base"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g0_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "base"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g0_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "base"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g0_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "base"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g1_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "base_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g1_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "base_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g1_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "base_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g1_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "base_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g1_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "base_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g1_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "base_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g2_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "base_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g2_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "base_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g2_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "base_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g2_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "base_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g2_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "base_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g2_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "base_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g3_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "primary"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g3_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "primary"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g3_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "primary"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g3_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "primary"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g3_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "primary"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g3_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "primary"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g4_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "primary_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g4_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "primary_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g4_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "primary_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g4_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "primary_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g4_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "primary_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g4_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "primary_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g5_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "primary_sulfuric"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g5_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "primary_sulfuric"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g5_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "primary_sulfuric"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g5_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "primary_sulfuric"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g5_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "primary_sulfuric"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g5_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "primary_sulfuric"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g6_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "primary_nosulfuric"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g6_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "primary_nosulfuric"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g6_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "primary_nosulfuric"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g6_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "primary_nosulfuric"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g6_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "primary_nosulfuric"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g6_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "primary_nosulfuric"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g7_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "primary_solvent"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g7_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "primary_solvent"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g7_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "primary_solvent"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g7_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "primary_solvent"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g7_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "primary_solvent"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g7_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "primary_solvent"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g8_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "primary_nosolvent"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g8_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "primary_nosolvent"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g8_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "primary_nosolvent"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g8_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "primary_nosolvent"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g8_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "primary_nosolvent"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g8_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "primary_nosolvent"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g9_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "primary_rad"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g9_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "primary_rad"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g9_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "primary_rad"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g9_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "primary_rad"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g9_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "primary_rad"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g9_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "primary_rad"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g10_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "primary_norad"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g10_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "primary_norad"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g10_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "primary_norad"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g10_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "primary_norad"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g10_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "primary_norad"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g10_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "primary_norad"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g11_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "primary_first"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g11_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "primary_first"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g11_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "primary_first"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g11_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "primary_first"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g11_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "primary_first"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g11_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "primary_first"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g12_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "primary_second"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g12_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "primary_second"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g12_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "primary_second"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g12_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "primary_second"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g12_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "primary_second"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g12_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "primary_second"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g13_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "crumbs"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g13_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "crumbs"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g13_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "crumbs"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g13_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "crumbs"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g13_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "crumbs"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g13_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "crumbs"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g14_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "sulfuric_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g14_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "sulfuric_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g14_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "sulfuric_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g14_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "sulfuric_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g14_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "sulfuric_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g14_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "sulfuric_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g15_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "sulfuric_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g15_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "sulfuric_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g15_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "sulfuric_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g15_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "sulfuric_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g15_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "sulfuric_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g15_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "sulfuric_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g16_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "sulfuric_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g16_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "sulfuric_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g16_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "sulfuric_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g16_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "sulfuric_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g16_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "sulfuric_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g16_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "sulfuric_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g17_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "sulfuric_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g17_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "sulfuric_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g17_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "sulfuric_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g17_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "sulfuric_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g17_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "sulfuric_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g17_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "sulfuric_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g18_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "solvent_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g18_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "solvent_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g18_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "solvent_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g18_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "solvent_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g18_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "solvent_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g18_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "solvent_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g19_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "solvent_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g19_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "solvent_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g19_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "solvent_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g19_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "solvent_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g19_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "solvent_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g19_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "solvent_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g20_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "solvent_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g20_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "solvent_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g20_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "solvent_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g20_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "solvent_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g20_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "solvent_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g20_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "solvent_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g21_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "solvent_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g21_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "solvent_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g21_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "solvent_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g21_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "solvent_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g21_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "solvent_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g21_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "solvent_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g22_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "rad_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g22_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "rad_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g22_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "rad_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g22_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "rad_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g22_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "rad_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g22_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "rad_byproduct"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g23_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "rad_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g23_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "rad_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g23_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "rad_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g23_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "rad_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g23_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "rad_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g23_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "rad_roasted"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g24_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "rad_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g24_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "rad_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g24_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "rad_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g24_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "rad_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g24_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "rad_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g24_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "rad_arc"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g25_light",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "light_metal",
+          "grade": "rad_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g25_heavy",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "heavy_metal",
+          "grade": "rad_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g25_rare",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "rare_earth",
+          "grade": "rad_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g25_actinide",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "actinide",
+          "grade": "rad_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g25_nonmetal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "non_metal",
+          "grade": "rad_washed"
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/bedrock_ore_g25_crystal",
+          "tints": [
+            {
+              "type": "hbm:bedrock_ore_color"
+            }
+          ]
+        },
+        "when": {
+          "type": "crystalline",
+          "grade": "rad_washed"
+        }
+      }
+    ],
+    "component": "hbm:bedrock_ore",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:item/bedrock_ore_g0_light",
+      "tints": [
+        {
+          "type": "hbm:bedrock_ore_color"
+        }
+      ]
+    },
+    "property": "minecraft:component"
+  }
+}

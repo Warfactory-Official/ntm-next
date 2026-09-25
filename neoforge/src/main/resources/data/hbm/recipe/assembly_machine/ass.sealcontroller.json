@@ -1,0 +1,25 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/dura_steel"
+    },
+    {
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:wires_dense/mingrade"
+    }
+  ],
+  "order": 60,
+  "output_items": [
+    "hbm:seal_controller"
+  ],
+  "power": 100
+}

@@ -1,0 +1,14 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 216,
+      "material": "carbon"
+    },
+    {
+      "amount": 162,
+      "material": "stone"
+    }
+  ],
+  "targets": "#c:ores/coal"
+}

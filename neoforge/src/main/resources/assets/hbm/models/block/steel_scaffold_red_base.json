@@ -1,0 +1,8 @@
+{
+  "ambientocclusion": true,
+  "gui_light": "side",
+  "textures": {
+    "all": "hbm:block/scaffold_red",
+    "particle": "hbm:block/scaffold_red"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 600,
+  "input_items": [
+    {
+      "ingredient": "hbm:warhead_volcano"
+    },
+    {
+      "ingredient": "hbm:fuel_tank_large"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:thruster_large"
+    }
+  ],
+  "order": 41,
+  "output_items": [
+    "hbm:missile_volcano"
+  ],
+  "power": 50000
+}

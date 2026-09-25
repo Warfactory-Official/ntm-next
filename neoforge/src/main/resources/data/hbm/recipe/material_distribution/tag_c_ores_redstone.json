@@ -1,0 +1,14 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 288,
+      "material": "redstone"
+    },
+    {
+      "amount": 162,
+      "material": "stone"
+    }
+  ],
+  "targets": "#c:ores/redstone"
+}

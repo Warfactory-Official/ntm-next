@@ -1,0 +1,76 @@
+{
+  "parent": "minecraft:item/generated",
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        2.779822E-5,
+        -84.99999,
+        25.000038
+      ],
+      "scale": [
+        1.1999999,
+        1.2,
+        1.1999999
+      ],
+      "translation": [
+        3.8257446,
+        0.7973423,
+        -4.461096
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        2.779822E-5,
+        -84.99999,
+        25.000038
+      ],
+      "scale": [
+        1.1999999,
+        1.2,
+        1.1999999
+      ],
+      "translation": [
+        4.3610716,
+        3.6614904,
+        1.6577101
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        169.99998,
+        -85.0,
+        -155.00002
+      ],
+      "scale": [
+        1.5937501,
+        1.5937501,
+        0.79687506
+      ],
+      "translation": [
+        1.1353092,
+        -0.5062685,
+        -8.974447
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        169.99998,
+        -85.0,
+        -155.00002
+      ],
+      "scale": [
+        1.5937501,
+        1.5937501,
+        0.79687506
+      ],
+      "translation": [
+        -0.08124924,
+        8.318406,
+        3.5893502
+      ]
+    }
+  },
+  "textures": {
+    "layer0": "hbm:item/bismuth_axe"
+  }
+}

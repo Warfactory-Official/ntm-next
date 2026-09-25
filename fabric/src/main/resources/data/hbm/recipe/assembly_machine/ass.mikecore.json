@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 1200,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#c:nuggets/uranium_238"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:plates/lead"
+    }
+  ],
+  "order": 316,
+  "output_items": [
+    "hbm:mike_core"
+  ],
+  "power": 100
+}

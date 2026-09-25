@@ -1,0 +1,23 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbm:ingot_firebrick"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/copper"
+    }
+  ],
+  "order": 63,
+  "output_items": [
+    "hbm:heater_oven"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

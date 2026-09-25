@@ -1,0 +1,65 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_amat_penance_base",
+    "draws": [
+      {
+        "parts": [
+          "Gun",
+          "Bolt",
+          "Magazine",
+          "BipodLeft",
+          "BipodHingeLeft",
+          "BipodRight",
+          "BipodHingeRight",
+          "Scope"
+        ]
+      },
+      {
+        "matrix": [
+          1.25,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.25,
+          0.0,
+          0.625,
+          0.0,
+          0.0,
+          1.25,
+          -4.3125,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "obj": "hbm:models/weapons/g3.obj",
+        "parts": [
+          "Silencer"
+        ],
+        "texture": "hbm:textures/models/weapons/g3_attachments.png"
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -5.75,
+      8.625,
+      -0.0,
+      -5.75,
+      0.0,
+      1.4375,
+      5.75,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/amat.obj",
+    "texture": "hbm:textures/models/weapons/amat_penance.png"
+  }
+}

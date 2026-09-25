@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_industrial_boiler"
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_industrial_boiler"
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_industrial_boiler"
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_industrial_boiler"
+    }
+  }
+}

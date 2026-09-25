@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "hbm:cluster_aluminium",
+  "step": "underground_ores"
+}

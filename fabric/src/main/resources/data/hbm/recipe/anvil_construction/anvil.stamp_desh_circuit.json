@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:stamp_desh_flat"
+    }
+  ],
+  "order": 170,
+  "output_items": [
+    "hbm:stamp_desh_circuit"
+  ],
+  "overlay": "smithing",
+  "tier": 3
+}

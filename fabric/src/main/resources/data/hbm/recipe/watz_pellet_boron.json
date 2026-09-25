@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:ingots/graphite",
+    "I": "#c:ingots/boron"
+  },
+  "pattern": [
+    " I ",
+    "IGI",
+    " I "
+  ],
+  "result": {
+    "id": "hbm:watz_pellet_boron"
+  }
+}

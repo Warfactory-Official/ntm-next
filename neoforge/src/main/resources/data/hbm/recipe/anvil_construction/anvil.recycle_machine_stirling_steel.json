@@ -1,0 +1,33 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "components": {
+        "hbm:has_cog": true
+      },
+      "ingredient": "hbm:machine_stirling_steel"
+    }
+  ],
+  "order": 219,
+  "output_items": [
+    {
+      "count": 16,
+      "id": "hbm:plate_steel"
+    },
+    {
+      "count": 6,
+      "id": "hbm:ingot_beryllium"
+    },
+    {
+      "count": 4,
+      "id": "minecraft:copper_ingot"
+    },
+    {
+      "count": 8,
+      "id": "hbm:coil_gold"
+    },
+    "hbm:gear_large_steel"
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

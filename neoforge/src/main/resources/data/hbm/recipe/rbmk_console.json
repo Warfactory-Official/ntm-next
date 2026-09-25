@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:ingots/boron",
+    "C": "hbm:circuit_analog",
+    "D": "hbm:deco_rbmk",
+    "G": "#c:glass_panes"
+  },
+  "pattern": [
+    "BBB",
+    "DGD",
+    "DCD"
+  ],
+  "result": {
+    "id": "hbm:rbmk_console"
+  }
+}

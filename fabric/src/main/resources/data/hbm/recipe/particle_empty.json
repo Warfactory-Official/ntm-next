@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:glass_panes",
+    "S": "#hbm:plates_cast/lead",
+    "T": "hbm:coil_gold"
+  },
+  "pattern": [
+    "STS",
+    "G G",
+    "STS"
+  ],
+  "result": {
+    "count": 2,
+    "id": "hbm:particle_empty"
+  }
+}

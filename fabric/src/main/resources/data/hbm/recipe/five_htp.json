@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/coal",
+    "#c:dusts/euphemium",
+    {
+      "fabric:type": "fabric:components",
+      "base": "hbm:canteen_vodka",
+      "components": {
+        "hbm:canteen_cooldown": 0
+      }
+    }
+  ],
+  "result": {
+    "id": "hbm:five_htp"
+  }
+}

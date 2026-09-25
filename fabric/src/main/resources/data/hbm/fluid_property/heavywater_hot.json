@@ -1,0 +1,25 @@
+{
+  "type": "liquid",
+  "color": "#4d007b",
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 1,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 600,
+  "traits": {
+    "coolable": {
+      "amount_produced": 1,
+      "amount_req": 1,
+      "cools_to": "hbm:heavywater",
+      "efficiency": {
+        "HEATEXCHANGER": 1.0
+      },
+      "heat_energy": 300
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "type": "hbm:purex",
+  "auto_switch_group": "autoswitch.plate",
+  "duration": 100,
+  "icon_from_input": true,
+  "input_fluids": [
+    {
+      "type": "hbm:kerosene",
+      "amount": 500
+    },
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "components": {
+        "hbm:decay_heat": false
+      },
+      "ingredient": "hbm:waste_plate_pu238be"
+    }
+  ],
+  "name_wrapper": "purex.recycle",
+  "order": 17,
+  "output_items": [
+    "hbm:nugget_beryllium",
+    "hbm:nugget_pu238",
+    {
+      "count": 2,
+      "id": "hbm:powder_coal_tiny"
+    },
+    {
+      "count": 2,
+      "id": "hbm:nugget_lead"
+    }
+  ],
+  "power": 1500
+}

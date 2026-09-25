@@ -1,0 +1,15 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbm:models/blocks/skeleton_holder.obj",
+  "skins": {
+    "all": [
+      "Holder1"
+    ]
+  },
+  "textures": {
+    "all": "hbm:particle/skeleton",
+    "particle": "hbm:particle/skeleton"
+  }
+}

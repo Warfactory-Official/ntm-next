@@ -1,0 +1,25 @@
+{
+  "parent": "hbm:centrifuge",
+  "criteria": {
+    "impossible": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.radium.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:coffee_radium"
+    },
+    "title": {
+      "translate": "achievement.radium"
+    }
+  },
+  "requirements": [
+    [
+      "impossible"
+    ]
+  ]
+}

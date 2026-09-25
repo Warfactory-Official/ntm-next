@@ -1,0 +1,25 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:ingots/workers_alloy"
+    },
+    {
+      "ingredient": "#hbm:wires_dense/gold"
+    }
+  ],
+  "order": 55,
+  "output_items": [
+    "hbm:motor_desh"
+  ],
+  "overlay": "construction",
+  "tier": 3
+}

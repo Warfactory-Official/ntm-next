@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "curve_bl": "hbm:block/boxduct_copper_curve_bl",
+    "curve_br": "hbm:block/boxduct_copper_curve_br",
+    "curve_tl": "hbm:block/boxduct_copper_curve_tl",
+    "curve_tr": "hbm:block/boxduct_copper_curve_tr",
+    "end": "hbm:block/boxduct_copper_end",
+    "junction": "hbm:block/boxduct_copper_junction_1",
+    "particle": "hbm:block/boxduct_copper_straight",
+    "straight": "hbm:block/boxduct_copper_straight"
+  }
+}

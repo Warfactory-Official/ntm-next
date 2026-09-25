@@ -1,0 +1,28 @@
+{
+  "type": "hbm:crucible",
+  "frequency": 9,
+  "icon": {
+    "id": "hbm:ingot_dura_steel"
+  },
+  "input_materials": [
+    {
+      "amount": 40,
+      "material": "steel"
+    },
+    {
+      "amount": 24,
+      "material": "tungsten"
+    },
+    {
+      "amount": 8,
+      "material": "cobalt"
+    }
+  ],
+  "order": 4,
+  "output_materials": [
+    {
+      "amount": 72,
+      "material": "dura_steel"
+    }
+  ]
+}

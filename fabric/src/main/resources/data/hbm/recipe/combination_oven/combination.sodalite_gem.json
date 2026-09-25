@@ -1,0 +1,18 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "ingredient": "#c:gems/sodalite"
+    }
+  ],
+  "order": 10,
+  "output_fluids": [
+    {
+      "type": "hbm:chlorine",
+      "amount": 100
+    }
+  ],
+  "output_items": [
+    "hbm:powder_sodium"
+  ]
+}

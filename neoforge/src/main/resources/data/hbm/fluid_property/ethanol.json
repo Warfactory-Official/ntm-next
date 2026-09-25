@@ -1,0 +1,34 @@
+{
+  "type": "liquid",
+  "color": "#e0ffff",
+  "containers": {
+    "canister": {
+      "color": "#eafff3"
+    }
+  },
+  "nfpa": {
+    "flame": 3,
+    "health": 2,
+    "react": 0
+  },
+  "shares": "#c:ethanol",
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "combustible": {
+      "energy": 687000,
+      "grade": "HIGH"
+    },
+    "flammable": {
+      "energy": 275000
+    },
+    "polluting": {
+      "burn": {
+        "SOOT": 0.001
+      },
+      "release": {
+        "POISON": 5.0E-5
+      }
+    }
+  }
+}

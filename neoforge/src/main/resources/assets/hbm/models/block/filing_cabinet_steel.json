@@ -1,0 +1,12 @@
+{
+  "parent": "hbm:block/filing_cabinet_steel_base",
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/file_cabinet.obj",
+  "skins": {
+    "all": [
+      "Cabinet",
+      "LowerDrawer",
+      "UpperDrawer"
+    ]
+  }
+}

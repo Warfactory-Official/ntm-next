@@ -1,0 +1,41 @@
+{
+  "model": {
+    "type": "hbm:mesh",
+    "base": "hbm:item/sawblade_base",
+    "mesh": "hbm:models/machines/sawmill.obj",
+    "part": "Blade",
+    "pose_suffix": {
+      "gui": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        -1.375,
+        0.0,
+        0.0,
+        1.0,
+        -0.875,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "skins": [
+      "hbm:textures/block/models/machines/sawmill.png"
+    ],
+    "spin": {
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "divisor": 1,
+      "modulus": 3600,
+      "rate": 0.2
+    }
+  }
+}

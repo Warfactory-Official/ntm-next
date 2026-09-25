@@ -1,0 +1,30 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#c:plates/copper"
+    },
+    "B": {
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    },
+    "C": {
+      "ingredient": "hbm:casing_large"
+    },
+    "D": {
+      "count": 3,
+      "ingredient": "#hbm:dusts/any_smokeless"
+    }
+  },
+  "order": 63,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:ammo_standard_rocket_heat"
+    }
+  ],
+  "pattern": [
+    "AB ",
+    " C ",
+    " D "
+  ]
+}

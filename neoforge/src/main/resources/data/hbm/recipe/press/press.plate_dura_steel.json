@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/dura_steel"
+    }
+  ],
+  "order": 21,
+  "output_items": [
+    "hbm:plate_dura_steel"
+  ],
+  "stamp": "plate"
+}

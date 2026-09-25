@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:detonator",
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:defuser"
+    },
+    "hbm:ducttape"
+  ],
+  "result": {
+    "id": "hbm:detonator_deadman"
+  }
+}

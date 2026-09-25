@@ -1,0 +1,18 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Plane"
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/refinery.obj",
+  "skins": {
+    "all": [
+      "Plane"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/refinery",
+    "particle": "hbm:block/models/machines/refinery"
+  }
+}

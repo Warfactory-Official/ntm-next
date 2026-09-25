@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "hbm:block/safe_front",
+    "particle": "hbm:block/safe_side",
+    "side": "hbm:block/safe_side",
+    "top": "hbm:block/safe_side"
+  }
+}

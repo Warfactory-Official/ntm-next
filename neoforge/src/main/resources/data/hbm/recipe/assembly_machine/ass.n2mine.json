@@ -1,0 +1,30 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.controller"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:fine_wires/magnetized_tungsten"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_controller"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:dyes/green"
+    }
+  ],
+  "order": 299,
+  "output_items": [
+    "hbm:nuke_n2"
+  ],
+  "power": 100
+}

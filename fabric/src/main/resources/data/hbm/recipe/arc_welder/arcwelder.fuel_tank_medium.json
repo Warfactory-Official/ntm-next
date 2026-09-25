@@ -1,0 +1,23 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/aluminum"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 12,
+      "ingredient": "hbm:steel_scaffold"
+    }
+  ],
+  "order": 22,
+  "output_items": [
+    "hbm:fuel_tank_medium"
+  ],
+  "power": 2000
+}

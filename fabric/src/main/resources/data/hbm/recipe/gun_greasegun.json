@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_light/steel",
+    "G": "#hbm:grips/steel",
+    "M": "#hbm:gun_mechanisms/gun_metal",
+    "R": "#hbm:receivers_light/steel",
+    "S": "#c:bolts/steel"
+  },
+  "pattern": [
+    "BRS",
+    "SMG"
+  ],
+  "result": {
+    "id": "hbm:gun_greasegun"
+  }
+}

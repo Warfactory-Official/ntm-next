@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:ingots/copper",
+    "G": "hbm:ballistite",
+    "I": "#c:ingots/tungsten"
+  },
+  "pattern": [
+    " I ",
+    "GIG",
+    "CCC"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:ammo_shell_apfsds_t"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:ingot_firebrick"
+  },
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "result": {
+    "id": "hbm:brick_fire"
+  }
+}

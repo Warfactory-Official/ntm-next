@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:plates/saturnite",
+    "S": "hbm:singularity",
+    "T": "hbm:powder_power"
+  },
+  "pattern": [
+    "CTC",
+    "TST",
+    "CTC"
+  ],
+  "result": {
+    "id": "hbm:singularity_super_heated"
+  }
+}

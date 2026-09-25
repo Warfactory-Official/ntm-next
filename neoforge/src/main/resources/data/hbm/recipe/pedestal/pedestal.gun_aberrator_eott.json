@@ -1,0 +1,44 @@
+{
+  "type": "hbm:pedestal",
+  "extra": "good_karma",
+  "key": {
+    "A": {
+      "ingredient": "hbm:item_secret_aberrator"
+    },
+    "B": {
+      "ingredient": "hbm:item_secret_aberrator"
+    },
+    "C": {
+      "ingredient": "hbm:item_secret_aberrator"
+    },
+    "D": {
+      "ingredient": "hbm:item_secret_aberrator"
+    },
+    "E": {
+      "count": 16,
+      "ingredient": "#hbm:gun_mechanisms/saturnite"
+    },
+    "F": {
+      "ingredient": "hbm:item_secret_aberrator"
+    },
+    "G": {
+      "ingredient": "hbm:item_secret_aberrator"
+    },
+    "H": {
+      "ingredient": "hbm:item_secret_aberrator"
+    },
+    "I": {
+      "ingredient": "hbm:item_secret_aberrator"
+    }
+  },
+  "order": 12,
+  "output_items": [
+    "hbm:gun_aberrator_eott"
+  ],
+  "pattern": [
+    "ABC",
+    "DEF",
+    "GHI"
+  ],
+  "recipe_set": 1
+}

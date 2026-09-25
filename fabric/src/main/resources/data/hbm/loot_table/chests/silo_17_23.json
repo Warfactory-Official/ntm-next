@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/silo"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 23.0,
+        "min": 17.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/silo_17_23"
+}

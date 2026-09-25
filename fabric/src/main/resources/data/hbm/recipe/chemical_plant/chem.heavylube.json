@@ -1,0 +1,31 @@
+{
+  "type": "hbm:chemical_plant",
+  "blueprint_pools": [
+    "alt.lube"
+  ],
+  "custom_localization": true,
+  "duration": 40,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:lubricant",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:canister"
+  },
+  "input_fluids": [
+    {
+      "type": "hbm:heavyoil",
+      "amount": 2000
+    }
+  ],
+  "order": 15,
+  "output_fluids": [
+    {
+      "type": "hbm:lubricant",
+      "amount": 1000
+    }
+  ],
+  "power": 100
+}

@@ -1,0 +1,21 @@
+{
+  "type": "hbm:mixer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:sunfloweroil",
+      "amount": 800
+    },
+    {
+      "type": "hbm:ethanol",
+      "amount": 200
+    }
+  ],
+  "order": 26,
+  "output_fluids": [
+    {
+      "type": "hbm:lubricant",
+      "amount": 1000
+    }
+  ]
+}

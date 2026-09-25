@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_battery_socket"
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_battery_socket",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_battery_socket",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_battery_socket",
+      "y": 180
+    }
+  }
+}

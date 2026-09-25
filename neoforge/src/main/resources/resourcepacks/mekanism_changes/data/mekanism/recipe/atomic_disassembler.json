@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#mekanism:alloys/atomic",
+    "E": "mekanism:energy_tablet",
+    "G": "#hbm:plates_cast/gold",
+    "I": "#c:ingots/refined_obsidian"
+  },
+  "pattern": [
+    "GAG",
+    "EIE",
+    " I "
+  ],
+  "result": {
+    "id": "mekanism:atomic_disassembler"
+  }
+}

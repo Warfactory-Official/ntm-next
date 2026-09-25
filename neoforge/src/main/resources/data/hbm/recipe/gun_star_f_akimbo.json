@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "M": "#hbm:gun_mechanisms/saturnite",
+    "U": "hbm:gun_star_f"
+  },
+  "pattern": [
+    "UMU"
+  ],
+  "result": {
+    "id": "hbm:gun_star_f_akimbo"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 1.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:storage_blocks/thorium"
+}

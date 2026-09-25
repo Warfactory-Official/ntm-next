@@ -1,0 +1,22 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Carriage",
+    "Cannon",
+    "Barrel"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/turrets/turret_arty.obj",
+  "offset_x": -0.5,
+  "offset_z": -0.5,
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/turrets/arty",
+    "particle": "hbm:block/block_steel"
+  }
+}

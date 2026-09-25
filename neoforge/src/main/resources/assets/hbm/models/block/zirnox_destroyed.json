@@ -1,0 +1,18 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Plane"
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/zirnox_destroyed.obj",
+  "skins": {
+    "all": [
+      "Plane"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/zirnox_destroyed",
+    "particle": "hbm:block/models/machines/zirnox_destroyed"
+  }
+}

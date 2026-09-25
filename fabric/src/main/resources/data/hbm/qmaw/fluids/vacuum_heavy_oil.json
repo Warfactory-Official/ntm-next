@@ -1,0 +1,29 @@
+{
+  "content": {
+    "en_us": "Vacuum heavy oil can be obtained by [[vacuum refinining|Vacuum Refinery]] [[pressurized|Compressor]] [[crude oil|Crude Oil]]. It is primarily [[fractioned|Fractioning Tower]] for [[heavy heating oil|Heavy Heating Oil]] and [[industrial oil|Industrial Oil]].<br><br>{{hbm:fluids/template_oil3}}"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:heavyoil_vacuum",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -15527404
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Vacuum Heavy Oil",
+  "title": {
+    "en_us": "Vacuum Heavy Oil"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:heavyoil_vacuum"
+    }
+  }
+}

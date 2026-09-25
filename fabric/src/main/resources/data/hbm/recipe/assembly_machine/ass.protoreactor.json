@@ -1,0 +1,27 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/lead"
+    },
+    {
+      "count": 10,
+      "ingredient": "hbm:rod_quad_empty"
+    },
+    {
+      "count": 3,
+      "ingredient": "#c:dyes/brown"
+    }
+  ],
+  "order": 46,
+  "output_items": [
+    "hbm:dysfunctional_reactor"
+  ],
+  "power": 100
+}

@@ -1,0 +1,16 @@
+{
+  "type": "hbm:cyclotron",
+  "amat": 50,
+  "input_items": [
+    {
+      "ingredient": "hbm:part_lithium"
+    },
+    {
+      "ingredient": "#c:dusts/actinium_227"
+    }
+  ],
+  "order": 10,
+  "output_items": [
+    "hbm:powder_thorium"
+  ]
+}

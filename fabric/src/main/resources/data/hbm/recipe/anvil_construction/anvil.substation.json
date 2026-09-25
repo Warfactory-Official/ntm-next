@@ -1,0 +1,30 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:concretes"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "hbm:plate_polymer"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:coil_copper"
+    }
+  ],
+  "order": 88,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:substation"
+    }
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

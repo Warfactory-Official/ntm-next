@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/bromine"
+    }
+  ],
+  "order": 461,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

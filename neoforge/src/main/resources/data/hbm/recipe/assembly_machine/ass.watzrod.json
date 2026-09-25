@@ -1,0 +1,39 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.tcalloy"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:ingots/zirconium"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:ingots/saturnite"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    }
+  ],
+  "order": 277,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:watz_element"
+    }
+  ],
+  "power": 100
+}

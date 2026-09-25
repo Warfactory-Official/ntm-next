@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "minecraft:brick"
+  },
+  "pattern": [
+    "BB"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:plate_polymer"
+  }
+}

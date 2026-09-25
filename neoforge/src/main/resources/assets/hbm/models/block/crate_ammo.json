@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "hbm:block/crate_ammo_bottom",
+    "particle": "hbm:block/crate_ammo_side",
+    "side": "hbm:block/crate_ammo_side",
+    "top": "hbm:block/crate_ammo_top"
+  }
+}

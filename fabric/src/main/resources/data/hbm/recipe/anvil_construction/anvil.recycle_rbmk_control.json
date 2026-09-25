@@ -1,0 +1,22 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:rbmk_control"
+    }
+  ],
+  "order": 240,
+  "output_items": [
+    "hbm:rbmk_absorber",
+    {
+      "count": 2,
+      "id": "hbm:ingot_graphite"
+    },
+    {
+      "count": 2,
+      "id": "hbm:motor"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 4
+}

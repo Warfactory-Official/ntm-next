@@ -1,0 +1,30 @@
+{
+  "parent": "hbm:chemplant",
+  "criteria": {
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": "hbm:gem_tantalium"
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.tantalum.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:gem_tantalium"
+    },
+    "title": {
+      "translate": "achievement.tantalum"
+    }
+  },
+  "requirements": [
+    [
+      "produced"
+    ]
+  ]
+}

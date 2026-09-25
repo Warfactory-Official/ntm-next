@@ -1,0 +1,34 @@
+{
+  "groups": [
+    {
+      "matrix": [
+        -1.0,
+        0.0,
+        -8.742278E-8,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        8.742278E-8,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Circle"
+      ],
+      "texture": "bigasstank"
+    }
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/bigasstank.obj",
+  "textures": {
+    "bigasstank": "hbm:block/models/machines/bigasstank",
+    "particle": "hbm:block/models/machines/bigasstank"
+  }
+}

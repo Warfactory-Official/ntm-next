@@ -1,0 +1,21 @@
+{
+  "type": "hbm:single_piece",
+  "biomes": [
+    "minecraft:beach",
+    "minecraft:cherry_grove",
+    "minecraft:desert",
+    "minecraft:ice_spikes",
+    "minecraft:meadow",
+    "minecraft:plains",
+    "minecraft:savanna",
+    "minecraft:savanna_plateau",
+    "minecraft:snowy_beach",
+    "minecraft:snowy_plains",
+    "minecraft:sunflower_plains",
+    "minecraft:wooded_badlands"
+  ],
+  "height_offset": -1,
+  "spawn_overrides": {},
+  "start_pool": "hbm:single/spire",
+  "step": "strongholds"
+}

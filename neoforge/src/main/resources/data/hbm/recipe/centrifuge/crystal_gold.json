@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_gold"
+    }
+  ],
+  "order": 135,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_gold"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_gold"
+    },
+    "hbm:nugget_mercury",
+    "hbm:powder_lithium_tiny"
+  ],
+  "power": 200
+}

@@ -1,0 +1,21 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Fluid",
+    "Spinner",
+    "Frame",
+    "Slider"
+  ],
+  "model": "hbm:models/machines/chemical_plant.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/chemical_plant",
+    "particle": "hbm:block/models/machines/chemical_plant"
+  }
+}

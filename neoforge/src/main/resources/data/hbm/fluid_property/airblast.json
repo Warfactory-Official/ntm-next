@@ -1,0 +1,11 @@
+{
+  "type": "gaseous",
+  "color": "#ffdada",
+  "nfpa": {
+    "flame": 3,
+    "health": 0,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 1200
+}

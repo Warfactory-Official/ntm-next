@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:reinforced_laminate"
+  ],
+  "ctm_textures": {
+    "hbm:block/reinforced_laminate": "hbm:block/ctm_lib/reinforced_laminate"
+  },
+  "variants": {
+    "": {
+      "model": "hbm:block/reinforced_laminate"
+    }
+  }
+}

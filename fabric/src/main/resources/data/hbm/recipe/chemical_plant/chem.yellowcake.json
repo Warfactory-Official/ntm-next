@@ -1,0 +1,25 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 250,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:billets/uranium"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:dusts/sulfur"
+    }
+  ],
+  "order": 80,
+  "output_items": [
+    "hbm:powder_yellowcake"
+  ],
+  "power": 500
+}

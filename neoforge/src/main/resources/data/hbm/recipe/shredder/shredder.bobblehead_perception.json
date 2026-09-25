@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:bobblehead_perception"
+    }
+  ],
+  "order": 179,
+  "output_items": [
+    "hbm:scrap_plastic_bridge_north"
+  ]
+}

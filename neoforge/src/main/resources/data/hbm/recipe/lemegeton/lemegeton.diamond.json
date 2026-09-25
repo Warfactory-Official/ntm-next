@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/graphite"
+    }
+  ],
+  "order": 29,
+  "output_items": [
+    "minecraft:diamond"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/mingrade",
+    "R": "#c:fine_wires/mingrade",
+    "W": "hbm:plate_polymer"
+  },
+  "pattern": [
+    "WRW",
+    "RIR",
+    "WRW"
+  ],
+  "result": {
+    "count": 16,
+    "id": "hbm:red_wire_coated"
+  }
+}

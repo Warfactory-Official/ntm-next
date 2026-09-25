@@ -1,0 +1,35 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 1200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#hbm:shells/aluminum"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:photo_panel"
+    },
+    {
+      "count": 32,
+      "ingredient": "#hbm:wires_dense/gold"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_bismoid"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:part_generic_lde"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:circuit_controller"
+    }
+  ],
+  "order": 420,
+  "output_items": [
+    "hbm:satellite_scanner"
+  ],
+  "power": 25000
+}

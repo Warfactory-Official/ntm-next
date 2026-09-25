@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:rod_quad_empty",
+    "#hbm:billets/plutonium_rg",
+    "#hbm:billets/plutonium_rg",
+    "#hbm:billets/plutonium_rg",
+    "#hbm:billets/plutonium_rg"
+  ],
+  "result": {
+    "id": "hbm:rod_quad_rgp"
+  }
+}

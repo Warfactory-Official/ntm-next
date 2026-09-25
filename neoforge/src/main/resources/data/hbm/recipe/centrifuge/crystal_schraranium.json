@@ -1,0 +1,29 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_schraranium"
+    }
+  ],
+  "order": 151,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:nugget_schrabidium"
+    },
+    {
+      "count": 2,
+      "id": "hbm:nugget_schrabidium"
+    },
+    {
+      "count": 2,
+      "id": "hbm:nugget_uranium"
+    },
+    {
+      "count": 2,
+      "id": "hbm:nugget_neptunium"
+    }
+  ],
+  "power": 200
+}

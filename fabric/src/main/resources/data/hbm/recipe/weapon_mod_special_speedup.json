@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/gun_metal",
+    "P": "#c:plates/weapon_steel",
+    "W": "#hbm:wires_dense/gold"
+  },
+  "pattern": [
+    "PIP",
+    "WWW",
+    "PIP"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_special_speedup"
+  }
+}

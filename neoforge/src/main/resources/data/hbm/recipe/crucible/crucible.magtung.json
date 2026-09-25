@@ -1,0 +1,24 @@
+{
+  "type": "hbm:crucible",
+  "frequency": 3,
+  "icon": {
+    "id": "hbm:ingot_magnetized_tungsten"
+  },
+  "input_materials": [
+    {
+      "amount": 72,
+      "material": "tungsten"
+    },
+    {
+      "amount": 8,
+      "material": "schrabidium"
+    }
+  ],
+  "order": 11,
+  "output_materials": [
+    {
+      "amount": 72,
+      "material": "magnetized_tungsten"
+    }
+  ]
+}

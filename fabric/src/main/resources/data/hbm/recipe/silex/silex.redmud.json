@@ -1,0 +1,61 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 50,
+  "fluid_produced": 300,
+  "input_fluids": [
+    {
+      "type": "hbm:redmud",
+      "amount": 0
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 14,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:powder_aluminium"
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "count": 3,
+          "id": "hbm:powder_neodymium_tiny"
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "count": 3,
+          "id": "hbm:powder_boron_tiny"
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_zirconium"
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "id": "hbm:powder_iron"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "hbm:powder_titanium"
+        },
+        "weight": 15
+      },
+      {
+        "data": {
+          "id": "hbm:powder_sodium"
+        },
+        "weight": 10
+      }
+    ]
+  ]
+}

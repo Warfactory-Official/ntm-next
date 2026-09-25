@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/lignite"
+    }
+  ],
+  "order": 9,
+  "output_items": [
+    "hbm:briquette_lignite"
+  ],
+  "stamp": "flat"
+}

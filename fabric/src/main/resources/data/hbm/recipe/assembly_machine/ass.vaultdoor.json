@@ -1,0 +1,35 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 32,
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:ingots/dura_steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_cast/lead"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:ingots/any_rubber"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:bolts/dura_steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:motor"
+    }
+  ],
+  "order": 63,
+  "output_items": [
+    "hbm:vault_door"
+  ],
+  "power": 100
+}

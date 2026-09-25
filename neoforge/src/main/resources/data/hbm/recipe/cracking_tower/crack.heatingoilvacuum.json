@@ -1,0 +1,20 @@
+{
+  "type": "hbm:cracking_tower",
+  "input_fluids": [
+    {
+      "type": "hbm:heatingoil_vacuum",
+      "amount": 100
+    }
+  ],
+  "order": 9,
+  "output_fluids": [
+    {
+      "type": "hbm:heatingoil",
+      "amount": 80
+    },
+    {
+      "type": "hbm:reformgas",
+      "amount": 20
+    }
+  ]
+}

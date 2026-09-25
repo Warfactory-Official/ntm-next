@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/uranium"
+    }
+  ],
+  "order": 302,
+  "output_items": [
+    "hbm:powder_uranium"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:uf6",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -3027266
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_yellowcake"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:dusts/fluorite"
+    }
+  ],
+  "order": 81,
+  "output_fluids": [
+    {
+      "type": "hbm:uf6",
+      "amount": 1200
+    }
+  ],
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:sulfur"
+    }
+  ],
+  "power": 500
+}

@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "belt": "hbm:block/conveyor_double",
+    "curve_left": "hbm:block/conveyor_double_curve_left",
+    "curve_right": "hbm:block/conveyor_double_curve_right",
+    "particle": "hbm:block/conveyor_double",
+    "side": "hbm:block/conveyor_side"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Wheel",
+    "Frame"
+  ],
+  "model": "hbm:models/machines/rockmill.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/rockmill",
+    "particle": "hbm:block/models/machines/rockmill"
+  }
+}

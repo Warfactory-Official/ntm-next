@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#c:concretes"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:ingot_firebrick"
+    },
+    {
+      "ingredient": "hbm:machine_transformer"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:circuit_analog"
+    }
+  ],
+  "name": "ass.arcfurnaceEx",
+  "order": 102,
+  "output_items": [
+    "hbm:machine_arc_furnace"
+  ],
+  "power": 100
+}

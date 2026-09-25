@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:detonator",
+    {
+      "fabric:type": "fabric:components",
+      "base": "hbm:defuser",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "hbm:ducttape"
+  ],
+  "result": {
+    "id": "hbm:detonator_deadman"
+  }
+}

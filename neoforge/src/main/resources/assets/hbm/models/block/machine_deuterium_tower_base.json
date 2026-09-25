@@ -1,0 +1,8 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "textures": {
+    "all": "hbm:block/models/machines/machine_deuterium_tower",
+    "particle": "hbm:block/concrete"
+  }
+}

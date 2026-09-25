@@ -1,0 +1,20 @@
+{
+  "type": "hbm:fraction_tower",
+  "input_fluids": [
+    {
+      "type": "hbm:oil_coker",
+      "amount": 100
+    }
+  ],
+  "order": 14,
+  "output_fluids": [
+    {
+      "type": "hbm:crackoil",
+      "amount": 30
+    },
+    {
+      "type": "hbm:heatingoil",
+      "amount": 70
+    }
+  ]
+}

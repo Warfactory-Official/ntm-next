@@ -1,0 +1,85 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_greasegun_base",
+    "draws": [
+      {
+        "excludes_mods": [
+          {
+            "id": 206
+          }
+        ],
+        "parts": [
+          "Bullet",
+          "Handle",
+          "Magazine",
+          "Flap",
+          "Stock",
+          "Gun"
+        ]
+      },
+      {
+        "parts": [
+          "Bullet",
+          "Handle",
+          "Magazine",
+          "Flap",
+          "Stock",
+          "Gun"
+        ],
+        "requires_mods": [
+          {
+            "id": 206
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/greasegun_clean.png"
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.5,
+          0.0,
+          0.0,
+          0.5,
+          0.0,
+          0.0,
+          -0.5,
+          0.0,
+          -0.0,
+          8.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -7.5,
+      0.0,
+      -0.0,
+      -7.5,
+      0.0,
+      -15.0,
+      7.5,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/greasegun.obj",
+    "texture": "hbm:textures/models/weapons/greasegun.png"
+  }
+}

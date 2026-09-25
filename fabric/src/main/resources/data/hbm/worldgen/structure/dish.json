@@ -1,0 +1,16 @@
+{
+  "type": "hbm:single_piece",
+  "biomes": [
+    "minecraft:plains",
+    "minecraft:savanna",
+    "minecraft:savanna_plateau",
+    "minecraft:sunflower_plains",
+    "minecraft:windswept_savanna"
+  ],
+  "height_offset": -10,
+  "max_height": 65,
+  "min_height": 53,
+  "spawn_overrides": {},
+  "start_pool": "hbm:single/dish",
+  "step": "strongholds"
+}

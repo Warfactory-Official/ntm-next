@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:brick_light",
+    "I": "hbm:plate_polymer"
+  },
+  "pattern": [
+    " I ",
+    "IBI",
+    " I "
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:vinyl_tile_large"
+  }
+}

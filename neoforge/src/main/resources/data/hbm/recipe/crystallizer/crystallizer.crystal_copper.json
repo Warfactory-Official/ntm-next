@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/copper"
+    }
+  ],
+  "order": 233,
+  "output_items": [
+    "hbm:crystal_copper"
+  ],
+  "productivity": 0.05
+}

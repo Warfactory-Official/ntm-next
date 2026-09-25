@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "cover_side": "hbm:block/rbmk/rbmk_reflector_cover_side",
+    "cover_top": "hbm:block/rbmk/rbmk_reflector_cover_top",
+    "glass_side": "hbm:block/rbmk/rbmk_reflector_glass_side",
+    "glass_top": "hbm:block/rbmk/rbmk_reflector_glass_top",
+    "particle": "hbm:block/rbmk/rbmk_reflector_side",
+    "side": "hbm:block/rbmk/rbmk_reflector_side",
+    "top": "hbm:block/rbmk/rbmk_reflector_top"
+  }
+}

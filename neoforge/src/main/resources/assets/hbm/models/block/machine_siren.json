@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "hbm:block/block_steel",
+    "east": "hbm:block/machine_siren",
+    "north": "hbm:block/machine_siren",
+    "particle": "hbm:block/machine_siren",
+    "south": "hbm:block/machine_siren",
+    "up": "hbm:block/block_steel",
+    "west": "hbm:block/machine_siren"
+  }
+}

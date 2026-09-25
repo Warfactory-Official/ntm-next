@@ -1,0 +1,13 @@
+{
+  "type": "hbm:breeder",
+  "flux": 400,
+  "input_items": [
+    {
+      "ingredient": "hbm:rod_dual_uranium"
+    }
+  ],
+  "order": 25,
+  "output_items": [
+    "hbm:rod_dual_rgp"
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.12733102,
+        4.885005,
+        1.4554012
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.12733102,
+        4.885005,
+        1.455401
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        6.8150005,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        0.6875,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.171875,
+        0.171875,
+        0.171875
+      ],
+      "translation": [
+        1.1920929E-7,
+        0.8551775,
+        -6.351563
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        3.756349,
+        -25.940022,
+        4.4766436
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0.0,
+        18.75,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -0.734741,
+        4.244675,
+        1.8570582
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -1.8945332,
+        4.0023904,
+        1.5483521
+      ]
+    }
+  },
+  "groups": [
+    {
+      "parts": [
+        "Body"
+      ],
+      "texture": "cyclotron"
+    },
+    {
+      "parts": [
+        "B1"
+      ],
+      "texture": "cyclotron_ashes"
+    },
+    {
+      "parts": [
+        "B2"
+      ],
+      "texture": "cyclotron_book"
+    },
+    {
+      "parts": [
+        "B3"
+      ],
+      "texture": "cyclotron_gavel"
+    },
+    {
+      "parts": [
+        "B4"
+      ],
+      "texture": "cyclotron_coin"
+    }
+  ],
+  "gui_light": "side",
+  "model": "hbm:models/machines/cyclotron.obj",
+  "offset_y": -1.0625,
+  "textures": {
+    "cyclotron": "hbm:block/models/machines/cyclotron",
+    "cyclotron_ashes": "hbm:block/models/machines/cyclotron_ashes",
+    "cyclotron_book": "hbm:block/models/machines/cyclotron_book",
+    "cyclotron_coin": "hbm:block/models/machines/cyclotron_coin",
+    "cyclotron_gavel": "hbm:block/models/machines/cyclotron_gavel",
+    "particle": "hbm:block/models/machines/cyclotron"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Pylon"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Pylon_steel"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/network/pylon.obj",
+  "skins": {
+    "all": [
+      "Pylon"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/network/pylon",
+    "particle": "hbm:block/red_pylon"
+  }
+}

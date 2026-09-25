@@ -1,0 +1,6 @@
+{
+  "type": "hbm:null_spawn",
+  "biomes": "minecraft:plains",
+  "spawn_overrides": {},
+  "step": "strongholds"
+}

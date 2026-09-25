@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:conveyor_wand_regular",
+    "P": "hbm:part_generic_piston_pneumatic",
+    "W": "#minecraft:planks"
+  },
+  "pattern": [
+    "WWW",
+    "WPW",
+    "CCC"
+  ],
+  "result": {
+    "id": "hbm:crane_boxer"
+  }
+}

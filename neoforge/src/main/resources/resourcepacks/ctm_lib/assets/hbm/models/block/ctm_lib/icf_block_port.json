@@ -1,0 +1,6 @@
+{
+  "textures": {
+    "connected": "hbm:block/ctm_lib/icf_block_port_ct",
+    "particle": "hbm:block/icf_block_port"
+  }
+}

@@ -1,0 +1,1604 @@
+{
+  "processors": [
+    {
+      "marker": {
+        "Name": "minecraft:chiseled_bookshelf",
+        "Properties": {
+          "facing": "east",
+          "slot_0_occupied": "false",
+          "slot_1_occupied": "false",
+          "slot_2_occupied": "false",
+          "slot_3_occupied": "false",
+          "slot_4_occupied": "false",
+          "slot_5_occupied": "false"
+        }
+      },
+      "probability": 0.15,
+      "processor_type": "hbm:maybe_place",
+      "result": {
+        "Name": "minecraft:cobweb"
+      }
+    },
+    {
+      "marker": {
+        "Name": "minecraft:chiseled_bookshelf",
+        "Properties": {
+          "facing": "east",
+          "slot_0_occupied": "false",
+          "slot_1_occupied": "false",
+          "slot_2_occupied": "false",
+          "slot_3_occupied": "false",
+          "slot_4_occupied": "false",
+          "slot_5_occupied": "true"
+        }
+      },
+      "probability": 0.15,
+      "processor_type": "hbm:maybe_place",
+      "result": {
+        "Name": "hbm:plant_reeds"
+      }
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "0",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_concrete"
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy"
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked"
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken"
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "0",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_stairs",
+            "Properties": {
+              "facing": "south",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy_stairs",
+            "Properties": {
+              "facing": "south",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked_stairs",
+            "Properties": {
+              "facing": "south",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken_stairs",
+            "Properties": {
+              "facing": "south",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "1",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_stairs",
+            "Properties": {
+              "facing": "east",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy_stairs",
+            "Properties": {
+              "facing": "east",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked_stairs",
+            "Properties": {
+              "facing": "east",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken_stairs",
+            "Properties": {
+              "facing": "east",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "1",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_stairs",
+            "Properties": {
+              "facing": "north",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy_stairs",
+            "Properties": {
+              "facing": "north",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked_stairs",
+            "Properties": {
+              "facing": "north",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken_stairs",
+            "Properties": {
+              "facing": "north",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "2",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_stairs",
+            "Properties": {
+              "facing": "west",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy_stairs",
+            "Properties": {
+              "facing": "west",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked_stairs",
+            "Properties": {
+              "facing": "west",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken_stairs",
+            "Properties": {
+              "facing": "west",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "2",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy_slab",
+            "Properties": {
+              "type": "bottom",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 900
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked_slab",
+            "Properties": {
+              "type": "bottom",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 1800
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken_slab",
+            "Properties": {
+              "type": "bottom",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 300
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_stairs",
+            "Properties": {
+              "facing": "east",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 300
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy_stairs",
+            "Properties": {
+              "facing": "east",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 225
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked_stairs",
+            "Properties": {
+              "facing": "east",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 150
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken_stairs",
+            "Properties": {
+              "facing": "east",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 75
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_stairs",
+            "Properties": {
+              "facing": "west",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 300
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy_stairs",
+            "Properties": {
+              "facing": "west",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 225
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked_stairs",
+            "Properties": {
+              "facing": "west",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 150
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken_stairs",
+            "Properties": {
+              "facing": "west",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 75
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_stairs",
+            "Properties": {
+              "facing": "south",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 300
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy_stairs",
+            "Properties": {
+              "facing": "south",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 225
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked_stairs",
+            "Properties": {
+              "facing": "south",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 150
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken_stairs",
+            "Properties": {
+              "facing": "south",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 75
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_stairs",
+            "Properties": {
+              "facing": "north",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 300
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy_stairs",
+            "Properties": {
+              "facing": "north",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 225
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked_stairs",
+            "Properties": {
+              "facing": "north",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 150
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken_stairs",
+            "Properties": {
+              "facing": "north",
+              "half": "bottom",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 75
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete"
+          },
+          "weight": 1200
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy"
+          },
+          "weight": 900
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked"
+          },
+          "weight": 600
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken"
+          },
+          "weight": 300
+        },
+        {
+          "data": {
+            "Name": "minecraft:air"
+          },
+          "weight": 1000
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "3",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_metal",
+            "Properties": {
+              "facing": "south",
+              "half": "lower",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_metal",
+            "Properties": {
+              "facing": "south",
+              "half": "lower",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "3",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_metal",
+            "Properties": {
+              "facing": "south",
+              "half": "upper",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_metal",
+            "Properties": {
+              "facing": "south",
+              "half": "upper",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "4",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:barrel_corroded",
+            "Properties": {
+              "east": "false",
+              "north": "false",
+              "south": "false",
+              "west": "false"
+            }
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:crate_can"
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:red_barrel"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:pink_barrel"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "minecraft:air"
+          },
+          "weight": 10
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "4",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_stairs",
+            "Properties": {
+              "facing": "north",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy_stairs",
+            "Properties": {
+              "facing": "north",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked_stairs",
+            "Properties": {
+              "facing": "north",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken_stairs",
+            "Properties": {
+              "facing": "north",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "5",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_stairs",
+            "Properties": {
+              "facing": "east",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy_stairs",
+            "Properties": {
+              "facing": "east",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked_stairs",
+            "Properties": {
+              "facing": "east",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken_stairs",
+            "Properties": {
+              "facing": "east",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "5",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "lower",
+              "hinge": "right",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "lower",
+              "hinge": "right",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "6",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "upper",
+              "hinge": "right",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "upper",
+              "hinge": "right",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "6",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "west",
+              "half": "lower",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "west",
+              "half": "lower",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "7",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "west",
+              "half": "upper",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "west",
+              "half": "upper",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "7",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "0"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "1"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "2"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "3"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "4"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "5"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "6"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "7"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "8"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "9"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "10"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "11"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "12"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "13"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "14"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "15"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "8",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_stairs",
+            "Properties": {
+              "facing": "south",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy_stairs",
+            "Properties": {
+              "facing": "south",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked_stairs",
+            "Properties": {
+              "facing": "south",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken_stairs",
+            "Properties": {
+              "facing": "south",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "8",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_stairs",
+            "Properties": {
+              "facing": "west",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy_stairs",
+            "Properties": {
+              "facing": "west",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked_stairs",
+            "Properties": {
+              "facing": "west",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken_stairs",
+            "Properties": {
+              "facing": "west",
+              "half": "top",
+              "shape": "straight",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "9",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "north",
+              "half": "lower",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "north",
+              "half": "lower",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "9",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "north",
+              "half": "upper",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "north",
+              "half": "upper",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "10",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "lower",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "lower",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "10",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "upper",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "south",
+              "half": "upper",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "11",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_metal",
+            "Properties": {
+              "facing": "east",
+              "half": "lower",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_metal",
+            "Properties": {
+              "facing": "east",
+              "half": "lower",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "11",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_metal",
+            "Properties": {
+              "facing": "east",
+              "half": "upper",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_metal",
+            "Properties": {
+              "facing": "east",
+              "half": "upper",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "12",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "east",
+              "half": "lower",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "east",
+              "half": "lower",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "12",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "east",
+              "half": "upper",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_bunker",
+            "Properties": {
+              "facing": "east",
+              "half": "upper",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "13",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "minecraft:dirt"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "minecraft:podzol",
+            "Properties": {
+              "snowy": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "processor_type": "hbm:multiblock_assembly"
+    },
+    {
+      "processor_type": "hbm:bobble_randomizer"
+    },
+    {
+      "processor_type": "hbm:lock_pins"
+    },
+    {
+      "processor_type": "hbm:loot_pile"
+    }
+  ]
+}

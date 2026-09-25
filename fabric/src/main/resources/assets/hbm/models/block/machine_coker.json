@@ -1,0 +1,13 @@
+{
+  "fabric:type": "hbm:obj",
+  "parent": "hbm:block/machine_coker_base",
+  "double_sided": [
+    "Plane"
+  ],
+  "model": "hbm:models/machines/coker.obj",
+  "skins": {
+    "all": [
+      "Plane"
+    ]
+  }
+}

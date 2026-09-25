@@ -1,0 +1,15 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbm:models/fusion/boiler.obj",
+  "skins": {
+    "all": [
+      "Boiler"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/fusion/boiler",
+    "particle": "hbm:block/models/fusion/boiler"
+  }
+}

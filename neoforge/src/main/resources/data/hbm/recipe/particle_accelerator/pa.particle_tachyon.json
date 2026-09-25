@@ -1,0 +1,16 @@
+{
+  "type": "hbm:particle_accelerator",
+  "input_items": [
+    {
+      "ingredient": "hbm:particle_muon"
+    },
+    {
+      "ingredient": "hbm:particle_higgs"
+    }
+  ],
+  "momentum": 5000,
+  "order": 5,
+  "output_items": [
+    "hbm:particle_tachyon"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:circuit_star_piece_mem_socket",
+    "hbm:circuit_star_piece_mem_16k_a",
+    "hbm:circuit_star_piece_mem_16k_b",
+    "hbm:circuit_star_piece_mem_16k_c",
+    "hbm:circuit_star_piece_mem_16k_d"
+  ],
+  "result": {
+    "id": "hbm:circuit_star_component_ram"
+  }
+}

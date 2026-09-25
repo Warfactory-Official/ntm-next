@@ -1,0 +1,30 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "fatal": false,
+        "level": {
+          "min": 200.0
+        }
+      },
+      "trigger": "hbm:radiation"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.radPoison.desc"
+    },
+    "icon": {
+      "id": "hbm:geiger_counter"
+    },
+    "title": {
+      "translate": "achievement.radPoison"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

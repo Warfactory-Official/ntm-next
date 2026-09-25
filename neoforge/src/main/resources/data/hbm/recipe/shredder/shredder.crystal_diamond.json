@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_diamond"
+    }
+  ],
+  "order": 102,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:powder_diamond"
+    }
+  ]
+}

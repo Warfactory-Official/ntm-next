@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 225.0
+    },
+    {
+      "type": "hbm:hot",
+      "level": 9.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:dusts/polonium_210"
+}

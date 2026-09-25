@@ -1,0 +1,50 @@
+{
+  "parent": "hbm:chemplant",
+  "criteria": {
+    "crafted_hbm_ingot_polymer_from_block": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_polymer_from_block"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_ingot_polymer_from_powder": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_polymer_from_powder"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_ingot_polymer_from_scrap_plastic": {
+      "conditions": {
+        "recipe_id": "hbm:ingot_polymer_from_scrap_plastic"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": "hbm:ingot_polymer"
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.polymer.desc"
+    },
+    "icon": {
+      "id": "hbm:ingot_polymer"
+    },
+    "title": {
+      "translate": "achievement.polymer"
+    }
+  },
+  "requirements": [
+    [
+      "crafted_hbm_ingot_polymer_from_block",
+      "crafted_hbm_ingot_polymer_from_powder",
+      "crafted_hbm_ingot_polymer_from_scrap_plastic",
+      "produced"
+    ]
+  ]
+}

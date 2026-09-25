@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "hbm:cobalt_pickaxe"
+    },
+    {
+      "ingredient": "hbm:ingot_meteorite"
+    }
+  ],
+  "kind": "hot",
+  "order": 32,
+  "output_items": [
+    "hbm:cobalt_decorated_pickaxe"
+  ],
+  "tier": 3
+}

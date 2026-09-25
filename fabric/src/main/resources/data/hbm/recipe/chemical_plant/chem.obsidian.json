@@ -1,0 +1,26 @@
+{
+  "type": "hbm:chemical_plant",
+  "blueprint_pools": [
+    "discover.stone"
+  ],
+  "duration": 60,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 1000
+    },
+    {
+      "type": "minecraft:lava",
+      "amount": 500
+    },
+    {
+      "type": "hbm:air",
+      "amount": 4000
+    }
+  ],
+  "order": 21,
+  "output_items": [
+    "minecraft:obsidian"
+  ],
+  "power": 500
+}

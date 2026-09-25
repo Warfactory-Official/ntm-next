@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "hbm:ducttape",
+    "K": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:insert_sapi"
+    },
+    "P": "#hbm:ingots/any_plastic",
+    "S": "#c:plates/weapon_steel"
+  },
+  "pattern": [
+    "PKP",
+    "DSD",
+    "PKP"
+  ],
+  "result": {
+    "id": "hbm:insert_esapi"
+  }
+}

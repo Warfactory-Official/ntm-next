@@ -1,0 +1,17 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/schrabidium"
+    }
+  ],
+  "order": 22,
+  "output_items": [
+    "hbm:powder_schrabidium",
+    "hbm:powder_schrabidium",
+    "hbm:nugget_solinium",
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

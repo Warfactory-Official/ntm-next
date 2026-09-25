@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:ingot_firebrick",
+    "I": "#c:ingots/steel",
+    "S": "minecraft:smooth_stone_slab"
+  },
+  "pattern": [
+    "B B",
+    "I I",
+    "BSB"
+  ],
+  "result": {
+    "id": "hbm:foundry_tank"
+  }
+}

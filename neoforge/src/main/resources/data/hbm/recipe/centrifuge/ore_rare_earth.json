@@ -1,0 +1,17 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#c:ores/rare_earth"
+    }
+  ],
+  "order": 23,
+  "output_items": [
+    "hbm:powder_desh_mix",
+    "hbm:nugget_zirconium",
+    "hbm:nugget_zirconium",
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

@@ -1,0 +1,25 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:deuterium",
+      "amount": 10000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#c:plates/weapon_steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:plates/titanium"
+    }
+  ],
+  "order": 317,
+  "output_items": [
+    "hbm:mike_deut"
+  ],
+  "power": 100
+}

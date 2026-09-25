@@ -1,0 +1,21 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Radar"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Dish"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/radar_large.obj",
+  "skins": {
+    "all": [
+      "Radar"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/radar_large",
+    "particle": "hbm:block/block_steel"
+  }
+}

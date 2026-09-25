@@ -1,0 +1,44 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528"
+    },
+    {
+      "type": "hbm:flag",
+      "name": "!lbsm_simple_crafting"
+    }
+  ],
+  "type": "hbm:soldering",
+  "duration": 400,
+  "input_fluids": [
+    {
+      "type": "hbm:solvent",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_chip"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_capacitor"
+    }
+  ],
+  "order": 33,
+  "output_items": [
+    "hbm:upgrade_power_3"
+  ],
+  "pcb": [
+    {
+      "ingredient": "hbm:upgrade_power_2"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/rubber"
+    }
+  ],
+  "power": 25000
+}

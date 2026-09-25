@@ -1,0 +1,14 @@
+{
+  "values": [
+    "hbm:block_meteor_molten",
+    "hbm:ore_meteor_iron",
+    "hbm:ore_meteor_copper",
+    "hbm:ore_meteor_aluminium",
+    "hbm:ore_meteor_rareearth",
+    "hbm:ore_meteor_cobalt",
+    "hbm:block_meteor",
+    "hbm:block_meteor_cobble",
+    "hbm:block_meteor_broken",
+    "hbm:block_meteor_treasure"
+  ]
+}

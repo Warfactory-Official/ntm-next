@@ -1,0 +1,10 @@
+{
+  "values": [
+    "hbm:brick_concrete",
+    "hbm:brick_concrete_cracked",
+    "hbm:brick_concrete_broken",
+    "hbm:concrete",
+    "hbm:concrete_smooth",
+    "hbm:gas_radon_tomb"
+  ]
+}

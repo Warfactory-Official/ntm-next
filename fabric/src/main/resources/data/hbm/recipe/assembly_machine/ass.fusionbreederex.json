@@ -1,0 +1,30 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_ferro_plating"
+    },
+    {
+      "count": 64,
+      "ingredient": "#c:ingots/boron"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_plastic"
+    }
+  ],
+  "name": "ass.fusionbreederEx",
+  "order": 268,
+  "output_items": [
+    "hbm:fusion_breeder"
+  ],
+  "power": 100
+}

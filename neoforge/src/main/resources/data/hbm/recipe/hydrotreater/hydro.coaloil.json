@@ -1,0 +1,27 @@
+{
+  "type": "hbm:hydrotreater",
+  "duration": 2,
+  "input_fluids": [
+    {
+      "type": "hbm:coaloil",
+      "amount": 100
+    },
+    {
+      "type": "hbm:hydrogen",
+      "amount": 10,
+      "pressure": 1
+    }
+  ],
+  "order": 5,
+  "output_fluids": [
+    {
+      "type": "hbm:coalgas",
+      "amount": 80
+    },
+    {
+      "type": "hbm:sourgas",
+      "amount": 15
+    }
+  ],
+  "power": 20000
+}

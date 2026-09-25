@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "#c:plates/copper"
+    }
+  ],
+  "order": 46,
+  "output_items": [
+    "hbm:pipe_copper"
+  ],
+  "overlay": "smithing",
+  "tier": 1
+}

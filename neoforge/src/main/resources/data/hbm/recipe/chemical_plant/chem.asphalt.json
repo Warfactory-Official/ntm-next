@@ -1,0 +1,28 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:bitumen",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "minecraft:gravel"
+    },
+    {
+      "count": 6,
+      "ingredient": "#minecraft:sand"
+    }
+  ],
+  "order": 28,
+  "output_items": [
+    {
+      "count": 16,
+      "id": "hbm:asphalt"
+    }
+  ],
+  "power": 100
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_steam_engine",
+      "y": 180
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_steam_engine",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_steam_engine",
+      "y": 270
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_steam_engine"
+    }
+  }
+}

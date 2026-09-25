@@ -1,0 +1,16 @@
+{
+  "type": "hbm:assembly_machine",
+  "auto_switch_group": "autoswitch.pilerod",
+  "duration": 40,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:billet_ra226be"
+    }
+  ],
+  "order": 47,
+  "output_items": [
+    "hbm:pile_rod_mk2_ra226be"
+  ],
+  "power": 200
+}

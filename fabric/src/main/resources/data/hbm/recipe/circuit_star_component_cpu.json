@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:circuit_star_piece_cpu_cache",
+    "hbm:circuit_star_piece_cpu_clock",
+    "hbm:circuit_star_piece_cpu_ext",
+    "hbm:circuit_star_piece_cpu_logic",
+    "hbm:circuit_star_piece_cpu_register",
+    "hbm:circuit_star_piece_cpu_socket"
+  ],
+  "result": {
+    "id": "hbm:circuit_star_component_cpu"
+  }
+}

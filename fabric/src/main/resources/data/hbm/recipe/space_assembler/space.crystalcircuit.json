@@ -1,0 +1,13 @@
+{
+  "type": "hbm:space_assembler",
+  "duration": 3600,
+  "input_items": [
+    {
+      "ingredient": "hbm:orbital_assembly"
+    }
+  ],
+  "order": 0,
+  "output_items": [
+    "hbm:circuit_crystal"
+  ]
+}

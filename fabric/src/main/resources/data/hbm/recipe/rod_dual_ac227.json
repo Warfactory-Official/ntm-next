@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:rod_dual_empty",
+    "#hbm:billets/actinium_227",
+    "#hbm:billets/actinium_227"
+  ],
+  "result": {
+    "id": "hbm:rod_dual_ac227"
+  }
+}

@@ -1,0 +1,264 @@
+{
+  "groups": [
+    {
+      "parts": [
+        "Top"
+      ],
+      "texture": "top_left"
+    },
+    {
+      "parts": [
+        "Bottom"
+      ],
+      "texture": "top_right"
+    },
+    {
+      "parts": [
+        "Left"
+      ],
+      "texture": "left"
+    },
+    {
+      "parts": [
+        "Back"
+      ],
+      "texture": "back_left"
+    },
+    {
+      "parts": [
+        "Front"
+      ],
+      "texture": "front_left"
+    },
+    {
+      "parts": [
+        "Inner"
+      ],
+      "texture": "inner"
+    },
+    {
+      "parts": [
+        "InnerLeft",
+        "InnerRight",
+        "InnerTop"
+      ],
+      "texture": "inner_side"
+    },
+    {
+      "parts": [
+        "InnerBottom"
+      ],
+      "texture": "belt"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Top"
+      ],
+      "texture": "top_right"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Bottom"
+      ],
+      "texture": "top_left"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Right"
+      ],
+      "texture": "right"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Back"
+      ],
+      "texture": "back_right"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Front"
+      ],
+      "texture": "front_right"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Inner"
+      ],
+      "texture": "inner"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "InnerLeft",
+        "InnerRight",
+        "InnerTop"
+      ],
+      "texture": "inner_side"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "InnerBottom"
+      ],
+      "texture": "belt"
+    }
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/splitter.obj",
+  "textures": {
+    "back_left": "hbm:block/crane_splitter_back_left",
+    "back_right": "hbm:block/crane_splitter_back_right",
+    "belt": "hbm:block/crane_splitter_belt",
+    "front_left": "hbm:block/crane_splitter_front_left",
+    "front_right": "hbm:block/crane_splitter_front_right",
+    "inner": "hbm:block/crane_splitter_inner",
+    "inner_side": "hbm:block/crane_splitter_inner_side",
+    "left": "hbm:block/crane_splitter_left",
+    "particle": "hbm:block/crane_side",
+    "right": "hbm:block/crane_splitter_right",
+    "top_left": "hbm:block/crane_splitter_top_left",
+    "top_right": "hbm:block/crane_splitter_top_right"
+  }
+}

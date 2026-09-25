@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "hbm:block/plant_tall_cd3_upper"
+  }
+}

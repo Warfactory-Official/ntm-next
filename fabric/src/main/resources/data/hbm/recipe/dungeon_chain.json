@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": "hbm:steel_beam"
+  },
+  "pattern": [
+    "S",
+    "S",
+    "S"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:dungeon_chain"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 0.47500000000000003
+    }
+  ],
+  "targets": "#hbm:hazard/nugget_americium_fuel"
+}

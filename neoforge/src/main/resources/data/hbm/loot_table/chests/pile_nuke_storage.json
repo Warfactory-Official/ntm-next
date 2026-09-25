@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:ammo_standard_nuke_standard",
+          "weight": 50
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 10
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/pile_nuke_storage"
+}

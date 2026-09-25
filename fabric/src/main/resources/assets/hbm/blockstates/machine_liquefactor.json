@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_liquefactor"
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_liquefactor"
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_liquefactor"
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_liquefactor"
+    }
+  }
+}

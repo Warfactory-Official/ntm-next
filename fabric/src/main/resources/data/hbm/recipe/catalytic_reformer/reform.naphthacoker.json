@@ -1,0 +1,26 @@
+{
+  "type": "hbm:catalytic_reformer",
+  "duration": 1,
+  "input_fluids": [
+    {
+      "type": "hbm:naphtha_coker",
+      "amount": 100
+    }
+  ],
+  "order": 3,
+  "output_fluids": [
+    {
+      "type": "hbm:reformate",
+      "amount": 50
+    },
+    {
+      "type": "hbm:reformgas",
+      "amount": 10
+    },
+    {
+      "type": "hbm:hydrogen",
+      "amount": 5
+    }
+  ],
+  "power": 20000
+}

@@ -1,0 +1,24 @@
+{
+  "content": {
+    "en_us": "Alloy made from copper and redstone in equal parts using the [[blast furnace|Blast Furnace]]. Used in almost all things electric, commonly in wire form.",
+    "ru_ru": "Сплав, изготовленный из меди и красного камня в равных частях в [[доменной печи|Blast Furnace]]. Используется почти во всех электрических устройствах, обычно в виде проводов.",
+    "uk_ua": "Сплав, виготовлений з [[міді|Copper]] та редстоуну в рівному співвідношенні в [[доменній печі|Blast Furnace]]. Використовується майже у всій електриці, зазвичай у вигляді дроту.",
+    "zh_cn": "等量的铜和红石在[[高炉|Blast Furnace]]中制作的合金。 主要以线的形式用于几乎所有电力设备。"
+  },
+  "icon": "hbm:ingot_red_copper",
+  "name": "Minecraft Grade Copper",
+  "title": {
+    "en_us": "Minecraft Grade Copper (Red Copper)",
+    "ru_ru": "Красная медь",
+    "uk_ua": "Червона мідь (aka Minecraft Grade Copper)",
+    "zh_cn": "紫铜"
+  },
+  "trigger": [
+    {
+      "items": "hbm:ingot_red_copper"
+    },
+    {
+      "items": "hbm:powder_red_copper"
+    }
+  ]
+}

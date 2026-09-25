@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "T": "hbm:powder_paleogenite_tiny"
+  },
+  "pattern": [
+    "TTT",
+    "TTT",
+    "TTT"
+  ],
+  "result": {
+    "id": "hbm:powder_paleogenite"
+  }
+}

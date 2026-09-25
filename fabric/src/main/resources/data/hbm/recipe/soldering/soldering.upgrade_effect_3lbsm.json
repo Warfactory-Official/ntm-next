@@ -1,0 +1,45 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528"
+    },
+    {
+      "condition": "hbm:flag",
+      "name": "lbsm_simple_crafting"
+    }
+  ],
+  "type": "hbm:soldering",
+  "duration": 400,
+  "input_fluids": [
+    {
+      "type": "hbm:solvent",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "hbm:circuit_chip"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_capacitor"
+    }
+  ],
+  "name": "soldering.upgrade_effect_3Lbsm",
+  "order": 30,
+  "output_items": [
+    "hbm:upgrade_effect_3"
+  ],
+  "pcb": [
+    {
+      "ingredient": "hbm:upgrade_effect_2"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/rubber"
+    }
+  ],
+  "power": 25000
+}

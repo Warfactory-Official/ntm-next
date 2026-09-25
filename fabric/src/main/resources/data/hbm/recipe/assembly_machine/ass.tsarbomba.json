@@ -1,0 +1,36 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.controller"
+  ],
+  "duration": 1200,
+  "input_items": [
+    {
+      "ingredient": "hbm:sphere_steel"
+    },
+    {
+      "count": 6,
+      "ingredient": "#hbm:shells/titanium"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "ingredient": "hbm:fins_tri_steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_controller_advanced"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:dyes/black"
+    }
+  ],
+  "order": 295,
+  "output_items": [
+    "hbm:nuke_tsar"
+  ],
+  "power": 100
+}

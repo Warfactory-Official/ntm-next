@@ -1,0 +1,17 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/thorium"
+    }
+  ],
+  "order": 27,
+  "output_items": [
+    "hbm:powder_thorium",
+    "hbm:powder_thorium",
+    "hbm:powder_uranium",
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

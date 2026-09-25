@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": "hbm:plant_flower_tobacco",
+  "result": {
+    "id": "hbm:plant_item_tobacco"
+  }
+}

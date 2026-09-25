@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/furnace_steel"
+    },
+    "facing=north": {
+      "model": "hbm:block/furnace_steel",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/furnace_steel",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/furnace_steel",
+      "y": 180
+    }
+  }
+}

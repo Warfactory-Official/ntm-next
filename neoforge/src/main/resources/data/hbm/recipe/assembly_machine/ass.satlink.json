@@ -1,0 +1,26 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbm:steel_scaffold"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:plates/aluminum"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:magnetron"
+    },
+    {
+      "ingredient": "hbm:circuit_controller"
+    }
+  ],
+  "order": 430,
+  "output_items": [
+    "hbm:machine_satlink"
+  ],
+  "power": 1000
+}

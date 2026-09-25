@@ -1,0 +1,16 @@
+{
+  "type": "hbm:blast_furnace",
+  "duration": 600,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/cobalt"
+    },
+    {
+      "ingredient": "hbm:powder_meteorite"
+    }
+  ],
+  "order": 10,
+  "output_items": [
+    "hbm:ingot_meteorite"
+  ]
+}

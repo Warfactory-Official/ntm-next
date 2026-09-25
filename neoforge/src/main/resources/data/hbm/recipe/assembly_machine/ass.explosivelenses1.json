@@ -1,0 +1,31 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:plates/aluminum"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:det_cord"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:plates/saturnite"
+    },
+    {
+      "count": 20,
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_plastic"
+    }
+  ],
+  "order": 305,
+  "output_items": [
+    "hbm:early_explosive_lenses"
+  ],
+  "power": 100
+}

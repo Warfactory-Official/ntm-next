@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hbm:item/fluid_pack",
+    "layer1": "hbm:item/fluid_pack_overlay"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 20,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:hydrogen",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:gas_tank"
+  },
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 8000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:gems/coal"
+    }
+  ],
+  "order": 0,
+  "output_fluids": [
+    {
+      "type": "hbm:hydrogen",
+      "amount": 500
+    }
+  ],
+  "power": 400
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:holotape_image_holo_digamma",
+    "#hbm:tools/screwdriver",
+    "hbm:ducttape",
+    "hbm:armor_polish"
+  ],
+  "result": {
+    "id": "hbm:holotape_image_holo_restored"
+  }
+}

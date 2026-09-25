@@ -1,0 +1,26 @@
+{
+  "type": "hbm:mixer",
+  "duration": 10,
+  "input_fluids": [
+    {
+      "type": "hbm:pheromone",
+      "amount": 1500
+    },
+    {
+      "type": "hbm:blood",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:pill_herbal"
+    }
+  ],
+  "order": 43,
+  "output_fluids": [
+    {
+      "type": "hbm:pheromone_m",
+      "amount": 2000
+    }
+  ]
+}

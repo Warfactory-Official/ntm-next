@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:battery_pack_capacitor_niobium",
+    "P": "#hbm:ingots/any_plastic",
+    "W": "#hbm:wires_dense/mingrade"
+  },
+  "pattern": [
+    "PWP",
+    "PCP",
+    "PWP"
+  ],
+  "result": {
+    "id": "hbm:armor_battery_mk2"
+  }
+}

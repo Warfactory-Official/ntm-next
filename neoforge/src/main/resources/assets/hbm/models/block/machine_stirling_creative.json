@@ -1,0 +1,20 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Piston",
+    "Cog",
+    "CogSmall"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/stirling.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/stirling_creative",
+    "particle": "hbm:block/block_steel"
+  }
+}

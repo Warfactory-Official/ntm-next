@@ -1,0 +1,18 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/chlorocalcite"
+    }
+  ],
+  "order": 6,
+  "output_fluids": [
+    {
+      "type": "hbm:chlorine",
+      "amount": 250
+    }
+  ],
+  "output_items": [
+    "hbm:powder_calcium"
+  ]
+}

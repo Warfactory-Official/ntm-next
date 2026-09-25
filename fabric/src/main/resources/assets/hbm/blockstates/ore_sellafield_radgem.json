@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/sellafield_ore_radgem_0"
+      },
+      {
+        "model": "hbm:block/sellafield_ore_radgem_1"
+      },
+      {
+        "model": "hbm:block/sellafield_ore_radgem_2"
+      },
+      {
+        "model": "hbm:block/sellafield_ore_radgem_3"
+      }
+    ]
+  }
+}

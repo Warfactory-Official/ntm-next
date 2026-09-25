@@ -1,0 +1,10 @@
+{
+  "values": [
+    "hbm:glass_boron",
+    "hbm:glass_lead",
+    "hbm:glass_uranium",
+    "hbm:glass_trinitite",
+    "hbm:glass_polonium",
+    "hbm:glass_ash"
+  ]
+}

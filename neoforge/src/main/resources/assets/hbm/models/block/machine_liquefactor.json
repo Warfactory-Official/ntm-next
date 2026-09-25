@@ -1,0 +1,22 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Main"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Fluid",
+    "Glass"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/liquefactor.obj",
+  "skins": {
+    "all": [
+      "Main"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/liquefactor",
+    "particle": "hbm:block/models/machines/liquefactor"
+  }
+}

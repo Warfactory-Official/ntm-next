@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:ingots/graphite",
+    "I": "hbm:ingot_uranium_fuel"
+  },
+  "pattern": [
+    " I ",
+    "IGI",
+    " I "
+  ],
+  "result": {
+    "id": "hbm:watz_pellet_meu"
+  }
+}

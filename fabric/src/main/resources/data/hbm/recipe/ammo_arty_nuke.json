@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:ammo_arty_he",
+    "hbm:boy_bullet",
+    "hbm:boy_target",
+    "hbm:boy_shielding",
+    "hbm:circuit_controller",
+    "hbm:ducttape"
+  ],
+  "result": {
+    "id": "hbm:ammo_arty_nuke"
+  }
+}

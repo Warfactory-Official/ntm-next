@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:any_tar"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_capacitor"
+    }
+  ],
+  "name": "ass.liquefactorEx",
+  "order": 133,
+  "output_items": [
+    "hbm:machine_liquefactor"
+  ],
+  "power": 100
+}

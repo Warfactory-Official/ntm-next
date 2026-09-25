@@ -1,0 +1,15 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/zirconium"
+    }
+  ],
+  "order": 11,
+  "output_items": [
+    "hbm:plate_welded_zirconium"
+  ],
+  "power": 10000
+}

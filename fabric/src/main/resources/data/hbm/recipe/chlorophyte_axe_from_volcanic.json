@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#c:ingots/fiberglass",
+    "D": "hbm:powder_chlorophyte",
+    "F": "#c:bolts/dura_steel",
+    "P": "hbm:volcanic_axe",
+    "S": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:blades_steel",
+      "components": {
+        "minecraft:damage": 0
+      }
+    }
+  },
+  "pattern": [
+    " SD",
+    "APS",
+    "FA "
+  ],
+  "result": {
+    "id": "hbm:chlorophyte_axe"
+  }
+}

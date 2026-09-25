@@ -1,0 +1,42 @@
+{
+  "model": {
+    "type": "hbm:mesh",
+    "base": "hbm:item/missile_anti_ballistic_base",
+    "cull": false,
+    "mesh": "hbm:models/missile_abm.obj",
+    "pose_suffix": {
+      "gui": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        -9.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "skins": [
+      "hbm:textures/models/missiles/missile_abm.png"
+    ],
+    "spin": {
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "divisor": 15,
+      "modulus": 360,
+      "rate": 1.0
+    }
+  },
+  "oversized_in_gui": true
+}

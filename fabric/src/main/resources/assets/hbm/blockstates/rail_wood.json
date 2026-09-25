@@ -1,0 +1,40 @@
+{
+  "variants": {
+    "shape=ascending_east": {
+      "model": "hbm:block/rail_wood_raised_ne",
+      "y": 90
+    },
+    "shape=ascending_north": {
+      "model": "hbm:block/rail_wood_raised_ne"
+    },
+    "shape=ascending_south": {
+      "model": "hbm:block/rail_wood_raised_sw"
+    },
+    "shape=ascending_west": {
+      "model": "hbm:block/rail_wood_raised_sw",
+      "y": 90
+    },
+    "shape=east_west": {
+      "model": "hbm:block/rail_wood",
+      "y": 90
+    },
+    "shape=north_east": {
+      "model": "hbm:block/rail_wood_corner",
+      "y": 270
+    },
+    "shape=north_south": {
+      "model": "hbm:block/rail_wood"
+    },
+    "shape=north_west": {
+      "model": "hbm:block/rail_wood_corner",
+      "y": 180
+    },
+    "shape=south_east": {
+      "model": "hbm:block/rail_wood_corner"
+    },
+    "shape=south_west": {
+      "model": "hbm:block/rail_wood_corner",
+      "y": 90
+    }
+  }
+}

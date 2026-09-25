@@ -1,0 +1,139 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_lasrifle_base",
+    "draws": [
+      {
+        "excludes_mods": [
+          {
+            "id": 218
+          }
+        ],
+        "parts": [
+          "Gun",
+          "Stock",
+          "Scope",
+          "Lever",
+          "Battery"
+        ]
+      },
+      {
+        "parts": [
+          "Gun",
+          "Stock",
+          "Lever",
+          "Battery"
+        ],
+        "requires_mods": [
+          {
+            "id": 218
+          }
+        ]
+      },
+      {
+        "excludes_mods": [
+          {
+            "id": 216
+          }
+        ],
+        "parts": [
+          "Barrel"
+        ]
+      },
+      {
+        "obj": "hbm:models/weapons/lasrifle_mods.obj",
+        "parts": [
+          "BarrelShotgun"
+        ],
+        "requires_mods": [
+          {
+            "id": 216
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/lasrifle_mods.png"
+      },
+      {
+        "obj": "hbm:models/weapons/lasrifle_mods.obj",
+        "parts": [
+          "UnderBarrel"
+        ],
+        "requires_mods": [
+          {
+            "id": 217
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/lasrifle_mods.png"
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "color": 16711680,
+        "duration": 150,
+        "kind": "laser",
+        "length": 1.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          1.5,
+          -1.0,
+          0.0,
+          -0.0,
+          12.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "color": 16744448,
+        "duration": 150,
+        "kind": "laser",
+        "length": 0.75,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          -0.25,
+          0.0,
+          1.0,
+          0.0,
+          1.5,
+          -1.0,
+          0.0,
+          -0.0,
+          12.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -6.25,
+      6.25,
+      -0.0,
+      -6.25,
+      0.0,
+      6.25,
+      6.25,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/lasrifle.obj",
+    "texture": "hbm:textures/models/weapons/lasrifle.png"
+  }
+}

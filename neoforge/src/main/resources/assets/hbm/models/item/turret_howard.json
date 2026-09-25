@@ -1,0 +1,198 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.5064299,
+        4.7490587,
+        1.4858682
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        -0.24071765,
+        4.7490587,
+        1.5512357
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        6.4400005,
+        1.4375
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        0.5,
+        -0.46875
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "translation": [
+        -0.4419421,
+        -0.9219327,
+        -6.8672676
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        3.0454955,
+        -24.76231,
+        3.6294813
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0.0,
+        18.0,
+        -1.875
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -0.36614585,
+        4.181416,
+        1.9162728
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -2.191968,
+        3.7999942,
+        1.4302872
+      ]
+    }
+  },
+  "groups": [
+    {
+      "model": "hbm:models/turrets/turret_chekhov.obj",
+      "parts": [
+        "Base"
+      ],
+      "texture": "base"
+    },
+    {
+      "parts": [
+        "Carriage"
+      ],
+      "texture": "carriage_ciws"
+    },
+    {
+      "parts": [
+        "Body"
+      ],
+      "texture": "howard"
+    },
+    {
+      "parts": [
+        "BarrelsTop",
+        "BarrelsBottom"
+      ],
+      "texture": "howard_barrels"
+    }
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/turrets/turret_howard.obj",
+  "offset_x": -0.90625,
+  "offset_y": -1.0,
+  "textures": {
+    "base": "hbm:block/models/turrets/base",
+    "carriage_ciws": "hbm:block/models/turrets/carriage_ciws",
+    "howard": "hbm:block/models/turrets/howard",
+    "howard_barrels": "hbm:block/models/turrets/howard_barrels",
+    "particle": "hbm:block/models/turrets/base"
+  }
+}

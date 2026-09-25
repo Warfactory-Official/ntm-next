@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_heavy/ferrouranium",
+    "C": "hbm:weapon_mod_special_scope",
+    "G": "#hbm:grips/wood",
+    "M": "#hbm:gun_mechanisms/weapon_steel",
+    "R": "#hbm:receivers_heavy/ferrouranium",
+    "S": "#hbm:stocks/wood"
+  },
+  "pattern": [
+    " C ",
+    "BRS",
+    " MG"
+  ],
+  "result": {
+    "id": "hbm:gun_amat"
+  }
+}

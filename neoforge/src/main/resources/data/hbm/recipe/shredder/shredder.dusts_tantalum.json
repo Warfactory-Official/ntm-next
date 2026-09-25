@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/tantalum"
+    }
+  ],
+  "order": 351,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

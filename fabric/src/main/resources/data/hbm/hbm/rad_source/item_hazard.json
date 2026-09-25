@@ -1,0 +1,38 @@
+{
+  "rate": {
+    "type": "item_hazard"
+  },
+  "targets": [
+    "hbm:block_yellowcake",
+    "hbm:block_uranium",
+    "hbm:block_u233",
+    "hbm:block_u235",
+    "hbm:block_u238",
+    "hbm:block_thorium",
+    "hbm:block_plutonium",
+    "hbm:block_pu_mix",
+    "hbm:block_pu238",
+    "hbm:block_pu239",
+    "hbm:block_pu240",
+    "hbm:block_neptunium",
+    "hbm:block_polonium",
+    "hbm:block_ra226",
+    "hbm:block_actinium",
+    "hbm:block_schrabidium",
+    "hbm:block_solinium",
+    "hbm:block_schrabidate",
+    "hbm:block_schraranium",
+    "hbm:block_uranium_fuel",
+    "hbm:block_thorium_fuel",
+    "hbm:block_mox_fuel",
+    "hbm:block_plutonium_fuel",
+    "hbm:block_schrabidium_fuel",
+    "hbm:block_trinitite",
+    "hbm:block_white_phosphorus",
+    "hbm:block_fallout",
+    "hbm:block_red_phosphorus",
+    "hbm:block_waste",
+    "hbm:block_waste_painted",
+    "hbm:block_waste_vitrified"
+  ]
+}

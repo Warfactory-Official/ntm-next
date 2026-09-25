@@ -1,0 +1,22 @@
+{
+  "fabric:type": "hbm:obj",
+  "parent": "hbm:block/cable_base",
+  "hidden": [
+    "negY",
+    "negZ",
+    "posY",
+    "posZ",
+    "CZ",
+    "CX",
+    "CY"
+  ],
+  "model": "hbm:models/blocks/cable_neo.obj",
+  "offset_y": 0.5,
+  "skins": {
+    "all": [
+      "negX",
+      "posX",
+      "Core"
+    ]
+  }
+}

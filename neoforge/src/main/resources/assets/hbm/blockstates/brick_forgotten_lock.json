@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "variant=0": {
+      "model": "hbm:block/brick_forgotten_lock"
+    },
+    "variant=1": {
+      "model": "hbm:block/brick_forgotten_lock_1"
+    },
+    "variant=2": {
+      "model": "hbm:block/brick_forgotten_lock_2"
+    }
+  }
+}

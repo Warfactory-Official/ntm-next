@@ -1,0 +1,22 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "double_sided": [
+    "Main"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Fluid",
+    "Glass"
+  ],
+  "model": "hbm:models/machines/solidifier.obj",
+  "skins": {
+    "all": [
+      "Main"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/solidifier",
+    "particle": "hbm:block/models/machines/solidifier"
+  }
+}

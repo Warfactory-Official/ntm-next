@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 72,
+      "material": "flux"
+    }
+  ],
+  "targets": "hbm:powder_flux"
+}

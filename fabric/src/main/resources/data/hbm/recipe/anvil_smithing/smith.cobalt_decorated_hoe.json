@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "hbm:cobalt_hoe"
+    },
+    {
+      "ingredient": "hbm:ingot_meteorite"
+    }
+  ],
+  "kind": "hot",
+  "order": 35,
+  "output_items": [
+    "hbm:cobalt_decorated_hoe"
+  ],
+  "tier": 3
+}

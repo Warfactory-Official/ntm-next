@@ -1,0 +1,54 @@
+{
+  "type": "hbm:rock_mill",
+  "auto_switch_group": "autoswitch.crushing",
+  "duration": 200,
+  "icon_from_input": true,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:ores/bauxite"
+    }
+  ],
+  "name_wrapper": "rock.crushing",
+  "order": 7,
+  "output_fluids": [
+    {
+      "type": "hbm:colloid",
+      "amount": 250
+    }
+  ],
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "minecraft:gravel"
+        },
+        "weight": 25
+      },
+      {
+        "data": {
+          "id": "minecraft:clay_ball"
+        },
+        "weight": 25
+      },
+      {
+        "data": {
+          "id": "hbm:stone_resource_hematite"
+        },
+        "weight": 25
+      },
+      {
+        "data": {
+          "id": "hbm:ore_titanium"
+        },
+        "weight": 25
+      }
+    ]
+  ],
+  "power": 25
+}

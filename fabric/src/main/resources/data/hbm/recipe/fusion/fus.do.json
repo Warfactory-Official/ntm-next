@@ -1,0 +1,32 @@
+{
+  "type": "hbm:fusion",
+  "custom_localization": true,
+  "duration": 100,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:oxygen",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:gas_tank"
+  },
+  "ignition_temp": 250000,
+  "input_fluids": [
+    {
+      "type": "hbm:deuterium",
+      "amount": 10
+    },
+    {
+      "type": "hbm:oxygen",
+      "amount": 10
+    }
+  ],
+  "neutron_flux": 50.0,
+  "order": 1,
+  "output_items": [
+    "hbm:pellet_charged"
+  ],
+  "output_temp": 1250000,
+  "power": 25000
+}

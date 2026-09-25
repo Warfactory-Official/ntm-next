@@ -1,0 +1,15 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#c:fine_wires/gold"
+    }
+  ],
+  "order": 307,
+  "output_items": [
+    "hbm:gadget_wireing"
+  ],
+  "power": 100
+}

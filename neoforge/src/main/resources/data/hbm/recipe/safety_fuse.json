@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "minecraft:gunpowder",
+    "S": "minecraft:string"
+  },
+  "pattern": [
+    "SSS",
+    "SGS",
+    "SSS"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:safety_fuse"
+  }
+}

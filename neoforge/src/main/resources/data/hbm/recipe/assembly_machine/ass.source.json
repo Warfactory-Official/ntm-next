@@ -1,0 +1,39 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.chip_quantum"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:pa_beamline"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:magnetron"
+    },
+    {
+      "ingredient": "hbm:circuit_quantum"
+    }
+  ],
+  "order": 215,
+  "output_items": [
+    "hbm:pa_source"
+  ],
+  "power": 100
+}

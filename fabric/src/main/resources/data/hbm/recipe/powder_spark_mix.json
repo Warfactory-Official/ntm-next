@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/workers_alloy",
+    "#c:dusts/euphemium",
+    "hbm:powder_power"
+  ],
+  "result": {
+    "count": 3,
+    "id": "hbm:powder_spark_mix"
+  }
+}

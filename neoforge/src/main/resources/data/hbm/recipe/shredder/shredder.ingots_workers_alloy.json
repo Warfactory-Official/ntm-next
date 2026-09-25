@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/workers_alloy"
+    }
+  ],
+  "order": 391,
+  "output_items": [
+    "hbm:powder_desh"
+  ]
+}

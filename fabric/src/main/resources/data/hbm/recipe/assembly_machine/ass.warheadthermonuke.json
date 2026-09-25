@@ -1,0 +1,40 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.controller"
+  ],
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:deuterium",
+      "amount": 4000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#hbm:plates_cast/titanium"
+    },
+    {
+      "count": 6,
+      "ingredient": "#hbm:plates_cast/lead"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:billets/plutonium_239"
+    },
+    {
+      "count": 12,
+      "ingredient": "hbm:ball_tatb"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_controller_advanced"
+    }
+  ],
+  "order": 357,
+  "output_items": [
+    "hbm:warhead_mirv"
+  ],
+  "power": 100
+}

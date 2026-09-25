@@ -1,0 +1,11 @@
+{
+  "rate": {
+    "type": "fixed",
+    "emission": 0.0018310546875,
+    "saturation": 500.0
+  },
+  "state": {
+    "level": "4"
+  },
+  "targets": "hbm:sellafield"
+}

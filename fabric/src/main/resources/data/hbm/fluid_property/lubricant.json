@@ -1,0 +1,27 @@
+{
+  "type": "liquid",
+  "color": "#606060",
+  "containers": {
+    "canister": {
+      "color": "#f1cc05"
+    }
+  },
+  "nfpa": {
+    "flame": 1,
+    "health": 2,
+    "react": 0
+  },
+  "shares": "#c:lubricant",
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "polluting": {
+      "burn": {
+        "SOOT": 0.004
+      },
+      "release": {
+        "POISON": 5.0E-5
+      }
+    }
+  }
+}

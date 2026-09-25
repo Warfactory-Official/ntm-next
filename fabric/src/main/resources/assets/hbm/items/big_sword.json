@@ -1,0 +1,31 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "hbm:mesh",
+          "base": "hbm:item/big_sword_base",
+          "cull": false,
+          "mesh": "hbm:models/weapons/big_sword.obj",
+          "skins": [
+            "hbm:textures/models/model_big_sword_texture.png"
+          ]
+        },
+        "when": [
+          "thirdperson_righthand",
+          "thirdperson_lefthand",
+          "firstperson_righthand",
+          "firstperson_lefthand",
+          "ground",
+          "fixed"
+        ]
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:item/big_sword_flat"
+    },
+    "property": "minecraft:display_context"
+  }
+}

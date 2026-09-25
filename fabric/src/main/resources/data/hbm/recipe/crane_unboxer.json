@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:conveyor_wand_regular",
+    "P": {
+      "fabric:type": "fabric:components",
+      "base": "minecraft:shears",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "W": "#c:rods/wooden"
+  },
+  "pattern": [
+    "WWW",
+    "WPW",
+    "CCC"
+  ],
+  "result": {
+    "id": "hbm:crane_unboxer"
+  }
+}

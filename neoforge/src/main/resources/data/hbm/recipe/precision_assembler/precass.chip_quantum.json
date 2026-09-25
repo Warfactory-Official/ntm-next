@@ -1,0 +1,62 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:precision_assembler",
+  "blueprint_pools": [
+    "528.chip_quantum"
+  ],
+  "duration": 300,
+  "input_fluids": [
+    {
+      "type": "hbm:helium4",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_silicon"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:wires_dense/bscco"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:pellet_charged"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:fine_wires/gold"
+    }
+  ],
+  "order": 8,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:circuit_chip_quantum"
+        },
+        "weight": 900
+      },
+      {
+        "data": {
+          "components": {
+            "hbm:broken_item_source": "hbm:circuit_chip_quantum"
+          },
+          "id": "hbm:broken_item"
+        },
+        "weight": 100
+      }
+    ]
+  ],
+  "power": 20000
+}

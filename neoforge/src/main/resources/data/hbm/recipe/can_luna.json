@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:can_empty",
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:potion_contents": "minecraft:water"
+      },
+      "items": "minecraft:potion"
+    },
+    "minecraft:sugar",
+    "hbm:powder_meteorite_tiny"
+  ],
+  "result": {
+    "id": "hbm:can_luna"
+  }
+}

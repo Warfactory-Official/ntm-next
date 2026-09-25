@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/aluminum"
+    }
+  ],
+  "order": 18,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:wire_fine_aluminum"
+    }
+  ],
+  "overlay": "smithing",
+  "tier": 4
+}

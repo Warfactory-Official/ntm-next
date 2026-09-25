@@ -1,0 +1,34 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_schraranium"
+    }
+  ],
+  "laser_strength": "uv",
+  "order": 8,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_schrabidium"
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_uranium"
+        },
+        "weight": 2
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_neptunium"
+        },
+        "weight": 2
+      }
+    ]
+  ]
+}

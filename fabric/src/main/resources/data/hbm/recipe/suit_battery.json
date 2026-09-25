@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:dusts/cobalt",
+    "E": "#c:dusts/redstone",
+    "I": "hbm:plate_polymer",
+    "W": "#c:fine_wires/gold"
+  },
+  "pattern": [
+    " W ",
+    "IEI",
+    "ICI"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:suit_battery"
+  }
+}

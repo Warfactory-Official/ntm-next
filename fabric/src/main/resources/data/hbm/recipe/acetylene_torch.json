@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": "#hbm:ingots/any_plastic",
+    "S": "#c:plates/steel",
+    "T": "hbm:tank_steel"
+  },
+  "pattern": [
+    "SS ",
+    " PS",
+    " T "
+  ],
+  "result": {
+    "components": {
+      "hbm:tank_contents": [
+        {
+          "type": "hbm:unsaturateds",
+          "amount": 0,
+          "pressure": 0
+        },
+        {
+          "type": "hbm:oxygen",
+          "amount": 0,
+          "pressure": 0
+        }
+      ]
+    },
+    "id": "hbm:acetylene_torch"
+  }
+}

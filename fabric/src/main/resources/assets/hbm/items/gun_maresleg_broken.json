@@ -1,0 +1,56 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_maresleg_broken_base",
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "kind": "normal",
+        "length": 5.0,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          1.0,
+          -1.0,
+          0.0,
+          -0.0,
+          3.75,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -8.75,
+      0.0,
+      -0.0,
+      -8.75,
+      0.0,
+      0.0,
+      8.75,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/maresleg.obj",
+    "parts": [
+      "Gun",
+      "Lever"
+    ],
+    "texture": "hbm:textures/models/weapons/maresleg_broken.png"
+  }
+}

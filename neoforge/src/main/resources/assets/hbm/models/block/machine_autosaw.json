@@ -1,0 +1,23 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Engine",
+    "ArmUpper",
+    "ArmLower",
+    "ArmTip",
+    "Sawblade",
+    "Main"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/autosaw.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/autosaw",
+    "particle": "hbm:block/models/machines/autosaw"
+  }
+}

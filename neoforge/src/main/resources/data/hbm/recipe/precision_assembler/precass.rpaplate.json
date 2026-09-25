@@ -1,0 +1,37 @@
+{
+  "type": "hbm:precision_assembler",
+  "blueprint_pools": [
+    "discover..rpa"
+  ],
+  "duration": 3600,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "hbm:plate_armor_ajr"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_cast/saturnite"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:gun_mechanisms/saturnite"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:plate_kevlar"
+    },
+    {
+      "ingredient": "hbm:parts_legendary_tier2"
+    }
+  ],
+  "order": 55,
+  "output_items": [
+    "hbm:rpa_plate"
+  ],
+  "power": 25000
+}

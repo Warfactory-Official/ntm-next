@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/machine_hydrotreater"
+    },
+    "facing=north": {
+      "model": "hbm:block/machine_hydrotreater"
+    },
+    "facing=south": {
+      "model": "hbm:block/machine_hydrotreater"
+    },
+    "facing=west": {
+      "model": "hbm:block/machine_hydrotreater"
+    }
+  }
+}

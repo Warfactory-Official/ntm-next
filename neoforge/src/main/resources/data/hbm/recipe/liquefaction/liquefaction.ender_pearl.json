@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "minecraft:ender_pearl"
+    }
+  ],
+  "order": 20,
+  "output_fluids": [
+    {
+      "type": "hbm:enderjuice",
+      "amount": 100
+    }
+  ]
+}

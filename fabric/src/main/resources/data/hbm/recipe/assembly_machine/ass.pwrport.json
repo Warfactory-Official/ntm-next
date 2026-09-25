@@ -1,0 +1,32 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/lead"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:concretes"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/steel"
+    }
+  ],
+  "order": 251,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:pwr_port"
+    }
+  ],
+  "power": 500
+}

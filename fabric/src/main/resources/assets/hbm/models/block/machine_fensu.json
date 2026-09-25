@@ -1,0 +1,19 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Lights",
+    "Disc"
+  ],
+  "model": "hbm:models/machines/fensu.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/fensu",
+    "particle": "hbm:block/machine_fensu"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "gaseous",
+  "color": "#404040",
+  "nfpa": {
+    "flame": 0,
+    "health": 3,
+    "react": 0
+  },
+  "shares": "#c:carbon_dioxide",
+  "symbol": "ASPHYXIANT",
+  "temperature": 20,
+  "traits": {
+    "polluting": {
+      "release": {
+        "POISON": 2.0000001E-5
+      }
+    }
+  }
+}

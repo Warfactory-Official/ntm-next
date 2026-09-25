@@ -1,0 +1,8 @@
+{
+  "type": "hbm:bedrock_oil_deposit",
+  "config": {
+    "core": {
+      "Name": "hbm:ore_bedrock_oil"
+    }
+  }
+}

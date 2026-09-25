@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:ingots/graphite",
+    "T": "#c:bolts/steel"
+  },
+  "pattern": [
+    "C",
+    "T",
+    "C"
+  ],
+  "result": {
+    "id": "hbm:arc_electrode_graphite"
+  }
+}

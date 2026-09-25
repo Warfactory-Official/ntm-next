@@ -1,0 +1,23 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 60,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:fine_wires/aluminum"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/copper"
+    }
+  ],
+  "order": 18,
+  "output_items": [
+    "hbm:thruster_small"
+  ],
+  "power": 1000
+}

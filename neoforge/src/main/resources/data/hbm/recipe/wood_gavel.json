@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "R": "#c:rods/wooden",
+    "S": "#minecraft:wooden_slabs",
+    "W": "#minecraft:logs"
+  },
+  "pattern": [
+    "SWS",
+    " R ",
+    " R "
+  ],
+  "result": {
+    "id": "hbm:wood_gavel"
+  }
+}

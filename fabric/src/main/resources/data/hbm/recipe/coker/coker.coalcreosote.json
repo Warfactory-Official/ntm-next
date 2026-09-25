@@ -1,0 +1,19 @@
+{
+  "type": "hbm:coker",
+  "input_fluids": [
+    {
+      "type": "hbm:coalcreosote",
+      "amount": 3200
+    }
+  ],
+  "order": 2,
+  "output_fluids": [
+    {
+      "type": "hbm:naphtha_coker",
+      "amount": 320
+    }
+  ],
+  "output_items": [
+    "hbm:coke_petroleum"
+  ]
+}

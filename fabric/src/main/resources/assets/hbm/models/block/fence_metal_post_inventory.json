@@ -1,0 +1,62 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "north": {
+          "texture": "#span"
+        },
+        "south": {
+          "texture": "#span"
+        }
+      },
+      "from": [
+        0,
+        0,
+        8
+      ],
+      "to": [
+        16,
+        16,
+        8
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#post"
+        },
+        "east": {
+          "texture": "#post"
+        },
+        "north": {
+          "texture": "#post"
+        },
+        "south": {
+          "texture": "#post"
+        },
+        "up": {
+          "texture": "#post"
+        },
+        "west": {
+          "texture": "#post"
+        }
+      },
+      "from": [
+        6,
+        0,
+        6
+      ],
+      "to": [
+        10,
+        16,
+        10
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "hbm:block/fence_metal",
+    "post": "hbm:block/fence_metal_post",
+    "span": "hbm:block/fence_metal"
+  }
+}

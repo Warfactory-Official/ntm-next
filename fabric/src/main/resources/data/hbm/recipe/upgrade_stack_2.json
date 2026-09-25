@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_capacitor",
+    "P": "hbm:part_generic_piston_hydraulic",
+    "U": "hbm:upgrade_stack_1"
+  },
+  "pattern": [
+    " C ",
+    "PUP",
+    " C "
+  ],
+  "result": {
+    "id": "hbm:upgrade_stack_2"
+  }
+}

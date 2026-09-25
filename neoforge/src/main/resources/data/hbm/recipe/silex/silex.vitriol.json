@@ -1,0 +1,41 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 300,
+  "fluid_produced": 1000,
+  "input_fluids": [
+    {
+      "type": "hbm:vitriol",
+      "amount": 0
+    }
+  ],
+  "laser_strength": "ir",
+  "order": 13,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:powder_bromine"
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "id": "hbm:powder_iodine"
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "id": "hbm:powder_iron"
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "id": "hbm:sulfur"
+        },
+        "weight": 15
+      }
+    ]
+  ]
+}

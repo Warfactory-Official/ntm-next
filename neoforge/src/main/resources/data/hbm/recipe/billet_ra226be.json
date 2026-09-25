@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:nuggets/radium_226",
+    "#c:nuggets/radium_226",
+    "#c:nuggets/radium_226",
+    "hbm:nugget_beryllium",
+    "hbm:nugget_beryllium",
+    "hbm:nugget_beryllium"
+  ],
+  "result": {
+    "id": "hbm:billet_ra226be"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "hbm:cm_block_desh"
+  },
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "result": {
+    "count": 16,
+    "id": "hbm:cm_sheet_desh"
+  }
+}

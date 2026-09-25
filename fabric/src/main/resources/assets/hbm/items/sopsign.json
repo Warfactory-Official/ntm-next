@@ -1,0 +1,31 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "hbm:mesh",
+          "base": "hbm:item/sopsign_base",
+          "cull": false,
+          "mesh": "hbm:models/weapons/stopsign.obj",
+          "skins": [
+            "hbm:textures/models/weapons/sopsign.png"
+          ]
+        },
+        "when": [
+          "thirdperson_righthand",
+          "thirdperson_lefthand",
+          "firstperson_righthand",
+          "firstperson_lefthand",
+          "ground",
+          "fixed"
+        ]
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:item/sopsign_flat"
+    },
+    "property": "minecraft:display_context"
+  }
+}

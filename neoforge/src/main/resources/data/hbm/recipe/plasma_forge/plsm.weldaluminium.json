@@ -1,0 +1,17 @@
+{
+  "type": "hbm:plasma_forge",
+  "auto_switch_group": "autoswitch.weldPlates",
+  "duration": 150,
+  "ignition_temp": 500000,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/aluminum"
+    }
+  ],
+  "order": 8,
+  "output_items": [
+    "hbm:plate_welded_aluminum"
+  ],
+  "power": 10000
+}

@@ -1,0 +1,35 @@
+{
+  "parent": "hbm:burnerpress",
+  "criteria": {
+    "crafted_hbm_gun_b92": {
+      "conditions": {
+        "recipe_id": "hbm:gun_b92"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "crafted_hbm_piston_selenium": {
+      "conditions": {
+        "recipe_id": "hbm:piston_selenium"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.selenium.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:ingot_starmetal"
+    },
+    "title": {
+      "translate": "achievement.selenium"
+    }
+  },
+  "requirements": [
+    [
+      "crafted_hbm_piston_selenium",
+      "crafted_hbm_gun_b92"
+    ]
+  ]
+}

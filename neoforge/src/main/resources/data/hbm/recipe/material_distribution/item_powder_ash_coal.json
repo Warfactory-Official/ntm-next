@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 16,
+      "material": "carbon"
+    }
+  ],
+  "targets": "hbm:powder_ash_coal"
+}

@@ -1,0 +1,25 @@
+{
+  "type": "hbm:pyro_oven",
+  "duration": 300,
+  "input_fluids": [
+    {
+      "type": "hbm:syngas",
+      "amount": 2000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/tungsten"
+    }
+  ],
+  "order": 57,
+  "output_fluids": [
+    {
+      "type": "hbm:spentsteam",
+      "amount": 1000
+    }
+  ],
+  "output_items": [
+    "hbm:ingot_tungsten_carbide"
+  ]
+}

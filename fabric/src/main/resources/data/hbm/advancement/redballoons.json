@@ -1,0 +1,44 @@
+{
+  "parent": "hbm:polymer",
+  "criteria": {
+    "crafted_hbm_mp_warhead_15_boxcar": {
+      "conditions": {
+        "recipe_id": "hbm:mp_warhead_15_boxcar"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": [
+            "hbm:missile_nuclear",
+            "hbm:missile_nuclear_cluster",
+            "hbm:missile_doomsday",
+            "hbm:mp_warhead_10_nuclear",
+            "hbm:mp_warhead_10_nuclear_large",
+            "hbm:mp_warhead_15_nuclear"
+          ]
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.redBalloons.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:missile_nuclear"
+    },
+    "title": {
+      "translate": "achievement.redBalloons"
+    }
+  },
+  "requirements": [
+    [
+      "crafted_hbm_mp_warhead_15_boxcar",
+      "produced"
+    ]
+  ]
+}

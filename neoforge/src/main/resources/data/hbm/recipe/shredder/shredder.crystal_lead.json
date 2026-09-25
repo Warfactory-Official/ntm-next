@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_lead"
+    }
+  ],
+  "order": 114,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:powder_lead"
+    }
+  ]
+}

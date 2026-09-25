@@ -1,0 +1,21 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:heater_firebox"
+    }
+  ],
+  "order": 215,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:plate_steel"
+    },
+    {
+      "count": 6,
+      "id": "minecraft:copper_ingot"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

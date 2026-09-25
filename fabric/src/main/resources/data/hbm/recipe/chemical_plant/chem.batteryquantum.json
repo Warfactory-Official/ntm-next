@@ -1,0 +1,35 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:perfluoromethyl_cold",
+      "amount": 8000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#hbm:wires_dense/bscco"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:pellet_charged"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:ingot_cft"
+    }
+  ],
+  "order": 33,
+  "output_fluids": [
+    {
+      "type": "hbm:perfluoromethyl",
+      "amount": 8000
+    }
+  ],
+  "output_items": [
+    "hbm:battery_pack_battery_quantum"
+  ],
+  "power": 100000
+}

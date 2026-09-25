@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#hbm:billets/gold_198",
+    "#hbm:billets/gold_198",
+    "#hbm:billets/gold_198",
+    "#c:plates/iron"
+  ],
+  "result": {
+    "id": "hbm:pellet_rtg_gold"
+  }
+}

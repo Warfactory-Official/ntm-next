@@ -1,0 +1,173 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -0.0,
+        -45.0,
+        0.0
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        -0.6894307,
+        0.0,
+        -0.6894312
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -0.0,
+        -45.0,
+        -0.0
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        0.6894293,
+        0.0,
+        0.6894293
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.9375,
+        0.9375,
+        0.9375
+      ],
+      "translation": [
+        1.5234375,
+        -0.55999947,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        -4.0,
+        0.609375
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -45.0,
+        -180.0
+      ],
+      "scale": [
+        0.9375,
+        0.93749994,
+        0.9375
+      ],
+      "translation": [
+        -1.0772324,
+        -0.53861666,
+        0.9329109
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        1.5,
+        1.5,
+        1.5
+      ],
+      "translation": [
+        2.4375,
+        0.0,
+        0.0
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        1.875,
+        1.875,
+        1.875
+      ],
+      "translation": [
+        -3.046875,
+        0.0,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -110.00001,
+        -45.0,
+        180.0
+      ],
+      "scale": [
+        0.5625,
+        0.5625,
+        0.5625
+      ],
+      "translation": [
+        -1.2330463,
+        0.841316,
+        0.42172635
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -110.00001,
+        -45.0,
+        -180.0
+      ],
+      "scale": [
+        0.5625,
+        0.5625,
+        0.5625
+      ],
+      "translation": [
+        -0.6463399,
+        1.3926396,
+        0.22106111
+      ]
+    }
+  },
+  "gui_light": "side",
+  "model": "hbm:models/lights/cage_lamp.obj",
+  "offset_x": -0.1015625,
+  "offset_y": 0.5,
+  "skins": {
+    "all": [
+      "CageLamp"
+    ]
+  },
+  "smooth": false,
+  "textures": {
+    "all": "hbm:block/cage_lamp",
+    "particle": "hbm:block/cage_lamp"
+  }
+}

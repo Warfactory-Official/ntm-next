@@ -1,0 +1,17 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/beryllium"
+    }
+  ],
+  "order": 28,
+  "output_items": [
+    "hbm:powder_beryllium",
+    "hbm:powder_beryllium",
+    "hbm:powder_emerald",
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

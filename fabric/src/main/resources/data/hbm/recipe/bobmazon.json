@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:book",
+    "minecraft:gold_nugget",
+    "minecraft:string",
+    "#c:dyes/blue"
+  ],
+  "result": {
+    "id": "hbm:bobmazon"
+  }
+}

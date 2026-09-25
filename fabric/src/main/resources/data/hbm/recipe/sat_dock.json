@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:crate_iron",
+    "P": "#hbm:ingots/any_plastic",
+    "S": "#c:ingots/steel"
+  },
+  "pattern": [
+    "SSS",
+    "PCP"
+  ],
+  "result": {
+    "id": "hbm:sat_dock"
+  }
+}

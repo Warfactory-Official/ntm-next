@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:crate_steel",
+    "I": "#c:ingots/titanium",
+    "L": "hbm:circuit_vacuum_tube"
+  },
+  "pattern": [
+    " L ",
+    "ICI",
+    " I "
+  ],
+  "result": {
+    "id": "hbm:mass_storage_iron"
+  }
+}

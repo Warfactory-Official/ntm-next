@@ -1,0 +1,124 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_star_f_base",
+    "draws": [
+      {
+        "parts": [
+          "Gun",
+          "Slide",
+          "Mag",
+          "Hammer"
+        ]
+      },
+      {
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          2.375,
+          0.0,
+          0.0,
+          1.0,
+          -0.25,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "obj": "hbm:models/weapons/uzi.obj",
+        "parts": [
+          "Silencer"
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "texture": "hbm:textures/models/weapons/uzi.png"
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 75,
+        "excludes_mods": [
+          {
+            "id": 201
+          }
+        ],
+        "kind": "normal",
+        "length": 7.5,
+        "matrix": [
+          -0.0,
+          0.0,
+          0.75,
+          0.0,
+          -0.0,
+          0.75,
+          0.0,
+          3.0,
+          -0.75,
+          0.0,
+          0.0,
+          6.25,
+          -0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "random_degrees": 90
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -6.25,
+      31.25,
+      -0.0,
+      -6.25,
+      0.0,
+      1.5625,
+      6.25,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/star_f.obj",
+    "pose_overrides": [
+      {
+        "gui": [
+          0.625,
+          -1.4901161E-8,
+          2.9802322E-8,
+          0.0,
+          0.0,
+          0.62500006,
+          0.0,
+          -2.3841858E-7,
+          2.9802322E-8,
+          1.4901161E-8,
+          0.625,
+          -3.7499995,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "requires_mods": [
+          {
+            "id": 201
+          }
+        ]
+      }
+    ],
+    "texture": "hbm:textures/models/weapons/star_f.png"
+  }
+}

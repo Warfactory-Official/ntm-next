@@ -1,0 +1,19 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:gravel_obsidian"
+    }
+  ],
+  "order": 263,
+  "output_items": [
+    "hbm:brick_obsidian"
+  ]
+}

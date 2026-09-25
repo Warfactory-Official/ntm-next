@@ -1,0 +1,32 @@
+{
+  "type": "hbm:crucible",
+  "frequency": 9,
+  "icon": {
+    "id": "hbm:ingot_arsenic_bronze"
+  },
+  "input_materials": [
+    {
+      "amount": 64,
+      "material": "copper"
+    },
+    {
+      "amount": 8,
+      "material": "arsenic"
+    },
+    {
+      "amount": 24,
+      "material": "flux"
+    }
+  ],
+  "order": 9,
+  "output_materials": [
+    {
+      "amount": 72,
+      "material": "arsenic_bronze"
+    },
+    {
+      "amount": 24,
+      "material": "slag"
+    }
+  ]
+}

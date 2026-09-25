@@ -1,0 +1,33 @@
+{
+  "type": "hbm:electrolyser_metal",
+  "duration": 20,
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "grade": "primary_second"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 19,
+  "output_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "grade": "crumbs"
+        }
+      },
+      "id": "hbm:bedrock_ore"
+    }
+  ],
+  "output_material": {
+    "amount": 288,
+    "material": "iron"
+  },
+  "output_material_2": {
+    "amount": 576,
+    "material": "copper"
+  }
+}

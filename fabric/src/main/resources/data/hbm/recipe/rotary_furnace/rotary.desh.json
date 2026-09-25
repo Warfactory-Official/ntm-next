@@ -1,0 +1,21 @@
+{
+  "type": "hbm:rotary_furnace",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:lightoil",
+      "amount": 100
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_desh_ready"
+    }
+  ],
+  "order": 5,
+  "output_material": {
+    "amount": 72,
+    "material": "workers_alloy"
+  },
+  "steam": 200
+}

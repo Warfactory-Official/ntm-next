@@ -1,0 +1,30 @@
+{
+  "content": {
+    "en_us": "Common resource. Mainly used for things that involve radiation, as well as ammunition, and as solder for many circuits.",
+    "ru_ru": "Распространённый ресурс. В основном используется для вещей, связанных с радиацией, а также для боеприпасов и в качестве припоя для многих схем.",
+    "uk_ua": "Поширений ресурс. В основному використовується для речей, пов'язаних з радіацією, та для боєприпасів, а також як припій для багатьох схем.",
+    "zh_cn": "常见资源，主要用于涉及辐射的设备，也用于制作弹药，以及用作电路板的焊料。"
+  },
+  "icon": "hbm:ingot_lead",
+  "name": "Lead",
+  "title": {
+    "en_us": "Lead",
+    "ru_ru": "Свинец",
+    "uk_ua": "Свинець",
+    "zh_cn": "铅"
+  },
+  "trigger": [
+    {
+      "items": "hbm:ingot_lead"
+    },
+    {
+      "items": "hbm:nugget_lead"
+    },
+    {
+      "items": "hbm:powder_lead"
+    },
+    {
+      "items": "hbm:raw_lead"
+    }
+  ]
+}

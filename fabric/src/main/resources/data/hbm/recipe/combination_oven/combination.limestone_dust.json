@@ -1,0 +1,18 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/limestone"
+    }
+  ],
+  "order": 13,
+  "output_fluids": [
+    {
+      "type": "hbm:carbondioxide",
+      "amount": 50
+    }
+  ],
+  "output_items": [
+    "hbm:powder_calcium"
+  ]
+}

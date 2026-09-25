@@ -1,0 +1,39 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 600,
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_pellet": {
+          "depletion": 2
+        }
+      },
+      "ingredient": "hbm:rbmk_pellet_heu235"
+    }
+  ],
+  "laser_strength": "ir",
+  "order": 123,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_u235"
+        },
+        "weight": 50
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_long_tiny_uranium235"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_short_tiny_uranium235"
+        },
+        "weight": 30
+      }
+    ]
+  ]
+}

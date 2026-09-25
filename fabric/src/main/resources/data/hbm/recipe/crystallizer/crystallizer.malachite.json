@@ -1,0 +1,28 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 300,
+  "input_fluids": [
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:chunk_ore_malachite"
+    }
+  ],
+  "order": 254,
+  "output_items": [
+    {
+      "components": {
+        "hbm:scrap": {
+          "amount": 72,
+          "material": 2900
+        }
+      },
+      "id": "hbm:scraps"
+    }
+  ],
+  "productivity": 0.1
+}

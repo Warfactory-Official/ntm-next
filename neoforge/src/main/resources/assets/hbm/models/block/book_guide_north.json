@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "hbm:block/guide_bottom",
+    "east": "hbm:block/guide_side_left",
+    "north": "hbm:block/guide_front",
+    "particle": "hbm:block/guide_front",
+    "south": "hbm:block/guide_back",
+    "up": "hbm:block/guide_top",
+    "west": "hbm:block/guide_side_right"
+  }
+}

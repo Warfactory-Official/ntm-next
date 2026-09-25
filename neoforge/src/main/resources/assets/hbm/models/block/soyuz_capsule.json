@@ -1,0 +1,37 @@
+{
+  "groups": [
+    {
+      "matrix": [
+        0.87542605,
+        -0.23456971,
+        -0.42261827,
+        0.0,
+        0.25881904,
+        0.9659258,
+        0.0,
+        -0.25,
+        0.4082179,
+        -0.10938165,
+        0.90630776,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Capsule"
+      ],
+      "texture": "soyuz_lander"
+    }
+  ],
+  "hidden": [
+    "Chute"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/soyuz_lander.obj",
+  "textures": {
+    "particle": "hbm:block/soyuz_capsule",
+    "soyuz_lander": "hbm:models/soyuz_capsule/soyuz_lander"
+  }
+}

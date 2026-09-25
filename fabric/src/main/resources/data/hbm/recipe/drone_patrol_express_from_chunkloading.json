@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:drone_patrol_express_chunkloading"
+  ],
+  "result": {
+    "id": "hbm:drone_patrol_express"
+  }
+}

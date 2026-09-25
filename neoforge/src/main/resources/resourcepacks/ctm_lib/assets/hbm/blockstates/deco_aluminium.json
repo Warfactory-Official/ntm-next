@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbm:deco_aluminium"
+  ],
+  "ctm_textures": {
+    "hbm:block/deco_aluminium": "hbm:block/ctm_lib/deco_aluminium"
+  },
+  "variants": {
+    "": {
+      "model": "hbm:block/deco_aluminium"
+    }
+  }
+}

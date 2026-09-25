@@ -1,0 +1,105 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_heavy_revolver_lilmac_base",
+    "draws": [
+      {
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          -1.0,
+          0.0,
+          -0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Gun",
+          "Cylinder",
+          "Bullets",
+          "Casings",
+          "Pivot",
+          "Hammer"
+        ]
+      },
+      {
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          -1.0,
+          0.0,
+          -0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "parts": [
+          "Scope"
+        ],
+        "texture": "hbm:textures/models/weapons/lilmac_scope.png"
+      }
+    ],
+    "equipped_muzzles": [
+      {
+        "duration": 0,
+        "kind": "gap",
+        "length": 0.0,
+        "matrix": [
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          2.5,
+          -1.0,
+          0.0,
+          -0.0,
+          -0.125,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    ],
+    "mod_table": [
+      0.0,
+      0.0,
+      -5.0,
+      0.0,
+      -0.0,
+      -5.0,
+      0.0,
+      2.5,
+      5.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/lilmac.obj",
+    "texture": "hbm:textures/models/weapons/lilmac.png"
+  }
+}

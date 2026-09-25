@@ -1,0 +1,32 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.tcalloy"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:item_expensive_ferro_plating"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/rubber"
+    }
+  ],
+  "name": "ass.watzcoolerEx",
+  "order": 280,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:watz_cooler"
+    }
+  ],
+  "power": 100
+}

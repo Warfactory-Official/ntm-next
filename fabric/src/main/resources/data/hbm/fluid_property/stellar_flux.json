@@ -1,0 +1,14 @@
+{
+  "type": "gaseous",
+  "color": "#e300ff",
+  "flags": [
+    "amat"
+  ],
+  "nfpa": {
+    "flame": 4,
+    "health": 0,
+    "react": 4
+  },
+  "symbol": "ANTIMATTER",
+  "temperature": 20
+}

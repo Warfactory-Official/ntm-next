@@ -1,0 +1,32 @@
+{
+  "type": "hbm:bedrock_ore",
+  "config": {
+    "auto": false,
+    "depth_rock": {
+      "Name": "hbm:stone_depth_nether"
+    },
+    "entries": [
+      {
+        "color": 16383821,
+        "count": 4,
+        "item": "minecraft:glowstone_dust",
+        "tier": 1,
+        "weight": 100
+      },
+      {
+        "color": 14103583,
+        "count": 4,
+        "item": "hbm:powder_fire",
+        "tier": 1,
+        "weight": 50
+      },
+      {
+        "color": 15790045,
+        "count": 4,
+        "item": "minecraft:quartz",
+        "tier": 1,
+        "weight": 100
+      }
+    ]
+  }
+}

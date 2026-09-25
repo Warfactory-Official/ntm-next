@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:ams_catalyst_blank",
+    "hbm:rune_isa",
+    "hbm:rune_dagaz",
+    "hbm:rune_jera",
+    "hbm:rune_jera",
+    "#c:dusts/beryllium",
+    "#c:dusts/beryllium",
+    "#c:dusts/beryllium",
+    "#c:dusts/beryllium"
+  ],
+  "result": {
+    "id": "hbm:ams_catalyst_beryllium"
+  }
+}

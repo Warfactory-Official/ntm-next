@@ -1,0 +1,29 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:solvent",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/rubber"
+    }
+  ],
+  "order": 24,
+  "output_items": [
+    "hbm:item_expensive_plastic"
+  ],
+  "power": 20000
+}

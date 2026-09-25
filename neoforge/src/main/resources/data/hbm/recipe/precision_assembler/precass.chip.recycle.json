@@ -1,0 +1,47 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    },
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:precision_assembler",
+  "duration": 100,
+  "icon": {
+    "components": {
+      "hbm:broken_item_source": "hbm:circuit_chip"
+    },
+    "id": "hbm:broken_item"
+  },
+  "input_items": [
+    {
+      "components": {
+        "hbm:broken_item_source": "hbm:circuit_chip"
+      },
+      "ingredient": "hbm:broken_item"
+    }
+  ],
+  "name_wrapper": "precass.recycle",
+  "order": 3,
+  "output_items": [
+    {
+      "chance": 0.9,
+      "id": "hbm:circuit_silicon"
+    },
+    {
+      "chance": 0.9,
+      "count": 3,
+      "id": "hbm:plate_polymer"
+    },
+    {
+      "chance": 0.9,
+      "count": 4,
+      "id": "hbm:wire_fine_gold"
+    }
+  ],
+  "power": 200
+}

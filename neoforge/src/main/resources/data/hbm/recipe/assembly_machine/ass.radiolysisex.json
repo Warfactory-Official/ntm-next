@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_lead_plating"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/copper"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:thermo_element"
+    }
+  ],
+  "name": "ass.radiolysisEx",
+  "order": 121,
+  "output_items": [
+    "hbm:machine_radiolysis"
+  ],
+  "power": 100
+}

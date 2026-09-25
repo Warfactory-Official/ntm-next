@@ -1,0 +1,19 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:iongel",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:oil_tar_wax"
+    }
+  ],
+  "order": 281,
+  "output_items": [
+    "hbm:pellet_charged"
+  ]
+}

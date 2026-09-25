@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "north=false,east=false,south=false,west=false": {
+      "model": "hbm:block/sandbags"
+    },
+    "north=false,east=false,south=false,west=true": {
+      "model": "hbm:block/sandbags_west"
+    },
+    "north=false,east=false,south=true,west=false": {
+      "model": "hbm:block/sandbags_south"
+    },
+    "north=false,east=false,south=true,west=true": {
+      "model": "hbm:block/sandbags_south_west"
+    },
+    "north=false,east=true,south=false,west=false": {
+      "model": "hbm:block/sandbags_east"
+    },
+    "north=false,east=true,south=false,west=true": {
+      "model": "hbm:block/sandbags_east_west"
+    },
+    "north=false,east=true,south=true,west=false": {
+      "model": "hbm:block/sandbags_east_south"
+    },
+    "north=false,east=true,south=true,west=true": {
+      "model": "hbm:block/sandbags_east_south_west"
+    },
+    "north=true,east=false,south=false,west=false": {
+      "model": "hbm:block/sandbags_north"
+    },
+    "north=true,east=false,south=false,west=true": {
+      "model": "hbm:block/sandbags_north_west"
+    },
+    "north=true,east=false,south=true,west=false": {
+      "model": "hbm:block/sandbags_north_south"
+    },
+    "north=true,east=false,south=true,west=true": {
+      "model": "hbm:block/sandbags_north_south_west"
+    },
+    "north=true,east=true,south=false,west=false": {
+      "model": "hbm:block/sandbags_north_east"
+    },
+    "north=true,east=true,south=false,west=true": {
+      "model": "hbm:block/sandbags_north_east_west"
+    },
+    "north=true,east=true,south=true,west=false": {
+      "model": "hbm:block/sandbags_north_east_south"
+    },
+    "north=true,east=true,south=true,west=true": {
+      "model": "hbm:block/sandbags_north_east_south_west"
+    }
+  }
+}

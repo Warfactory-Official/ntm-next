@@ -1,0 +1,22 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:radiosolvent",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:powder_ash_soot"
+    }
+  ],
+  "order": 14,
+  "output_fluids": [
+    {
+      "type": "hbm:fullerene",
+      "amount": 250
+    }
+  ]
+}

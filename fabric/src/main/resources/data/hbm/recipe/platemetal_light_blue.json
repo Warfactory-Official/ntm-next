@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#c:dyes/light_blue",
+    "P": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:platemetal",
+      "components": {
+        "minecraft:block_state": {
+          "variant": "base"
+        }
+      }
+    }
+  },
+  "pattern": [
+    "PPP",
+    "PDP",
+    "PPP"
+  ],
+  "result": {
+    "components": {
+      "minecraft:block_state": {
+        "variant": "light_blue"
+      }
+    },
+    "count": 8,
+    "id": "hbm:platemetal"
+  }
+}

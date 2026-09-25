@@ -1,0 +1,171 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -0.0,
+        45.0,
+        0.0
+      ],
+      "scale": [
+        1.2,
+        1.2,
+        1.2
+      ],
+      "translation": [
+        -0.0,
+        0.38639355,
+        0.0
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -0.0,
+        45.0,
+        -0.0
+      ],
+      "scale": [
+        1.2,
+        1.2,
+        1.2
+      ],
+      "translation": [
+        0.0,
+        0.38639355,
+        0.0
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        1.875,
+        1.875,
+        1.875
+      ],
+      "translation": [
+        0.0,
+        0.04373932,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0.0,
+        -3.758504,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30.0,
+        -45.0,
+        -0.0
+      ],
+      "scale": [
+        1.875,
+        1.8749999,
+        1.875
+      ],
+      "translation": [
+        0.0,
+        0.5228534,
+        0.3018694
+      ]
+    },
+    "head": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        3.0,
+        3.0,
+        3.0
+      ],
+      "translation": [
+        0.0,
+        0.96598434,
+        0.0
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        3.75,
+        3.75,
+        3.75
+      ],
+      "translation": [
+        0.0,
+        1.2074795,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        69.99999,
+        -45.0,
+        0.0
+      ],
+      "scale": [
+        1.125,
+        1.125,
+        1.125
+      ],
+      "translation": [
+        1.8793864,
+        0.3578496,
+        0.983186
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        69.99999,
+        -45.0,
+        -0.0
+      ],
+      "scale": [
+        1.125,
+        1.125,
+        1.125
+      ],
+      "translation": [
+        -4.7683716E-7,
+        2.1238947,
+        0.3403976
+      ]
+    }
+  },
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/battery.obj",
+  "offset_y": 0.271542,
+  "skins": {
+    "all": [
+      "Plane"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/hev_battery_block",
+    "particle": "hbm:block/hev_battery_block"
+  }
+}

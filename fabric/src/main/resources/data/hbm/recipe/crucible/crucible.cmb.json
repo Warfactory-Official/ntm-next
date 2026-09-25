@@ -1,0 +1,24 @@
+{
+  "type": "hbm:crucible",
+  "frequency": 3,
+  "icon": {
+    "id": "hbm:ingot_combine_steel"
+  },
+  "input_materials": [
+    {
+      "amount": 48,
+      "material": "magnetized_tungsten"
+    },
+    {
+      "amount": 24,
+      "material": "watz_mud"
+    }
+  ],
+  "order": 10,
+  "output_materials": [
+    {
+      "amount": 72,
+      "material": "cmbsteel"
+    }
+  ]
+}

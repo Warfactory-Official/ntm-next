@@ -1,0 +1,47 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#all",
+          "uv": [
+            2,
+            14,
+            14,
+            2
+          ]
+        },
+        "east": {
+          "texture": "#all"
+        },
+        "north": {
+          "texture": "#all"
+        },
+        "south": {
+          "texture": "#all"
+        },
+        "up": {
+          "texture": "#all"
+        },
+        "west": {
+          "texture": "#all"
+        }
+      },
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        16,
+        14
+      ]
+    }
+  ],
+  "textures": {
+    "all": "hbm:block/sandbags",
+    "particle": "hbm:block/sandbags"
+  }
+}

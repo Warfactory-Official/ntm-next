@@ -1,0 +1,22 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Pivot",
+    "Body",
+    "Drum",
+    "BarrelR",
+    "BarrelL"
+  ],
+  "model": "hbm:models/turrets/turret_sentry.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/turrets/sentry_damaged",
+    "particle": "hbm:block/block_rust"
+  }
+}

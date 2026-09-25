@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:starmetal_helmet",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "F": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:gas_mask_filter",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "P": "hbm:plate_armor_fau",
+    "S": "#hbm:pipes/steel",
+    "W": "minecraft:red_wool"
+  },
+  "pattern": [
+    "PWP",
+    "PBP",
+    "FSF"
+  ],
+  "result": {
+    "id": "hbm:fau_helmet"
+  }
+}

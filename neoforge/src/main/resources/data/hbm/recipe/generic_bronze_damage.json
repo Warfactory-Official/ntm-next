@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#hbm:gun_mechanisms/saturnite",
+    "#hbm:plates_cast/any_bismoid_bronze",
+    "#hbm:plates_cast/any_bismoid_bronze",
+    "#hbm:plates_cast/any_bismoid_bronze",
+    "hbm:ducttape"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_generic_bronze_damage"
+  }
+}

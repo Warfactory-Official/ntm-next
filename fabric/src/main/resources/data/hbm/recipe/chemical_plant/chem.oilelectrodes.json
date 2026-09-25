@@ -1,0 +1,19 @@
+{
+  "type": "hbm:chemical_plant",
+  "blueprint_pools": [
+    "alt.electrodes"
+  ],
+  "custom_localization": true,
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:heatingoil",
+      "amount": 4000
+    }
+  ],
+  "order": 56,
+  "output_items": [
+    "hbm:arc_electrode_graphite"
+  ],
+  "power": 100
+}

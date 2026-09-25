@@ -1,0 +1,44 @@
+{
+  "ambientocclusion": false,
+  "groups": [
+    {
+      "matrix": [
+        0.98106027,
+        -0.17364818,
+        0.08583164,
+        0.0,
+        0.1729874,
+        0.9848077,
+        0.015134435,
+        -1.0,
+        -0.08715574,
+        0.0,
+        0.9961947,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Torus"
+      ],
+      "texture": "all"
+    }
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Plasma",
+    "Bolts4",
+    "Bolts3",
+    "Bolts2",
+    "Bolts1",
+    "Magnet"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/fusion/torus.obj",
+  "textures": {
+    "all": "hbm:block/models/fusion/torus",
+    "particle": "hbm:block/models/fusion/torus"
+  }
+}

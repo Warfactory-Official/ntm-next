@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "N": "#c:nuggets/gold",
+    "S": "minecraft:wheat_seeds"
+  },
+  "pattern": [
+    " S ",
+    "SNS",
+    " S "
+  ],
+  "result": {
+    "id": "hbm:peas"
+  }
+}

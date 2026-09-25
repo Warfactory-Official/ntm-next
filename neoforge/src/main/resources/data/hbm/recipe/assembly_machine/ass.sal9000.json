@@ -1,0 +1,40 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 32,
+      "ingredient": "#hbm:wires_dense/gold"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:pipes/copper"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:circuit_basic"
+    },
+    {
+      "ingredient": "hbm:circuit_bismoid"
+    }
+  ],
+  "order": 95,
+  "output_items": [
+    "hbm:machine_supercomputer"
+  ],
+  "power": 1000
+}

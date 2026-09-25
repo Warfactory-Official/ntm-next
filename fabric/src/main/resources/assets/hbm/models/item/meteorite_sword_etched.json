@@ -1,0 +1,76 @@
+{
+  "parent": "minecraft:item/generated",
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        2.779822E-5,
+        -84.99999,
+        25.00004
+      ],
+      "scale": [
+        1.632,
+        1.632,
+        0.816
+      ],
+      "translation": [
+        2.4868608,
+        0.79734373,
+        -4.343957
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        2.779822E-5,
+        -84.99999,
+        25.00004
+      ],
+      "scale": [
+        1.632,
+        1.632,
+        0.816
+      ],
+      "translation": [
+        3.0221863,
+        3.6614895,
+        1.7748461
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        169.99998,
+        -85.0,
+        -155.00002
+      ],
+      "scale": [
+        1.5937501,
+        1.5937501,
+        0.79687506
+      ],
+      "translation": [
+        1.0050077,
+        -0.7835283,
+        -7.4132285
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        169.99998,
+        -85.0,
+        -155.00002
+      ],
+      "scale": [
+        1.5937501,
+        1.5937501,
+        0.79687506
+      ],
+      "translation": [
+        -0.033823013,
+        6.7519455,
+        3.3151174
+      ]
+    }
+  },
+  "textures": {
+    "layer0": "hbm:item/meteorite_sword"
+  }
+}

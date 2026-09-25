@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#c:plates/aluminum",
+    "S": "#c:ingots/steel"
+  },
+  "pattern": [
+    "SAS",
+    "A A",
+    "SAS"
+  ],
+  "result": {
+    "count": 8,
+    "id": "hbm:fluid_duct_paintable"
+  }
+}

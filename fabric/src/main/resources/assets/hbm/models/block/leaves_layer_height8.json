@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/snow_height8",
+  "textures": {
+    "particle": "hbm:block/waste_leaves",
+    "texture": "hbm:block/waste_leaves"
+  }
+}

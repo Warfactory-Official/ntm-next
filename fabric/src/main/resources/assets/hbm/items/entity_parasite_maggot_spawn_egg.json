@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/entity_parasite_maggot_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 13684944
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 8421504
+      }
+    ]
+  }
+}

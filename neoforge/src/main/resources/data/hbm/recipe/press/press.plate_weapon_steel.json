@@ -1,0 +1,13 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/weapon_steel"
+    }
+  ],
+  "order": 19,
+  "output_items": [
+    "hbm:plate_weaponsteel"
+  ],
+  "stamp": "plate"
+}

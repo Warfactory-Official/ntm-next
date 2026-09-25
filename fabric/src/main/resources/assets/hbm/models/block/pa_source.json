@@ -1,0 +1,16 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbm:models/particleaccelerator/source.obj",
+  "offset_y": -1.0,
+  "skins": {
+    "all": [
+      "Cube_Cube.001"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/particleaccelerator/source",
+    "particle": "hbm:block/models/particleaccelerator/source"
+  }
+}

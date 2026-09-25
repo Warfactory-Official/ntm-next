@@ -1,0 +1,26 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_15"
+    },
+    {
+      "count": 10,
+      "ingredient": "#hbm:pipes/dura_steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:plates_cast/tungsten"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:plates/saturnite"
+    }
+  ],
+  "order": 376,
+  "output_items": [
+    "hbm:mp_thruster_15_balefire_large"
+  ],
+  "power": 100
+}

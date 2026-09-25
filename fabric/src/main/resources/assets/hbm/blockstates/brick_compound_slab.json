@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "hbm:block/brick_compound_slab"
+    },
+    "type=double": {
+      "model": "hbm:block/brick_compound_slab_double"
+    },
+    "type=top": {
+      "model": "hbm:block/brick_compound_slab_top"
+    }
+  }
+}

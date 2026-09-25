@@ -1,0 +1,18 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "double_sided": [
+    "Cube.001_Cube.002"
+  ],
+  "gui_light": "side",
+  "model": "hbm:models/radiolysis.obj",
+  "skins": {
+    "all": [
+      "Cube.001_Cube.002"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/radiolysis",
+    "particle": "hbm:block/models/radiolysis"
+  }
+}

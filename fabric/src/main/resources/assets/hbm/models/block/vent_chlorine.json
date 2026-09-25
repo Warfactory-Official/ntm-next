@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "hbm:block/vent_blank",
+    "side": "hbm:block/vent_chlorine"
+  }
+}

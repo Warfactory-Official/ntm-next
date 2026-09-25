@@ -1,0 +1,55 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528"
+    },
+    {
+      "condition": "hbm:flag",
+      "name": "lbsm_simple_crafting"
+    }
+  ],
+  "type": "hbm:soldering",
+  "duration": 400,
+  "input_fluids": [
+    {
+      "type": "hbm:perfluoromethyl",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_chip"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_capacitor"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_capacitor_tantalium"
+    }
+  ],
+  "name": "soldering.circuit_controllerLbsm",
+  "order": 10,
+  "output_items": [
+    "hbm:circuit_controller"
+  ],
+  "pcb": [
+    {
+      "ingredient": "hbm:circuit_controller_chassis"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/rubber"
+    }
+  ],
+  "power": 15000,
+  "solder": [
+    {
+      "count": 16,
+      "ingredient": "#c:fine_wires/lead"
+    }
+  ]
+}

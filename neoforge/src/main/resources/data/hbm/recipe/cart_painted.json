@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "hbm:cart_base": "steel"
+      },
+      "items": "hbm:cart_empty"
+    },
+    "#c:dyes/red"
+  ],
+  "result": {
+    "components": {
+      "hbm:cart_base": "painted"
+    },
+    "id": "hbm:cart_empty"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "#c:storage_blocks/coal"
+    }
+  ],
+  "order": 15,
+  "output_fluids": [
+    {
+      "type": "hbm:syngas",
+      "amount": 500
+    }
+  ],
+  "output_items": [
+    {
+      "count": 9,
+      "id": "hbm:oil_tar_coal"
+    }
+  ]
+}

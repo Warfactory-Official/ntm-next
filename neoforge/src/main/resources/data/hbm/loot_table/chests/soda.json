@@ -1,0 +1,46 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:bottle_nuka",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:bottle_cherry",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:bottle_quantum",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:can_bepis",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:can_luna",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:can_mug",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:can_breen",
+          "weight": 1
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/soda"
+}

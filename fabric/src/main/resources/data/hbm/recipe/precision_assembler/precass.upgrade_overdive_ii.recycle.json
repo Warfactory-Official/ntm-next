@@ -1,0 +1,60 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "enable_528"
+    },
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:precision_assembler",
+  "duration": 600,
+  "icon": {
+    "components": {
+      "hbm:broken_item_source": "hbm:upgrade_overdrive_2"
+    },
+    "id": "hbm:broken_item"
+  },
+  "input_items": [
+    {
+      "components": {
+        "hbm:broken_item_source": "hbm:upgrade_overdrive_2"
+      },
+      "ingredient": "hbm:broken_item"
+    }
+  ],
+  "name_wrapper": "precass.recycle",
+  "order": 47,
+  "output_items": [
+    {
+      "chance": 0.75,
+      "id": "hbm:upgrade_overdrive_1"
+    },
+    {
+      "chance": 0.75,
+      "id": "hbm:upgrade_speed_3"
+    },
+    {
+      "chance": 0.75,
+      "id": "hbm:upgrade_effect_3"
+    },
+    {
+      "chance": 0.75,
+      "count": 16,
+      "id": "hbm:ingot_saturnite"
+    },
+    {
+      "chance": 0.75,
+      "count": 8,
+      "id": "hbm:ingot_cft"
+    },
+    {
+      "chance": 0.75,
+      "count": 16,
+      "id": "hbm:circuit_capacitor_board"
+    }
+  ],
+  "power": 5000
+}

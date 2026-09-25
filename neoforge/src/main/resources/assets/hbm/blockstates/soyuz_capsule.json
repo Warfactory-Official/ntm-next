@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "rusted=false": {
+      "model": "hbm:block/soyuz_capsule"
+    },
+    "rusted=true": {
+      "model": "hbm:block/soyuz_capsule_rusted"
+    }
+  }
+}

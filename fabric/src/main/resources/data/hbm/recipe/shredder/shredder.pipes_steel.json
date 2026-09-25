@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:pipes_steel"
+    }
+  ],
+  "order": 141,
+  "output_items": [
+    {
+      "count": 27,
+      "id": "hbm:powder_steel"
+    }
+  ]
+}

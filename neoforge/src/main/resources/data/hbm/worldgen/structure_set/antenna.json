@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1314147633,
+    "separation": 7,
+    "spacing": 16
+  },
+  "structures": [
+    {
+      "structure": "hbm:antenna",
+      "weight": 1
+    }
+  ]
+}

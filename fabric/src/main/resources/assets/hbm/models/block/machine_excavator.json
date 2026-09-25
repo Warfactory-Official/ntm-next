@@ -1,0 +1,22 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Crusher2",
+    "Shaft",
+    "Drillbit",
+    "Crusher1"
+  ],
+  "model": "hbm:models/machines/mining_drill.obj",
+  "offset_y": -3.0,
+  "skins": {
+    "all": [
+      "Main"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/mining_drill",
+    "particle": "hbm:block/block_steel"
+  }
+}

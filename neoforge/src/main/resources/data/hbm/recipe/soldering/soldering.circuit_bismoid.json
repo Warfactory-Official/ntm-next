@@ -1,0 +1,51 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!lbsm_simple_crafting"
+    }
+  ],
+  "type": "hbm:soldering",
+  "duration": 400,
+  "input_fluids": [
+    {
+      "type": "hbm:solvent",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_chip_bismoid"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_chip"
+    },
+    {
+      "count": 24,
+      "ingredient": "hbm:circuit_capacitor"
+    }
+  ],
+  "order": 5,
+  "output_items": [
+    "hbm:circuit_bismoid"
+  ],
+  "pcb": [
+    {
+      "count": 12,
+      "ingredient": "hbm:circuit_pcb"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    }
+  ],
+  "power": 10000,
+  "solder": [
+    {
+      "count": 12,
+      "ingredient": "#c:fine_wires/lead"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:hydroactive",
+      "level": 1.0
+    }
+  ],
+  "targets": "#c:raw_materials/lithium"
+}

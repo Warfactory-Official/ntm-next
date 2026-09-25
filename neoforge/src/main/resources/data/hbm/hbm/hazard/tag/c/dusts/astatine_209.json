@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 22500.0
+    },
+    {
+      "type": "hbm:hot",
+      "level": 60.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:dusts/astatine_209"
+}

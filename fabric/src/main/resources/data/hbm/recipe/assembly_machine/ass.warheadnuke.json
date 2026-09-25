@@ -1,0 +1,33 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.controller"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#hbm:plates_cast/titanium"
+    },
+    {
+      "count": 6,
+      "ingredient": "#hbm:plates_cast/lead"
+    },
+    {
+      "count": 6,
+      "ingredient": "#hbm:billets/uranium_235"
+    },
+    {
+      "count": 12,
+      "ingredient": "hbm:cordite"
+    },
+    {
+      "ingredient": "hbm:circuit_controller"
+    }
+  ],
+  "order": 356,
+  "output_items": [
+    "hbm:warhead_nuclear"
+  ],
+  "power": 100
+}

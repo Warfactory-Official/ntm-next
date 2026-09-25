@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "hbm:block/pneumatic_storage_access",
+    "east": "hbm:block/pneumatic_storage_access",
+    "north": "hbm:block/pneumatic_storage_access_front",
+    "particle": "hbm:block/pneumatic_storage_access",
+    "south": "hbm:block/pneumatic_storage_access",
+    "up": "hbm:block/pneumatic_storage_access",
+    "west": "hbm:block/pneumatic_storage_access"
+  }
+}

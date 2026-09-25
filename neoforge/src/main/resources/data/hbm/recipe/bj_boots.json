@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:storage_blocks/starmetal",
+    "N": "hbm:plate_armor_lunar",
+    "S": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:starmetal_boots"
+    }
+  },
+  "pattern": [
+    "N N",
+    "BSB"
+  ],
+  "result": {
+    "id": "hbm:bj_boots"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 12.0,
+  "ingredient": "hbm:ore_gneiss_uranium_scorched",
+  "result": {
+    "id": "hbm:ingot_uranium"
+  }
+}

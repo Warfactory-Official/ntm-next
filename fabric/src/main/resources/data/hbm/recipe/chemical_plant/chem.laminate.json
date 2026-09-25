@@ -1,0 +1,28 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:xylene",
+      "amount": 50
+    },
+    {
+      "type": "hbm:phosgene",
+      "amount": 50
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:glass_blocks"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:bolts/steel"
+    }
+  ],
+  "order": 78,
+  "output_items": [
+    "hbm:reinforced_laminate"
+  ],
+  "power": 100
+}

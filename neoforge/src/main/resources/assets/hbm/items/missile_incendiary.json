@@ -1,0 +1,42 @@
+{
+  "model": {
+    "type": "hbm:mesh",
+    "base": "hbm:item/missile_incendiary_base",
+    "cull": false,
+    "mesh": "hbm:models/missile_v2.obj",
+    "pose_suffix": {
+      "gui": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        -7.5,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "skins": [
+      "hbm:textures/models/missiles/missile_v2_inc.png"
+    ],
+    "spin": {
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "divisor": 15,
+      "modulus": 360,
+      "rate": 1.0
+    }
+  },
+  "oversized_in_gui": true
+}

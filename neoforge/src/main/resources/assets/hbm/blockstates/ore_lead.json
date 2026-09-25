@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/ore_lead"
+      },
+      {
+        "model": "hbm:block/ore_lead_mirrored"
+      },
+      {
+        "model": "hbm:block/ore_lead",
+        "y": 180
+      },
+      {
+        "model": "hbm:block/ore_lead_mirrored",
+        "y": 180
+      }
+    ]
+  }
+}

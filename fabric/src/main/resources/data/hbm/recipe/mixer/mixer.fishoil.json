@@ -1,0 +1,21 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_items": [
+    {
+      "ingredient": [
+        "minecraft:cod",
+        "minecraft:salmon",
+        "minecraft:tropical_fish",
+        "minecraft:pufferfish"
+      ]
+    }
+  ],
+  "order": 12,
+  "output_fluids": [
+    {
+      "type": "hbm:fishoil",
+      "amount": 100
+    }
+  ]
+}

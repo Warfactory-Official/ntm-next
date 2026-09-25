@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "hbm:block/fusion_heater_top",
+    "side": "hbm:block/fusion_heater_side"
+  }
+}

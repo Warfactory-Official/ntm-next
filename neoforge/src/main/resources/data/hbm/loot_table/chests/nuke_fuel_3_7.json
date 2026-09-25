@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/nuke_fuel"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 7.0,
+        "min": 3.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/nuke_fuel_3_7"
+}

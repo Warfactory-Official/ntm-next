@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:storage_blocks/steel",
+    "I": "#c:ingots/steel",
+    "P": "#c:plates/steel"
+  },
+  "pattern": [
+    " PI",
+    "IIB",
+    " PI"
+  ],
+  "result": {
+    "id": "hbm:fins_tri_steel"
+  }
+}

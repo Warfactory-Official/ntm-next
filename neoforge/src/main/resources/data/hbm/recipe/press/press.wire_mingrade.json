@@ -1,0 +1,16 @@
+{
+  "type": "hbm:press",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/mingrade"
+    }
+  ],
+  "order": 37,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:wire_fine_mingrade"
+    }
+  ],
+  "stamp": "wire"
+}

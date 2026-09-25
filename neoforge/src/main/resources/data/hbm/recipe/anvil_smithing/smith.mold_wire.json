@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "#c:fine_wires/copper"
+    },
+    {
+      "ingredient": "hbm:mold_base"
+    }
+  ],
+  "kind": "mold",
+  "order": 45,
+  "output_items": [
+    "hbm:mold_wire"
+  ],
+  "shape": "fine_wires"
+}

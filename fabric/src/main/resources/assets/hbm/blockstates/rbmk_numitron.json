@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/rbmk_numitron_east"
+    },
+    "facing=north": {
+      "model": "hbm:block/rbmk_numitron_north"
+    },
+    "facing=south": {
+      "model": "hbm:block/rbmk_numitron_south"
+    },
+    "facing=west": {
+      "model": "hbm:block/rbmk_numitron_west"
+    }
+  }
+}

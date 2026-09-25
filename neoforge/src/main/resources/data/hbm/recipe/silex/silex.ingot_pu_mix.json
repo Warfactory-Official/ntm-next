@@ -1,0 +1,28 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": "hbm:ingot_pu_mix"
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 2,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_pu239"
+        },
+        "weight": 6
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_pu240"
+        },
+        "weight": 3
+      }
+    ]
+  ]
+}

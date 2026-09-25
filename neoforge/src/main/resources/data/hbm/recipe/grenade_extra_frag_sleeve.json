@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:bolts/steel",
+    "T": "hbm:ducttape"
+  },
+  "pattern": [
+    "BBB",
+    " T ",
+    "BBB"
+  ],
+  "result": {
+    "id": "hbm:grenade_extra_frag_sleeve"
+  }
+}

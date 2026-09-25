@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:quartz_stairs"
+    }
+  ],
+  "order": 7,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "hbm:powder_quartz"
+    }
+  ]
+}

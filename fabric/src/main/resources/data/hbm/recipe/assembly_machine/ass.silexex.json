@@ -1,0 +1,30 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_ferro_plating"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:glass_quartz"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/rubber"
+    }
+  ],
+  "name": "ass.silexEx",
+  "order": 145,
+  "output_items": [
+    "hbm:machine_silex"
+  ],
+  "power": 100
+}

@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "minecraft:wheat_seeds"
+    }
+  ],
+  "order": 30,
+  "output_fluids": [
+    {
+      "type": "hbm:seedslurry",
+      "amount": 50
+    }
+  ]
+}

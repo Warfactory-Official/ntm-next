@@ -1,0 +1,9 @@
+{
+  "values": [
+    "hbm:entity_elder_one",
+    "hbm:entity_mob_mask_man",
+    "hbm:entity_ufo",
+    "hbm:entity_balls_o_tron",
+    "hbm:entity_mob_hunter_chopper"
+  ]
+}

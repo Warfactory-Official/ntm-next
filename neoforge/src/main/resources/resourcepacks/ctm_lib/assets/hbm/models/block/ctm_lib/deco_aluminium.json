@@ -1,0 +1,6 @@
+{
+  "textures": {
+    "connected": "hbm:block/ctm_lib/deco_aluminium_ct",
+    "particle": "hbm:block/deco_aluminium"
+  }
+}

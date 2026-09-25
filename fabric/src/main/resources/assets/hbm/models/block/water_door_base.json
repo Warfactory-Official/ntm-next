@@ -1,0 +1,9 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "textures": {
+    "particle": "hbm:block/models/pheodoors/water_door",
+    "sheet0": "hbm:block/models/pheodoors/water_door",
+    "sheet1": "hbm:block/models/pheodoors/water_door_clean"
+  }
+}

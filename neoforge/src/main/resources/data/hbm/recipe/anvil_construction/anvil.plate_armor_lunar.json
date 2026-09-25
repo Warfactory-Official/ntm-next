@@ -1,0 +1,22 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/weapon_steel"
+    },
+    {
+      "ingredient": "#c:ingots/starmetal"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:fine_wires/magnetized_tungsten"
+    }
+  ],
+  "order": 99,
+  "output_items": [
+    "hbm:plate_armor_lunar"
+  ],
+  "overlay": "construction",
+  "tier": 4
+}

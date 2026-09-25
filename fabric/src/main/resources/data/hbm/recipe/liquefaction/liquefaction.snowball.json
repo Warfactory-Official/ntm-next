@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "minecraft:snowball"
+    }
+  ],
+  "order": 16,
+  "output_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 125
+    }
+  ]
+}

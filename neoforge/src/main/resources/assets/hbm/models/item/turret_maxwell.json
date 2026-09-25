@@ -1,0 +1,196 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.74438596,
+        4.409193,
+        1.6241367
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        -0.4510486,
+        4.409193,
+        1.7287238
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        0.0,
+        5.5025005,
+        2.0
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.0,
+        0.03125,
+        -0.75
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "translation": [
+        -8.34465E-7,
+        0.05680996,
+        -6.8125
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        2.9286685,
+        -23.022491,
+        3.4902544
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        0.0,
+        16.125,
+        -3.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -0.07738471,
+        3.891084,
+        1.8958927
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -2.3028255,
+        3.4261806,
+        1.3035392
+      ]
+    }
+  },
+  "groups": [
+    {
+      "model": "hbm:models/turrets/turret_chekhov.obj",
+      "parts": [
+        "Base"
+      ],
+      "texture": "base"
+    },
+    {
+      "model": "hbm:models/turrets/turret_howard.obj",
+      "parts": [
+        "Carriage"
+      ],
+      "texture": "carriage_ciws"
+    },
+    {
+      "parts": [
+        "Microwave"
+      ],
+      "texture": "maxwell"
+    }
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Carriage",
+    "Connectors",
+    "Base"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/turrets/turret_microwave.obj",
+  "offset_x": -0.25,
+  "offset_y": -0.84375,
+  "textures": {
+    "base": "hbm:block/models/turrets/base",
+    "carriage_ciws": "hbm:block/models/turrets/carriage_ciws",
+    "maxwell": "hbm:block/models/turrets/maxwell",
+    "particle": "hbm:block/models/turrets/base"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "disguise=crate": {
+      "model": "hbm:block/crate"
+    },
+    "disguise=crate_iron": {
+      "model": "hbm:block/crate_iron"
+    },
+    "disguise=crate_weapon": {
+      "model": "hbm:block/crate_weapon"
+    },
+    "disguise=deco_rusty_steel": {
+      "model": "hbm:block/deco_rusty_steel_plain"
+    },
+    "disguise=deco_steel": {
+      "model": "hbm:block/deco_steel_plain"
+    },
+    "disguise=deco_tungsten": {
+      "model": "hbm:block/deco_tungsten_plain"
+    },
+    "disguise=machine_controller": {
+      "model": "hbm:block/machine_controller"
+    },
+    "disguise=none": {
+      "model": "hbm:block/logic_block"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "hbm:coker",
+  "input_fluids": [
+    {
+      "type": "hbm:vitriol",
+      "amount": 4000
+    }
+  ],
+  "order": 32,
+  "output_fluids": [
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 500
+    }
+  ],
+  "output_items": [
+    "hbm:powder_iron"
+  ]
+}

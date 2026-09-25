@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 226622662,
+    "separation": 15,
+    "spacing": 45
+  },
+  "structures": [
+    {
+      "structure": "hbm:jungle_dungeon",
+      "weight": 1
+    }
+  ]
+}

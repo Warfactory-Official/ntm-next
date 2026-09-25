@@ -1,0 +1,30 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 36,
+      "ingredient": "hbm:rocket_fuel"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:ball_tatb"
+    },
+    {
+      "ingredient": "hbm:circuit_advanced"
+    }
+  ],
+  "order": 341,
+  "output_items": [
+    "hbm:ammo_himars_single"
+  ],
+  "power": 100
+}

@@ -1,0 +1,28 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:rbmk_boiler"
+    }
+  ],
+  "order": 249,
+  "output_items": [
+    "hbm:rbmk_blank",
+    {
+      "count": 6,
+      "id": "hbm:pipe_copper"
+    },
+    {
+      "count": 2,
+      "id": "hbm:shell_copper"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 4
+}

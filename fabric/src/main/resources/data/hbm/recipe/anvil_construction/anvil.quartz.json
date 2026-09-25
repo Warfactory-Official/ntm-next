@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/nether_quartz"
+    }
+  ],
+  "order": 25,
+  "output_items": [
+    "minecraft:quartz"
+  ],
+  "overlay": "smithing",
+  "tier": 3
+}

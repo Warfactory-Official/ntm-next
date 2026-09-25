@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:coil_copper"
+    }
+  ],
+  "order": 129,
+  "output_items": [
+    "hbm:powder_red_copper"
+  ]
+}

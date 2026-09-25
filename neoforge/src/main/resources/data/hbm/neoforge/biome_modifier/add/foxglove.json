@@ -1,0 +1,11 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:forest",
+    "minecraft:flower_forest",
+    "minecraft:birch_forest",
+    "minecraft:dark_forest"
+  ],
+  "features": "hbm:foxglove",
+  "step": "vegetal_decoration"
+}

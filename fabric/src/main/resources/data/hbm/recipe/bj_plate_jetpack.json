@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:crystal_phosphorus",
+    "F": "hbm:fins_quad_titanium",
+    "I": "hbm:mp_thruster_10_xenon",
+    "N": "hbm:plate_armor_lunar",
+    "P": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:bj_plate",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "T": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:fluid_tank",
+      "components": {
+        "hbm:fluid_content": {
+          "type": "hbm:xenon",
+          "amount": 1000,
+          "pressure": 0
+        }
+      }
+    }
+  },
+  "pattern": [
+    "NFN",
+    "TPT",
+    "ICI"
+  ],
+  "result": {
+    "id": "hbm:bj_plate_jetpack"
+  }
+}

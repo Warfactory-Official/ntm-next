@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "hbm:block/icf_capacitor_top",
+    "side": "hbm:block/icf_capacitor_side"
+  }
+}

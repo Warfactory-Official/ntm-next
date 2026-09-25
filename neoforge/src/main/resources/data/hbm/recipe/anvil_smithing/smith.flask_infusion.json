@@ -1,0 +1,16 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": "hbm:gem_alexandrite"
+    },
+    {
+      "ingredient": "hbm:bottle_nuka"
+    }
+  ],
+  "order": 37,
+  "output_items": [
+    "hbm:flask_infusion_shield"
+  ],
+  "tier": 4
+}

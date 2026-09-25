@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:bolts/steel",
+    "H": "#hbm:pipes/steel",
+    "T": "hbm:tank_steel"
+  },
+  "pattern": [
+    "HB",
+    " T"
+  ],
+  "result": {
+    "id": "hbm:gun_fireext"
+  }
+}

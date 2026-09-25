@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "variant=0": {
+      "model": "hbm:block/brick_forgotten"
+    },
+    "variant=1": {
+      "model": "hbm:block/brick_forgotten_1"
+    },
+    "variant=2": {
+      "model": "hbm:block/brick_forgotten_2"
+    },
+    "variant=3": {
+      "model": "hbm:block/brick_forgotten_3"
+    },
+    "variant=4": {
+      "model": "hbm:block/brick_forgotten_4"
+    },
+    "variant=5": {
+      "model": "hbm:block/brick_forgotten_5"
+    },
+    "variant=6": {
+      "model": "hbm:block/brick_forgotten_6"
+    }
+  }
+}

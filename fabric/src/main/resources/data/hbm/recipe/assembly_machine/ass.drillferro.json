@@ -1,0 +1,23 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#c:ingots/ferrouranium"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/bismuth"
+    }
+  ],
+  "order": 155,
+  "output_items": [
+    "hbm:drillbit_ferro"
+  ],
+  "power": 100
+}

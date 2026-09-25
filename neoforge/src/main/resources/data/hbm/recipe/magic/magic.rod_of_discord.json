@@ -1,0 +1,18 @@
+{
+  "type": "hbm:magic",
+  "input_items": [
+    {
+      "ingredient": "minecraft:ender_pearl"
+    },
+    {
+      "ingredient": "minecraft:blaze_rod"
+    },
+    {
+      "ingredient": "hbm:nugget_euphemium"
+    }
+  ],
+  "order": 1,
+  "output_items": [
+    "hbm:rod_of_discord"
+  ]
+}

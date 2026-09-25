@@ -1,0 +1,38 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_lead_plating"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/graphite"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:concretes"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.cirnoxEx",
+  "order": 228,
+  "output_items": [
+    "hbm:reactor_zirnox"
+  ],
+  "power": 100
+}

@@ -1,0 +1,26 @@
+{
+  "type": "gaseous",
+  "color": "#e39393",
+  "flags": [
+    "unsiphonable"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 4,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 600,
+  "traits": {
+    "coolable": {
+      "amount_produced": 10,
+      "amount_req": 1,
+      "cools_to": "hbm:superhotsteam",
+      "efficiency": {
+        "HEATEXCHANGER": 0.5,
+        "TURBINE": 1.0
+      },
+      "heat_energy": 120
+    }
+  }
+}

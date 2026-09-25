@@ -1,0 +1,24 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "#c:plates/iron"
+    },
+    {
+      "ingredient": "#c:ingots/niobium"
+    },
+    {
+      "ingredient": "hbm:plate_armor_titanium"
+    }
+  ],
+  "order": 97,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:plate_armor_ajr"
+    }
+  ],
+  "overlay": "construction",
+  "tier": 3
+}

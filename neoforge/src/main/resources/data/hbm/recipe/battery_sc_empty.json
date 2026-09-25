@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:fine_wires/gold",
+    "L": "#c:plates/lead",
+    "P": "#hbm:ingots/any_plastic"
+  },
+  "pattern": [
+    "PGP",
+    "L L",
+    "PGP"
+  ],
+  "result": {
+    "id": "hbm:battery_sc_empty"
+  }
+}

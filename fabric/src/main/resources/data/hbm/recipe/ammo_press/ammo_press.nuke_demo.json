@@ -1,0 +1,21 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "count": 2,
+      "ingredient": "#c:nuggets/plutonium_239"
+    },
+    "B": {
+      "ingredient": "hbm:assembly_nuke"
+    }
+  },
+  "order": 82,
+  "output_items": [
+    "hbm:ammo_standard_nuke_demo"
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    "   "
+  ]
+}

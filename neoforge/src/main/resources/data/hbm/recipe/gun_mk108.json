@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_heavy/weapon_steel",
+    "D": "#hbm:shells/weapon_steel",
+    "G": "#hbm:grips/any_plastic",
+    "M": "#hbm:gun_mechanisms/weapon_steel",
+    "R": "#hbm:receivers_heavy/weapon_steel"
+  },
+  "pattern": [
+    " GG",
+    "BRM",
+    " D "
+  ],
+  "result": {
+    "id": "hbm:gun_mk108"
+  }
+}

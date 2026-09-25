@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 10000.0
+    },
+    {
+      "type": "hbm:hot",
+      "level": 7.0
+    },
+    {
+      "type": "hbm:blinding",
+      "level": 50.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:ingots/lead_209"
+}

@@ -1,0 +1,22 @@
+{
+  "type": "hbm:anvil_smithing",
+  "input_items": [
+    {
+      "ingredient": [
+        "hbm:stamp_stone_flat",
+        "hbm:stamp_iron_flat",
+        "hbm:stamp_steel_flat",
+        "hbm:stamp_titanium_flat",
+        "hbm:stamp_obsidian_flat"
+      ]
+    },
+    {
+      "ingredient": "hbm:mold_base"
+    }
+  ],
+  "kind": "mold",
+  "order": 48,
+  "output_items": [
+    "hbm:mold_stamp"
+  ]
+}

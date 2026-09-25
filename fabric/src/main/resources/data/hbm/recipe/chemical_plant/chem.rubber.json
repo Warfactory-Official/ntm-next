@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528_pressurized"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/sulfur"
+    }
+  ],
+  "order": 42,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:ingot_rubber"
+    }
+  ],
+  "power": 200
+}

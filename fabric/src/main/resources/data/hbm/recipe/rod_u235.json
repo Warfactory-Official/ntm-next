@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:rod_empty",
+    "#hbm:billets/uranium_235"
+  ],
+  "result": {
+    "id": "hbm:rod_u235"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:storage_blocks/sulfur"
+    }
+  ],
+  "order": 422,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:sulfur"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "minecraft:stone_bricks"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:ingot_firebrick"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/iron"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/copper"
+    }
+  ],
+  "order": 29,
+  "output_items": [
+    "hbm:machine_annihilator"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

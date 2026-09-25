@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:canister",
+      "components": {
+        "!hbm:fluid_content": {}
+      }
+    },
+    "R": "#hbm:pipes/rubber",
+    "S": "#c:plates/steel"
+  },
+  "pattern": [
+    " R ",
+    "CCC",
+    "SSS"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_special_canisters"
+  }
+}

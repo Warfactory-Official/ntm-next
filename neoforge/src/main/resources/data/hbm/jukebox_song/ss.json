@@ -1,0 +1,8 @@
+{
+  "comparator_output": 15,
+  "description": {
+    "translate": "jukebox_song.hbm.ss"
+  },
+  "length_in_seconds": 166.504,
+  "sound_event": "hbm:music.record_sector_sweep"
+}

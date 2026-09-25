@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/iron",
+    "R": "hbm:plant_item_rope",
+    "S": "#c:plates/iron"
+  },
+  "pattern": [
+    "RSR",
+    "I I",
+    "RSR"
+  ],
+  "result": {
+    "count": 16,
+    "id": "hbm:conveyor_wand_regular"
+  }
+}

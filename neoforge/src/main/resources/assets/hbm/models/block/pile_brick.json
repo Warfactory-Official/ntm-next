@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "hbm:block/pile_brick_top",
+    "east": "hbm:block/pile_brick_side",
+    "north": "hbm:block/pile_brick",
+    "particle": "hbm:block/pile_brick",
+    "south": "hbm:block/pile_brick",
+    "up": "hbm:block/pile_brick_top",
+    "west": "hbm:block/pile_brick_side"
+  }
+}

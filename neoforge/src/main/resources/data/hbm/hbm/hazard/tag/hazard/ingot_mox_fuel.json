@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 2.5
+    }
+  ],
+  "targets": "#hbm:hazard/ingot_mox_fuel"
+}

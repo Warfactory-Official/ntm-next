@@ -1,0 +1,422 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -0.0,
+        -45.0,
+        0.0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "translation": [
+        1.4305115E-6,
+        0.0,
+        9.536743E-7
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -0.0,
+        -45.0,
+        -0.0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "translation": [
+        -4.7683716E-7,
+        0.0,
+        -4.7683716E-7
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.390625,
+        0.390625,
+        0.390625
+      ],
+      "translation": [
+        0.0,
+        -0.55999994,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.15625,
+        0.15625,
+        0.15625
+      ],
+      "translation": [
+        0.0,
+        -4.0,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -45.0,
+        -180.0
+      ],
+      "scale": [
+        0.390625,
+        0.390625,
+        0.390625
+      ],
+      "translation": [
+        9.536743E-7,
+        0.0,
+        -1.1920929E-7
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ],
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.78125,
+        0.78125,
+        0.78125
+      ],
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -110.00001,
+        -45.0,
+        180.0
+      ],
+      "scale": [
+        0.234375,
+        0.23437501,
+        0.234375
+      ],
+      "translation": [
+        -1.879385,
+        0.23395622,
+        0.64278746
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -110.00001,
+        -45.0,
+        -180.0
+      ],
+      "scale": [
+        0.234375,
+        0.23437501,
+        0.234375
+      ],
+      "translation": [
+        -9.536743E-7,
+        1.9999992,
+        4.4703484E-7
+      ]
+    }
+  },
+  "groups": [
+    {
+      "parts": [
+        "Top"
+      ],
+      "texture": "crane_splitter_top_left"
+    },
+    {
+      "parts": [
+        "Bottom"
+      ],
+      "texture": "crane_splitter_top_right"
+    },
+    {
+      "parts": [
+        "Left"
+      ],
+      "texture": "crane_splitter_left"
+    },
+    {
+      "parts": [
+        "Back"
+      ],
+      "texture": "crane_splitter_back_left"
+    },
+    {
+      "parts": [
+        "Front"
+      ],
+      "texture": "crane_splitter_front_left"
+    },
+    {
+      "parts": [
+        "Inner"
+      ],
+      "texture": "crane_splitter_inner"
+    },
+    {
+      "parts": [
+        "InnerLeft",
+        "InnerRight",
+        "InnerTop"
+      ],
+      "texture": "crane_splitter_inner_side"
+    },
+    {
+      "parts": [
+        "InnerBottom"
+      ],
+      "texture": "crane_splitter_belt"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Top"
+      ],
+      "texture": "crane_splitter_top_right"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Bottom"
+      ],
+      "texture": "crane_splitter_top_left"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Right"
+      ],
+      "texture": "crane_splitter_right"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Back"
+      ],
+      "texture": "crane_splitter_back_right"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Front"
+      ],
+      "texture": "crane_splitter_front_right"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Inner"
+      ],
+      "texture": "crane_splitter_inner"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "InnerLeft",
+        "InnerRight",
+        "InnerTop"
+      ],
+      "texture": "crane_splitter_inner_side"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "InnerBottom"
+      ],
+      "texture": "crane_splitter_belt"
+    }
+  ],
+  "gui_light": "side",
+  "model": "hbm:models/blocks/splitter.obj",
+  "offset_z": 0.5,
+  "textures": {
+    "crane_splitter_back_left": "hbm:block/crane_splitter_back_left",
+    "crane_splitter_back_right": "hbm:block/crane_splitter_back_right",
+    "crane_splitter_belt": "hbm:block/crane_splitter_belt",
+    "crane_splitter_front_left": "hbm:block/crane_splitter_front_left",
+    "crane_splitter_front_right": "hbm:block/crane_splitter_front_right",
+    "crane_splitter_inner": "hbm:block/crane_splitter_inner",
+    "crane_splitter_inner_side": "hbm:block/crane_splitter_inner_side",
+    "crane_splitter_left": "hbm:block/crane_splitter_left",
+    "crane_splitter_right": "hbm:block/crane_splitter_right",
+    "crane_splitter_top_left": "hbm:block/crane_splitter_top_left",
+    "crane_splitter_top_right": "hbm:block/crane_splitter_top_right",
+    "particle": "hbm:block/crane_splitter_top_left"
+  }
+}

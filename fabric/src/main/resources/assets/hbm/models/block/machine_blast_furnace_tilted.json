@@ -1,0 +1,39 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "double_sided": [
+    "Plane"
+  ],
+  "groups": [
+    {
+      "matrix": [
+        0.98106027,
+        -0.17364818,
+        0.08583164,
+        0.0,
+        0.1729874,
+        0.9848077,
+        0.015134435,
+        -0.25,
+        -0.08715574,
+        0.0,
+        0.9961947,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Plane"
+      ],
+      "texture": "all"
+    }
+  ],
+  "gui_light": "side",
+  "model": "hbm:models/machines/blast_furnace.obj",
+  "textures": {
+    "all": "hbm:block/models/machines/blast_furnace",
+    "particle": "hbm:block/models/machines/blast_furnace"
+  }
+}

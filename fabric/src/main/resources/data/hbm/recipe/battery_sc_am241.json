@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:battery_sc_empty",
+    "#hbm:billets/americium_241",
+    "#hbm:billets/americium_241"
+  ],
+  "result": {
+    "id": "hbm:battery_sc_am241"
+  }
+}

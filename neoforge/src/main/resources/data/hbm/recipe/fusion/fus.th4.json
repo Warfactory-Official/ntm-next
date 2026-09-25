@@ -1,0 +1,34 @@
+{
+  "type": "hbm:fusion",
+  "blue": 1.0,
+  "custom_localization": true,
+  "duration": 100,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:tritium",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:gas_tank"
+  },
+  "ignition_temp": 875000,
+  "input_fluids": [
+    {
+      "type": "hbm:tritium",
+      "amount": 10
+    },
+    {
+      "type": "hbm:helium4",
+      "amount": 10
+    }
+  ],
+  "neutron_flux": 500.0,
+  "order": 5,
+  "output_items": [
+    "hbm:pellet_charged"
+  ],
+  "output_temp": 4000000,
+  "power": 25000,
+  "red": 0.2
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:glass_panes",
+    "I": "#hbm:ingots/any_rubber",
+    "S": "#c:plates/steel"
+  },
+  "pattern": [
+    "SSS",
+    "IGI"
+  ],
+  "result": {
+    "id": "hbm:security_helmet"
+  }
+}

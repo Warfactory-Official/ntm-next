@@ -1,0 +1,33 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:plate_polymer"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_silicon"
+    },
+    {
+      "ingredient": "#hbm:nuggets/any_bismoid"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:fine_wires/gold"
+    }
+  ],
+  "name": "ass.chipBismoid",
+  "order": 30,
+  "output_items": [
+    "hbm:circuit_chip_bismoid"
+  ],
+  "power": 1500
+}

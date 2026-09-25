@@ -1,0 +1,35 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "killing_blow": {
+          "tags": [
+            {
+              "expected": true,
+              "id": "hbm:is_bolt"
+            }
+          ]
+        }
+      },
+      "trigger": "minecraft:entity_killed_player"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.goFish.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:achievement_icon_gofish"
+    },
+    "title": {
+      "translate": "achievement.goFish"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

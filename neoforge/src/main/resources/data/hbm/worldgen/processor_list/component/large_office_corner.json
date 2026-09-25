@@ -1,0 +1,870 @@
+{
+  "processors": [
+    {
+      "marker": {
+        "Name": "minecraft:chiseled_bookshelf",
+        "Properties": {
+          "facing": "east",
+          "slot_0_occupied": "false",
+          "slot_1_occupied": "false",
+          "slot_2_occupied": "false",
+          "slot_3_occupied": "false",
+          "slot_4_occupied": "false",
+          "slot_5_occupied": "false"
+        }
+      },
+      "probability": 0.75,
+      "processor_type": "hbm:maybe_place",
+      "result": {
+        "Name": "minecraft:glass_pane",
+        "Properties": {
+          "east": "false",
+          "north": "false",
+          "south": "false",
+          "waterlogged": "false",
+          "west": "false"
+        }
+      }
+    },
+    {
+      "marker": {
+        "Name": "minecraft:chiseled_bookshelf",
+        "Properties": {
+          "facing": "east",
+          "slot_0_occupied": "false",
+          "slot_1_occupied": "false",
+          "slot_2_occupied": "false",
+          "slot_3_occupied": "false",
+          "slot_4_occupied": "false",
+          "slot_5_occupied": "true"
+        }
+      },
+      "probability": 0.85,
+      "processor_type": "hbm:maybe_place",
+      "result": {
+        "Name": "minecraft:smooth_stone_slab",
+        "Properties": {
+          "type": "bottom",
+          "waterlogged": "false"
+        }
+      }
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "0",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:brick_concrete"
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_mossy"
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_cracked"
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "hbm:brick_concrete_broken"
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "0",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "north",
+              "half": "lower",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "north",
+              "half": "lower",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "1",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "north",
+              "half": "upper",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "north",
+              "half": "upper",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "1",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "north",
+              "half": "lower",
+              "hinge": "right",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "north",
+              "half": "lower",
+              "hinge": "right",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "2",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "north",
+              "half": "upper",
+              "hinge": "right",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "north",
+              "half": "upper",
+              "hinge": "right",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "2",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "east",
+              "half": "lower",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "east",
+              "half": "lower",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "3",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "east",
+              "half": "upper",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "east",
+              "half": "upper",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "3",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "east",
+              "half": "lower",
+              "hinge": "right",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "east",
+              "half": "lower",
+              "hinge": "right",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "4",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "east",
+              "half": "upper",
+              "hinge": "right",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "minecraft:oak_door",
+            "Properties": {
+              "facing": "east",
+              "half": "upper",
+              "hinge": "right",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "4",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_office",
+            "Properties": {
+              "facing": "north",
+              "half": "lower",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_office",
+            "Properties": {
+              "facing": "north",
+              "half": "lower",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "5",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_office",
+            "Properties": {
+              "facing": "north",
+              "half": "upper",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_office",
+            "Properties": {
+              "facing": "north",
+              "half": "upper",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "5",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_office",
+            "Properties": {
+              "facing": "west",
+              "half": "lower",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_office",
+            "Properties": {
+              "facing": "west",
+              "half": "lower",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "6",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_office",
+            "Properties": {
+              "facing": "west",
+              "half": "upper",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_office",
+            "Properties": {
+              "facing": "west",
+              "half": "upper",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "6",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_office",
+            "Properties": {
+              "facing": "south",
+              "half": "lower",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_office",
+            "Properties": {
+              "facing": "south",
+              "half": "lower",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "7",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_office",
+            "Properties": {
+              "facing": "south",
+              "half": "upper",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_office",
+            "Properties": {
+              "facing": "south",
+              "half": "upper",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "7",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_metal",
+            "Properties": {
+              "facing": "north",
+              "half": "lower",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_metal",
+            "Properties": {
+              "facing": "north",
+              "half": "lower",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "8",
+          "waterlogged": "true"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:door_metal",
+            "Properties": {
+              "facing": "north",
+              "half": "upper",
+              "hinge": "left",
+              "open": "false",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:door_metal",
+            "Properties": {
+              "facing": "north",
+              "half": "upper",
+              "hinge": "left",
+              "open": "true",
+              "powered": "false"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place",
+      "seed_offset_y": -1
+    },
+    {
+      "marker": {
+        "Name": "minecraft:light",
+        "Properties": {
+          "level": "8",
+          "waterlogged": "false"
+        }
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "0"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "1"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "2"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "3"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "4"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "5"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "6"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "7"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "8"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "9"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "10"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "11"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "12"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "13"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "14"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:bobblehead",
+            "Properties": {
+              "rotation": "15"
+            }
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "processor_type": "hbm:bobble_randomizer"
+    },
+    {
+      "processor_type": "hbm:lock_pins"
+    },
+    {
+      "processor_type": "hbm:loot_pile"
+    }
+  ]
+}

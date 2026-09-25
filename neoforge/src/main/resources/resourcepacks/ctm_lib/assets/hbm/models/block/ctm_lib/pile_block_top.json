@@ -1,0 +1,6 @@
+{
+  "textures": {
+    "connected": "hbm:block/ctm_lib/pile_block_top_ct",
+    "particle": "hbm:block/pile_block_top"
+  }
+}

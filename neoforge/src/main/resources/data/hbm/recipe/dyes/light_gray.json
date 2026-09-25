@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "hbm:powder_titanium",
+      "hbm:powder_ash_wood",
+      "hbm:crayon_silver",
+      "hbm:chemical_dye_silver"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:light_gray_dye"
+  }
+}

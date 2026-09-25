@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:hot",
+      "level": 3.0
+    },
+    {
+      "type": "hbm:hydroactive",
+      "level": 3.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:dusts/strontium"
+}

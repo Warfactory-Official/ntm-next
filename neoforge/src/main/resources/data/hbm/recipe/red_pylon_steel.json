@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:coil_copper",
+    "P": "hbm:plate_polymer",
+    "S": "#c:cobblestones",
+    "W": "#hbm:pipes/steel"
+  },
+  "pattern": [
+    "CWC",
+    "PWP",
+    " S "
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:red_pylon_steel"
+  }
+}

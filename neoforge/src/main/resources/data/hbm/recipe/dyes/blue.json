@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "hbm:powder_lapis",
+      "hbm:crayon_blue",
+      "hbm:chemical_dye_blue"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:blue_dye"
+  }
+}

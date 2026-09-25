@@ -1,0 +1,30 @@
+{
+  "parent": "hbm:digammafeel",
+  "criteria": {
+    "earned": {
+      "conditions": {
+        "level": {
+          "min": 10.0
+        }
+      },
+      "trigger": "hbm:digamma"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.digammaKnow.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "hbm:achievement_icon_digammaknow"
+    },
+    "title": {
+      "translate": "achievement.digammaKnow"
+    }
+  },
+  "requirements": [
+    [
+      "earned"
+    ]
+  ]
+}

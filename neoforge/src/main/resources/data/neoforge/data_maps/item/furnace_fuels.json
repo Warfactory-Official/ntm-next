@@ -1,0 +1,166 @@
+{
+  "values": {
+    "hbm:biomass": {
+      "burn_time": 400
+    },
+    "hbm:biomass_compressed": {
+      "burn_time": 800
+    },
+    "hbm:block_coke_coal": {
+      "burn_time": 32000
+    },
+    "hbm:block_coke_lignite": {
+      "burn_time": 32000
+    },
+    "hbm:block_coke_petroleum": {
+      "burn_time": 32000
+    },
+    "hbm:block_scrap": {
+      "burn_time": 400
+    },
+    "hbm:book_guide_hadron": {
+      "burn_time": 200
+    },
+    "hbm:book_guide_rbmk": {
+      "burn_time": 200
+    },
+    "hbm:book_guide_starter": {
+      "burn_time": 200
+    },
+    "hbm:book_guide_test": {
+      "burn_time": 200
+    },
+    "hbm:briquette_coal": {
+      "burn_time": 2000
+    },
+    "hbm:briquette_lignite": {
+      "burn_time": 1600
+    },
+    "hbm:briquette_wood": {
+      "burn_time": 400
+    },
+    "hbm:coal_eternal": {
+      "burn_time": 3200
+    },
+    "hbm:coal_infernal": {
+      "burn_time": 4800
+    },
+    "hbm:coke_coal": {
+      "burn_time": 3200
+    },
+    "hbm:coke_lignite": {
+      "burn_time": 3200
+    },
+    "hbm:coke_petroleum": {
+      "burn_time": 3200
+    },
+    "hbm:crate": {
+      "burn_time": 300
+    },
+    "hbm:crate_can": {
+      "burn_time": 300
+    },
+    "hbm:crate_supply": {
+      "burn_time": 300
+    },
+    "hbm:crate_weapon": {
+      "burn_time": 300
+    },
+    "hbm:crystal_coal": {
+      "burn_time": 6400
+    },
+    "hbm:dust": {
+      "burn_time": 25
+    },
+    "hbm:frozen_log": {
+      "burn_time": 300
+    },
+    "hbm:frozen_planks": {
+      "burn_time": 300
+    },
+    "hbm:lignite": {
+      "burn_time": 1200
+    },
+    "hbm:powder_ash_coal": {
+      "burn_time": 200
+    },
+    "hbm:powder_ash_fly": {
+      "burn_time": 200
+    },
+    "hbm:powder_ash_misc": {
+      "burn_time": 100
+    },
+    "hbm:powder_ash_soot": {
+      "burn_time": 100
+    },
+    "hbm:powder_ash_wood": {
+      "burn_time": 100
+    },
+    "hbm:powder_coal": {
+      "burn_time": 1600
+    },
+    "hbm:powder_fire": {
+      "burn_time": 6400
+    },
+    "hbm:powder_lignite": {
+      "burn_time": 1200
+    },
+    "hbm:powder_sawdust": {
+      "burn_time": 100
+    },
+    "hbm:radio_telex": {
+      "burn_time": 300
+    },
+    "hbm:red_pylon_medium_wood": {
+      "burn_time": 300
+    },
+    "hbm:red_pylon_medium_wood_transformer": {
+      "burn_time": 300
+    },
+    "hbm:rocket_fuel": {
+      "burn_time": 6400
+    },
+    "hbm:scrap": {
+      "burn_time": 50
+    },
+    "hbm:solid_fuel": {
+      "burn_time": 3200
+    },
+    "hbm:solid_fuel_bf": {
+      "burn_time": 32000
+    },
+    "hbm:solid_fuel_presto": {
+      "burn_time": 8000
+    },
+    "hbm:solid_fuel_presto_bf": {
+      "burn_time": 80000
+    },
+    "hbm:solid_fuel_presto_triplet": {
+      "burn_time": 40000
+    },
+    "hbm:solid_fuel_presto_triplet_bf": {
+      "burn_time": 400000
+    },
+    "hbm:waste_log": {
+      "burn_time": 300
+    },
+    "hbm:waste_planks": {
+      "burn_time": 300
+    },
+    "hbm:wood_barrier": {
+      "burn_time": 300
+    },
+    "hbm:wood_gavel": {
+      "burn_time": 200
+    },
+    "hbm:wood_structure_ceiling": {
+      "burn_time": 300
+    },
+    "hbm:wood_structure_roof": {
+      "burn_time": 300
+    },
+    "hbm:wood_structure_scaffold": {
+      "burn_time": 300
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/coal",
+    "#c:dusts/polonium_210",
+    "#c:dusts/strontium"
+  ],
+  "result": {
+    "id": "hbm:fmn"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#c:ingots/tungsten"
+    }
+  },
+  "order": 79,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:ammo_standard_coil_tungsten"
+    }
+  ],
+  "pattern": [
+    "   ",
+    " A ",
+    "   "
+  ]
+}

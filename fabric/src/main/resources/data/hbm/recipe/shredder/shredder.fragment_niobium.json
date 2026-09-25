@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:fragment_niobium"
+    }
+  ],
+  "order": 40,
+  "output_items": [
+    "hbm:powder_niobium_tiny"
+  ]
+}

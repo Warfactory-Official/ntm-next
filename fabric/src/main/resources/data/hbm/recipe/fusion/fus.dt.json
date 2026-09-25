@@ -1,0 +1,35 @@
+{
+  "type": "hbm:fusion",
+  "custom_localization": true,
+  "duration": 100,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:helium4",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:gas_tank"
+  },
+  "ignition_temp": 750000,
+  "input_fluids": [
+    {
+      "type": "hbm:deuterium",
+      "amount": 10
+    },
+    {
+      "type": "hbm:tritium",
+      "amount": 10
+    }
+  ],
+  "neutron_flux": 100.0,
+  "order": 2,
+  "output_fluids": [
+    {
+      "type": "hbm:helium4",
+      "amount": 1000
+    }
+  ],
+  "output_temp": 3750000,
+  "power": 25000
+}

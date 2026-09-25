@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/heater_electric"
+    },
+    "facing=north": {
+      "model": "hbm:block/heater_electric",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/heater_electric",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/heater_electric",
+      "y": 180
+    }
+  }
+}

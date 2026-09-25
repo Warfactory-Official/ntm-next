@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#hbm:shells/steel",
+    "R": "hbm:rbmk_blank"
+  },
+  "pattern": [
+    "C",
+    "R",
+    "C"
+  ],
+  "result": {
+    "id": "hbm:rbmk_fuel_rod"
+  }
+}

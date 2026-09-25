@@ -1,0 +1,14 @@
+{
+  "ability_centrifuge": true,
+  "ability_crystallizer": true,
+  "ability_explosion": true,
+  "ability_furnace": true,
+  "ability_hammer": true,
+  "ability_luck": true,
+  "ability_mercury": true,
+  "ability_shredder": true,
+  "ability_silk": true,
+  "ability_vein": true,
+  "veinminer_breaks_netherrack": false,
+  "veinminer_breaks_stone": false
+}

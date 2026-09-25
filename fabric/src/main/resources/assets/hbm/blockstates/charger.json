@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/charger"
+    },
+    "facing=north": {
+      "model": "hbm:block/charger",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/charger",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/charger",
+      "y": 180
+    }
+  }
+}

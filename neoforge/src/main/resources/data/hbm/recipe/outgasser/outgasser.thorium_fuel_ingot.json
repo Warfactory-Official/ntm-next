@@ -1,0 +1,13 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/thorium"
+    }
+  ],
+  "order": 7,
+  "output_items": [
+    "hbm:ingot_thorium_fuel"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "type": "liquid",
+  "color": "#7a5542",
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 2,
+    "react": 3
+  },
+  "symbol": "NONE",
+  "temperature": 800,
+  "traits": {
+    "corrosive": {
+      "rating": 65
+    },
+    "heatable": {
+      "efficiency": {
+        "PWR": 1.0
+      },
+      "steps": [
+        {
+          "amount_produced": 1,
+          "amount_req": 1,
+          "heat_req": 400,
+          "produces": "hbm:thorium_salt_hot"
+        }
+      ]
+    },
+    "pwrmoderator": {
+      "multiplier": 2.5
+    }
+  }
+}

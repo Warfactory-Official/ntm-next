@@ -1,0 +1,27 @@
+{
+  "type": "hbm:hydrotreater",
+  "duration": 2,
+  "input_fluids": [
+    {
+      "type": "hbm:diesel_crack",
+      "amount": 100
+    },
+    {
+      "type": "hbm:hydrogen",
+      "amount": 10,
+      "pressure": 1
+    }
+  ],
+  "order": 3,
+  "output_fluids": [
+    {
+      "type": "hbm:diesel",
+      "amount": 80
+    },
+    {
+      "type": "hbm:sourgas",
+      "amount": 30
+    }
+  ],
+  "power": 20000
+}

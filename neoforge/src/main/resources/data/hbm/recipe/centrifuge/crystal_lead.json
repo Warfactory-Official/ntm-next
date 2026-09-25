@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_lead"
+    }
+  ],
+  "order": 150,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_lead"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_lead"
+    },
+    "hbm:powder_gold",
+    "hbm:powder_lithium_tiny"
+  ],
+  "power": 200
+}

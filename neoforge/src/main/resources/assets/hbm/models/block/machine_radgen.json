@@ -1,0 +1,23 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Base"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Glass",
+    "Light",
+    "Rotor"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/radgen.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/radgen",
+    "particle": "hbm:block/machine_radgen"
+  }
+}

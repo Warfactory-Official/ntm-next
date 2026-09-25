@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:potato",
+    "#c:fine_wires/aluminum",
+    "#c:fine_wires/copper"
+  ],
+  "result": {
+    "id": "hbm:battery_potato"
+  }
+}

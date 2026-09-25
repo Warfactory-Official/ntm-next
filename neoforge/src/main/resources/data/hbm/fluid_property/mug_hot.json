@@ -1,0 +1,25 @@
+{
+  "type": "liquid",
+  "color": "#6b2a20",
+  "flags": [
+    "delicious"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 0,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 500,
+  "traits": {
+    "coolable": {
+      "amount_produced": 1,
+      "amount_req": 1,
+      "cools_to": "hbm:mug",
+      "efficiency": {
+        "HEATEXCHANGER": 1.0
+      },
+      "heat_energy": 400
+    }
+  }
+}

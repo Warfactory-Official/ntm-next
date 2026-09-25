@@ -1,0 +1,15 @@
+{
+  "type": "plasma",
+  "color": "#f0adf4",
+  "flags": [
+    "nocontainer",
+    "noid"
+  ],
+  "nfpa": {
+    "flame": 4,
+    "health": 0,
+    "react": 0
+  },
+  "symbol": "RADIATION",
+  "temperature": 2500
+}

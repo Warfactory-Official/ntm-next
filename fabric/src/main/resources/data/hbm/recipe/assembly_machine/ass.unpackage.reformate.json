@@ -1,0 +1,37 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 40,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:reformate",
+        "amount": 32000
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -8170382
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "input_items": [
+    {
+      "ingredient": "hbm:fluid_pack",
+      "predicates": {
+        "hbm:fluid_content": "hbm:reformate"
+      }
+    }
+  ],
+  "order": 540,
+  "output_fluids": [
+    {
+      "type": "hbm:reformate",
+      "amount": 32000
+    }
+  ],
+  "output_items": [
+    "hbm:fluid_pack"
+  ],
+  "power": 100
+}

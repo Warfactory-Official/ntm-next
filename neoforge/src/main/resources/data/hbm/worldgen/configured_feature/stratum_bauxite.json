@@ -1,0 +1,18 @@
+{
+  "type": "hbm:stratum_3d",
+  "config": {
+    "domain_x": "hbm:noise/stratum_bauxite/x",
+    "domain_y": "hbm:noise/stratum_bauxite/y",
+    "domain_z": "hbm:noise/stratum_bauxite/z",
+    "replaceable": {
+      "predicate_type": "minecraft:tag_match",
+      "tag": "minecraft:stone_ore_replaceables"
+    },
+    "scale_h": 0.03,
+    "scale_v": 0.15,
+    "state": {
+      "Name": "hbm:stone_resource_bauxite"
+    },
+    "threshold": 300.0
+  }
+}

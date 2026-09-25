@@ -1,0 +1,213 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#texture",
+          "uv": [
+            7.0,
+            9.0,
+            9.0,
+            7.0
+          ]
+        },
+        "east": {
+          "texture": "#texture",
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            16.0
+          ]
+        },
+        "north": {
+          "texture": "#texture",
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#texture",
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#texture",
+          "uv": [
+            7.0,
+            7.0,
+            9.0,
+            9.0
+          ]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        7.0,
+        0.0,
+        7.0
+      ],
+      "to": [
+        9.0,
+        16.0,
+        9.0
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#texture",
+          "uv": [
+            8.0,
+            16.0,
+            9.0,
+            0.0
+          ]
+        },
+        "east": {
+          "texture": "#texture",
+          "uv": [
+            0.0,
+            8.440001,
+            16.0,
+            15.0
+          ]
+        },
+        "north": {
+          "texture": "#texture",
+          "uv": [
+            8.0,
+            8.440001,
+            9.0,
+            15.0
+          ]
+        },
+        "south": {
+          "texture": "#texture",
+          "uv": [
+            8.0,
+            8.440001,
+            9.0,
+            15.0
+          ]
+        },
+        "up": {
+          "texture": "#texture",
+          "uv": [
+            8.0,
+            0.0,
+            9.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [
+            0.0,
+            8.440001,
+            16.0,
+            15.0
+          ]
+        }
+      },
+      "from": [
+        8.0,
+        1.0,
+        0.0
+      ],
+      "to": [
+        9.0,
+        7.56,
+        16.0
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#texture",
+          "uv": [
+            8.0,
+            16.0,
+            9.0,
+            0.0
+          ]
+        },
+        "east": {
+          "texture": "#texture",
+          "uv": [
+            0.0,
+            1.0,
+            16.0,
+            7.0
+          ]
+        },
+        "north": {
+          "texture": "#texture",
+          "uv": [
+            8.0,
+            1.0,
+            9.0,
+            7.0
+          ]
+        },
+        "south": {
+          "texture": "#texture",
+          "uv": [
+            8.0,
+            1.0,
+            9.0,
+            7.0
+          ]
+        },
+        "up": {
+          "texture": "#texture",
+          "uv": [
+            8.0,
+            0.0,
+            9.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [
+            0.0,
+            1.0,
+            16.0,
+            7.0
+          ]
+        }
+      },
+      "from": [
+        8.0,
+        9.0,
+        0.0
+      ],
+      "to": [
+        9.0,
+        15.0,
+        16.0
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "hbm:block/wood_barrier",
+    "texture": "hbm:block/wood_barrier"
+  }
+}

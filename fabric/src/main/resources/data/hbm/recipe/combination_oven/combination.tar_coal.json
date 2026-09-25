@@ -1,0 +1,12 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "ingredient": "hbm:oil_tar_coal"
+    }
+  ],
+  "order": 19,
+  "output_items": [
+    "hbm:coke_coal"
+  ]
+}

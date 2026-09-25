@@ -1,0 +1,37 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": [
+        "hbm:ingot_plutonium",
+        "hbm:powder_plutonium"
+      ]
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 4,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_pu238"
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_pu239"
+        },
+        "weight": 4
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_pu240"
+        },
+        "weight": 2
+      }
+    ]
+  ]
+}

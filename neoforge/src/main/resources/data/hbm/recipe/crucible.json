@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:ingot_chainsteel",
+    "D": "hbm:demon_core_closed",
+    "E": "#c:ingots/euphemium",
+    "M": "hbm:ingot_meteorite_forged",
+    "Y": "hbm:billet_yharonite"
+  },
+  "pattern": [
+    "MEM",
+    "YDY",
+    "YCY"
+  ],
+  "result": {
+    "components": {
+      "minecraft:damage": 3
+    },
+    "id": "hbm:crucible"
+  }
+}

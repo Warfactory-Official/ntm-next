@@ -1,0 +1,46 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.soyuz"
+  ],
+  "duration": 6000,
+  "input_items": [
+    {
+      "count": 32,
+      "ingredient": "#hbm:shells/titanium"
+    },
+    {
+      "count": 64,
+      "ingredient": "#c:ingots/rubber"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:rocket_fuel"
+    },
+    {
+      "count": 12,
+      "ingredient": "hbm:thruster_small"
+    },
+    {
+      "count": 12,
+      "ingredient": "hbm:thruster_medium"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_controller"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:part_generic_lde"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:drive_flash_flightsim"
+    }
+  ],
+  "order": 415,
+  "output_items": [
+    "hbm:missile_soyuz_0"
+  ],
+  "power": 25000
+}

@@ -1,0 +1,27 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/plutonium"
+    },
+    {
+      "count": 3,
+      "ingredient": "#c:dusts/fluorite"
+    }
+  ],
+  "order": 82,
+  "output_fluids": [
+    {
+      "type": "hbm:puf6",
+      "amount": 900
+    }
+  ],
+  "power": 500
+}

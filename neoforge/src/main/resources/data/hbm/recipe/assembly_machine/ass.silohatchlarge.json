@@ -1,0 +1,31 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "#hbm:plates_welded/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:plate_polymer"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:bolts/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:dyes/green"
+    }
+  ],
+  "order": 76,
+  "output_items": [
+    "hbm:silo_hatch_large"
+  ],
+  "power": 100
+}

@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:annihilator",
+  "item": "#hbm:billets/silicon",
+  "milestones": [
+    {
+      "amount": "256",
+      "payout": {
+        "components": {
+          "hbm:blueprint_pool": "528.chip"
+        },
+        "id": "hbm:blueprints"
+      }
+    }
+  ]
+}

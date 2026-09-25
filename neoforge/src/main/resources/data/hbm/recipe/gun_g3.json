@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_light/weapon_steel",
+    "G": "#hbm:grips/rubber",
+    "M": "#hbm:gun_mechanisms/weapon_steel",
+    "R": "#hbm:receivers_light/weapon_steel",
+    "S": "#hbm:stocks/wood",
+    "W": "#hbm:grips/wood"
+  },
+  "pattern": [
+    "BRM",
+    "WGS"
+  ],
+  "result": {
+    "id": "hbm:gun_g3"
+  }
+}

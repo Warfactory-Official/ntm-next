@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "hbm:fluid_content": {
+          "type": "hbm:peroxide",
+          "amount": 1000,
+          "pressure": 0
+        }
+      },
+      "items": "hbm:fluid_tank"
+    },
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "hbm:b92_energy": 25
+      },
+      "items": "hbm:gun_b92_ammo"
+    },
+    "#c:fine_wires/copper"
+  ],
+  "result": {
+    "id": "hbm:weaponized_starblaster_cell"
+  }
+}

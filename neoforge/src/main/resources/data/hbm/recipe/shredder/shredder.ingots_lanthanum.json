@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/lanthanum"
+    }
+  ],
+  "order": 371,
+  "output_items": [
+    "hbm:powder_lanthanium"
+  ]
+}

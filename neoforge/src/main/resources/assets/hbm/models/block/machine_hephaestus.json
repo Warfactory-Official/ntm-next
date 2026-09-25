@@ -1,0 +1,19 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Rotor",
+    "Core"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/hephaestus.obj",
+  "skins": {
+    "all": [
+      "Main"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/hephaestus",
+    "particle": "hbm:block/models/machines/hephaestus"
+  }
+}

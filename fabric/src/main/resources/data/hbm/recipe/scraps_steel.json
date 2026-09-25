@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/iron",
+    "#c:dusts/coal"
+  ],
+  "result": {
+    "components": {
+      "hbm:scrap": {
+        "amount": 72,
+        "material": 30
+      }
+    },
+    "id": "hbm:scraps"
+  }
+}

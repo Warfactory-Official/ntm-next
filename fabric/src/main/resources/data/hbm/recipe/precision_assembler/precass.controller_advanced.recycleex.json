@@ -1,0 +1,67 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "enable_528"
+    },
+    {
+      "condition": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:precision_assembler",
+  "duration": 600,
+  "icon": {
+    "components": {
+      "hbm:broken_item_source": "hbm:circuit_controller_advanced"
+    },
+    "id": "hbm:broken_item"
+  },
+  "input_items": [
+    {
+      "components": {
+        "hbm:broken_item_source": "hbm:circuit_controller_advanced"
+      },
+      "ingredient": "hbm:broken_item"
+    }
+  ],
+  "name": "precass.controller_advanced.recycleEx",
+  "name_wrapper": "precass.recycle",
+  "order": 19,
+  "output_fluids": [
+    {
+      "type": "hbm:perfluoromethyl",
+      "amount": 2000
+    }
+  ],
+  "output_items": [
+    {
+      "chance": 0.5,
+      "count": 16,
+      "id": "hbm:circuit_chip_bismoid"
+    },
+    {
+      "chance": 0.5,
+      "count": 48,
+      "id": "hbm:circuit_capacitor_tantalium"
+    },
+    {
+      "chance": 0.5,
+      "id": "hbm:circuit_atomic_clock"
+    },
+    {
+      "chance": 0.5,
+      "id": "hbm:circuit_controller_chassis"
+    },
+    {
+      "chance": 0.5,
+      "id": "hbm:upgrade_speed_3"
+    },
+    {
+      "chance": 0.5,
+      "count": 24,
+      "id": "hbm:wire_fine_lead"
+    }
+  ],
+  "power": 25000
+}

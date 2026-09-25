@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/rail_large_switch_flipped_east"
+    },
+    "facing=north": {
+      "model": "hbm:block/rail_large_switch_flipped_north"
+    },
+    "facing=south": {
+      "model": "hbm:block/rail_large_switch_flipped_south"
+    },
+    "facing=west": {
+      "model": "hbm:block/rail_large_switch_flipped_west"
+    }
+  }
+}

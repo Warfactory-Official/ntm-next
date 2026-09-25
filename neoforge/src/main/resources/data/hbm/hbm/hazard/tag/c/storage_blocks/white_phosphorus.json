@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:hot",
+      "level": 50.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:storage_blocks/white_phosphorus"
+}

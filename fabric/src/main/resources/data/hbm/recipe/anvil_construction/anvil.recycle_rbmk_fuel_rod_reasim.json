@@ -1,0 +1,22 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:rbmk_fuel_rod_reasim"
+    }
+  ],
+  "order": 243,
+  "output_items": [
+    "hbm:rbmk_blank",
+    {
+      "count": 4,
+      "id": "hbm:ingot_zirconium"
+    },
+    {
+      "count": 2,
+      "id": "hbm:shell_steel"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 4
+}

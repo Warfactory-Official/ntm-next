@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:billet_ra226",
+    "hbm:billet_ra226",
+    "hbm:billet_ra226",
+    "hbm:billet_beryllium",
+    "hbm:billet_beryllium",
+    "hbm:billet_beryllium"
+  ],
+  "result": {
+    "count": 6,
+    "id": "hbm:billet_ra226be"
+  }
+}

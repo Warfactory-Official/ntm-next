@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:blades_titanium"
+    },
+    "P": "hbm:plate_desh"
+  },
+  "pattern": [
+    " P ",
+    "PBP",
+    " P "
+  ],
+  "result": {
+    "id": "hbm:blades_desh"
+  }
+}

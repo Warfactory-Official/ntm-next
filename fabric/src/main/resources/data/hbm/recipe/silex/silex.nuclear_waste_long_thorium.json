@@ -1,0 +1,34 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": "hbm:nuclear_waste_long_thorium"
+    }
+  ],
+  "laser_strength": "ir",
+  "order": 284,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_u233"
+        },
+        "weight": 40
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_u235"
+        },
+        "weight": 35
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_tiny"
+        },
+        "weight": 25
+      }
+    ]
+  ]
+}

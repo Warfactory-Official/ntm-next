@@ -1,0 +1,20 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#hbm:ore_processing/plutonium"
+    }
+  ],
+  "order": 24,
+  "output_items": [
+    "hbm:powder_plutonium",
+    "hbm:powder_plutonium",
+    {
+      "count": 3,
+      "id": "hbm:nugget_polonium"
+    },
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

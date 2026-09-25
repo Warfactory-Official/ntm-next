@@ -1,0 +1,22 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:plate_dineutronium"
+    },
+    {
+      "ingredient": "hbm:particle_sparkticle"
+    },
+    {
+      "count": 6,
+      "ingredient": "hbm:plate_armor_fau"
+    }
+  ],
+  "order": 101,
+  "output_items": [
+    "hbm:plate_armor_dnt"
+  ],
+  "overlay": "construction",
+  "tier": 7
+}

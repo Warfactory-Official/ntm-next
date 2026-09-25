@@ -1,0 +1,52 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": "hbm:falloutitem"
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 294,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:dust_tiny"
+        },
+        "weight": 90
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_co60"
+        },
+        "weight": 2
+      },
+      {
+        "data": {
+          "id": "hbm:powder_sr90_tiny"
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "hbm:powder_i131_tiny"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "hbm:powder_cs137_tiny"
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_au198"
+        },
+        "weight": 1
+      }
+    ]
+  ]
+}

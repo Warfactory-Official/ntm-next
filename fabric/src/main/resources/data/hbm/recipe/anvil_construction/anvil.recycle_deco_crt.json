@@ -1,0 +1,36 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": [
+        "hbm:deco_crt_clean",
+        "hbm:deco_crt_broken",
+        "hbm:deco_crt_blinking",
+        "hbm:deco_crt_bsod"
+      ]
+    }
+  ],
+  "order": 224,
+  "output_items": [
+    "hbm:crt_display",
+    {
+      "count": 2,
+      "id": "hbm:scrap"
+    },
+    {
+      "count": 2,
+      "id": "hbm:wire_fine_copper"
+    },
+    {
+      "chance": 0.25,
+      "count": 2,
+      "id": "hbm:wire_fine_gold"
+    },
+    {
+      "chance": 0.25,
+      "id": "hbm:circuit_vacuum_tube"
+    }
+  ],
+  "overlay": "recycling",
+  "tier": 2
+}

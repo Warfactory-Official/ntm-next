@@ -1,0 +1,37 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 600,
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_pellet": {}
+      },
+      "ingredient": "hbm:rbmk_pellet_mep"
+    }
+  ],
+  "laser_strength": "ir",
+  "order": 29,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_pu_mix"
+        },
+        "weight": 85
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_short_tiny_plutonium239"
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_short_tiny_plutonium240"
+        },
+        "weight": 5
+      }
+    ]
+  ]
+}

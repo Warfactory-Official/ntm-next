@@ -1,0 +1,32 @@
+{
+  "type": "hbm:pedestal",
+  "key": {
+    "A": {
+      "ingredient": "hbm:morning_glory"
+    },
+    "B": {
+      "count": 2,
+      "ingredient": "hbm:item_secret_selenium_steel"
+    },
+    "C": {
+      "ingredient": "hbm:gun_laser_pistol"
+    },
+    "D": {
+      "count": 2,
+      "ingredient": "hbm:item_secret_selenium_steel"
+    },
+    "E": {
+      "count": 16,
+      "ingredient": "#c:gems/emerald"
+    }
+  },
+  "order": 9,
+  "output_items": [
+    "hbm:gun_laser_pistol_morning_glory"
+  ],
+  "pattern": [
+    " A ",
+    "BCD",
+    " E "
+  ]
+}

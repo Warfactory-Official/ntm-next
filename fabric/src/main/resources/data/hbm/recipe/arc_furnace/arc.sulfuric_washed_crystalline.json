@@ -1,0 +1,21 @@
+{
+  "type": "hbm:arc_furnace",
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "crystalline",
+          "grade": "sulfuric_washed"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 67,
+  "output_materials": [
+    {
+      "amount": 144,
+      "material": "asbestos"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!lbsm_simple_armor"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:cobalt_legs"
+    },
+    "E": "#c:ingots/starmetal"
+  },
+  "pattern": [
+    "EEE",
+    "ECE",
+    "E E"
+  ],
+  "result": {
+    "id": "hbm:starmetal_legs"
+  }
+}

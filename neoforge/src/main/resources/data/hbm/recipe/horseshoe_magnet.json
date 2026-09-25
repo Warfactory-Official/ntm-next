@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/iron",
+    "L": "hbm:lodestone"
+  },
+  "pattern": [
+    "L L",
+    "I I",
+    "ILI"
+  ],
+  "result": {
+    "id": "hbm:horseshoe_magnet"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:stone_gneiss"
+    }
+  ],
+  "order": 265,
+  "output_items": [
+    "hbm:powder_lithium"
+  ],
+  "productivity": 0.25
+}

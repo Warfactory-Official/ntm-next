@@ -1,0 +1,14 @@
+{
+  "values": [
+    "hbm:plant_flower_foxglove",
+    "hbm:plant_flower_tobacco",
+    "hbm:plant_flower_nightshade",
+    "hbm:plant_flower_weed",
+    "hbm:plant_flower_cd0",
+    "hbm:plant_flower_cd1",
+    "hbm:plant_tall_weed",
+    "hbm:plant_tall_cd2",
+    "hbm:plant_tall_cd3",
+    "hbm:plant_tall_cd4"
+  ]
+}

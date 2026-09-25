@@ -1,0 +1,23 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 20,
+      "ingredient": "#hbm:ingots/any_resistant_alloy"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:ingots/workers_alloy"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/rubber"
+    }
+  ],
+  "order": 153,
+  "output_items": [
+    "hbm:drillbit_tcalloy"
+  ],
+  "power": 100
+}

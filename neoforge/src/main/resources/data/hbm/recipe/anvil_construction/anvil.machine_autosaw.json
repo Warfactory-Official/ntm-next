@@ -1,0 +1,30 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:ingots/iron"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:ingots/copper"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_vacuum_tube"
+    },
+    {
+      "ingredient": "hbm:sawblade"
+    }
+  ],
+  "order": 80,
+  "output_items": [
+    "hbm:machine_autosaw"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

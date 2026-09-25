@@ -1,0 +1,26 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/tungsten"
+    },
+    {
+      "ingredient": "hbm:machine_transformer"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:arc_electrode_graphite"
+    }
+  ],
+  "order": 78,
+  "output_items": [
+    "hbm:machine_arc_welder"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

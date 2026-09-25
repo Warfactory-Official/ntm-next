@@ -1,0 +1,33 @@
+{
+  "type": "hbm:supercomputer",
+  "duration": 18000,
+  "input_fluids": [
+    {
+      "type": "hbm:helium4",
+      "amount": 16000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:drive_disk_orbitdata"
+    }
+  ],
+  "order": 11,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:drive_disk_orbitdata_processed"
+        },
+        "weight": 50
+      },
+      {
+        "data": {
+          "id": "hbm:drive_disk_broken"
+        },
+        "weight": 50
+      }
+    ]
+  ],
+  "power": 10000
+}

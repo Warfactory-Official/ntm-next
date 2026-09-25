@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "hbm:crayon_lightblue",
+      "hbm:chemical_dye_lightblue"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:light_blue_dye"
+  }
+}

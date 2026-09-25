@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#c:dusts/aluminum",
+    "G": "#c:glass_panes",
+    "S": "#c:plates/steel",
+    "T": "hbm:circuit_vacuum_tube"
+  },
+  "pattern": [
+    " A ",
+    "SGS",
+    " T "
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:crt_display"
+  }
+}

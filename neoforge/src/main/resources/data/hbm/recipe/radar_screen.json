@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_basic",
+    "P": "#hbm:ingots/any_plastic",
+    "R": "hbm:crt_display",
+    "S": "#c:plates/steel"
+  },
+  "pattern": [
+    "PCP",
+    "SRS",
+    "PCP"
+  ],
+  "result": {
+    "id": "hbm:radar_screen"
+  }
+}

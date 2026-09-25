@@ -1,0 +1,10 @@
+{
+  "parent": "hbm:block/machine_deuterium_tower_base",
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/machine_deuterium_tower.obj",
+  "skins": {
+    "all": [
+      "Cube.007_Cube.009"
+    ]
+  }
+}

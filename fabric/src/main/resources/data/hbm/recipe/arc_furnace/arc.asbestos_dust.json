@@ -1,0 +1,21 @@
+{
+  "type": "hbm:arc_furnace",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/asbestos"
+    }
+  ],
+  "order": 8,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:nugget_silicon"
+    }
+  ],
+  "output_materials": [
+    {
+      "amount": 36,
+      "material": "silicon"
+    }
+  ]
+}

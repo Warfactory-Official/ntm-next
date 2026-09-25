@@ -1,0 +1,27 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_highexplosive"
+    },
+    "B": {
+      "ingredient": "#hbm:pipes/steel"
+    },
+    "C": {
+      "ingredient": "#hbm:dusts/any_smokeless"
+    }
+  },
+  "order": 88,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:ammo_standard_ct_mortar"
+    }
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

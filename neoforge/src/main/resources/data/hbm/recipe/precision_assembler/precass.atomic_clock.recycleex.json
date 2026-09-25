@@ -1,0 +1,53 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    },
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:precision_assembler",
+  "duration": 200,
+  "icon": {
+    "components": {
+      "hbm:broken_item_source": "hbm:circuit_atomic_clock"
+    },
+    "id": "hbm:broken_item"
+  },
+  "input_items": [
+    {
+      "components": {
+        "hbm:broken_item_source": "hbm:circuit_atomic_clock"
+      },
+      "ingredient": "hbm:broken_item"
+    }
+  ],
+  "name": "precass.atomic_clock.recycleEx",
+  "name_wrapper": "precass.recycle",
+  "order": 13,
+  "output_items": [
+    {
+      "chance": 0.5,
+      "count": 8,
+      "id": "hbm:circuit_chip"
+    },
+    {
+      "chance": 0.5,
+      "count": 4,
+      "id": "hbm:ingot_polymer"
+    },
+    {
+      "chance": 0.5,
+      "count": 8,
+      "id": "hbm:wire_fine_zirconium"
+    },
+    {
+      "chance": 0.5,
+      "id": "hbm:powder_strontium"
+    }
+  ],
+  "power": 2000
+}

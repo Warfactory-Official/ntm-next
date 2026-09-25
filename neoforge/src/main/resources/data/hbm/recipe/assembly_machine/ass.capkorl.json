@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 10,
+  "input_items": [
+    {
+      "count": 64,
+      "ingredient": "hbm:cap_korl"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:cap_korl"
+    }
+  ],
+  "order": 83,
+  "output_items": [
+    "hbm:block_cap_korl"
+  ],
+  "power": 100
+}

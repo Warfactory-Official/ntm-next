@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "minecraft:obsidian",
+    "F": "minecraft:iron_bars"
+  },
+  "pattern": [
+    "FBF",
+    "BFB",
+    "FBF"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:brick_obsidian"
+  }
+}

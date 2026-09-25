@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:snowball",
+    "#c:dusts/saltpeter",
+    "#c:dusts/redstone"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:powder_ice"
+  }
+}

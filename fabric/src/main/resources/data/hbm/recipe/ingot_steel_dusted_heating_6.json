@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredient": {
+    "fabric:type": "fabric:components",
+    "base": "hbm:ingot_steel_dusted",
+    "components": {
+      "hbm:forge_count": 6
+    }
+  },
+  "result": {
+    "components": {
+      "hbm:forge_count": 6,
+      "hbm:hot_item_heat": 140
+    },
+    "id": "hbm:ingot_steel_dusted"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "hbm:radar",
+    "base": "hbm:item/machine_radar_base"
+  }
+}

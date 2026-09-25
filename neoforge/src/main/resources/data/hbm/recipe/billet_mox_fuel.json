@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:billet_uranium_fuel",
+    "hbm:billet_uranium_fuel",
+    "#hbm:billets/plutonium_239"
+  ],
+  "result": {
+    "count": 3,
+    "id": "hbm:billet_mox_fuel"
+  }
+}

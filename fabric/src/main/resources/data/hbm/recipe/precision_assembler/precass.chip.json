@@ -1,0 +1,47 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:precision_assembler",
+  "blueprint_pools": [
+    "528.chip"
+  ],
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "hbm:circuit_silicon"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:plate_polymer"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:fine_wires/gold"
+    }
+  ],
+  "order": 2,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:circuit_chip"
+        },
+        "weight": 900
+      },
+      {
+        "data": {
+          "components": {
+            "hbm:broken_item_source": "hbm:circuit_chip"
+          },
+          "id": "hbm:broken_item"
+        },
+        "weight": 100
+      }
+    ]
+  ],
+  "power": 200
+}

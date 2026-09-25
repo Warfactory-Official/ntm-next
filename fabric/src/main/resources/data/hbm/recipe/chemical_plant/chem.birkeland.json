@@ -1,0 +1,26 @@
+{
+  "type": "hbm:chemical_plant",
+  "blueprint_pools": [
+    "alt.birkeland"
+  ],
+  "custom_localization": true,
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:air",
+      "amount": 8000
+    },
+    {
+      "type": "minecraft:water",
+      "amount": 2000
+    }
+  ],
+  "order": 61,
+  "output_fluids": [
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 1000
+    }
+  ],
+  "power": 5000
+}

@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!lbsm_simple_armor"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "E": "#c:ingots/schrabidium",
+    "P": "hbm:pellet_charged",
+    "S": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:starmetal_boots"
+    }
+  },
+  "pattern": [
+    "EPE",
+    "ESE"
+  ],
+  "result": {
+    "id": "hbm:schrabidium_boots"
+  }
+}

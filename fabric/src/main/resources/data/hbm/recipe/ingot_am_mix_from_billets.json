@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:billet_am_mix",
+    "hbm:billet_am_mix",
+    "hbm:billet_am_mix"
+  ],
+  "result": {
+    "count": 2,
+    "id": "hbm:ingot_am_mix"
+  }
+}

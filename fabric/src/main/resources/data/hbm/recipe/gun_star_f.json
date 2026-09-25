@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_light/weapon_steel",
+    "G": "#hbm:grips/any_plastic",
+    "M": "#hbm:gun_mechanisms/weapon_steel",
+    "R": "#hbm:receivers_light/weapon_steel"
+  },
+  "pattern": [
+    "BRM",
+    "  G"
+  ],
+  "result": {
+    "id": "hbm:gun_star_f"
+  }
+}

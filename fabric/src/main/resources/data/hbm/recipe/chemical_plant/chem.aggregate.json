@@ -1,0 +1,26 @@
+{
+  "type": "hbm:chemical_plant",
+  "blueprint_pools": [
+    "discover.stone"
+  ],
+  "custom_localization": true,
+  "duration": 320,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "minecraft:cobblestone"
+    }
+  ],
+  "order": 22,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "minecraft:gravel"
+    },
+    {
+      "count": 8,
+      "id": "minecraft:sand"
+    }
+  ],
+  "power": 500
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:bobblehead_mellow"
+    }
+  ],
+  "order": 200,
+  "output_items": [
+    "hbm:scrap_plastic_card_processor"
+  ]
+}

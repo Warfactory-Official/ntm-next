@@ -1,0 +1,12 @@
+{
+  "type": "hbm:arc_furnace",
+  "input_items": [
+    {
+      "ingredient": "hbm:sand_quartz"
+    }
+  ],
+  "order": 10,
+  "output_items": [
+    "hbm:glass_quartz"
+  ]
+}

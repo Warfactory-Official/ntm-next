@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:plates/saturnite",
+    "#hbm:plates_cast/any_bismoid_bronze",
+    "hbm:ducttape"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_generic_bronze_dura"
+  }
+}

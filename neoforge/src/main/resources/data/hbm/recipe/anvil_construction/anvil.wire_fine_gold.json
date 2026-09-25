@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/gold"
+    }
+  ],
+  "order": 14,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:wire_fine_gold"
+    }
+  ],
+  "overlay": "smithing",
+  "tier": 4
+}

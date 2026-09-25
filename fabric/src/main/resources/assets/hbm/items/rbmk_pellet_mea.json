@@ -1,0 +1,113 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/rbmk_pellet_mea_e0"
+        },
+        "when": {
+          "depletion": 0,
+          "xenon": false
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/rbmk_pellet_mea_e1"
+        },
+        "when": {
+          "depletion": 1,
+          "xenon": false
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/rbmk_pellet_mea_e2"
+        },
+        "when": {
+          "depletion": 2,
+          "xenon": false
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/rbmk_pellet_mea_e3"
+        },
+        "when": {
+          "depletion": 3,
+          "xenon": false
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/rbmk_pellet_mea_e4"
+        },
+        "when": {
+          "depletion": 4,
+          "xenon": false
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/rbmk_pellet_mea_e0_xe"
+        },
+        "when": {
+          "depletion": 0,
+          "xenon": true
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/rbmk_pellet_mea_e1_xe"
+        },
+        "when": {
+          "depletion": 1,
+          "xenon": true
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/rbmk_pellet_mea_e2_xe"
+        },
+        "when": {
+          "depletion": 2,
+          "xenon": true
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/rbmk_pellet_mea_e3_xe"
+        },
+        "when": {
+          "depletion": 3,
+          "xenon": true
+        }
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/rbmk_pellet_mea_e4_xe"
+        },
+        "when": {
+          "depletion": 4,
+          "xenon": true
+        }
+      }
+    ],
+    "component": "hbm:rbmk_pellet",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:item/rbmk_pellet_mea_e0"
+    },
+    "property": "minecraft:component"
+  }
+}

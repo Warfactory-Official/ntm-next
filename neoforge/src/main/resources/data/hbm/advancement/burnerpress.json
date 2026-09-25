@@ -1,0 +1,27 @@
+{
+  "parent": "hbm:root",
+  "criteria": {
+    "crafted_hbm_machine_press": {
+      "conditions": {
+        "recipe_id": "hbm:machine_press"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.burnerPress.desc"
+    },
+    "icon": {
+      "id": "hbm:machine_press"
+    },
+    "title": {
+      "translate": "achievement.burnerPress"
+    }
+  },
+  "requirements": [
+    [
+      "crafted_hbm_machine_press"
+    ]
+  ]
+}

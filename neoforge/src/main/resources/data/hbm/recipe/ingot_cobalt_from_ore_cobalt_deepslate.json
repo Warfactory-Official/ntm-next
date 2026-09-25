@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 2.0,
+  "ingredient": "hbm:ore_cobalt_deepslate",
+  "result": {
+    "id": "hbm:ingot_cobalt"
+  }
+}

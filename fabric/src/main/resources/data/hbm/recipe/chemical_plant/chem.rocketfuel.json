@@ -1,0 +1,34 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!enable_528_pressurized"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:petroleum",
+      "amount": 200
+    },
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 100
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:solid_fuel"
+    }
+  ],
+  "order": 69,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:rocket_fuel"
+    }
+  ],
+  "power": 100
+}

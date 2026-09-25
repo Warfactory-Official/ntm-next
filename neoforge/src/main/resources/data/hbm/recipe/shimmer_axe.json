@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "hbm:shimmer_handle",
+    "H": "hbm:shimmer_axe_head"
+  },
+  "pattern": [
+    "H",
+    "G",
+    "G"
+  ],
+  "result": {
+    "id": "hbm:shimmer_axe"
+  }
+}

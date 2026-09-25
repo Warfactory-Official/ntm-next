@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_basic",
+    "I": "hbm:plate_polymer",
+    "P": "hbm:part_generic_piston_pneumatic"
+  },
+  "pattern": [
+    "PIP",
+    "ICI",
+    "PIP"
+  ],
+  "result": {
+    "id": "hbm:crane_router"
+  }
+}

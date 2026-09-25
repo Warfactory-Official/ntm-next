@@ -1,0 +1,34 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "non_metal",
+          "grade": "rad_arc"
+        }
+      },
+      "count": 4,
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 170,
+  "output_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "non_metal",
+          "grade": "rad_washed"
+        }
+      },
+      "id": "hbm:bedrock_ore"
+    }
+  ]
+}

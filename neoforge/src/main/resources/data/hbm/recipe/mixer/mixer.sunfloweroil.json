@@ -1,0 +1,16 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_items": [
+    {
+      "ingredient": "minecraft:sunflower"
+    }
+  ],
+  "order": 13,
+  "output_fluids": [
+    {
+      "type": "hbm:sunfloweroil",
+      "amount": 100
+    }
+  ]
+}

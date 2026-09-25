@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 0.35
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:ores/uranium"
+}

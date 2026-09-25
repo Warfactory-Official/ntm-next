@@ -1,0 +1,15 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/siren_track_eas_alarm",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "hbm:cassette_color"
+      }
+    ]
+  }
+}

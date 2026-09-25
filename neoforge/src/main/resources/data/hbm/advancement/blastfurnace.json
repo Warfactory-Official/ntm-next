@@ -1,0 +1,29 @@
+{
+  "parent": "hbm:burnerpress",
+  "criteria": {
+    "produced": {
+      "conditions": {
+        "item": {
+          "items": "hbm:machine_blast_furnace"
+        }
+      },
+      "trigger": "hbm:item_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "achievement.blastFurnace.desc"
+    },
+    "icon": {
+      "id": "hbm:machine_blast_furnace"
+    },
+    "title": {
+      "translate": "achievement.blastFurnace"
+    }
+  },
+  "requirements": [
+    [
+      "produced"
+    ]
+  ]
+}

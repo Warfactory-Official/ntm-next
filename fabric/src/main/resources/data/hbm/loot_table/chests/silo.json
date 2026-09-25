@@ -1,0 +1,81 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:missile_generic",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:missile_incendiary",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:gas_mask_m65",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:battery_pack_battery_lead",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:designator",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:thruster_small",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:thruster_medium",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:fuel_tank_small",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:fuel_tank_medium",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:bomb_caller_carpet_bombing",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:bomb_caller_agent_orange",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:bottle_nuka",
+          "weight": 10
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "hbm:chests/silo"
+}

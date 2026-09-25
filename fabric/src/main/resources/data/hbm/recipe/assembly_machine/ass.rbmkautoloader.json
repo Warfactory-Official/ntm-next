@@ -1,0 +1,36 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.ferrouranium"
+  ],
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_welded/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/lead"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/boron"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:motor"
+    }
+  ],
+  "order": 231,
+  "output_items": [
+    "hbm:rbmk_autoloader"
+  ],
+  "power": 100
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/uranium_238"
+    }
+  ],
+  "order": 15,
+  "output_items": [
+    "hbm:ingot_u235"
+  ]
+}

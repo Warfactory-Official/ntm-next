@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 0.5
+    }
+  ],
+  "targets": "#hbm:hazard/ingot_uranium_fuel"
+}

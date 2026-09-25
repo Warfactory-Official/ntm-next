@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:annihilator",
+  "item": "#c:ingots/steel",
+  "milestones": [
+    {
+      "amount": "256",
+      "payout": {
+        "components": {
+          "hbm:blueprint_pool": "528.steel"
+        },
+        "id": "hbm:blueprints"
+      }
+    }
+  ]
+}

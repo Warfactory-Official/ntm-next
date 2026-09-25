@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 64,
+      "ingredient": "#hbm:wires_dense/bscco"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:ingots/any_plastic"
+    }
+  ],
+  "order": 221,
+  "output_items": [
+    "hbm:pa_coil_bscco"
+  ],
+  "power": 100
+}

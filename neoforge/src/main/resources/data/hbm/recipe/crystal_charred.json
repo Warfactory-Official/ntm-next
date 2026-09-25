@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/strontium",
+    "#c:dusts/cobalt",
+    "#c:dusts/bromine",
+    "#c:dusts/niobium",
+    "#c:dusts/tennessine",
+    "#c:dusts/cerium",
+    "hbm:block_meteor",
+    "#c:storage_blocks/aluminum",
+    "minecraft:water_bucket"
+  ],
+  "result": {
+    "id": "hbm:crystal_charred"
+  }
+}

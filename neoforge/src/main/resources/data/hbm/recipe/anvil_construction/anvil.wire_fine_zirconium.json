@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/zirconium"
+    }
+  ],
+  "order": 20,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:wire_fine_zirconium"
+    }
+  ],
+  "overlay": "smithing",
+  "tier": 4
+}

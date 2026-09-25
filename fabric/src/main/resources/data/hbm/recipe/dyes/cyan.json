@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "hbm:oil_tar_wax",
+      "hbm:crayon_cyan",
+      "hbm:chemical_dye_cyan"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:cyan_dye"
+  }
+}

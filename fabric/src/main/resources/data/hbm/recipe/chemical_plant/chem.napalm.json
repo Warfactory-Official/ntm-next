@@ -1,0 +1,27 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 40,
+  "input_fluids": [
+    {
+      "type": "hbm:gasoline",
+      "amount": 100
+    },
+    {
+      "type": "hbm:aromatics",
+      "amount": 50
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:canister",
+      "predicates": {
+        "hbm:fluid_content": "minecraft:empty"
+      }
+    }
+  ],
+  "order": 77,
+  "output_items": [
+    "hbm:canister_napalm"
+  ],
+  "power": 100
+}

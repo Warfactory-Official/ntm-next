@@ -1,0 +1,27 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#c:ingots/uranium_238"
+    },
+    "B": {
+      "count": 2,
+      "ingredient": "#hbm:dusts/any_smokeless"
+    },
+    "C": {
+      "ingredient": "hbm:casing_buckshot_advanced"
+    }
+  },
+  "order": 52,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:ammo_standard_g10_du"
+    }
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

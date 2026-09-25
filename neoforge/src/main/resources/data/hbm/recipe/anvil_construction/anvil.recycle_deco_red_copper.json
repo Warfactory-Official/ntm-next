@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:deco_red_copper"
+    }
+  ],
+  "order": 206,
+  "output_items": [
+    "hbm:ingot_red_copper"
+  ],
+  "overlay": "recycling",
+  "tier": 1
+}

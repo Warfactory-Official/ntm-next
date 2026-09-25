@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_light/steel",
+    "G": "#c:bolts/steel",
+    "M": "#hbm:gun_mechanisms/gun_metal",
+    "R": "#hbm:receivers_light/steel",
+    "S": "#hbm:stocks/wood"
+  },
+  "pattern": [
+    "BRM",
+    "BGS"
+  ],
+  "result": {
+    "id": "hbm:gun_maresleg"
+  }
+}

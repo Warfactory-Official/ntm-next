@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:ams_catalyst_blank",
+    "hbm:rune_dagaz",
+    "hbm:rune_dagaz",
+    "hbm:rune_jera",
+    "hbm:rune_thurisaz",
+    "#c:dusts/strontium",
+    "#c:dusts/strontium",
+    "#c:dusts/strontium",
+    "#c:dusts/strontium"
+  ],
+  "result": {
+    "id": "hbm:ams_catalyst_strontium"
+  }
+}

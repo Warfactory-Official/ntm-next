@@ -1,0 +1,17 @@
+{
+  "type": "liquid",
+  "color": "#fff7aa",
+  "nfpa": {
+    "flame": 0,
+    "health": 3,
+    "react": 3
+  },
+  "shares": "#c:hydrogen_peroxide",
+  "symbol": "OXIDIZER",
+  "temperature": 20,
+  "traits": {
+    "corrosive": {
+      "rating": 40
+    }
+  }
+}

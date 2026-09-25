@@ -1,0 +1,8 @@
+{
+  "rate": {
+    "type": "fixed",
+    "emission": 0.04,
+    "saturation": 100.0
+  },
+  "targets": "hbm:fallout"
+}

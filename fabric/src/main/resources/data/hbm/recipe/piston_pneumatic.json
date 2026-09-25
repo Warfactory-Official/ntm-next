@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:ingots/copper",
+    "I": "#c:ingots/iron",
+    "P": "#c:plates/iron"
+  },
+  "pattern": [
+    " I ",
+    "CPC",
+    " I "
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:part_generic_piston_pneumatic"
+  }
+}

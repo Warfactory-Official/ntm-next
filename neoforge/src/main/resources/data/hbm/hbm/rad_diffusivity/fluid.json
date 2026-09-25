@@ -1,0 +1,7 @@
+{
+  "blocks": [
+    "minecraft:water",
+    "minecraft:lava"
+  ],
+  "value": 0.55
+}

@@ -1,0 +1,23 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Body"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Glass_Glaass",
+    "Blades"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/machines/turbine.obj",
+  "offset_z": -1.0,
+  "skins": {
+    "all": [
+      "Body"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/turbine",
+    "particle": "hbm:block/models/machines/turbine"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:crystal_redstone"
+    }
+  ],
+  "order": 136,
+  "output_items": [
+    {
+      "count": 3,
+      "id": "minecraft:redstone"
+    },
+    {
+      "count": 3,
+      "id": "minecraft:redstone"
+    },
+    {
+      "count": 3,
+      "id": "minecraft:redstone"
+    },
+    {
+      "count": 3,
+      "id": "hbm:nugget_mercury"
+    }
+  ],
+  "power": 200
+}

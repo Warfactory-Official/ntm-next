@@ -1,0 +1,35 @@
+{
+  "type": "hbm:electrolyser_metal",
+  "duration": 20,
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "rare_earth",
+          "grade": "primary_second"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 25,
+  "output_items": [
+    {
+      "count": 40,
+      "id": "hbm:bedrock_ore_fragment_rare_earth"
+    },
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "rare_earth",
+          "grade": "crumbs"
+        }
+      },
+      "id": "hbm:bedrock_ore"
+    }
+  ],
+  "output_material": {
+    "amount": 160,
+    "material": "cobalt"
+  }
+}

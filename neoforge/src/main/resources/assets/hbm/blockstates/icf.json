@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/icf"
+    },
+    "facing=north": {
+      "model": "hbm:block/icf",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/icf",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/icf",
+      "y": 180
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_heavy/workers_alloy",
+    "G": "#hbm:grips/workers_alloy",
+    "M": "#hbm:gun_mechanisms/gun_metal",
+    "P": "#hbm:plates_cast/steel"
+  },
+  "pattern": [
+    "BBB",
+    "PGM"
+  ],
+  "result": {
+    "id": "hbm:gun_panzerschreck"
+  }
+}

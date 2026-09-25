@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "L": "#c:plates/dura_steel",
+    "P": "#c:plates/steel",
+    "S": "hbm:ring_starmetal"
+  },
+  "pattern": [
+    "PLP",
+    "PSP",
+    "PLP"
+  ],
+  "result": {
+    "id": "hbm:radiobox"
+  }
+}

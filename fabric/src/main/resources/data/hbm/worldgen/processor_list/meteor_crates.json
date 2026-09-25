@@ -1,0 +1,85 @@
+{
+  "processors": [
+    {
+      "marker": {
+        "Name": "hbm:meteor_brick"
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:meteor_brick"
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "hbm:meteor_brick_mossy"
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "hbm:meteor_brick_cracked"
+          },
+          "weight": 3
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "hbm:crate"
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "minecraft:air"
+          },
+          "weight": 6
+        },
+        {
+          "data": {
+            "Name": "hbm:crate_ammo"
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "hbm:crate_can"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:crate"
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "marker": {
+        "Name": "hbm:meteor_spawner"
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:meteor_brick"
+          },
+          "weight": 8
+        },
+        {
+          "data": {
+            "Name": "hbm:meteor_spawner"
+          },
+          "weight": 2
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "processor_type": "hbm:loot_pile"
+    }
+  ]
+}

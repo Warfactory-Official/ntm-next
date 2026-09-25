@@ -1,0 +1,19 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 64,
+      "ingredient": "#hbm:wires_dense/niobium"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:wires_dense/titanium"
+    }
+  ],
+  "order": 220,
+  "output_items": [
+    "hbm:pa_coil_niobium"
+  ],
+  "power": 100
+}

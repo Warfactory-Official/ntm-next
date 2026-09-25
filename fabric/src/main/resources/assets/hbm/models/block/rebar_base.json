@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "fill": "hbm:block/concrete_liquid",
+    "particle": "hbm:block/rebar",
+    "rebar": "hbm:block/rebar"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "type": "hbm:ammo_press",
+  "key": {
+    "A": {
+      "ingredient": "#c:ingots/steel"
+    },
+    "B": {
+      "ingredient": "#hbm:dusts/any_smokeless"
+    },
+    "C": {
+      "ingredient": "hbm:casing_small"
+    }
+  },
+  "order": 8,
+  "output_items": [
+    {
+      "count": 6,
+      "id": "hbm:ammo_standard_m44_fmj"
+    }
+  ],
+  "pattern": [
+    " A ",
+    " B ",
+    " C "
+  ]
+}

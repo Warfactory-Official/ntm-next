@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:glass_blocks",
+    "#c:dusts/red_phosphorus",
+    {
+      "fabric:type": "hbm:fluid_content",
+      "amount": 1000,
+      "fluid": "hbm:tritium"
+    },
+    "#c:dusts/aluminum"
+  ],
+  "result": {
+    "id": "hbm:lamp_tritium_blue"
+  }
+}

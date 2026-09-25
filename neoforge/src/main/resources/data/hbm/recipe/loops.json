@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:flame_pony",
+    "minecraft:wheat",
+    "minecraft:sugar"
+  ],
+  "result": {
+    "id": "hbm:loops"
+  }
+}

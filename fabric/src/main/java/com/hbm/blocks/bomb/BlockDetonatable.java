@@ -1,0 +1,12 @@
+// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+// SPDX-License-Identifier: LGPL-3.0-only
+
+package com.hbm.blocks.bomb;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+
+public interface BlockDetonatable {
+
+    void onShot(Level level, BlockPos pos);
+}

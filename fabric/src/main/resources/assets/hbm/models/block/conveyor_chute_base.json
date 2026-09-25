@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "belt": "hbm:block/conveyor",
+    "concrete": "hbm:block/concrete",
+    "grate": "hbm:block/grate_top",
+    "particle": "hbm:block/conveyor",
+    "side": "hbm:block/conveyor_side"
+  }
+}

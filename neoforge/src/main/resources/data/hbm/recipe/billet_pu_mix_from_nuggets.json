@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:nuggets/plutonium_239",
+    "#c:nuggets/plutonium_239",
+    "#c:nuggets/plutonium_239",
+    "#c:nuggets/plutonium_239",
+    "#c:nuggets/plutonium_240",
+    "#c:nuggets/plutonium_240"
+  ],
+  "result": {
+    "id": "hbm:billet_pu_mix"
+  }
+}

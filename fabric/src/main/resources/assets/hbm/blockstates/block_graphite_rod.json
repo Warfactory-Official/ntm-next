@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "axis=x,shrouded=false,withdrawn=false": {
+      "model": "hbm:block/block_graphite_rod",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,shrouded=false,withdrawn=true": {
+      "model": "hbm:block/block_graphite_rod_out",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,shrouded=true,withdrawn=false": {
+      "model": "hbm:block/block_graphite_rod_aluminum",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,shrouded=true,withdrawn=true": {
+      "model": "hbm:block/block_graphite_rod_out_aluminum",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,shrouded=false,withdrawn=false": {
+      "model": "hbm:block/block_graphite_rod"
+    },
+    "axis=y,shrouded=false,withdrawn=true": {
+      "model": "hbm:block/block_graphite_rod_out"
+    },
+    "axis=y,shrouded=true,withdrawn=false": {
+      "model": "hbm:block/block_graphite_rod_aluminum"
+    },
+    "axis=y,shrouded=true,withdrawn=true": {
+      "model": "hbm:block/block_graphite_rod_out_aluminum"
+    },
+    "axis=z,shrouded=false,withdrawn=false": {
+      "model": "hbm:block/block_graphite_rod",
+      "x": 90
+    },
+    "axis=z,shrouded=false,withdrawn=true": {
+      "model": "hbm:block/block_graphite_rod_out",
+      "x": 90
+    },
+    "axis=z,shrouded=true,withdrawn=false": {
+      "model": "hbm:block/block_graphite_rod_aluminum",
+      "x": 90
+    },
+    "axis=z,shrouded=true,withdrawn=true": {
+      "model": "hbm:block/block_graphite_rod_out_aluminum",
+      "x": 90
+    }
+  }
+}

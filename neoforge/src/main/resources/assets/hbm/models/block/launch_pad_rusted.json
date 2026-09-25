@@ -1,0 +1,15 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/weapons/launch_pad_silo.obj",
+  "skins": {
+    "all": [
+      "Plane"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/launchpad/silo_rusted",
+    "particle": "hbm:block/models/launchpad/silo_rusted"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:desert",
+    "minecraft:badlands",
+    "minecraft:eroded_badlands",
+    "minecraft:wooded_badlands"
+  ],
+  "features": "hbm:barrel",
+  "step": "vegetal_decoration"
+}

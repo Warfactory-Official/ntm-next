@@ -1,0 +1,42 @@
+{
+  "type": "hbm:pedestal",
+  "extra": "sun",
+  "key": {
+    "A": {
+      "ingredient": "#hbm:plates_cast/gold"
+    },
+    "B": {
+      "ingredient": "hbm:canned_slime"
+    },
+    "C": {
+      "ingredient": "#hbm:plates_cast/gold"
+    },
+    "D": {
+      "ingredient": "#c:ingots/white_phosphorus"
+    },
+    "E": {
+      "ingredient": "hbm:gun_flamer"
+    },
+    "F": {
+      "ingredient": "#c:ingots/white_phosphorus"
+    },
+    "G": {
+      "ingredient": "#hbm:plates_cast/gold"
+    },
+    "H": {
+      "ingredient": "hbm:stick_dynamite"
+    },
+    "I": {
+      "ingredient": "#hbm:plates_cast/gold"
+    }
+  },
+  "order": 6,
+  "output_items": [
+    "hbm:gun_flamer_daybreaker"
+  ],
+  "pattern": [
+    "ABC",
+    "DEF",
+    "GHI"
+  ]
+}

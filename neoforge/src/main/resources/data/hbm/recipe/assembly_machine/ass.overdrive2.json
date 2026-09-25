@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_items": [
+    {
+      "ingredient": "hbm:upgrade_overdrive_1"
+    },
+    {
+      "ingredient": "hbm:upgrade_speed_3"
+    },
+    {
+      "ingredient": "hbm:upgrade_effect_3"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/saturnite"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:ingot_cft"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_capacitor_board"
+    }
+  ],
+  "order": 284,
+  "output_items": [
+    "hbm:upgrade_overdrive_2"
+  ],
+  "power": 100
+}

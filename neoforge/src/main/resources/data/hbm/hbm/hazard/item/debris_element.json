@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 100.0
+    }
+  ],
+  "targets": "hbm:debris_element"
+}

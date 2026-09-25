@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "hbm:cell_anti_schrabidium",
+    "E": "hbm:plate_euphemium",
+    "S": "hbm:singularity"
+  },
+  "pattern": [
+    "EAE",
+    "ASA",
+    "EAE"
+  ],
+  "result": {
+    "id": "hbm:ams_core_sing"
+  }
+}

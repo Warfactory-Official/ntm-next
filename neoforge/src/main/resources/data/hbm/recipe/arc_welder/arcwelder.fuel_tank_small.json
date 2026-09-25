@@ -1,0 +1,23 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 60,
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "#c:plates/aluminum"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/copper"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:steel_scaffold"
+    }
+  ],
+  "order": 21,
+  "output_items": [
+    "hbm:fuel_tank_small"
+  ],
+  "power": 1000
+}

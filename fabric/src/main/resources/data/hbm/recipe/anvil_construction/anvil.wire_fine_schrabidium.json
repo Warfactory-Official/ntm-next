@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/schrabidium"
+    }
+  ],
+  "order": 15,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbm:wire_fine_schrabidium"
+    }
+  ],
+  "overlay": "smithing",
+  "tier": 4
+}

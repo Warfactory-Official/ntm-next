@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:rbmk_fuel_empty",
+    "hbm:billet_ra226be",
+    "hbm:billet_ra226be",
+    "hbm:billet_ra226be",
+    "hbm:billet_ra226be",
+    "hbm:billet_ra226be",
+    "hbm:billet_ra226be",
+    "hbm:billet_ra226be",
+    "hbm:billet_ra226be"
+  ],
+  "result": {
+    "id": "hbm:rbmk_fuel_ra226be"
+  }
+}

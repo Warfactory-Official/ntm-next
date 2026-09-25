@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/anvil_desh"
+    },
+    "facing=north": {
+      "model": "hbm:block/anvil_desh",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/anvil_desh",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/anvil_desh",
+      "y": 180
+    }
+  }
+}

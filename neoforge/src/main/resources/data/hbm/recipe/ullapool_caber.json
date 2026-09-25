@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:plates/iron",
+    "S": "#c:rods/wooden",
+    "T": "minecraft:tnt"
+  },
+  "pattern": [
+    "ITI",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "id": "hbm:ullapool_caber"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_15"
+    },
+    {
+      "ingredient": "hbm:seg_20"
+    },
+    {
+      "count": 48,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:plates/steel"
+    }
+  ],
+  "order": 396,
+  "output_items": [
+    "hbm:mp_fuselage_15_20_solid"
+  ],
+  "power": 100
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_mirrored",
+  "textures": {
+    "end": "hbm:block/ore_fluorite_deepslate_top",
+    "side": "hbm:block/ore_fluorite_deepslate"
+  }
+}

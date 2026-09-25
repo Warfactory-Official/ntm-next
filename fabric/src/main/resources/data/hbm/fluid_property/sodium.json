@@ -1,0 +1,31 @@
+{
+  "type": "liquid",
+  "color": "#ccd4d5",
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 2,
+    "health": 1,
+    "react": 3
+  },
+  "shares": "#c:sodium",
+  "symbol": "NONE",
+  "temperature": 400,
+  "traits": {
+    "heatable": {
+      "efficiency": {
+        "ICF": 3.0,
+        "PWR": 2.5
+      },
+      "steps": [
+        {
+          "amount_produced": 1,
+          "amount_req": 1,
+          "heat_req": 400,
+          "produces": "hbm:sodium_hot"
+        }
+      ]
+    }
+  }
+}

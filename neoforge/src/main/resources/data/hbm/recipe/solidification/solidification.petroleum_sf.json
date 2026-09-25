@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:petroleum",
+      "amount": 1000
+    }
+  ],
+  "order": 40,
+  "output_items": [
+    "hbm:solid_fuel"
+  ]
+}

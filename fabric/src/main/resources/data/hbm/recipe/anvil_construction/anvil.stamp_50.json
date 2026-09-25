@@ -1,0 +1,18 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:stamp_iron_flat"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:ingots/gun_metal"
+    }
+  ],
+  "order": 172,
+  "output_items": [
+    "hbm:stamp_50"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

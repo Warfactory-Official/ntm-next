@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "minecraft:enchanted_book"
+    }
+  ],
+  "order": 47,
+  "output_items": [
+    "hbm:powder_magic"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:missile_assembly",
+    "hbm:ducttape",
+    "hbm:cell_anti_schrabidium",
+    "hbm:circuit_quantum"
+  ],
+  "result": {
+    "id": "hbm:missile_schrabidium"
+  }
+}

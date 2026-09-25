@@ -1,0 +1,20 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 60,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "ingredient": "hbm:fuel_tank_small"
+    },
+    {
+      "ingredient": "hbm:thruster_small"
+    }
+  ],
+  "order": 29,
+  "output_items": [
+    "hbm:missile_decoy"
+  ],
+  "power": 2500
+}

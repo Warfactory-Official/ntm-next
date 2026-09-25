@@ -1,0 +1,14 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 72,
+      "material": "cobalt"
+    },
+    {
+      "amount": 162,
+      "material": "stone"
+    }
+  ],
+  "targets": "#hbm:ore_processing/cobalt"
+}

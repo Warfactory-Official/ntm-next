@@ -1,0 +1,16 @@
+{
+  "type": "hbm:fluid_breeder",
+  "input_fluids": [
+    {
+      "type": "hbm:gas",
+      "amount": 1000
+    }
+  ],
+  "order": 0,
+  "output_fluids": [
+    {
+      "type": "hbm:syngas",
+      "amount": 1000
+    }
+  ]
+}

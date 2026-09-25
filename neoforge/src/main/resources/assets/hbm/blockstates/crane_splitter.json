@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/crane_splitter"
+    },
+    "facing=north": {
+      "model": "hbm:block/crane_splitter",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/crane_splitter",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/crane_splitter",
+      "y": 180
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:explosive",
+      "level": 4.0
+    }
+  ],
+  "targets": "minecraft:tnt"
+}

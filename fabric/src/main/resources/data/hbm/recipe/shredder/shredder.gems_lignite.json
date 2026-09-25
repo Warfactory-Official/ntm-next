@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:gems/lignite"
+    }
+  ],
+  "order": 400,
+  "output_items": [
+    "hbm:powder_lignite"
+  ]
+}

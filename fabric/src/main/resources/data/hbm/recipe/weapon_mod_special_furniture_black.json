@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "#c:dyes/black",
+    "G": "#hbm:grips/any_plastic",
+    "P": "#hbm:ingots/any_plastic",
+    "S": "#hbm:stocks/any_plastic"
+  },
+  "pattern": [
+    "PDS",
+    "  G"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_special_furniture_black"
+  }
+}

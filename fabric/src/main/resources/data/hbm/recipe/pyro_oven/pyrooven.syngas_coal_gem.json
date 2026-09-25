@@ -1,0 +1,22 @@
+{
+  "type": "hbm:pyro_oven",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:steam",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:gems/coal"
+    }
+  ],
+  "order": 58,
+  "output_fluids": [
+    {
+      "type": "hbm:syngas",
+      "amount": 1000
+    }
+  ]
+}

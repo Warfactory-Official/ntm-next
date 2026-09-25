@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/pile_bones"
+        }
+      ],
+      "rolls": 6.0
+    }
+  ],
+  "random_sequence": "hbm:chests/pile_bones_6_6"
+}

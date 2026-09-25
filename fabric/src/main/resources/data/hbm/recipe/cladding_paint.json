@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:nuggets/lead",
+    "#c:nuggets/lead",
+    "#c:nuggets/lead",
+    "#c:nuggets/lead",
+    "minecraft:clay_ball",
+    "minecraft:glass_bottle"
+  ],
+  "result": {
+    "id": "hbm:cladding_paint"
+  }
+}

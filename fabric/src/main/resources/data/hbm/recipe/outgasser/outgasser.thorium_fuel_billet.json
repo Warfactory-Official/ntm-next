@@ -1,0 +1,13 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "#hbm:billets/thorium"
+    }
+  ],
+  "order": 9,
+  "output_items": [
+    "hbm:billet_thorium_fuel"
+  ]
+}

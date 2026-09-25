@@ -1,0 +1,26 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_15"
+    },
+    {
+      "count": 3,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/tungsten"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/steel"
+    }
+  ],
+  "order": 368,
+  "output_items": [
+    "hbm:mp_thruster_15_kerosene_dual"
+  ],
+  "power": 100
+}

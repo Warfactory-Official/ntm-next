@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "fabric:type": "fabric:components",
+      "base": "hbm:ajr_legs",
+      "components": {
+        "minecraft:damage": 0
+      }
+    },
+    "#c:dyes/red",
+    "#c:dyes/black"
+  ],
+  "result": {
+    "id": "hbm:ajro_legs"
+  }
+}

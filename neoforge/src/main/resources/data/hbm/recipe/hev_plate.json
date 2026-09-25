@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:titanium_plate"
+    },
+    "I": "#hbm:ingots/any_plastic",
+    "M": "hbm:motor_desh",
+    "P": "hbm:plate_armor_hev"
+  },
+  "pattern": [
+    "MPM",
+    "IBI",
+    "PPP"
+  ],
+  "result": {
+    "id": "hbm:hev_plate"
+  }
+}

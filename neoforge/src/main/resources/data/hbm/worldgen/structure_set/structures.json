@@ -1,0 +1,162 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 996996996,
+    "separation": 4,
+    "spacing": 16
+  },
+  "structures": [
+    {
+      "structure": "hbm:meteor_dungeon",
+      "weight": 1
+    },
+    {
+      "structure": "hbm:ruin_a",
+      "weight": 10
+    },
+    {
+      "structure": "hbm:ruin_b",
+      "weight": 12
+    },
+    {
+      "structure": "hbm:ruin_c",
+      "weight": 12
+    },
+    {
+      "structure": "hbm:ruin_d",
+      "weight": 12
+    },
+    {
+      "structure": "hbm:ruin_e",
+      "weight": 12
+    },
+    {
+      "structure": "hbm:ruin_f",
+      "weight": 12
+    },
+    {
+      "structure": "hbm:ruin_g",
+      "weight": 12
+    },
+    {
+      "structure": "hbm:ruin_h",
+      "weight": 12
+    },
+    {
+      "structure": "hbm:ruin_i",
+      "weight": 12
+    },
+    {
+      "structure": "hbm:ruin_j",
+      "weight": 12
+    },
+    {
+      "structure": "hbm:spire",
+      "weight": 2
+    },
+    {
+      "structure": "hbm:features",
+      "weight": 50
+    },
+    {
+      "structure": "hbm:bunker",
+      "weight": 6
+    },
+    {
+      "structure": "hbm:vertibird",
+      "weight": 6
+    },
+    {
+      "structure": "hbm:crashed_vertibird",
+      "weight": 10
+    },
+    {
+      "structure": "hbm:beached_patrol",
+      "weight": 15
+    },
+    {
+      "structure": "hbm:aircraft_carrier",
+      "weight": 3
+    },
+    {
+      "structure": "hbm:oil_rig",
+      "weight": 5
+    },
+    {
+      "structure": "hbm:lighthouse",
+      "weight": 1
+    },
+    {
+      "structure": "hbm:dish",
+      "weight": 10
+    },
+    {
+      "structure": "hbm:water_pump",
+      "weight": 15
+    },
+    {
+      "structure": "hbm:forest_chem",
+      "weight": 30
+    },
+    {
+      "structure": "hbm:laboratory",
+      "weight": 20
+    },
+    {
+      "structure": "hbm:forest_post",
+      "weight": 30
+    },
+    {
+      "structure": "hbm:radio_house",
+      "weight": 25
+    },
+    {
+      "structure": "hbm:factory",
+      "weight": 40
+    },
+    {
+      "structure": "hbm:crane",
+      "weight": 20
+    },
+    {
+      "structure": "hbm:broadcasting_tower",
+      "weight": 25
+    },
+    {
+      "structure": "hbm:crashed_plane_1",
+      "weight": 25
+    },
+    {
+      "structure": "hbm:crashed_plane_2",
+      "weight": 25
+    },
+    {
+      "structure": "hbm:desert_shack_1",
+      "weight": 18
+    },
+    {
+      "structure": "hbm:desert_shack_2",
+      "weight": 20
+    },
+    {
+      "structure": "hbm:desert_shack_3",
+      "weight": 22
+    },
+    {
+      "structure": "hbm:dead_dish_small",
+      "weight": 15
+    },
+    {
+      "structure": "hbm:tower_base",
+      "weight": 30
+    },
+    {
+      "structure": "hbm:null_spawn_plains",
+      "weight": 20
+    },
+    {
+      "structure": "hbm:null_spawn_ocean",
+      "weight": 35
+    }
+  ]
+}

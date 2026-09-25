@@ -1,0 +1,178 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -180.0,
+        85.0,
+        155.0
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        -0.42117506,
+        1.6607065,
+        -4.8140473
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -180.0,
+        85.0,
+        155.0
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        0.15984786,
+        4.7693434,
+        1.8270729
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -180.0,
+        0.0,
+        -180.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.7231369,
+        6.1587505,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.09375,
+        0.09375,
+        0.09375
+      ],
+      "translation": [
+        -0.36156845,
+        0.359375,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        45.000008,
+        -180.0
+      ],
+      "scale": [
+        0.1171875,
+        0.1171875,
+        0.1171875
+      ],
+      "translation": [
+        0.31958407,
+        -0.038706362,
+        -6.4986224
+      ]
+    },
+    "head": {
+      "rotation": [
+        31.329784,
+        35.63104,
+        160.47453
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "translation": [
+        4.927913,
+        -24.988398,
+        4.072858
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        -1.4462729,
+        17.4375,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -38.126266,
+        71.3061,
+        52.13139
+      ],
+      "scale": [
+        0.0703125,
+        0.0703125,
+        0.07031249
+      ],
+      "translation": [
+        -1.4692376,
+        4.253376,
+        -0.24644226
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -38.126266,
+        71.3061,
+        52.13139
+      ],
+      "scale": [
+        0.0703125,
+        0.0703125,
+        0.07031249
+      ],
+      "translation": [
+        -1.8856199,
+        3.6988916,
+        1.7530655
+      ]
+    }
+  },
+  "gui_light": "side",
+  "model": "hbm:models/machines/ore_slopper.obj",
+  "offset_x": 0.24104548,
+  "offset_y": -2.40625,
+  "skins": {
+    "all": [
+      "Slider",
+      "Hydraulics",
+      "Bucket",
+      "BladesRight",
+      "BladesLeft",
+      "Fan",
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/ore_slopper",
+    "particle": "hbm:block/models/machines/ore_slopper"
+  }
+}

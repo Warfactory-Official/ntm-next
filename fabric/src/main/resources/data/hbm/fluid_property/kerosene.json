@@ -1,0 +1,34 @@
+{
+  "type": "liquid",
+  "color": "#ffa5d2",
+  "containers": {
+    "canister": {
+      "color": "#ff377d"
+    }
+  },
+  "nfpa": {
+    "flame": 2,
+    "health": 1,
+    "react": 0
+  },
+  "shares": "#c:kerosene",
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "combustible": {
+      "energy": 3850000,
+      "grade": "AERO"
+    },
+    "flammable": {
+      "energy": 2560000
+    },
+    "polluting": {
+      "burn": {
+        "SOOT": 0.001
+      },
+      "release": {
+        "POISON": 5.0E-5
+      }
+    }
+  }
+}

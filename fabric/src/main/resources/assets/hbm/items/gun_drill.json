@@ -1,0 +1,35 @@
+{
+  "model": {
+    "type": "hbm:gun",
+    "base": "hbm:item/gun_drill_base",
+    "mod_table": [
+      0.0,
+      0.0,
+      -8.75,
+      0.0,
+      -0.0,
+      -8.75,
+      0.0,
+      0.0,
+      8.75,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "obj": "hbm:models/weapons/drill.obj",
+    "parts": [
+      "Base",
+      "Gauge",
+      "Piston1",
+      "Piston2",
+      "Piston3",
+      "DrillBack",
+      "DrillFront"
+    ],
+    "texture": "hbm:textures/models/weapons/drill.png"
+  }
+}

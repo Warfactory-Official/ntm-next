@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:plates/copper",
+    "L": {
+      "neoforge:ingredient_type": "hbm:fluid_content",
+      "amount": 1000,
+      "fluid": "minecraft:lava"
+    },
+    "S": "minecraft:stone",
+    "T": "#c:ingots/tungsten"
+  },
+  "pattern": [
+    "CCC",
+    "SLS",
+    "TST"
+  ],
+  "result": {
+    "id": "hbm:press_preheater"
+  }
+}

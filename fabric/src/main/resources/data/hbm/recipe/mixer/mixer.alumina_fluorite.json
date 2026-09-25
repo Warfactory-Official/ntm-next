@@ -1,0 +1,23 @@
+{
+  "type": "hbm:mixer",
+  "duration": 40,
+  "input_fluids": [
+    {
+      "type": "hbm:sodium_aluminate",
+      "amount": 150
+    }
+  ],
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "#c:dusts/fluorite"
+    }
+  ],
+  "order": 46,
+  "output_fluids": [
+    {
+      "type": "hbm:alumina",
+      "amount": 200
+    }
+  ]
+}

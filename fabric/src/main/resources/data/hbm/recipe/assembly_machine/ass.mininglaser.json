@@ -1,0 +1,45 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:shells/titanium"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/dura_steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:crystal_redstone"
+    },
+    {
+      "count": 3,
+      "ingredient": "minecraft:diamond"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:motor"
+    }
+  ],
+  "order": 158,
+  "output_items": [
+    "hbm:machine_mining_laser"
+  ],
+  "power": 100
+}

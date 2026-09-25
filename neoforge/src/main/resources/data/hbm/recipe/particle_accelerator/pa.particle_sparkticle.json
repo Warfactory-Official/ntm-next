@@ -1,0 +1,17 @@
+{
+  "type": "hbm:particle_accelerator",
+  "input_items": [
+    {
+      "ingredient": "hbm:particle_strange"
+    },
+    {
+      "ingredient": "hbm:powder_magic"
+    }
+  ],
+  "momentum": 12500,
+  "order": 7,
+  "output_items": [
+    "hbm:particle_sparkticle",
+    "hbm:dust"
+  ]
+}

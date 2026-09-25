@@ -1,0 +1,26 @@
+{
+  "type": "hbm:mixer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:petroleum",
+      "amount": 1000
+    },
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/fluorite"
+    }
+  ],
+  "order": 48,
+  "output_fluids": [
+    {
+      "type": "hbm:perfluoromethyl",
+      "amount": 1000
+    }
+  ]
+}

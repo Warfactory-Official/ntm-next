@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:annihilator",
+  "item": "hbm:ammo_standard_bmg50_fmj",
+  "milestones": [
+    {
+      "amount": "256",
+      "payout": {
+        "components": {
+          "hbm:blueprint_pool": "528.bmg"
+        },
+        "id": "hbm:blueprints"
+      }
+    }
+  ]
+}

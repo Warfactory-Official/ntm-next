@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbm:item/plant_tall_weed",
+    "tints": [
+      {
+        "type": "hbm:plant_grass"
+      }
+    ]
+  }
+}

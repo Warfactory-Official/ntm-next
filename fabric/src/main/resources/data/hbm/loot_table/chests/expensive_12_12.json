@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/expensive"
+        }
+      ],
+      "rolls": 12.0
+    }
+  ],
+  "random_sequence": "hbm:chests/expensive_12_12"
+}

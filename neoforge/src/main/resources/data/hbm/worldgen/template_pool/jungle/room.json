@@ -1,0 +1,437 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/blank_plain",
+        "processors": "hbm:jungle/blank_plain",
+        "projection": "rigid"
+      },
+      "weight": 80
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/blank_lava",
+        "processors": "hbm:jungle/blank_lava",
+        "projection": "rigid"
+      },
+      "weight": 10
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/blank_crate",
+        "processors": "hbm:jungle/blank_crate",
+        "projection": "rigid"
+      },
+      "weight": 10
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/arrow_plain",
+        "processors": "hbm:jungle/arrow_plain",
+        "projection": "rigid"
+      },
+      "weight": 8
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/arrow_lava",
+        "processors": "hbm:jungle/arrow_lava",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/arrow_crate",
+        "processors": "hbm:jungle/arrow_crate",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/arrow_fire_plain",
+        "processors": "hbm:jungle/arrow_fire_plain",
+        "projection": "rigid"
+      },
+      "weight": 8
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/arrow_fire_lava",
+        "processors": "hbm:jungle/arrow_fire_lava",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/arrow_fire_crate",
+        "processors": "hbm:jungle/arrow_fire_crate",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/fire_plain",
+        "processors": "hbm:jungle/fire_plain",
+        "projection": "rigid"
+      },
+      "weight": 8
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/fire_lava",
+        "processors": "hbm:jungle/fire_lava",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/fire_crate",
+        "processors": "hbm:jungle/fire_crate",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/magic_plain",
+        "processors": "hbm:jungle/magic_plain",
+        "projection": "rigid"
+      },
+      "weight": 8
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/magic_lava",
+        "processors": "hbm:jungle/magic_lava",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/magic_crate",
+        "processors": "hbm:jungle/magic_crate",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/mine_plain",
+        "processors": "hbm:jungle/mine_plain",
+        "projection": "rigid"
+      },
+      "weight": 8
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/mine_lava",
+        "processors": "hbm:jungle/mine_lava",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/mine_crate",
+        "processors": "hbm:jungle/mine_crate",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/pillar_plain",
+        "processors": "hbm:jungle/pillar_plain",
+        "projection": "rigid"
+      },
+      "weight": 8
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/pillar_lava",
+        "processors": "hbm:jungle/pillar_lava",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/pillar_crate",
+        "processors": "hbm:jungle/pillar_crate",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/poison_plain",
+        "processors": "hbm:jungle/poison_plain",
+        "projection": "rigid"
+      },
+      "weight": 8
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/poison_lava",
+        "processors": "hbm:jungle/poison_lava",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/poison_crate",
+        "processors": "hbm:jungle/poison_crate",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/rad_plain",
+        "processors": "hbm:jungle/rad_plain",
+        "projection": "rigid"
+      },
+      "weight": 8
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/rad_lava",
+        "processors": "hbm:jungle/rad_lava",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/rad_crate",
+        "processors": "hbm:jungle/rad_crate",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/rubble_plain",
+        "processors": "hbm:jungle/rubble_plain",
+        "projection": "rigid"
+      },
+      "weight": 8
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/rubble_lava",
+        "processors": "hbm:jungle/rubble_lava",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/rubble_crate",
+        "processors": "hbm:jungle/rubble_crate",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/slowness_plain",
+        "processors": "hbm:jungle/slowness_plain",
+        "projection": "rigid"
+      },
+      "weight": 8
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/slowness_lava",
+        "processors": "hbm:jungle/slowness_lava",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/slowness_crate",
+        "processors": "hbm:jungle/slowness_crate",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/spiders_plain",
+        "processors": "hbm:jungle/spiders_plain",
+        "projection": "rigid"
+      },
+      "weight": 8
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/spiders_lava",
+        "processors": "hbm:jungle/spiders_lava",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/spiders_crate",
+        "processors": "hbm:jungle/spiders_crate",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/spikes_plain",
+        "processors": "hbm:jungle/spikes_plain",
+        "projection": "rigid"
+      },
+      "weight": 8
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/spikes_lava",
+        "processors": "hbm:jungle/spikes_lava",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/spikes_crate",
+        "processors": "hbm:jungle/spikes_crate",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/weakness_plain",
+        "processors": "hbm:jungle/weakness_plain",
+        "projection": "rigid"
+      },
+      "weight": 8
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/weakness_lava",
+        "processors": "hbm:jungle/weakness_lava",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/weakness_crate",
+        "processors": "hbm:jungle/weakness_crate",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/web_plain",
+        "processors": "hbm:jungle/web_plain",
+        "projection": "rigid"
+      },
+      "weight": 8
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/web_lava",
+        "processors": "hbm:jungle/web_lava",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/web_crate",
+        "processors": "hbm:jungle/web_crate",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/zombie_plain",
+        "processors": "hbm:jungle/zombie_plain",
+        "projection": "rigid"
+      },
+      "weight": 8
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/zombie_lava",
+        "processors": "hbm:jungle/zombie_lava",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "hbm:jungle/zombie_crate",
+        "processors": "hbm:jungle/zombie_crate",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "hbm:jungle/wall_cap"
+}

@@ -1,0 +1,21 @@
+{
+  "ambientocclusion": true,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/anvil_iron.obj",
+  "skins": {
+    "all": [
+      "anvil_iron",
+      "Back",
+      "Bottom",
+      "Top",
+      "Left",
+      "Right",
+      "Front"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/anvil_bismuth_bronze",
+    "particle": "hbm:block/anvil_bismuth_bronze"
+  }
+}

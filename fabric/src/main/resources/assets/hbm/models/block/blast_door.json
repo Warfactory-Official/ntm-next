@@ -1,0 +1,46 @@
+{
+  "fabric:type": "hbm:obj",
+  "double_sided": [
+    "Cube_Cube.001",
+    "Cube.003_Cube.004"
+  ],
+  "groups": [
+    {
+      "parts": [
+        "Cube_Cube.001"
+      ],
+      "texture": "blast_door_base"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        3.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "model": "hbm:models/machines/blast_door_block.obj",
+      "parts": [
+        "Cube.003_Cube.004"
+      ],
+      "texture": "blast_door_block"
+    }
+  ],
+  "model": "hbm:models/machines/blast_door_base.obj",
+  "textures": {
+    "blast_door_base": "hbm:block/models/machines/blast_door_base",
+    "blast_door_block": "hbm:block/models/machines/blast_door_block",
+    "particle": "hbm:block/blast_door"
+  }
+}

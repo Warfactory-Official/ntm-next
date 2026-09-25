@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_light/any_bismoid_bronze",
+    "C": "hbm:circuit_bismoid",
+    "D": "hbm:crystal_redstone",
+    "G": "#hbm:grips/any_hard_plastic",
+    "L": "hbm:weapon_mod_special_scope",
+    "M": "#hbm:gun_mechanisms/saturnite",
+    "R": "#hbm:receivers_light/any_bismoid_bronze",
+    "S": "#hbm:stocks/any_hard_plastic"
+  },
+  "pattern": [
+    "DLC",
+    "BRS",
+    "MG "
+  ],
+  "result": {
+    "id": "hbm:gun_lasrifle"
+  }
+}

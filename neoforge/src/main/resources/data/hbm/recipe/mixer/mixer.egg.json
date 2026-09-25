@@ -1,0 +1,22 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:radiosolvent",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "minecraft:egg"
+    }
+  ],
+  "order": 11,
+  "output_fluids": [
+    {
+      "type": "hbm:egg",
+      "amount": 1000
+    }
+  ]
+}

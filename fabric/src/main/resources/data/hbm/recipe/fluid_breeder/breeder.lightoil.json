@@ -1,0 +1,16 @@
+{
+  "type": "hbm:fluid_breeder",
+  "input_fluids": [
+    {
+      "type": "hbm:lightoil",
+      "amount": 1000
+    }
+  ],
+  "order": 1,
+  "output_fluids": [
+    {
+      "type": "hbm:reformgas",
+      "amount": 1000
+    }
+  ]
+}

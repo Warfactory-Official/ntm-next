@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "fabric:type": "fabric:components",
+      "base": "hbm:cart_empty",
+      "components": {
+        "hbm:cart_base": "steel"
+      }
+    },
+    "#c:dyes/red"
+  ],
+  "result": {
+    "components": {
+      "hbm:cart_base": "painted"
+    },
+    "id": "hbm:cart_empty"
+  }
+}

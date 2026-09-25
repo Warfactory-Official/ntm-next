@@ -1,0 +1,18 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Cube.001"
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/tesla.obj",
+  "skins": {
+    "all": [
+      "Cube.001"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/tesla",
+    "particle": "hbm:block/tesla"
+  }
+}

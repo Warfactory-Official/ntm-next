@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "hbm:stamp_titanium_flat"
+    }
+  ],
+  "order": 164,
+  "output_items": [
+    "hbm:stamp_titanium_circuit"
+  ],
+  "overlay": "smithing",
+  "tier": 2
+}

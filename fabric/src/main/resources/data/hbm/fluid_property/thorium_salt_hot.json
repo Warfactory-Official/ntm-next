@@ -1,0 +1,28 @@
+{
+  "type": "liquid",
+  "color": "#3e3627",
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 2,
+    "react": 3
+  },
+  "symbol": "NONE",
+  "temperature": 1600,
+  "traits": {
+    "coolable": {
+      "amount_produced": 1,
+      "amount_req": 1,
+      "cools_to": "hbm:thorium_salt_depleted",
+      "efficiency": {
+        "HEATEXCHANGER": 1.0
+      },
+      "heat_energy": 400
+    },
+    "corrosive": {
+      "rating": 65
+    }
+  }
+}

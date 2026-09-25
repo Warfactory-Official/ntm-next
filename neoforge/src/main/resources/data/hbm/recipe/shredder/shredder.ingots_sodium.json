@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/sodium"
+    }
+  ],
+  "order": 244,
+  "output_items": [
+    "hbm:powder_sodium"
+  ]
+}

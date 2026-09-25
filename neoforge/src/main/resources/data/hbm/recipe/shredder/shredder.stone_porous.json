@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:stone_porous"
+    }
+  ],
+  "order": 150,
+  "output_items": [
+    "hbm:scrap_oil"
+  ]
+}

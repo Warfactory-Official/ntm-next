@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/titanium"
+    }
+  ],
+  "order": 265,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

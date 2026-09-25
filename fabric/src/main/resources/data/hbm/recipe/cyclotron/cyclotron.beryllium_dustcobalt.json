@@ -1,0 +1,16 @@
+{
+  "type": "hbm:cyclotron",
+  "amat": 25,
+  "input_items": [
+    {
+      "ingredient": "hbm:part_beryllium"
+    },
+    {
+      "ingredient": "#c:dusts/cobalt"
+    }
+  ],
+  "order": 16,
+  "output_items": [
+    "hbm:powder_copper"
+  ]
+}

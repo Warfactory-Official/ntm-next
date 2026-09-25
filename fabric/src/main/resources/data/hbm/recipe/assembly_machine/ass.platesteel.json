@@ -1,0 +1,18 @@
+{
+  "type": "hbm:assembly_machine",
+  "auto_switch_group": "autoswitch.plates",
+  "blueprint_pools": [
+    "alt.plates"
+  ],
+  "duration": 60,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/steel"
+    }
+  ],
+  "order": 4,
+  "output_items": [
+    "hbm:plate_steel"
+  ],
+  "power": 100
+}

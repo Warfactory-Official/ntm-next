@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_basic",
+    "M": "#hbm:gun_mechanisms/weapon_steel",
+    "S": "#hbm:shells/weapon_steel"
+  },
+  "pattern": [
+    "C",
+    "M",
+    "S"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:grenade_shell_tech"
+  }
+}

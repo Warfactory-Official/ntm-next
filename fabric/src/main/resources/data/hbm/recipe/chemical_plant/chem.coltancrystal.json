@@ -1,0 +1,29 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 80,
+  "input_fluids": [
+    {
+      "type": "hbm:pain",
+      "amount": 1000
+    },
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "order": 66,
+  "output_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 250
+    }
+  ],
+  "output_items": [
+    "hbm:gem_tantalium",
+    {
+      "count": 3,
+      "id": "hbm:dust"
+    }
+  ],
+  "power": 100
+}

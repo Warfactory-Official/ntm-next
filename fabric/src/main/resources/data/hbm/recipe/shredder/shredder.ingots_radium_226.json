@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/radium_226"
+    }
+  ],
+  "order": 329,
+  "output_items": [
+    "hbm:powder_ra226"
+  ]
+}

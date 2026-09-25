@@ -1,0 +1,20 @@
+{
+  "values": [
+    "hbm:schrabidium_shovel",
+    "hbm:titanium_shovel",
+    "hbm:steel_shovel",
+    "hbm:cmb_shovel",
+    "hbm:desh_shovel",
+    "hbm:cobalt_shovel",
+    "hbm:cobalt_decorated_shovel",
+    "hbm:starmetal_shovel",
+    "hbm:centri_stick",
+    "hbm:smashing_hammer",
+    "hbm:bismuth_pickaxe",
+    "hbm:volcanic_pickaxe",
+    "hbm:chlorophyte_pickaxe",
+    "hbm:mese_pickaxe",
+    "hbm:dwarven_pickaxe",
+    "hbm:elec_shovel"
+  ]
+}

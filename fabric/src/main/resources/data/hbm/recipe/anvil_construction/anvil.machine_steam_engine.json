@@ -1,0 +1,30 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbm:reinforced_stone"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:coil_copper"
+    },
+    {
+      "ingredient": "hbm:gear_large"
+    }
+  ],
+  "order": 73,
+  "output_items": [
+    "hbm:machine_steam_engine"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

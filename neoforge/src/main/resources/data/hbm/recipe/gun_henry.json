@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#hbm:barrels_light/steel",
+    "M": "#hbm:gun_mechanisms/gun_metal",
+    "P": "#c:plates/gun_metal",
+    "R": "#hbm:receivers_light/gun_metal",
+    "S": "#hbm:stocks/wood"
+  },
+  "pattern": [
+    "BRP",
+    "BMS"
+  ],
+  "result": {
+    "id": "hbm:gun_henry"
+  }
+}

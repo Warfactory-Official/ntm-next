@@ -1,0 +1,48 @@
+{
+  "type": "liquid",
+  "color": "#3333ff",
+  "flags": [
+    "unsiphonable"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 0,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "heatable": {
+      "efficiency": {
+        "BOILER": 1.0,
+        "HEATEXCHANGER": 0.25
+      },
+      "steps": [
+        {
+          "amount_produced": 100,
+          "amount_req": 1,
+          "heat_req": 200,
+          "produces": "hbm:steam"
+        },
+        {
+          "amount_produced": 10,
+          "amount_req": 1,
+          "heat_req": 220,
+          "produces": "hbm:hotsteam"
+        },
+        {
+          "amount_produced": 1,
+          "amount_req": 1,
+          "heat_req": 238,
+          "produces": "hbm:superhotsteam"
+        },
+        {
+          "amount_produced": 1,
+          "amount_req": 10,
+          "heat_req": 2500,
+          "produces": "hbm:ultrahotsteam"
+        }
+      ]
+    }
+  }
+}

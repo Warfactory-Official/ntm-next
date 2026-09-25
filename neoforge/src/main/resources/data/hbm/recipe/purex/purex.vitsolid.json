@@ -1,0 +1,21 @@
+{
+  "type": "hbm:purex",
+  "duration": 300,
+  "input_items": [
+    {
+      "ingredient": "hbm:sand_lead"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:nuclear_waste"
+    }
+  ],
+  "order": 52,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:nuclear_waste_vitrified"
+    }
+  ],
+  "power": 1000
+}

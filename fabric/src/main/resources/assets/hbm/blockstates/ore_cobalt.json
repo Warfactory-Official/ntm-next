@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbm:block/ore_cobalt"
+      },
+      {
+        "model": "hbm:block/ore_cobalt_mirrored"
+      },
+      {
+        "model": "hbm:block/ore_cobalt",
+        "y": 180
+      },
+      {
+        "model": "hbm:block/ore_cobalt_mirrored",
+        "y": 180
+      }
+    ]
+  }
+}

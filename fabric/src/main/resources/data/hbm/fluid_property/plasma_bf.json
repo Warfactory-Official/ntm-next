@@ -1,0 +1,15 @@
+{
+  "type": "plasma",
+  "color": "#a7f1a3",
+  "flags": [
+    "nocontainer",
+    "noid"
+  ],
+  "nfpa": {
+    "flame": 5,
+    "health": 4,
+    "react": 4
+  },
+  "symbol": "ANTIMATTER",
+  "temperature": 8500
+}

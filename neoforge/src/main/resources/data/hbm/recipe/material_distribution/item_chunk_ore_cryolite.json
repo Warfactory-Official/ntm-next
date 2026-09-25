@@ -1,0 +1,14 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 72,
+      "material": "aluminum"
+    },
+    {
+      "amount": 72,
+      "material": "sodium"
+    }
+  ],
+  "targets": "hbm:chunk_ore_cryolite"
+}

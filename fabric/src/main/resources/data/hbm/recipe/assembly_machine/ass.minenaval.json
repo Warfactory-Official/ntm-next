@@ -1,0 +1,25 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 300,
+  "input_items": [
+    {
+      "ingredient": "hbm:sphere_steel"
+    },
+    {
+      "count": 3,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "count": 24,
+      "ingredient": "#hbm:ingots/any_plasticexplosive"
+    }
+  ],
+  "order": 290,
+  "output_items": [
+    "hbm:mine_naval"
+  ],
+  "power": 100
+}

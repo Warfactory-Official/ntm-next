@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "hbm:missile_assembly",
+    {
+      "fabric:type": "hbm:fluid_content",
+      "amount": 1000,
+      "fluid": "hbm:watz_mud"
+    },
+    "hbm:powder_spark_mix",
+    "hbm:powder_magic"
+  ],
+  "result": {
+    "id": "hbm:missile_taint"
+  }
+}

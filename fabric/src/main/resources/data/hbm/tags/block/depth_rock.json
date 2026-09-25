@@ -1,0 +1,19 @@
+{
+  "values": [
+    "hbm:stone_depth",
+    "hbm:depth_brick",
+    "hbm:depth_tiles",
+    "hbm:stone_depth_nether",
+    "hbm:depth_nether_brick",
+    "hbm:depth_nether_tiles",
+    "hbm:depth_dnt",
+    "hbm:cluster_depth_iron",
+    "hbm:cluster_depth_titanium",
+    "hbm:cluster_depth_tungsten",
+    "hbm:ore_depth_cinnabar",
+    "hbm:ore_depth_zirconium",
+    "hbm:ore_depth_borax",
+    "hbm:ore_depth_nether_neodymium",
+    "hbm:ore_alexandrite"
+  ]
+}

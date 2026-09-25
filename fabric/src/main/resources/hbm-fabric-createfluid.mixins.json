@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "com.hbm.fabric.mixin.create",
+  "mixins": ["MixinFluidPropagator", "MixinFlowSourceFluidHandler", "MixinPumpBlockEntity"],
+  "injectors": { "defaultRequire": 1 }
+}

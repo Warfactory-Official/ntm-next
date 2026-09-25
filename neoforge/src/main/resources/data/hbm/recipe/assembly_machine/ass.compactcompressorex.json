@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:pipes/copper"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.compactcompressorEx",
+  "order": 139,
+  "output_items": [
+    "hbm:machine_compressor_compact"
+  ],
+  "power": 100
+}

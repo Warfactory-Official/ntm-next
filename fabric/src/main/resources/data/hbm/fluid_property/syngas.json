@@ -1,0 +1,26 @@
+{
+  "type": "gaseous",
+  "color": "#131313",
+  "containers": {
+    "gastank": {
+      "bottle_color": "#ffffff",
+      "label_color": "#131313"
+    }
+  },
+  "nfpa": {
+    "flame": 4,
+    "health": 1,
+    "react": 2
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "combustible": {
+      "energy": 2060000,
+      "grade": "GAS"
+    },
+    "flammable": {
+      "energy": 1650000
+    }
+  }
+}

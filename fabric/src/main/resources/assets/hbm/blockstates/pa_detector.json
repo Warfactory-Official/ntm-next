@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbm:block/pa_detector"
+    },
+    "facing=north": {
+      "model": "hbm:block/pa_detector",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbm:block/pa_detector",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbm:block/pa_detector",
+      "y": 180
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "content": {
+    "en_us": "Obtained after [[refining|Oil Refinery]] [[heated|Boiler]] [[crude oil|Crude Oil]]. Petroleum gas is the main ingredient in [[polymer|Polymer]], [[bakelite|Bakelite]], and [[perfluoromethyl|Perfluoromethyl]] making it a key ingredient for progression in all stages of the game. It is also the primary fluid used in [[fracking solution|Fracking Solution]].<br><br>{{hbm:fluids/template_oil1}}",
+    "ru_ru": "Получается после  [[переработки|Oil Refinery]] [[нагретой|Boiler]] [[сырой нефти|Crude Oil]]. Нефтяной газ является основным компонентом для [[полимера|Polymer]], [[бакелита|Bakelite]] и [[перфторометан|Perfluoromethyl]], что делает его ключевым ингредиентом для продвижения на всех этапах игры. Он также является основной жидкостью, используемой в [[растворе для гидроразрыва пласта|Fracking Solution]].<br><br>{{hbm:fluids/template_oil1}}"
+  },
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbm:petroleum",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -8603703
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "name": "Petroleum Gas",
+  "title": {
+    "en_us": "Petroleum Gas",
+    "ru_ru": "Попутный нефтяной газ"
+  },
+  "trigger": {
+    "items": "hbm:fluid_icon",
+    "predicates": {
+      "hbm:fluid_content": "hbm:petroleum"
+    }
+  }
+}

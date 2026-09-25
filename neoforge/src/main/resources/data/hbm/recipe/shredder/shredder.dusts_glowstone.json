@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/glowstone"
+    }
+  ],
+  "order": 465,
+  "output_items": [
+    "hbm:dust"
+  ]
+}

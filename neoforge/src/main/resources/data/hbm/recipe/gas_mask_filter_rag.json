@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": "hbm:rag_damp",
+    "I": "#c:ingots/iron"
+  },
+  "pattern": [
+    "I",
+    "F"
+  ],
+  "result": {
+    "id": "hbm:gas_mask_filter_rag"
+  }
+}
