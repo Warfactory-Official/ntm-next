@@ -1,0 +1,51 @@
+name: Bug report
+description: Report a reproducible bug.
+type: Bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please check the latest release first — it may already be fixed.
+        Skip any field that would not tell us something new.
+
+  - type: input
+    id: build
+    attributes:
+      label: Build
+      description: >
+        NTM's version as the mod list shows it, e.g. `1.0.0+a1b2c3d4` — the suffix is the commit
+        the jar was built from.
+      placeholder: 1.0.0+a1b2c3d4
+    validations:
+      required: true
+
+  - type: input
+    id: setup
+    attributes:
+      label: Setup
+      description: Loader, and singleplayer or dedicated server. Say if only one of the two loaders is affected.
+      placeholder: NeoForge, dedicated server
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Repro
+      description: Minimal steps, observed result, expected result.
+    validations:
+      required: true
+
+  - type: textarea
+    id: log
+    attributes:
+      label: Log
+      description: <https://mclo.gs> link, or the crash report — whenever the game logged or crashed.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: >
+        Anything that narrows it down: other mods involved, edited configs, save state or world age,
+        JVM or OS if you suspect them, a screenshot or clip for a visual bug.

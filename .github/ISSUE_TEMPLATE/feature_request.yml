@@ -1,0 +1,35 @@
+name: Feature request
+description: Propose mod interop, extensibility, or a quality-of-life change.
+type: Feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        NTM is a port of 1.7.10, so gameplay content 1.7 does not have is out of scope, and content it
+        does have is a port gap we already track rather than a request. This form is for mod interop,
+        extensibility for addons, and quality of life.
+
+  - type: input
+    id: subject
+    attributes:
+      label: Subject
+      description: Mod id, registry name, or API surface this is about, if one names it.
+      placeholder: jei
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What should change, and the behavior you would see. Note anything it changes about 1.7 gameplay.
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: >
+        Anything that changes the decision: the other mod's API, 1.7 or CE precedent,
+        alternatives you ruled out.
