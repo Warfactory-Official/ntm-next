@@ -6,7 +6,7 @@
     "domain_z": "hbm:noise/stratum_malachite/z",
     "replaceable": {
       "predicate_type": "minecraft:tag_match",
-      "tag": "minecraft:stone_ore_replaceables"
+      "tag": "minecraft:base_stone_overworld"
     },
     "scale_h": 0.1,
     "scale_v": 0.15,

@@ -4,11 +4,10 @@
 
 package com.hbm.items.machine;
 
+import com.hbm.blockentity.machine.rbmk.IRBMKFluxReceiver.NType;
+import com.hbm.blockentity.machine.rbmk.RBMKConfig;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
-import com.hbm.tileentity.machine.rbmk.IRBMKFluxReceiver.NType;
-import com.hbm.tileentity.machine.rbmk.RBMKConfig;
-import com.hbm.util.I18nUtil;
 import java.util.Locale;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -22,7 +21,6 @@ import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
 
 public class ItemRBMKRod extends Item {
-
     public @Nullable ItemRBMKPellet pellet;
 
     public String fullName = "";
@@ -31,16 +29,16 @@ public class ItemRBMKRod extends Item {
     public EnumBurnFunc function = EnumBurnFunc.LOG_TEN;
     public EnumDepleteFunc depFunc = EnumDepleteFunc.GENTLE_SLOPE;
     public double xGen = 0.5D;
-    public double xBurn = 50D;
-    public double heat = 1D;
+    public double xBurn = 50.0D;
+    public double heat = 1.0D;
     public double yield;
-    public double meltingPoint = 1000D;
+    public double meltingPoint = 1000.0D;
     public double diffusion = 0.02D;
     public NType nType = NType.SLOW;
     public NType rType = NType.FAST;
     public int colorTint = 0x304825;
-    public double heatCoeffStart = 0D;
-    public double heatCoeffLength = 0D;
+    public double heatCoeffStart = 0.0D;
+    public double heatCoeffLength = 0.0D;
 
     public ItemRBMKRod(Properties props, String fullName) {
         super(props);
@@ -52,7 +50,7 @@ public class ItemRBMKRod extends Item {
     }
 
     public static double getPoisonLevel(ItemStack stack) {
-        return getPoison(stack) / 100D;
+        return getPoison(stack) / 100.0D;
     }
 
     public static RBMKFuelData getData(ItemStack stack) {
@@ -94,7 +92,7 @@ public class ItemRBMKRod extends Item {
     }
 
     public ItemRBMKRod setTint(int tint) {
-        this.colorTint = tint;
+        colorTint = tint;
         return this;
     }
 
@@ -108,30 +106,30 @@ public class ItemRBMKRod extends Item {
     }
 
     public ItemRBMKRod setStats(double funcEnd, double selfRate) {
-        this.reactivity = funcEnd;
+        reactivity = funcEnd;
         this.selfRate = selfRate;
         return this;
     }
 
     public ItemRBMKRod setFunction(EnumBurnFunc func) {
-        this.function = func;
+        function = func;
         return this;
     }
 
     public ItemRBMKRod setDepletionFunction(EnumDepleteFunc func) {
-        this.depFunc = func;
+        depFunc = func;
         return this;
     }
 
     public ItemRBMKRod setHeatCoeff(double start, double length) {
-        this.heatCoeffStart = start;
-        this.heatCoeffLength = length;
+        heatCoeffStart = start;
+        heatCoeffLength = length;
         return this;
     }
 
     public ItemRBMKRod setXenon(double gen, double burn) {
-        this.xGen = gen;
-        this.xBurn = burn;
+        xGen = gen;
+        xBurn = burn;
         return this;
     }
 
@@ -163,18 +161,18 @@ public class ItemRBMKRod extends Item {
         if (RBMKConfig.getXenon(world)) {
             double xenon = getPoison(stack);
             xenon -= xenonBurnFunc(inFlux);
-            inFlux *= (1D - getPoisonLevel(stack));
+            inFlux *= (1.0D - getPoisonLevel(stack));
             xenon += xenonGenFunc(inFlux);
-            if (xenon < 0D) xenon = 0D;
-            if (xenon > 100D) xenon = 100D;
+            if (xenon < 0.0D) xenon = 0.0D;
+            if (xenon > 100.0D) xenon = 100.0D;
             setPoison(stack, xenon);
         }
 
-        double mult = 1D;
+        double mult = 1.0D;
         double coreHeat = getCoreHeat(stack);
 
-        if (this.heatCoeffStart != 0 && coreHeat >= this.heatCoeffStart) {
-            double prog = (coreHeat - this.heatCoeffStart) / this.heatCoeffLength;
+        if (heatCoeffStart != 0 && coreHeat >= heatCoeffStart) {
+            double prog = (coreHeat - heatCoeffStart) / heatCoeffLength;
             if (prog > 1) prog = 1;
             mult = Math.sin((prog * Math.PI + Math.PI) / 2);
         }
@@ -186,7 +184,7 @@ public class ItemRBMKRod extends Item {
         if (RBMKConfig.getDepletion(world)) {
             double y = getYield(stack);
             y -= inFlux;
-            if (y < 0D) y = 0D;
+            if (y < 0.0D) y = 0.0D;
             setYield(stack, y);
         }
         coreHeat += outFlux * heat;
@@ -196,8 +194,8 @@ public class ItemRBMKRod extends Item {
     }
 
     private double rectify(double num) {
-        if (num > 1_000_000D) num = 1_000_000D;
-        if (num < 20D || Double.isNaN(num)) num = 20D;
+        if (num > 1_000_000.0D) num = 1_000_000.0D;
+        if (num < 20.0D || Double.isNaN(num)) num = 20.0D;
         return num;
     }
 
@@ -205,9 +203,9 @@ public class ItemRBMKRod extends Item {
         double coreHeat = getCoreHeat(stack);
         double hullHeat = getHullHeat(stack);
         if (coreHeat > hullHeat) {
-            double mid = (coreHeat - hullHeat) / 2D;
-            coreHeat -= mid * this.diffusion * RBMKConfig.getFuelDiffusionMod(world) * mod;
-            hullHeat += mid * this.diffusion * RBMKConfig.getFuelDiffusionMod(world) * mod;
+            double mid = (coreHeat - hullHeat) / 2.0D;
+            coreHeat -= mid * diffusion * RBMKConfig.getFuelDiffusionMod(world) * mod;
+            hullHeat += mid * diffusion * RBMKConfig.getFuelDiffusionMod(world) * mod;
             setCoreHeat(stack, rectify(coreHeat));
             setHullHeat(stack, rectify(hullHeat));
         }
@@ -216,9 +214,9 @@ public class ItemRBMKRod extends Item {
     public double provideHeat(Level world, ItemStack stack, double heat, double mod) {
         double hullHeat = getHullHeat(stack);
 
-        if (hullHeat > this.meltingPoint) {
+        if (hullHeat > meltingPoint) {
             double coreHeat = getCoreHeat(stack);
-            double avg = (heat + hullHeat + coreHeat) / 3D;
+            double avg = (heat + hullHeat + coreHeat) / 3.0D;
             setCoreHeat(stack, avg);
             setHullHeat(stack, avg);
             return avg - heat;
@@ -235,26 +233,26 @@ public class ItemRBMKRod extends Item {
 
     public double reactivityFunc(double in, double enrichment) {
         double flux = in * reactivityModByEnrichment(enrichment);
-        return switch (this.function) {
+        return switch (function) {
             case PASSIVE -> selfRate * enrichment;
             case LOG_TEN -> Math.log10(flux + 1) * 0.5D * reactivity;
-            case PLATEU -> (1 - Math.pow(Math.E, -flux / 25D)) * reactivity;
-            case ARCH -> Math.max((flux - (flux * flux / 10000D)) / 100D * reactivity, 0D);
-            case SIGMOID -> reactivity / (1 + Math.pow(Math.E, -(flux - 50D) / 10D));
-            case SQUARE_ROOT -> Math.sqrt(flux) * reactivity / 10D;
-            case LINEAR -> flux / 100D * reactivity;
-            case QUADRATIC -> flux * flux / 10000D * reactivity;
+            case PLATEU -> (1 - Math.pow(Math.E, -flux / 25.0D)) * reactivity;
+            case ARCH -> Math.max((flux - (flux * flux / 10000.0D)) / 100.0D * reactivity, 0.0D);
+            case SIGMOID -> reactivity / (1 + Math.pow(Math.E, -(flux - 50.0D) / 10.0D));
+            case SQUARE_ROOT -> Math.sqrt(flux) * reactivity / 10.0D;
+            case LINEAR -> flux / 100.0D * reactivity;
+            case QUADRATIC -> flux * flux / 10000.0D * reactivity;
             case EXPERIMENTAL -> flux * (Math.sin(flux) + 1) * reactivity;
         };
     }
 
     public double reactivityModByEnrichment(double enrichment) {
-        return switch (this.depFunc) {
-            case STATIC -> 1D;
+        return switch (depFunc) {
+            case STATIC -> 1.0D;
             case BOOSTED_SLOPE ->
                     enrichment + Math.sin((enrichment - 1) * (enrichment - 1) * Math.PI);
-            case RAISING_SLOPE -> enrichment + (Math.sin(enrichment * Math.PI) / 2D);
-            case GENTLE_SLOPE -> enrichment + (Math.sin(enrichment * Math.PI) / 3D);
+            case RAISING_SLOPE -> enrichment + (Math.sin(enrichment * Math.PI) / 2.0D);
+            case GENTLE_SLOPE -> enrichment + (Math.sin(enrichment * Math.PI) / 3.0D);
             default -> enrichment;
         };
     }
@@ -269,17 +267,18 @@ public class ItemRBMKRod extends Item {
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return getEnrichment(stack) < 1D;
+        return getEnrichment(stack) < 1.0D;
     }
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return (int) Math.round(13.0D * Math.clamp(getEnrichment(stack), 0D, 1D));
+        return (int) Math.round(13.0D * Math.clamp(getEnrichment(stack), 0.0D, 1.0D));
     }
 
     @Override
     public int getBarColor(ItemStack stack) {
-        return Mth.hsvToRgb((float) Math.clamp(getEnrichment(stack), 0D, 1D) / 3.0F, 1.0F, 1.0F);
+        return Mth.hsvToRgb(
+                (float) Math.clamp(getEnrichment(stack), 0.0D, 1.0D) / 3.0F, 1.0F, 1.0F);
     }
 
     public String getFuncDescription(ItemStack stack) {
@@ -307,10 +306,10 @@ public class ItemRBMKRod extends Item {
             String enrichmentMod =
                     ChatFormatting.YELLOW
                             + ""
-                            + ((int) (enrichment * 1000D) / 1000D)
+                            + ((int) (enrichment * 1000.0D) / 1000.0D)
                             + ChatFormatting.WHITE;
             String enrichmentPer =
-                    ChatFormatting.GOLD + " (" + ((int) (enrichment * 1000D) / 10D) + "%)";
+                    ChatFormatting.GOLD + " (" + ((int) (enrichment * 1000.0D) / 10.0D) + "%)";
             flux = "(" + flux + " * " + enrichmentMod + ")";
             return String.format(Locale.US, function, flux, reactivity).concat(enrichmentPer);
         }
@@ -325,173 +324,142 @@ public class ItemRBMKRod extends Item {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-        adder.accept(Component.literal(this.fullName).withStyle(ChatFormatting.ITALIC));
+        adder.accept(Component.literal(fullName).withStyle(ChatFormatting.ITALIC));
 
         if (this == ModItems.RBMK_FUEL_DRX.get()) {
             if (getHullHeat(stack) >= 50 || getCoreHeat(stack) >= 50) {
                 adder.accept(
-                        Component.literal(I18nUtil.resolveKey("desc.item.wasteCooling"))
+                        Component.translatable("desc.item.wasteCooling")
                                 .withStyle(ChatFormatting.GOLD));
             }
-            if (selfRate > 0 || this.function == EnumBurnFunc.SIGMOID) {
+            if (selfRate > 0 || function == EnumBurnFunc.SIGMOID) {
                 adder.accept(
-                        Component.literal(I18nUtil.resolveKey("trait.rbmx.source"))
-                                .withStyle(ChatFormatting.RED));
+                        Component.translatable("trait.rbmx.source").withStyle(ChatFormatting.RED));
             }
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmx.depletion",
-                                            ((int) (((yield - getYield(stack)) / yield) * 100000))
-                                                            / 1000D
-                                                    + "%"))
+                    Component.translatable(
+                                    "trait.rbmx.depletion",
+                                    ((int) (((yield - getYield(stack)) / yield) * 100000)) / 1000.0D
+                                            + "%")
                             .withStyle(ChatFormatting.GREEN));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmx.xenon",
-                                            ((int) (getPoison(stack) * 1000D) / 1000D) + "%"))
+                    Component.translatable(
+                                    "trait.rbmx.xenon",
+                                    ((int) (getPoison(stack) * 1000.0D) / 1000.0D) + "%")
                             .withStyle(ChatFormatting.DARK_PURPLE));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmx.splitsWith",
-                                            I18nUtil.resolveKey(nType.unlocalized + ".x")))
+                    Component.translatable(
+                                    "trait.rbmx.splitsWith",
+                                    Component.translatable(nType.unlocalized + ".x"))
                             .withStyle(ChatFormatting.BLUE));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmx.splitsInto",
-                                            I18nUtil.resolveKey(rType.unlocalized + ".x")))
+                    Component.translatable(
+                                    "trait.rbmx.splitsInto",
+                                    Component.translatable(rType.unlocalized + ".x"))
                             .withStyle(ChatFormatting.BLUE));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmx.fluxFunc",
-                                            ChatFormatting.WHITE + getFuncDescription(stack)))
+                    Component.translatable(
+                                    "trait.rbmx.fluxFunc",
+                                    ChatFormatting.WHITE + getFuncDescription(stack))
                             .withStyle(ChatFormatting.YELLOW));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmx.funcType",
-                                            I18nUtil.resolveKey(this.function.title)))
+                    Component.translatable(
+                                    "trait.rbmx.funcType", Component.translatable(function.title))
                             .withStyle(ChatFormatting.YELLOW));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmx.xenonGen",
-                                            ChatFormatting.WHITE + "x * " + xGen))
+                    Component.translatable(
+                                    "trait.rbmx.xenonGen", ChatFormatting.WHITE + "x * " + xGen)
                             .withStyle(ChatFormatting.YELLOW));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmx.xenonBurn",
-                                            ChatFormatting.WHITE + "x² / " + xBurn))
+                    Component.translatable(
+                                    "trait.rbmx.xenonBurn", ChatFormatting.WHITE + "x² / " + xBurn)
                             .withStyle(ChatFormatting.YELLOW));
             adder.accept(
-                    Component.literal(I18nUtil.resolveKey("trait.rbmx.heat", heat + "°C"))
+                    Component.translatable("trait.rbmx.heat", heat + "°C")
                             .withStyle(ChatFormatting.GOLD));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey("trait.rbmx.diffusion", diffusion + "¹/²"))
+                    Component.translatable("trait.rbmx.diffusion", diffusion + "¹/²")
                             .withStyle(ChatFormatting.GOLD));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmx.skinTemp",
-                                            ((int) (getHullHeat(stack) * 10D) / 10D) + "m"))
+                    Component.translatable(
+                                    "trait.rbmx.skinTemp",
+                                    ((int) (getHullHeat(stack) * 10.0D) / 10.0D) + "m")
                             .withStyle(ChatFormatting.RED));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmx.coreTemp",
-                                            ((int) (getCoreHeat(stack) * 10D) / 10D) + "m"))
+                    Component.translatable(
+                                    "trait.rbmx.coreTemp",
+                                    ((int) (getCoreHeat(stack) * 10.0D) / 10.0D) + "m")
                             .withStyle(ChatFormatting.RED));
             adder.accept(
-                    Component.literal(I18nUtil.resolveKey("trait.rbmx.melt", meltingPoint + "m"))
+                    Component.translatable("trait.rbmx.melt", meltingPoint + "m")
                             .withStyle(ChatFormatting.DARK_RED));
         } else {
             if (getHullHeat(stack) >= 50 || getCoreHeat(stack) >= 50) {
                 adder.accept(
-                        Component.literal(I18nUtil.resolveKey("desc.item.wasteCooling"))
+                        Component.translatable("desc.item.wasteCooling")
                                 .withStyle(ChatFormatting.GOLD));
             }
-            if (selfRate > 0 || this.function == EnumBurnFunc.SIGMOID) {
+            if (selfRate > 0 || function == EnumBurnFunc.SIGMOID) {
                 adder.accept(
-                        Component.literal(I18nUtil.resolveKey("trait.rbmk.source"))
-                                .withStyle(ChatFormatting.RED));
+                        Component.translatable("trait.rbmk.source").withStyle(ChatFormatting.RED));
             }
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmk.depletion",
-                                            ((int) (((yield - getYield(stack)) / yield) * 100000D))
-                                                            / 1000D
-                                                    + "%"))
+                    Component.translatable(
+                                    "trait.rbmk.depletion",
+                                    ((int) (((yield - getYield(stack)) / yield) * 100000.0D))
+                                                    / 1000.0D
+                                            + "%")
                             .withStyle(ChatFormatting.GREEN));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmk.xenon",
-                                            ((int) (getPoison(stack) * 1000D) / 1000D) + "%"))
+                    Component.translatable(
+                                    "trait.rbmk.xenon",
+                                    ((int) (getPoison(stack) * 1000.0D) / 1000.0D) + "%")
                             .withStyle(ChatFormatting.DARK_PURPLE));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmk.splitsWith",
-                                            I18nUtil.resolveKey(nType.unlocalized)))
+                    Component.translatable(
+                                    "trait.rbmk.splitsWith",
+                                    Component.translatable(nType.unlocalized))
                             .withStyle(ChatFormatting.BLUE));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmk.splitsInto",
-                                            I18nUtil.resolveKey(rType.unlocalized)))
+                    Component.translatable(
+                                    "trait.rbmk.splitsInto",
+                                    Component.translatable(rType.unlocalized))
                             .withStyle(ChatFormatting.BLUE));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmk.fluxFunc",
-                                            ChatFormatting.WHITE + getFuncDescription(stack)))
+                    Component.translatable(
+                                    "trait.rbmk.fluxFunc",
+                                    ChatFormatting.WHITE + getFuncDescription(stack))
                             .withStyle(ChatFormatting.YELLOW));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmk.funcType",
-                                            I18nUtil.resolveKey(this.function.title)))
+                    Component.translatable(
+                                    "trait.rbmk.funcType", Component.translatable(function.title))
                             .withStyle(ChatFormatting.YELLOW));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmk.xenonGen",
-                                            ChatFormatting.WHITE + "x * " + xGen))
+                    Component.translatable(
+                                    "trait.rbmk.xenonGen", ChatFormatting.WHITE + "x * " + xGen)
                             .withStyle(ChatFormatting.YELLOW));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmk.xenonBurn",
-                                            ChatFormatting.WHITE + "x² / " + xBurn))
+                    Component.translatable(
+                                    "trait.rbmk.xenonBurn", ChatFormatting.WHITE + "x² / " + xBurn)
                             .withStyle(ChatFormatting.YELLOW));
             adder.accept(
-                    Component.literal(I18nUtil.resolveKey("trait.rbmk.heat", heat + "°C"))
+                    Component.translatable("trait.rbmk.heat", heat + "°C")
                             .withStyle(ChatFormatting.GOLD));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey("trait.rbmk.diffusion", diffusion + "¹/²"))
+                    Component.translatable("trait.rbmk.diffusion", diffusion + "¹/²")
                             .withStyle(ChatFormatting.GOLD));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmk.skinTemp",
-                                            ((int) (getHullHeat(stack) * 10D) / 10D) + "°C"))
+                    Component.translatable(
+                                    "trait.rbmk.skinTemp",
+                                    ((int) (getHullHeat(stack) * 10.0D) / 10.0D) + "°C")
                             .withStyle(ChatFormatting.RED));
             adder.accept(
-                    Component.literal(
-                                    I18nUtil.resolveKey(
-                                            "trait.rbmk.coreTemp",
-                                            ((int) (getCoreHeat(stack) * 10D) / 10D) + "°C"))
+                    Component.translatable(
+                                    "trait.rbmk.coreTemp",
+                                    ((int) (getCoreHeat(stack) * 10.0D) / 10.0D) + "°C")
                             .withStyle(ChatFormatting.RED));
             adder.accept(
-                    Component.literal(I18nUtil.resolveKey("trait.rbmk.melt", meltingPoint + "°C"))
+                    Component.translatable("trait.rbmk.melt", meltingPoint + "°C")
                             .withStyle(ChatFormatting.DARK_RED));
         }
     }

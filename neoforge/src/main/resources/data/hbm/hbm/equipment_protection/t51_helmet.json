@@ -1,0 +1,12 @@
+{
+  "hazards": [
+    "particle_coarse",
+    "particle_fine",
+    "gas_lung",
+    "bacteria",
+    "gas_blistering",
+    "gas_monoxide",
+    "sand"
+  ],
+  "targets": "hbm:t51_helmet"
+}

@@ -12,7 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public interface IRepairable {
-
     static boolean tryRepairMultiblock(Level level, BlockPos core, Player player) {
         return repairAt(level, level.getBlockEntity(core), player);
     }

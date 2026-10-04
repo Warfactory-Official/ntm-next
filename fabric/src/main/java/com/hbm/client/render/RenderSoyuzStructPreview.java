@@ -3,7 +3,7 @@
 
 package com.hbm.client.render;
 
-import com.hbm.tileentity.machine.BlockEntitySoyuzStruct;
+import com.hbm.blockentity.machine.BlockEntitySoyuzStruct;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import java.util.ArrayList;

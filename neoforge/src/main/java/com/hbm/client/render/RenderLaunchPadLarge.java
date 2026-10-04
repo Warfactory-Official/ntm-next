@@ -3,11 +3,11 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.bomb.BlockEntityLaunchPadLarge;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.items.weapon.ItemMissile.MissileFormFactor;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPadLarge;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -33,7 +33,6 @@ public final class RenderLaunchPadLarge
 
     private static final RenderType PLATFORM =
             RenderTypes.entityCutoutCull(ResourceManager.missile_erector_pad_tex);
-
     private static final double MISSILE_Y = 2D;
 
     private @Nullable Erectors erectors;
@@ -54,9 +53,7 @@ public final class RenderLaunchPadLarge
                 row("Huge", 3D, 1.5D, ResourceManager.missile_erector_huge_tex);
         rows[MissileFormFactor.ATLAS.ordinal()] =
                 row("Atlas", 4D, 1.5D, ResourceManager.missile_erector_atlas_tex);
-
         rows[MissileFormFactor.OTHER.ordinal()] = rows[MissileFormFactor.ABM.ordinal()];
-
         resolved = new Erectors(rows, ResourceManager.missile_erector.partId("Pad"));
         erectors = resolved;
         return resolved;

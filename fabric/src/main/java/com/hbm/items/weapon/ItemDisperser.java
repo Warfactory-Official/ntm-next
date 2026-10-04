@@ -53,7 +53,6 @@ public class ItemDisperser extends ItemFluidTank {
         ItemStack stack = player.getItemInHand(hand);
 
         if (!level.isClientSide()) {
-
             level.playSound(
                     null,
                     player.getX(),

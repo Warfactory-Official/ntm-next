@@ -78,12 +78,10 @@ public final class CargoElevatorShape extends ArrayVoxelShape {
         double x = pos.getX() + coreX, y = pos.getY() + coreY, z = pos.getZ() + coreZ;
         Vec3 start = from.subtract(x, y, z);
         Vec3 end = to.subtract(x, y, z);
-
         for (AABB box : boxes) {
             BlockHitResult hit = clipBox(box, start, end, pos);
             if (hit != null) {
                 Vec3 point = hit.getLocation().add(x, y, z);
-
                 BlockPos surface =
                         BlockPos.containing(
                                 Math.clamp(point.x, x - 1D, Math.nextDown(x + 2D)),
@@ -102,7 +100,6 @@ public final class CargoElevatorShape extends ArrayVoxelShape {
         double distance = Double.POSITIVE_INFINITY;
         for (int axis = 0; axis < 3; axis++) {
             double delta = axis == 0 ? dx : axis == 1 ? dy : dz;
-
             if (delta * delta < 1.0E-7F) continue;
             double start = axis == 0 ? from.x : axis == 1 ? from.y : from.z;
             for (int side = 0; side < 2; side++) {

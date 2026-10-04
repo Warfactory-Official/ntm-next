@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.blockentity.network.BlockEntityPylonLarge;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.tileentity.network.BlockEntityPylonLarge;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -63,7 +63,6 @@ public class PylonLargeBlock extends BlockMultiblockCore implements EntityBlock 
             BlockState oldState,
             boolean movedByPiston) {
         super.onPlace(state, level, pos, oldState, movedByPiston);
-
         if (level instanceof ServerLevel server && !oldState.is(this)) {
             CableConductorBlockBase.mintNode(server, pos, state, MASK_NONE);
         }

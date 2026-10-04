@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityConveyorPress;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityConveyorPress;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -81,7 +81,6 @@ public class RenderConveyorPress
         state.yaw = Facing.yaw(BlockMultiblockCore.coreFacing(be.getBlockState()), 90);
         state.press = (float) (be.lastPress + (be.renderPress - be.lastPress) * partialTicks);
         state.stamped = !be.syncStack.isEmpty();
-
         long ticks = be.getLevel() == null ? 0L : be.getLevel().getGameTime();
         state.beltOffset = (ticks % BELT_FRAMES - BELT_PHASE) / (float) BELT_FRAMES;
     }

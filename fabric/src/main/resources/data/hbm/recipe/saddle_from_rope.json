@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "L": "minecraft:leather",
     "R": "hbm:plant_item_rope",

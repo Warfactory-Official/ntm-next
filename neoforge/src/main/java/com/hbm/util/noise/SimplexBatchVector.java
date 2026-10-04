@@ -118,7 +118,6 @@ final class SimplexBatchVector implements SimplexBatch {
                 double skew = xin + yin;
                 int i = Mth.floor(Math.fma(skew, F2, xin));
                 int j = Mth.floor(Math.fma(skew, F2, yin));
-
                 double unskew = -(double) (i + j);
                 double px = xin - Math.fma(unskew, G2, i);
                 double py = yin - Math.fma(unskew, G2, j);

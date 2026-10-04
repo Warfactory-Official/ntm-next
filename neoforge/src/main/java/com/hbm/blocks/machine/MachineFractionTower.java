@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.oil.BlockEntityMachineFractionTower;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -14,7 +15,6 @@ import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineFractionTower;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

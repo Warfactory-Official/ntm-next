@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.BlockEntityLanternBehemoth;
 import com.hbm.blocks.generic.BlockLanternBehemoth;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.BlockEntityLanternBehemoth;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;

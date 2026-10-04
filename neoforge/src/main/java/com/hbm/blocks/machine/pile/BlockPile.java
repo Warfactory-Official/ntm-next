@@ -3,12 +3,12 @@
 
 package com.hbm.blocks.machine.pile;
 
+import com.hbm.blockentity.machine.pile.BlockEntityPileCore;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.multiblock.AssembledMembers;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.interfaces.IToolable;
-import com.hbm.tileentity.machine.pile.BlockEntityPileCore;
 import com.hbm.util.ChunkUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -55,7 +55,6 @@ public class BlockPile extends Block
         if (!core) AssembledMembers.release(level, pos);
         if (BlockEntityPileCore.meltingDown) return;
         if (!core && owner == null) return;
-
         if (level.getBlockState(pos).is(ModBlocks.PILE_BRICK.get())) return;
         level.setBlockAndUpdate(pos, ModBlocks.PILE_BRICK.get().defaultBlockState());
         BlockEntityPileCore pile =
@@ -124,14 +123,15 @@ public class BlockPile extends Block
                 };
         if (key == null && role != Role.CORE) return;
         info.title(getName().getString(), 0xffff00, 0x404000);
-        if (key != null) info.line(Component.translatable(key).getString());
+        if (key != null) info.line(Component.empty().append(Component.translatable(key)));
         if (role == Role.CORE && level.getBlockEntity(pos) instanceof BlockEntityPileCore core)
             info.line(
-                    Component.translatable(
-                                    "overlay.hbm.pile.core.temp",
-                                    Math.round(core.highestHeat),
-                                    BlockEntityPileCore.MAX_HEAT)
-                            .getString());
+                    Component.empty()
+                            .append(
+                                    Component.translatable(
+                                            "overlay.hbm.pile.core.temp",
+                                            Math.round(core.highestHeat),
+                                            BlockEntityPileCore.MAX_HEAT)));
     }
 
     public enum Role implements StringRepresentable {

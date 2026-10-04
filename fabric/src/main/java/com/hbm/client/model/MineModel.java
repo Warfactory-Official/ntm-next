@@ -64,14 +64,12 @@ public record MineModel(Kind kind) implements BlockModel<HFRWavefrontObject> {
                 state -> state.getValue(BlockLandmineAP.GROUND).getSerializedName(),
                 MineModel::flat,
                 "Circle"),
-
         HE(
                 "models/blocks/marelet.obj",
                 new Matrix4f().translate(0.5F, 0F, 0.5F).rotateY((float) Math.toRadians(90)),
                 state -> ObjUnbakedGeometry.SINGLE_SLOT,
                 ObjUnbakedGeometry.Group::rawSmooth,
                 "Circle"),
-
         SHRAP(
                 "models/blocks/ap_mine.obj",
                 new Matrix4f()
@@ -82,7 +80,6 @@ public record MineModel(Kind kind) implements BlockModel<HFRWavefrontObject> {
                 state -> ObjUnbakedGeometry.SINGLE_SLOT,
                 MineModel::flat,
                 "Circle"),
-
         FAT(
                 "models/blocks/mine_fat.obj",
                 new Matrix4f()
@@ -92,7 +89,6 @@ public record MineModel(Kind kind) implements BlockModel<HFRWavefrontObject> {
                 state -> ObjUnbakedGeometry.SINGLE_SLOT,
                 ObjUnbakedGeometry.Group::rawCutout,
                 "Sphere"),
-
         NAVAL(
                 "models/blocks/naval_mine.obj",
                 new Matrix4f()
@@ -106,7 +102,6 @@ public record MineModel(Kind kind) implements BlockModel<HFRWavefrontObject> {
         public final Identifier obj;
         public final Matrix4fc matrix;
         public final Function<BlockState, String> slot;
-
         public final Shading shading;
         public final ObjUnbakedGeometry.Overrides overrides;
 

@@ -6,7 +6,6 @@ package com.hbm.api.block;
 import net.minecraft.world.Container;
 
 public interface IDroneContainer {
-
     interface Provider extends IDroneContainer {
         Container droneOfferInventory();
     }

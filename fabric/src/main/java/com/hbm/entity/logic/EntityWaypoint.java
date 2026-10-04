@@ -3,10 +3,9 @@
 
 package com.hbm.entity.logic;
 
+import com.hbm.config.FabricHbmConfig;
 import com.hbm.entity.mob.glyphid.EntityGlyphid;
 import com.hbm.lib.Library;
-import com.hbm.platform.Services;
-import com.hbm.registration.IRegistrar;
 import com.hbm.registration.Reg;
 import java.util.List;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -30,7 +29,7 @@ public class EntityWaypoint extends Entity {
 
     public static Reg.@Nullable EntityHandle<EntityWaypoint> TYPE;
 
-    public static void register(IRegistrar r) {
+    public static void register() {
         TYPE =
                 Reg.entity(
                         "entity_waypoint",
@@ -135,7 +134,7 @@ public class EntityWaypoint extends Entity {
                     }
                 }
             }
-        } else if (Services.CONFIG.runtime().waypointDebug()) {
+        } else if (FabricHbmConfig.runtime().waypointDebug()) {
 
             double x = bb.minX + (random.nextDouble() - 0.5) * (bb.maxX - bb.minX);
             double y = bb.minY + random.nextDouble() * (bb.maxY - bb.minY);

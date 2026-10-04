@@ -9,7 +9,7 @@
     "range_mult": 20,
     "replaceable": {
       "predicate_type": "minecraft:tag_match",
-      "tag": "minecraft:stone_ore_replaceables"
+      "tag": "minecraft:base_stone_overworld"
     },
     "stalactite": {
       "Name": "hbm:stalactite_asbestos",

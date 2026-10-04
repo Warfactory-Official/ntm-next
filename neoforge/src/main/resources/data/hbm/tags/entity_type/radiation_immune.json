@@ -1,0 +1,28 @@
+{
+  "values": [
+    "minecraft:mooshroom",
+    "minecraft:zombie",
+    "minecraft:husk",
+    "minecraft:drowned",
+    "minecraft:zombie_villager",
+    "minecraft:zombified_piglin",
+    "minecraft:skeleton",
+    "minecraft:stray",
+    "minecraft:wither_skeleton",
+    "minecraft:bogged",
+    "minecraft:ocelot",
+    "minecraft:zombie_horse",
+    "minecraft:skeleton_horse",
+    "minecraft:armor_stand",
+    "hbm:entity_mob_tainted_creeper",
+    "hbm:entity_mob_nuclear_creeper",
+    "hbm:entity_cyber_crab",
+    "hbm:entity_elder_one",
+    "hbm:entity_radiation_blaze",
+    "hbm:entity_mob_mask_man",
+    "hbm:entity_ufo",
+    "hbm:entity_balls_o_tron",
+    "hbm:entity_balls_o_tron_seg",
+    "hbm:entity_mob_hunter_chopper"
+  ]
+}

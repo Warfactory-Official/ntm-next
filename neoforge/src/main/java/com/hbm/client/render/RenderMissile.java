@@ -59,7 +59,6 @@ public class RenderMissile extends EntityRenderer<EntityMissileBaseNT, RenderMis
     @Override
     public void extractRenderState(EntityMissileBaseNT entity, State state, float partialTicks) {
         super.extractRenderState(entity, state, partialTicks);
-
         state.yaw = Mth.rotLerp(partialTicks, entity.renderYawO, entity.renderYaw);
         state.pitch = Mth.lerp(partialTicks, entity.renderPitchO, entity.renderPitch);
         state.padRoll = padRoll(entity.getFacing());
@@ -75,7 +74,6 @@ public class RenderMissile extends EntityRenderer<EntityMissileBaseNT, RenderMis
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(state.yaw - 90F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(state.pitch));
-
         poseStack.mulPose(Axis.YN.rotationDegrees(state.yaw - 90F));
         poseStack.mulPose(Axis.YP.rotationDegrees(state.padRoll));
         if (scale != 1F) poseStack.scale(scale, scale, scale);

@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntitySoyuzStruct;
 import com.hbm.blocks.ITickingBlock;
-import com.hbm.tileentity.machine.BlockEntitySoyuzStruct;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;

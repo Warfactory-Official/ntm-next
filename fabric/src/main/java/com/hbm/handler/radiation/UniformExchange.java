@@ -15,7 +15,6 @@ public interface UniformExchange {
 
     private static UniformExchange choose() {
         VectorBackend backend = VectorApi.backend();
-
         if (backend.arithmetic() && backend.masks() && backend.fma()) {
             try {
                 return new UniformExchangeVector();

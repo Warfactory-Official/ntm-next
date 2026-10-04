@@ -7,7 +7,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public interface IRailNTM {
-
     default Vec3 getSnappingPos(
             Level level, int x, int y, int z, double trainX, double trainY, double trainZ) {
         RailContext info = new RailContext();
@@ -53,16 +52,11 @@ public interface IRailNTM {
     }
 
     final class RailContext {
-
         public float yaw;
-
         public double overshoot;
-
         public int posX, posY, posZ;
         public boolean hasPos;
-
         public double x, y, z;
-
         public final BlockRailNTM.Owner owner = new BlockRailNTM.Owner();
 
         public RailContext reset() {
@@ -100,9 +94,7 @@ public interface IRailNTM {
     final class MoveContext {
         public RailCheckType type;
         public double collisionBogieDistance;
-
         public boolean collision = false;
-
         public double overshoot;
 
         public MoveContext(RailCheckType type, double collisionBogieDistance) {

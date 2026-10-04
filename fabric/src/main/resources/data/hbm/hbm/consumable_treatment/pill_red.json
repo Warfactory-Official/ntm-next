@@ -1,0 +1,16 @@
+{
+  "actions": [
+    {
+      "type": "potion_sickness",
+      "seconds": 5
+    },
+    {
+      "type": "effect",
+      "duration": 72000,
+      "effect": "hbm:death"
+    }
+  ],
+  "block_when_potion_sick": true,
+  "targets": "hbm:pill_red",
+  "trigger": "consume"
+}

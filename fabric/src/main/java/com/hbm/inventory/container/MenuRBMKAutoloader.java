@@ -3,8 +3,8 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKAutoloader;
 import com.hbm.inventory.slot.SlotFiltered;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKAutoloader;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -30,7 +30,6 @@ public class MenuRBMKAutoloader extends BlockEntityMenu<BlockEntityRBMKAutoloade
                 addSlot(SlotFiltered.gated(container, j + i * 3, 17 + 18 * j, 18 + 18 * i));
             }
         }
-
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 addSlot(

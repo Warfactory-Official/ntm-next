@@ -154,20 +154,15 @@ public class ExplosionNukeRayParallelized
     final NonBlockingHashMapLong<ConcurrentLinkedQueue<ResumeItem>> postLoadQueues;
     final MpscUnboundedXaddArrayLongQueue chunkLoadQueue;
     final Long2LongOpenHashMap sectionMaskByChunk;
-
     private final LongOpenHashSet publishedChunks = new LongOpenHashSet();
-
     private final LongArrayList deferredFluidWakes = new LongArrayList();
     private final Long2ObjectOpenHashMap<CompletableFuture<?>> lightingByChunk =
             new Long2ObjectOpenHashMap<>();
     final int algorithm;
     final int rayCount;
-
     private final Long2ObjectOpenHashMap<CompletableFuture<ChunkResult<LevelChunk>>>
             chunksInFlight = new Long2ObjectOpenHashMap<>();
-
     private final LongArrayList ticketsPendingFlush = new LongArrayList();
-
     private final LongOpenHashSet ticketedChunks = new LongOpenHashSet();
     private final LongOpenHashSet readinessLoads = new LongOpenHashSet();
     private boolean notificationTicketsPendingFlush;
@@ -557,7 +552,6 @@ public class ExplosionNukeRayParallelized
     }
 
     void onAllRaysFinished() {
-
         if (activeWorkerTasks != 0
                 || collectFinished != 0
                 || destroyFinished != 0
@@ -582,7 +576,6 @@ public class ExplosionNukeRayParallelized
             return;
         if (!U.compareAndSetInt(this, OFF_ADMISSION_PUMP_QUEUED, 0, 1)) return;
         var server = world.getServer();
-
         server.schedule(server.wrapRunnable(this::pumpChunkAdmissions));
     }
 
@@ -623,7 +616,6 @@ public class ExplosionNukeRayParallelized
                 long ck = ticketsPendingFlush.getLong(i);
                 CompletableFuture<ChunkResult<LevelChunk>> future =
                         ChunkUtil.blastChunkFuture(world, ck);
-
                 if (future != null) trackChunkFuture(ck, future);
                 else queueChunkLoad(ck);
             }
@@ -649,7 +641,6 @@ public class ExplosionNukeRayParallelized
                 continue;
             }
             processChunkLoadRequest(ck, chunk);
-
             if (destroyFinished != 0 || failure != null || System.nanoTime() >= deadlineNanos)
                 return;
         }
@@ -669,7 +660,6 @@ public class ExplosionNukeRayParallelized
     void processChunkLoadRequest(long chunkPos, @Nullable LevelChunk chunk) {
         if (chunk == null) return;
         readinessLoads.remove(chunkPos);
-
         if (mirror != null) mirror.put(chunkPos, chunk);
 
         ForkJoinPool p = pool;
@@ -696,7 +686,6 @@ public class ExplosionNukeRayParallelized
                 }
             }
         }
-
         U.getAndAddInt(this, OFF_PENDING_POST_LOAD_WORK, 1);
         try {
             ConcurrentLinkedQueue<ResumeItem> q = postLoadQueues.remove(chunkPos);
@@ -799,7 +788,6 @@ public class ExplosionNukeRayParallelized
                     world.getChunkSource()
                             .getChunkNow(ChunkPos.getX(packed), ChunkPos.getZ(packed));
             if (chunk == null) continue;
-
             CompletableFuture<?> lighting =
                     ChunkUtil.updateLight(world, chunk, LongList.of(), e.getLongValue());
             CompletableFuture<?> carved = lightingByChunk.remove(packed);
@@ -959,7 +947,6 @@ public class ExplosionNukeRayParallelized
         if (!mainCleanupDone) {
             mainCleanupDone = true;
             try {
-
                 secondPass();
             } finally {
                 sectionMaskByChunk.clear();
@@ -975,7 +962,6 @@ public class ExplosionNukeRayParallelized
     }
 
     private void finishCancellation() {
-
         if (!U.compareAndSetInt(this, OFF_WORKER_CLEANUP, 0, 1)) return;
         if (waitingRoom != null) waitingRoom.clear();
         if (postLoadQueues != null) {
@@ -1058,7 +1044,6 @@ public class ExplosionNukeRayParallelized
                             if (U.getAndSetInt(this, OFF_MAP_ACQUIRED, 0) != 0) {
                                 ChunkUtil.releaseMirrorMap(world);
                             }
-
                             releaseChunkTickets();
                         });
     }
@@ -1262,7 +1247,6 @@ public class ExplosionNukeRayParallelized
                 continue;
             }
             world.updateNeighborsAt(p, air.getBlock());
-
             air.updateNeighbourShapes(world, p, Block.UPDATE_CLIENTS);
         }
         if (selfChunk != null) {
@@ -1438,7 +1422,6 @@ public class ExplosionNukeRayParallelized
 
         long[] states = pausedRays;
         int stateOffset = dirIndex * PAUSED_RAY_WORDS;
-
         if (states != null && states[stateOffset] != 0) {
             energy = Double.longBitsToDouble(states[stateOffset]);
             long packed = states[stateOffset + 1];
@@ -1580,7 +1563,6 @@ public class ExplosionNukeRayParallelized
                                             * INITIAL_ENERGY_FACTOR;
                             agg.recordHit(cachedCPLong, bitIndex, damageInc, segLen);
                         } else if (energy > 0) {
-
                             int bitIndex =
                                     ((worldHeight - 1 - (y - worldMinY)) << 8)
                                             | ((x & 0xF) << 4)
@@ -1714,7 +1696,6 @@ public class ExplosionNukeRayParallelized
     private void prepareRayCaches(DecodedSection[] resistance, EmptySubMaskCache empty) {
         if (empty.epoch == cacheEpoch) return;
         empty.epoch = cacheEpoch;
-
         Arrays.fill(empty.arrays, null);
         for (DecodedSection decoded : resistance) {
             if (decoded != null) decoded.section = null;
@@ -1752,7 +1733,6 @@ public class ExplosionNukeRayParallelized
                 int palSize = palette.getSize();
                 direct = palSize > MAX_LUT;
                 if (!direct) {
-
                     int capacity = Math.max(1 << bits.getBits(), palSize);
                     if (lut == null || lut.length < capacity)
                         lut = new float[Math.max(capacity, 64)];
@@ -1796,7 +1776,6 @@ public class ExplosionNukeRayParallelized
     }
 
     static final class IntDoubleAccumulator {
-
         static final int EMPTY = Integer.MIN_VALUE;
         static final int BASE_CAPACITY = 128;
         static final int MAX_RETAINED_CAPACITY = 4096;

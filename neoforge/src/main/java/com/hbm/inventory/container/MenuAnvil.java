@@ -119,7 +119,6 @@ public class MenuAnvil extends NtmContainerMenu {
     private boolean prepareTake() {
         if (!canTake()) return false;
         if (matchedRecipe.kind == AnvilSmithingRecipe.Kind.HOT) {
-
             matchedRecipe.updateOutputHeat(
                     output.getItem(0),
                     input.getItem(0),
@@ -164,7 +163,6 @@ public class MenuAnvil extends NtmContainerMenu {
 
         @Override
         public void onTake(Player player, ItemStack stack) {
-
             input.removeItem(0, matchedRecipe.amountConsumed(0, mirrored));
             input.removeItem(1, matchedRecipe.amountConsumed(1, mirrored));
             updateSmithing();

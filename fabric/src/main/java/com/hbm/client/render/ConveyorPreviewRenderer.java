@@ -14,7 +14,6 @@ import com.mojang.blaze3d.pipeline.DepthStencilState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.QuadInstance;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
@@ -31,13 +30,11 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.BlockStateModelSet;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
-import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.LightCoordsUtil;
@@ -56,7 +53,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public final class ConveyorPreviewRenderer {
-
     private static final int LAID = 0xFF00FFFF;
     private static final int REFUSED = 0xFFFF0000;
 
@@ -165,7 +161,6 @@ public final class ConveyorPreviewRenderer {
                         pos,
                         side,
                         run.budget());
-
         color = laid > 0 ? LAID : REFUSED;
         bake(volume);
     }
@@ -192,7 +187,6 @@ public final class ConveyorPreviewRenderer {
             BlockState state,
             RandomSource random) {
         int paint = color;
-
         MutableMesh mesh = Renderer.get().mutableMesh();
         QuadEmitter emitter = mesh.emitter();
         emitter.pushTransform(

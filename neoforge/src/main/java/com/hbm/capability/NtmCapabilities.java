@@ -7,6 +7,7 @@ import com.hbm.api.energymk2.EnergyCaps;
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.fluidmk2.FluidCaps;
 import com.hbm.api.fluidmk2.IFluidHandlerMK2;
+import com.hbm.blockentity.machine.fusion.FusionPorts;
 import com.hbm.blocks.machine.BlockCMPort;
 import com.hbm.blocks.machine.BlockPWR;
 import com.hbm.blocks.machine.CustomMachinePorts;
@@ -18,15 +19,17 @@ import com.hbm.capability.port.IPortHost;
 import com.hbm.capability.port.PortDomain;
 import com.hbm.capability.port.PortView;
 import com.hbm.compat.computercraft.ComputerCraft;
-import com.hbm.platform.ICapabilityService;
-import com.hbm.platform.Services;
+import com.hbm.platform.FacedContext;
+import com.hbm.platform.NeoForgeCaps;
+import com.hbm.platform.NeoForgeCaps;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.RegistryHandle;
-import com.hbm.tileentity.machine.fusion.FusionPorts;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiPredicate;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -39,7 +42,6 @@ import net.neoforged.neoforge.capabilities.BlockCapability;
 import org.jspecify.annotations.Nullable;
 
 public final class NtmCapabilities {
-
     public static final int FE_INSERT_PLANE = BlockMultiblockCore.PASSIVE_NONE;
     public static final int FE_EXTRACT_PLANE = BlockMultiblockCore.PASSIVE_NONE;
     public static final int ITEM_PLANE = BlockMultiblockCore.PASSIVE_ITEMS;
@@ -51,7 +53,7 @@ public final class NtmCapabilities {
 
     public static void exposeFluid(RegistryHandle<? extends Block> handle) {
         FLUID_EXPOSED.add(handle.get());
-        Services.CAPS.exposeFluid(handle);
+        NeoForgeCaps.fluidExposures.add((Supplier<? extends Block>) handle);
     }
 
     public static boolean ownsFluidExposure(BlockState state) {
@@ -63,7 +65,7 @@ public final class NtmCapabilities {
 
     public static void exposeEnergyAtBlock(RegistryHandle<? extends Block> handle) {
         ENERGY_EXPOSED.add(handle.get());
-        Services.CAPS.exposeEnergyAtBlock(handle);
+        NeoForgeCaps.energyBlockExposures.add((Supplier<? extends Block>) handle);
     }
 
     public static boolean ownsEnergyExposure(BlockState state) {
@@ -81,8 +83,7 @@ public final class NtmCapabilities {
         Set<String> beKeyed = new HashSet<>();
         FLUID_EXPOSED.clear();
         MultiblockCellShapes.reset();
-        List<RegistryHandle<? extends Block>> roster = Services.REGISTRAR.blocks();
-
+        List<RegistryHandle<? extends Block>> roster = NeoForgeRegistrar.registeredBlocks;
         MultiblockCellCaps.declare(roster);
         BlockPWR.declareProxies();
         NtmContracts.registerAll(roster);
@@ -110,7 +111,6 @@ public final class NtmCapabilities {
 
         public final int bit;
         public final int passivePlane;
-
         public final int planeIndex;
 
         CapRole(int bit, int passivePlane) {
@@ -130,7 +130,6 @@ public final class NtmCapabilities {
             Set<String> beKeyed) {
         MachineCaps caps = declaring.caps();
         assertOwnsItsBeType(handle, caps);
-
         boolean multiblock = handle.get() instanceof BlockMultiblockCore;
         boolean own = !caps.selfProvided;
         if (caps.powerIn && own)
@@ -176,14 +175,15 @@ public final class NtmCapabilities {
 
         if (caps.fluidIn || caps.fluidOut) exposeFluid(handle);
 
-        if (caps.items && once(beKeyed, caps, "item")) Services.CAPS.exposeItem(caps.beType());
-        if (caps.itemsAtCells) Services.CAPS.exposeItemAtBlock(handle);
+        if (caps.items && once(beKeyed, caps, "item")) NeoForgeCaps.exposeItem(caps.beType());
+        if (caps.itemsAtCells)
+            NeoForgeCaps.itemBlockExposures.add((Supplier<? extends Block>) handle);
         if (caps.fe) {
             if (multiblock) {
                 exposeEnergyAtBlock(handle);
             } else {
                 ENERGY_EXPOSED.add(handle.get());
-                if (once(beKeyed, caps, "fe")) Services.CAPS.exposeEnergy(caps.beType());
+                if (once(beKeyed, caps, "fe")) NeoForgeCaps.exposeEnergy(caps.beType());
             }
         }
         declaring.declareExtraCaps(handle);
@@ -196,7 +196,6 @@ public final class NtmCapabilities {
         if (state.getBlock() instanceof BlockPWR) return BlockPWR.ioController(level, pos, state);
         if (!MultiblockSurface.isSurface(state)) return null;
         BlockEntity owner = MultiblockSurface.resolveOwnerIfOpenForItems(level, pos, state, side);
-
         return owner != null && !MultiblockSurface.ownerDeclares(owner, MachineCaps.ITEMS_AT_CELLS)
                 ? null
                 : owner;
@@ -226,28 +225,27 @@ public final class NtmCapabilities {
             CapRole role,
             BiPredicate<BlockEntity, ? super C> accepts) {
         if (multiblock) {
-
-            Services.CAPS.registerBlockProvider(
-                    token,
-                    handle,
-                    (level, pos, state, be, context) -> {
-                        T owner =
-                                fullSurfaceCap(
-                                        level,
-                                        pos,
-                                        state,
-                                        ICapabilityService.sideOf(context),
-                                        type,
-                                        role);
-                        if (owner == null) return null;
-                        return owner instanceof BlockEntity ownerBe
-                                        && !accepts.test(ownerBe, context)
-                                ? null
-                                : owner;
-                    });
+            NeoForgeCaps.pendingBlocks.add(
+                    new NeoForgeCaps.BlockRegistration<>(
+                            token,
+                            (Supplier<? extends Block>) handle,
+                            (level, pos, state, be, context) -> {
+                                T owner =
+                                        fullSurfaceCap(
+                                                level,
+                                                pos,
+                                                state,
+                                                FacedContext.sideOf(context),
+                                                type,
+                                                role);
+                                if (owner == null) return null;
+                                return owner instanceof BlockEntity ownerBe
+                                                && !accepts.test(ownerBe, context)
+                                        ? null
+                                        : owner;
+                            }));
         } else if (once(beKeyed, caps, role.name())) {
-
-            Services.CAPS.registerProvider(
+            NeoForgeCaps.registerProvider(
                     token,
                     caps.beType(),
                     (be, context) ->
@@ -266,14 +264,12 @@ public final class NtmCapabilities {
         if (!MultiblockSurface.isOpen(level, pos, state, side, plane, role)) return null;
         BlockEntity core = MultiblockSurface.resolveOwner(level, pos, state, side, plane, role);
         if (core == null || core.isRemoved() || !type.isInstance(core)) return null;
-
         if ((MachineCaps.declaredDomains(core) & role.bit) == 0) return null;
         if (!MultiblockSurface.ownerDeclares(core, MachineCaps.FE)) return null;
         if (!MachineCaps.acceptsFace(core, side)) return null;
         PortDomain<? extends PortView> domain = PortDomain.forCapability(type);
         if (domain != null && core instanceof IPortHost host) {
             PortView port = host.portAccess(domain, pos, side);
-
             if (port != null && port.as(type, role) == null) return null;
         }
         return type.cast(core);
@@ -307,7 +303,6 @@ public final class NtmCapabilities {
             Class<T> type,
             CapRole role,
             int passivePlane) {
-
         ServerLevel server = level instanceof ServerLevel s ? s : null;
         if (server != null && side != null) {
             T hit = ResolvedCapCache.of(server).serve(pos, state, side, type, role, passivePlane);
@@ -321,10 +316,8 @@ public final class NtmCapabilities {
         if (core == null) return null;
 
         PortDomain<? extends PortView> domain = PortDomain.forCapability(type);
-
         if (side != null && domain != null && core instanceof IPortHost host) {
             PortView port = host.portAccess(domain, pos, side);
-
             if (port != null) {
                 T claimed = port.as(type, role);
                 if (claimed != null && server != null) {

@@ -39,7 +39,6 @@ public class RBMKMiniPanelBase extends Block {
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
-
         return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
     }
 

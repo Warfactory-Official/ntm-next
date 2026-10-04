@@ -24,7 +24,6 @@ public enum EnumChemDye {
     WHITE(0xF0F0F0, DyeColor.WHITE);
 
     public final int color;
-
     public final DyeColor dye;
 
     EnumChemDye(int color, DyeColor dye) {

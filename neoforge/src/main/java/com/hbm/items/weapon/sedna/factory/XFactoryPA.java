@@ -4,7 +4,6 @@
 
 package com.hbm.items.weapon.sedna.factory;
 
-import com.hbm.config.GunVisualConfig;
 import com.hbm.items.ModItems;
 import com.hbm.items.armor.IPAMelee;
 import com.hbm.items.armor.IPARanged;
@@ -16,7 +15,7 @@ import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.items.weapon.sedna.Receiver;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.Reg;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
@@ -64,10 +63,10 @@ public class XFactoryPA {
                 if (component != null) component.clickSecondary(stack, ctx);
             };
 
-    public static void init(IRegistrar r) {
+    public static void init() {
 
         ModItems.GUN_PA_MELEE =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_pa_melee",
                         props ->
                                 new ItemGunPA(

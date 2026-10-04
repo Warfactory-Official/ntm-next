@@ -4,11 +4,11 @@
 package com.hbm.client.render;
 
 import com.hbm.api.entity.RadarEntry;
+import com.hbm.blockentity.machine.BlockEntityMachineRadarScreen;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.gui.ScreenMachineRadar;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.BlockEntityMachineRadarScreen;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -32,32 +32,24 @@ import org.jspecify.annotations.Nullable;
 public class RenderRadarScreen
         implements BlockEntityRenderer<BlockEntityMachineRadarScreen, RenderRadarScreen.State>,
                 ConcurrentRenderStateExtraction {
-
     private static final float PLANE_X = 0.38F;
-
     private static final long BAR_PERIOD = 56L;
     private static final float BAR_SPEED = 30F;
     private static final float BAR_TOP = 2F;
     private static final float BAR_HEIGHT = 0.125F;
-
     private static final float FACE_MIN = -0.375F;
     private static final float FACE_MAX = 1.375F;
-
     private static final double SCOPE_SPAN = 0.875D;
-
     private static final double BLIP_HALF = 0.0625D;
-
     private static final int STATIC_V = 118;
     private static final int STATIC_ROWS = 81;
     private static final float STATIC_HEIGHT = 40F;
 
     private static final int BAR_TOP_COLOR = ARGB.color(0, 0, 255, 0);
-
     private static final int BAR_BOTTOM_COLOR = ARGB.color(50, 0, 255, 0);
 
     private final RenderType barType = FlatTranslucent.litPlain(ResourceManager.white_tex);
     private final RenderType blipType = FlatTranslucent.litCutout(ScreenMachineRadar.TEXTURE);
-
     private final RenderType staticType =
             WorldRenderPipeline.oneSidedCutout(ScreenMachineRadar.TEXTURE);
 
@@ -100,7 +92,6 @@ public class RenderRadarScreen
         state.yaw = Facing.yaw(be.getBlockState().getValue(BlockMultiblockCore.FACING), 90);
         state.linked = be.linked;
         state.barOffset = ((be.getLevel().getGameTime() % BAR_PERIOD) + partialTicks) / BAR_SPEED;
-
         state.staticV = STATIC_V + ThreadLocalRandom.current().nextInt(STATIC_ROWS);
 
         state.blips.clear();

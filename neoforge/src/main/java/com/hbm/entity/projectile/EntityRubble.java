@@ -83,7 +83,6 @@ public class EntityRubble extends ThrowableProjectile {
                     SoundSource.BLOCKS,
                     1.5F,
                     1.0F);
-
             server.sendParticles(
                     new BlockParticleOption(ParticleTypes.BLOCK, getBlockState()),
                     getX(),

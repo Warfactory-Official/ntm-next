@@ -19,7 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class GunStateDecider {
-
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_STANDARD_DECIDER =
             (stack, ctx) -> {
                 int index = ctx.configIndex();
@@ -141,7 +140,6 @@ public class GunStateDecider {
                         if (rec.getCanFire(stack).apply(stack, ctx))
                             rec.getOnFire(stack).accept(stack, ctx);
                 } else if (rec.getDoesDryFireAfterAuto(stack)) {
-
                     ItemGunBaseNT.setState(
                             stack,
                             gunIndex,
@@ -153,7 +151,6 @@ public class GunStateDecider {
                     ItemGunBaseNT.setTimer(stack, gunIndex, 0);
                 }
             } else {
-
                 if (rec.getReloadOnEmpty(stack)
                         && rec.getMagazine(stack).getAmount(stack, ctx.inventory()) <= 0) {
                     ItemGunBaseNT.setIsAiming(stack, false);

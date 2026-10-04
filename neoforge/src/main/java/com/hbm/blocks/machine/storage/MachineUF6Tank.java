@@ -3,7 +3,7 @@
 
 package com.hbm.blocks.machine.storage;
 
-import com.hbm.tileentity.machine.storage.BlockEntityUF6Tank;
+import com.hbm.blockentity.machine.storage.BlockEntityUF6Tank;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

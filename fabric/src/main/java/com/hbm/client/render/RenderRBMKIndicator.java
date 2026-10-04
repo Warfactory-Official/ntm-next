@@ -3,11 +3,11 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKIndicator.IndicatorUnit;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKIndicator;
 import com.hbm.blocks.machine.rbmk.RBMKMiniPanelBase;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKIndicator.IndicatorUnit;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKIndicator;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;

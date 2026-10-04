@@ -3,6 +3,7 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.BlockEntityPlushie;
 import com.hbm.blocks.generic.BlockPlushie.PlushieType;
 import com.hbm.blocks.generic.BlockPlushie;
 import com.hbm.client.render.flywheel.HbmBlockEntityVisual;
@@ -11,7 +12,6 @@ import com.hbm.items.ModItems;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.util.HorsePronter;
-import com.hbm.tileentity.BlockEntityPlushie;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -27,8 +27,6 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -45,7 +43,6 @@ public class RenderPlushie
     private static final int DERG_COLON_THREE = ResourceManager.derg.partId("ColonThree");
     private static final int NO9_HELMET = ResourceManager.armor_no9.partId("Helmet");
     private static final int NO9_INSIGNIA = ResourceManager.armor_no9.partId("Insignia");
-
     private static final double[][] NUMBER_NINE_POSE = numberNinePose();
     private static volatile @Nullable ItemStack cigaretteStack;
 

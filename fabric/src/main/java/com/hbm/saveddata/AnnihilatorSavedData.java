@@ -75,7 +75,6 @@ public class AnnihilatorSavedData extends SavedData {
             AnnihilatorPool pool = new AnnihilatorPool();
             for (KeyEntry k : e.items()) {
                 Object key = decodeKey(k);
-
                 if (key != null) pool.items.put(key, new BigInteger(k.amount(), 10));
             }
             data.pools.put(e.poolName(), pool);
@@ -183,7 +182,6 @@ public class AnnihilatorSavedData extends SavedData {
     }
 
     public static class AnnihilatorPool {
-
         public final HashMap<Object, BigInteger> items = new HashMap<>();
 
         public @Nullable ItemStack increment(Object type, long amount, boolean alwaysPayOut) {

@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "C": "hbm:man_core",
     "D": "hbm:det_charge",

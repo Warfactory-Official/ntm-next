@@ -3,7 +3,7 @@
 
 package com.hbm.fabric.mixin;
 
-import com.hbm.platform.FabricServerAccessor;
+import com.hbm.platform.FabricServerEvents;
 import com.llamalad7.mixinextras.sugar.Local;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.server.level.ChunkHolder;
@@ -38,7 +38,7 @@ public abstract class ChunkMapUnloadMixin {
             CallbackInfo ci,
             @Local(name = "chunk") ChunkAccess chunk) {
         if (chunk instanceof LevelChunk levelChunk) {
-            FabricServerAccessor.dispatchChunkUnload(this.level, levelChunk);
+            FabricServerEvents.dispatchChunkUnload(this.level, levelChunk);
         }
     }
 }

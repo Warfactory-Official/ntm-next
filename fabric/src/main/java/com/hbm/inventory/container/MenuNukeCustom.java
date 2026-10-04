@@ -3,7 +3,7 @@
 
 package com.hbm.inventory.container;
 
-import com.hbm.tileentity.bomb.BlockEntityNukeCustom;
+import com.hbm.blockentity.bomb.BlockEntityNukeCustom;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -47,7 +47,6 @@ public class MenuNukeCustom extends BlockEntityMenu<BlockEntityNukeCustom> {
                 stack -> {
                     int hold = BlockEntityNukeCustom.SLOT_COUNT;
                     if (index < hold) return moveItemStackTo(stack, hold, slots.size(), true);
-
                     return moveItemStackTo(stack, 0, hold, true);
                 });
     }

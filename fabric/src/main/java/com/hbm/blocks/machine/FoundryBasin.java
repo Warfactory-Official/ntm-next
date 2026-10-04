@@ -3,10 +3,10 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityFoundryBasin;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.BlockEntityFoundryBasin;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -17,7 +17,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class FoundryBasin extends FoundryCastingBase implements ICapabilityBlock {
-
     private static final VoxelShape SHAPE = Shapes.box(0D, 0D, 0D, 1D, 0.999D, 1D);
     private static final VoxelShape COLLISION =
             Shapes.or(

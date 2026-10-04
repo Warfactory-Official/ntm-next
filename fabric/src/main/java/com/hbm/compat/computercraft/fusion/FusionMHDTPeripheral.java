@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.fusion;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionMHDT;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionMHDT;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class FusionMHDTPeripheral extends SnapshotPeripheral<BlockEntityFusionMHDT> {

@@ -7,7 +7,11 @@ import com.hbm.capability.ResolvedCapCache;
 import com.hbm.uninos.graph.EndpointRegistry;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.world.NtmWorldgenFields;
+import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import java.util.List;
+import java.util.Set;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 public interface IServerLevelExtension {
 
@@ -15,7 +19,17 @@ public interface IServerLevelExtension {
 
     List<LevelNodeGraph<?>> hbm$graphs();
 
+    Long2IntOpenHashMap hbm$capGraphChunks();
+
+    void hbm$redrawCapabilityShapes();
+
     ResolvedCapCache hbm$resolvedCaps();
 
     NtmWorldgenFields hbm$worldgenFields();
+
+    Set<Entity> hbm$radarTargets();
+
+    Set<LivingEntity> hbm$livingTargets();
+
+    Set<Entity> hbm$storageEntities();
 }

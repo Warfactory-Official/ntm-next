@@ -3,15 +3,15 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineCombustionEngine;
 import com.hbm.inventory.container.MenuMachineCombustionEngine;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.trait.FT_Combustible;
 import com.hbm.items.ItemPistons.EnumPistonType;
 import com.hbm.items.ItemPistons;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineCombustionEngine;
 import java.util.List;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
@@ -239,7 +239,7 @@ public class ScreenMachineCombustionEngine
 
     private void send(CompoundTag data) {
         BlockPos pos = menu.blockEntity().getBlockPos();
-        Services.NETWORK.sendToServer(new NbtControlPayload(pos, data));
+        PacketWire.sendToServer(new NbtControlPayload(pos, data));
     }
 
     private BlockEntityMachineCombustionEngine engine() {

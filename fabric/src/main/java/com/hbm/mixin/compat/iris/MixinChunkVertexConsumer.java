@@ -21,7 +21,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ChunkVertexConsumer.class, remap = false)
 public abstract class MixinChunkVertexConsumer implements ISectionGeometryVertexConsumer {
-
     @Unique
     private static final boolean hbm$irisVertexData =
             ChunkVertexExtension.class.isAssignableFrom(ChunkVertexEncoder.Vertex.class);

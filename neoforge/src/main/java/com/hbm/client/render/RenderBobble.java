@@ -3,6 +3,7 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.BlockEntityBobble;
 import com.hbm.blocks.generic.BlockBobble.BobbleType;
 import com.hbm.blocks.generic.BlockBobble;
 import com.hbm.client.render.flywheel.BobbleVisual;
@@ -11,7 +12,6 @@ import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumModSpecial;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.BlockEntityBobble;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -61,7 +61,6 @@ public class RenderBobble
     public static final int GLOW = ResourceManager.bobble.partId("Glow");
     public static final int HEV_HEAD = ResourceManager.armor_hev.partId("Head");
     public static final int MINI_NUKE = ResourceManager.fatman.partId("MiniNuke");
-
     public static final int[] NI4NI =
             ResourceManager.n_i_4_n_i.partIds(
                     "FrameDark", "Grip", "FrameLight", "Cylinder", "Barrel");
@@ -69,11 +68,9 @@ public class RenderBobble
             ResourceManager.double_barrel.partIds("Stock", "BarrelShort", "Buckle", "Lever");
     public static final Skin LAYERED = skinSet("");
     public static final Skin FLAT = skinSet("17");
-
     private static final Map<BobbleType, RenderType> SKINS = new EnumMap<>(BobbleType.class);
     private static final RenderType SOCKET =
             RenderTypes.entityCutoutCull(ResourceManager.bobble_socket_tex);
-
     private static final RenderType SHINE = BobbleRenderTypes.figurine(ResourceManager.white_tex);
     private static final double[] ZERO = {0, 0, 0};
     private static final Map<BobbleType, Pose> POSES = new EnumMap<>(BobbleType.class);
@@ -223,7 +220,6 @@ public class RenderBobble
     }
 
     public static int shine(long time) {
-
         float alpha = 0.1F + (float) Math.sin(time * 0.001D) * 0.05F;
         return ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 0.0F);
     }
@@ -233,7 +229,6 @@ public class RenderBobble
     }
 
     public static Matrix4f labelBase(Matrix4f pose) {
-
         float f3 = 0.01F;
         return pose.translate(0.63F, 0.175F, 0F).scale(f3, -f3, f3);
     }
@@ -289,7 +284,6 @@ public class RenderBobble
         state.type = be.type;
         state.rotation = be.getBlockState().getValue(BlockBobble.ROTATION);
         state.time = GameTime.now();
-
         state.propOnly = HbmBlockEntityVisual.hasVisual(be);
         if (state.propOnly && !BobbleVisual.vanillaNeeded(be)) return;
         if (state.type == BobbleType.VAER) resolveCigarette(state.cigarette, be.getLevel());
@@ -302,7 +296,6 @@ public class RenderBobble
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
         ps.scale(0.25F, 0.25F, 0.25F);
-
         ps.mulPose(Axis.YN.rotationDegrees(22.5F * s.rotation + 90.0F));
         if (s.propOnly) renderProp(s, ps, col);
         else
@@ -380,7 +373,6 @@ public class RenderBobble
         switch (type) {
             case PU238 -> renderPellet(time, ps, col, light);
             case UFFR -> renderFumo(time, ps, col, light);
-
             case DRILLGON ->
                     part(
                             col,
@@ -410,7 +402,6 @@ public class RenderBobble
             @Nullable ItemStackRenderState cigarette) {
         Pose pose = pose(type);
         HFRWavefrontObject m = ResourceManager.bobble;
-
         OrderedSubmitNodeCollector out = col == null ? null : col.order(order);
 
         ps.pushPose();
@@ -483,7 +474,6 @@ public class RenderBobble
     }
 
     private void renderPellet(long time, PoseStack ps, SubmitNodeCollector col, int light) {
-
         part(
                 col,
                 ps,
@@ -549,7 +539,6 @@ public class RenderBobble
                 ps.scale(0.125F, 0.125F, 0.125F);
                 ps.mulPose(Axis.YP.rotationDegrees(90));
                 ps.mulPose(Axis.XP.rotationDegrees(10));
-
                 RenderType gun = RenderTypes.entityCutoutCull(ResourceManager.n_i_4_n_i_tex);
                 for (int p : NI4NI) part(col, ps, gun, ResourceManager.n_i_4_n_i, light, p);
                 ps.popPose();
@@ -582,7 +571,6 @@ public class RenderBobble
                 ps.mulPose(Axis.XP.rotationDegrees(-90));
                 ps.scale(0.125F, 0.125F, 0.125F);
                 RenderType nuke = RenderTypes.entityCutoutCull(ResourceManager.fatman_mininuke_tex);
-
                 ps.translate(-6, 0, 0);
                 for (int i = -1; i <= 1; i++) {
                     ps.translate(3, 0, 0);
@@ -645,7 +633,6 @@ public class RenderBobble
 
     private void renderSocket(BobbleType type, PoseStack ps, SubmitNodeCollector col) {
         labelWidth(labelBase(ps.last().pose()), font.width(type.label));
-
         col.submitText(
                 ps,
                 0,

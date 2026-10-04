@@ -5,8 +5,8 @@ package com.hbm.compat.computercraft.machine;
 
 import com.hbm.api.entity.IRadarDetectableNT;
 import com.hbm.api.entity.RadarEntry;
+import com.hbm.blockentity.machine.BlockEntityMachineRadar;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.BlockEntityMachineRadar;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.List;
 

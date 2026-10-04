@@ -24,6 +24,7 @@ import com.hbm.util.GameTime;
 import io.netty.buffer.ByteBuf;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
@@ -40,15 +41,31 @@ public final class HbmAnimationPayload extends ThreadedPayload {
     private final int type;
     private final int receiverIndex;
     private final int itemIndex;
+    private final int slot;
+    private final int item;
 
-    public HbmAnimationPayload(int type, int receiverIndex, int itemIndex) {
+    public HbmAnimationPayload(
+            Player player, ItemStack stack, int type, int receiverIndex, int itemIndex) {
+        this(
+                type,
+                receiverIndex,
+                itemIndex,
+                player.getInventory().getSelectedSlot(),
+                BuiltInRegistries.ITEM.getId(stack.getItem()));
+    }
+
+    private HbmAnimationPayload(int type, int receiverIndex, int itemIndex, int slot, int item) {
         this.type = type;
         this.receiverIndex = receiverIndex;
         this.itemIndex = itemIndex;
+        this.slot = slot;
+        this.item = item;
     }
 
     private static HbmAnimationPayload decode(ByteBuf buf) {
         return new HbmAnimationPayload(
+                ByteBufCodecs.VAR_INT.decode(buf),
+                ByteBufCodecs.VAR_INT.decode(buf),
                 ByteBufCodecs.VAR_INT.decode(buf),
                 ByteBufCodecs.VAR_INT.decode(buf),
                 ByteBufCodecs.VAR_INT.decode(buf));
@@ -61,6 +78,8 @@ public final class HbmAnimationPayload extends ThreadedPayload {
             int slot = player.getInventory().getSelectedSlot();
 
             if (stack.isEmpty()) return;
+            if (payload.slot != slot
+                    || payload.item != BuiltInRegistries.ITEM.getId(stack.getItem())) return;
 
             if (stack.getItem() instanceof ItemGunBaseNT) {
                 handleSedna(
@@ -98,6 +117,7 @@ public final class HbmAnimationPayload extends ThreadedPayload {
             int gunIndex) {
         ItemGunBaseNT gun = (ItemGunBaseNT) stack.getItem();
         GunConfig config = gun.getConfig(stack, gunIndex);
+        HbmAnimations.startGunAnimation(player, type, gunIndex);
 
         if (type == GunAnimation.CYCLE) {
             if (gunIndex < gun.lastShot.length)
@@ -125,7 +145,6 @@ public final class HbmAnimationPayload extends ThreadedPayload {
         }
 
         if (animation != null) {
-
             boolean isReloadAnimation =
                     type == GunAnimation.RELOAD || type == GunAnimation.RELOAD_CYCLE;
             if (isReloadAnimation
@@ -146,6 +165,8 @@ public final class HbmAnimationPayload extends ThreadedPayload {
         ByteBufCodecs.VAR_INT.encode(buf, type);
         ByteBufCodecs.VAR_INT.encode(buf, receiverIndex);
         ByteBufCodecs.VAR_INT.encode(buf, itemIndex);
+        ByteBufCodecs.VAR_INT.encode(buf, slot);
+        ByteBufCodecs.VAR_INT.encode(buf, item);
     }
 
     @Override

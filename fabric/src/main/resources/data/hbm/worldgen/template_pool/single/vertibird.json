@@ -2,7 +2,22 @@
   "elements": [
     {
       "element": {
-        "element_type": "minecraft:single_pool_element",
+        "conductors": [
+          3573412827139,
+          3573412827140,
+          3573412831236,
+          3573412827141,
+          3573412831237,
+          3573412835333,
+          3573412839429,
+          3573412843525,
+          3573412847621,
+          3573412851717,
+          3573412855813,
+          3573412859909,
+          3573412864005
+        ],
+        "element_type": "hbm:conductor_template",
         "location": "hbm:vertibird",
         "processors": "hbm:no_rules",
         "projection": "rigid"

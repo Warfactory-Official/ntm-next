@@ -3,13 +3,13 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityHeaterOilburner;
 import com.hbm.inventory.container.MenuMachineOilburner;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.trait.FT_Flammable;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityHeaterOilburner;
 import java.util.List;
 import java.util.Locale;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -148,7 +148,7 @@ public class ScreenMachineOilburner extends ScreenInfoContainer<MenuMachineOilbu
             BlockPos pos = menu.blockEntity().getBlockPos();
             CompoundTag data = new CompoundTag();
             data.putBoolean("toggle", true);
-            Services.NETWORK.sendToServer(new NbtControlPayload(pos, data));
+            PacketWire.sendToServer(new NbtControlPayload(pos, data));
             playClick();
             return true;
         }

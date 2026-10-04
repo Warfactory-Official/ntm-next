@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 @FunctionalInterface
 public interface FlushFaces {
-
     @FunctionalInterface
     interface Visitor {
         void contact(BlockPos position, Direction side);

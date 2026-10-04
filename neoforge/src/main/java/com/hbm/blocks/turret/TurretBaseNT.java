@@ -3,11 +3,11 @@
 
 package com.hbm.blocks.turret;
 
+import com.hbm.blockentity.turret.BlockEntityTurretBaseNT;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.RefreshesNeighborState;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
-import com.hbm.tileentity.turret.BlockEntityTurretBaseNT;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;

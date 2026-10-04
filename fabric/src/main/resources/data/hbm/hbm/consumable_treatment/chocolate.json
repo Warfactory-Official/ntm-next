@@ -1,0 +1,35 @@
+{
+  "actions": [
+    {
+      "type": "potion_sickness",
+      "seconds": 5
+    },
+    {
+      "type": "damage",
+      "amount": 1000.0,
+      "one_in": 25,
+      "sources": "hbm:overdose"
+    },
+    {
+      "type": "effect",
+      "amplifier": 3,
+      "duration": 1200,
+      "effect": "minecraft:haste"
+    },
+    {
+      "type": "effect",
+      "amplifier": 3,
+      "duration": 1200,
+      "effect": "minecraft:speed"
+    },
+    {
+      "type": "effect",
+      "amplifier": 3,
+      "duration": 1200,
+      "effect": "minecraft:jump_boost"
+    }
+  ],
+  "block_when_potion_sick": true,
+  "targets": "hbm:chocolate",
+  "trigger": "consume"
+}

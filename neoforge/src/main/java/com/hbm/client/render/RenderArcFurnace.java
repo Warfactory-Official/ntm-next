@@ -3,11 +3,11 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityCrucible.PourStream;
+import com.hbm.blockentity.machine.BlockEntityMachineArcFurnace;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityCrucible.PourStream;
-import com.hbm.tileentity.machine.BlockEntityMachineArcFurnace;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -52,7 +52,6 @@ public class RenderArcFurnace
     public RenderArcFurnace() {
         this.model = ResourceManager.arc_furnace;
         this.bodyType = RenderTypes.entityCutoutCull(ResourceManager.arc_furnace_tex);
-
         this.hotType = FlatCutout.of(ResourceManager.arc_furnace_tex);
         this.streamType = FlatCutout.of(ResourceManager.foundry_stream_tex);
     }
@@ -138,7 +137,6 @@ public class RenderArcFurnace
                             + s.liquidsAmount
                                     * 1.75
                                     / (double) BlockEntityMachineArcFurnace.MAX_LIQUID;
-
             ps.pushPose();
             ps.translate(0.0, contentsY, 0.0);
             col.submitCustomGeometry(

@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityHeaterElectric;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.RefreshesNeighborState;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -11,12 +12,10 @@ import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.interfaces.IToolable;
-import com.hbm.tileentity.machine.BlockEntityHeaterElectric;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;

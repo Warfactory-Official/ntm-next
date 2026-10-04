@@ -15,7 +15,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class EntityEMPBlast extends Entity {
-
     private static final EntityDataAccessor<Integer> MAX_AGE =
             SynchedEntityData.defineId(EntityEMPBlast.class, EntityDataSerializers.INT);
 
@@ -24,7 +23,6 @@ public class EntityEMPBlast extends Entity {
 
     public EntityEMPBlast(EntityType<? extends EntityEMPBlast> type, Level level) {
         super(type, level);
-
         this.age = 0;
         this.scale = 0;
     }

@@ -3,10 +3,13 @@
   "cookingtime": 200,
   "experience": 1.0,
   "ingredient": {
-    "fabric:type": "fabric:components",
-    "base": "hbm:ingot_steel_dusted",
-    "components": {
-      "hbm:forge_count": 2
+    "fabric:type": "hbm:recipe_input",
+    "base": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:ingot_steel_dusted",
+      "components": {
+        "hbm:forge_count": 2
+      }
     }
   },
   "result": {

@@ -3,6 +3,7 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionPlasmaForge;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.render.FramedItem;
 import com.hbm.client.render.RenderFusionPlasmaForge;
@@ -10,7 +11,6 @@ import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionPlasmaForge;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;

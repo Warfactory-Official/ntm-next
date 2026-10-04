@@ -34,7 +34,6 @@ import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
 
 public final class TorexVisual extends HbmDynamicEntityVisual<EntityNukeTorex> {
-
     private static final Identifier CLOUDLET_TEX =
             Library.id("textures/particle/particle_base.png");
     private static final Material MATERIAL =
@@ -45,7 +44,6 @@ public final class TorexVisual extends HbmDynamicEntityVisual<EntityNukeTorex> {
                     .build();
     private static final Model MODEL = new SingleMeshModel(FogQuadMesh.INSTANCE, MATERIAL);
     private static final Identifier FLARE_TEX = Library.id("textures/particle/flare.png");
-
     private static final Material FLARE_MATERIAL =
             SimpleMaterial.builder()
                     .transparency(Transparency.ORDER_INDEPENDENT_ADDITIVE)
@@ -58,11 +56,10 @@ public final class TorexVisual extends HbmDynamicEntityVisual<EntityNukeTorex> {
                     .build();
     private static final Model FLARE_MODEL =
             new SingleMeshModel(FogQuadMesh.INSTANCE, FLARE_MATERIAL);
-
     private static final Material FLASH_MATERIAL =
             SimpleMaterial.builder()
-                    .transparency(Transparency.LIGHTNING)
-                    .writeMask(WriteMask.COLOR_DEPTH)
+                    .transparency(Transparency.ORDER_INDEPENDENT_ADDITIVE)
+                    .writeMask(WriteMask.COLOR)
                     .cardinalLightingMode(CardinalLightingMode.OFF)
                     .useLight(false)
                     .texture(EffectVisuals.Shared.WHITE)
@@ -75,11 +72,9 @@ public final class TorexVisual extends HbmDynamicEntityVisual<EntityNukeTorex> {
     private final BillboardInstance[] flare = new BillboardInstance[FLARE_QUADS];
     private final TransformedInstance flash;
     private final Matrix4f flashPose = new Matrix4f();
-
     private final float[] flareGaussX = new float[FLARE_QUADS];
     private final float[] flareGaussY = new float[FLARE_QUADS];
     private final float[] flareGaussZ = new float[FLARE_QUADS];
-
     private Instancer<BillboardInstance> instancer;
     private BillboardInstance[] pool = new BillboardInstance[0];
     private int created;
@@ -263,7 +258,6 @@ public final class TorexVisual extends HbmDynamicEntityVisual<EntityNukeTorex> {
 
     private void ensureCapacity(int n) {
         if (created >= n) return;
-
         if (instancer == null) {
             instancer = instancerProvider().instancer(InstanceTypes.BILLBOARD, MODEL);
         }

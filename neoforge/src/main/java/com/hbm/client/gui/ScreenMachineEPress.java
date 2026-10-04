@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineEPress;
 import com.hbm.inventory.container.MenuMachineEPress;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachineEPress;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;

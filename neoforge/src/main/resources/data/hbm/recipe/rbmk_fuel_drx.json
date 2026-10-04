@@ -1,9 +1,17 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
     "hbm:rbmk_fuel_balefire",
     "hbm:particle_digamma"
   ],
+  "input_state": {
+    "0": {
+      "preserve": "remainder"
+    },
+    "1": {
+      "preserve": "remainder"
+    }
+  },
   "result": {
     "id": "hbm:rbmk_fuel_drx"
   }

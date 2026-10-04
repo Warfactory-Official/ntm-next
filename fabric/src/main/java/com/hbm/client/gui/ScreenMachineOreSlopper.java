@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineOreSlopper;
 import com.hbm.inventory.container.MenuMachineOreSlopper;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachineOreSlopper;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;

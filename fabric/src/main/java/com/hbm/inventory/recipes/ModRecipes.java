@@ -3,21 +3,16 @@
 
 package com.hbm.inventory.recipes;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionPlasmaForge;
 import com.hbm.inventory.material.MatDistribution;
 import com.hbm.inventory.recipes.anvil.AnvilConstructionRecipes;
 import com.hbm.inventory.recipes.anvil.AnvilSmithingRecipes;
-import com.hbm.inventory.recipes.crafting.CargoShellRecipe;
-import com.hbm.inventory.recipes.crafting.ContainerUpgradeRecipe;
-import com.hbm.inventory.recipes.crafting.DuctRetypeRecipe;
-import com.hbm.inventory.recipes.crafting.DuctUntypeRecipe;
-import com.hbm.inventory.recipes.crafting.GrenadeCraftingRecipe;
-import com.hbm.inventory.recipes.crafting.MkuRecipe;
-import com.hbm.inventory.recipes.crafting.TagResultRecipe;
+import com.hbm.inventory.recipes.crafting.*;
 import com.hbm.inventory.recipes.loader.SerializableRecipe;
-import com.hbm.registration.IRegistrar;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionPlasmaForge;
+import com.hbm.registration.FabricRegistrar;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 
 public final class ModRecipes {
@@ -29,7 +24,6 @@ public final class ModRecipes {
         handlers.clear();
 
         handlers.add(CentrifugeRecipes.INSTANCE);
-
         handlers.add(GasCentrifugeRecipes.INSTANCE);
         handlers.add(BlastFurnaceRecipesNT.INSTANCE);
         handlers.add(RockMillRecipes.INSTANCE);
@@ -82,22 +76,33 @@ public final class ModRecipes {
         handlers.add(AnnihilatorRecipes.INSTANCE);
 
         handlers.add(MatDistribution.INSTANCE);
-
         handlers.add(ArcFurnaceRecipes.INSTANCE);
     }
 
-    public static void register(IRegistrar r) {
+    public static void register() {
         registerAllHandlers();
-        for (SerializableRecipe table : SerializableRecipe.recipeHandlers) table.registerType(r);
+        for (SerializableRecipe table : SerializableRecipe.recipeHandlers) table.registerType();
 
-        r.registerRecipeSerializer("rbmk_fuel_disassembly", RBMKFuelDisassemblyRecipe.SERIALIZER);
-        r.registerRecipeSerializer("duct_retype", DuctRetypeRecipe.SERIALIZER);
-        r.registerRecipeSerializer("duct_untype", DuctUntypeRecipe.SERIALIZER);
-        r.registerRecipeSerializer("mku", MkuRecipe.SERIALIZER);
-        r.registerRecipeSerializer("grenade_assembly", GrenadeCraftingRecipe.SERIALIZER);
-        r.registerRecipeSerializer("cargo_shell", CargoShellRecipe.SERIALIZER);
-        r.registerListedRecipeSerializer("container_upgrade", ContainerUpgradeRecipe.SERIALIZER);
-        r.registerListedRecipeSerializer("tag_result", TagResultRecipe.SERIALIZER);
+        registerCustomCrafting("rbmk_fuel_disassembly", RBMKFuelDisassemblyRecipe.SERIALIZER);
+        registerCustomCrafting("duct_retype", DuctRetypeRecipe.SERIALIZER);
+        registerCustomCrafting("duct_untype", DuctUntypeRecipe.SERIALIZER);
+        registerCustomCrafting("mku", MkuRecipe.SERIALIZER);
+        registerCustomCrafting("grenade_assembly", GrenadeCraftingRecipe.SERIALIZER);
+        registerCustomCrafting("cargo_shell", CargoShellRecipe.SERIALIZER);
+        registerCustomCrafting("scraps_split", ScrapsSplittingRecipe.SERIALIZER);
+        registerListedCrafting("crafting_shaped", StateShapedRecipe.SERIALIZER);
+        registerListedCrafting("crafting_shapeless", StateShapelessRecipe.SERIALIZER);
+        registerListedCrafting("tag_result", TagResultRecipe.SERIALIZER);
+    }
+
+    private static <T extends HbmCustomRecipe> void registerCustomCrafting(
+            String name, RecipeSerializer<T> serializer) {
+        FabricRegistrar.registerRecipeSerializer(name, serializer);
+    }
+
+    private static <T extends HbmNormalCraftingRecipe> void registerListedCrafting(
+            String name, RecipeSerializer<T> serializer) {
+        FabricRegistrar.registerListedRecipeSerializer(name, serializer);
     }
 
     public static List<RecipeType<?>> datapackBackedTypes() {
@@ -108,7 +113,6 @@ public final class ModRecipes {
     }
 
     public static void bootstrap() {
-
         BlockEntityFusionPlasmaForge.registerBoosters();
     }
 

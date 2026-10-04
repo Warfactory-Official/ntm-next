@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "B": "#c:dyes/orange",
     "C": "hbm:crate_steel",

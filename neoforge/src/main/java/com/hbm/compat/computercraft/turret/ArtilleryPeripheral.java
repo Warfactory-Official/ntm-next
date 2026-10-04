@@ -3,7 +3,7 @@
 
 package com.hbm.compat.computercraft.turret;
 
-import com.hbm.tileentity.turret.BlockEntityTurretBaseArtillery;
+import com.hbm.blockentity.turret.BlockEntityTurretBaseArtillery;
 import dan200.computercraft.api.lua.LuaFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
@@ -25,7 +25,6 @@ public abstract class ArtilleryPeripheral<BE extends BlockEntityTurretBaseArtill
     @LuaFunction(mainThread = true)
     public final Object[] getCurrentTarget() {
         BE machine = machine();
-
         if (machine.queuedTargets() == 0) return new Object[] {null, "Index: 0, Size: 0"};
         Vec3 target = machine.queuedTarget(0);
         return new Object[] {target.x, target.y, target.z};

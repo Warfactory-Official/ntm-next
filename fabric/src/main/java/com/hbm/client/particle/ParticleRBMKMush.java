@@ -130,7 +130,6 @@ public class ParticleRBMKMush extends SingleQuadParticle implements VisualPartic
                 double ya,
                 double za,
                 RandomSource random) {
-
             float scale = (float) Math.max(1.0D, ya);
             return new ParticleRBMKMush(level, x, y + scale, z, scale, this.sprites.get(0, 1));
         }

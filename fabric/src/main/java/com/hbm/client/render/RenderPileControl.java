@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.pile.BlockEntityPileControl;
 import com.hbm.blocks.machine.pile.BlockPileDevice;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.pile.BlockEntityPileControl;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;

@@ -4,7 +4,6 @@
 package com.hbm.client.render;
 
 public final class OrbitalLaserGeometry {
-
     public static final double STEP_RADIANS = Math.PI / 4D;
     public static final int VERTEX_COUNT = 2 * 8 * 4;
     public static final float[] XYZ = new float[VERTEX_COUNT * 3];

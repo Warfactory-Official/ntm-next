@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.network;
 
+import com.hbm.blockentity.network.BlockEntityRadioTelex;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.network.BlockEntityRadioTelex;
 import dan200.computercraft.api.lua.IArguments;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.lua.LuaFunction;
@@ -76,7 +76,6 @@ public final class RadioTelexPeripheral extends SnapshotPeripheral<BlockEntityRa
     public final Object[] setSendingText(IArguments args) throws LuaException {
         BlockEntityRadioTelex machine = machine();
         for (int i = 0; i < LINES; i++) {
-
             if (args.count() <= i)
                 throw new LuaException(
                         "bad arguments #" + (i + 1) + " (value expected, got no value)");

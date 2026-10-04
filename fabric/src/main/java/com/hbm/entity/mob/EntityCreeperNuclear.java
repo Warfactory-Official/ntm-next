@@ -12,8 +12,8 @@ import com.hbm.handler.threading.TargetPoint;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.factory.GunFactory;
 import com.hbm.lib.ModDamageTypes;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.MukePayload;
-import com.hbm.platform.Services;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
@@ -39,6 +39,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gamerules.GameRules;
 
 public class EntityCreeperNuclear extends EntityCreeperBase {
 
@@ -55,7 +56,6 @@ public class EntityCreeperNuclear extends EntityCreeperBase {
 
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
-
         if (isRemoved()) return false;
 
         if (source.is(ModDamageTypes.RADIATION) || source.is(ModDamageTypes.MUD_POISONING)) {
@@ -130,11 +130,10 @@ public class EntityCreeperNuclear extends EntityCreeperBase {
     @Override
     protected void detonate(ServerLevel level) {
 
-        boolean griefing = Services.PLATFORM.canEntityGrief(level, this);
+        boolean griefing = level.getGameRules().get(GameRules.MOB_GRIEFING);
 
         if (isPowered()) {
-
-            Services.NETWORK.sendToAllAround(
+            PacketWire.sendToAllAround(
                     new MukePayload(getX(), getY() + 0.5D, getZ(), false, false),
                     new TargetPoint(level, getX(), getY(), getZ(), 250));
             level.playSound(

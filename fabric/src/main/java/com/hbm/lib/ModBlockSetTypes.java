@@ -9,9 +9,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 public final class ModBlockSetTypes {
-
     public static final BlockSetType HBM_METAL = register("hbm_metal", SoundType.METAL);
-
     public static final BlockSetType HBM_DOOR = register("hbm_door", SoundType.STONE);
 
     private ModBlockSetTypes() {}

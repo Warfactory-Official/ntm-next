@@ -16,7 +16,6 @@ import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.Vec3;
 
 public final class RenderSparks {
-
     public static final RenderPipeline SPARK_LINES_PIPELINE =
             WorldRenderPipeline.of(
                     RenderPipeline.builder(RenderPipelines.LINES_SNIPPET)
@@ -49,9 +48,10 @@ public final class RenderSparks {
         for (int i = 0; i < min + rand.nextInt(max); i++) {
             double prevX = x, prevY = y, prevZ = z;
 
-            x = prevX + dir.x * length * rand.nextFloat();
-            y = prevY + dir.y * length * rand.nextFloat();
-            z = prevZ + dir.z * length * rand.nextFloat();
+            float step = length * rand.nextFloat();
+            x = prevX + dir.x * step;
+            y = prevY + dir.y * step;
+            z = prevZ + dir.z * step;
 
             segment(pose, buffer, prevX, prevY, prevZ, x, y, z, color1, 5F);
             segment(pose, buffer, prevX, prevY, prevZ, x, y, z, color2, 2F);

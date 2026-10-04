@@ -23,20 +23,18 @@ import java.util.Map;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Mth;
 
-public final class FabricHbmConfig implements HbmConfig {
-
-    private static final Path PATH =
+public final class FabricHbmConfig {
+    public static final Path PATH =
             FabricLoader.getInstance().getConfigDir().resolve(ConfigFiles.FABRIC_FILE);
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final String INDENT = "  ";
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final String INDENT = "  ";
 
-    private final File file = PATH.toFile();
+    public static final File FILE = PATH.toFile();
+    public static volatile Map<ConfigEntry<?>, Object> values = defaults();
+    public static volatile long stampedModified;
+    public static volatile long stampedLength;
 
-    private volatile Map<ConfigEntry<?>, Object> values = defaults();
-    private volatile long stampedModified;
-    private volatile long stampedLength;
-
-    private final ConfigStore store =
+    public static final ConfigStore STORE =
             new ConfigStore() {
                 @Override
                 @SuppressWarnings("unchecked")
@@ -45,10 +43,10 @@ public final class FabricHbmConfig implements HbmConfig {
                 }
             };
 
-    private final ConfigStore.Content content = new ConfigStore.Content(store);
-    private final ConfigStore.Runtime runtime = new ConfigStore.Runtime(store);
+    public static final ConfigStore.Content CONTENT = new ConfigStore.Content(STORE);
+    public static final ConfigStore.Runtime RUNTIME = new ConfigStore.Runtime(STORE);
 
-    private static Map<ConfigEntry<?>, Object> defaults() {
+    public static Map<ConfigEntry<?>, Object> defaults() {
         Map<ConfigEntry<?>, Object> map = new HashMap<>();
         for (ConfigEntry<?> entry : ConfigSchema.ENTRIES) {
             map.put(entry, entry.defaultValue());
@@ -56,7 +54,7 @@ public final class FabricHbmConfig implements HbmConfig {
         return map;
     }
 
-    private static Object read(JsonObject section, ConfigEntry<?> entry) {
+    public static Object read(JsonObject section, ConfigEntry<?> entry) {
         JsonElement e = section.get(entry.key());
         switch (entry.kind()) {
             case BOOL -> {
@@ -85,16 +83,11 @@ public final class FabricHbmConfig implements HbmConfig {
         return entry.defaultValue();
     }
 
-    private static String sectionName(Domain domain) {
-        return ConfigFiles.fabricSection(domain);
-    }
-
-    private static JsonObject section(JsonObject root, String name) {
+    public static JsonObject section(JsonObject root, String name) {
         return root.get(name) instanceof JsonObject o ? o : new JsonObject();
     }
 
-    @Override
-    public <T> void set(ConfigEntry<T> entry, T value) {
+    public static <T> void set(ConfigEntry<T> entry, T value) {
         Map<ConfigEntry<?>, Object> next = new HashMap<>(values);
         next.put(entry, value);
         values = next;
@@ -102,9 +95,7 @@ public final class FabricHbmConfig implements HbmConfig {
         NuclearTech.deriveConfigFacades();
     }
 
-    @Override
-    public boolean pollForExternalEdit() {
-
+    public static boolean pollForExternalEdit() {
         long modified;
         long length;
         try {
@@ -119,46 +110,37 @@ public final class FabricHbmConfig implements HbmConfig {
         return true;
     }
 
-    @Override
-    public void reload() {
+    public static void reload() {
         load();
         NuclearTech.deriveConfigFacades();
     }
 
-    @Override
-    public ContentConfig content() {
-        return content;
+    public static ContentConfig content() {
+        return CONTENT;
     }
 
-    @Override
-    public RuntimeConfig runtime() {
-        return runtime;
+    public static RuntimeConfig runtime() {
+        return RUNTIME;
     }
 
-    @Override
-    public ConfigStore clientStore() {
-        return store;
-    }
-
-    public void load() {
-        if (file.exists()) {
-            try (JsonReader reader = new JsonReader(new FileReader(file))) {
-
+    public static void load() {
+        if (FILE.exists()) {
+            try (JsonReader reader = new JsonReader(new FileReader(FILE))) {
                 reader.setStrictness(Strictness.LENIENT);
                 fromJson(JsonParser.parseReader(reader));
             } catch (Exception e) {
                 NuclearTech.LOGGER.warn(
-                        "Could not load config from '{}'", file.getAbsolutePath(), e);
+                        "Could not load config from '{}'", FILE.getAbsolutePath(), e);
             }
         }
         save();
     }
 
-    private void save() {
-        try (FileWriter writer = new FileWriter(file)) {
+    public static void save() {
+        try (FileWriter writer = new FileWriter(FILE)) {
             writer.write(toJsonc());
         } catch (Exception e) {
-            NuclearTech.LOGGER.warn("Could not save config to '{}'", file.getAbsolutePath(), e);
+            NuclearTech.LOGGER.warn("Could not save config to '{}'", FILE.getAbsolutePath(), e);
         }
         try {
             BasicFileAttributes attributes = Files.readAttributes(PATH, BasicFileAttributes.class);
@@ -170,7 +152,7 @@ public final class FabricHbmConfig implements HbmConfig {
         }
     }
 
-    private void fromJson(JsonElement json) {
+    public static void fromJson(JsonElement json) {
         if (!(json instanceof JsonObject root)) {
             NuclearTech.LOGGER.warn("Config JSON must be an object");
             values = defaults();
@@ -178,18 +160,24 @@ public final class FabricHbmConfig implements HbmConfig {
         }
         Map<ConfigEntry<?>, Object> next = new HashMap<>();
         for (ConfigEntry<?> entry : ConfigSchema.ENTRIES) {
-            JsonObject domain = section(root, sectionName(entry.domain()));
+            JsonObject domain =
+                    root.get(ConfigFiles.fabricSection(entry.domain())) instanceof JsonObject o
+                            ? o
+                            : new JsonObject();
             next.put(entry, read(section(domain, entry.section()), entry));
         }
         values = next;
     }
 
-    private String toJsonc() {
+    public static String toJsonc() {
         StringBuilder out = new StringBuilder("{\n");
         Domain[] domains = Domain.values();
         for (int d = 0; d < domains.length; d++) {
             Domain domain = domains[d];
-            out.append(INDENT).append('"').append(sectionName(domain)).append("\": {\n");
+            out.append(INDENT)
+                    .append('"')
+                    .append(ConfigFiles.fabricSection(domain))
+                    .append("\": {\n");
             List<String> sections = new ArrayList<>();
             Map<String, List<ConfigEntry<?>>> bySection = new LinkedHashMap<>();
             for (ConfigEntry<?> entry : ConfigSchema.of(domain)) {
@@ -227,7 +215,7 @@ public final class FabricHbmConfig implements HbmConfig {
         return out.append("}\n").toString();
     }
 
-    private JsonPrimitive literal(ConfigEntry<?> entry) {
+    public static JsonPrimitive literal(ConfigEntry<?> entry) {
         Object value = values.get(entry);
         return switch (entry.kind()) {
             case BOOL -> new JsonPrimitive((Boolean) value);
@@ -237,7 +225,7 @@ public final class FabricHbmConfig implements HbmConfig {
         };
     }
 
-    private JsonObject toJson() {
+    public static JsonObject toJson() {
         JsonObject root = new JsonObject();
         for (Domain domain : Domain.values()) {
             JsonObject owner = new JsonObject();
@@ -258,7 +246,7 @@ public final class FabricHbmConfig implements HbmConfig {
                     case STRING -> section.addProperty(entry.key(), (String) value);
                 }
             }
-            root.add(sectionName(domain), owner);
+            root.add(ConfigFiles.fabricSection(domain), owner);
         }
         return root;
     }

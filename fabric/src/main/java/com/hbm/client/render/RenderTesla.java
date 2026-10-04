@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityTesla;
 import com.hbm.render.util.BeamPronter.EnumBeamType;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
 import com.hbm.render.util.BeamPronter;
-import com.hbm.tileentity.machine.BlockEntityTesla;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import java.util.ArrayList;
@@ -23,7 +23,6 @@ import org.jspecify.annotations.Nullable;
 public class RenderTesla
         implements BlockEntityRenderer<BlockEntityTesla, RenderTesla.State>,
                 ConcurrentRenderStateExtraction {
-
     private static final int COLOR = 0x404040;
     private static final float SIZE = 0.125F;
     private static final int LAYERS = 2;
@@ -59,7 +58,6 @@ public class RenderTesla
         double sy = pos.getY() + BlockEntityTesla.OFFSET;
         double sz = pos.getZ() + 0.5D;
         for (Vec3 target : tesla.targets) state.beams.add(target.subtract(sx, sy, sz));
-
         state.start = (int) tesla.getLevel().getGameTime() % 1000 + 1;
     }
 
@@ -72,7 +70,6 @@ public class RenderTesla
         if (state.beams.isEmpty()) return;
 
         poseStack.pushPose();
-
         poseStack.translate(0.5D, BlockEntityTesla.OFFSET, 0.5D);
 
         for (Vec3 skeleton : state.beams) {
@@ -96,7 +93,6 @@ public class RenderTesla
     }
 
     public static final class State extends BlockEntityRenderState {
-
         public final List<Vec3> beams = new ArrayList<>();
         public int start;
     }

@@ -3,9 +3,9 @@
 
 package com.hbm.items.tool;
 
+import com.hbm.blockentity.machine.BlockEntityReactorZirnox;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKBase;
 import com.hbm.blocks.multiblock.MultiblockSurface;
-import com.hbm.tileentity.machine.BlockEntityReactorZirnox;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKBase;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -29,12 +29,12 @@ public class ItemDyatlov extends Item {
         BlockPos core = MultiblockSurface.coreOfAny(level, pos);
         if (core == null) return InteractionResult.PASS;
 
-        BlockEntity te = level.getBlockEntity(core);
-        if (te instanceof BlockEntityRBMKBase rbmk) {
+        BlockEntity be = level.getBlockEntity(core);
+        if (be instanceof BlockEntityRBMKBase rbmk) {
             rbmk.meltdown();
             return InteractionResult.SUCCESS;
         }
-        if (te instanceof BlockEntityReactorZirnox zirnox) {
+        if (be instanceof BlockEntityReactorZirnox zirnox) {
             zirnox.heat = 200000;
             return InteractionResult.SUCCESS;
         }

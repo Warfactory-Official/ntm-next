@@ -3,11 +3,11 @@
 
 package com.hbm.blocks.machine.fusion;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionPlasmaForge;
+import com.hbm.blockentity.machine.fusion.FusionPorts;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionPlasmaForge;
-import com.hbm.tileentity.machine.fusion.FusionPorts;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,7 +21,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class MachineFusionPlasmaForge extends BlockFusionMachine implements ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         2, 0, 2, 2, 5, 5, 0, 0, 0,
         4, -3, 0, 0, 4, 4, 0, 0, 0,

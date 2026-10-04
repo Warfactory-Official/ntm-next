@@ -142,7 +142,6 @@ public record DiodeModel() implements BlockModel<HFRWavefrontObject> {
 
         @Override
         public Object visualEqualityGroup(BlockState blockState) {
-
             return List.of(facing, parts);
         }
     }

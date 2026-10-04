@@ -4,9 +4,9 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.BlockEntityMachineAutocrafter;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.inventory.slot.SlotPattern;
-import com.hbm.tileentity.machine.BlockEntityMachineAutocrafter;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerInput;
@@ -90,7 +90,6 @@ public class MenuMachineAutocrafter extends BlockEntityMenu<BlockEntityMachineAu
 
                     if (index < machineEnd) {
                         if (!moveItemStackTo(stack, machineEnd, slots.size(), true)) return false;
-
                     } else if (stack.getItem() instanceof IBatteryItem) {
                         if (!moveItemStackTo(
                                 stack,

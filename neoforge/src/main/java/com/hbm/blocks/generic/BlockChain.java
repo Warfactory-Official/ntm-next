@@ -127,7 +127,6 @@ public class BlockChain extends Block implements SimpleWaterloggedBlock {
             return defaultBlockState().setValue(FACING, support.getValue(FACING));
         }
         if (support.isFaceSturdy(level, above, Direction.DOWN)) return defaultBlockState();
-
         for (int side = 5; side >= 2; side--) {
             Direction facing = Direction.from3DDataValue(side);
             BlockPos neighbor = pos.relative(facing.getOpposite());

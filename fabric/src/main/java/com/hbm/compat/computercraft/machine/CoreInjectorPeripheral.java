@@ -3,9 +3,9 @@
 
 package com.hbm.compat.computercraft.machine;
 
+import com.hbm.blockentity.machine.BlockEntityCoreInjector;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.tileentity.machine.BlockEntityCoreInjector;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class CoreInjectorPeripheral extends SnapshotPeripheral<BlockEntityCoreInjector> {

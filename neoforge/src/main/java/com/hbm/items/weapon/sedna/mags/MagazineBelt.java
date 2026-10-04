@@ -16,7 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class MagazineBelt implements IMagazine<BulletConfig> {
-
     private static final int INFINITE_ROUNDS = 9_999;
 
     public static final String KEY_MAG_TYPE = "magtype";
@@ -135,7 +134,6 @@ public class MagazineBelt implements IMagazine<BulletConfig> {
                     for (int j = 0; j < bag.getContainerSize(); j++) {
                         ItemStack inBag = bag.getItem(j);
                         if (inBag.isEmpty() || !first.matchesAmmo(inBag)) continue;
-
                         if (infinite) return INFINITE_ROUNDS;
                         count += inBag.getCount();
                     }

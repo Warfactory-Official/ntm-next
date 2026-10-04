@@ -4,7 +4,7 @@
 package com.hbm.items.special;
 
 import com.hbm.main.Polaroid;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -25,15 +25,15 @@ public class ItemCustomLore extends Item {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-        String base = this.getDescriptionId() + ".desc";
-
+        String base = getDescriptionId() + ".desc";
         if (Polaroid.isBalefireDay()) {
-            String[] special = I18nUtil.loreLines(base + ".P11");
-            if (special.length > 0) {
-                for (String line : special) adder.accept(Component.literal(line));
+            var special = TooltipStyle.lines(Component.translatableWithFallback(base + ".P11", ""));
+            if (!special.isEmpty()) {
+                for (Component line : special) adder.accept(line);
                 return;
             }
         }
-        for (String line : I18nUtil.loreLines(base)) adder.accept(Component.literal(line));
+        for (Component line : TooltipStyle.lines(Component.translatableWithFallback(base, "")))
+            adder.accept(line);
     }
 }

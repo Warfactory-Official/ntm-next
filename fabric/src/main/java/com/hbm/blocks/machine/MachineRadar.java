@@ -3,13 +3,13 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineRadar;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.data.MachineData;
 import com.hbm.inventory.IGUIProvider;
-import com.hbm.tileentity.machine.BlockEntityMachineRadar;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -40,7 +40,6 @@ public class MachineRadar extends Block implements ITickingBlock, ICapabilityBlo
             }
             return InteractionResult.SUCCESS;
         }
-
         if (player.isSecondaryUseActive()) return InteractionResult.PASS;
         if (!level.isClientSide() && level.getBlockEntity(core) instanceof MenuProvider provider) {
             IGUIProvider.openBlockMenu(

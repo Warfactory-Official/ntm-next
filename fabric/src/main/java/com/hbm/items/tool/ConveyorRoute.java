@@ -78,7 +78,6 @@ public final class ConveyorRoute {
             if (!route.getBlockState(cursor).canBeReplaced()) return -1;
 
             Block block = conveyorForDirection(type, dir);
-
             Direction facing = facingFor(block, dir, targetDir, horDir);
             ConveyorBend bend = ConveyorBend.STRAIGHT;
 
@@ -141,7 +140,6 @@ public final class ConveyorRoute {
     }
 
     private static BlockState columnState(ConveyorPlacer build, BlockPos pos, BlockState state) {
-
         BlockGetter view = build instanceof LevelPlacer live ? live.level() : build;
         if (state.hasProperty(ConveyorLiftBlock.PART)) {
             return state.setValue(ConveyorLiftBlock.PART, ConveyorLiftBlock.partAt(view, pos));

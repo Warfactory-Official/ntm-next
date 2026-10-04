@@ -16,7 +16,6 @@ public final class CoalGasHandler {
 
     public static void onBlockBroken(Level level, BlockPos pos, BlockState broken) {
         if (level.isClientSide()) return;
-
         if (!broken.is(Blocks.COAL_ORE)
                 && !broken.is(Blocks.DEEPSLATE_COAL_ORE)
                 && !broken.is(Blocks.COAL_BLOCK)

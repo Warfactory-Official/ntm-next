@@ -6,7 +6,6 @@ package com.hbm.explosion.vanillant.standard;
 import com.hbm.explosion.vanillant.ExplosionVNT;
 import com.hbm.explosion.vanillant.interfaces.IBlockMutator;
 import com.hbm.explosion.vanillant.interfaces.IBlockProcessor;
-import com.hbm.platform.Services;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.function.BiConsumer;
@@ -18,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -88,11 +88,11 @@ public class BlockProcessorStandard implements IBlockProcessor {
             }
 
             if (!tool.isEmpty()
-                    && Services.PLATFORM.canDropFromExplosion(level, pos, state, explosion)) {
+                    && state.canDropFromExplosion(
+                            (BlockGetter) level, pos, (Explosion) explosion)) {
                 dropWithFortune(level, pos, state, explosion, tool);
             }
             state.onExplosionHit(level, pos, explosion, drops);
-
             if (convert != null) convert.mutatePre(explosion, state, pos);
         }
 

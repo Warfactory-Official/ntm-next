@@ -7,6 +7,12 @@ SPDX-FileCopyrightText = "2026 movblock <admin@movblock.mov>"
 SPDX-License-Identifier = "LGPL-3.0-only"
 
 [[annotations]]
+path = "**/src/main/resources/hbm.png"
+precedence = "override"
+SPDX-FileCopyrightText = "2026 movblock <admin@movblock.mov>"
+SPDX-License-Identifier = "LicenseRef-All-Rights-Reserved"
+
+[[annotations]]
 path = [
     "**/src/main/resources/assets/**",
     "**/src/main/resources/data/**",
@@ -177,12 +183,6 @@ SPDX-FileCopyrightText = "2026 movblock <admin@movblock.mov>"
 SPDX-License-Identifier = "LGPL-3.0-only"
 
 [[annotations]]
-path = "native/**"
-precedence = "closest"
-SPDX-FileCopyrightText = "2026 movblock <admin@movblock.mov>"
-SPDX-License-Identifier = "LicenseRef-All-Rights-Reserved"
-
-[[annotations]]
 path = [
     "**/src/main/resources/assets/hbm/textures/item/spawn_egg.png",
     "**/src/main/resources/assets/hbm/textures/item/spawn_egg_overlay.png",
@@ -225,15 +225,6 @@ path = [
 precedence = "closest"
 SPDX-FileCopyrightText = ["JCTools contributors", "2026 movblock <admin@movblock.mov>"]
 SPDX-License-Identifier = "Apache-2.0 AND LGPL-3.0-only"
-
-[[annotations]]
-path = "**/src/main/java/com/hbm/platform/FabricTrustedLookupProvider.java"
-precedence = "closest"
-SPDX-FileCopyrightText = [
-    "2025 Burning_TNT <pangyl08@163.com>",
-    "2026 movblock <admin@movblock.mov>",
-]
-SPDX-License-Identifier = "MIT AND LGPL-3.0-only"
 
 [[annotations]]
 path = "**/src/main/java/com/hbm/client/render/ModelCrab.java"

@@ -22,7 +22,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -40,7 +39,6 @@ public class EntityCog extends EntityThrowableInterp {
 
     private static final double SETTLE_SPEED = 0.75D;
     private static final int LANDED = 6;
-
     private static final float BREAKABLE_RESISTANCE = 50F;
 
     public EntityCog(EntityType<? extends EntityCog> type, Level level) {

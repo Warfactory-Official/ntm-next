@@ -422,12 +422,10 @@ public class EntityChemical extends EntityThrowableNT {
 
     public boolean teleportRandomly(Entity e) {
         if (!(level() instanceof ServerLevel server)) return false;
-
         double x = getX() + (this.random.nextDouble() - 0.5D) * 64.0D;
         double y = getY() + (this.random.nextInt(64) - 32);
         double z = getZ() + (this.random.nextDouble() - 0.5D) * 64.0D;
         double fromX = e.getX(), fromY = e.getY(), fromZ = e.getZ();
-
         if (!(e instanceof LivingEntity living
                 ? living.randomTeleport(x, y, z, true)
                 : walkTo(server, e, x, y, z))) return false;
@@ -565,7 +563,6 @@ public class EntityChemical extends EntityThrowableNT {
                                         || state.is(ModBlocks.DIRT_DEAD.get())
                                         || state.is(ModBlocks.DIRT_OILY.get())) {
                                     BlockPos above = target.above();
-
                                     if (level().getMaxLocalRawBrightness(above) >= 9
                                             && level().getBlockState(above).getLightDampening()
                                                     <= 2) {
@@ -589,7 +586,6 @@ public class EntityChemical extends EntityThrowableNT {
                                     level().setBlockAndUpdate(
                                                     target,
                                                     brickConcreteMossy().defaultBlockState());
-
                                 if (state.is(block("brick_concrete_slab")))
                                     level().setBlockAndUpdate(
                                                     target,

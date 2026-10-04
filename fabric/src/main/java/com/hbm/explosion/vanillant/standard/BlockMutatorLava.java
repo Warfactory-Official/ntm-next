@@ -19,7 +19,6 @@ public class BlockMutatorLava implements IBlockMutator {
 
     @Override
     public void mutatePre(ExplosionVNT explosion, BlockState blockState, BlockPos pos) {
-
         if (blockState.isSolidRender()) {
             explosion.world.setBlock(pos, lava.defaultBlockState(), Block.UPDATE_ALL);
         }

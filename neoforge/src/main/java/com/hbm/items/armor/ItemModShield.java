@@ -36,7 +36,6 @@ public class ItemModShield extends ItemArmorMod {
                 System.currentTimeMillis() % 1000L < 500L
                         ? ChatFormatting.YELLOW
                         : ChatFormatting.GOLD;
-
         tooltip.add(
                 Component.translatable(
                                 "desc.item.armorMod.health.installed",

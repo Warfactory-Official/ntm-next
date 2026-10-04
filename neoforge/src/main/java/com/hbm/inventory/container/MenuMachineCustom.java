@@ -4,12 +4,12 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.BlockEntityCustomMachine;
 import com.hbm.inventory.machine.CustomMachineDefinition;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.inventory.slot.SlotPattern;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.BlockEntityCustomMachine;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerInput;
@@ -17,7 +17,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class MenuMachineCustom extends BlockEntityMenu<BlockEntityCustomMachine> {
-
     private static final int[] COLUMN_X = {8, 26, 44};
     private static final int[] ROW_Y = {72, 90};
 

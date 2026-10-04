@@ -9,6 +9,7 @@ import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.ingredient.CountIngredient;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
+import com.hbm.inventory.recipes.loader.Outputs;
 import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncSource;
@@ -34,11 +35,9 @@ public class ModuleMachineBase implements SyncSource {
     protected final int[] outputSlots;
     protected final FluidTankNTM[] inputTanks;
     protected final FluidTankNTM[] outputTanks;
-
     private final @Nullable IEnergyHandlerMK2 battery;
 
     @SyncField protected String recipe = "";
-
     @SyncField public double progress;
     @SyncField public boolean restrictedMode;
     public boolean didProcess;
@@ -211,7 +210,6 @@ public class ModuleMachineBase implements SyncSource {
         }
 
         boolean[] used = new boolean[inputSlots.length];
-
         int[] debitSlot = new int[ingredients.length * inputSlots.length];
         int[] debitCount = new int[debitSlot.length];
         int debits = 0;
@@ -244,30 +242,14 @@ public class ModuleMachineBase implements SyncSource {
         if (outputs == null) return true;
         int n = Math.min(outputs.length, outputSlots.length);
         for (int i = 0; i < n; i++) {
-            ItemStack slot = inventory.getItem(outputSlots[i]);
-            if (slot.isEmpty()) continue;
-            ItemStack single = single(outputs[i]);
-            if (single == null) return false;
-            if (single.isEmpty()) continue;
-            if (!ItemStack.isSameItemSameComponents(slot, single)) return false;
-            if (slot.getCount() + single.getCount() > slot.getMaxStackSize()) return false;
+            if (!Outputs.fits(inventory.getItem(outputSlots[i]), outputs[i])) return false;
         }
         return true;
     }
 
-    private static @Nullable ItemStack single(WeightedList<ItemStack> out) {
-        List<Weighted<ItemStack>> entries = out.unwrap();
-        if (entries.size() == 1) return entries.getFirst().value();
-        if (entries.size() != 2) return null;
-        ItemStack first = entries.get(0).value();
-        ItemStack second = entries.get(1).value();
-        if (first.isEmpty() == second.isEmpty()) return null;
-        return first.isEmpty() ? second : first;
-    }
-
     private static ItemStack roll(WeightedList<ItemStack> out) {
         List<Weighted<ItemStack>> entries = out.unwrap();
-        ItemStack single = single(out);
+        ItemStack single = Outputs.single(out);
         if (entries.size() != 2 || single == null)
             return out.getRandom(GenericRecipes.RNG).orElse(ItemStack.EMPTY);
         int total = entries.get(0).weight() + entries.get(1).weight();
@@ -286,7 +268,6 @@ public class ModuleMachineBase implements SyncSource {
     public boolean isItemValid(int slot, ItemStack stack) {
         GenericRecipe recipe = getRecipe();
         if (recipe == null || recipe.inputItem == null) return false;
-
         for (int i = 0; i < Math.min(inputSlots.length, recipe.inputItem.length); i++) {
             if (inputSlots[i] == slot && recipe.inputItem[i].matchesItem(stack)) return true;
         }
@@ -391,7 +372,6 @@ public class ModuleMachineBase implements SyncSource {
     public static final class Match {
 
         public final GenericRecipe recipe;
-
         private final int[] debitSlot;
         private final int[] debitCount;
 

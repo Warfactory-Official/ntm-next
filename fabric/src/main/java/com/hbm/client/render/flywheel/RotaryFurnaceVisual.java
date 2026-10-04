@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityCrucible.PourStream;
+import com.hbm.blockentity.machine.BlockEntityMachineRotaryFurnace;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityCrucible.PourStream;
-import com.hbm.tileentity.machine.BlockEntityMachineRotaryFurnace;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;

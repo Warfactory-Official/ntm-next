@@ -4,13 +4,11 @@
 package com.hbm.api.fluidmk2;
 
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
 public interface FluidTankEndpoint extends FluidFlushSender {
-
     int HIGHEST_VALID_PRESSURE = 5;
 
     @Nullable Level getLevel();

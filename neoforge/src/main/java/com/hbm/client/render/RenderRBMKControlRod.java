@@ -3,11 +3,11 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControl;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlAuto;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlManual;
+import com.hbm.blockentity.machine.rbmk.RBMKConfig;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControl;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControlAuto;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControlManual;
-import com.hbm.tileentity.machine.rbmk.RBMKConfig;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -33,7 +33,6 @@ public class RenderRBMKControlRod
             RenderTypes.entityCutoutCull(ResourceManager.rbmk_control_tex);
     private final RenderType autoType =
             RenderTypes.entityCutoutCull(ResourceManager.rbmk_control_auto_tex);
-
     private final RenderType[] colorTypes = buildColorTypes();
 
     private static RenderType[] buildColorTypes() {
@@ -82,7 +81,6 @@ public class RenderRBMKControlRod
                 be, state, partialTicks, cameraPosition, breakProgress);
         state.level = Mth.lerp(partialTicks, be.lastLevel, be.level);
         state.offset = RBMKConfig.getColumnHeight(be.getLevel());
-
         state.capLight =
                 LightCoordsUtil.getLightCoords(
                         be.getLevel(), be.getBlockPos().above(state.offset + 1));

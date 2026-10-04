@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EnvironmentAttributeSystem.class)
 public abstract class MixinEnvironmentAttributeSystem {
-
     @Inject(
             method =
                     "addDefaultLayers(Lnet/minecraft/world/attribute/EnvironmentAttributeSystem$Builder;Lnet/minecraft/world/level/Level;)V",

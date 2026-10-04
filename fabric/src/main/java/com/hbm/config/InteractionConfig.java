@@ -4,7 +4,6 @@
 package com.hbm.config;
 
 public final class InteractionConfig {
-
     public static volatile boolean crateOpensHeld = true;
     public static volatile boolean recipeViewerHidesSecrets = true;
 

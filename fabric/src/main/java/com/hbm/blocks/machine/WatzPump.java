@@ -6,7 +6,6 @@ package com.hbm.blocks.machine;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 
 public class WatzPump extends BlockMultiblockCore {
-
     private static final int[] DIMENSIONS = {1, 0, 0, 0, 0, 0};
 
     public WatzPump(Properties props) {

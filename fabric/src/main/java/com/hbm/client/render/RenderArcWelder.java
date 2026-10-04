@@ -3,8 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineArcWelder;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.tileentity.machine.BlockEntityMachineArcWelder;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 

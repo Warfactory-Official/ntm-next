@@ -4,7 +4,7 @@
 package com.hbm.compat.computercraft.storage;
 
 import com.hbm.api.energymk2.IEnergyHandlerMK2.ConnectionPriority;
-import com.hbm.tileentity.machine.storage.BlockEntityBatteryREDD;
+import com.hbm.blockentity.machine.storage.BlockEntityBatteryREDD;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class BatteryREDDPeripheral extends EnergyStoragePeripheral<BlockEntityBatteryREDD> {
@@ -18,12 +18,12 @@ public final class BatteryREDDPeripheral extends EnergyStoragePeripheral<BlockEn
 
     @Override
     protected int redLow(BlockEntityBatteryREDD machine) {
-        return machine.redLow;
+        return machine.getRedLow();
     }
 
     @Override
     protected int redHigh(BlockEntityBatteryREDD machine) {
-        return machine.redHigh;
+        return machine.getRedHigh();
     }
 
     @Override
@@ -33,12 +33,12 @@ public final class BatteryREDDPeripheral extends EnergyStoragePeripheral<BlockEn
 
     @Override
     protected void applyRedLow(BlockEntityBatteryREDD machine, int mode) {
-        machine.redLow = mode;
+        machine.setRedLow(mode);
     }
 
     @Override
     protected void applyRedHigh(BlockEntityBatteryREDD machine, int mode) {
-        machine.redHigh = mode;
+        machine.setRedHigh(mode);
     }
 
     @Override

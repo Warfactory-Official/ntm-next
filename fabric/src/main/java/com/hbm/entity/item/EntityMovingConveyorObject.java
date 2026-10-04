@@ -6,9 +6,9 @@ package com.hbm.entity.item;
 import com.hbm.api.conveyor.IConveyorBelt;
 import com.hbm.api.conveyor.IEnterableBlock;
 import com.hbm.capability.NtmContracts;
+import com.hbm.config.FabricHbmConfig;
 import com.hbm.explosion.vanillant.ExplosionVNT;
 import com.hbm.explosion.vanillant.standard.ExplosionEffectTiny;
-import com.hbm.platform.Services;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -73,7 +73,6 @@ public abstract class EntityMovingConveyorObject extends Entity {
 
         BlockPos pos = blockPosition();
         Vec3 self = position();
-
         IConveyorBelt belt = NtmContracts.CONVEYOR_BELT.at(server, pos);
 
         if (belt == null || !belt.canItemStay(server, pos, self)) {
@@ -115,7 +114,7 @@ public abstract class EntityMovingConveyorObject extends Entity {
                 server.getEntitiesOfClass(
                         EntityMovingConveyorObject.class, getBoundingBox().inflate(0.125D));
 
-        if (objs.size() < Services.CONFIG.runtime().conveyorCramMax()) return;
+        if (objs.size() < FabricHbmConfig.runtime().conveyorCramMax()) return;
 
         for (EntityMovingConveyorObject obj : objs) obj.discard();
 
@@ -125,7 +124,7 @@ public abstract class EntityMovingConveyorObject extends Entity {
 
         BlockPos pos = blockPosition();
         if (tickCount > 400
-                && Services.CONFIG.runtime().conveyorCramExplode()
+                && FabricHbmConfig.runtime().conveyorCramExplode()
                 && server.getBlockState(pos).getBlock() instanceof IConveyorBelt)
             server.destroyBlock(pos, false);
     }

@@ -6,17 +6,10 @@ plugins {
 
 version = property("mod_version")!!
 group = property("mod_group_id")!!
+val implementationVersion = "$version+${rootProject.extra["buildRevision"]}"
 
 base {
     archivesName = "${property("mod_id")}-neoforge"
-}
-
-val sourcesJar = tasks.register<Jar>("sourcesJar") {
-    archiveClassifier.set("sources")
-    isPreserveFileTimestamps = false
-    isReproducibleFileOrder = true
-    includeEmptyDirs = false
-    from(sourceSets.main.get().allJava)
 }
 
 publishing {
@@ -26,7 +19,6 @@ publishing {
             artifactId = "ntm-next-neoforge"
             version = rootProject.extra["publishVersion"] as String
             artifact(tasks.named("jar"))
-            artifact(sourcesJar)
         }
     }
     repositories {
@@ -49,59 +41,40 @@ publishing {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
+val javacInternalExports = listOf("api", "code", "comp", "jvm", "main", "model", "parser", "tree", "util")
+    .map { "--add-exports=jdk.compiler/com.sun.tools.javac.$it=ALL-UNNAMED" }
+val javacInternalOpens = listOf("main")
+    .map { "--add-opens=jdk.compiler/com.sun.tools.javac.$it=ALL-UNNAMED" }
+
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
     options.compilerArgs.add("--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED")
     options.compilerArgs.add("--add-modules=jdk.incubator.vector")
+    options.isFork = true
     options.forkOptions.memoryMaximumSize = "2g"
+    options.forkOptions.jvmArgs!!.addAll(javacInternalExports)
+    options.forkOptions.jvmArgs!!.addAll(javacInternalOpens)
 }
 
 sourceSets.main {
     resources.exclude("assets/**/*.obj")
 }
 
-val javacInternalExports = listOf("api", "code", "comp", "main", "model", "parser", "tree", "util")
-    .map { "--add-exports=jdk.compiler/com.sun.tools.javac.$it=ALL-UNNAMED" }
-val javacInternalOpens = listOf("main")
-    .map { "--add-opens=jdk.compiler/com.sun.tools.javac.$it=ALL-UNNAMED" }
-
 tasks.named<JavaCompile>("compileJava") {
     options.compilerArgs.addAll(listOf(
         "-Xplugin:tenon-asm",
         "-Xplugin:tenon-inject packages=com.hbm.interfaces.injected",
         "-Xplugin:tenon-traits templates=" +
-                layout.projectDirectory.dir("src/main/templates/java/com/hbm/tileentity").asFile.absolutePath,
+                layout.projectDirectory.dir("src/main/templates/java/com/hbm/blockentity").asFile.absolutePath,
         "-Xplugin:hbm-compiler syncTo=com/hbm/inventory/container-sync.idx"
     ))
     options.compilerArgs.addAll(javacInternalExports)
-    options.isFork = true
-    options.forkOptions.jvmArgs!!.addAll(javacInternalExports)
-    options.forkOptions.jvmArgs!!.addAll(javacInternalOpens)
-}
-
-val nativeResources = configurations.create("nativeResources") {
-    isCanBeConsumed = false
-    isCanBeResolved = true
-}
-val nativePlatforms = providers.gradleProperty("hbm.native.platforms").getOrElse("host")
-require(nativePlatforms in setOf("host", "all")) { "hbm.native.platforms must be host or all" }
-dependencies.add(
-    nativeResources.name, dependencies.project(
-        mapOf(
-            "path" to ":native",
-            "configuration" to if (nativePlatforms == "all") "ciResources" else "hostResources",
-        )
-    )
-)
-
-tasks.named<ProcessResources>("processResources") {
-    from(nativeResources)
 }
 
 tasks.named<Jar>("jar") {
     isPreserveFileTimestamps = false
     isReproducibleFileOrder = true
-    manifest.attributes("Implementation-Version" to "$version+${rootProject.extra["buildRevision"]}")
+    manifest.attributes("Implementation-Version" to implementationVersion)
     includeEmptyDirs = false
     exclude("assets/**/*.obj")
 }
@@ -144,7 +117,24 @@ repositories {
     }
 }
 
+val crankshaftVersion = "1.5.5+mc26.2"
+
+val crankshaftJar = configurations.create("crankshaftJar") {
+    isCanBeConsumed = false
+    isTransitive = false
+}
+val crankshaftIris = tasks.register<Sync>("crankshaftIris") {
+    from(crankshaftJar.elements.map { jars -> jars.map { zipTree(it.asFile) } }) {
+        include("META-INF/jarjar/dev.engine_room.crankshaft-iris-*.jar")
+        eachFile { path = "crankshaft-iris.jar" }
+    }
+    includeEmptyDirs = false
+    into(layout.buildDirectory.dir("crankshaft-iris"))
+    doLast { check(destinationDir.resolve("crankshaft-iris.jar").isFile) { "no META-INF/jarjar/dev.engine_room.crankshaft-iris-*.jar in crankshaft-neoforge" } }
+}
+
 dependencies {
+    compileOnly("org.appliedenergistics:appliedenergistics2:26.2.1-alpha") { isTransitive = false }
     compileOnly("cc.tweaked:cc-tweaked-26.2-forge-api:1.120.2")
     compileOnly("maven.modrinth:sophisticated-core:HJLJBWYT")
     compileOnly("maven.modrinth:sophisticated-storage:9jOzQdN5")
@@ -157,10 +147,8 @@ dependencies {
     compileOnly("maven.modrinth:iris:k55HdONq")
     compileOnly("net.caffeinemc:sodium-neoforge-mod:0.9.2+mc26.2")
     compileOnly("io.github.douira:glsl-transformer:3.0.0-pre3")
-
     compileOnly("org.antlr:antlr4-runtime:4.13.1")
     compileOnly("io.github.llamalad7:mixinextras-common:0.5.5")
-
     compileOnly("org.jspecify:jspecify:1.0.0")
     compileOnly("maven.modrinth:scalablelux:0.3.0-alpha.0.16+26.2")
     compileOnly("maven.modrinth:lithium:mc26.2-0.25.3-neoforge")
@@ -171,7 +159,9 @@ dependencies {
     annotationProcessor("mov.movblock.tenon:tenon-traits:${property("tenon_version")}")
     annotationProcessor("mov.movblock.tenon:tenon-inject:${property("tenon_version")}")
 
-    implementation("dev.engine_room:crankshaft-neoforge:1.5.3+mc26.2")
+    implementation("dev.engine_room:crankshaft-neoforge:${crankshaftVersion}")
+    crankshaftJar("dev.engine_room:crankshaft-neoforge:${crankshaftVersion}")
+    compileOnly(files(layout.buildDirectory.file("crankshaft-iris/crankshaft-iris.jar")).builtBy(crankshaftIris))
 
     compileOnly("mezz.jei:jei-26.2-common-api:30.35.0.224")
 

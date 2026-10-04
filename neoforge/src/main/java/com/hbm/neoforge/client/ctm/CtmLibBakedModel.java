@@ -105,7 +105,6 @@ final class CtmLibBakedModel extends StandardCTMBlockStateModel {
     protected StandardCTMKey computeCTMKey(
             BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random) {
         StandardCTMKey key = super.computeCTMKey(level, pos, state, random);
-
         return new StandardCTMKey(
                 key.down(), key.up(), key.north(), key.south(), key.east(), key.west());
     }

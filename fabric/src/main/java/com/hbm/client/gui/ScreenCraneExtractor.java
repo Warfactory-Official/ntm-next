@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.network.BlockEntityCraneExtractor;
 import com.hbm.inventory.container.MenuCraneExtractor;
 import com.hbm.lib.Library;
 import com.hbm.module.ModulePatternMatcher;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.network.BlockEntityCraneExtractor;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -135,8 +135,7 @@ public class ScreenCraneExtractor extends ScreenInfoContainer<MenuCraneExtractor
     private void send(String key) {
         CompoundTag data = new CompoundTag();
         data.putBoolean(key, true);
-        Services.NETWORK.sendToServer(
-                new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
         playClick();
     }
 }

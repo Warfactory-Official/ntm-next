@@ -42,7 +42,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 
-public final class LootVisual extends HbmDynamicBlockEntityVisual<BlockLoot.TileEntityLoot>
+public final class LootVisual extends HbmDynamicBlockEntityVisual<BlockLoot.BlockEntityLoot>
         implements ShaderLightVisual {
     private static final Identifier MINI_NUKE_TEXTURE =
             Library.id("textures/models/projectiles/mini_nuke.png");
@@ -53,11 +53,14 @@ public final class LootVisual extends HbmDynamicBlockEntityVisual<BlockLoot.Tile
     private final double[] lightBoundsAccumulator = new double[6];
     private final AABB anchorBounds;
     private List<EntryKey> keys = List.of();
-    private BlockLoot.TileEntityLoot.Entry[] trackedEntries = new BlockLoot.TileEntityLoot.Entry[0];
+    private BlockLoot.BlockEntityLoot.Entry[] trackedEntries =
+            new BlockLoot.BlockEntityLoot.Entry[0];
     private @Nullable AABB lastLightBounds;
 
     public LootVisual(
-            VisualizationContext context, BlockLoot.TileEntityLoot blockEntity, float partialTick) {
+            VisualizationContext context,
+            BlockLoot.BlockEntityLoot blockEntity,
+            float partialTick) {
         super(context, blockEntity, partialTick);
         anchorBounds = new AABB(pos);
         writeFrame(partialTick);
@@ -109,7 +112,7 @@ public final class LootVisual extends HbmDynamicBlockEntityVisual<BlockLoot.Tile
 
     public static void initModels() {}
 
-    public static boolean vanillaNeeded(BlockLoot.TileEntityLoot be) {
+    public static boolean vanillaNeeded(BlockLoot.BlockEntityLoot be) {
         for (var entry : be.items) {
             ItemStack stack = entry.stack();
             if (specs(stack) == null
@@ -257,12 +260,12 @@ public final class LootVisual extends HbmDynamicBlockEntityVisual<BlockLoot.Tile
 
     @Override
     protected void trackExtent() {
-        List<BlockLoot.TileEntityLoot.Entry> source = blockEntity.items;
+        List<BlockLoot.BlockEntityLoot.Entry> source = blockEntity.items;
         boolean same = source.size() == trackedEntries.length;
         for (int i = 0; same && i < trackedEntries.length; i++)
             same = source.get(i) == trackedEntries[i];
         if (same) return;
-        trackedEntries = source.toArray(new BlockLoot.TileEntityLoot.Entry[0]);
+        trackedEntries = source.toArray(new BlockLoot.BlockEntityLoot.Entry[0]);
         refreshVisibleBounds();
     }
 
@@ -292,12 +295,12 @@ public final class LootVisual extends HbmDynamicBlockEntityVisual<BlockLoot.Tile
     }
 
     private boolean syncEntries() {
-        List<BlockLoot.TileEntityLoot.Entry> source = blockEntity.items;
+        List<BlockLoot.BlockEntityLoot.Entry> source = blockEntity.items;
         if (source.size() == keys.size()) {
             boolean same = true;
             for (int i = 0; i < source.size(); i++) {
                 EntryKey key = keys.get(i);
-                BlockLoot.TileEntityLoot.Entry entry = source.get(i);
+                BlockLoot.BlockEntityLoot.Entry entry = source.get(i);
                 if (key.x != entry.x()
                         || key.y != entry.y()
                         || key.z != entry.z()

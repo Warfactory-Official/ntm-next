@@ -3,7 +3,7 @@
 
 package com.hbm.compat.computercraft.turret;
 
-import com.hbm.tileentity.turret.BlockEntityTurretArty;
+import com.hbm.blockentity.turret.BlockEntityTurretArty;
 import dan200.computercraft.api.lua.LuaFunction;
 import net.minecraft.world.phys.Vec3;
 

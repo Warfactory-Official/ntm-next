@@ -40,7 +40,6 @@ abstract class SpscArrayQueuePad1<E> extends SpscArrayQueueColdFields<E> {
 abstract class SpscArrayQueueProducerFields<E> extends SpscArrayQueuePad1<E> {
     static final long P_INDEX_OFFSET =
             fieldOffset(SpscArrayQueueProducerFields.class, "producerIndex");
-
     protected long producerLimit;
     private volatile long producerIndex;
 

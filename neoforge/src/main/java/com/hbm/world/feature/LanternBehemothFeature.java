@@ -10,6 +10,7 @@ import com.hbm.util.LootGenerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -26,7 +27,7 @@ public final class LanternBehemothFeature extends Feature<NoneFeatureConfigurati
         var level = context.level();
         BlockPos pos = context.origin();
         if (!LockedSafeFeature.canPlaceTorchOnTop(level.getBlockState(pos.below()))
-                || !level.getBlockState(pos).canBeReplaced()) return false;
+                || !isReplaceable(level.getBlockState(pos))) return false;
 
         BlockLanternBehemoth block = ModBlocks.LANTERN_BEHEMOTH.get();
         BlockState state =
@@ -45,5 +46,9 @@ public final class LanternBehemothFeature extends Feature<NoneFeatureConfigurati
                             LootGenerator.LOOT_BOOKLET, context.random(), level.getSeed()));
         }
         return true;
+    }
+
+    public static boolean isReplaceable(BlockState state) {
+        return state.canBeReplaced() && !(state.getBlock() instanceof DoublePlantBlock);
     }
 }

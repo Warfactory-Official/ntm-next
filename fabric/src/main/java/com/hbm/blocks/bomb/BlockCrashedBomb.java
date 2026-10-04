@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.bomb;
 
+import com.hbm.blockentity.bomb.BlockEntityCrashedBomb;
 import com.hbm.blocks.ITickingBlock;
-import com.hbm.config.BombConfig;
 import com.hbm.data.ExplosionData;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.logic.EntityBalefire;
@@ -20,11 +20,10 @@ import com.hbm.interfaces.IToolable;
 import com.hbm.inventory.material.Mats;
 import com.hbm.items.ModItems;
 import com.hbm.main.Polaroid;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.MukePayload;
 import com.hbm.particle.helper.ExplosionCreator;
-import com.hbm.platform.Services;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.bomb.TileEntityCrashedBomb;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -72,7 +71,7 @@ public class BlockCrashedBomb extends Block implements ITickingBlock, IToolable,
                 SoundSource.BLOCKS,
                 15.0F,
                 1.0F);
-        Services.NETWORK.sendToAllAround(
+        PacketWire.sendToAllAround(
                 new MukePayload(x, y, z, false, balefire), new TargetPoint(server, x, y, z, 250));
     }
 
@@ -83,7 +82,7 @@ public class BlockCrashedBomb extends Block implements ITickingBlock, IToolable,
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileEntityCrashedBomb(pos, state);
+        return new BlockEntityCrashedBomb(pos, state);
     }
 
     @Override
@@ -128,7 +127,6 @@ public class BlockCrashedBomb extends Block implements ITickingBlock, IToolable,
         switch (type) {
             case BALEFIRE -> {
                 EntityBalefire bf = new EntityBalefire(ModEntities.BALEFIRE.get(), server);
-
                 bf.setPos(pos.getX(), pos.getY(), pos.getZ());
                 bf.destructionRange = (int) (ExplosionData.FATMAN_RADIUS.get() * 1.25);
                 server.addFreshEntity(bf);

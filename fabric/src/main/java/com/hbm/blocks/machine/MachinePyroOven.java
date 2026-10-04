@@ -3,12 +3,12 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.oil.BlockEntityMachinePyroOven;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.oil.BlockEntityMachinePyroOven;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -50,7 +50,6 @@ public class MachinePyroOven extends BlockMultiblockCore
         for (int i = -2; i <= 2; i++) {
             visitor.cell(core.offset(dx * i + rx * 2, 0, dz * i + rz * 2), MASK_EAST);
         }
-
         visitor.cell(core.offset(-rx, 2, -rz), MASK_UP, ROLE_FLUID_OUT);
     }
 

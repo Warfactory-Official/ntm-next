@@ -45,7 +45,6 @@ public class MultiblockAssemblyProcessor implements StructureProcessor {
         for (StructureTemplate.StructureBlockInfo info : processedBlockInfoList) {
             BlockState placedState =
                     info.state().mirror(settings.getMirror()).rotate(settings.getRotation());
-
             if (placedState.getBlock() instanceof BlockMultiblockCore folded) {
                 assembleFolded(level, info.pos(), placedState, folded);
                 cores.add(info.pos());

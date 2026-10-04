@@ -3,6 +3,7 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.oil.BlockEntityMachineRefinery;
 import com.hbm.inventory.container.MenuMachineRefinery;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluidProperty;
@@ -10,7 +11,6 @@ import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.RefineryRecipe;
 import com.hbm.inventory.recipes.RefineryRecipes;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineRefinery;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;

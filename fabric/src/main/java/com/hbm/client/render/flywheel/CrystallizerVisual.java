@@ -3,11 +3,11 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityMachineCrystallizer;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.gui.FluidGauge;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityMachineCrystallizer;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.Material;
@@ -119,7 +119,6 @@ public final class CrystallizerVisual
         if (typeChanged) syncFluid(type);
         if (fluid != null && (typeChanged || movingChanged)) {
             fluid.setVisible(moving);
-
             if (moving) poseFluid();
         }
         lastMoving = moving;

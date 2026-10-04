@@ -6,7 +6,6 @@ package com.hbm.entity.missile;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockSellafieldSlaked;
-import com.hbm.config.BombConfig;
 import com.hbm.data.ExplosionData;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.effect.EntityBlackHole;
@@ -18,7 +17,6 @@ import com.hbm.explosion.ExplosionNukeSmall;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
 import com.hbm.items.ModItems;
-import com.hbm.items.special.Autogen;
 import com.hbm.items.weapon.sedna.factory.GunFactory;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +43,6 @@ public abstract class EntityMissileTier0 extends EntityMissileBaseNT {
 
     @Override
     public List<ItemStack> getDebris() {
-
         List<ItemStack> list = new ArrayList<>();
         list.add(autogen(MaterialShapes.WIRE, Mats.MAT_ALUMINIUM, 4));
         list.add(new ItemStack(ModItems.plate(Mats.MAT_TITANIUM), 4));
@@ -79,7 +76,6 @@ public abstract class EntityMissileTier0 extends EntityMissileBaseNT {
                         BlockPos pos = new BlockPos(x + iX, y + iY, z + iZ);
                         BlockState state = level().getBlockState(pos);
                         boolean slaked = state.getBlock() == ModBlocks.SELLAFIELD_SLAKED.get();
-
                         int shade =
                                 state.hasProperty(BlockSellafieldSlaked.SHADE)
                                         ? state.getValue(BlockSellafieldSlaked.SHADE)
@@ -136,7 +132,6 @@ public abstract class EntityMissileTier0 extends EntityMissileBaseNT {
 
         @Override
         public ItemStack getDebrisRareDrop() {
-
             return ModItems.AMMO_STANDARD.stack(GunFactory.EnumAmmo.NUKE_HIGH);
         }
 

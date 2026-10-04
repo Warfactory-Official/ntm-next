@@ -87,7 +87,6 @@ public class Lego {
             (stack, ctx) -> {
                 clickReceiver(stack, ctx, 0);
             };
-
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_STANDARD_CLICK_SECONDARY =
             (stack, ctx) -> {
                 LivingEntity entity = ctx.entity();
@@ -121,17 +120,14 @@ public class Lego {
                                         1F);
                 }
             };
-
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_STANDARD_SMOKE =
             (stack, ctx) -> {
                 handleStandardSmoke(ctx.entity(), stack, 2000, 0.025D, 1.15D, ctx.configIndex());
             };
-
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_TOGGLE_AIM =
             (stack, ctx) -> {
                 ItemGunBaseNT.setIsAiming(stack, !ItemGunBaseNT.getIsAiming(stack));
             };
-
     public static BiFunction<ItemStack, LambdaContext, Boolean> LAMBDA_STANDARD_CAN_FIRE =
             (stack, ctx) -> {
                 return ctx.config()
@@ -148,7 +144,6 @@ public class Lego {
                                 .getAmount(stack, ctx.inventory())
                         > 0;
             };
-
     public static BiFunction<ItemStack, LambdaContext, Boolean> LAMBDA_LOCKON_CAN_FIRE =
             (stack, ctx) -> {
                 return ctx.config()
@@ -158,12 +153,10 @@ public class Lego {
                                 > 0
                         && ItemGunBaseNT.getIsLockedOn(stack);
             };
-
     public static BiFunction<ItemStack, LambdaContext, Boolean> LAMBDA_DEBUG_CAN_FIRE =
             (stack, ctx) -> {
                 return true;
             };
-
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_STANDARD_FIRE =
             (stack, ctx) -> {
                 doStandardFire(stack, ctx, GunAnimation.CYCLE, 0, true);
@@ -172,12 +165,10 @@ public class Lego {
             (stack, ctx) -> {
                 doStandardFire(stack, ctx, GunAnimation.CYCLE, 1, true);
             };
-
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_NOWEAR_FIRE =
             (stack, ctx) -> {
                 doStandardFire(stack, ctx, GunAnimation.CYCLE, 0, false);
             };
-
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_LOCKON_FIRE =
             (stack, ctx) -> {
                 doStandardFire(stack, ctx, GunAnimation.CYCLE, 0, true);
@@ -432,7 +423,6 @@ public class Lego {
                                 sideOffset,
                                 heightOffset,
                                 forwardOffset);
-
                 if (ItemGunBaseNT.getIsLockedOn(stack)
                         && entity.level() instanceof ServerLevel server)
                     mk4.lockonTarget = server.getEntity(ItemGunBaseNT.getLockonTarget(stack));
@@ -504,13 +494,9 @@ public class Lego {
             boolean calcWear,
             int index,
             boolean aim) {
-
         float spreadInnate = primary.getInnateSpread(stack);
-
         float spreadAmmo = config.spread * primary.getAmmoSpread(stack);
-
         float spreadHipfire = aim ? 0F : primary.getHipfireSpread(stack);
-
         float spreadWear =
                 !calcWear
                         ? 0F

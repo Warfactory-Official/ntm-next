@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(value = ServerLivingEntityEvents.class, remap = false)
 abstract class ServerDamageEventsMixin {
-
     @WrapOperation(
             method = "<clinit>",
             at =

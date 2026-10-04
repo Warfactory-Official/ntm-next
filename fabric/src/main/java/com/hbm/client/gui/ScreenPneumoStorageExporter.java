@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageExporter;
 import com.hbm.inventory.container.MenuPneumoStorageExporter;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageExporter;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -202,8 +202,7 @@ public class ScreenPneumoStorageExporter extends ScreenInfoContainer<MenuPneumoS
         if (!checkClick(mouseX, mouseY, left, top, sizeX, sizeY)) return;
         CompoundTag data = new CompoundTag();
         data.putBoolean(key, true);
-        Services.NETWORK.sendToServer(
-                new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
         playClick();
     }
 }

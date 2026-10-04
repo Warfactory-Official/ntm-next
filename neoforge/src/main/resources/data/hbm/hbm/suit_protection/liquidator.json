@@ -1,0 +1,12 @@
+{
+  "armor": {
+    "chest": "hbm:liquidator_plate",
+    "feet": "hbm:liquidator_boots",
+    "head": "hbm:liquidator_helmet",
+    "legs": "hbm:liquidator_legs"
+  },
+  "protections": [
+    "hazmat",
+    "sealed"
+  ]
+}

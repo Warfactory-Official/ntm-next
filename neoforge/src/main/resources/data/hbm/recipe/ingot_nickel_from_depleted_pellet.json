@@ -10,7 +10,11 @@
   ],
   "type": "hbm:tag_result",
   "ingredients": [
-    "hbm:pellet_rtg_depleted_nickel"
+    {
+      "neoforge:ingredient_type": "hbm:recipe_input",
+      "base": "hbm:pellet_rtg_depleted_nickel",
+      "remainder": true
+    }
   ],
   "result": {
     "count": 2,

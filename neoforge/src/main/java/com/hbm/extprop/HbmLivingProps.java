@@ -4,13 +4,12 @@
 package com.hbm.extprop;
 
 import com.hbm.advancement.HbmCriteria;
-import com.hbm.config.RadiationConfig;
 import com.hbm.data.RadiationData;
 import com.hbm.entity.mob.EntityDuck;
 import com.hbm.lib.Library;
 import com.hbm.lib.ModDamageTypes;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.PlayerInformPayload;
-import com.hbm.platform.Services;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -24,6 +23,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -31,7 +31,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.jspecify.annotations.Nullable;
 
 public final class HbmLivingProps {
-
     public static final double RAD_CAP = 2500D;
     public static final int maxAsbestos = 60 * SharedConstants.TICKS_PER_MINUTE;
     public static final int maxBlacklung = 120 * SharedConstants.TICKS_PER_MINUTE;
@@ -80,9 +79,7 @@ public final class HbmLivingProps {
                                                     .optionalFieldOf("contamination", List.of())
                                                     .forGetter(HbmLivingProps::getCont))
                                     .apply(i, HbmLivingProps::create));
-
     private static final Identifier DIGAMMA_MODIFIER_ID = Library.id("digamma_health");
-
     private @Nullable List<ContaminationEffect> contamination;
     public double radiation;
     public double digamma;
@@ -95,7 +92,6 @@ public final class HbmLivingProps {
     public int phosphorus;
     public int balefire;
     public int blackFire;
-
     public boolean defused;
     public double radEnv;
     public double radBuf;
@@ -135,11 +131,11 @@ public final class HbmLivingProps {
     }
 
     public static HbmLivingProps getData(LivingEntity entity) {
-        return Services.ENTITY_DATA.get(entity, ModEntityData.LIVING_PROPS);
+        return ((Entity) entity).getData(ModEntityData.LIVING_PROPS.get());
     }
 
     public static @Nullable HbmLivingProps peek(LivingEntity entity) {
-        return Services.ENTITY_DATA.getOrNull(entity, ModEntityData.LIVING_PROPS);
+        return ((Entity) entity).getExistingDataOrNull(ModEntityData.LIVING_PROPS.get());
     }
 
     public boolean isDefault() {
@@ -243,7 +239,6 @@ public final class HbmLivingProps {
     }
 
     public static void setDigamma(LivingEntity entity, double digamma) {
-
         if (entity instanceof EntityDuck) digamma = 0D;
         digamma = Mth.clamp(digamma, 0D, 1000D);
         getData(entity).digamma = digamma;
@@ -271,7 +266,6 @@ public final class HbmLivingProps {
 
         if (entity instanceof ServerPlayer player) {
             double di = getData(entity).digamma;
-
             if (di > 0D) HbmCriteria.digamma(player, di);
         }
     }
@@ -305,7 +299,7 @@ public final class HbmLivingProps {
 
     private static void informGasHazard(LivingEntity entity, String key) {
         if (entity instanceof ServerPlayer player) {
-            Services.NETWORK.sendTo(
+            PacketWire.sendTo(
                     new PlayerInformPayload(
                             Component.translatable(key).withStyle(ChatFormatting.RED),
                             PlayerInformPayload.ID_GAS_HAZARD,

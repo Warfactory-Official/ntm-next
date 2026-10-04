@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityReactorResearch;
 import com.hbm.inventory.container.MenuReactorResearch;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntityReactorResearch;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -62,7 +62,6 @@ public class ScreenReactorResearch extends ScreenInfoContainer<MenuReactorResear
         field.setBordered(false);
         field.setMaxLength(3);
         field.setValue(String.valueOf((int) (reactor().controlLevel * 100)));
-
         addWidget(field);
     }
 
@@ -238,7 +237,7 @@ public class ScreenReactorResearch extends ScreenInfoContainer<MenuReactorResear
             CompoundTag control = new CompoundTag();
             control.putDouble("level", level);
             leverTimer = LEVER_HOLD;
-            Services.NETWORK.sendToServer(new NbtControlPayload(reactor().getBlockPos(), control));
+            PacketWire.sendToServer(new NbtControlPayload(reactor().getBlockPos(), control));
             Minecraft.getInstance()
                     .getSoundManager()
                     .play(SimpleSoundInstance.forUI(ModSounds.RBMK_AZ5_COVER.get(), 0.5F));

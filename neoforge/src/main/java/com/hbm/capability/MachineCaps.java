@@ -15,7 +15,6 @@ public final class MachineCaps {
 
     private static final BiPredicate<BlockEntity, Direction> ALL = (be, side) -> true;
     private static final BiPredicate<BlockEntity, FluidFace> ALL_FLUID = (be, face) -> true;
-
     public static final MachineCaps NONE = new MachineCaps(null);
     public static final int POWER_IN = 1;
     public static final int POWER_OUT = 1 << 1;

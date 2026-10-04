@@ -3,9 +3,9 @@
 
 package com.hbm.compat.computercraft.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineTurbineGas;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.tileentity.machine.BlockEntityMachineTurbineGas;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class GasTurbinePeripheral extends SnapshotPeripheral<BlockEntityMachineTurbineGas> {

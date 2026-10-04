@@ -3,6 +3,7 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionPlasmaForge;
 import com.hbm.inventory.container.MenuMachinePlasmaForge;
 import com.hbm.inventory.recipes.PlasmaForgeRecipe;
 import com.hbm.inventory.recipes.PlasmaForgeRecipes;
@@ -10,9 +11,7 @@ import com.hbm.inventory.recipes.ingredient.CountIngredient;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionPlasmaForge;
 import com.hbm.util.BobMathUtil;
-import com.hbm.util.I18nUtil;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -38,13 +37,7 @@ public class ScreenMachinePlasmaForge extends ScreenInfoContainer<MenuMachinePla
     public ScreenMachinePlasmaForge(
             MenuMachinePlasmaForge menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 176, 244);
-        this.inventoryLabelY = this.imageHeight - 96 + 2;
-    }
-
-    private static List<Component> toComponents(List<String> strings) {
-        List<Component> out = new ArrayList<>(strings.size());
-        for (String s : strings) out.add(Component.literal(s));
-        return out;
+        inventoryLabelY = imageHeight - 96 + 2;
     }
 
     @Override
@@ -193,13 +186,13 @@ public class ScreenMachinePlasmaForge extends ScreenInfoContainer<MenuMachinePla
         }
         GUIElements.drawCyclingStackText(
                 graphics,
-                this.font,
-                I18nUtil.resolveKey("desc.gui.plasmaForge.boosterIsotope"),
+                font,
+                Component.translatable("desc.gui.plasmaForge.boosterIsotope"),
                 isotopes,
                 mouseX,
                 mouseY,
-                this.width,
-                this.height);
+                width,
+                height);
     }
 
     @Override
@@ -228,16 +221,10 @@ public class ScreenMachinePlasmaForge extends ScreenInfoContainer<MenuMachinePla
                 menu.blockEntity().module.getRecipe() instanceof PlasmaForgeRecipe f ? f : null;
         if (recipe != null) {
             GUIElements.drawHoveringTextRecipe(
-                    graphics,
-                    this.font,
-                    toComponents(recipe.print()),
-                    mouseX,
-                    mouseY,
-                    this.width,
-                    this.height);
+                    graphics, font, recipe.print(), mouseX, mouseY, width, height);
         } else {
             graphics.setTooltipForNextFrame(
-                    this.font,
+                    font,
                     Component.translatable("gui.recipe.setRecipe").withStyle(ChatFormatting.YELLOW),
                     mouseX,
                     mouseY);

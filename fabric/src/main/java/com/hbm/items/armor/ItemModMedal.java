@@ -41,11 +41,15 @@ public class ItemModMedal extends ItemArmorMod {
     }
 
     @Override
+    public boolean ticksServer() {
+        return true;
+    }
+
+    @Override
     public void modUpdate(LivingEntity entity, ItemStack armor) {
         if (entity.level().isClientSide()) return;
         HbmLivingProps.setRadiation(
                 entity, Math.max(HbmLivingProps.getRadiation(entity) - 0.5D, 0D));
-
         if (entity instanceof Player player)
             ContaminationUtil.neutronActivateInventory(player, 0F, ACTIVATION_DECAY);
     }

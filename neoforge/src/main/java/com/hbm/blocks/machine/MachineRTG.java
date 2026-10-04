@@ -3,14 +3,14 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineRTG;
+import com.hbm.blocks.CapabilityDependentShape;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.inventory.IGUIProvider;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachineRTG;
-import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.AutoRotate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,7 +36,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 @AutoRotate
-public class MachineRTG extends Block implements ITickingBlock, ICapabilityBlock {
+public class MachineRTG extends Block
+        implements CapabilityDependentShape.Endpoint, ITickingBlock, ICapabilityBlock {
 
     public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
     public static final BooleanProperty EAST = BlockStateProperties.EAST;
@@ -111,7 +112,6 @@ public class MachineRTG extends Block implements ITickingBlock, ICapabilityBlock
             boolean movedByPiston) {
         super.neighborChanged(state, level, pos, block, orientation, movedByPiston);
         if (level instanceof ServerLevel sl) {
-            LevelNodeGraph.watchForeignNeighbours(sl, pos);
             Library.redrawArms(state, sl, pos);
         }
     }

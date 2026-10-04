@@ -1,0 +1,9 @@
+{
+  "values": [
+    "hbm:ore_asbestos",
+    "hbm:ore_gneiss_asbestos",
+    "hbm:ore_basalt_asbestos",
+    "hbm:ore_asbestos_deepslate",
+    "hbm:stone_resource_asbestos"
+  ]
+}

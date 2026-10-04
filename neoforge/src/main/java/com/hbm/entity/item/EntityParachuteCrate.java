@@ -3,9 +3,9 @@
 
 package com.hbm.entity.item;
 
+import com.hbm.blockentity.machine.storage.BlockEntityCrateSupply;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.interfaces.StoredItems;
-import com.hbm.tileentity.machine.storage.BlockEntityCrateSupply;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -76,7 +76,6 @@ public class EntityParachuteCrate extends Entity implements StoredItems {
             if (level().getBlockEntity(above) instanceof BlockEntityCrateSupply crate) {
                 int slot = 0;
                 for (ItemStack stack : this.items) {
-
                     if (stack.isEmpty() || slot >= crate.inventory.size()) continue;
                     crate.inventory.set(slot++, stack);
                 }

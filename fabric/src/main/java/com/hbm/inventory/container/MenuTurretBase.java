@@ -3,8 +3,8 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.turret.BlockEntityTurretBaseNT;
 import com.hbm.items.ModItems;
-import com.hbm.tileentity.turret.BlockEntityTurretBaseNT;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;

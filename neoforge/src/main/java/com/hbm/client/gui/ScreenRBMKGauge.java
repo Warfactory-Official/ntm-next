@@ -3,10 +3,10 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGauge;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKGauge;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
@@ -228,7 +228,6 @@ public final class ScreenRBMKGauge extends Screen {
         data.putByte("polling", pollingMask);
 
         for (int i = 0; i < GAUGES; i++) {
-
             try {
                 data.putInt("color" + i, Integer.parseInt(color[i].getValue(), 16));
             } catch (Exception ex) {
@@ -244,7 +243,7 @@ public final class ScreenRBMKGauge extends Screen {
             } catch (Exception ex) {
             }
         }
-        Services.NETWORK.sendToServer(new NbtControlPayload(gauge.getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(gauge.getBlockPos(), data));
     }
 
     @Override

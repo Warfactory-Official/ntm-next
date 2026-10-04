@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "C": "#c:ingots/workers_alloy",
     "T": "#c:ingots/tungsten"

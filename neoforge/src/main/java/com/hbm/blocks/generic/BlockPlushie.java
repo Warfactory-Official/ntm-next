@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityPlushie;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.BlockEntityPlushie;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -29,7 +29,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class BlockPlushie extends Block implements EntityBlock {
-
     public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
 
     public BlockPlushie(Properties props) {
@@ -100,7 +99,6 @@ public class BlockPlushie extends Block implements EntityBlock {
                             pos.getY(),
                             pos.getZ() + 0.5,
                             BlockEntityPlushie.stackOf(plushie.type));
-
             item.setDeltaMovement(0, 0, 0);
             level.addFreshEntity(item);
         }

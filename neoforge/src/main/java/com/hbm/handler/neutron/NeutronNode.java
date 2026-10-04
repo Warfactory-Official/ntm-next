@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jspecify.annotations.Nullable;
 
 public abstract class NeutronNode {
-
     private final Map<Key<?>, Object> data = new HashMap<>();
     protected NeutronType type;
     protected BlockPos pos;

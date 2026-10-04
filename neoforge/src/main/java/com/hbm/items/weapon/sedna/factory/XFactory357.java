@@ -11,7 +11,7 @@ import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -210,7 +210,7 @@ public class XFactory357 {
                 return LAMBDA_ATLAS_ANIMS.apply(stack, type);
             };
 
-    public static void init(IRegistrar r) {
+    public static void init() {
         m357_bp =
                 new BulletConfig()
                         .setItem(EnumAmmo.M357_BP)
@@ -252,7 +252,7 @@ public class XFactory357 {
                         .setWear(1.5F);
 
         ModItems.GUN_LIGHT_REVOLVER =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_light_revolver",
                         props ->
                                 new ItemGunBaseNT(
@@ -301,7 +301,7 @@ public class XFactory357 {
                         Item.Properties::new);
 
         ModItems.GUN_LIGHT_REVOLVER_ATLAS =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_light_revolver_atlas",
                         props ->
                                 new ItemGunBaseNT(
@@ -350,7 +350,7 @@ public class XFactory357 {
                         Item.Properties::new);
 
         ModItems.GUN_LIGHT_REVOLVER_DANI =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_light_revolver_dani",
                         props ->
                                 new ItemGunBaseNT(

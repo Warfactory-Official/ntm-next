@@ -40,7 +40,6 @@ public class RenderBombletZeta extends EntityRenderer<EntityBombletZeta, RenderB
     @Override
     public void extractRenderState(EntityBombletZeta entity, State state, float partialTicks) {
         super.extractRenderState(entity, state, partialTicks);
-
         state.yaw = Mth.lerp(partialTicks, entity.yRotO, entity.getYRot());
         state.pitch = Mth.lerp(partialTicks, entity.renderPitchO, entity.renderPitch);
     }
@@ -52,7 +51,6 @@ public class RenderBombletZeta extends EntityRenderer<EntityBombletZeta, RenderB
         pose.pushPose();
         pose.mulPose(Axis.YP.rotationDegrees(state.yaw - 90F));
         pose.mulPose(Axis.ZP.rotationDegrees(state.pitch));
-
         pose.scale(0.5F, 0.5F, 0.5F);
         collector.submitCustomGeometry(
                 pose, body, (p, buf) -> ResourceManager.bomblet_theta.render(p, buf, light, -1));

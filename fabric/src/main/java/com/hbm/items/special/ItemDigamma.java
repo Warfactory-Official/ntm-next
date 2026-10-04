@@ -6,9 +6,7 @@ package com.hbm.items.special;
 import com.hbm.data.ItemData;
 import com.hbm.entity.effect.EntityQuasar;
 import com.hbm.interfaces.IItemEntityUpdate;
-import com.hbm.platform.Services;
 import com.hbm.util.ContaminationUtil;
-import com.hbm.util.I18nUtil;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -62,22 +60,26 @@ public class ItemDigamma extends Item implements IItemEntityUpdate {
             Consumer<Component> adder,
             TooltipFlag flag) {
         adder.accept(
-                Component.literal(I18nUtil.resolveKey("trait.hlParticle", "1.67*10³⁴ a"))
+                Component.translatable("trait.hlParticle", "1.67*10³⁴ a")
                         .withStyle(ChatFormatting.GOLD));
         adder.accept(
-                Component.literal(I18nUtil.resolveKey("trait.hlPlayer", (digamma / 20D) + "s"))
+                Component.translatable("trait.hlPlayer", (digamma / 20D) + "s")
                         .withStyle(ChatFormatting.RED));
         adder.accept(Component.empty());
 
         double mdrxPerSecond = ((int) ((1000D / digamma) * 200D)) / 10D;
         adder.accept(
-                Component.literal("[" + I18nUtil.resolveKey("trait.digamma") + "]")
+                Component.literal("[")
+                        .append(Component.translatable("trait.digamma"))
+                        .append("]")
                         .withStyle(ChatFormatting.RED));
         adder.accept(
                 Component.literal(mdrxPerSecond + "mDRX/s").withStyle(ChatFormatting.DARK_RED));
 
         adder.accept(
-                Component.literal("[" + I18nUtil.resolveKey("trait.drop") + "]")
+                Component.literal("[")
+                        .append(Component.translatable("trait.drop"))
+                        .append("]")
                         .withStyle(ChatFormatting.RED));
     }
 }

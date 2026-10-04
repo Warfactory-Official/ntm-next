@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKRod;
+import com.hbm.blockentity.machine.rbmk.RBMKConfig;
 import com.hbm.client.render.RenderTextures;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKRod;
-import com.hbm.tileentity.machine.rbmk.RBMKConfig;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.DepthTest;

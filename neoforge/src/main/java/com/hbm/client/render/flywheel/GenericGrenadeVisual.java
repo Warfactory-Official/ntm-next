@@ -70,7 +70,6 @@ public final class GenericGrenadeVisual<T extends Entity> extends HbmDynamicEnti
                         .instancer(InstanceTypes.UV_TRANSFORMED, MODEL, 0)
                         .createInstance();
         base.setVisible(false);
-
         overlay =
                 entity instanceof EntityDisperserCanister
                         ? instancerProvider()

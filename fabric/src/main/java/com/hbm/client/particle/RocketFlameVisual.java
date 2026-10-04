@@ -29,7 +29,6 @@ public final class RocketFlameVisual
         implements EffectVisual<RocketFlameEffect>, SimpleDynamicVisual {
     private static final int SUBQUADS = 10;
     private static final int LIGHT = LightCoordsUtil.pack(15, 0);
-
     private static final Material MATERIAL =
             SimpleMaterial.builder()
                     .transparency(Transparency.ORDER_INDEPENDENT_ADDITIVE)
@@ -103,7 +102,6 @@ public final class RocketFlameVisual
             int g = clamp8(0.6F * dark + add[i]);
             int b = clamp8(add[i]);
             int argb = ARGB.color(a, r, g, b);
-
             instances[i]
                     .position(px + offX[i] * spread, py + offY[i] * spread, pz + offZ[i] * spread)
                     .size(2F * scale);

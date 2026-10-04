@@ -3,7 +3,7 @@
 
 package com.hbm.packet.compat;
 
-import com.hbm.platform.Services;
+import com.hbm.lib.internal.UnsafeHolder;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodType;
 import java.nio.ByteBuffer;
@@ -25,7 +25,7 @@ public final class ZstdAccess {
             Class<?> directive = Class.forName("com.github.luben.zstd.EndDirective", true, loader);
             Class<?> decoder =
                     Class.forName("com.github.luben.zstd.ZstdDecompressCtx", true, loader);
-            var lookup = Services.TRUSTED_LOOKUP.implLookup();
+            var lookup = UnsafeHolder.IMPL_LOOKUP;
             compress =
                     lookup.unreflect(
                                     compressor.getMethod(

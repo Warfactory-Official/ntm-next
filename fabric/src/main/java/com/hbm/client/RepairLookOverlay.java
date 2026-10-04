@@ -23,16 +23,17 @@ public final class RepairLookOverlay {
         if (!(level.getBlockEntity(core) instanceof IRepairable repairable)
                 || !repairable.isDamaged()) return;
         info.title(level.getBlockState(core).getBlock().getName().getString(), 0xFFFF00, 0x404000);
-        info.line(Component.translatable("desc.repair.with").getString(), 0xFFAA00);
+        info.line(Component.empty().append(Component.translatable("desc.repair.with")), 0xFFAA00);
         for (CountIngredient ingredient : repairable.getRepairMaterials()) {
             ItemStack display = ingredient.extractForCyclingDisplay(GameTime.millis(level), 20);
             if (display.isEmpty()) continue;
             info.line(
-                    Component.translatable(
-                                    "desc.repair.material",
-                                    display.getHoverName(),
-                                    display.getCount())
-                            .getString());
+                    Component.empty()
+                            .append(
+                                    Component.translatable(
+                                            "desc.repair.material",
+                                            display.getHoverName(),
+                                            display.getCount())));
         }
     }
 }

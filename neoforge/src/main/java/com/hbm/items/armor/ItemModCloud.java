@@ -4,6 +4,7 @@
 package com.hbm.items.armor;
 
 import com.hbm.handler.ArmorModHandler;
+import com.hbm.lib.Library;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -11,12 +12,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemModCloud extends ItemArmorMod {
+    public static final Identifier SPEED_ID = Library.id("armor_mod_cloud");
 
     private static final double SPEED = 0.125D;
     private static final int DASHES = 3;
@@ -43,12 +46,18 @@ public class ItemModCloud extends ItemArmorMod {
     }
 
     @Override
+    public boolean hasAttributes() {
+        return true;
+    }
+
+    @Override
     public void collectModifiers(
-            ItemStack armor,
+            EquipmentSlot slot,
             Identifier id,
             BiConsumer<Holder<Attribute>, AttributeModifier> adder) {
         adder.accept(
                 Attributes.MOVEMENT_SPEED,
-                new AttributeModifier(id, SPEED, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+                new AttributeModifier(
+                        SPEED_ID, SPEED, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     }
 }

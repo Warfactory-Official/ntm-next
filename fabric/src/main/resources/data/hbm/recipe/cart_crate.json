@@ -1,6 +1,10 @@
 {
-  "type": "hbm:container_upgrade",
-  "carrier": "hbm:crate_steel",
+  "type": "hbm:crafting_shaped",
+  "input_state": {
+    "C": {
+      "preserve": "result"
+    }
+  },
   "key": {
     "C": "hbm:crate_steel",
     "S": "minecraft:minecart"

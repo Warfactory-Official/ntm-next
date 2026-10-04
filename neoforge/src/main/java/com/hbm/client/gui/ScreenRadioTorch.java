@@ -4,16 +4,15 @@
 package com.hbm.client.gui;
 
 import com.hbm.api.redstoneoverradio.IRORInfo;
-import com.hbm.api.redstoneoverradio.IRORValueProvider;
+import com.hbm.blockentity.network.BlockEntityRadioTorch;
+import com.hbm.blockentity.network.BlockEntityRadioTorchController;
+import com.hbm.blockentity.network.BlockEntityRadioTorchLogic;
+import com.hbm.blockentity.network.BlockEntityRadioTorchReader;
+import com.hbm.blockentity.network.BlockEntityRadioTorchReceiver;
+import com.hbm.blockentity.network.BlockEntityRadioTorchSender;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.network.BlockEntityRadioTorch;
-import com.hbm.tileentity.network.BlockEntityRadioTorchController;
-import com.hbm.tileentity.network.BlockEntityRadioTorchLogic;
-import com.hbm.tileentity.network.BlockEntityRadioTorchReader;
-import com.hbm.tileentity.network.BlockEntityRadioTorchReceiver;
-import com.hbm.tileentity.network.BlockEntityRadioTorchSender;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -538,7 +537,7 @@ public final class ScreenRadioTorch extends Screen {
     }
 
     private void send(CompoundTag data) {
-        Services.NETWORK.sendToServer(new NbtControlPayload(radio.getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(radio.getBlockPos(), data));
     }
 
     @Override

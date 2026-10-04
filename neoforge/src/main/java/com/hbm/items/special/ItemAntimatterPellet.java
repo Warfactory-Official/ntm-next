@@ -6,7 +6,6 @@ package com.hbm.items.special;
 import com.hbm.data.ItemData;
 import com.hbm.explosion.vanillant.ExplosionVNT;
 import com.hbm.interfaces.IItemEntityUpdate;
-import com.hbm.platform.Services;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

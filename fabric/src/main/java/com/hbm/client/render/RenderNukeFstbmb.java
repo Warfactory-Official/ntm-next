@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.bomb.BlockEntityNukeBalefire;
 import com.hbm.blocks.machine.BlockMachineHorizontal;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.bomb.BlockEntityNukeBalefire;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -26,12 +26,10 @@ public final class RenderNukeFstbmb
         implements BlockEntityRenderer<BlockEntityNukeBalefire, RenderNukeFstbmb.State>,
                 ConcurrentRenderStateExtraction {
     private static final int BALEFIRE_PART = ResourceManager.fstbmb.partId("Balefire");
-
     private static final float GLINT_SPEED = 5F;
     private static final float GLINT_COLOR = 0.76F;
     private static final float[] TINT = {0.0F, 0.8F, 0.15F};
     private static final int GLINT_LAYERS = 2;
-
     private static final float TEXT_SCALE = 0.04F;
 
     public static float yawFor(Direction facing) {
@@ -85,7 +83,6 @@ public final class RenderNukeFstbmb
             PoseStack poseStack,
             SubmitNodeCollector collector,
             CameraRenderState camera) {
-
         if (!state.loaded) return;
 
         poseStack.pushPose();

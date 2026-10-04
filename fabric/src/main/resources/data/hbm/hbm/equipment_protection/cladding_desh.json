@@ -1,0 +1,12 @@
+{
+  "cladding": {
+    "resistance": 0.2,
+    "slots": [
+      "head",
+      "chest",
+      "legs",
+      "feet"
+    ]
+  },
+  "targets": "hbm:cladding_desh"
+}

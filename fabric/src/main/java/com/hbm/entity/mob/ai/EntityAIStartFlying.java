@@ -19,7 +19,6 @@ public class EntityAIStartFlying extends Goal {
 
     @Override
     public boolean canUse() {
-
         return flying.getFlyingState() == IFlyingCreature.STATE_WALKING
                 && (living.getLastHurtByMob() != null
                         || living.isOnFire()

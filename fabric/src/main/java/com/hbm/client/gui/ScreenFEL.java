@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityFEL;
 import com.hbm.inventory.container.MenuFEL;
 import com.hbm.items.machine.EnumWavelengths;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityFEL;
 import java.awt.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -130,7 +130,7 @@ public class ScreenFEL extends ScreenInfoContainer<MenuFEL> {
             if (core != null) {
                 CompoundTag data = new CompoundTag();
                 data.putBoolean("toggle", true);
-                Services.NETWORK.sendToServer(new NbtControlPayload(core, data));
+                PacketWire.sendToServer(new NbtControlPayload(core, data));
                 playClick();
                 return true;
             }

@@ -9,9 +9,9 @@ void flw_instanceVertex(in FlwInstance i) {
         flw_vertexColor = vec4(0.);
         return;
     }
-    vec3 from = centerLine ? vec3(0.0) : hbm_beamJoint(segment, i.length, i.size, i.count, i.phase, i.wave);
-    vec3 to = centerLine ? vec3(0.0, i.length, 0.0)
-                         : hbm_beamJoint(segment + 1, i.length, i.size, i.count, i.phase, i.wave);
+    vec3 from = centerLine ? vec3(0.0) : hbm_beamJoint(segment, i.beamLength, i.size, i.count, i.phase, i.wave);
+    vec3 to = centerLine ? vec3(0.0, i.beamLength, 0.0)
+                         : hbm_beamJoint(segment + 1, i.beamLength, i.size, i.count, i.phase, i.wave);
     vec3 start = (i.pose * vec4(from, 1.0)).xyz;
     vec3 end = (i.pose * vec4(to, 1.0)).xyz;
     vec3 delta = end - start;

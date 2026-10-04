@@ -5,8 +5,8 @@ package com.hbm.client.gui;
 
 import com.hbm.handler.BobmazonOffer;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.BobmazonPurchasePayload;
-import com.hbm.platform.Services;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
@@ -24,7 +24,6 @@ import org.jspecify.annotations.Nullable;
 public class GUIScreenBobmazon extends Screen {
 
     private static final Identifier TEXTURE = Library.id("textures/gui/gui_bobmazon.png");
-
     private static final int X_SIZE = 217;
     private static final int Y_SIZE = 229;
     private static final int TEXT = 0xFF404040;
@@ -264,7 +263,7 @@ public class GUIScreenBobmazon extends Screen {
                     .getSoundManager()
                     .play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             if (type == 0) {
-                Services.NETWORK.sendToServer(new BobmazonPurchasePayload(index));
+                PacketWire.sendToServer(new BobmazonPurchasePayload(index));
             } else if (type == 1) {
                 if (currentPage > 0) currentPage--;
                 updateButtons();

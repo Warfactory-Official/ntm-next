@@ -6,11 +6,11 @@ package com.hbm.platform;
 import net.neoforged.neoforge.transfer.energy.EnergyHandler;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 
-final class NeoForgeEnergyHandlerView implements IEnergyHandlerView {
+public final class NeoForgeEnergyHandlerView implements IEnergyHandlerView {
 
     private final EnergyHandler handler;
 
-    NeoForgeEnergyHandlerView(EnergyHandler handler) {
+    public NeoForgeEnergyHandlerView(EnergyHandler handler) {
         this.handler = handler;
     }
 

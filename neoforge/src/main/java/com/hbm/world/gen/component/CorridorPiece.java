@@ -11,12 +11,10 @@ import com.hbm.world.structure.HbmStructureTypes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
@@ -174,7 +172,6 @@ public class CorridorPiece extends NtmBranchingPiece {
                                     stair(concreteStairsBase, stairSide, false),
                                     stair(concreteStairsBase, stairSide, false));
                             out.box(x, 1, 5, x, 3, 5, decoTungsten, decoTungsten);
-
                             Direction computerFacing = i < 1 ? Direction.EAST : Direction.WEST;
                             BlockState tapeRecorder =
                                     hbmState("tape_recorder")
@@ -197,7 +194,6 @@ public class CorridorPiece extends NtmBranchingPiece {
                             out.block(x, 2, 1, Blocks.OAK_PRESSURE_PLATE.defaultBlockState());
                             out.block(x, 1, 3, stair(concreteStairsBase, Direction.NORTH, true));
                             out.block(x, 1, 4, stair(concreteStairsBase, Direction.SOUTH, true));
-
                             out.block(
                                     x,
                                     2,

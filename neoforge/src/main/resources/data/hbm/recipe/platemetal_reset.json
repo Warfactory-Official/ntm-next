@@ -1,7 +1,147 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
-    "hbm:platemetal"
+    {
+      "neoforge:ingredient_type": "hbm:any",
+      "ingredients": [
+        "hbm:platemetal",
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:block_state": {
+              "variant": "base"
+            }
+          },
+          "items": "hbm:platemetal"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:block_state": {
+              "variant": "black"
+            }
+          },
+          "items": "hbm:platemetal"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:block_state": {
+              "variant": "white"
+            }
+          },
+          "items": "hbm:platemetal"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:block_state": {
+              "variant": "red"
+            }
+          },
+          "items": "hbm:platemetal"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:block_state": {
+              "variant": "green"
+            }
+          },
+          "items": "hbm:platemetal"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:block_state": {
+              "variant": "light_gray"
+            }
+          },
+          "items": "hbm:platemetal"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:block_state": {
+              "variant": "blue"
+            }
+          },
+          "items": "hbm:platemetal"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:block_state": {
+              "variant": "purple"
+            }
+          },
+          "items": "hbm:platemetal"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:block_state": {
+              "variant": "cyan"
+            }
+          },
+          "items": "hbm:platemetal"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:block_state": {
+              "variant": "pink"
+            }
+          },
+          "items": "hbm:platemetal"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:block_state": {
+              "variant": "lime"
+            }
+          },
+          "items": "hbm:platemetal"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:block_state": {
+              "variant": "yellow"
+            }
+          },
+          "items": "hbm:platemetal"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:block_state": {
+              "variant": "light_blue"
+            }
+          },
+          "items": "hbm:platemetal"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:block_state": {
+              "variant": "magenta"
+            }
+          },
+          "items": "hbm:platemetal"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:block_state": {
+              "variant": "orange"
+            }
+          },
+          "items": "hbm:platemetal"
+        }
+      ]
+    }
   ],
   "result": {
     "components": {

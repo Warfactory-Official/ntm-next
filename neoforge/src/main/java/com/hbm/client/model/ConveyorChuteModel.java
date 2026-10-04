@@ -6,6 +6,7 @@ package com.hbm.client.model;
 import com.hbm.blocks.network.ConveyorBlockBase;
 import com.hbm.blocks.network.ConveyorChuteBlock;
 import com.hbm.blocks.network.ConveyorNeighbors;
+import com.mojang.math.Quadrant;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import java.util.ArrayList;
@@ -29,7 +30,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Vector3f;
 
 public class ConveyorChuteModel implements BlockStateModel {
-
     private static final float INNER_MIN = 4F;
     private static final float INNER_MAX = 12F;
     private static final float GLASS_MIN = 2F;
@@ -51,7 +51,7 @@ public class ConveyorChuteModel implements BlockStateModel {
     private final BlockStateModelPart fallback;
 
     public ConveyorChuteModel(ModelBaker baker, ResolvedModel base) {
-        this.baker = baker;
+        this.baker = RuntimeBaker.capture(baker, base);
         this.base = base;
         this.slots = base.getTopTextureSlots();
         this.particle = base.resolveParticleMaterial(slots, baker);
@@ -87,6 +87,15 @@ public class ConveyorChuteModel implements BlockStateModel {
                         ? face == Direction.WEST || face == Direction.EAST
                         : face == Direction.NORTH || face == Direction.SOUTH;
         return sideFace ? ConveyorModel.SIDE : ConveyorModel.BELT;
+    }
+
+    private static int[] beltRot(Direction facing) {
+        return switch (facing) {
+            case SOUTH -> (new int[] {3, 0, 0, 0, 0, 3});
+            case EAST -> (new int[] {2, 2, 3, 0, 0, 0});
+            case WEST -> (new int[] {1, 1, 0, 3, 0, 0});
+            default -> (new int[] {0, 3, 0, 0, 3, 0});
+        };
     }
 
     @Override
@@ -145,172 +154,724 @@ public class ConveyorChuteModel implements BlockStateModel {
         List<ObjUnbakedGeometry.BoxQuad> b = new ArrayList<>();
 
         if (lowest) {
-            ConveyorUv.Uv[][] belt =
-                    switch (facing) {
-                        case SOUTH -> ConveyorChuteUv.BELT_SOUTH;
-                        case EAST -> ConveyorChuteUv.BELT_EAST;
-                        case WEST -> ConveyorChuteUv.BELT_WEST;
-                        default -> ConveyorChuteUv.BELT_NORTH;
-                    };
-            box(b, face -> beltSlot(facing, face), belt[0], INNER_MIN, 0F, 0F, INNER_MAX, LIP, 16F);
-            box(
+            int[] beltRot = beltRot(facing);
+            final Vector3f from = new Vector3f(INNER_MIN, 0F, 0F);
+            final Vector3f to = new Vector3f(INNER_MAX, LIP, 16F);
+            ConveyorModel.faces(
                     b,
+                    this.baker,
+                    this.base,
+                    this.slots,
+                    Boxes.IDENTITY,
                     face -> beltSlot(facing, face),
-                    belt[1],
-                    0F,
-                    0F,
-                    INNER_MIN,
-                    INNER_MIN,
-                    LIP,
-                    INNER_MAX);
-            box(
+                    (Direction) null,
+                    from,
+                    to,
+                    new UvRotation[] {
+                        switch (beltRot[0]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 16.0F, 12.0F, 0.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 12.0F, 16.0F, 4.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 4.0F, 0.0F, 12.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 0.0F, 4.0F, 16.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[0] + " outside 0..3");
+                        },
+                        switch (beltRot[1]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 16.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 4.0F, 16.0F, 12.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 12.0F, 0.0F, 4.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 16.0F, 4.0F, 0.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[1] + " outside 0..3");
+                        },
+                        switch (beltRot[2]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 4.0F, 12.0F, 12.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 12.0F, 4.0F, 4.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 4.0F, 4.0F, 0.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[2] + " outside 0..3");
+                        },
+                        switch (beltRot[3]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 4.0F, 4.0F, 12.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 12.0F, 12.0F, 4.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 4.0F, 4.0F, 0.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[3] + " outside 0..3");
+                        },
+                        switch (beltRot[4]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 12.0F, 16.0F, 16.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 16.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 16.0F, 12.0F, 0.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 4.0F, 0.0F, 0.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[4] + " outside 0..3");
+                        },
+                        switch (beltRot[5]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 12.0F, 16.0F, 16.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 0.0F, 12.0F, 16.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 16.0F, 4.0F, 0.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 4.0F, 0.0F, 0.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[5] + " outside 0..3");
+                        }
+                    });
+            final Vector3f from2 = new Vector3f(0F, 0F, INNER_MIN);
+            final Vector3f to2 = new Vector3f(INNER_MIN, LIP, INNER_MAX);
+            ConveyorModel.faces(
                     b,
+                    this.baker,
+                    this.base,
+                    this.slots,
+                    Boxes.IDENTITY,
                     face -> beltSlot(facing, face),
-                    belt[2],
-                    INNER_MAX,
-                    0F,
-                    INNER_MIN,
-                    16F,
-                    LIP,
-                    INNER_MAX);
+                    (Direction) null,
+                    from2,
+                    to2,
+                    new UvRotation[] {
+                        switch (beltRot[0]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 12.0F, 4.0F, 4.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 4.0F, 12.0F, 0.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 12.0F, 4.0F, 16.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 4.0F, 12.0F, 12.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[0] + " outside 0..3");
+                        },
+                        switch (beltRot[1]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 4.0F, 4.0F, 12.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 4.0F, 4.0F, 0.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 12.0F, 12.0F, 4.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[1] + " outside 0..3");
+                        },
+                        switch (beltRot[2]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 12.0F, 4.0F, 16.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 0.0F, 12.0F, 4.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 16.0F, 4.0F, 12.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 4.0F, 12.0F, 0.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[2] + " outside 0..3");
+                        },
+                        switch (beltRot[3]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 12.0F, 4.0F, 16.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 12.0F, 4.0F, 16.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 4.0F, 12.0F, 0.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 4.0F, 12.0F, 0.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[3] + " outside 0..3");
+                        },
+                        switch (beltRot[4]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 4.0F, 4.0F, 12.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 12.0F, 12.0F, 4.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 4.0F, 4.0F, 0.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[4] + " outside 0..3");
+                        },
+                        switch (beltRot[5]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 4.0F, 12.0F, 12.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 12.0F, 4.0F, 4.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 4.0F, 4.0F, 0.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[5] + " outside 0..3");
+                        }
+                    });
+            final Vector3f from3 = new Vector3f(INNER_MAX, 0F, INNER_MIN);
+            final Vector3f to3 = new Vector3f(16F, LIP, INNER_MAX);
+            ConveyorModel.faces(
+                    b,
+                    this.baker,
+                    this.base,
+                    this.slots,
+                    Boxes.IDENTITY,
+                    face -> beltSlot(facing, face),
+                    (Direction) null,
+                    from3,
+                    to3,
+                    new UvRotation[] {
+                        switch (beltRot[0]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 12.0F, 16.0F, 4.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 16.0F, 12.0F, 12.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 0.0F, 4.0F, 4.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 4.0F, 0.0F, 12.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[0] + " outside 0..3");
+                        },
+                        switch (beltRot[1]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 4.0F, 16.0F, 12.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 4.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 16.0F, 4.0F, 12.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 12.0F, 0.0F, 4.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[1] + " outside 0..3");
+                        },
+                        switch (beltRot[2]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 12.0F, 16.0F, 16.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 12.0F, 12.0F, 16.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 4.0F, 4.0F, 0.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 4.0F, 0.0F, 0.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[2] + " outside 0..3");
+                        },
+                        switch (beltRot[3]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 12.0F, 16.0F, 16.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 4.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 16.0F, 12.0F, 12.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 4.0F, 0.0F, 0.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[3] + " outside 0..3");
+                        },
+                        switch (beltRot[4]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 4.0F, 4.0F, 12.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 12.0F, 12.0F, 4.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 4.0F, 4.0F, 0.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[4] + " outside 0..3");
+                        },
+                        switch (beltRot[5]) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 4.0F, 12.0F, 12.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 12.0F, 4.0F, 4.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(12.0F, 4.0F, 4.0F, 0.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + beltRot[5] + " outside 0..3");
+                        }
+                    });
         } else {
-
-            stub(
-                    b,
-                    facing,
-                    belts,
-                    Direction.WEST,
-                    ConveyorChuteUv.STUB_WEST,
-                    0F,
-                    INNER_MIN,
-                    GLASS_MIN,
-                    INNER_MAX);
-            stub(
-                    b,
-                    facing,
-                    belts,
-                    Direction.EAST,
-                    ConveyorChuteUv.STUB_EAST,
-                    GLASS_MAX,
-                    INNER_MIN,
-                    16F,
-                    INNER_MAX);
-            stub(
-                    b,
-                    facing,
-                    belts,
-                    Direction.NORTH,
-                    ConveyorChuteUv.STUB_NORTH,
-                    INNER_MIN,
-                    0F,
-                    INNER_MAX,
-                    GLASS_MIN);
-            stub(
-                    b,
-                    facing,
-                    belts,
-                    Direction.SOUTH,
-                    ConveyorChuteUv.STUB_SOUTH,
-                    INNER_MIN,
-                    GLASS_MAX,
-                    INNER_MAX,
-                    16F);
+            if (beltAt(belts, Direction.WEST)) {
+                final Vector3f from4 = new Vector3f(0F, 0F, INNER_MIN);
+                final Vector3f to4 = new Vector3f(GLASS_MIN, LIP, INNER_MAX);
+                ConveyorModel.faces(
+                        b,
+                        this.baker,
+                        this.base,
+                        this.slots,
+                        Boxes.IDENTITY,
+                        face2 -> beltSlot(facing, face2),
+                        (Direction) null,
+                        from4,
+                        to4,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 12.0F, 2.0F, 4.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 14.0F, 12.0F, 16.0F), Quadrant.R90),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 12.0F, 2.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 12.0F, 2.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0)
+                        });
+            }
+            if (beltAt(belts, Direction.EAST)) {
+                final Vector3f from5 = new Vector3f(GLASS_MAX, 0F, INNER_MIN);
+                final Vector3f to5 = new Vector3f(16F, LIP, INNER_MAX);
+                ConveyorModel.faces(
+                        b,
+                        this.baker,
+                        this.base,
+                        this.slots,
+                        Boxes.IDENTITY,
+                        face3 -> beltSlot(facing, face3),
+                        (Direction) null,
+                        from5,
+                        to5,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(14.0F, 12.0F, 16.0F, 4.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 16.0F, 4.0F, 14.0F), Quadrant.R90),
+                            new UvRotation(
+                                    new CuboidFace.UVs(14.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(14.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0)
+                        });
+            }
+            if (beltAt(belts, Direction.NORTH)) {
+                final Vector3f from6 = new Vector3f(INNER_MIN, 0F, 0F);
+                final Vector3f to6 = new Vector3f(INNER_MAX, LIP, GLASS_MIN);
+                ConveyorModel.faces(
+                        b,
+                        this.baker,
+                        this.base,
+                        this.slots,
+                        Boxes.IDENTITY,
+                        face4 -> beltSlot(facing, face4),
+                        (Direction) null,
+                        from6,
+                        to6,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 2.0F, 12.0F, 0.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 16.0F, 4.0F, 14.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 12.0F, 2.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 12.0F, 2.0F, 16.0F), Quadrant.R0)
+                        });
+            }
+            if (beltAt(belts, Direction.SOUTH)) {
+                final Vector3f from7 = new Vector3f(INNER_MIN, 0F, GLASS_MAX);
+                final Vector3f to7 = new Vector3f(INNER_MAX, LIP, 16F);
+                ConveyorModel.faces(
+                        b,
+                        this.baker,
+                        this.base,
+                        this.slots,
+                        Boxes.IDENTITY,
+                        face5 -> beltSlot(facing, face5),
+                        (Direction) null,
+                        from7,
+                        to7,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 16.0F, 12.0F, 14.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 14.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(14.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(14.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0)
+                        });
+            }
         }
 
-        box(
+        final int[] plain = new int[] {0, 0, 0, 0, 0, 0};
+        final Vector3f from8 = new Vector3f(0F, 0F, 0F);
+        final Vector3f to8 = new Vector3f(INNER_MIN, 16F, INNER_MIN);
+        ConveyorModel.faces(
                 b,
+                this.baker,
+                this.base,
+                this.slots,
+                Boxes.IDENTITY,
                 face -> ConveyorModel.CONCRETE,
-                ConveyorChuteUv.POST_MIN_MIN,
-                0F,
-                0F,
-                0F,
-                INNER_MIN,
-                16F,
-                INNER_MIN);
-        box(
+                (Direction) null,
+                from8,
+                to8,
+                new UvRotation[] {
+                    new UvRotation(new CuboidFace.UVs(0.0F, 4.0F, 4.0F, 0.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 4.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 16.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 16.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 16.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 16.0F), Quadrant.R0)
+                });
+        final Vector3f from9 = new Vector3f(INNER_MAX, 0F, 0F);
+        final Vector3f to9 = new Vector3f(16F, 16F, INNER_MIN);
+        ConveyorModel.faces(
                 b,
+                this.baker,
+                this.base,
+                this.slots,
+                Boxes.IDENTITY,
                 face -> ConveyorModel.CONCRETE,
-                ConveyorChuteUv.POST_MAX_MIN,
-                INNER_MAX,
-                0F,
-                0F,
-                16F,
-                16F,
-                INNER_MIN);
-        box(
+                (Direction) null,
+                from9,
+                to9,
+                new UvRotation[] {
+                    new UvRotation(new CuboidFace.UVs(12.0F, 4.0F, 16.0F, 0.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 4.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 16.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 16.0F), Quadrant.R0)
+                });
+        final Vector3f from10 = new Vector3f(0F, 0F, INNER_MAX);
+        final Vector3f to10 = new Vector3f(INNER_MIN, 16F, 16F);
+        ConveyorModel.faces(
                 b,
+                this.baker,
+                this.base,
+                this.slots,
+                Boxes.IDENTITY,
                 face -> ConveyorModel.CONCRETE,
-                ConveyorChuteUv.POST_MIN_MAX,
-                0F,
-                0F,
-                INNER_MAX,
-                INNER_MIN,
-                16F,
-                16F);
-        box(
+                (Direction) null,
+                from10,
+                to10,
+                new UvRotation[] {
+                    new UvRotation(new CuboidFace.UVs(0.0F, 16.0F, 4.0F, 12.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(0.0F, 12.0F, 4.0F, 16.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 16.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 16.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0)
+                });
+        final Vector3f from11 = new Vector3f(INNER_MAX, 0F, INNER_MAX);
+        final Vector3f to11 = new Vector3f(16F, 16F, 16F);
+        ConveyorModel.faces(
                 b,
+                this.baker,
+                this.base,
+                this.slots,
+                Boxes.IDENTITY,
                 face -> ConveyorModel.CONCRETE,
-                ConveyorChuteUv.POST_MAX_MAX,
-                INNER_MAX,
-                0F,
-                INNER_MAX,
-                16F,
-                16F,
-                16F);
+                (Direction) null,
+                from11,
+                to11,
+                new UvRotation[] {
+                    new UvRotation(new CuboidFace.UVs(12.0F, 16.0F, 16.0F, 12.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(12.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0)
+                });
 
         float floor = lowest ? LIP : 0F;
-        pane(
-                b,
-                facing,
-                belts,
-                lowest,
-                Direction.WEST,
-                lowest ? ConveyorChuteUv.PANE_WEST_LIP : ConveyorChuteUv.PANE_WEST_BASE,
-                GLASS_MIN,
-                floor,
-                INNER_MIN,
-                GLASS_MIN,
-                16F,
-                INNER_MAX);
-        pane(
-                b,
-                facing,
-                belts,
-                lowest,
-                Direction.EAST,
-                lowest ? ConveyorChuteUv.PANE_EAST_LIP : ConveyorChuteUv.PANE_EAST_BASE,
-                GLASS_MAX,
-                floor,
-                INNER_MIN,
-                GLASS_MAX,
-                16F,
-                INNER_MAX);
-        pane(
-                b,
-                facing,
-                belts,
-                lowest,
-                Direction.NORTH,
-                lowest ? ConveyorChuteUv.PANE_NORTH_LIP : ConveyorChuteUv.PANE_NORTH_BASE,
-                INNER_MIN,
-                floor,
-                GLASS_MIN,
-                INNER_MAX,
-                16F,
-                GLASS_MIN);
-        pane(
-                b,
-                facing,
-                belts,
-                lowest,
-                Direction.SOUTH,
-                lowest ? ConveyorChuteUv.PANE_SOUTH_LIP : ConveyorChuteUv.PANE_SOUTH_BASE,
-                INNER_MIN,
-                floor,
-                GLASS_MAX,
-                INNER_MAX,
-                16F,
-                GLASS_MAX);
+        if (!beltAt(belts, Direction.WEST) && !(lowest && Direction.WEST == facing)) {
+            final Vector3f from12 = new Vector3f(GLASS_MIN, floor, INNER_MIN);
+            final Vector3f to12 = new Vector3f(GLASS_MIN, 16F, INNER_MAX);
+            this.grate(
+                    b,
+                    Direction.WEST,
+                    from12,
+                    to12,
+                    new UvRotation[] {
+                        new UvRotation(new CuboidFace.UVs(2.0F, 12.0F, 2.0F, 4.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(2.0F, 4.0F, 2.0F, 12.0F), Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(2.0F, 0.0F, 2.0F, 16F - from12.y()),
+                                Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(2.0F, 0.0F, 2.0F, 16F - from12.y()),
+                                Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 16F - from12.y()),
+                                Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 16F - from12.y()),
+                                Quadrant.R0)
+                    });
+        }
+        if (!beltAt(belts, Direction.EAST) && !(lowest && Direction.EAST == facing)) {
+            final Vector3f from13 = new Vector3f(GLASS_MAX, floor, INNER_MIN);
+            final Vector3f to13 = new Vector3f(GLASS_MAX, 16F, INNER_MAX);
+            this.grate(
+                    b,
+                    Direction.EAST,
+                    from13,
+                    to13,
+                    new UvRotation[] {
+                        new UvRotation(new CuboidFace.UVs(14.0F, 12.0F, 14.0F, 4.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(14.0F, 4.0F, 14.0F, 12.0F), Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(14.0F, 0.0F, 14.0F, 16F - from13.y()),
+                                Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(14.0F, 0.0F, 14.0F, 16F - from13.y()),
+                                Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 16F - from13.y()),
+                                Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 16F - from13.y()),
+                                Quadrant.R0)
+                    });
+        }
+        if (!beltAt(belts, Direction.NORTH) && !(lowest && Direction.NORTH == facing)) {
+            final Vector3f from14 = new Vector3f(INNER_MIN, floor, GLASS_MIN);
+            final Vector3f to14 = new Vector3f(INNER_MAX, 16F, GLASS_MIN);
+            this.grate(
+                    b,
+                    Direction.NORTH,
+                    from14,
+                    to14,
+                    new UvRotation[] {
+                        new UvRotation(new CuboidFace.UVs(4.0F, 2.0F, 12.0F, 2.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(4.0F, 2.0F, 12.0F, 2.0F), Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 16F - from14.y()),
+                                Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 16F - from14.y()),
+                                Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(2.0F, 0.0F, 2.0F, 16F - from14.y()),
+                                Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(2.0F, 0.0F, 2.0F, 16F - from14.y()), Quadrant.R0)
+                    });
+        }
+        if (!beltAt(belts, Direction.SOUTH) && !(lowest && Direction.SOUTH == facing)) {
+            final Vector3f from15 = new Vector3f(INNER_MIN, floor, GLASS_MAX);
+            final Vector3f to15 = new Vector3f(INNER_MAX, 16F, GLASS_MAX);
+            this.grate(
+                    b,
+                    Direction.SOUTH,
+                    from15,
+                    to15,
+                    new UvRotation[] {
+                        new UvRotation(new CuboidFace.UVs(4.0F, 14.0F, 12.0F, 14.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(4.0F, 14.0F, 12.0F, 14.0F), Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 16F - from15.y()),
+                                Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 16F - from15.y()),
+                                Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(14.0F, 0.0F, 14.0F, 16F - from15.y()),
+                                Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(14.0F, 0.0F, 14.0F, 16F - from15.y()),
+                                Quadrant.R0)
+                    });
+        }
 
         return new SimpleModelWrapper(
                 ObjUnbakedGeometry.bakeGroups(List.of(), b, 0F, 0F, 0F),
@@ -318,43 +879,16 @@ public class ConveyorChuteModel implements BlockStateModel {
                 particle);
     }
 
-    private void stub(
+    private void grate(
             List<ObjUnbakedGeometry.BoxQuad> b,
-            Direction facing,
-            int belts,
             Direction side,
-            ConveyorUv.Uv[] windows,
-            float x0,
-            float z0,
-            float x1,
-            float z1) {
-        if (!beltAt(belts, side)) return;
-        box(b, face -> beltSlot(facing, face), windows, x0, 0F, z0, x1, LIP, z1);
-    }
-
-    private void pane(
-            List<ObjUnbakedGeometry.BoxQuad> b,
-            Direction facing,
-            int belts,
-            boolean lowest,
-            Direction side,
-            ConveyorUv.Uv[] windows,
-            float x0,
-            float y0,
-            float z0,
-            float x1,
-            float y1,
-            float z1) {
-        if (beltAt(belts, side)) return;
-        if (lowest && side == facing) return;
-
-        Vector3f from = new Vector3f(x0, y0, z0);
-        Vector3f to = new Vector3f(x1, y1, z1);
-
+            Vector3f from,
+            Vector3f to,
+            UvRotation[] uvs) {
         Material.Baked material = BlockModel.slot(baker, base, slots, GRATE);
 
         for (Direction face : side.getAxis() == Direction.Axis.X ? X_FACES : Z_FACES) {
-            ConveyorUv.Uv uv = windows[face.ordinal()];
+            UvRotation uv = uvs[face.ordinal()];
             b.add(
                     new ObjUnbakedGeometry.BoxQuad(
                             Boxes.face(
@@ -371,20 +905,6 @@ public class ConveyorChuteModel implements BlockStateModel {
                             null,
                             QuadLighting.cell(0, 0, 0)));
         }
-    }
-
-    private void box(
-            List<ObjUnbakedGeometry.BoxQuad> b,
-            ConveyorModel.SlotBySide slotBySide,
-            ConveyorUv.Uv[] windows,
-            float x0,
-            float y0,
-            float z0,
-            float x1,
-            float y1,
-            float z1) {
-        ConveyorModel.box(
-                b, baker, base, slots, Boxes.IDENTITY, slotBySide, windows, x0, y0, z0, x1, y1, z1);
     }
 
     public interface Factory {

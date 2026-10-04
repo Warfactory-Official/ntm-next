@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineShredder;
 import com.hbm.inventory.container.MenuMachineShredder;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachineShredder;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;

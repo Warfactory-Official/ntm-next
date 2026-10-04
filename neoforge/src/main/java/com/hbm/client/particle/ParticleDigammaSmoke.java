@@ -128,7 +128,6 @@ public class ParticleDigammaSmoke extends SingleQuadParticle implements VisualPa
                 double ya,
                 double za,
                 RandomSource random) {
-
             return new ParticleDigammaSmoke(level, x, y, z, xa, za, this.sprites.get(random));
         }
     }

@@ -8,7 +8,6 @@ import com.hbm.inventory.material.Mats;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.EnumAshType;
 import com.hbm.items.machine.EnumBriquetteType;
-import com.hbm.platform.Services;
 import java.util.function.ObjIntConsumer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -21,7 +20,7 @@ public final class FuelHandler {
     private FuelHandler() {}
 
     public static int getBurnTime(Level level, ItemStack fuel) {
-        return Services.PLATFORM.burnTime(fuel, level.fuelValues());
+        return fuel.getBurnTime(null, level.fuelValues());
     }
 
     public static void forEachUniformFuel(ObjIntConsumer<ItemLike> out) {
@@ -43,7 +42,6 @@ public final class FuelHandler {
         out.accept(ModItems.LIGNITE.get(), 1200);
         out.accept(ModItems.powder(Mats.MAT_LIGNITE), 1200);
         for (var coke : ModItems.COKE) out.accept(coke.get(), SINGLE * 16);
-
         out.accept(ModBlocks.BLOCK_COKE_COAL.get(), SINGLE * 160);
         out.accept(ModBlocks.BLOCK_COKE_LIGNITE.get(), SINGLE * 160);
         out.accept(ModBlocks.BLOCK_COKE_PETROLEUM.get(), SINGLE * 160);
@@ -55,7 +53,6 @@ public final class FuelHandler {
         out.accept(ModItems.BRIQUETTE.get(EnumBriquetteType.COAL), SINGLE * 10);
         out.accept(ModItems.BRIQUETTE.get(EnumBriquetteType.LIGNITE), SINGLE * 8);
         out.accept(ModItems.BRIQUETTE.get(EnumBriquetteType.WOOD), SINGLE * 2);
-
         out.accept(ModItems.POWDER_ASH.get(EnumAshType.WOOD), SINGLE / 2);
         out.accept(ModItems.POWDER_ASH.get(EnumAshType.COAL), SINGLE);
         out.accept(ModItems.POWDER_ASH.get(EnumAshType.MISC), SINGLE / 2);

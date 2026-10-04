@@ -72,7 +72,6 @@ public final class SyncedData implements ContainerData {
         }
         long raw = 0;
         for (int i = 0; i < entry.slots; i++) raw |= (get(entry.slot + i) & 0xFFFFL) << (16 * i);
-
         return switch (entry.type) {
             case "boolean" -> raw != 0 ? 1 : 0;
             case "enum" -> raw;
@@ -148,7 +147,6 @@ public final class SyncedData implements ContainerData {
                     new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
                 for (String line; (line = reader.readLine()) != null; ) {
                     if (line.isBlank()) continue;
-
                     String[] parts = line.split(" ");
                     built.computeIfAbsent(parts[0], k -> new ArrayList<>())
                             .add(new String[] {parts[1], parts[2]});
@@ -187,7 +185,6 @@ public final class SyncedData implements ContainerData {
             try {
                 return switch (type) {
                     case "boolean" -> field.getBoolean(be) ? 1 : 0;
-
                     case "enum" -> ((Enum<?>) field.get(be)).ordinal();
                     default -> field.getLong(be);
                 };

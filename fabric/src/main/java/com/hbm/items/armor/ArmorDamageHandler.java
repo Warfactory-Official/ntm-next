@@ -16,7 +16,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public final class ArmorDamageHandler {
-
     private static final float DNS_EXPLOSION_MULT = 0.001F;
 
     private ArmorDamageHandler() {}

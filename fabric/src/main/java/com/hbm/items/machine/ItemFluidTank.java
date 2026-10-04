@@ -153,7 +153,6 @@ public class ItemFluidTank extends StackRemainderItem implements IFluidContainer
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-
         String s = getFill(stack) + "/" + capacity + " mB";
         if (stack.getCount() > 1) s = stack.getCount() + "x " + s;
         adder.accept(Component.literal(s).withStyle(ChatFormatting.GRAY));

@@ -3,8 +3,8 @@
 
 package com.hbm.client;
 
+import com.hbm.blockentity.machine.BlockEntityMachineAssemblyFactory;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntityMachineAssemblyFactory;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;

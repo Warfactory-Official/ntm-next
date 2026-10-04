@@ -3,13 +3,13 @@
 
 package com.hbm.blocks.machine.fusion;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionBoiler;
+import com.hbm.blockentity.machine.fusion.FusionPorts;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionBoiler;
-import com.hbm.tileentity.machine.fusion.FusionPorts;
 import java.util.List;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;

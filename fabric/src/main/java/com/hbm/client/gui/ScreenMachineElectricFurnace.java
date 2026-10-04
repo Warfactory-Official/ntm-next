@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineElectricFurnace;
 import com.hbm.inventory.container.MenuMachineElectricFurnace;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachineElectricFurnace;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;

@@ -163,7 +163,6 @@ public final class MedicalSyringeItem extends ItemCustomLore {
 
     @Override
     public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-
         if (type == Type.MED_BAG
                 || type == Type.CBT
                 || (type.sicknessGated && VersatileConfig.hasPotionSickness(target))
@@ -268,7 +267,6 @@ public final class MedicalSyringeItem extends ItemCustomLore {
         MEDX(true),
         PSYCHO(true),
         AWESOME(true),
-
         TAINT(false),
         POISON(false),
         CBT(false);

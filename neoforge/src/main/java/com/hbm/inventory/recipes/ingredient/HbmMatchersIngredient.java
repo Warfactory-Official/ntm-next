@@ -33,7 +33,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public record HbmMatchersIngredient(Ingredient base, DataComponentMatchers matchers)
-        implements ICustomIngredient {
+        implements IngredientState, ICustomIngredient {
 
     public static final Identifier ID = Library.id("matchers");
 
@@ -59,6 +59,16 @@ public record HbmMatchersIngredient(Ingredient base, DataComponentMatchers match
     @Override
     public boolean test(ItemStack stack) {
         return base.test(stack) && matchers.test(stack);
+    }
+
+    @Override
+    public boolean acceptsState(ItemStack stack) {
+        return RecipeInputState.accepts(matchers, stack);
+    }
+
+    @Override
+    public boolean acceptsState(ItemStack stack, DataComponentMatchers additional) {
+        return RecipeInputState.accepts(matchers, additional, stack);
     }
 
     @Override

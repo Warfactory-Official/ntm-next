@@ -4,8 +4,8 @@
 package com.hbm.api.energymk2;
 
 import com.hbm.items.machine.ItemBatteryCreative;
+import com.hbm.platform.FabricCaps;
 import com.hbm.platform.IEnergyHandlerView;
-import com.hbm.platform.Services;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 
@@ -31,7 +31,7 @@ public final class ItemEnergyTransfer {
             return accepted;
         }
 
-        IEnergyHandlerView view = Services.CAPS.findEnergyHandler(container, slot);
+        IEnergyHandlerView view = FabricCaps.findEnergyHandler(container, slot);
         if (view == null) return 0;
         long acceptedFe =
                 view.insert(
@@ -60,7 +60,7 @@ public final class ItemEnergyTransfer {
             return provided;
         }
 
-        IEnergyHandlerView view = Services.CAPS.findEnergyHandler(container, slot);
+        IEnergyHandlerView view = FabricCaps.findEnergyHandler(container, slot);
         if (view == null) return 0;
         long providedFe =
                 view.extract(

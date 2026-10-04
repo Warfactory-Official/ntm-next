@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineChemicalFactory;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityMachineChemicalFactory;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -44,7 +44,6 @@ public class RenderChemicalFactory
     }
 
     private static float facingYaw(Direction facing) {
-
         return Facing.yaw(facing, 0);
     }
 

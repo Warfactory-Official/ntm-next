@@ -3,13 +3,13 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityPedestal;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.extprop.HbmPlayerProps;
 import com.hbm.inventory.recipes.PedestalRecipe;
 import com.hbm.inventory.recipes.PedestalRecipes;
 import com.hbm.particle.helper.ExplosionSmallCreator;
 import com.hbm.stats.ModStats;
-import com.hbm.tileentity.BlockEntityPedestal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;

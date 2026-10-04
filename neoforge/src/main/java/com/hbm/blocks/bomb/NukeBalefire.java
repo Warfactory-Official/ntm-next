@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.bomb;
 
+import com.hbm.blockentity.bomb.BlockEntityNukeBalefire;
 import com.hbm.blocks.machine.BlockMachineHorizontal;
 import com.hbm.interfaces.IBomb;
-import com.hbm.tileentity.bomb.BlockEntityNukeBalefire;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;

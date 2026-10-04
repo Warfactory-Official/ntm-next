@@ -11,7 +11,6 @@ import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
 public class MixerRecipes extends GenericRecipes<MixerRecipe, RecipeIndex<Fluid, MixerRecipe>> {
-
     public static final MixerRecipes INSTANCE = new MixerRecipes();
 
     @Override

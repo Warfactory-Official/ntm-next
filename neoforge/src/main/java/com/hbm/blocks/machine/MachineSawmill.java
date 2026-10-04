@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntitySawmill;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.RefreshesNeighborState;
@@ -12,11 +13,9 @@ import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.items.ModItems;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntitySawmill;
 import java.util.Locale;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -38,7 +37,6 @@ public class MachineSawmill extends BlockMultiblockCore
 
     public MachineSawmill(Properties props) {
         super(props);
-
         this.bounding.add(new AABB(-1.5D, 0D, -1.5D, 1.5D, 1D, 1.5D));
         this.bounding.add(new AABB(-1.25D, 1D, -0.5D, -0.625D, 1.875D, 0.5D));
         this.bounding.add(new AABB(-0.625D, 1D, -1D, 1.375D, 2D, 1D));

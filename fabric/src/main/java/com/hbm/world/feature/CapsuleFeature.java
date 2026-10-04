@@ -3,10 +3,10 @@
 
 package com.hbm.world.feature;
 
+import com.hbm.blockentity.machine.storage.BlockEntitySoyuzCapsule;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.SoyuzCapsule;
 import com.hbm.items.ModItems;
-import com.hbm.tileentity.machine.storage.BlockEntitySoyuzCapsule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +16,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public class CapsuleFeature extends Feature<NoneFeatureConfiguration> {
-
     private static final int DEPTH = 4;
 
     public CapsuleFeature() {

@@ -1,0 +1,5 @@
+{
+  "minimum_dose": 500.0,
+  "result": "minecraft:zombie_villager",
+  "targets": "minecraft:villager"
+}

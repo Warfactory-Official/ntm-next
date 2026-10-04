@@ -3,15 +3,15 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityCoreEmitter;
+import com.hbm.blockentity.machine.BlockEntityCoreInjector;
+import com.hbm.blockentity.machine.BlockEntityCoreReceiver;
+import com.hbm.blockentity.machine.BlockEntityCoreStabilizer;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.inventory.IGUIProvider;
-import com.hbm.tileentity.machine.BlockEntityCoreEmitter;
-import com.hbm.tileentity.machine.BlockEntityCoreInjector;
-import com.hbm.tileentity.machine.BlockEntityCoreReceiver;
-import com.hbm.tileentity.machine.BlockEntityCoreStabilizer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -68,7 +68,6 @@ public class CoreComponent extends Block implements ITickingBlock, ICapabilityBl
             BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (!(level.getBlockEntity(pos) instanceof MenuProvider provider))
             return InteractionResult.PASS;
-
         if (player.isSecondaryUseActive()) return InteractionResult.PASS;
         if (!level.isClientSide() && provider instanceof IGUIProvider gui) {
             IGUIProvider.openBlockMenu(player, gui, pos);

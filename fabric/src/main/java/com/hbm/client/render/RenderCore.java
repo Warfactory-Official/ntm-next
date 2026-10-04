@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.RenderSparks;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.BlockEntityCore;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

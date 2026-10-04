@@ -92,7 +92,6 @@ public class ModelCrab extends EntityModel<LivingEntityRenderState> {
     @Override
     public void setupAnim(LivingEntityRenderState state) {
         super.setupAnim(state);
-
         float swing =
                 -(Mth.cos(state.walkAnimationPos * 0.6662F * 2F) * 0.4F)
                         * state.walkAnimationSpeed

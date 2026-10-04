@@ -109,14 +109,6 @@ public abstract class MixinClientLevel implements IClientLevelExtension, IClient
         hbm$geometry.lightChanged(x, z);
     }
 
-    @Inject(method = "setSectionRangeDirty", at = @At("RETURN"))
-    private void hbm$sectionRangeLightQueued(
-            int minX, int minY, int minZ, int maxX, int maxY, int maxZ, CallbackInfo ci) {
-        for (int z = minZ; z <= maxZ; z++) {
-            for (int x = minX; x <= maxX; x++) hbm$geometry.lightChanged(x, z);
-        }
-    }
-
     @Inject(method = "update", at = @At("RETURN"))
     private void hbm$refreshSectionLighting(CallbackInfo ci) {
         hbm$geometry.lightApplied();

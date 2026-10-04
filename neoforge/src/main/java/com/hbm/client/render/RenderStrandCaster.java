@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineStrandCaster;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.BlockEntityMachineStrandCaster;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -123,7 +123,6 @@ public class RenderStrandCaster
 
         ps.pushPose();
         ps.translate(0.0, 0.0, s.strand);
-
         final float d = (float) (s.strand - 0.5D);
         col.submitCustomGeometry(
                 ps,

@@ -4,6 +4,7 @@
 package com.hbm.world.structure;
 
 import com.hbm.util.DataCodecs;
+import com.hbm.world.LocationIsValidSpawn;
 import com.mojang.serialization.MapCodec;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
@@ -29,7 +30,6 @@ public class NtmProceduralStructure extends Structure {
         ChunkPos chunkPos = context.chunkPos();
         int blockX = chunkPos.getMiddleBlockX();
         int blockZ = chunkPos.getMiddleBlockZ();
-
         int surface =
                 context.chunkGenerator()
                         .getBaseHeight(
@@ -48,7 +48,8 @@ public class NtmProceduralStructure extends Structure {
                                 context.randomState());
         if (!column.getBlock(surface).isAir()) return Optional.empty();
         BlockState ground = column.getBlock(surface - 1);
-        if (ground.isAir() || ground.liquid()) return Optional.empty();
+        if (ground.isAir()) ground = column.getBlock(surface - 2);
+        if (!LocationIsValidSpawn.isDryGround(ground)) return Optional.empty();
 
         BlockPos origin = new BlockPos(blockX, surface, blockZ);
         return Optional.of(

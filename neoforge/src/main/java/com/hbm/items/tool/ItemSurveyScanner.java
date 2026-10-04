@@ -3,9 +3,9 @@
 
 package com.hbm.items.tool;
 
+import com.hbm.blockentity.BlockEntityBedrockOre;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
-import com.hbm.tileentity.BlockEntityBedrockOre;
 import java.util.EnumSet;
 import java.util.Set;
 import net.minecraft.ChatFormatting;
@@ -30,7 +30,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class ItemSurveyScanner extends Item {
-
     public enum Deposit {
         OIL("chat.surveyScanner.foundOil", ChatFormatting.BLACK),
         BEDROCK_OIL("chat.surveyScanner.foundBedrockOil", ChatFormatting.BLACK),
@@ -74,7 +73,6 @@ public class ItemSurveyScanner extends Item {
     public static Survey scan(Level level, BlockPos origin) {
         EnumSet<Deposit> deposits = EnumSet.noneOf(Deposit.class);
         ItemStack bedrockOre = ItemStack.EMPTY;
-
         int floor = level.getMinY();
 
         for (int a = -5; a <= 5; a++) {
@@ -92,7 +90,6 @@ public class ItemSurveyScanner extends Item {
 
                 BlockPos node = new BlockPos(origin.getX() + a * 2, floor, origin.getZ() + b * 2);
                 if (level.getBlockState(node).is(ModBlocks.ORE_BEDROCK.get())) {
-
                     bedrockOre =
                             level.getBlockEntity(node) instanceof BlockEntityBedrockOre ore
                                     ? ore.resource

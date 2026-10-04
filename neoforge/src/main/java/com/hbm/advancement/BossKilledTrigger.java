@@ -25,11 +25,8 @@ public class BossKilledTrigger extends SimpleCriterionTrigger<BossKilledTrigger.
 
     public enum Kind implements StringRepresentable {
         MASKMAN("maskman"),
-
         MELTDOWN("meltdown"),
-
         WORM("worm"),
-
         UFO("ufo");
 
         public static final Codec<Kind> CODEC = StringRepresentable.fromEnum(Kind::values);

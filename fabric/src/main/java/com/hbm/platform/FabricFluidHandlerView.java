@@ -8,15 +8,14 @@ import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.world.level.material.Fluid;
 
-final class FabricFluidHandlerView implements IFluidHandlerView {
+public final class FabricFluidHandlerView implements IFluidHandlerView {
 
     private static final long DROPLETS_PER_MB = 81L;
-
     private static final long MAX_MB = Long.MAX_VALUE / DROPLETS_PER_MB;
 
     private final Storage<FluidVariant> storage;
 
-    FabricFluidHandlerView(Storage<FluidVariant> storage) {
+    public FabricFluidHandlerView(Storage<FluidVariant> storage) {
         this.storage = storage;
     }
 

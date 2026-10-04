@@ -3,11 +3,11 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.albion.BlockEntityPABeamline;
 import com.hbm.blocks.machine.albion.BlockPABeamline;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.albion.BlockEntityPABeamline;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -40,7 +40,6 @@ public class RenderPABeamline
 
     public RenderPABeamline(BlockEntityRendererProvider.Context context) {
         this.model = ResourceManager.pa_beamline;
-
         this.glassType = FlatCutout.of(WHITE);
     }
 

@@ -9,10 +9,8 @@ import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.inventory.fluid.trait.FluidTraitTooltip;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
-import com.hbm.util.BobMathUtil;
 import java.util.List;
 import java.util.function.Consumer;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -75,7 +73,6 @@ public class ItemFluidIcon extends Item {
         FluidStackNTM content = stack.get(ModDataComponents.FLUID_CONTENT.get());
         if (content != null) {
             if (content.amount() > 0) adder.accept(Component.literal(content.amount() + "mB"));
-
             if (content.pressure() > 0)
                 FluidTraitTooltip.addPressureInfo(content.pressure(), adder);
         }

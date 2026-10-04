@@ -3,7 +3,7 @@
 
 package com.hbm.inventory.recipes.loader;
 
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgeServerEvents;
 import java.util.Collection;
 import java.util.List;
 import net.minecraft.server.MinecraftServer;
@@ -14,9 +14,7 @@ import org.jspecify.annotations.Nullable;
 public final class RecipeSource {
 
     public static final Token NEVER_FILLED = new Token(new Object());
-
     private static volatile @Nullable Latch client;
-
     private static @Nullable Token serverToken;
     private static volatile List<String> clientPoolNames = List.of();
 
@@ -58,7 +56,7 @@ public final class RecipeSource {
     }
 
     private static @Nullable RecipeManager serverRecipes() {
-        MinecraftServer server = Services.SERVER.getCurrentServer();
+        MinecraftServer server = NeoForgeServerEvents.getCurrentServer();
         return server == null ? null : server.getRecipeManager();
     }
 

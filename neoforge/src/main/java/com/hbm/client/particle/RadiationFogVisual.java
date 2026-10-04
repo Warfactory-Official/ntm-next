@@ -59,7 +59,7 @@ public final class RadiationFogVisual
             float pz = bz + (float) (RadiationFogEffect.OFF_Z[i] + RadiationFogEffect.JIT_Z[i]);
             BillboardInstance inst = instancer.createInstance();
             inst.position(px, py, pz)
-                    .size(RadiationFogEffect.SIZE[i])
+                    .size(2F * RadiationFogEffect.SIZE[i])
                     .uvRegion(offU, offV, scaleU, scaleV);
             inst.colorArgb(argb);
             inst.light(LightCoordsUtil.pack(15, 0));

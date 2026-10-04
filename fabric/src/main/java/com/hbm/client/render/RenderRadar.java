@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineRadar;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityMachineRadar;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -21,14 +21,11 @@ import org.jspecify.annotations.Nullable;
 public class RenderRadar
         implements BlockEntityRenderer<BlockEntityMachineRadar, RenderRadar.State>,
                 ConcurrentRenderStateExtraction {
-
     public static final float BASE_YAW = 180F;
     private static final int DISH = ResourceManager.radar.partId("Dish");
-
     private static final double DISH_OFFSET_X = -0.125D;
 
     private final HFRWavefrontObject model = ResourceManager.radar;
-
     private final RenderType dishType =
             WorldRenderPipeline.oneSidedCutout(ResourceManager.radar_dish_tex);
 
@@ -66,7 +63,6 @@ public class RenderRadar
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
         ps.mulPose(Axis.YP.rotationDegrees(BASE_YAW));
-
         ps.mulPose(Axis.YP.rotationDegrees(-s.spin));
         ps.translate(DISH_OFFSET_X, 0.0, 0.0);
 

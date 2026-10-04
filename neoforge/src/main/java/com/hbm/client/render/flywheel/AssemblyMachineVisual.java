@@ -3,11 +3,11 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityMachineAssemblyMachine;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.render.FramedItem;
 import com.hbm.client.render.RenderAssemblyMachine;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityMachineAssemblyMachine;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;

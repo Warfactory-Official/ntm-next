@@ -3,14 +3,14 @@
 
 package com.hbm.world.gen;
 
+import com.hbm.blockentity.BlockEntityPedestal;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.BlockLoot.TileEntityLoot;
+import com.hbm.blocks.generic.BlockLoot.BlockEntityLoot;
 import com.hbm.blocks.generic.BlockRedBrick;
 import com.hbm.blocks.generic.BlockRedBrickKeyhole;
 import com.hbm.itempool.ItemPool;
 import com.hbm.itempool.ItemPools;
 import com.hbm.items.ModItems;
-import com.hbm.tileentity.BlockEntityPedestal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -227,7 +227,8 @@ public final class RedRoom {
 
         if (rand == 0) {
             set(level, x, y + 1, z, ModBlocks.LOOT.get().defaultBlockState());
-            TileEntityLoot loot = (TileEntityLoot) level.getBlockEntity(new BlockPos(x, y + 1, z));
+            BlockEntityLoot loot =
+                    (BlockEntityLoot) level.getBlockEntity(new BlockPos(x, y + 1, z));
 
             if (random.nextInt(5) == 0) {
                 loot.addItem(new ItemStack(ModItems.NCRPA_HELMET.get()), 0, 0, 0);
@@ -314,7 +315,6 @@ public final class RedRoom {
 
     private static void torch(ServerLevel level, int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z);
-
         set(
                 level,
                 x,
@@ -344,9 +344,7 @@ public final class RedRoom {
 
     private static void door(ServerLevel level, BlockPos pos, Direction facing) {
         DoorBlock block = ModBlocks.DOOR_RED.get();
-
         level.setBlock(pos.above(), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
-
         BlockState state =
                 block.getStateForPlacement(
                         new DirectionalPlaceContext(

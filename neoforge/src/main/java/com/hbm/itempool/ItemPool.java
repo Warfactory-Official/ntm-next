@@ -29,7 +29,6 @@ import net.minecraft.world.item.Items;
 import org.jspecify.annotations.Nullable;
 
 public class ItemPool {
-
     public static final String RESOURCE = "/hbm/item_pools.json";
 
     public static final Map<String, ItemPool> POOLS = new HashMap<>();
@@ -137,7 +136,6 @@ public class ItemPool {
     }
 
     public static ItemStack getUnit(String name, RandomSource rand) {
-
         Entry entry = select(getPool(name), rand);
         return entry == null || entry.isEmpty()
                 ? ItemStack.EMPTY
@@ -160,7 +158,6 @@ public class ItemPool {
 
     public record Entry(
             @Nullable Holder<Item> item, DataComponentPatch patch, int min, int max, int weight) {
-
         public static Entry of(Item item, int min, int max, int weight) {
             return new Entry(
                     item.builtInRegistryHolder(), DataComponentPatch.EMPTY, min, max, weight);
@@ -175,7 +172,6 @@ public class ItemPool {
         }
 
         public ItemStack roll(RandomSource rand) {
-
             int count = min + rand.nextInt(max - min + 1);
             return item == null ? ItemStack.EMPTY : new ItemStack(item, count, patch);
         }

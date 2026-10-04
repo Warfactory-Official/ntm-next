@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class ItemPeas extends ItemCustomLore {
-
     private static final double RANGE = 50D;
 
     public ItemPeas(Properties props) {

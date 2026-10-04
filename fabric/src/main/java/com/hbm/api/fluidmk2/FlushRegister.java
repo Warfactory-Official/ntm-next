@@ -5,7 +5,7 @@ package com.hbm.api.fluidmk2;
 
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricCaps;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.TickPhase;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -51,7 +51,6 @@ public final class FlushRegister {
     private BlockPos[] positions = NO_POSITIONS;
     private long[] contactKeys = NO_WORDS;
     private Direction[] sides = NO_SIDES;
-
     private int[] laneEnd = NO_ENDS;
     private long[] probed = NO_WORDS;
     private long[] live = NO_WORDS;
@@ -69,6 +68,14 @@ public final class FlushRegister {
         return ADAPTED.get(machine);
     }
 
+    private static boolean containsIdentity(
+            List<IFluidHandlerMK2> gather, IFluidHandlerMK2 receiver) {
+        for (int i = 0, size = gather.size(); i < size; i++) {
+            if (gather.get(i) == receiver) return true;
+        }
+        return false;
+    }
+
     void expectLanes(int count) {
         if (derived && lanes.length != count) derived = false;
     }
@@ -79,7 +86,6 @@ public final class FlushRegister {
 
         long gameTime = level.getGameTime();
         BlockPos pos = machine.getBlockPos();
-
         if (!anyLaneDue(gameTime, pos)) return;
         probePending(level);
 
@@ -92,7 +98,6 @@ public final class FlushRegister {
                     && lane.enabled().getAsBoolean()) {
                 FluidTankNTM tank = lane.tank();
                 Fluid type = tank.getFluid();
-
                 if (tank.getFill() > 0 && type != null && type != Fluids.EMPTY) {
                     serve(level, lane, type, tank.getPressure(), from, to);
                 }
@@ -125,6 +130,15 @@ public final class FlushRegister {
         if (posKey == machine.getBlockPos().asLong()) derived = false;
         for (int i = 0; i < contactKeys.length; i++) {
             if (contactKeys[i] != posKey) continue;
+            probed[i >>> 6] &= ~(1L << i);
+            parked[i >>> 6] &= ~(1L << i);
+        }
+    }
+
+    void invalidateChunk(long chunkKey) {
+        if (LevelNodeGraph.chunkOf(machine.getBlockPos().asLong()) == chunkKey) derived = false;
+        for (int i = 0; i < contactKeys.length; i++) {
+            if (LevelNodeGraph.chunkOf(contactKeys[i]) != chunkKey) continue;
             probed[i >>> 6] &= ~(1L << i);
             parked[i >>> 6] &= ~(1L << i);
         }
@@ -227,7 +241,7 @@ public final class FlushRegister {
         }
         probed[i >>> 6] |= 1L << i;
         boolean present =
-                Services.CAPS.find(FluidCaps.RECEIVER, level, at, FluidFace.any(sides[i])) != null;
+                FabricCaps.find(FluidCaps.RECEIVER, level, at, FluidFace.any(sides[i])) != null;
         if (present) live[i >>> 6] |= 1L << i;
         else live[i >>> 6] &= ~(1L << i);
     }
@@ -239,7 +253,6 @@ public final class FlushRegister {
 
     private void serve(
             ServerLevel level, FlushLane lane, Fluid type, int pressure, int from, int to) {
-
         List<IFluidHandlerMK2> out = inUse ? new ArrayList<>(4) : gather;
         boolean pooled = out == gather;
         if (pooled) {
@@ -251,14 +264,12 @@ public final class FlushRegister {
             for (int i = from; i < to; i++) {
                 if ((live[i >>> 6] & (1L << i)) == 0) continue;
                 IFluidHandlerMK2 receiver =
-                        Services.CAPS.find(
+                        FabricCaps.find(
                                 FluidCaps.RECEIVER,
                                 level,
                                 positions[i],
                                 FluidFace.of(sides[i], type));
-
                 if (receiver == null || receiver == provider) continue;
-
                 if (!containsIdentity(out, receiver)) out.add(receiver);
             }
             if (out.isEmpty()) return;
@@ -266,13 +277,5 @@ public final class FlushRegister {
         } finally {
             if (pooled) inUse = false;
         }
-    }
-
-    private static boolean containsIdentity(
-            List<IFluidHandlerMK2> gather, IFluidHandlerMK2 receiver) {
-        for (int i = 0, size = gather.size(); i < size; i++) {
-            if (gather.get(i) == receiver) return true;
-        }
-        return false;
     }
 }

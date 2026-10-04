@@ -6,7 +6,7 @@ package com.hbm.blocks.multiblock;
 import com.hbm.capability.NtmCapabilities.CapRole;
 import com.hbm.capability.NtmCapabilities;
 import com.hbm.interfaces.injected.IClientCoreHint;
-import com.hbm.platform.Services;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.registration.RegistryHandle;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.BlockReadBounds;
@@ -35,10 +35,8 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 import org.jspecify.annotations.Nullable;
 
 public final class MultiblockSurface {
-
     public static final long NO_CORE = Long.MIN_VALUE;
     public static final long NO_CORE_TRUNCATED = Long.MIN_VALUE + 1;
-
     private static volatile @Nullable Long2ObjectOpenHashMap<long[]> clientCandidates;
     private static final ThreadLocal<ForeignHint> foreignHints =
             ThreadLocal.withInitial(ForeignHint::new);
@@ -436,7 +434,6 @@ public final class MultiblockSurface {
         BlockState owner = particleState(level, pos, state);
         if (owner == state) return fallback;
         if (owner == null) return null;
-
         return new BlockParticleOption(ParticleTypes.BLOCK, owner);
     }
 
@@ -464,7 +461,7 @@ public final class MultiblockSurface {
 
     private static Long2ObjectOpenHashMap<long[]> buildClientCandidates() {
         var deltas = new Long2ObjectOpenHashMap<LongOpenHashSet>();
-        for (RegistryHandle<? extends Block> handle : Services.REGISTRAR.blocks()) {
+        for (RegistryHandle<? extends Block> handle : FabricRegistrar.registeredBlocks) {
             if (!(handle.get() instanceof BlockMultiblockCore core)) continue;
             for (Direction facing : Direction.VALUES) {
                 if (facing.getAxis() == Direction.Axis.Y) continue;

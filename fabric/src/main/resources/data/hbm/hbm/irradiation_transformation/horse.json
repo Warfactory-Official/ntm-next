@@ -1,0 +1,5 @@
+{
+  "minimum_dose": 800.0,
+  "result": "minecraft:zombie_horse",
+  "targets": "minecraft:horse"
+}

@@ -19,7 +19,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 
 public class OilBubblePiece extends StructurePiece {
-
     private static final double H_EXTENT = 0.8165D;
     private static final int SCAR_MARGIN = 28;
 
@@ -40,7 +39,6 @@ public class OilBubblePiece extends StructurePiece {
             RuleTest replaceable,
             long scarSeed) {
         super(HbmStructureTypes.OIL_BUBBLE_PIECE.get(), 0, box(centre, radius));
-
         this.setOrientation(null);
         this.centreX = centre.getX();
         this.centreY = centre.getY();

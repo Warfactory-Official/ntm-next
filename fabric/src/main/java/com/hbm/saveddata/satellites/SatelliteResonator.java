@@ -41,7 +41,6 @@ public class SatelliteResonator extends Satellite {
         ChunkUtil.loadForEntity(level, new ChunkPos(x >> 4, z >> 4));
         if (y < 0) y = WorldgenHeight.lightBlocking(level.getChunk(x >> 4, z >> 4), x, z);
         serverPlayer.connection.teleport(x + 0.5D, y, z + 0.5D, player.getYRot(), player.getXRot());
-
         level.playSound(
                 null,
                 player.getX(),

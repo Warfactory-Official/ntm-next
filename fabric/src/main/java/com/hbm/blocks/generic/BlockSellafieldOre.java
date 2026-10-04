@@ -26,7 +26,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.jspecify.annotations.Nullable;
 
 public class BlockSellafieldOre extends BlockSellafieldSlaked {
-
     public static final MapCodec<BlockSellafieldOre> CODEC =
             simpleCodec(p -> new BlockSellafieldOre(p, null, 0, 0));
 

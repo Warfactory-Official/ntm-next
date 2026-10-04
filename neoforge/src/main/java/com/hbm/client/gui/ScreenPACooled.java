@@ -3,8 +3,8 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.albion.BlockEntityCooledBase;
 import com.hbm.inventory.container.BlockEntityMenu;
-import com.hbm.tileentity.machine.albion.BlockEntityCooledBase;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -15,7 +15,6 @@ import net.minecraft.world.entity.player.Inventory;
 
 abstract class ScreenPACooled<T extends BlockEntityMenu<? extends BlockEntityCooledBase>>
         extends ScreenInfoContainer<T> {
-
     protected static final int COLD_ENOUGH = (int) BlockEntityCooledBase.TEMPERATURE_TARGET;
 
     protected ScreenPACooled(

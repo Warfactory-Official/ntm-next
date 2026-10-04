@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityCoreStabilizer;
 import com.hbm.inventory.container.MenuCoreStabilizer;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityCoreStabilizer;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -60,7 +60,7 @@ public class ScreenCoreStabilizer extends ScreenInfoContainer<MenuCoreStabilizer
                 field.setValue(String.valueOf(watts));
                 CompoundTag data = new CompoundTag();
                 data.putInt("watts", watts);
-                Services.NETWORK.sendToServer(
+                PacketWire.sendToServer(
                         new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
                 playClick();
                 return true;

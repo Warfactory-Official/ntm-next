@@ -3,8 +3,8 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityTesla;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
-import com.hbm.tileentity.machine.BlockEntityTesla;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import java.util.ArrayList;

@@ -7,11 +7,12 @@ import com.hbm.api.energymk2.EnergyCaps;
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.fluidmk2.FluidCaps;
 import com.hbm.api.fluidmk2.IFluidHandlerMK2;
+import com.hbm.blockentity.machine.BlockEntityCustomMachine;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgeCaps;
 import com.hbm.registration.RegistryHandle;
-import com.hbm.tileentity.machine.BlockEntityCustomMachine;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -45,21 +46,29 @@ public class BlockCMPort extends Block implements ICapabilityBlock {
 
     @Override
     public void declareExtraCaps(RegistryHandle<? extends Block> self) {
-        Services.CAPS.registerBlockProvider(
-                EnergyCaps.RECEIVER,
-                self,
-                (level, pos, state, be, side) -> (IEnergyHandlerMK2) owner(level, pos, state));
-        Services.CAPS.registerBlockProvider(
-                EnergyCaps.PROVIDER,
-                self,
-                (level, pos, state, be, side) -> (IEnergyHandlerMK2) owner(level, pos, state));
-        Services.CAPS.registerBlockProvider(
-                FluidCaps.RECEIVER,
-                self,
-                (level, pos, state, be, face) -> (IFluidHandlerMK2) owner(level, pos, state));
-        Services.CAPS.registerBlockProvider(
-                FluidCaps.PROVIDER,
-                self,
-                (level, pos, state, be, face) -> (IFluidHandlerMK2) owner(level, pos, state));
+        NeoForgeCaps.pendingBlocks.add(
+                new NeoForgeCaps.BlockRegistration<>(
+                        EnergyCaps.RECEIVER,
+                        (Supplier<? extends Block>) self,
+                        (level, pos, state, be, side) ->
+                                (IEnergyHandlerMK2) owner(level, pos, state)));
+        NeoForgeCaps.pendingBlocks.add(
+                new NeoForgeCaps.BlockRegistration<>(
+                        EnergyCaps.PROVIDER,
+                        (Supplier<? extends Block>) self,
+                        (level, pos, state, be, side) ->
+                                (IEnergyHandlerMK2) owner(level, pos, state)));
+        NeoForgeCaps.pendingBlocks.add(
+                new NeoForgeCaps.BlockRegistration<>(
+                        FluidCaps.RECEIVER,
+                        (Supplier<? extends Block>) self,
+                        (level, pos, state, be, face) ->
+                                (IFluidHandlerMK2) owner(level, pos, state)));
+        NeoForgeCaps.pendingBlocks.add(
+                new NeoForgeCaps.BlockRegistration<>(
+                        FluidCaps.PROVIDER,
+                        (Supplier<? extends Block>) self,
+                        (level, pos, state, be, face) ->
+                                (IFluidHandlerMK2) owner(level, pos, state)));
     }
 }

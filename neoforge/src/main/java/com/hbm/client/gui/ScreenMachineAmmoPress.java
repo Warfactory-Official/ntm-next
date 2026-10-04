@@ -8,8 +8,8 @@ import com.hbm.inventory.recipes.AmmoPressRecipe;
 import com.hbm.inventory.recipes.AmmoPressRecipes;
 import com.hbm.inventory.recipes.ingredient.CountIngredient;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -97,7 +97,7 @@ public class ScreenMachineAmmoPress extends ScreenInfoContainer<MenuMachineAmmoP
                 selection = selection != clicked ? clicked : -1;
                 CompoundTag data = new CompoundTag();
                 data.putInt("selection", selection);
-                Services.NETWORK.sendToServer(
+                PacketWire.sendToServer(
                         new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
                 playClick();
                 return true;

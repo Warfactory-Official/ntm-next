@@ -19,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(targets = "com.mojang.blaze3d.opengl.GlDevice", priority = 900)
 public class GlDeviceMixin {
-
     @Inject(method = "getOrCompilePipeline", at = @At("HEAD"), cancellable = true)
     private void hbm$ribbonProgram(
             RenderPipeline pipeline, CallbackInfoReturnable<GlRenderPipeline> cir) {

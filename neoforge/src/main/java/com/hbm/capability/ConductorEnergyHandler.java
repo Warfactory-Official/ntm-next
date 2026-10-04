@@ -18,7 +18,6 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jspecify.annotations.Nullable;
 
 public final class ConductorEnergyHandler implements EnergyHandler {
-
     private static final Map<ForeignEnergyBridge, WeakReference<Journal>> JOURNALS =
             new WeakHashMap<>();
 
@@ -31,7 +30,6 @@ public final class ConductorEnergyHandler implements EnergyHandler {
         this.level = level;
         this.pos = pos.immutable();
         this.peerKey = side == null ? this.pos.asLong() : this.pos.relative(side).asLong();
-
         PowerNetwork.bridgeAt(level, this.pos);
     }
 

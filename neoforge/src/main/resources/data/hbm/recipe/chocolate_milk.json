@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
     "#c:glass_panes",
     "minecraft:cocoa_beans",
@@ -10,6 +10,11 @@
       "fluid": "hbm:nitroglycerin"
     }
   ],
+  "input_state": {
+    "2": {
+      "preserve": "remainder"
+    }
+  },
   "result": {
     "id": "hbm:chocolate_milk"
   }

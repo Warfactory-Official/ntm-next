@@ -7,14 +7,13 @@ package com.hbm.entity.mob.glyphid;
 import com.hbm.entity.mob.glyphid.GlyphidStats.StatBundle;
 import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.Reg;
 import com.hbm.util.MobUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
@@ -30,13 +29,14 @@ public class EntityGlyphidBrawler extends EntityGlyphid {
 
     public static Reg.@Nullable EntityHandle<EntityGlyphidBrawler> TYPE;
 
-    public static void register(IRegistrar r) {
+    public static void register() {
         TYPE =
                 Reg.entity(
                         "entity_glyphid_brawler",
                         () ->
                                 EntityType.Builder.<EntityGlyphidBrawler>of(
                                                 EntityGlyphidBrawler::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(2F, 1.125F)
                                         .clientTrackingRange(5)
@@ -45,7 +45,7 @@ public class EntityGlyphidBrawler extends EntityGlyphid {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_glyphid_brawler"))));
-        r.registerLivingAttributes(TYPE, EntityGlyphidBrawler::createAttributes);
+        NeoForgeRegistrar.registerLivingAttributes(TYPE, EntityGlyphidBrawler::createAttributes);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -148,7 +148,6 @@ public class EntityGlyphidBrawler extends EntityGlyphid {
         float pitch = (float) (Math.atan2(motionY, (double) hyp) * 180.0D / Math.PI);
         this.setYRot(yaw);
         this.yRotO = yaw;
-
         this.yBodyRot = yaw;
         this.yBodyRotO = yaw;
         this.setXRot(pitch);

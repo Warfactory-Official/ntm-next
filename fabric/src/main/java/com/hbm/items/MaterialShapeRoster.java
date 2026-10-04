@@ -16,7 +16,6 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;

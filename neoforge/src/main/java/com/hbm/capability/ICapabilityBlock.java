@@ -7,7 +7,6 @@ import com.hbm.registration.RegistryHandle;
 import net.minecraft.world.level.block.Block;
 
 public interface ICapabilityBlock {
-
     MachineCaps caps();
 
     default void declareExtraCaps(RegistryHandle<? extends Block> self) {}

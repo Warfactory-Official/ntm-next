@@ -3,13 +3,12 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageExporter;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.inventory.slot.SlotPattern;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageExporter;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerInput;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class MenuPneumoStorageExporter extends BlockEntityMenu<BlockEntityPneumoStorageExporter> {

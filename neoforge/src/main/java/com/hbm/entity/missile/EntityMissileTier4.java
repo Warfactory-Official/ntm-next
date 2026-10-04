@@ -4,7 +4,6 @@
 package com.hbm.entity.missile;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.config.BombConfig;
 import com.hbm.data.ExplosionData;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.effect.EntityNukeTorex;

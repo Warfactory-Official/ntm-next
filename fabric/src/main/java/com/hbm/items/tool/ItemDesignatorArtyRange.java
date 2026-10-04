@@ -3,10 +3,10 @@
 
 package com.hbm.items.tool;
 
+import com.hbm.blockentity.turret.BlockEntityTurretBaseArtillery;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.items.ModDataComponents;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.turret.BlockEntityTurretBaseArtillery;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

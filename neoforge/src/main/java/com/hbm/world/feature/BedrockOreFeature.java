@@ -3,14 +3,15 @@
 
 package com.hbm.world.feature;
 
+import com.hbm.blockentity.BlockEntityBedrockOre;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.ModItems;
-import com.hbm.tileentity.BlockEntityBedrockOre;
 import com.hbm.world.NtmWorldgenFields;
 import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.WorldGenLevel;
@@ -70,7 +71,6 @@ public class BedrockOreFeature extends Feature<BedrockOreConfig> {
         RandomSource rand = ctx.random();
         int x = ctx.origin().getX();
         int z = ctx.origin().getZ();
-
         int floor = level.getMinY();
 
         ItemStack resource;
@@ -116,10 +116,7 @@ public class BedrockOreFeature extends Feature<BedrockOreConfig> {
                     pos.set(ix, floor + dy, iz);
                     BlockState cur = level.getBlockState(pos);
                     if (dy >= 3 && !cur.is(Blocks.BEDROCK)) continue;
-                    if (cur.is(Blocks.STONE)
-                            || cur.is(Blocks.DEEPSLATE)
-                            || cur.is(Blocks.NETHERRACK)
-                            || cur.is(Blocks.BEDROCK)) {
+                    if (cur.is(BlockTags.BASE_STONE_OVERWORLD) || cur.is(Blocks.BEDROCK)) {
                         level.setBlock(pos, depth, 2);
                     }
                 }

@@ -44,7 +44,6 @@ public final class ItemRodOfDiscord extends Item {
                                 ClipContext.Block.OUTLINE,
                                 ClipContext.Fluid.NONE,
                                 player));
-
         BlockHitResult blockHit =
                 hit.getType() == HitResult.Type.MISS
                         ? Shapes.block().clip(from, to, BlockPos.containing(to))

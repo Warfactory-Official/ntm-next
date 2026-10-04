@@ -3,6 +3,9 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.FoldedCoreResident;
+import com.hbm.blockentity.GraphResident;
+import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.packet.SyncBindings;
@@ -11,9 +14,6 @@ import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncList;
 import com.hbm.packet.SyncSource;
 import com.hbm.packet.SyncUnitSchema;
-import com.hbm.tileentity.FoldedCoreResident;
-import com.hbm.tileentity.GraphResident;
-import com.hbm.tileentity.Synced;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -57,9 +57,9 @@ public class BlockLoot extends Block implements EntityBlock {
         super(props);
     }
 
-    public static void place(LevelAccessor level, BlockPos pos, List<TileEntityLoot.Entry> items) {
+    public static void place(LevelAccessor level, BlockPos pos, List<BlockEntityLoot.Entry> items) {
         level.setBlock(pos, ModBlocks.LOOT.get().defaultBlockState(), Block.UPDATE_CLIENTS);
-        if (level.getBlockEntity(pos) instanceof TileEntityLoot pile) {
+        if (level.getBlockEntity(pos) instanceof BlockEntityLoot pile) {
             pile.items.addAll(items);
             pile.setChanged();
         }
@@ -88,10 +88,10 @@ public class BlockLoot extends Block implements EntityBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileEntityLoot(pos, state);
+        return new BlockEntityLoot(pos, state);
     }
 
-    public static class TileEntityLoot extends BlockEntity
+    public static class BlockEntityLoot extends BlockEntity
             implements Synced, SyncUnitSchema, GraphResident, FoldedCoreResident {
 
         private static final String ITEMS = "items";
@@ -99,7 +99,7 @@ public class BlockLoot extends Block implements EntityBlock {
         @SyncField(units = 1L)
         public final List<Entry> items = new SyncList<>();
 
-        public TileEntityLoot(BlockPos pos, BlockState state) {
+        public BlockEntityLoot(BlockPos pos, BlockState state) {
             super(ModBlockEntities.NTM_LOOT.get(), pos, state);
         }
 
@@ -130,7 +130,7 @@ public class BlockLoot extends Block implements EntityBlock {
             items.clear();
         }
 
-        public TileEntityLoot addItem(ItemStack stack, double x, double y, double z) {
+        public BlockEntityLoot addItem(ItemStack stack, double x, double y, double z) {
             if (stack.isEmpty()) return this;
             items.add(new Entry(stack, x, y, z));
             setChanged();

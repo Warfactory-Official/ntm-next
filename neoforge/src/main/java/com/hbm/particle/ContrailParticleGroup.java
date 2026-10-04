@@ -32,9 +32,7 @@ public class ContrailParticleGroup extends ParticleGroup<ParticleContrail> {
             Frustum frustum, Camera camera, float partialTicks) {
         int count = this.particles.size();
         ParticleContrail[] refs = new ParticleContrail[count];
-
         float[] pos = new float[count * 3];
-
         float[] par = new float[count * 6];
         Vec3 cam = camera.position();
 

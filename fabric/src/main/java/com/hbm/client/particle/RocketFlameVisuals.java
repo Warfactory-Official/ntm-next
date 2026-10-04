@@ -36,16 +36,18 @@ public final class RocketFlameVisuals {
 
     public static void tick() {
         if (ACTIVE.isEmpty()) return;
-        Level current = Minecraft.getInstance().level;
+        Minecraft mc = Minecraft.getInstance();
+        Level current = mc.level;
+        boolean advance =
+                current != null && !mc.isPaused() && current.tickRateManager().runsNormally();
         Iterator<RocketFlameEffect> it = ACTIVE.iterator();
         while (it.hasNext()) {
             RocketFlameEffect e = it.next();
-
             if (e.level() != current) {
                 it.remove();
                 continue;
             }
-            e.tick();
+            if (advance) e.tick();
             if (e.expired()) {
                 VisualizationHelper.queueRemove(e);
                 it.remove();

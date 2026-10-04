@@ -4,10 +4,10 @@
 package com.hbm.client.gui;
 
 import com.hbm.NuclearTech;
+import com.hbm.blockentity.network.BlockEntityRadioAUTOCAL;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.network.BlockEntityRadioAUTOCAL;
 import io.netty.buffer.ByteBufUtil;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -62,7 +62,6 @@ public class ScreenRadioAUTOCAL extends Screen {
             if (i > 0) lines.add("");
             lines.addAll(List.of(language.getOrDefault(LANG + "doc." + i).split("\n", -1)));
         }
-
         Files.write(doc, lines, StandardCharsets.UTF_8);
     }
 
@@ -273,7 +272,7 @@ public class ScreenRadioAUTOCAL extends Screen {
                     .getSoundManager()
                     .play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
         }
-        Services.NETWORK.sendToServer(new NbtControlPayload(autocal.getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(autocal.getBlockPos(), data));
         return true;
     }
 

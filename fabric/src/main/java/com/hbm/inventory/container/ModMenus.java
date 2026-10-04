@@ -3,49 +3,49 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.bomb.BlockEntityBombMulti;
+import com.hbm.blockentity.bomb.BlockEntityCompactLauncher;
+import com.hbm.blockentity.bomb.BlockEntityLaunchPad;
+import com.hbm.blockentity.bomb.BlockEntityLaunchPadLarge;
+import com.hbm.blockentity.bomb.BlockEntityLaunchPadRusted;
+import com.hbm.blockentity.bomb.BlockEntityLaunchTable;
+import com.hbm.blockentity.bomb.BlockEntityNukeBalefire;
+import com.hbm.blockentity.bomb.BlockEntityNukeCustom;
+import com.hbm.blockentity.machine.*;
+import com.hbm.blockentity.machine.albion.*;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionBreeder;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionKlystron;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionPlasmaForge;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorus;
+import com.hbm.blockentity.machine.oil.*;
+import com.hbm.blockentity.machine.rbmk.*;
+import com.hbm.blockentity.machine.storage.*;
+import com.hbm.blockentity.network.BlockEntityCraneBoxer;
+import com.hbm.blockentity.network.BlockEntityCraneExtractor;
+import com.hbm.blockentity.network.BlockEntityCraneGrabber;
+import com.hbm.blockentity.network.BlockEntityCraneInserter;
+import com.hbm.blockentity.network.BlockEntityCraneRouter;
+import com.hbm.blockentity.network.BlockEntityCraneUnboxer;
+import com.hbm.blockentity.network.BlockEntityDroneCrate;
+import com.hbm.blockentity.network.BlockEntityDroneDock;
+import com.hbm.blockentity.network.BlockEntityDroneProvider;
+import com.hbm.blockentity.network.BlockEntityDroneRequester;
+import com.hbm.blockentity.network.BlockEntityRadioTorchCounter;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageAccess;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageClutter;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageExporter;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageImporter;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageMono;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTube;
+import com.hbm.blockentity.turret.BlockEntityTurretBaseNT;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.tool.ItemAmmoBag;
 import com.hbm.items.tool.ItemCasingBag;
 import com.hbm.items.tool.ItemLeadBox;
 import com.hbm.items.tool.ItemPlasticBag;
 import com.hbm.items.tool.ItemToolBox;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.registration.RegistryHandle;
-import com.hbm.tileentity.bomb.BlockEntityBombMulti;
-import com.hbm.tileentity.bomb.BlockEntityCompactLauncher;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPad;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPadLarge;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPadRusted;
-import com.hbm.tileentity.bomb.BlockEntityLaunchTable;
-import com.hbm.tileentity.bomb.BlockEntityNukeBalefire;
-import com.hbm.tileentity.bomb.BlockEntityNukeCustom;
-import com.hbm.tileentity.machine.*;
-import com.hbm.tileentity.machine.albion.*;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionBreeder;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionKlystron;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionPlasmaForge;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionTorus;
-import com.hbm.tileentity.machine.oil.*;
-import com.hbm.tileentity.machine.rbmk.*;
-import com.hbm.tileentity.machine.storage.*;
-import com.hbm.tileentity.network.BlockEntityCraneBoxer;
-import com.hbm.tileentity.network.BlockEntityCraneExtractor;
-import com.hbm.tileentity.network.BlockEntityCraneGrabber;
-import com.hbm.tileentity.network.BlockEntityCraneInserter;
-import com.hbm.tileentity.network.BlockEntityCraneRouter;
-import com.hbm.tileentity.network.BlockEntityCraneUnboxer;
-import com.hbm.tileentity.network.BlockEntityDroneCrate;
-import com.hbm.tileentity.network.BlockEntityDroneDock;
-import com.hbm.tileentity.network.BlockEntityDroneProvider;
-import com.hbm.tileentity.network.BlockEntityDroneRequester;
-import com.hbm.tileentity.network.BlockEntityRadioTorchCounter;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageAccess;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageClutter;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageExporter;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageImporter;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageMono;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoTube;
-import com.hbm.tileentity.turret.BlockEntityTurretBaseNT;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.world.inventory.MenuType;
@@ -53,7 +53,6 @@ import net.minecraft.world.inventory.MenuType;
 public final class ModMenus {
 
     private static final RegistryHandle<MenuType<MenuCrate>>[] CRATE = newCrateArray();
-
     private static final Map<Integer, RegistryHandle<MenuType<MenuAnvil>>> ANVIL = new HashMap<>();
     public static RegistryHandle<MenuType<MenuTrainCargoTram>> TRAIN_CARGO_TRAM;
     public static RegistryHandle<MenuType<MenuTrainCargoTramTrailer>> TRAIN_CARGO_TRAM_TRAILER;
@@ -143,7 +142,6 @@ public final class ModMenus {
     public static RegistryHandle<MenuType<MenuMachineEPress>> MACHINE_EPRESS;
     public static RegistryHandle<MenuType<MenuMachineShredder>> MACHINE_SHREDDER;
     public static RegistryHandle<MenuType<MenuMachineFluidTank>> MACHINE_FLUID_TANK;
-
     public static RegistryHandle<MenuType<MenuTurretBase>> TURRET_BASE;
     public static RegistryHandle<MenuType<MenuBarrel>> BARREL;
     public static RegistryHandle<MenuType<MenuMassStorage>> MASS_STORAGE;
@@ -227,338 +225,469 @@ public final class ModMenus {
 
     private ModMenus() {}
 
-    public static void register(IRegistrar r) {
-        MACHINE_CENTRIFUGE = r.registerMenu("machine_centrifuge", MenuMachineCentrifuge::new);
-
+    public static void register() {
+        MACHINE_CENTRIFUGE =
+                FabricRegistrar.registerMenu("machine_centrifuge", MenuMachineCentrifuge::new);
         MACHINE_GASCENT =
-                r.registerBlockEntityMenu("machine_gascent", BlockEntityMachineGasCent.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_gascent", BlockEntityMachineGasCent.class);
         MACHINE_ELECTRIC_FURNACE =
-                r.registerMenu("machine_electric_furnace", MenuMachineElectricFurnace::new);
-        MACHINE_PRESS = r.registerBlockEntityMenu("machine_press", BlockEntityMachinePress.class);
-
+                FabricRegistrar.registerMenu(
+                        "machine_electric_furnace", MenuMachineElectricFurnace::new);
+        MACHINE_PRESS =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_press", BlockEntityMachinePress.class);
         MACHINE_AUTOCRAFTER =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_autocrafter", BlockEntityMachineAutocrafter.class);
-
-        PNEUMATIC_TUBE = r.registerBlockEntityMenu("pneumatic_tube", BlockEntityPneumoTube.class);
-
+        PNEUMATIC_TUBE =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "pneumatic_tube", BlockEntityPneumoTube.class);
         CRANE_INSERTER =
-                r.registerBlockEntityMenu("crane_inserter", BlockEntityCraneInserter.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "crane_inserter", BlockEntityCraneInserter.class);
         CRANE_EXTRACTOR =
-                r.registerBlockEntityMenu("crane_extractor", BlockEntityCraneExtractor.class);
-        CRANE_GRABBER = r.registerBlockEntityMenu("crane_grabber", BlockEntityCraneGrabber.class);
-        CRANE_BOXER = r.registerBlockEntityMenu("crane_boxer", BlockEntityCraneBoxer.class);
-        CRANE_UNBOXER = r.registerBlockEntityMenu("crane_unboxer", BlockEntityCraneUnboxer.class);
-        CRANE_ROUTER = r.registerBlockEntityMenu("crane_router", BlockEntityCraneRouter.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "crane_extractor", BlockEntityCraneExtractor.class);
+        CRANE_GRABBER =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "crane_grabber", BlockEntityCraneGrabber.class);
+        CRANE_BOXER =
+                FabricRegistrar.registerBlockEntityMenu("crane_boxer", BlockEntityCraneBoxer.class);
+        CRANE_UNBOXER =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "crane_unboxer", BlockEntityCraneUnboxer.class);
+        CRANE_ROUTER =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "crane_router", BlockEntityCraneRouter.class);
         PNEUMATIC_STORAGE_ACCESS =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "pneumatic_storage_access", BlockEntityPneumoStorageAccess.class);
         PNEUMATIC_STORAGE_CLUTTER =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "pneumatic_storage_clutter", BlockEntityPneumoStorageClutter.class);
         PNEUMATIC_STORAGE_MONO =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "pneumatic_storage_mono", BlockEntityPneumoStorageMono.class);
         PNEUMATIC_STORAGE_IMPORTER =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "pneumatic_storage_importer", BlockEntityPneumoStorageImporter.class);
         PNEUMATIC_STORAGE_EXPORTER =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "pneumatic_storage_exporter", BlockEntityPneumoStorageExporter.class);
         MACHINE_ASSEMBLY_MACHINE =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_assembly_machine", BlockEntityMachineAssemblyMachine.class);
         MACHINE_ASSEMBLY_FACTORY =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_assembly_factory", BlockEntityMachineAssemblyFactory.class);
         MACHINE_CUSTOM =
-                r.registerBlockEntityMenu("machine_custom", BlockEntityCustomMachine.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_custom", BlockEntityCustomMachine.class);
         MACHINE_CHEMICAL_PLANT =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_chemical_plant", BlockEntityMachineChemicalPlant.class);
         MACHINE_ROCK_MILL =
-                r.registerBlockEntityMenu("machine_rockmill", BlockEntityMachineRockMill.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_rockmill", BlockEntityMachineRockMill.class);
         MACHINE_RADIOLYSIS =
-                r.registerBlockEntityMenu("machine_radiolysis", BlockEntityMachineRadiolysis.class);
-        FUSION_TORUS = r.registerBlockEntityMenu("fusion_torus", BlockEntityFusionTorus.class);
-        CORE_CORE = r.registerBlockEntityMenu("dfc_core", BlockEntityCore.class);
-        CORE_EMITTER = r.registerBlockEntityMenu("dfc_emitter", BlockEntityCoreEmitter.class);
-        CORE_RECEIVER = r.registerBlockEntityMenu("dfc_receiver", BlockEntityCoreReceiver.class);
-        CORE_INJECTOR = r.registerBlockEntityMenu("dfc_injector", BlockEntityCoreInjector.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_radiolysis", BlockEntityMachineRadiolysis.class);
+        FUSION_TORUS =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "fusion_torus", BlockEntityFusionTorus.class);
+        CORE_CORE = FabricRegistrar.registerBlockEntityMenu("dfc_core", BlockEntityCore.class);
+        CORE_EMITTER =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "dfc_emitter", BlockEntityCoreEmitter.class);
+        CORE_RECEIVER =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "dfc_receiver", BlockEntityCoreReceiver.class);
+        CORE_INJECTOR =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "dfc_injector", BlockEntityCoreInjector.class);
         CORE_STABILIZER =
-                r.registerBlockEntityMenu("dfc_stabilizer", BlockEntityCoreStabilizer.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "dfc_stabilizer", BlockEntityCoreStabilizer.class);
         FUSION_KLYSTRON =
-                r.registerBlockEntityMenu("fusion_klystron", BlockEntityFusionKlystron.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "fusion_klystron", BlockEntityFusionKlystron.class);
         FUSION_BREEDER =
-                r.registerBlockEntityMenu("fusion_breeder", BlockEntityFusionBreeder.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "fusion_breeder", BlockEntityFusionBreeder.class);
         MACHINE_PLASMA_FORGE =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_plasma_forge", BlockEntityFusionPlasmaForge.class);
         MACHINE_CHEMICAL_FACTORY =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_chemical_factory", BlockEntityMachineChemicalFactory.class);
         MACHINE_ELECTROLYSER_FLUID =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_electrolyser_fluid", BlockEntityMachineElectrolyser.class);
         MACHINE_ELECTROLYSER_METAL =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_electrolyser_metal", BlockEntityMachineElectrolyser.class);
         MACHINE_REFINERY =
-                r.registerBlockEntityMenu("machine_refinery", BlockEntityMachineRefinery.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_refinery", BlockEntityMachineRefinery.class);
         MACHINE_CATALYTIC_REFORMER =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_catalytic_reformer", BlockEntityMachineCatalyticReformer.class);
         MACHINE_HYDROTREATER =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_hydrotreater", BlockEntityMachineHydrotreater.class);
-        MACHINE_PUREX = r.registerBlockEntityMenu("machine_purex", BlockEntityMachinePUREX.class);
-        MACHINE_MIXER = r.registerBlockEntityMenu("machine_mixer", BlockEntityMachineMixer.class);
-        MACHINE_SILEX = r.registerBlockEntityMenu("machine_silex", BlockEntitySILEX.class);
-        MACHINE_ICF = r.registerBlockEntityMenu("icf", BlockEntityICF.class);
+        MACHINE_PUREX =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_purex", BlockEntityMachinePUREX.class);
+        MACHINE_MIXER =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_mixer", BlockEntityMachineMixer.class);
+        MACHINE_SILEX =
+                FabricRegistrar.registerBlockEntityMenu("machine_silex", BlockEntitySILEX.class);
+        MACHINE_ICF = FabricRegistrar.registerBlockEntityMenu("icf", BlockEntityICF.class);
         MACHINE_ICF_PRESS =
-                r.registerBlockEntityMenu("machine_icf_press", BlockEntityICFPress.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_icf_press", BlockEntityICFPress.class);
         MACHINE_ORE_SLOPPER =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_ore_slopper", BlockEntityMachineOreSlopper.class);
         MACHINE_ANNIHILATOR =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_annihilator", BlockEntityMachineAnnihilator.class);
         MACHINE_BLAST_FURNACE =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_blast_furnace", BlockEntityMachineBlastFurnace.class);
-        MACHINE_CRUCIBLE = r.registerBlockEntityMenu("machine_crucible", BlockEntityCrucible.class);
+        MACHINE_CRUCIBLE =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_crucible", BlockEntityCrucible.class);
         MACHINE_STRAND_CASTER =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_strand_caster", BlockEntityMachineStrandCaster.class);
         MACHINE_PRECASS =
-                r.registerBlockEntityMenu("machine_precass", BlockEntityMachinePrecAss.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_precass", BlockEntityMachinePrecAss.class);
         MACHINE_MINING_LASER =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_mining_laser", BlockEntityMachineMiningLaser.class);
-        FORCEFIELD = r.registerBlockEntityMenu("machine_forcefield", BlockEntityForceField.class);
+        FORCEFIELD =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_forcefield", BlockEntityForceField.class);
         MACHINE_EXCAVATOR =
-                r.registerBlockEntityMenu("machine_excavator", BlockEntityMachineExcavator.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_excavator", BlockEntityMachineExcavator.class);
         MACHINE_CYCLOTRON =
-                r.registerBlockEntityMenu("machine_cyclotron", BlockEntityMachineCyclotron.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_cyclotron", BlockEntityMachineCyclotron.class);
         MACHINE_EXPOSURE_CHAMBER =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_exposure_chamber", BlockEntityMachineExposureChamber.class);
         MACHINE_RADGEN =
-                r.registerBlockEntityMenu("machine_radgen", BlockEntityMachineRadGen.class);
-        MACHINE_RADAR = r.registerBlockEntityMenu("machine_radar", BlockEntityMachineRadar.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_radgen", BlockEntityMachineRadGen.class);
+        MACHINE_RADAR =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_radar", BlockEntityMachineRadar.class);
         MACHINE_RADAR_SLOTS =
-                r.registerBlockEntityMenu("machine_radar_slots", BlockEntityMachineRadar.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_radar_slots", BlockEntityMachineRadar.class);
         MACHINE_REACTOR_BREEDING =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_reactor", BlockEntityMachineReactorBreeding.class);
         REACTOR_RESEARCH =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_reactor_small", BlockEntityReactorResearch.class);
         REACTOR_CONTROL =
-                r.registerBlockEntityMenu("machine_controller", BlockEntityReactorControl.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_controller", BlockEntityReactorControl.class);
         MACHINE_ARC_FURNACE =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_arc_furnace", BlockEntityMachineArcFurnace.class);
         MACHINE_ROTARY_FURNACE =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_rotary_furnace", BlockEntityMachineRotaryFurnace.class);
         HEATER_FIREBOX =
-                r.registerBlockEntityMenu("heater_firebox", BlockEntityHeaterFirebox.class);
-
-        MACHINE_WELL = r.registerBlockEntityMenu("machine_well", BlockEntityOilDrillBase.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "heater_firebox", BlockEntityHeaterFirebox.class);
+        MACHINE_WELL =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_well", BlockEntityOilDrillBase.class);
         MACHINE_COMPRESSOR =
-                r.registerBlockEntityMenu("machine_compressor", BlockEntityMachineCompressor.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_compressor", BlockEntityMachineCompressor.class);
         MACHINE_GAS_FLARE =
-                r.registerBlockEntityMenu("machine_flare", BlockEntityMachineGasFlare.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_flare", BlockEntityMachineGasFlare.class);
         REACTOR_ZIRNOX =
-                r.registerBlockEntityMenu("reactor_zirnox", BlockEntityReactorZirnox.class);
-        WATZ = r.registerBlockEntityMenu("watz", BlockEntityWatz.class);
-        MACHINE_FEL = r.registerBlockEntityMenu("machine_fel", BlockEntityFEL.class);
-        PA_SOURCE = r.registerBlockEntityMenu("pa_source", BlockEntityPASource.class);
-        PA_RFC = r.registerBlockEntityMenu("pa_rfc", BlockEntityPARFC.class);
-        PA_QUADRUPOLE = r.registerBlockEntityMenu("pa_quadrupole", BlockEntityPAQuadrupole.class);
-        PA_DIPOLE = r.registerBlockEntityMenu("pa_dipole", BlockEntityPADipole.class);
-        PA_DETECTOR = r.registerBlockEntityMenu("pa_detector", BlockEntityPADetector.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "reactor_zirnox", BlockEntityReactorZirnox.class);
+        WATZ = FabricRegistrar.registerBlockEntityMenu("watz", BlockEntityWatz.class);
+        MACHINE_FEL = FabricRegistrar.registerBlockEntityMenu("machine_fel", BlockEntityFEL.class);
+        PA_SOURCE = FabricRegistrar.registerBlockEntityMenu("pa_source", BlockEntityPASource.class);
+        PA_RFC = FabricRegistrar.registerBlockEntityMenu("pa_rfc", BlockEntityPARFC.class);
+        PA_QUADRUPOLE =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "pa_quadrupole", BlockEntityPAQuadrupole.class);
+        PA_DIPOLE = FabricRegistrar.registerBlockEntityMenu("pa_dipole", BlockEntityPADipole.class);
+        PA_DETECTOR =
+                FabricRegistrar.registerBlockEntityMenu("pa_detector", BlockEntityPADetector.class);
         MACHINE_SOLDERING_STATION =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_soldering_station", BlockEntityMachineSolderingStation.class);
         MACHINE_ARC_WELDER =
-                r.registerBlockEntityMenu("machine_arc_welder", BlockEntityMachineArcWelder.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_arc_welder", BlockEntityMachineArcWelder.class);
         MACHINE_EPRESS =
-                r.registerBlockEntityMenu("machine_epress", BlockEntityMachineEPress.class);
-        MACHINE_SHREDDER = r.registerMenu("machine_shredder", MenuMachineShredder::new);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_epress", BlockEntityMachineEPress.class);
+        MACHINE_SHREDDER =
+                FabricRegistrar.registerMenu("machine_shredder", MenuMachineShredder::new);
         MACHINE_FLUID_TANK =
-                r.registerBlockEntityMenu("machine_fluidtank", BlockEntityMachineFluidTank.class);
-        TURRET_BASE = r.registerBlockEntityMenu("turret_base", BlockEntityTurretBaseNT.class);
-        BARREL = r.registerBlockEntityMenu("barrel", BlockEntityBarrel.class);
-        MASS_STORAGE = r.registerBlockEntityMenu("mass_storage", BlockEntityMassStorage.class);
-        FILE_CABINET = r.registerBlockEntityMenu("filing_cabinet", BlockEntityFileCabinet.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_fluidtank", BlockEntityMachineFluidTank.class);
+        TURRET_BASE =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "turret_base", BlockEntityTurretBaseNT.class);
+        BARREL = FabricRegistrar.registerBlockEntityMenu("barrel", BlockEntityBarrel.class);
+        MASS_STORAGE =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "mass_storage", BlockEntityMassStorage.class);
+        FILE_CABINET =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "filing_cabinet", BlockEntityFileCabinet.class);
         MACHINE_WOOD_BURNER =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_wood_burner", BlockEntityMachineWoodBurner.class);
         MACHINE_DIESEL =
-                r.registerBlockEntityMenu("machine_diesel", BlockEntityMachineDiesel.class);
-        MACHINE_RTG = r.registerBlockEntityMenu("machine_rtg", BlockEntityMachineRTG.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_diesel", BlockEntityMachineDiesel.class);
+        MACHINE_RTG =
+                FabricRegistrar.registerBlockEntityMenu("machine_rtg", BlockEntityMachineRTG.class);
         MACHINE_TURBINE =
-                r.registerBlockEntityMenu("machine_turbine", BlockEntityMachineTurbine.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_turbine", BlockEntityMachineTurbine.class);
         MACHINE_LARGE_TURBINE =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_large_turbine", BlockEntityMachineLargeTurbine.class);
         MACHINE_COMBUSTION_ENGINE =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_combustion_engine", BlockEntityMachineCombustionEngine.class);
         MACHINE_TURBINEGAS =
-                r.registerBlockEntityMenu("machine_turbinegas", BlockEntityMachineTurbineGas.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_turbinegas", BlockEntityMachineTurbineGas.class);
         MACHINE_TURBOFAN =
-                r.registerBlockEntityMenu("machine_turbofan", BlockEntityMachineTurbofan.class);
-        WASTE_DRUM = r.registerMenu("machine_waste_drum", MenuWasteDrum::new);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_turbofan", BlockEntityMachineTurbofan.class);
+        WASTE_DRUM = FabricRegistrar.registerMenu("machine_waste_drum", MenuWasteDrum::new);
         STORAGE_DRUM =
-                r.registerBlockEntityMenu("machine_storage_drum", BlockEntityStorageDrum.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_storage_drum", BlockEntityStorageDrum.class);
         BATTERY_SOCKET =
-                r.registerBlockEntityMenu("machine_battery_socket", BlockEntityBatterySocket.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_battery_socket", BlockEntityBatterySocket.class);
         MACHINE_BATTERY =
-                r.registerBlockEntityMenu("machine_battery", BlockEntityMachineBattery.class);
-        BATTERY_REDD = r.registerBlockEntityMenu("battery_redd", BlockEntityBatteryREDD.class);
-        NUKE_MAN = r.registerMenu("nuke_man", MenuNukeMan::new);
-        NUKE_GADGET = r.registerMenu("nuke_gadget", MenuNukeGadget::new);
-        NUKE_BOY = r.registerMenu("nuke_boy", MenuNukeBoy::new);
-        NUKE_MIKE = r.registerMenu("nuke_mike", MenuNukeMike::new);
-        NUKE_TSAR = r.registerMenu("nuke_tsar", MenuNukeTsar::new);
-        NUKE_FLEIJA = r.registerMenu("nuke_fleija", MenuNukeFleija::new);
-        NUKE_PROTOTYPE = r.registerMenu("nuke_prototype", MenuNukePrototype::new);
-        NUKE_SOLINIUM = r.registerMenu("nuke_solinium", MenuNukeSolinium::new);
-        NUKE_N2 = r.registerMenu("nuke_n2", MenuNukeN2::new);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_battery", BlockEntityMachineBattery.class);
+        BATTERY_REDD =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "battery_redd", BlockEntityBatteryREDD.class);
+        NUKE_MAN = FabricRegistrar.registerMenu("nuke_man", MenuNukeMan::new);
+        NUKE_GADGET = FabricRegistrar.registerMenu("nuke_gadget", MenuNukeGadget::new);
+        NUKE_BOY = FabricRegistrar.registerMenu("nuke_boy", MenuNukeBoy::new);
+        NUKE_MIKE = FabricRegistrar.registerMenu("nuke_mike", MenuNukeMike::new);
+        NUKE_TSAR = FabricRegistrar.registerMenu("nuke_tsar", MenuNukeTsar::new);
+        NUKE_FLEIJA = FabricRegistrar.registerMenu("nuke_fleija", MenuNukeFleija::new);
+        NUKE_PROTOTYPE = FabricRegistrar.registerMenu("nuke_prototype", MenuNukePrototype::new);
+        NUKE_SOLINIUM = FabricRegistrar.registerMenu("nuke_solinium", MenuNukeSolinium::new);
+        NUKE_N2 = FabricRegistrar.registerMenu("nuke_n2", MenuNukeN2::new);
         MACHINE_MISSILE_ASSEMBLY =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_missile_assembly", BlockEntityMachineMissileAssembly.class);
-        LAUNCH_PAD = r.registerBlockEntityMenu("launch_pad", BlockEntityLaunchPad.class);
+        LAUNCH_PAD =
+                FabricRegistrar.registerBlockEntityMenu("launch_pad", BlockEntityLaunchPad.class);
         LAUNCH_PAD_RUSTED =
-                r.registerBlockEntityMenu("launch_pad_rusted", BlockEntityLaunchPadRusted.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "launch_pad_rusted", BlockEntityLaunchPadRusted.class);
         LAUNCH_PAD_LARGE =
-                r.registerBlockEntityMenu("launch_pad_large", BlockEntityLaunchPadLarge.class);
-        LAUNCH_TABLE = r.registerBlockEntityMenu("launch_table", BlockEntityLaunchTable.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "launch_pad_large", BlockEntityLaunchPadLarge.class);
+        LAUNCH_TABLE =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "launch_table", BlockEntityLaunchTable.class);
         COMPACT_LAUNCHER =
-                r.registerBlockEntityMenu("compact_launcher", BlockEntityCompactLauncher.class);
-        NUKE_CUSTOM = r.registerBlockEntityMenu("nuke_custom", BlockEntityNukeCustom.class);
-        NUKE_FSTBMB = r.registerBlockEntityMenu("nuke_fstbmb", BlockEntityNukeBalefire.class);
-        BOMB_MULTI = r.registerBlockEntityMenu("bomb_multi", BlockEntityBombMulti.class);
-        SOYUZ_CAPSULE = r.registerBlockEntityMenu("soyuz_capsule", BlockEntitySoyuzCapsule.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "compact_launcher", BlockEntityCompactLauncher.class);
+        NUKE_CUSTOM =
+                FabricRegistrar.registerBlockEntityMenu("nuke_custom", BlockEntityNukeCustom.class);
+        NUKE_FSTBMB =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "nuke_fstbmb", BlockEntityNukeBalefire.class);
+        BOMB_MULTI =
+                FabricRegistrar.registerBlockEntityMenu("bomb_multi", BlockEntityBombMulti.class);
+        SOYUZ_CAPSULE =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "soyuz_capsule", BlockEntitySoyuzCapsule.class);
         SOYUZ_LAUNCHER =
-                r.registerBlockEntityMenu("soyuz_launcher", BlockEntitySoyuzLauncher.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "soyuz_launcher", BlockEntitySoyuzLauncher.class);
         LAUNCHPAD_SOYUZ =
-                r.registerBlockEntityMenu("launchpad_soyuz", BlockEntityLaunchpadSoyuz.class);
-        SAT_DOCK = r.registerBlockEntityMenu("sat_dock", BlockEntityMachineSatDock.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "launchpad_soyuz", BlockEntityLaunchpadSoyuz.class);
+        SAT_DOCK =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "sat_dock", BlockEntityMachineSatDock.class);
         RADIO_TORCH_COUNTER =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "radio_torch_counter", BlockEntityRadioTorchCounter.class);
-        DRONE_CRATE = r.registerBlockEntityMenu("drone_crate", BlockEntityDroneCrate.class);
-        DRONE_DOCK = r.registerBlockEntityMenu("drone_dock", BlockEntityDroneDock.class);
+        DRONE_CRATE =
+                FabricRegistrar.registerBlockEntityMenu("drone_crate", BlockEntityDroneCrate.class);
+        DRONE_DOCK =
+                FabricRegistrar.registerBlockEntityMenu("drone_dock", BlockEntityDroneDock.class);
         DRONE_PROVIDER =
-                r.registerBlockEntityMenu("drone_provider", BlockEntityDroneProvider.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "drone_provider", BlockEntityDroneProvider.class);
         DRONE_REQUESTER =
-                r.registerBlockEntityMenu("drone_requester", BlockEntityDroneRequester.class);
-        WEAPON_TABLE = r.registerMenu("weapon_table", MenuWeaponTable::new);
-        BOOK_OF = r.registerMenu("book_of_", MenuBook::new);
-        LEMEGETON = r.registerMenu("lemegeton", MenuLemegeton::new);
-        ARMOR_TABLE = r.registerMenu("armor_table", MenuArmorTable::new);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "drone_requester", BlockEntityDroneRequester.class);
+        WEAPON_TABLE = FabricRegistrar.registerMenu("weapon_table", MenuWeaponTable::new);
+        BOOK_OF = FabricRegistrar.registerMenu("book_of_", MenuBook::new);
+        LEMEGETON = FabricRegistrar.registerMenu("lemegeton", MenuLemegeton::new);
+        ARMOR_TABLE = FabricRegistrar.registerMenu("armor_table", MenuArmorTable::new);
 
-        RBMK_ROD = r.registerBlockEntityMenu("rbmk_fuel_rod", BlockEntityRBMKRod.class);
+        RBMK_ROD =
+                FabricRegistrar.registerBlockEntityMenu("rbmk_fuel_rod", BlockEntityRBMKRod.class);
         RBMK_CONTROL =
-                r.registerBlockEntityMenu("rbmk_control", BlockEntityRBMKControlManual.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "rbmk_control", BlockEntityRBMKControlManual.class);
         RBMK_CONTROL_AUTO =
-                r.registerBlockEntityMenu("rbmk_control_auto", BlockEntityRBMKControlAuto.class);
-        RBMK_BOILER = r.registerBlockEntityMenu("rbmk_boiler", BlockEntityRBMKBoiler.class);
-        RBMK_STORAGE = r.registerBlockEntityMenu("rbmk_storage", BlockEntityRBMKStorage.class);
-        RBMK_HEATER = r.registerBlockEntityMenu("rbmk_heater", BlockEntityRBMKHeater.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "rbmk_control_auto", BlockEntityRBMKControlAuto.class);
+        RBMK_BOILER =
+                FabricRegistrar.registerBlockEntityMenu("rbmk_boiler", BlockEntityRBMKBoiler.class);
+        RBMK_STORAGE =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "rbmk_storage", BlockEntityRBMKStorage.class);
+        RBMK_HEATER =
+                FabricRegistrar.registerBlockEntityMenu("rbmk_heater", BlockEntityRBMKHeater.class);
         RBMK_OUTGASSER =
-                r.registerBlockEntityMenu("rbmk_outgasser", BlockEntityRBMKOutgasser.class);
-        RBMK_CONSOLE = r.registerBlockEntityMenu("rbmk_console", BlockEntityRBMKConsole.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "rbmk_outgasser", BlockEntityRBMKOutgasser.class);
+        RBMK_CONSOLE =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "rbmk_console", BlockEntityRBMKConsole.class);
         RBMK_AUTOLOADER =
-                r.registerBlockEntityMenu("rbmk_autoloader", BlockEntityRBMKAutoloader.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "rbmk_autoloader", BlockEntityRBMKAutoloader.class);
         PWR_CONTROLLER =
-                r.registerBlockEntityMenu("pwr_controller", BlockEntityMachinePWRController.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "pwr_controller", BlockEntityMachinePWRController.class);
 
-        FURNACE_IRON = r.registerBlockEntityMenu("furnace_iron", BlockEntityFurnaceIron.class);
-        FURNACE_STEEL = r.registerBlockEntityMenu("furnace_steel", BlockEntityFurnaceSteel.class);
+        FURNACE_IRON =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "furnace_iron", BlockEntityFurnaceIron.class);
+        FURNACE_STEEL =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "furnace_steel", BlockEntityFurnaceSteel.class);
         FURNACE_COMBINATION =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "furnace_combination", BlockEntityFurnaceCombination.class);
         FURNACE_BRICK =
-                r.registerBlockEntityMenu("machine_furnace_brick", BlockEntityFurnaceBrick.class);
-        HEATER_OVEN = r.registerBlockEntityMenu("heater_oven", BlockEntityHeaterOven.class);
-        MACHINE_ASHPIT = r.registerBlockEntityMenu("machine_ashpit", BlockEntityAshpit.class);
-        MACHINE_SIREN = r.registerBlockEntityMenu("machine_siren", BlockEntityMachineSiren.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_furnace_brick", BlockEntityFurnaceBrick.class);
+        HEATER_OVEN =
+                FabricRegistrar.registerBlockEntityMenu("heater_oven", BlockEntityHeaterOven.class);
+        MACHINE_ASHPIT =
+                FabricRegistrar.registerBlockEntityMenu("machine_ashpit", BlockEntityAshpit.class);
+        MACHINE_SIREN =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_siren", BlockEntityMachineSiren.class);
         HEATER_OILBURNER =
-                r.registerBlockEntityMenu("heater_oilburner", BlockEntityHeaterOilburner.class);
-        HEATER_HEATEX = r.registerBlockEntityMenu("heater_heatex", BlockEntityHeaterHeatex.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "heater_oilburner", BlockEntityHeaterOilburner.class);
+        HEATER_HEATEX =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "heater_heatex", BlockEntityHeaterHeatex.class);
         MACHINE_CRYSTALLIZER =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_crystallizer", BlockEntityMachineCrystallizer.class);
-        MACHINE_COKER = r.registerBlockEntityMenu("machine_coker", BlockEntityMachineCoker.class);
+        MACHINE_COKER =
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_coker", BlockEntityMachineCoker.class);
         MACHINE_LIQUEFACTOR =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_liquefactor", BlockEntityMachineLiquefactor.class);
         MACHINE_SOLIDIFIER =
-                r.registerBlockEntityMenu("machine_solidifier", BlockEntityMachineSolidifier.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_solidifier", BlockEntityMachineSolidifier.class);
         MACHINE_PYROOVEN =
-                r.registerBlockEntityMenu("machine_pyrooven", BlockEntityMachinePyroOven.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_pyrooven", BlockEntityMachinePyroOven.class);
         MACHINE_VACUUM_DISTILL =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_vacuum_distill", BlockEntityMachineVacuumDistill.class);
         MACHINE_FUNNEL =
-                r.registerBlockEntityMenu("machine_funnel", BlockEntityMachineFunnel.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_funnel", BlockEntityMachineFunnel.class);
         MACHINE_MICROWAVE =
-                r.registerBlockEntityMenu("machine_microwave", BlockEntityMicrowave.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_microwave", BlockEntityMicrowave.class);
         MACHINE_SATLINKER =
-                r.registerBlockEntityMenu("machine_satlinker", BlockEntityMachineSatLinker.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_satlinker", BlockEntityMachineSatLinker.class);
         MACHINE_SUPERCOMPUTER =
-                r.registerBlockEntityMenu(
+                FabricRegistrar.registerBlockEntityMenu(
                         "machine_supercomputer", BlockEntityMachineSuperComputer.class);
         MACHINE_TAPE_DRIVE =
-                r.registerBlockEntityMenu("machine_tape_drive", BlockEntityMachineTapeDrive.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_tape_drive", BlockEntityMachineTapeDrive.class);
         MACHINE_KEYFORGE =
-                r.registerBlockEntityMenu("machine_keyforge", BlockEntityMachineKeyForge.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_keyforge", BlockEntityMachineKeyForge.class);
         MACHINE_AMMO_PRESS =
-                r.registerBlockEntityMenu("machine_ammo_press", BlockEntityMachineAmmoPress.class);
+                FabricRegistrar.registerBlockEntityMenu(
+                        "machine_ammo_press", BlockEntityMachineAmmoPress.class);
 
-        TRAIN_CARGO_TRAM = r.registerMenu("train_cargo_tram", MenuTrainCargoTram::new);
+        TRAIN_CARGO_TRAM =
+                FabricRegistrar.registerMenu("train_cargo_tram", MenuTrainCargoTram::new);
         TRAIN_CARGO_TRAM_TRAILER =
-                r.registerMenu("train_cargo_tram_trailer", MenuTrainCargoTramTrailer::new);
-        CART_DESTROYER = r.registerMenu("cart_destroyer", MenuCartDestroyer::new);
+                FabricRegistrar.registerMenu(
+                        "train_cargo_tram_trailer", MenuTrainCargoTramTrailer::new);
+        CART_DESTROYER = FabricRegistrar.registerMenu("cart_destroyer", MenuCartDestroyer::new);
         CONTAINMENT_BOX =
-                r.registerMenu(
+                FabricRegistrar.registerMenu(
                         "containment_box",
                         (id, inv) ->
                                 new MenuItemBox(
                                         CONTAINMENT_BOX.get(), id, inv, ItemLeadBox.LAYOUT));
         TOOLBOX =
-                r.registerMenu(
+                FabricRegistrar.registerMenu(
                         "toolbox",
                         (id, inv) -> new MenuItemBox(TOOLBOX.get(), id, inv, ItemToolBox.LAYOUT));
         AMMO_BAG =
-                r.registerMenu(
+                FabricRegistrar.registerMenu(
                         "ammo_bag",
                         (id, inv) -> new MenuItemBox(AMMO_BAG.get(), id, inv, ItemAmmoBag.LAYOUT));
         CASING_BAG =
-                r.registerMenu(
+                FabricRegistrar.registerMenu(
                         "casing_bag",
                         (id, inv) ->
                                 new MenuItemBox(CASING_BAG.get(), id, inv, ItemCasingBag.LAYOUT));
         PLASTIC_BAG =
-                r.registerMenu(
+                FabricRegistrar.registerMenu(
                         "plastic_bag",
                         (id, inv) ->
                                 new MenuItemBox(PLASTIC_BAG.get(), id, inv, ItemPlasticBag.LAYOUT));
-        REBAR_PLACER = r.registerMenu("rebar_placer", MenuRebarPlacer::new);
+        REBAR_PLACER = FabricRegistrar.registerMenu("rebar_placer", MenuRebarPlacer::new);
 
         for (CrateType type : CrateType.values()) {
             CRATE[type.ordinal()] =
-                    r.registerMenu(type.id, (id, inv) -> new MenuCrate(id, inv, type));
+                    FabricRegistrar.registerMenu(
+                            type.id, (id, inv) -> new MenuCrate(id, inv, type));
         }
         for (int tier : ModBlocks.ANVIL_TIERS) {
             ANVIL.put(
                     tier,
-                    r.registerMenu("anvil_" + tier, (id, inv) -> new MenuAnvil(id, inv, tier)));
+                    FabricRegistrar.registerMenu(
+                            "anvil_" + tier, (id, inv) -> new MenuAnvil(id, inv, tier)));
         }
     }
 

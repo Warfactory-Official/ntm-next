@@ -3,10 +3,10 @@
 
 package com.hbm.world.feature;
 
+import com.hbm.blockentity.machine.storage.BlockEntityCrate;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.storage.BlockSafe;
 import com.hbm.itempool.ComponentLoot;
-import com.hbm.tileentity.machine.storage.BlockEntityCrate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;

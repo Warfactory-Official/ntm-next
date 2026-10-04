@@ -18,8 +18,7 @@ import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
 import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
 import com.hbm.particle.helper.FlameCreator;
-import com.hbm.platform.Services;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -38,6 +37,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -173,7 +173,7 @@ public class XFactoryFlamer {
             BlockPos pos = blockHit.getBlockPos();
             Direction dir = blockHit.getDirection();
             BlockState state = world.getBlockState(pos);
-            if (Services.PLATFORM.isFlammable(world, pos, state, dir)) {
+            if (state.isFlammable((BlockGetter) world, pos, dir)) {
                 BlockPos target = pos.relative(dir);
                 if (world.getBlockState(target).isAir()) {
                     world.setBlockAndUpdate(target, Blocks.FIRE.defaultBlockState());
@@ -221,7 +221,7 @@ public class XFactoryFlamer {
                 BuiltInRegistries.ITEM.getOptional(Library.id("plate_steel")).orElseThrow(), count);
     }
 
-    public static void init(IRegistrar r) {
+    public static void init() {
         flame_diesel =
                 new BulletConfig()
                         .setItem(EnumAmmo.FLAME_DIESEL)
@@ -358,7 +358,7 @@ public class XFactoryFlamer {
                                 });
 
         ModItems.GUN_FLAMER =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_flamer",
                         props ->
                                 new ItemGunBaseNT(
@@ -396,7 +396,7 @@ public class XFactoryFlamer {
                                         .setDefaultAmmo(EnumAmmo.FLAME_DIESEL, 1),
                         Item.Properties::new);
         ModItems.GUN_FLAMER_TOPAZ =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_flamer_topaz",
                         props ->
                                 new ItemGunBaseNT(
@@ -434,7 +434,7 @@ public class XFactoryFlamer {
                                         .setDefaultAmmo(EnumAmmo.FLAME_DIESEL, 1),
                         Item.Properties::new);
         ModItems.GUN_FLAMER_DAYBREAKER =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_flamer_daybreaker",
                         props ->
                                 new ItemGunBaseNT(
@@ -482,7 +482,7 @@ public class XFactoryFlamer {
                         Item.Properties::new);
 
         ModItems.GUN_CHEMTHROWER =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_chemthrower",
                         props ->
                                 new ItemGunChemthrower(

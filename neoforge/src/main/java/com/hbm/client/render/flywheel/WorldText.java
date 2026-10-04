@@ -87,7 +87,6 @@ public final class WorldText {
                         .useOverlay(false)
                         .mipmap(false)
                         .polygonOffset(sheet.style() == Style.POLYGON_OFFSET || sheet.front());
-
         if (sheet.style() == Style.ADDITIVE)
             builder.transparency(Transparency.ORDER_INDEPENDENT_ADDITIVE)
                     .cutout(CutoutShaders.OFF)
@@ -211,7 +210,6 @@ public final class WorldText {
                                     minZ = Math.min(minZ, capture.z[q]);
                                     maxZ = Math.max(maxZ, capture.z[q]);
                                 }
-
                                 float front =
                                         maxZ - minZ > Font.SHADOW_DEPTH / 2F
                                                 ? minZ + Font.SHADOW_DEPTH / 2F
@@ -249,7 +247,6 @@ public final class WorldText {
 
     @FunctionalInterface
     public interface Posing {
-
         void pose(int width, Matrix4f out);
     }
 

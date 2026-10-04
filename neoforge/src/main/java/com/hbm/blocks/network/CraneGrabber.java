@@ -3,10 +3,10 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.blockentity.network.BlockEntityCraneGrabber;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.network.BlockEntityCraneGrabber;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;

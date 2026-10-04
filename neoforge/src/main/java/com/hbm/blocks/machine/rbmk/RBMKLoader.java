@@ -7,17 +7,18 @@ import com.hbm.api.fluidmk2.FluidCaps;
 import com.hbm.api.fluidmk2.FluidFace;
 import com.hbm.api.fluidmk2.FlushIndex;
 import com.hbm.api.fluidmk2.IFluidHandlerMK2;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKBase;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.trait.FT_Coolable;
 import com.hbm.inventory.fluid.trait.FT_Heatable;
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgeCaps;
 import com.hbm.registration.RegistryHandle;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKBase;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.ChunkUtil;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -48,7 +49,6 @@ public class RBMKLoader extends Block implements ICapabilityBlock {
         for (int up = 1; up <= 2; up++) {
             BlockPos at = pos.above(up);
             BlockState state = ChunkUtil.blockStateIfLoaded(level, at);
-
             if (state == null || state.getBlock() instanceof RBMKLoader) return null;
             BlockEntity be =
                     loading != null && loading.getBlockPos().equals(at)
@@ -74,10 +74,11 @@ public class RBMKLoader extends Block implements ICapabilityBlock {
 
     @Override
     public void declareExtraCaps(RegistryHandle<? extends Block> self) {
-        Services.CAPS.registerBlockProvider(
-                FluidCaps.PROVIDER,
-                self,
-                (level, pos, state, be, face) -> provider(level, pos, face));
+        NeoForgeCaps.pendingBlocks.add(
+                new NeoForgeCaps.BlockRegistration<>(
+                        FluidCaps.PROVIDER,
+                        (Supplier<? extends Block>) self,
+                        (level, pos, state, be, face) -> provider(level, pos, face)));
     }
 
     @Override
@@ -130,9 +131,8 @@ public class RBMKLoader extends Block implements ICapabilityBlock {
     }
 
     private static void changed(ServerLevel level, BlockPos pos) {
-        Services.CAPS.invalidateCaps(level, pos);
+        ((Level) level).invalidateCapabilities(pos);
         LevelNodeGraph.invalidateEndpointsAround(level, pos);
-
         FlushIndex.invalidateAt(level, pos.above().asLong());
         FlushIndex.invalidateAt(level, pos.above(2).asLong());
     }

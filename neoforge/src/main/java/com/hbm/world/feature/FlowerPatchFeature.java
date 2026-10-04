@@ -33,7 +33,6 @@ public final class FlowerPatchFeature extends Feature<NoneFeatureConfiguration> 
         if (TomSaveData.impact(level.getLevel()) || random.nextInt(odds) != 0) return false;
 
         BlockPos chunkOrigin = context.origin();
-
         int x = (chunkOrigin.getX() & ~15) + random.nextInt(16);
         int z = (chunkOrigin.getZ() & ~15) + random.nextInt(16);
         int y = WorldgenHeight.lightBlocking(level, x, z);

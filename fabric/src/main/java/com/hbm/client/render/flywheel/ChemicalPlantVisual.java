@@ -3,6 +3,7 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityMachineChemicalPlant;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluidProperties;
@@ -10,7 +11,6 @@ import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityMachineChemicalPlant;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;

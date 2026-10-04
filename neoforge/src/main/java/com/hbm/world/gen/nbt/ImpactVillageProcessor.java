@@ -36,7 +36,6 @@ public final class ImpactVillageProcessor implements StructureProcessor {
             StructurePlaceSettings settings) {
         BlockState state = processedBlockInfo.state();
         BlockState ruin;
-
         if (state.is(BlockTags.MINEABLE_WITH_AXE)
                 || state.instrument() == NoteBlockInstrument.HAT
                 || state.is(Blocks.LADDER)

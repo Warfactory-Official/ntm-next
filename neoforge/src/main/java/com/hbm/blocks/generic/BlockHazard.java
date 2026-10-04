@@ -62,7 +62,6 @@ public class BlockHazard extends Block {
             if (oz != 0) iz = pos.getZ() + 0.5 + oz * 0.5 + rand.nextDouble() * oz;
             switch (extEffect) {
                 case RADFOG -> level.addParticle(ParticleTypes.MYCELIUM, ix, iy, iz, 0.0, 0.0, 0.0);
-
                 case SCHRAB ->
                         level.addParticle(HbmParticles.SCHRAB_FOG.get(), ix, iy, iz, 0.0, 0.0, 0.0);
             }

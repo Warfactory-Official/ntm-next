@@ -53,7 +53,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public final class ConveyorPreviewRenderer {
-
     private static final int LAID = 0xFF00FFFF;
     private static final int REFUSED = 0xFFFF0000;
 
@@ -162,7 +161,6 @@ public final class ConveyorPreviewRenderer {
                         pos,
                         side,
                         run.budget());
-
         color = laid > 0 ? LAID : REFUSED;
         bake(volume);
     }
@@ -189,7 +187,6 @@ public final class ConveyorPreviewRenderer {
             BlockState state,
             RandomSource random) {
         int paint = color;
-
         List<BlockStateModelPart> parts = new ArrayList<>(1);
         model.collectParts(volume, pos, state, random, parts);
 

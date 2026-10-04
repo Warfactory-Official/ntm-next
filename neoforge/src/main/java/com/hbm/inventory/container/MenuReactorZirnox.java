@@ -3,9 +3,10 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityReactorZirnox;
 import com.hbm.inventory.slot.SlotFiltered;
+import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemZirnoxRod;
-import com.hbm.tileentity.machine.BlockEntityReactorZirnox;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 public class MenuReactorZirnox extends BlockEntityMenu<BlockEntityReactorZirnox> {
 
     private static final int SLOT_COUNT = 28;
-
     private static final int[] ROD_X = {
         26, 62, 98, 8, 44, 80, 116, 26, 62, 98, 8, 44, 80, 116, 26, 62, 98, 8, 44, 80, 116, 26, 62,
         98
@@ -44,7 +44,9 @@ public class MenuReactorZirnox extends BlockEntityMenu<BlockEntityReactorZirnox>
                             i,
                             ROD_X[i],
                             ROD_Y[i],
-                            s -> s.getItem() instanceof ItemZirnoxRod));
+                            s ->
+                                    s.getItem() instanceof ItemZirnoxRod
+                                            || s.is(ModItems.METEORITE_SWORD_BRED.get())));
         }
         addSlot(new Slot(container, 24, 143, 124));
         addSlot(new SlotFiltered(container, 26, 143, 142, SlotFiltered.NONE));

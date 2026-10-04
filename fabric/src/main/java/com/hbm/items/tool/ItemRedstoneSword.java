@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 public class ItemRedstoneSword extends Item {
-
     private static final int DAMAGE_PER_PLACEMENT = 14;
 
     public ItemRedstoneSword(Properties properties) {

@@ -14,7 +14,7 @@ import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
 import com.hbm.particle.SpentCasing.CasingType;
 import com.hbm.particle.SpentCasing;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationSequence;
@@ -110,7 +110,7 @@ public class XFactory75Bolt {
                 return null;
             };
 
-    public static void init(IRegistrar r) {
+    public static void init() {
         SpentCasing casing75 =
                 new SpentCasing(CasingType.STRAIGHT)
                         .setColor(SpentCasing.COLOR_CASE_BRASS)
@@ -137,7 +137,7 @@ public class XFactory75Bolt {
                         .setOnImpact(LAMBDA_STANDARD_EXPLODE);
 
         ModItems.GUN_BOLTER =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_bolter",
                         props ->
                                 new ItemGunBaseNT(

@@ -31,7 +31,6 @@ final class NeighborEdge {
     static final String ANNOTATION = "RefreshesNeighborState";
 
     private static final String FOLDED_FQN = "com.hbm.blocks.multiblock.BlockMultiblockCore";
-
     private static final int MAX_CHAIN = 32;
 
     private static final String FOLDED_BASE = "BlockMultiblockCore";

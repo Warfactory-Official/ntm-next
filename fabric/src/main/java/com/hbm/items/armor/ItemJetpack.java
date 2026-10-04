@@ -8,7 +8,7 @@ import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.IFluidContainerItem;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.ChatFormatting;
@@ -92,8 +92,10 @@ public class ItemJetpack extends ItemArmorMod implements IFluidContainerItem {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-        for (String line : I18nUtil.loreLines(getDescriptionId() + ".desc")) {
-            adder.accept(Component.literal(line));
+        for (Component line :
+                TooltipStyle.lines(
+                        Component.translatableWithFallback(getDescriptionId() + ".desc", ""))) {
+            adder.accept(line);
         }
         adder.accept(
                 Component.translatable(

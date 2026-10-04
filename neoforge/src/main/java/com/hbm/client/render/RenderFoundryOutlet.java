@@ -3,11 +3,11 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityCrucible.PourStream;
+import com.hbm.blockentity.machine.BlockEntityFoundryOutlet;
 import com.hbm.blocks.machine.FoundryOutlet;
 import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityCrucible.PourStream;
-import com.hbm.tileentity.machine.BlockEntityFoundryOutlet;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -39,7 +39,6 @@ public class RenderFoundryOutlet
     public RenderFoundryOutlet() {
         this.filterType = FlatCutout.culled(Library.id("textures/block/foundry_outlet_filter.png"));
         this.lockType = FlatCutout.culled(Library.id("textures/block/foundry_outlet_lock.png"));
-
         this.streamType = FlatCutout.of(ResourceManager.foundry_stream_tex);
     }
 
@@ -97,11 +96,9 @@ public class RenderFoundryOutlet
         int light = s.lightCoords;
 
         if (s.filter || s.closed) {
-
             final int shade = FoundryFaces.shaded(0xFFFFFF, s.facing);
             ps.pushPose();
             ps.translate(0.5, 0.0, 0.5);
-
             ps.mulPose(Axis.YP.rotationDegrees(overlayYaw(s.facing)));
             ps.translate(-0.5, 0.0, -0.5);
 
@@ -172,7 +169,6 @@ public class RenderFoundryOutlet
 
         for (StreamState stream : s.streams) {
             ps.pushPose();
-
             ps.translate(
                     0.5 - s.facing.getStepX() * 0.125, 0.125, 0.5 - s.facing.getStepZ() * 0.125);
             final Direction dir = s.facing;

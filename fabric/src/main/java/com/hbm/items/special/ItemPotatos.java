@@ -15,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
 public class ItemPotatos extends ItemBattery {
-
     private static final int BASE_DELAY = 200, JITTER = 100;
 
     public ItemPotatos(Properties properties, long maxCharge, long chargeRate, long dischargeRate) {

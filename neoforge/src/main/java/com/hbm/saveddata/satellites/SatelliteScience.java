@@ -117,9 +117,12 @@ public final class SatelliteScience extends Satellite {
         if (assemblerCount > 0 && requestableSlots.isEmpty() && !assemblerTasks.isEmpty()) {
             SpaceAssemblerRecipe recipe =
                     SpaceAssemblerRecipes.INSTANCE.getRecipe(assemblerTasks.getFirst());
-            if (recipe == null)
-                throw new IllegalStateException(
-                        "Unknown orbital assembly recipe: " + assemblerTasks.getFirst());
+            if (recipe == null) {
+                assemblerTasks.removeFirst();
+                assemblerProgress = 0D;
+                SatelliteSavedData.get(level).setDirty();
+                return;
+            }
             assemblerProgress += (double) assemblerCount / recipe.duration;
             SatelliteSavedData.get(level).setDirty();
             if (assemblerProgress >= 1D) {

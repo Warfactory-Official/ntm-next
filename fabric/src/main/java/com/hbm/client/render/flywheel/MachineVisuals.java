@@ -376,7 +376,6 @@ public final class MachineVisuals {
         SimpleBlockEntityVisualizer.builder(ModBlockEntities.HEATING_OVEN.get())
                 .factory(HeaterOvenVisual::new)
                 .apply();
-
         SimpleBlockEntityVisualizer.builder(ModBlockEntities.RAIL.get())
                 .factory(
                         (ctx, be, partialTick) ->
@@ -418,6 +417,9 @@ public final class MachineVisuals {
                 .factory(SoyuzLauncherVisual::new)
                 .apply();
         SimpleBlockEntityVisualizer.builder(ModBlockEntities.LAUNCHPAD_SOYUZ.get())
+                .factory(LaunchpadSoyuzVisual::new)
+                .apply();
+        SimpleBlockEntityVisualizer.builder(ModBlockEntities.LAUNCHPAD_SOYUZ_ANCHOR.get())
                 .factory(LaunchpadSoyuzVisual::new)
                 .apply();
         SimpleBlockEntityVisualizer.builder(ModBlockEntities.SOLIDIFIER.get())

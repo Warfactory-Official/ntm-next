@@ -7,8 +7,9 @@ import com.hbm.config.GunVisualConfig;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.lib.Library;
 import com.hbm.packet.IPayloadHandlerContext;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.threading.ThreadedPayload;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricServerEvents;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -42,7 +43,6 @@ public final class GunSoundPayload extends ThreadedPayload {
         this.legacy = legacy;
         this.sound = sound;
         this.source = source;
-
         this.x = (int) (x * 8.0);
         this.y = (int) (y * 8.0);
         this.z = (int) (z * 8.0);
@@ -74,7 +74,7 @@ public final class GunSoundPayload extends ThreadedPayload {
             float volume,
             float pitch,
             long seed) {
-        Services.NETWORK.sendToAllAround(
+        PacketWire.sendToAllAround(
                 new GunSoundPayload(legacy, sound, source, x, y, z, volume, pitch, seed),
                 new TargetPoint(level, x, y, z, sound.value().getRange(volume)));
     }
@@ -100,7 +100,7 @@ public final class GunSoundPayload extends ThreadedPayload {
     public void toBytes(ByteBuf buf) {
         RegistryFriendlyByteBuf reg =
                 new RegistryFriendlyByteBuf(
-                        buf, Services.SERVER.getCurrentServer().registryAccess());
+                        buf, FabricServerEvents.getCurrentServer().registryAccess());
         reg.writeBoolean(legacy);
         SoundEvent.STREAM_CODEC.encode(reg, sound);
         reg.writeEnum(source);

@@ -3,7 +3,7 @@
 
 package com.hbm.inventory.container;
 
-import com.hbm.tileentity.machine.BlockEntityHeaterFirebox;
+import com.hbm.blockentity.machine.BlockEntityHeaterFirebox;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

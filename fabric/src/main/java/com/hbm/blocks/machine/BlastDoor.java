@@ -3,13 +3,13 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityBlastDoor;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.generic.BlockDoorGeneric;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.interfaces.IBomb;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemLock;
-import com.hbm.tileentity.machine.BlockEntityBlastDoor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -29,7 +29,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class BlastDoor extends BlockMultiblockCore implements ITickingBlock, IBomb {
-
     private static final int[] DIMENSIONS = {6, 0, 0, 0, 0, 0};
 
     public static final int LEAF_TOP = 5;

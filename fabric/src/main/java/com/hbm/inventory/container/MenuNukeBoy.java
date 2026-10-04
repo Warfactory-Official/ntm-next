@@ -3,8 +3,8 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.bomb.BlockEntityNukeBoy;
 import com.hbm.inventory.slot.SlotComponent;
-import com.hbm.tileentity.bomb.BlockEntityNukeBoy;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;

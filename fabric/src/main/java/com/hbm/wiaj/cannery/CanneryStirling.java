@@ -20,9 +20,9 @@ import com.hbm.wiaj.actions.ActionSetBlock;
 import com.hbm.wiaj.actions.ActionSetZoom;
 import com.hbm.wiaj.actions.ActionUpdateActor;
 import com.hbm.wiaj.actions.ActionWait;
+import com.hbm.wiaj.actors.ActorBlockEntity;
 import com.hbm.wiaj.actors.ActorFancyPanel.Orientation;
 import com.hbm.wiaj.actors.ActorFancyPanel;
-import com.hbm.wiaj.actors.ActorTileEntity;
 import com.hbm.wiaj.actors.ITileActorRenderer;
 import com.hbm.wiaj.cannery.CanneryFirebox.ActorFirebox;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -76,7 +76,7 @@ public class CanneryStirling extends CanneryBase {
         firebox.putDouble("y", 1);
         firebox.putDouble("z", 2);
         firebox.putInt("rotation", 5);
-        scene0.add(new ActionCreateActor(0, new ActorTileEntity(new ActorFirebox(), firebox)));
+        scene0.add(new ActionCreateActor(0, new ActorBlockEntity(new ActorFirebox(), firebox)));
 
         scene0.add(new ActionWait(10));
 
@@ -84,8 +84,7 @@ public class CanneryStirling extends CanneryBase {
         stirling.putDouble("x", 2);
         stirling.putDouble("z", 2);
         stirling.putInt("rotation", 2);
-        scene0.add(new ActionCreateActor(1, new ActorTileEntity(new ActorStirling(), stirling)));
-
+        scene0.add(new ActionCreateActor(1, new ActorBlockEntity(new ActorStirling(), stirling)));
         scene0.add(new ActionUpdateActor(1, "speed", 0F));
         scene0.add(new ActionUpdateActor(1, "y", 2D));
         scene0.add(new ActionUpdateActor(1, "type", 0));
@@ -187,7 +186,7 @@ public class CanneryStirling extends CanneryBase {
         burner.putDouble("y", 1);
         burner.putDouble("z", 2);
         burner.putInt("rotation", 5);
-        scene1.add(new ActionCreateActor(0, new ActorTileEntity(new ActorBurner(), burner)));
+        scene1.add(new ActionCreateActor(0, new ActorBlockEntity(new ActorBurner(), burner)));
         scene1.add(new ActionUpdateActor(1, "y", 3D));
 
         scene1.add(new ActionSetBlock(0, 2, 2, Dummies.cable(Direction.UP, Direction.DOWN)));

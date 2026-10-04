@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin({LivingEntity.class, Player.class})
 abstract class LivingEntityAcceptedDamageMixin {
-
     @ModifyVariable(method = "actuallyHurt", at = @At("HEAD"), argsOnly = true, ordinal = 0)
     private float hbm$acceptedDamage(float amount, ServerLevel level, DamageSource source) {
         LivingEntity self = (LivingEntity) (Object) this;

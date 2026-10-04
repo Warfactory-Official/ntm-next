@@ -4,14 +4,15 @@
 package com.hbm.blocks.machine;
 
 import com.hbm.api.energymk2.EnergyCaps;
+import com.hbm.blockentity.machine.BlockEntityFloodlight;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.IToolable;
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgeCaps;
 import com.hbm.registration.RegistryHandle;
-import com.hbm.tileentity.machine.BlockEntityFloodlight;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -22,6 +23,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -29,7 +31,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class Floodlight extends Block implements ITickingBlock, IToolable, ICapabilityBlock {
-
     public static final IntegerProperty FACING = IntegerProperty.create("facing", 0, 7);
 
     public Floodlight(Properties props) {
@@ -136,9 +137,11 @@ public class Floodlight extends Block implements ITickingBlock, IToolable, ICapa
 
     @Override
     public void declareExtraCaps(RegistryHandle<? extends Block> self) {
-        Services.CAPS.registerProvider(
-                EnergyCaps.RECEIVER,
-                ModBlockEntities.FLOODLIGHT,
-                (be, side) -> side == be.inputDirection() ? be : null);
+        NeoForgeCaps.pending.add(
+                new NeoForgeCaps.Registration<>(
+                        EnergyCaps.RECEIVER,
+                        (Supplier<? extends BlockEntityType<? extends BlockEntityFloodlight>>)
+                                ModBlockEntities.FLOODLIGHT,
+                        (be, side) -> side == be.inputDirection() ? be : null));
     }
 }

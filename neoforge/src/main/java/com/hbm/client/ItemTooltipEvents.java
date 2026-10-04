@@ -3,13 +3,13 @@
 
 package com.hbm.client;
 
+import com.hbm.blockentity.bomb.CustomNukeEntries;
 import com.hbm.client.gui.ScreenArmorTable;
 import com.hbm.client.qmaw.QMAWClient;
 import com.hbm.config.HudConfig;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.handler.HazmatRegistry;
 import com.hbm.hazard.HazardSystem;
-import com.hbm.tileentity.bomb.CustomNukeEntries;
 import com.hbm.util.ArmorRegistry;
 import com.hbm.util.DamageResistanceHandler;
 import com.hbm.util.TooltipStyle;
@@ -29,8 +29,9 @@ public final class ItemTooltipEvents {
 
     public static void append(
             ItemStack stack, @Nullable Player player, TooltipFlag flag, List<Component> tooltip) {
+        RadiationResistanceTooltip.append(stack, tooltip);
         int from = tooltip.size();
-        boolean shift = ModifierKeys.leftShiftHeld();
+        boolean shift = ModifierKeys.detailsHeld();
         DamageResistanceHandler.addInfo(stack, tooltip::add);
         ArmorRegistry.addProtectionTooltip(stack, shift, tooltip::add);
 

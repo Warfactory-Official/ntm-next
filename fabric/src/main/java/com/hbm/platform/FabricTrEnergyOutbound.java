@@ -9,6 +9,7 @@ import com.hbm.blocks.network.CableBlock;
 import com.hbm.blocks.network.CableConductorBlockBase;
 import com.hbm.capability.MachineCaps;
 import com.hbm.capability.NtmCapabilities;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.registration.RegistryHandle;
 import it.unimi.dsi.fastutil.longs.Long2LongMap;
 import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
@@ -23,32 +24,28 @@ import java.util.WeakHashMap;
 import java.util.function.Supplier;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
-final class FabricTrEnergyOutbound {
+public final class FabricTrEnergyOutbound {
 
     private FabricTrEnergyOutbound() {}
 
-    static void register(
-            FabricCapabilityService caps,
+    public static void register(
             List<Supplier<? extends BlockEntityType<?>>> machineTypes,
             List<Supplier<? extends Block>> machineBlocks) {
         for (Supplier<? extends BlockEntityType<?>> type : machineTypes) {
-            registerMachineType(caps, type);
+            registerMachineType(type);
         }
         for (Supplier<? extends Block> block : machineBlocks) {
-            registerMachineBlock(caps, block);
+            registerMachineBlock(block);
         }
-        registerConductors(caps);
+        registerConductors();
         FabricTrEnergyItem.register();
     }
 
@@ -64,32 +61,30 @@ final class FabricTrEnergyOutbound {
         return (declaredOf(be, machine) & MachineCaps.POWER_OUT) != 0 ? machine : null;
     }
 
-    private static void registerConductors(FabricCapabilityService caps) {
+    private static void registerConductors() {
         List<Block> conductors = new ArrayList<>();
-        for (RegistryHandle<? extends Block> handle : Services.REGISTRAR.blocks()) {
+        for (RegistryHandle<? extends Block> handle : FabricRegistrar.registeredBlocks) {
             Block block = handle.get();
             if (block instanceof CableBlock || block instanceof CableConductorBlockBase)
                 conductors.add(block);
         }
         if (conductors.isEmpty()) return;
-        caps.registerForBlocks(
+        FabricCaps.registerForBlocks(
                 EnergyStorage.SIDED,
                 (level, pos, state, be, side) -> {
                     if (!(level instanceof ServerLevel server)) return null;
                     ForeignEnergyBridge bridge = PowerNetwork.bridgeAt(server, pos);
                     if (bridge == null) return null;
-
                     long peerKey = side == null ? pos.asLong() : pos.relative(side).asLong();
                     return NetStaging.of(bridge, server).face(peerKey);
                 },
                 conductors.toArray(new Block[0]));
     }
 
-    private static void registerMachineType(
-            FabricCapabilityService caps, Supplier<? extends BlockEntityType<?>> typeSupplier) {
+    private static void registerMachineType(Supplier<? extends BlockEntityType<?>> typeSupplier) {
         @SuppressWarnings("unchecked")
         BlockEntityType<BlockEntity> type = (BlockEntityType<BlockEntity>) typeSupplier.get();
-        caps.registerForBlockEntity(
+        FabricCaps.registerForBlockEntity(
                 EnergyStorage.SIDED,
                 (be, side) ->
                         side != null
@@ -100,9 +95,8 @@ final class FabricTrEnergyOutbound {
                 type);
     }
 
-    private static void registerMachineBlock(
-            FabricCapabilityService caps, Supplier<? extends Block> blockSupplier) {
-        caps.registerForBlocks(
+    private static void registerMachineBlock(Supplier<? extends Block> blockSupplier) {
+        FabricCaps.registerForBlocks(
                 EnergyStorage.SIDED,
                 (level, pos, state, be, side) -> {
                     if (side == null || !MultiblockSurface.isSurface(state)) return null;
@@ -124,7 +118,6 @@ final class FabricTrEnergyOutbound {
                                     NtmCapabilities.CapRole.POWER_OUT);
                     IEnergyHandlerMK2 machine = receiver != null ? receiver : provider;
                     if (machine == null) return null;
-
                     return MachineStaging.of((BlockEntity) machine, machine)
                             .face(side, receiver, provider);
                 },
@@ -179,7 +172,6 @@ final class FabricTrEnergyOutbound {
 
         @Override
         protected void onFinalCommit() {
-
             if (!insertsByPeer.isEmpty()) {
                 for (ObjectIterator<Long2LongMap.Entry> it =
                                 insertsByPeer.long2LongEntrySet().fastIterator();
@@ -200,7 +192,6 @@ final class FabricTrEnergyOutbound {
             updateSnapshots(transaction);
             insertsByPeer.addTo(peerKey, accepted);
             insertTotalFe += accepted;
-
             tick = level.getGameTime();
             return accepted;
         }
@@ -276,7 +267,6 @@ final class FabricTrEnergyOutbound {
         }
 
         static synchronized MachineStaging of(BlockEntity be, IEnergyHandlerMK2 machine) {
-
             WeakReference<MachineStaging> ref = ALL.get(be);
             MachineStaging staging = ref == null ? null : ref.get();
             if (staging == null)
@@ -308,7 +298,6 @@ final class FabricTrEnergyOutbound {
 
         @Override
         protected void onFinalCommit() {
-
             if (insertFe > 0) machine.transferPower(EnergyConversion.heFromFe(insertFe), false);
             if (extractFe > 0) machine.usePower(EnergyConversion.heFromFe(extractFe));
             insertFe = 0;
@@ -319,7 +308,6 @@ final class FabricTrEnergyOutbound {
         long stageInsert(long maxFe, IEnergyHandlerMK2 receiver, TransactionContext transaction) {
             if (be.isRemoved()) return 0;
             long room = receiver.getMaxPower() - receiver.getPower();
-
             long offered = Math.min(room, receiver.getReceiverSpeed());
             long quantum = EnergyConversion.feQuantum();
             long fits =
@@ -363,7 +351,6 @@ final class FabricTrEnergyOutbound {
             @Nullable IEnergyHandlerMK2 receiver,
             @Nullable IEnergyHandlerMK2 provider)
             implements EnergyStorage {
-
         @Override
         public boolean supportsInsertion() {
             return receiver != null;

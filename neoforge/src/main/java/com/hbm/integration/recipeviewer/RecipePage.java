@@ -63,7 +63,6 @@ public abstract class RecipePage<T> {
 
     public enum Lookup {
         USES,
-
         RECIPES
     }
 

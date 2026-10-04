@@ -160,7 +160,6 @@ public abstract class EntityMissileTier3 extends EntityMissileBaseNT {
 
         @Override
         public void onMissileImpact(BlockHitResult mop) {
-
             for (int i = 0; i < 30; i++) {
                 ExplosionVNT vnt = new ExplosionVNT(level(), getX(), getY() - i, getZ(), 10F, this);
                 vnt.setBlockAllocator(new BlockAllocatorStandard(24));

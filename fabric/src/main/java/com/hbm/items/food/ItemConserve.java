@@ -6,7 +6,7 @@ package com.hbm.items.food;
 
 import com.hbm.entity.effect.EntityVortex;
 import com.hbm.items.ModItems;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -79,8 +79,10 @@ public class ItemConserve extends Item {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-        for (String line : I18nUtil.loreLines(getDescriptionId() + ".desc")) {
-            adder.accept(Component.literal(line));
+        for (Component line :
+                TooltipStyle.lines(
+                        Component.translatableWithFallback(getDescriptionId() + ".desc", ""))) {
+            adder.accept(line);
         }
     }
 
@@ -93,7 +95,6 @@ public class ItemConserve extends Item {
         SLIME(15, 5F),
         MILK(5, 0.25F),
         ASS(6, 0.75F),
-
         PIZZA(8, 75F),
         TUBE(2, 0.25F),
         TOMATO(4, 0.5F),

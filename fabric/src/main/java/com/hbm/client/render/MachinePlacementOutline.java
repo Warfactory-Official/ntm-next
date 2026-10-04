@@ -27,7 +27,6 @@ public final class MachinePlacementOutline {
 
     public static @Nullable State extract(
             Level level, BlockHitResult hit, @Nullable Player player) {
-
         if (player == null
                 || hit.getType() != HitResult.Type.BLOCK
                 || !(player.getMainHandItem().getItem() instanceof BlockItem item)
@@ -75,7 +74,6 @@ public final class MachinePlacementOutline {
                 state.core.getX() - camera.x,
                 state.core.getY() - camera.y,
                 state.core.getZ() - camera.z);
-
         collector.submitShapeOutline(
                 poses,
                 state.shape,

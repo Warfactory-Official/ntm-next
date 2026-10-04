@@ -1,0 +1,6 @@
+{
+  "filter_exclusions": [
+    "gas_blistering"
+  ],
+  "targets": "hbm:gas_mask_olde"
+}

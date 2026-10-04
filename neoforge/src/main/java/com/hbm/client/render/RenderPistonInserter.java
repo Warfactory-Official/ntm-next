@@ -3,12 +3,12 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityPistonInserter;
 import com.hbm.client.model.PistonInserterModel;
 import com.hbm.client.render.flywheel.HbmBlockEntityVisual;
 import com.hbm.client.render.flywheel.WorldItem;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityPistonInserter;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -23,9 +23,7 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;

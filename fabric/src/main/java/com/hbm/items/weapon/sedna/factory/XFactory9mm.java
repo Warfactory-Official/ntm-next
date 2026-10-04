@@ -18,7 +18,7 @@ import com.hbm.items.weapon.sedna.mods.XWeaponModManager;
 import com.hbm.main.ResourceManager;
 import com.hbm.particle.SpentCasing.CasingType;
 import com.hbm.particle.SpentCasing;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -68,7 +68,6 @@ public class XFactory9mm {
                 ItemGunBaseNT.setupRecoil(
                         5, (float) (ctx.getPlayer().getRandom().nextGaussian() * 1.5));
             };
-
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_FIRE_LAG =
             (stack, ctx) -> {
                 GunAnimation type = ItemGunBaseNT.getLastAnim(stack, ctx.configIndex());
@@ -79,7 +78,6 @@ public class XFactory9mm {
                     Receiver primary = ctx.config().getReceivers(stack)[0];
                     IMagazine mag = primary.getMagazine(stack);
                     BulletConfig config = (BulletConfig) mag.getType(stack, ctx.inventory());
-
                     player.awardStat(ModStats.BULLETS.get());
                     mag.useUpAmmo(stack, ctx.inventory(), 1);
                     ItemGunBaseNT.setWear(
@@ -456,7 +454,7 @@ public class XFactory9mm {
                 return null;
             };
 
-    public static void init(IRegistrar r) {
+    public static void init() {
         SpentCasing casing9 =
                 new SpentCasing(CasingType.STRAIGHT)
                         .setColor(SpentCasing.COLOR_CASE_BRASS)
@@ -497,7 +495,7 @@ public class XFactory9mm {
                                         .register("p9ap"));
 
         ModItems.GUN_GREASEGUN =
-                r.registerItem(
+                FabricRegistrar.registerItem(
                         "gun_greasegun",
                         props ->
                                 new ItemGunBaseNT(
@@ -549,7 +547,7 @@ public class XFactory9mm {
                         Item.Properties::new);
 
         ModItems.GUN_LAG =
-                r.registerItem(
+                FabricRegistrar.registerItem(
                         "gun_lag",
                         props ->
                                 new ItemGunBaseNT(
@@ -599,7 +597,7 @@ public class XFactory9mm {
                         Item.Properties::new);
 
         ModItems.GUN_UZI =
-                r.registerItem(
+                FabricRegistrar.registerItem(
                         "gun_uzi",
                         props ->
                                 new ItemGunBaseNT(
@@ -650,7 +648,7 @@ public class XFactory9mm {
                         Item.Properties::new);
 
         ModItems.GUN_UZI_AKIMBO =
-                r.registerItem(
+                FabricRegistrar.registerItem(
                         "gun_uzi_akimbo",
                         props ->
                                 new ItemGunBaseNT(

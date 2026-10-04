@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageMono;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTube;
 import com.hbm.inventory.container.MenuPneumoStorageMono;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageMono;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoTube;
 import java.util.List;
 import java.util.Locale;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -134,8 +134,7 @@ public class ScreenPneumoStorageMono extends ScreenInfoContainer<MenuPneumoStora
         if (checkClick((int) x, (int) y, 174, 36, 20, 8)) {
             CompoundTag data = new CompoundTag();
             data.putBoolean("pressure", true);
-            Services.NETWORK.sendToServer(
-                    new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
             playClick();
         }
         return super.mouseClicked(event, doubleClick);

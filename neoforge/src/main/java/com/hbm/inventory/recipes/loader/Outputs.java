@@ -24,7 +24,6 @@ import net.minecraft.world.item.ItemStackTemplate;
 import org.jspecify.annotations.Nullable;
 
 public final class Outputs {
-
     public static final int RESOLUTION = 1000;
 
     public static final Codec<WeightedList<ItemStack>> CODEC =
@@ -167,5 +166,36 @@ public final class Outputs {
 
     public static Weighted<ItemStack> entry(ItemStack stack, int weight) {
         return new Weighted<>(stack, weight);
+    }
+
+    public static @Nullable ItemStack single(WeightedList<ItemStack> out) {
+        List<Weighted<ItemStack>> entries = out.unwrap();
+        if (entries.size() == 1) return entries.getFirst().value();
+        if (entries.size() != 2) return null;
+        ItemStack first = entries.get(0).value();
+        ItemStack second = entries.get(1).value();
+        if (first.isEmpty() == second.isEmpty()) return null;
+        return first.isEmpty() ? second : first;
+    }
+
+    public static boolean fits(ItemStack slot, WeightedList<ItemStack> out) {
+        if (slot.isEmpty()) return true;
+        ItemStack single = single(out);
+        if (single == null) return false;
+        if (single.isEmpty()) return true;
+        return ItemStack.isSameItemSameComponents(slot, single)
+                && slot.getCount() + single.getCount() <= slot.getMaxStackSize();
+    }
+
+    public static boolean fits(
+            ItemStack slot, WeightedList<ItemStack> @Nullable [] outputs, int index) {
+        return outputs == null || index >= outputs.length || fits(slot, outputs[index]);
+    }
+
+    public static List<ItemStack> outcomes(WeightedList<ItemStack> out) {
+        return out.unwrap().stream()
+                .map(Weighted::value)
+                .filter(stack -> !stack.isEmpty())
+                .toList();
     }
 }

@@ -3,6 +3,7 @@
 
 package com.hbm.integration.rei;
 
+import com.hbm.blockentity.machine.BlockEntityMachineAutocrafter;
 import com.hbm.client.gui.ScreenAnvil;
 import com.hbm.client.gui.ScreenMachineAutocrafter;
 import com.hbm.client.gui.ScreenMachineCustom;
@@ -11,7 +12,9 @@ import com.hbm.integration.recipeviewer.CraftingRows;
 import com.hbm.integration.recipeviewer.CustomMachinePage;
 import com.hbm.integration.recipeviewer.RecipePage;
 import com.hbm.integration.recipeviewer.RecipePages;
-import com.hbm.tileentity.machine.BlockEntityMachineAutocrafter;
+import com.hbm.items.ModDataComponents;
+import com.hbm.items.ModItems;
+import com.hbm.items.machine.FluidIdentifierData;
 import dev.architectury.event.EventResult;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,15 +31,19 @@ import me.shedaniel.rei.api.client.gui.drag.DraggingContext;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
+import me.shedaniel.rei.api.client.registry.display.DynamicDisplayGenerator;
+import me.shedaniel.rei.api.client.registry.entry.EntryRegistry;
 import me.shedaniel.rei.api.client.registry.screen.ExclusionZones;
 import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
+import me.shedaniel.rei.plugin.common.displays.crafting.CraftingDisplay;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomShapelessDisplay;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -49,10 +56,15 @@ import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
 public class NTMReiClientPlugin implements REIClientPlugin {
 
     private final List<CustomMachinePage> customMachines = new ArrayList<>();
+    private volatile CraftingDisplay identifierRecipe;
+
+    @Override
+    public void registerEntries(EntryRegistry registry) {
+        registry.addEntry(EntryStacks.of(new ItemStack(ModItems.FLUID_IDENTIFIER)));
+    }
 
     @Override
     public void registerEntryRenderers(EntryRendererRegistry registry) {
-
         registry.transformTooltip(
                 VanillaEntryTypes.FLUID,
                 (entry, mouse, tooltip) -> {
@@ -84,6 +96,7 @@ public class NTMReiClientPlugin implements REIClientPlugin {
 
     @Override
     public void registerDisplays(DisplayRegistry registry) {
+        identifierRecipe = null;
         for (RecipePage<?> page : pages()) addRows(registry, page);
         for (RecipeHolder<CraftingRecipe> row : CraftingRows.rows()) {
             ShapelessCraftingRecipeDisplay display =
@@ -102,6 +115,43 @@ public class NTMReiClientPlugin implements REIClientPlugin {
                                         && (page.hidden() || !ReiLookupFilter.answers(page))
                                 ? EventResult.interruptFalse()
                                 : EventResult.pass());
+        registry.registerDisplayGenerator(
+                BuiltinPlugin.CRAFTING,
+                new DynamicDisplayGenerator<>() {
+                    @Override
+                    public Optional<List<CraftingDisplay>> getRecipeFor(EntryStack<?> entry) {
+                        if (!(entry.getValue() instanceof ItemStack stack)
+                                || !stack.is(ModItems.FLUID_IDENTIFIER.get())
+                                || stack.getOrDefault(
+                                                ModDataComponents.FLUID_IDENTIFIER.get(),
+                                                FluidIdentifierData.EMPTY)
+                                        .equals(FluidIdentifierData.EMPTY)) {
+                            return Optional.empty();
+                        }
+                        CraftingDisplay recipe = identifierRecipe;
+                        if (recipe == null) {
+                            EntryStack<?> base =
+                                    EntryStacks.of(new ItemStack(ModItems.FLUID_IDENTIFIER));
+                            for (CraftingDisplay display : registry.get(BuiltinPlugin.CRAFTING)) {
+                                if (produces(display, base)) {
+                                    recipe = display;
+                                    identifierRecipe = display;
+                                    break;
+                                }
+                            }
+                        }
+                        return recipe == null ? Optional.empty() : Optional.of(List.of(recipe));
+                    }
+                });
+    }
+
+    private static boolean produces(Display display, EntryStack<?> output) {
+        for (EntryIngredient group : display.getOutputEntries()) {
+            for (EntryStack<?> stack : group) {
+                if (EntryStacks.equalsFuzzy(stack, output)) return true;
+            }
+        }
+        return false;
     }
 
     private static <T> void addRows(DisplayRegistry registry, RecipePage<T> page) {
@@ -113,7 +163,6 @@ public class NTMReiClientPlugin implements REIClientPlugin {
         rule.hide(
                 () -> {
                     List<EntryStack<?>> hidden = new ArrayList<>();
-
                     for (ItemStack stack : RecipePages.hiddenStacks()) {
                         hidden.add(EntryStacks.of(stack));
                         hidden.add(EntryStacks.of(stack.getItem()));
@@ -135,7 +184,6 @@ public class NTMReiClientPlugin implements REIClientPlugin {
                     new Rectangle(area.x(), area.y(), area.width(), area.height()),
                     category);
         }
-
         for (CustomMachinePage page : customMachines) {
             registry.registerContainerClickArea(
                     screen ->

@@ -33,7 +33,6 @@ public class SlotPattern extends Slot {
 
     @Override
     public void set(ItemStack stack) {
-
         if (!stack.isEmpty()) {
             stack = allowStackSize ? stack.copy() : stack.copyWithCount(1);
         }

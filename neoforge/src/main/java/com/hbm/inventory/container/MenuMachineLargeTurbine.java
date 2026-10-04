@@ -4,10 +4,10 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.BlockEntityMachineLargeTurbine;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.BlockEntityMachineLargeTurbine;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;

@@ -1,0 +1,7 @@
+{
+  "failure_damage": 100.0,
+  "minimum_dose": 200.0,
+  "one_in": 3,
+  "result": "hbm:entity_mob_nuclear_creeper",
+  "targets": "minecraft:creeper"
+}

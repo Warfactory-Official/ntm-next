@@ -4,11 +4,11 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityTrappedBrick;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.BlockEntityTrappedBrick;
 import com.mojang.serialization.MapCodec;
 import java.util.function.Function;
 import net.minecraft.core.BlockPos;

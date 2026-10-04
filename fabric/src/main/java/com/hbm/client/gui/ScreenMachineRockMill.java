@@ -3,13 +3,13 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineRockMill;
 import com.hbm.inventory.container.MenuMachineRockMill;
 import com.hbm.inventory.recipes.RockMillRecipes;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachineRockMill;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -161,7 +161,7 @@ public class ScreenMachineRockMill extends ScreenInfoContainer<MenuMachineRockMi
             return;
         }
         List<Component> lines = new ArrayList<>();
-        for (String line : recipe.print()) lines.add(Component.literal(line));
+        lines.addAll(recipe.print());
         GUIElements.drawHoveringTextRecipe(graphics, font, lines, mouseX, mouseY, width, height);
     }
 }

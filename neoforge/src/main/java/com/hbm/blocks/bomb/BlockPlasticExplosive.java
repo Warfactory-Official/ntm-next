@@ -31,7 +31,6 @@ public class BlockPlasticExplosive extends BlockDirectionalBase implements IBomb
 
     public BlockPlasticExplosive(Properties props) {
         super(props);
-
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.DOWN));
     }
 

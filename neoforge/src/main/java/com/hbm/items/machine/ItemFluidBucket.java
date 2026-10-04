@@ -198,7 +198,6 @@ public class ItemFluidBucket extends Item implements IFluidContainerItem {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-
         if (getFluid(stack) == Fluids.EMPTY) return;
         String s = VOLUME + " mB";
         if (stack.getCount() > 1) s = stack.getCount() + "x " + s;

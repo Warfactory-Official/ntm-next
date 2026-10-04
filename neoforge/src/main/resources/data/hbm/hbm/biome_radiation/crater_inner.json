@@ -1,0 +1,5 @@
+{
+  "rad_per_second": 25.0,
+  "targets": "hbm:crater_inner",
+  "wet_multiplier": 5.0
+}

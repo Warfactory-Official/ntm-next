@@ -10,7 +10,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 
 public class RTGUtil {
-
     public static final boolean RTG_DECAY = true;
     public static final boolean SCALE_POWER = false;
 

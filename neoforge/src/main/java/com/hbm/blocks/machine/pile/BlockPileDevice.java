@@ -3,6 +3,10 @@
 
 package com.hbm.blocks.machine.pile;
 
+import com.hbm.blockentity.machine.pile.BlockEntityPileControl;
+import com.hbm.blockentity.machine.pile.BlockEntityPileCore;
+import com.hbm.blockentity.machine.pile.BlockEntityPileLoader;
+import com.hbm.blockentity.machine.pile.BlockEntityPileVent;
 import com.hbm.blocks.BlockHorizontalBase;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
@@ -13,10 +17,6 @@ import com.hbm.interfaces.ILookOverlay;
 import com.hbm.interfaces.IToolable;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.pile.BlockEntityPileControl;
-import com.hbm.tileentity.machine.pile.BlockEntityPileCore;
-import com.hbm.tileentity.machine.pile.BlockEntityPileLoader;
-import com.hbm.tileentity.machine.pile.BlockEntityPileVent;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -130,7 +130,6 @@ public class BlockPileDevice extends BlockHorizontalBase
             return defaultBlockState()
                     .setValue(FACING, context.getHorizontalDirection().getOpposite());
         Direction face = context.getClickedFace();
-
         if (!face.getAxis().isHorizontal()) face = Direction.NORTH;
         return defaultBlockState().setValue(FACING, face);
     }
@@ -199,22 +198,25 @@ public class BlockPileDevice extends BlockHorizontalBase
                                     .getString());
             if (!loader.getItem(0).isEmpty())
                 info.line(
-                        Component.translatable(
-                                        "overlay.hbm.pile.loader.loading",
-                                        loader.getItem(0).getHoverName())
-                                .getString());
+                        Component.empty()
+                                .append(
+                                        Component.translatable(
+                                                "overlay.hbm.pile.loader.loading",
+                                                loader.getItem(0).getHoverName())));
             if (!loader.channelStack.isEmpty()) {
                 info.line(
-                        Component.translatable(
-                                        "overlay.hbm.pile.loader.last_rod",
-                                        loader.channelStack.getHoverName())
-                                .getString());
+                        Component.empty()
+                                .append(
+                                        Component.translatable(
+                                                "overlay.hbm.pile.loader.last_rod",
+                                                loader.channelStack.getHoverName())));
                 if (loader.channelDepletion > 0D)
                     info.line(
-                            Component.translatable(
-                                            "overlay.hbm.pile.loader.depletion",
-                                            Math.round(loader.channelDepletion))
-                                    .getString());
+                            Component.empty()
+                                    .append(
+                                            Component.translatable(
+                                                    "overlay.hbm.pile.loader.depletion",
+                                                    Math.round(loader.channelDepletion))));
             }
         } else if (kind == Kind.CONTROL
                 && level.getBlockEntity(pos) instanceof BlockEntityPileControl control) {

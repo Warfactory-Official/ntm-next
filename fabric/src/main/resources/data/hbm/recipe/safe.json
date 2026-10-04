@@ -1,6 +1,5 @@
 {
-  "type": "hbm:container_upgrade",
-  "carrier": "hbm:crate_steel",
+  "type": "hbm:crafting_shaped",
   "key": {
     "A": "#c:plates/titanium",
     "C": "hbm:crate_steel",

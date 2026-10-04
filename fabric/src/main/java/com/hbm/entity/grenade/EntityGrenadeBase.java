@@ -4,8 +4,8 @@
 package com.hbm.entity.grenade;
 
 import com.hbm.NuclearTech;
+import com.hbm.config.FabricHbmConfig;
 import com.hbm.entity.projectile.EntityThrowableNT;
-import com.hbm.platform.Services;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -26,7 +26,6 @@ public abstract class EntityGrenadeBase extends EntityThrowableNT {
         super.tick();
 
         xRotO = getXRot();
-
         setXRot(getXRot() - (float) (getDeltaMovement().length() * 25));
     }
 
@@ -34,11 +33,10 @@ public abstract class EntityGrenadeBase extends EntityThrowableNT {
     protected void onImpact(HitResult mop) {
         if (mop instanceof EntityHitResult entityHit && level() instanceof ServerLevel server) {
             Entity hit = entityHit.getEntity();
-
             hit.hurtServer(server, damageSources().thrown(this, getOwner()), 0F);
         }
 
-        if (!level().isClientSide() && Services.CONFIG.runtime().extendedLogging()) {
+        if (!level().isClientSide() && FabricHbmConfig.runtime().extendedLogging()) {
             Entity thrower = getOwner();
             NuclearTech.LOGGER.info(
                     "[GREN] Set off grenade at {} / {} / {} by {}!",

@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineDiesel;
 import com.hbm.inventory.container.MenuMachineDiesel;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineDiesel;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -123,8 +123,7 @@ public class ScreenMachineDiesel extends ScreenInfoContainer<MenuMachineDiesel> 
         if (x >= 89 && x < 105 && y > 61 && y <= 75) {
             CompoundTag data = new CompoundTag();
             data.putBoolean("turnOn", true);
-            Services.NETWORK.sendToServer(
-                    new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
             playClick();
             return true;
         }

@@ -33,23 +33,17 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityB92Beam extends Entity {
-
     private static final EntityDataAccessor<Byte> CRITICAL =
             SynchedEntityData.defineId(EntityB92Beam.class, EntityDataSerializers.BYTE);
 
     private int xTile = -1;
     private int yTile = -1;
     private int zTile = -1;
-
     public double gravity = 0.0D;
-
     private BlockState inTile;
     private boolean inGround;
-
     public int canBePickedUp;
-
     public int arrowShake;
-
     public Entity shootingEntity;
     private int ticksInGround;
     private int ticksInAir;
@@ -190,7 +184,6 @@ public class EntityB92Beam extends Entity {
         if (this.tickCount > 100) this.discard();
 
         if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
-
             float yaw =
                     (float)
                             (Math.atan2(this.getDeltaMovement().x, this.getDeltaMovement().z)
@@ -204,7 +197,6 @@ public class EntityB92Beam extends Entity {
             BlockState state =
                     this.level().getBlockState(new BlockPos(this.xTile, this.yTile, this.zTile));
             if (!state.isAir()) {
-
                 this.discard();
                 explode();
             }
@@ -322,7 +314,6 @@ public class EntityB92Beam extends Entity {
         output.putInt("zTile", this.zTile);
         output.putInt("life", this.ticksInGround);
         output.storeNullable("inTile", BlockState.CODEC, this.inTile);
-
         output.putByte("shake", (byte) this.arrowShake);
         output.putBoolean("inGround", this.inGround);
         output.putByte("pickup", (byte) this.canBePickedUp);

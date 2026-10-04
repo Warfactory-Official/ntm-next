@@ -20,7 +20,6 @@ public class SpentCasing implements Cloneable {
     public static final int COLOR_CASE_40MM = 0x515151;
 
     public static final HashMap<String, SpentCasing> casingMap = new HashMap<String, SpentCasing>();
-
     public static final String PLINK_SHELL = "weapon.casing.shell";
     public static final String PLINK_SMALL = "weapon.casing.small";
     public static final String PLINK_MEDIUM = "weapon.casing.medium";

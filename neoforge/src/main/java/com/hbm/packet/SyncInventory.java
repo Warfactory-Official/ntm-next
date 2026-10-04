@@ -3,11 +3,12 @@
 
 package com.hbm.packet;
 
+import com.hbm.inventory.StoredInventory;
 import java.util.Arrays;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 
-public final class SyncInventory extends NonNullList<ItemStack> implements SyncSource {
+public final class SyncInventory extends StoredInventory implements SyncSource {
     private record Layout(
             boolean all, boolean components, long low, long[] high, int maximum, long units) {}
 
@@ -45,8 +46,8 @@ public final class SyncInventory extends NonNullList<ItemStack> implements SyncS
     private final long[] high;
     private final long units;
 
-    private SyncInventory(ItemStack[] items, Layout slots) {
-        super(Arrays.asList(items), ItemStack.EMPTY);
+    private SyncInventory(Object owner, ItemStack[] items, Layout slots) {
+        super(owner, Arrays.asList(items));
         all = slots.all();
         components = slots.components();
         mask = slots.low();
@@ -56,12 +57,12 @@ public final class SyncInventory extends NonNullList<ItemStack> implements SyncS
 
     public static NonNullList<ItemStack> create(Object owner, int size) {
         Layout slots = SLOTS.get(owner.getClass());
-        if (slots == null) return NonNullList.withSize(size, ItemStack.EMPTY);
+        if (slots == null) return StoredInventory.create(owner, size);
         if (slots.maximum() >= size)
             throw new IllegalArgumentException("Sync slot " + slots.maximum());
         ItemStack[] items = new ItemStack[size];
         Arrays.fill(items, ItemStack.EMPTY);
-        return new SyncInventory(items, slots);
+        return new SyncInventory(owner, items, slots);
     }
 
     private boolean watches(int slot) {

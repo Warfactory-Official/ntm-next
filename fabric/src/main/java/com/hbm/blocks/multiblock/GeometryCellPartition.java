@@ -7,7 +7,6 @@ public enum GeometryCellPartition {
     STATIC(false, false, false),
     DOOR(true, false, false),
     DOOR_SEALED(true, true, false),
-
     RAIL(false, false, true);
 
     private final boolean opens;

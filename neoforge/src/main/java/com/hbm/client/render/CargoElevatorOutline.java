@@ -3,8 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityCargoElevator;
 import com.hbm.blocks.machine.BlockCargoElevator;
-import com.hbm.tileentity.machine.BlockEntityCargoElevator;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.ColorTargetState;
 import com.mojang.blaze3d.pipeline.DepthStencilState;
@@ -24,7 +24,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 
 public final class CargoElevatorOutline {
-
     public static final RenderPipeline PIPELINE =
             WorldRenderPipeline.of(
                     RenderPipeline.builder(RenderPipelines.LINES_SNIPPET)

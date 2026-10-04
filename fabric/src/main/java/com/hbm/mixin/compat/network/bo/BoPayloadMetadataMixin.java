@@ -19,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
         targets = "com.PinkCats.bandwidthoptimizer.integration.minecraft.CustomPayloadPacketCompat",
         remap = false)
 public abstract class BoPayloadMetadataMixin {
-
     @Redirect(
             method = "payloadChannel",
             at =

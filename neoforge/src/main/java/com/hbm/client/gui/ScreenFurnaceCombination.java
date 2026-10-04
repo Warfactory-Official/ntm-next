@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityFurnaceCombination;
 import com.hbm.inventory.container.MenuFurnaceCombination;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityFurnaceCombination;
 import java.util.List;
 import java.util.Locale;
 import net.minecraft.client.gui.GuiGraphicsExtractor;

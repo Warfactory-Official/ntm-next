@@ -11,9 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.NoiseColumn;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
@@ -24,18 +22,17 @@ public class SpaceshipStructure extends Structure {
 
     private static final Identifier TEMPLATE_ID = Library.id("spaceship");
     private static final int ANCHOR_DX = 1;
-    private static final int ANCHOR_DY = -3;
+    private static final int ANCHOR_DY = -2;
 
     public SpaceshipStructure(Structure.StructureSettings settings) {
         super(settings);
     }
 
     private static boolean validCorner(Structure.GenerationContext context, int x, int y, int z) {
-        ChunkGenerator generator = context.chunkGenerator();
-        RandomState randomState = context.randomState();
-        NoiseColumn column = generator.getBaseColumn(x, z, context.heightAccessor(), randomState);
-        return LocationIsValidSpawn.isValidGround(
-                column.getBlock(y - 1), column.getBlock(y - 2), false);
+        NoiseColumn column =
+                context.chunkGenerator()
+                        .getBaseColumn(x, z, context.heightAccessor(), context.randomState());
+        return LocationIsValidSpawn.isDryGround(column.getBlock(y - 1));
     }
 
     @Override
@@ -47,7 +44,6 @@ public class SpaceshipStructure extends Structure {
         ChunkPos chunkPos = context.chunkPos();
         int x = chunkPos.getBlockX(8);
         int z = chunkPos.getBlockZ(8);
-
         int y =
                 context.chunkGenerator()
                         .getBaseHeight(

@@ -15,7 +15,7 @@ import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmoSecret;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
 import com.hbm.particle.SpentCasing.CasingType;
 import com.hbm.particle.SpentCasing;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -218,7 +218,7 @@ public class XFactory35800 {
                 }
             };
 
-    public static void init(IRegistrar r) {
+    public static void init() {
 
         p35800 =
                 new BulletConfig()
@@ -250,7 +250,7 @@ public class XFactory35800 {
                         .setOnBeamImpact(LAMBDA_BLACK_IMPACT);
 
         ModItems.GUN_ABERRATOR =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_aberrator",
                         props ->
                                 new ItemGunBaseNT(
@@ -295,7 +295,7 @@ public class XFactory35800 {
                         Item.Properties::new);
 
         ModItems.GUN_ABERRATOR_EOTT =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_aberrator_eott",
                         props ->
                                 new ItemGunBaseNT(

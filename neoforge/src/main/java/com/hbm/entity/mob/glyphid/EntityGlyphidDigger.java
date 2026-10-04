@@ -10,8 +10,7 @@ import com.hbm.entity.mob.glyphid.GlyphidStats.StatBundle;
 import com.hbm.entity.projectile.EntityRubble;
 import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
-import com.hbm.platform.Services;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.Reg;
 import com.hbm.util.MobUtil;
 import java.util.List;
@@ -21,7 +20,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
@@ -32,19 +30,21 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jspecify.annotations.Nullable;
 
 public class EntityGlyphidDigger extends EntityGlyphid {
 
     public static Reg.@Nullable EntityHandle<EntityGlyphidDigger> TYPE;
 
-    public static void register(IRegistrar r) {
+    public static void register() {
         TYPE =
                 Reg.entity(
                         "entity_glyphid_digger",
                         () ->
                                 EntityType.Builder.<EntityGlyphidDigger>of(
                                                 EntityGlyphidDigger::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(1.75F, 1F)
                                         .clientTrackingRange(5)
@@ -53,7 +53,7 @@ public class EntityGlyphidDigger extends EntityGlyphid {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_glyphid_digger"))));
-        r.registerLivingAttributes(TYPE, EntityGlyphidDigger::createAttributes);
+        NeoForgeRegistrar.registerLivingAttributes(TYPE, EntityGlyphidDigger::createAttributes);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -199,7 +199,9 @@ public class EntityGlyphidDigger extends EntityGlyphid {
                         && !(b instanceof BlockMultiblockCell)
                         && level().getBlockEntity(pos) == null
                         && level() instanceof ServerLevel server
-                        && Services.PLATFORM.canEntityDestroyBlock(server, pos, state, this)) {
+                        && (state.canEntityDestroy(server, pos, (LivingEntity) this)
+                                && EventHooks.onEntityDestroyBlock(
+                                        (LivingEntity) this, pos, state))) {
 
                     EntityRubble rubble = new EntityRubble(level(), x1 + 0.5, y1 + 2, z1 + 0.5);
                     rubble.setBlockState(state);

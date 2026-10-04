@@ -3,8 +3,8 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorusStruct;
 import com.hbm.client.render.StructGhost;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionTorusStruct;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;

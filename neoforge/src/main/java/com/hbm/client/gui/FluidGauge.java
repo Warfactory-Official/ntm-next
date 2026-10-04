@@ -23,7 +23,6 @@ import org.joml.Matrix3x2f;
 import org.jspecify.annotations.Nullable;
 
 public final class FluidGauge {
-
     private static final Map<Fluid, Identifier> SHEETS = new ConcurrentHashMap<>();
 
     private FluidGauge() {}

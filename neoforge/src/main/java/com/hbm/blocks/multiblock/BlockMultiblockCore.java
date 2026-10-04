@@ -3,6 +3,8 @@
 
 package com.hbm.blocks.multiblock;
 
+import com.hbm.blockentity.BlockEntityMachineBase;
+import com.hbm.blockentity.Tiltable;
 import com.hbm.blocks.IBlockHighlight;
 import com.hbm.blocks.ISectionGeometry;
 import com.hbm.blocks.ModBlocks;
@@ -12,9 +14,8 @@ import com.hbm.capability.NtmCapabilities.CapRole;
 import com.hbm.interfaces.ICopiable;
 import com.hbm.interfaces.RigidPistonStructure;
 import com.hbm.inventory.IGUIProvider;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.BlockEntityMachineBase;
-import com.hbm.tileentity.Tiltable;
+import com.hbm.platform.NeoForgeCaps;
+import com.hbm.platform.NeoForgePlatform;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.world.phys.PlacementExtraShape;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
@@ -29,6 +30,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.FullChunkStatus;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -77,10 +79,8 @@ public abstract class BlockMultiblockCore extends Block
     public static final int MASK_SOUTH = 1 << 3;
     public static final int MASK_WEST = 1 << 4;
     public static final int MASK_EAST = 1 << 5;
-
     public static final int MASK_HORIZONTAL = 0b111100;
     public static final int MASK_ALL = 0b111111;
-
     public static final int ROLE_POWER_IN = MachineCaps.POWER_IN;
     public static final int ROLE_POWER_OUT = MachineCaps.POWER_OUT;
     public static final int ROLE_FLUID_IN = MachineCaps.FLUID_IN;
@@ -92,13 +92,11 @@ public abstract class BlockMultiblockCore extends Block
     public static final int PASSIVE_NONE = 0;
     public static final int PASSIVE_POWER_IN = 1 << 0;
     public static final int PASSIVE_FLUID_IN = 1 << 1;
-
     public static final int PASSIVE_ITEMS = 1 << 2;
     public static final int PASSIVE_ANY = PASSIVE_POWER_IN | PASSIVE_FLUID_IN | PASSIVE_ITEMS;
     static final int PASSIVE_DOMAINS = 3;
 
     private static final ThreadLocal<Boolean> BUSY = ThreadLocal.withInitial(() -> Boolean.FALSE);
-
     protected final List<AABB> bounding = new ArrayList<>();
     private final VoxelShape[] boundingShapes = new VoxelShape[4];
     private final VoxelShape[] boundingCoreShapes = new VoxelShape[4];
@@ -107,12 +105,11 @@ public abstract class BlockMultiblockCore extends Block
     private final VoxelShape[][] placementExtraShapes = new VoxelShape[4][];
     private static final double[] NO_PLACEMENT_EXTRAS = {};
     private static final VoxelShape[] NO_PLACEMENT_EXTRA_SHAPES = {};
-
     private @Nullable MultiblockMaskTable table;
     private MultiblockFootprint.Layout[] footprints;
 
     protected BlockMultiblockCore(Properties properties) {
-        super(properties);
+        super(properties.isValidSpawn((state, level, pos, type) -> false));
         BlockState state = stateDefinition.any().setValue(FACING, Direction.NORTH);
         registerDefaultState(tilts() ? state.setValue(Tiltable.TILTED, false) : state);
     }
@@ -132,7 +129,7 @@ public abstract class BlockMultiblockCore extends Block
     }
 
     static void notifyCell(ServerLevel level, BlockPos pos) {
-        Services.CAPS.invalidateCaps(level, pos);
+        ((Level) level).invalidateCapabilities(pos);
         LevelNodeGraph.invalidateEndpointsAround(level, pos);
     }
 
@@ -157,11 +154,10 @@ public abstract class BlockMultiblockCore extends Block
     }
 
     public static void foldedCellRemoved(ServerLevel level, BlockPos pos, boolean movedByPiston) {
-
         FoldedOwner owner = movedByPiston || busy() ? null : ownerOf(level, pos);
 
         unindexCell(level, pos);
-        Services.CAPS.invalidateCaps(level, pos);
+        ((Level) level).invalidateCapabilities(pos);
         LevelNodeGraph.invalidateEndpointsAround(level, pos);
 
         if (owner == null) return;
@@ -263,7 +259,6 @@ public abstract class BlockMultiblockCore extends Block
                     facing,
                     (pos, mask) -> {
                         if (!block.isCellOf(level.getBlockState(pos))) return;
-
                         if (MultiblockSurface.recordedCorePacked(
                                         level, pos.getX(), pos.getY(), pos.getZ())
                                 != corePacked) {
@@ -282,15 +277,29 @@ public abstract class BlockMultiblockCore extends Block
     }
 
     public static @Nullable LevelChunk readableChunk(ServerLevel level, int x, int z) {
-        return level.getChunkSource()
-                .getChunkNow(SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z));
+        LevelChunk chunk =
+                level.getChunkSource()
+                        .getChunkNow(
+                                SectionPos.blockToSectionCoord(x),
+                                SectionPos.blockToSectionCoord(z));
+        return chunk != null && chunk.getFullStatus().isOrAfter(FullChunkStatus.FULL)
+                ? chunk
+                : null;
+    }
+
+    public static @Nullable LevelChunk readableChunk(
+            ServerLevel level, int x, int z, LevelChunk knownChunk) {
+        if (knownChunk.getPos().x() != SectionPos.blockToSectionCoord(x)
+                || knownChunk.getPos().z() != SectionPos.blockToSectionCoord(z)) {
+            return readableChunk(level, x, z);
+        }
+        return knownChunk.getFullStatus().isOrAfter(FullChunkStatus.FULL) ? knownChunk : null;
     }
 
     public static boolean canReadWithoutLoading(BlockGetter world, BlockPos pos) {
         if (world instanceof ServerLevel level) {
             return readableChunk(level, pos.getX(), pos.getZ()) != null;
         }
-
         return true;
     }
 
@@ -603,7 +612,6 @@ public abstract class BlockMultiblockCore extends Block
     @Override
     protected VoxelShape getCollisionShape(
             BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-
         if (context.isPlacement() && !level.getBlockState(pos).is(this)) return Shapes.block();
         VoxelShape shape = cellShape(0, 0, 0, state.getValue(FACING), false, true);
         return shape == null ? Shapes.block() : shape;
@@ -620,7 +628,6 @@ public abstract class BlockMultiblockCore extends Block
         Arrays.fill(placementShapes, null);
         Arrays.fill(placementExtraShapes, null);
         this.table = MultiblockMaskTable.bake(this, declaredCaps);
-
         MultiblockCellShapes.bake(this);
         footprints = new MultiblockFootprint.Layout[4];
         for (Direction facing : Direction.Plane.HORIZONTAL) {
@@ -664,7 +671,6 @@ public abstract class BlockMultiblockCore extends Block
         int mask = maskAt(lx, ly, lz, facing, role);
         if (mask == MultiblockMaskTable.NOT_A_CELL) return false;
         if (passiveDomains != PASSIVE_NONE) {
-
             int passive = passiveMaskAt(lx, ly, lz, passiveDomains);
             if (passive != MultiblockMaskTable.NOT_A_CELL) mask |= passive;
         }
@@ -712,7 +718,6 @@ public abstract class BlockMultiblockCore extends Block
                         });
 
         if (!checkRequirement(level, placed, dir, o)) {
-
             ItemStack refund = stack.copyWithCount(1);
             if (!pl.getAbilities().instabuild) pl.getInventory().placeItemBackInInventory(refund);
             return;
@@ -724,7 +729,6 @@ public abstract class BlockMultiblockCore extends Block
             level.setBlock(
                     core, takeWater(defaultBlockState().setValue(FACING, dir), level, core), 3);
             fillSpace(level, core, dir);
-
             BlockEntity placedCore = level.getBlockEntity(core);
             if (placedCore != null) {
                 placedCore.applyComponentsFromItemStack(stack);
@@ -771,10 +775,8 @@ public abstract class BlockMultiblockCore extends Block
         } finally {
             BUSY.set(prev);
         }
-
         indexCells(level, core, dir);
         if (level instanceof ServerLevel server) {
-
             renotifyNeighbours(server, core);
             visitPlacedCells(
                     level, core, dir, (pos, mask) -> renotifyNeighbours(server, pos.immutable()));
@@ -830,8 +832,7 @@ public abstract class BlockMultiblockCore extends Block
                                             MultiblockMaskTable.worldX(lx, ly, lz, facing),
                                             ly,
                                             MultiblockMaskTable.worldZ(lx, ly, lz, facing));
-
-                            Services.PLATFORM.updateNeighbourForOutputSignal(level, cell, this);
+                            NeoForgePlatform.updateNeighbourForOutputSignal(level, cell, this);
                         });
     }
 
@@ -898,8 +899,7 @@ public abstract class BlockMultiblockCore extends Block
             BlockState oldState,
             boolean movedByPiston) {
         super.onPlace(state, level, pos, oldState, movedByPiston);
-        Services.CAPS.invalidateCaps(level, pos);
-
+        level.invalidateCapabilities(pos);
         if (wantsNeighborUpdates() && level instanceof ServerLevel server)
             cellNeighborChanged(server, pos, pos);
     }
@@ -932,10 +932,8 @@ public abstract class BlockMultiblockCore extends Block
 
     protected void removedAt(
             BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-
-        Services.CAPS.invalidateCaps(level, pos);
+        ((Level) level).invalidateCapabilities(pos);
         LevelNodeGraph.invalidateEndpointsAround(level, pos);
-
         if (movedByPiston || BUSY.get()) return;
         demolish(level, pos, this, state.getValue(FACING), false);
     }
@@ -946,12 +944,12 @@ public abstract class BlockMultiblockCore extends Block
             visitCells(
                     core,
                     facing,
-                    (pos, mask) -> Services.CAPS.invalidateCaps(level, notify.set(pos)));
+                    (pos, mask) -> NeoForgeCaps.invalidateCaps(level, notify.set(pos)));
         else
             footprint(facing)
                     .visit(
                             core,
-                            (pos, mask) -> Services.CAPS.invalidateCaps(level, notify.set(pos)));
+                            (pos, mask) -> NeoForgeCaps.invalidateCaps(level, notify.set(pos)));
     }
 
     public void reindexLoadedCells(ServerLevel level, BlockPos core) {
@@ -970,14 +968,13 @@ public abstract class BlockMultiblockCore extends Block
                                 MultiblockSurface.recordedCorePacked(
                                         level, pos.getX(), pos.getY(), pos.getZ());
                         if (recorded != MultiblockSurface.NO_CORE && recorded != corePacked) return;
-                        Services.CAPS.invalidateCaps(level, notify.set(pos));
+                        NeoForgeCaps.invalidateCaps(level, notify.set(pos));
                         LevelNodeGraph.invalidateEndpointsAround(level, notify);
                         scratch.addCell(pos);
                     });
-            Services.CAPS.invalidateCaps(level, core);
+            ((Level) level).invalidateCapabilities(core);
             LevelNodeGraph.invalidateEndpointsAround(level, core);
             flushIndex(level, core, scratch, this);
-
             if (ConveyorNeighbors.isReceiver(this)) {
                 for (int i = 0; i < scratch.cellCount; i++)
                     ConveyorNeighbors.refreshAround(level, BlockPos.of(scratch.cells[i]));
@@ -991,7 +988,6 @@ public abstract class BlockMultiblockCore extends Block
             BlockState coreState, Level level, BlockPos core, Player player, BlockHitResult hit) {
         if (!(level.getBlockEntity(core) instanceof MenuProvider menu))
             return InteractionResult.PASS;
-
         if (player.isSecondaryUseActive()) return InteractionResult.SUCCESS;
         if (!level.isClientSide()) openCoreMenu(player, core, menu);
         return InteractionResult.SUCCESS;

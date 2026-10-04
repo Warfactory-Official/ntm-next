@@ -49,7 +49,6 @@ public final class BobmazonPurchasePayload extends ThreadedPayload {
         List<BobmazonOffer> catalog = BobmazonOffers.forStack(player.getMainHandItem());
 
         if (catalog == null) {
-
             player.sendSystemMessage(
                     Component.translatable("chat.bobmazonPurchase.thereAppearsToBe"));
             player.sendSystemMessage(

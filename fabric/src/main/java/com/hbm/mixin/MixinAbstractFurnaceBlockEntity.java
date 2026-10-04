@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(AbstractFurnaceBlockEntity.class)
 public abstract class MixinAbstractFurnaceBlockEntity {
-
     @WrapOperation(
             method = "consumeFuel",
             at =

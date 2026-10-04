@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.oil.BlockEntityMachineCrackingTower;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
@@ -14,7 +15,6 @@ import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineCrackingTower;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -33,7 +33,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineCrackingTower extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         0, 0, 3, 3, 2, 3, 0, 0, 0,
         8, -1, 3, -1, 2, 0, 0, 0, 0,
@@ -70,7 +69,6 @@ public class MachineCrackingTower extends BlockMultiblockCore
     public boolean checkRequirement(Level level, BlockPos placed, Direction dir, int o) {
         if (!super.checkRequirement(level, placed, dir, o)) return false;
         BlockPos core = placed.offset(dir.getStepX() * o, dir.getStepY() * o, dir.getStepZ() * o);
-
         return MultiblockHandlerXR.checkSpace(level, core, LEG_SPACE_A, placed, dir)
                 && MultiblockHandlerXR.checkSpace(level, core, LEG_SPACE_B, placed, dir)
                 && MultiblockHandlerXR.checkSpace(level, core, LEG_SPACE_C, placed, dir)
@@ -168,7 +166,6 @@ public class MachineCrackingTower extends BlockMultiblockCore
     public void buildLookOverlay(Level level, BlockPos pos, LookInfo info) {
         if (!(level.getBlockEntity(pos) instanceof BlockEntityMachineCrackingTower be)) return;
         info.title(getName().getString(), 0xFFFF00, 0x404000);
-
         for (int i = 0; i < BlockEntityMachineCrackingTower.TANK_COUNT; i++) {
             FluidTankNTM tank = be.tanks[i];
             info.line(

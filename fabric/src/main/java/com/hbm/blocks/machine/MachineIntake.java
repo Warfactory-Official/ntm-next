@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineIntake;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
@@ -10,7 +11,6 @@ import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.tileentity.machine.BlockEntityMachineIntake;
 import com.hbm.util.BobMathUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
@@ -24,7 +24,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineIntake extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
     private static final int[] DIMENSIONS = {0, 0, 1, 0, 1, 0};
 
     public MachineIntake(Properties props) {
@@ -64,7 +63,6 @@ public class MachineIntake extends BlockMultiblockCore
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-
         return RenderShape.MODEL;
     }
 
@@ -96,7 +94,6 @@ public class MachineIntake extends BlockMultiblockCore
 
     @Override
     public MachineCaps caps() {
-
         return MachineCaps.blockKeyed()
                 .powerIn()
                 .fluidOut()

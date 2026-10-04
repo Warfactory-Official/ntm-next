@@ -12,9 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class ItemSchnitzelVegan extends Item {
-
     private static final int FIRE_SECONDS = 5;
-
     private static final double LAUNCH = 2.0D;
 
     public ItemSchnitzelVegan(Properties props) {

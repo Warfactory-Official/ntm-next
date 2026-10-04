@@ -3,9 +3,9 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.BlockEntityEmitter;
 import com.hbm.blocks.generic.BlockEmitter;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
-import com.hbm.tileentity.BlockEntityEmitter;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import java.util.function.Consumer;

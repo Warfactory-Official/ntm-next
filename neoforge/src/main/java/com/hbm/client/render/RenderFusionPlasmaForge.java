@@ -3,6 +3,7 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionPlasmaForge;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.render.flywheel.HbmBlockEntityVisual;
 import com.hbm.client.render.flywheel.WorldItem;
@@ -11,7 +12,6 @@ import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionPlasmaForge;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -69,12 +69,10 @@ public class RenderFusionPlasmaForge
     private static final int BOLTS1 = ResourceManager.fusion_torus.partId("Bolts1");
 
     private static final float BASE_YAW = 90F;
-
     public static final double ICON_RANGE_SQ = 35.0 * 35.0;
     public static final double BEAM_RANGE_SQ = 50.0 * 50.0;
     private static final RenderType BEAM_TYPE =
             FusionPlasmaRenderTypes.beam(Library.id("textures/gui/fluids/stellar_flux.png"));
-
     private static final float BEAM_IN = 0.4375F;
     private static final float BEAM_BOTTOM = 1F;
     private static final float BEAM_TEX = 1.5F;
@@ -84,7 +82,6 @@ public class RenderFusionPlasmaForge
 
     private final HFRWavefrontObject model = ResourceManager.fusion_plasma_forge;
     private final HFRWavefrontObject torus = ResourceManager.fusion_torus;
-
     private final RenderType baseType =
             RenderTypes.entityCutoutCull(ResourceManager.fusion_plasma_forge_tex);
     private final RenderType torusType =
@@ -149,7 +146,6 @@ public class RenderFusionPlasmaForge
         } else {
             FramedItem.framedSpritePrefix(ps);
             FramedItem.framedSpriteAnchor(ps);
-
             FramedItem.framedSpriteCopies(ps, 1, draw);
         }
     }

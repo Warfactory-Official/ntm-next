@@ -36,6 +36,11 @@ public class ItemModSerum extends ItemArmorMod {
     }
 
     @Override
+    public boolean ticksServer() {
+        return true;
+    }
+
+    @Override
     public void modUpdate(LivingEntity entity, ItemStack armor) {
         if (entity.hasEffect(MobEffects.POISON)) {
             entity.removeEffect(MobEffects.POISON);

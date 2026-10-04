@@ -5,8 +5,8 @@ package com.hbm.client.gui;
 
 import com.hbm.inventory.container.MenuRBMKAutoloader;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -70,7 +70,7 @@ public class ScreenRBMKAutoloader extends ScreenInfoContainer<MenuRBMKAutoloader
         BlockPos core = menu.blockEntity().getBlockPos();
         CompoundTag data = new CompoundTag();
         data.putBoolean(key, true);
-        Services.NETWORK.sendToServer(new NbtControlPayload(core, data));
+        PacketWire.sendToServer(new NbtControlPayload(core, data));
         playClick();
         return true;
     }

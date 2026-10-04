@@ -223,7 +223,6 @@ public final class ObjLoader {
             }
             if (corners < 3) throw tokens.fail(null);
             if (corners == 3) {
-
                 System.arraycopy(
                         quads.array(),
                         base + 2 * GroupObject.STRIDE,

@@ -11,6 +11,7 @@ import com.hbm.inventory.BlockMenuContext;
 import com.hbm.inventory.IGUIProvider;
 import com.hbm.inventory.fluid.NeoForgeTokenFluid;
 import com.hbm.inventory.fluid.NtmFluidType;
+import com.hbm.lib.Library;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import java.util.ArrayList;
@@ -77,68 +78,69 @@ import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.*;
 import org.jspecify.annotations.Nullable;
 
-public final class NeoForgeRegistrar implements IRegistrar {
+public final class NeoForgeRegistrar {
+    public static final Map<String, DeferredHolder<FluidType, FluidType>> types = new HashMap<>();
 
-    private final Map<String, DeferredHolder<FluidType, FluidType>> types = new HashMap<>();
-
-    private final DeferredRegister.Blocks blocks =
+    public static final DeferredRegister.Blocks blocks =
             DeferredRegister.createBlocks(NuclearTech.MOD_ID);
-    private final DeferredRegister.Items items = DeferredRegister.createItems(NuclearTech.MOD_ID);
-    private final DeferredRegister<RecipeType<?>> recipeTypes =
+    public static final DeferredRegister.Items items =
+            DeferredRegister.createItems(NuclearTech.MOD_ID);
+    public static final DeferredRegister<RecipeType<?>> recipeTypes =
             DeferredRegister.create(Registries.RECIPE_TYPE, NuclearTech.MOD_ID);
-    private final DeferredRegister<RecipeSerializer<?>> recipeSerializers =
+    public static final DeferredRegister<RecipeSerializer<?>> recipeSerializers =
             DeferredRegister.create(Registries.RECIPE_SERIALIZER, NuclearTech.MOD_ID);
-    private final DeferredRegister<CriterionTrigger<?>> criterionTriggers =
+    public static final DeferredRegister<CriterionTrigger<?>> criterionTriggers =
             DeferredRegister.create(Registries.TRIGGER_TYPE, NuclearTech.MOD_ID);
-    private final DeferredRegister<DataComponentPredicate.Type<?>> componentPredicates =
+    public static final DeferredRegister<DataComponentPredicate.Type<?>> componentPredicates =
             DeferredRegister.create(Registries.DATA_COMPONENT_PREDICATE_TYPE, NuclearTech.MOD_ID);
-    private final DeferredRegister<DataComponentType<?>> dataComponents =
+    public static final DeferredRegister<DataComponentType<?>> dataComponents =
             DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, NuclearTech.MOD_ID);
-    private final DeferredRegister<BlockEntityType<?>> blockEntityTypes =
+    public static final DeferredRegister<BlockEntityType<?>> blockEntityTypes =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, NuclearTech.MOD_ID);
-    private final DeferredRegister<MenuType<?>> menuTypes =
+    public static final DeferredRegister<MenuType<?>> menuTypes =
             DeferredRegister.create(Registries.MENU, NuclearTech.MOD_ID);
-    private final DeferredRegister<CreativeModeTab> creativeTabs =
+    public static final DeferredRegister<CreativeModeTab> creativeTabs =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, NuclearTech.MOD_ID);
-    private final DeferredRegister<Fluid> fluids =
+    public static final DeferredRegister<Fluid> fluids =
             DeferredRegister.create(Registries.FLUID, NuclearTech.MOD_ID);
-    private final DeferredRegister<SoundEvent> soundEvents =
+    public static final DeferredRegister<SoundEvent> soundEvents =
             DeferredRegister.create(Registries.SOUND_EVENT, NuclearTech.MOD_ID);
-    private final DeferredRegister<Identifier> customStats =
+    public static final DeferredRegister<Identifier> customStats =
             DeferredRegister.create(Registries.CUSTOM_STAT, NuclearTech.MOD_ID);
-    private final DeferredRegister<MobEffect> mobEffects =
+    public static final DeferredRegister<MobEffect> mobEffects =
             DeferredRegister.create(Registries.MOB_EFFECT, NuclearTech.MOD_ID);
-    private final DeferredRegister<EntityType<?>> entityTypes =
+    public static final DeferredRegister<EntityType<?>> entityTypes =
             DeferredRegister.create(Registries.ENTITY_TYPE, NuclearTech.MOD_ID);
-    private final DeferredRegister<ParticleType<?>> particleTypes =
+    public static final DeferredRegister<ParticleType<?>> particleTypes =
             DeferredRegister.create(Registries.PARTICLE_TYPE, NuclearTech.MOD_ID);
-    private final DeferredRegister<TicketType> ticketTypes =
+    public static final DeferredRegister<TicketType> ticketTypes =
             DeferredRegister.create(Registries.TICKET_TYPE, NuclearTech.MOD_ID);
-    private final DeferredRegister<StructureType<?>> structureTypes =
+    public static final DeferredRegister<StructureType<?>> structureTypes =
             DeferredRegister.create(Registries.STRUCTURE_TYPE, NuclearTech.MOD_ID);
-    private final DeferredRegister<StructurePieceType> structurePieceTypes =
+    public static final DeferredRegister<StructurePieceType> structurePieceTypes =
             DeferredRegister.create(Registries.STRUCTURE_PIECE, NuclearTech.MOD_ID);
-    private final DeferredRegister<StructurePoolElementType<?>> structurePoolElementTypes =
+    public static final DeferredRegister<StructurePoolElementType<?>> structurePoolElementTypes =
             DeferredRegister.create(Registries.STRUCTURE_POOL_ELEMENT, NuclearTech.MOD_ID);
-    private final DeferredRegister<PlacementModifierType<?>> placementModifiers =
+    public static final DeferredRegister<PlacementModifierType<?>> placementModifiers =
             DeferredRegister.create(Registries.PLACEMENT_MODIFIER_TYPE, NuclearTech.MOD_ID);
-    private final DeferredRegister<Feature<?>> features =
+    public static final DeferredRegister<Feature<?>> features =
             DeferredRegister.create(Registries.FEATURE, NuclearTech.MOD_ID);
-    private final DeferredRegister<MapCodec<? extends StructureProcessor>> structureProcessors =
-            DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, NuclearTech.MOD_ID);
-    private final DeferredRegister<MapCodec<? extends NumberProvider>> lootNumberProviders =
+    public static final DeferredRegister<MapCodec<? extends StructureProcessor>>
+            structureProcessors =
+                    DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, NuclearTech.MOD_ID);
+    public static final DeferredRegister<MapCodec<? extends NumberProvider>> lootNumberProviders =
             DeferredRegister.create(Registries.LOOT_NUMBER_PROVIDER_TYPE, NuclearTech.MOD_ID);
-    private final DeferredRegister<FluidType> fluidTypes =
+    public static final DeferredRegister<FluidType> fluidTypes =
             DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, NuclearTech.MOD_ID);
-    private final List<LivingAttributes<?>> livingAttributes = new ArrayList<>();
-    private final List<SpawnPlacement<?>> spawnPlacements = new ArrayList<>();
-    private final List<DataPackRegistry<?>> dataPackRegistries = new ArrayList<>();
-    private final List<RegistryHandle<? extends Block>> registeredBlocks = new ArrayList<>();
-    private final List<Map.Entry<ResourceKey<CreativeModeTab>, Supplier<ItemStack>>>
+    public static final List<LivingAttributes<?>> livingAttributes = new ArrayList<>();
+    public static final List<SpawnPlacement<?>> spawnPlacements = new ArrayList<>();
+    public static final List<DataPackRegistry<?>> dataPackRegistries = new ArrayList<>();
+    public static final List<RegistryHandle<? extends Block>> registeredBlocks = new ArrayList<>();
+    public static final List<Map.Entry<ResourceKey<CreativeModeTab>, Supplier<ItemStack>>>
             vanillaTabEntries = new ArrayList<>();
-    private boolean frozen;
+    public static boolean frozen;
 
-    public void subscribe(IEventBus modBus) {
+    public static void subscribe(IEventBus modBus) {
         blocks.register(modBus);
         items.register(modBus);
         recipeTypes.register(modBus);
@@ -187,8 +189,7 @@ public final class NeoForgeRegistrar implements IRegistrar {
                 });
     }
 
-    @Override
-    public <B extends Block> RegistryHandle<B> registerBlock(
+    public static <B extends Block> RegistryHandle<B> registerBlock(
             String name,
             Function<BlockBehaviour.Properties, ? extends B> factory,
             Supplier<BlockBehaviour.Properties> props) {
@@ -200,13 +201,12 @@ public final class NeoForgeRegistrar implements IRegistrar {
                                 factory.apply(
                                         props.get()
                                                 .setId(ResourceKey.create(Registries.BLOCK, key))));
-        RegistryHandle<B> handle = RegistryHandle.of(idOf(name), holder);
+        RegistryHandle<B> handle = RegistryHandle.of(Library.id(name), holder);
         registeredBlocks.add(handle);
         return handle;
     }
 
-    @Override
-    public <I extends Item> RegistryHandle<I> registerItem(
+    public static <I extends Item> RegistryHandle<I> registerItem(
             String name,
             Function<Item.Properties, ? extends I> factory,
             Supplier<Item.Properties> props) {
@@ -218,17 +218,16 @@ public final class NeoForgeRegistrar implements IRegistrar {
                                 factory.apply(
                                         props.get()
                                                 .setId(ResourceKey.create(Registries.ITEM, key))));
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public <I extends Item> RegistryHandle<I> registerItem(
+    public static <I extends Item> RegistryHandle<I> registerItem(
             String name,
             Identifier model,
             Function<Item.Properties, ? extends I> factory,
             Supplier<Item.Properties> props) {
         assertOpen("registerItem");
-        Reg.recordItemModel(idOf(name), model);
+        Reg.recordItemModel(Library.id(name), model);
         DeferredItem<I> holder =
                 items.register(
                         name,
@@ -241,30 +240,28 @@ public final class NeoForgeRegistrar implements IRegistrar {
                                             components.set(DataComponents.ITEM_MODEL, model));
                             return item;
                         });
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public <T extends BlockEntity> RegistryHandle<BlockEntityType<T>> registerBlockEntityType(
-            String name, Supplier<BlockEntityType<T>> typeFactory) {
+    public static <T extends BlockEntity>
+            RegistryHandle<BlockEntityType<T>> registerBlockEntityType(
+                    String name, Supplier<BlockEntityType<T>> typeFactory) {
         assertOpen("registerBlockEntityType");
         DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> holder =
                 blockEntityTypes.register(name, typeFactory);
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public <T extends AbstractContainerMenu> RegistryHandle<MenuType<T>> registerMenu(
+    public static <T extends AbstractContainerMenu> RegistryHandle<MenuType<T>> registerMenu(
             String name, MenuType.MenuSupplier<T> factory) {
         assertOpen("registerMenu");
         DeferredHolder<MenuType<?>, MenuType<T>> holder =
                 menuTypes.register(name, () -> new MenuType<>(factory, FeatureFlags.VANILLA_SET));
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
-    public <T extends AbstractContainerMenu, BE extends BlockEntity & MenuProvider>
+    public static <T extends AbstractContainerMenu, BE extends BlockEntity & MenuProvider>
             RegistryHandle<MenuType<T>> registerBlockEntityMenu(
                     String name, Class<BE> blockEntityClass) {
         assertOpen("registerBlockEntityMenu");
@@ -289,7 +286,7 @@ public final class NeoForgeRegistrar implements IRegistrar {
                                                                 + " at "
                                                                 + context.pos()
                                                                 + " while opening "
-                                                                + idOf(name)
+                                                                + Library.id(name)
                                                                 + ", found "
                                                                 + blockEntity);
                                             }
@@ -303,14 +300,13 @@ public final class NeoForgeRegistrar implements IRegistrar {
                                             if (menu == null)
                                                 throw new IllegalStateException(
                                                         "GUI provider returned no menu for "
-                                                                + idOf(name));
+                                                                + Library.id(name));
                                             return (T) menu;
                                         }));
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public RegistryHandle<CreativeModeTab> registerCreativeModeTab(
+    public static RegistryHandle<CreativeModeTab> registerCreativeModeTab(
             String name, Consumer<CreativeModeTab.Builder> config) {
         assertOpen("registerCreativeModeTab");
         DeferredHolder<CreativeModeTab, CreativeModeTab> holder =
@@ -321,100 +317,82 @@ public final class NeoForgeRegistrar implements IRegistrar {
                             config.accept(builder);
                             return builder.build();
                         });
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public Consumer<CreativeModeTab.Builder> searchBar() {
+    public static Consumer<CreativeModeTab.Builder> searchBar() {
         return CreativeModeTab.Builder::withSearchBar;
     }
 
-    @Override
-    public void addToVanillaTab(ResourceKey<CreativeModeTab> tab, Supplier<ItemStack> entry) {
-        vanillaTabEntries.add(Map.entry(tab, entry));
+    public static <T extends Recipe<?>> RegistryHandle<RecipeType<T>> registerRecipeType(
+            String name) {
+        Identifier id = Library.id(name);
+        return registerRecipeType(name, new NamedRecipeType<>(id));
     }
 
-    @Override
-    public <T extends Recipe<?>> RegistryHandle<RecipeType<T>> registerRecipeType(String name) {
-        Identifier id = idOf(name);
-        return registerRecipeType(
-                name,
-                new RecipeType<T>() {
-                    @Override
-                    public String toString() {
-                        return id.toString();
-                    }
-                });
-    }
-
-    @Override
-    public <T extends Recipe<?>> RegistryHandle<RecipeType<T>> registerRecipeType(
+    public static <T extends Recipe<?>> RegistryHandle<RecipeType<T>> registerRecipeType(
             String name, RecipeType<T> instance) {
         assertOpen("registerRecipeType");
-        Identifier id = idOf(name);
+        Identifier id = Library.id(name);
         DeferredHolder<RecipeType<?>, RecipeType<T>> holder =
                 recipeTypes.register(name, () -> instance);
         return RegistryHandle.of(id, holder);
     }
 
-    @Override
-    public <T extends Recipe<?>> RegistryHandle<RecipeSerializer<T>> registerRecipeSerializer(
-            String name, RecipeSerializer<T> serializer) {
+    public static <T extends Recipe<?>>
+            RegistryHandle<RecipeSerializer<T>> registerRecipeSerializer(
+                    String name, RecipeSerializer<T> serializer) {
         assertOpen("registerRecipeSerializer");
-        Identifier id = idOf(name);
+        Identifier id = Library.id(name);
         DeferredHolder<RecipeSerializer<?>, RecipeSerializer<T>> holder =
                 recipeSerializers.register(name, () -> serializer);
         return RegistryHandle.of(id, holder);
     }
 
-    @Override
-    public <T extends CriterionTrigger<?>> RegistryHandle<T> registerCriterionTrigger(
+    public static <T extends CriterionTrigger<?>> RegistryHandle<T> registerCriterionTrigger(
             String name, T trigger) {
         assertOpen("registerCriterionTrigger");
         DeferredHolder<CriterionTrigger<?>, T> holder =
                 criterionTriggers.register(name, () -> trigger);
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public <T extends DataComponentPredicate>
+    public static <T extends DataComponentPredicate>
             RegistryHandle<DataComponentPredicate.Type<T>> registerDataComponentPredicate(
                     String name, Codec<T> codec) {
         assertOpen("registerDataComponentPredicate");
         DeferredHolder<DataComponentPredicate.Type<?>, DataComponentPredicate.Type<T>> holder =
                 componentPredicates.register(
                         name, () -> new DataComponentPredicate.ConcreteType<>(codec));
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public <T> RegistryHandle<DataComponentType<T>> registerDataComponent(
+    public static <T> RegistryHandle<DataComponentType<T>> registerDataComponent(
             String name, DataComponentType<T> type) {
         assertOpen("registerDataComponent");
-        Identifier id = idOf(name);
+        Identifier id = Library.id(name);
         DeferredHolder<DataComponentType<?>, DataComponentType<T>> holder =
                 dataComponents.register(name, () -> type);
         return RegistryHandle.of(id, holder);
     }
 
-    @Override
-    public RegistryHandle<Fluid> registerFluid(String name) {
+    public static RegistryHandle<Fluid> registerFluid(String name) {
         assertOpen("registerFluid");
         DeferredHolder<Fluid, NeoForgeTokenFluid> fluidHolder =
                 fluids.register(name, () -> new NeoForgeTokenFluid(fluidTypeOf(name)));
         DeferredHolder<FluidType, FluidType> typeHolder =
                 fluidTypes.register(name, () -> new NtmFluidType(fluidHolder::get, name));
         types.put(name, typeHolder);
-        return RegistryHandle.<Fluid>of(idOf(name), fluidHolder::get);
+        return RegistryHandle.<Fluid>of(Library.id(name), fluidHolder::get);
     }
 
-    @Override
-    public ClassicFluid.Pair registerClassicFluid(String name, ClassicFluid.Spec spec) {
+    public static ClassicFluid.Pair registerClassicFluid(String name, ClassicFluid.Spec spec) {
         assertOpen("registerClassicFluid");
         String flowingName = "flowing_" + name;
-        DeferredHolder<Fluid, Fluid> source = DeferredHolder.create(Registries.FLUID, idOf(name));
+        DeferredHolder<Fluid, Fluid> source =
+                DeferredHolder.create(Registries.FLUID, Library.id(name));
         DeferredHolder<Fluid, Fluid> flowing =
-                DeferredHolder.create(Registries.FLUID, idOf(flowingName));
+                DeferredHolder.create(Registries.FLUID, Library.id(flowingName));
         Supplier<? extends FluidType> type =
                 switch (spec.physics()) {
                     case WATER -> NeoForgeMod.WATER_TYPE::value;
@@ -429,56 +407,51 @@ public final class NeoForgeRegistrar implements IRegistrar {
                         flowingName,
                         () -> new NeoForgeClassicFluid.Flowing(spec, source, flowing, type));
         return new ClassicFluid.Pair(
-                RegistryHandle.of(idOf(name), still), RegistryHandle.of(idOf(flowingName), flow));
+                RegistryHandle.of(Library.id(name), still),
+                RegistryHandle.of(Library.id(flowingName), flow));
     }
 
-    private Supplier<? extends FluidType> fluidTypeOf(String name) {
+    public static Supplier<? extends FluidType> fluidTypeOf(String name) {
         return () -> types.get(name).get();
     }
 
-    @Override
-    public RegistryHandle<SoundEvent> registerSound(String name) {
+    public static RegistryHandle<SoundEvent> registerSound(String name) {
         assertOpen("registerSound");
-        Identifier id = idOf(name);
+        Identifier id = Library.id(name);
         DeferredHolder<SoundEvent, SoundEvent> holder =
                 soundEvents.register(name, () -> SoundEvent.createVariableRangeEvent(id));
         return RegistryHandle.of(id, holder);
     }
 
-    @Override
-    public RegistryHandle<Identifier> registerCustomStat(String name) {
+    public static RegistryHandle<Identifier> registerCustomStat(String name) {
         assertOpen("registerCustomStat");
-        Identifier id = idOf(name);
+        Identifier id = Library.id(name);
         DeferredHolder<Identifier, Identifier> holder = customStats.register(name, () -> id);
         return RegistryHandle.of(id, holder);
     }
 
-    @Override
-    public <T extends MobEffect> RegistryHandle<T> registerMobEffect(
+    public static <T extends MobEffect> RegistryHandle<T> registerMobEffect(
             String name, Supplier<T> factory) {
         assertOpen("registerMobEffect");
         DeferredHolder<MobEffect, T> holder = mobEffects.register(name, factory);
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public <T extends Entity> RegistryHandle<EntityType<T>> registerEntityType(
+    public static <T extends Entity> RegistryHandle<EntityType<T>> registerEntityType(
             String name, Supplier<EntityType<T>> typeFactory) {
         assertOpen("registerEntityType");
         DeferredHolder<EntityType<?>, EntityType<T>> holder =
                 entityTypes.register(name, typeFactory);
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public <T extends LivingEntity> void registerLivingAttributes(
+    public static <T extends LivingEntity> void registerLivingAttributes(
             RegistryHandle<EntityType<T>> type, Supplier<AttributeSupplier.Builder> attributes) {
         assertOpen("registerLivingAttributes");
         livingAttributes.add(new LivingAttributes<>(type, attributes));
     }
 
-    @Override
-    public <T extends Mob> void registerSpawnPlacement(
+    public static <T extends Mob> void registerSpawnPlacement(
             RegistryHandle<EntityType<T>> type,
             SpawnPlacementType placement,
             Heightmap.Types heightmap,
@@ -487,109 +460,90 @@ public final class NeoForgeRegistrar implements IRegistrar {
         spawnPlacements.add(new SpawnPlacement<>(type, placement, heightmap, predicate));
     }
 
-    @Override
-    public <T extends ParticleType<?>> RegistryHandle<T> registerParticleType(
+    public static <T extends ParticleType<?>> RegistryHandle<T> registerParticleType(
             String name, Supplier<T> typeFactory) {
         assertOpen("registerParticleType");
         DeferredHolder<ParticleType<?>, T> holder = particleTypes.register(name, typeFactory);
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public RegistryHandle<TicketType> registerTicketType(
+    public static RegistryHandle<TicketType> registerTicketType(
             String name, Supplier<TicketType> typeFactory) {
         assertOpen("registerTicketType");
         DeferredHolder<TicketType, TicketType> holder = ticketTypes.register(name, typeFactory);
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public <T extends Structure> RegistryHandle<StructureType<T>> registerStructureType(
+    public static <T extends Structure> RegistryHandle<StructureType<T>> registerStructureType(
             String name, MapCodec<T> codec) {
         assertOpen("registerStructureType");
         DeferredHolder<StructureType<?>, StructureType<T>> holder =
                 structureTypes.register(name, () -> () -> codec);
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public RegistryHandle<StructurePieceType> registerStructurePieceType(
+    public static RegistryHandle<StructurePieceType> registerStructurePieceType(
             String name, StructurePieceType type) {
         assertOpen("registerStructurePieceType");
         DeferredHolder<StructurePieceType, StructurePieceType> holder =
                 structurePieceTypes.register(name, () -> type);
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public <T extends StructurePoolElement>
+    public static <T extends StructurePoolElement>
             RegistryHandle<StructurePoolElementType<T>> registerStructurePoolElementType(
                     String name, MapCodec<T> codec) {
         assertOpen("registerStructurePoolElementType");
         DeferredHolder<StructurePoolElementType<?>, StructurePoolElementType<T>> holder =
                 structurePoolElementTypes.register(name, () -> () -> codec);
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public <P extends PlacementModifier>
+    public static <P extends PlacementModifier>
             RegistryHandle<PlacementModifierType<P>> registerPlacementModifierType(
                     String name, MapCodec<P> codec) {
         assertOpen("registerPlacementModifierType");
         DeferredHolder<PlacementModifierType<?>, PlacementModifierType<P>> holder =
                 placementModifiers.register(name, () -> () -> codec);
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public <FC extends FeatureConfiguration, F extends Feature<FC>>
+    public static <FC extends FeatureConfiguration, F extends Feature<FC>>
             RegistryHandle<F> registerFeature(String name, F feature) {
         assertOpen("registerFeature");
         DeferredHolder<Feature<?>, F> holder = features.register(name, () -> feature);
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public <T extends StructureProcessor>
+    public static <T extends StructureProcessor>
             RegistryHandle<MapCodec<T>> registerStructureProcessorType(
                     String name, MapCodec<T> codec) {
         assertOpen("registerStructureProcessorType");
         DeferredHolder<MapCodec<? extends StructureProcessor>, MapCodec<T>> holder =
                 structureProcessors.register(name, () -> codec);
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public <T extends NumberProvider> RegistryHandle<MapCodec<T>> registerLootNumberProviderType(
-            String name, MapCodec<T> codec) {
+    public static <T extends NumberProvider>
+            RegistryHandle<MapCodec<T>> registerLootNumberProviderType(
+                    String name, MapCodec<T> codec) {
         DeferredHolder<MapCodec<? extends NumberProvider>, MapCodec<T>> holder =
                 lootNumberProviders.register(name, () -> codec);
-        return RegistryHandle.of(idOf(name), holder);
+        return RegistryHandle.of(Library.id(name), holder);
     }
 
-    @Override
-    public <T> void registerDataPackRegistry(ResourceKey<Registry<T>> key, Codec<T> codec) {
+    public static <T> void registerDataPackRegistry(ResourceKey<Registry<T>> key, Codec<T> codec) {
         assertOpen("registerDataPackRegistry");
         dataPackRegistries.add(new DataPackRegistry<>(key, codec, null));
     }
 
-    @Override
-    public <T> void registerSyncedDataPackRegistry(ResourceKey<Registry<T>> key, Codec<T> codec) {
+    public static <T> void registerSyncedDataPackRegistry(
+            ResourceKey<Registry<T>> key, Codec<T> codec) {
         assertOpen("registerSyncedDataPackRegistry");
         dataPackRegistries.add(new DataPackRegistry<>(key, codec, codec));
     }
 
-    @Override
-    public void freeze() {
-        frozen = true;
-    }
-
-    @Override
-    public List<RegistryHandle<? extends Block>> blocks() {
-        return registeredBlocks;
-    }
-
-    private void assertOpen(String what) {
+    public static void assertOpen(String what) {
         if (frozen) {
             throw new IllegalStateException(
                     "registration is closed: "
@@ -598,15 +552,15 @@ public final class NeoForgeRegistrar implements IRegistrar {
         }
     }
 
-    private record LivingAttributes<T extends LivingEntity>(
+    public record LivingAttributes<T extends LivingEntity>(
             RegistryHandle<EntityType<T>> type, Supplier<AttributeSupplier.Builder> attributes) {}
 
-    private record SpawnPlacement<T extends Mob>(
+    public record SpawnPlacement<T extends Mob>(
             RegistryHandle<EntityType<T>> type,
             SpawnPlacementType placement,
             Heightmap.Types heightmap,
             SpawnPlacements.SpawnPredicate<T> predicate) {
-        void register(RegisterSpawnPlacementsEvent event) {
+        public void register(RegisterSpawnPlacementsEvent event) {
             event.register(
                     type.get(),
                     placement,
@@ -616,10 +570,23 @@ public final class NeoForgeRegistrar implements IRegistrar {
         }
     }
 
-    private record DataPackRegistry<T>(
+    public record DataPackRegistry<T>(
             ResourceKey<Registry<T>> key, Codec<T> codec, @Nullable Codec<T> networkCodec) {
-        void declare(DataPackRegistryEvent.NewRegistry event) {
+        public void declare(DataPackRegistryEvent.NewRegistry event) {
             event.dataPackRegistry(key, codec, networkCodec);
+        }
+    }
+
+    public static final class NamedRecipeType<T extends Recipe<?>> implements RecipeType<T> {
+        private final Identifier id;
+
+        public NamedRecipeType(Identifier id) {
+            this.id = id;
+        }
+
+        @Override
+        public String toString() {
+            return id.toString();
         }
     }
 }

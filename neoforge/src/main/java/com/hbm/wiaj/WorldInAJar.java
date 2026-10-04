@@ -68,11 +68,11 @@ public final class WorldInAJar implements BlockAndTintGetter {
         }
     }
 
-    public @Nullable BlockEntity getTileEntity(int x, int y, int z) {
+    public @Nullable BlockEntity getBlockEntity(int x, int y, int z) {
         return inBounds(x, y, z) ? tiles[index(x, y, z)] : null;
     }
 
-    public void setTileEntity(int x, int y, int z, BlockEntity tile) {
+    public void setBlockEntity(int x, int y, int z, BlockEntity tile) {
         if (inBounds(x, y, z)) {
             tiles[index(x, y, z)] = tile;
             revision++;
@@ -109,7 +109,7 @@ public final class WorldInAJar implements BlockAndTintGetter {
 
     @Override
     public @Nullable BlockEntity getBlockEntity(BlockPos pos) {
-        return getTileEntity(pos.getX(), pos.getY(), pos.getZ());
+        return getBlockEntity(pos.getX(), pos.getY(), pos.getZ());
     }
 
     @Override

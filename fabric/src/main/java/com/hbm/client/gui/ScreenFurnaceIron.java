@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityFurnaceIron;
 import com.hbm.inventory.container.MenuFurnaceIron;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityFurnaceIron;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.SharedConstants;

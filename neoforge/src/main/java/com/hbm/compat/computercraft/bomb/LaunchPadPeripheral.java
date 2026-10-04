@@ -3,10 +3,10 @@
 
 package com.hbm.compat.computercraft.bomb;
 
+import com.hbm.blockentity.bomb.BlockEntityLaunchPadBase;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.weapon.ItemMissile;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPadBase;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.Locale;
 import net.minecraft.world.item.ItemStack;

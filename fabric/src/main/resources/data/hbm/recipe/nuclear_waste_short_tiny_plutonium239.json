@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
     "hbm:nuclear_waste_short_plutonium239"
   ],

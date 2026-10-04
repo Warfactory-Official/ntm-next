@@ -5,8 +5,8 @@ package com.hbm.client.gui;
 
 import com.hbm.inventory.container.MenuCraneBoxer;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -63,8 +63,7 @@ public class ScreenCraneBoxer extends ScreenInfoContainer<MenuCraneBoxer> {
                 (int) event.x(), (int) event.y(), TOGGLE_X, TOGGLE_Y, TOGGLE_SIZE, TOGGLE_SIZE)) {
             CompoundTag data = new CompoundTag();
             data.putBoolean("toggle", true);
-            Services.NETWORK.sendToServer(
-                    new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
             playClick();
         }
 

@@ -15,6 +15,7 @@ import com.hbm.entity.grenade.EntityGrenadeUniversal;
 import com.hbm.entity.grenade.EntityWastePearl;
 import com.hbm.entity.item.EntityBoatRubber;
 import com.hbm.entity.item.EntityDeliveryDrone;
+import com.hbm.entity.item.EntityFallingBlockBatch;
 import com.hbm.entity.item.EntityFallingBlockNT;
 import com.hbm.entity.item.EntityFallingMultiblock;
 import com.hbm.entity.item.EntityFireworks;
@@ -141,17 +142,15 @@ import com.hbm.entity.train.EntityRailCarRidable;
 import com.hbm.entity.train.TrainCargoTram;
 import com.hbm.entity.train.TrainCargoTramTrailer;
 import com.hbm.lib.Library;
-import com.hbm.platform.Services;
-import com.hbm.registration.IRegistrar;
+import com.hbm.platform.FabricBiomeInjection;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.registration.Reg;
 import com.hbm.registration.RegistryHandle;
-import com.hbm.tags.HbmEntityTypeTags;
 import com.hbm.world.BiomeTarget;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -278,6 +277,7 @@ public final class ModEntities {
 
     public static RegistryHandle<EntityType<EntityTntNtm>> TNT_NTM;
     public static RegistryHandle<EntityType<EntityFallingBlockNT>> FALLING_BLOCK_NT;
+    public static RegistryHandle<EntityType<EntityFallingBlockBatch>> FALLING_BLOCK_BATCH;
     public static RegistryHandle<EntityType<EntityFallingMultiblock>> FALLING_MULTIBLOCK;
 
     public static RegistryHandle<EntityType<EntityC130>> C130;
@@ -330,7 +330,7 @@ public final class ModEntities {
 
     private static final TagKey<Biome> NO_DEFAULT_MONSTERS = convention("no_default_monsters");
 
-    public static void register(IRegistrar r) {
+    public static void register() {
         BEAM_DISCHARGE =
                 Reg.entity(
                         "beam_discharge",
@@ -346,7 +346,6 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("beam_discharge"))));
-
         NUKE_EXPLOSION_MK5 =
                 Reg.entity(
                         "nuke_mk5",
@@ -375,12 +374,12 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("fallout_rain"))));
-
         UNDEAD_SOLDIER =
                 Reg.entity(
                         "entity_undead_soldier",
                         () ->
                                 EntityType.Builder.of(EntityUndeadSoldier::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(.6F, 1.95F)
                                         .clientTrackingRange(5)
@@ -389,7 +388,8 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_undead_soldier"))));
-        r.registerLivingAttributes(UNDEAD_SOLDIER, EntityUndeadSoldier::createAttributes);
+        FabricRegistrar.registerLivingAttributes(
+                UNDEAD_SOLDIER, EntityUndeadSoldier::createAttributes);
 
         FBI =
                 Reg.entity(
@@ -397,6 +397,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityFBI>of(
                                                 EntityFBI::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .sized(0.6F, 1.8F)
                                         .fireImmune()
                                         .clientTrackingRange(5)
@@ -405,7 +406,7 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_fbi"))));
-        r.registerLivingAttributes(FBI, EntityFBI::createAttributes);
+        FabricRegistrar.registerLivingAttributes(FBI, EntityFBI::createAttributes);
 
         CREEPER_GOLD =
                 Reg.entity(
@@ -413,6 +414,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityCreeperGold>of(
                                                 EntityCreeperGold::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(0.6F, 1.7F)
                                         .clientTrackingRange(5)
@@ -421,8 +423,8 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_mob_gold_creeper"))));
-        r.registerLivingAttributes(CREEPER_GOLD, Creeper::createAttributes);
-        r.registerSpawnPlacement(
+        FabricRegistrar.registerLivingAttributes(CREEPER_GOLD, Creeper::createAttributes);
+        FabricRegistrar.registerSpawnPlacement(
                 CREEPER_GOLD,
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -434,6 +436,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityCreeperVolatile>of(
                                                 EntityCreeperVolatile::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(0.6F, 1.7F)
                                         .clientTrackingRange(5)
@@ -443,8 +446,8 @@ public final class ModEntities {
                                                         Registries.ENTITY_TYPE,
                                                         Library.id(
                                                                 "entity_mob_volatile_creeper"))));
-        r.registerLivingAttributes(CREEPER_VOLATILE, Creeper::createAttributes);
-        r.registerSpawnPlacement(
+        FabricRegistrar.registerLivingAttributes(CREEPER_VOLATILE, Creeper::createAttributes);
+        FabricRegistrar.registerSpawnPlacement(
                 CREEPER_VOLATILE,
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -456,6 +459,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityCreeperPhosgene>of(
                                                 EntityCreeperPhosgene::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(0.6F, 1.7F)
                                         .clientTrackingRange(5)
@@ -465,8 +469,8 @@ public final class ModEntities {
                                                         Registries.ENTITY_TYPE,
                                                         Library.id(
                                                                 "entity_mob_phosgene_creeper"))));
-        r.registerLivingAttributes(CREEPER_PHOSGENE, Creeper::createAttributes);
-        r.registerSpawnPlacement(
+        FabricRegistrar.registerLivingAttributes(CREEPER_PHOSGENE, Creeper::createAttributes);
+        FabricRegistrar.registerSpawnPlacement(
                 CREEPER_PHOSGENE,
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -478,6 +482,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityCreeperTainted>of(
                                                 EntityCreeperTainted::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(0.6F, 1.7F)
                                         .clientTrackingRange(5)
@@ -486,7 +491,8 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_mob_tainted_creeper"))));
-        r.registerLivingAttributes(CREEPER_TAINTED, EntityCreeperTainted::createAttributes);
+        FabricRegistrar.registerLivingAttributes(
+                CREEPER_TAINTED, EntityCreeperTainted::createAttributes);
 
         CREEPER_NUCLEAR =
                 Reg.entity(
@@ -494,6 +500,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityCreeperNuclear>of(
                                                 EntityCreeperNuclear::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(0.6F, 1.7F)
                                         .clientTrackingRange(5)
@@ -502,7 +509,8 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_mob_nuclear_creeper"))));
-        r.registerLivingAttributes(CREEPER_NUCLEAR, EntityCreeperNuclear::createAttributes);
+        FabricRegistrar.registerLivingAttributes(
+                CREEPER_NUCLEAR, EntityCreeperNuclear::createAttributes);
 
         CYBER_CRAB =
                 Reg.entity(
@@ -510,6 +518,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityCyberCrab>of(
                                                 EntityCyberCrab::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(0.75F, 0.35F)
                                         .clientTrackingRange(5)
@@ -518,7 +527,7 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_cyber_crab"))));
-        r.registerLivingAttributes(CYBER_CRAB, EntityCyberCrab::createAttributes);
+        FabricRegistrar.registerLivingAttributes(CYBER_CRAB, EntityCyberCrab::createAttributes);
 
         TESLA_CRAB =
                 Reg.entity(
@@ -526,6 +535,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityTeslaCrab>of(
                                                 EntityTeslaCrab::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(0.75F, 1.25F)
                                         .clientTrackingRange(5)
@@ -534,7 +544,7 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_tesla_crab"))));
-        r.registerLivingAttributes(TESLA_CRAB, EntityTeslaCrab::createAttributes);
+        FabricRegistrar.registerLivingAttributes(TESLA_CRAB, EntityTeslaCrab::createAttributes);
 
         TAINT_CRAB =
                 Reg.entity(
@@ -542,6 +552,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityTaintCrab>of(
                                                 EntityTaintCrab::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(1.25F, 1.25F)
                                         .clientTrackingRange(5)
@@ -550,7 +561,7 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_taint_crab"))));
-        r.registerLivingAttributes(TAINT_CRAB, EntityTaintCrab::createAttributes);
+        FabricRegistrar.registerLivingAttributes(TAINT_CRAB, EntityTaintCrab::createAttributes);
 
         DUCK =
                 Reg.entity(
@@ -566,7 +577,7 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_fucc_a_ducc"))));
-        r.registerLivingAttributes(DUCK, Chicken::createAttributes);
+        FabricRegistrar.registerLivingAttributes(DUCK, Chicken::createAttributes);
 
         GHOST =
                 Reg.entity(
@@ -582,7 +593,7 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_ghost"))));
-        r.registerLivingAttributes(GHOST, EntityGhost::createAttributes);
+        FabricRegistrar.registerLivingAttributes(GHOST, EntityGhost::createAttributes);
 
         TEST_DUMMY =
                 Reg.entity(
@@ -598,7 +609,7 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_test_dummy"))));
-        r.registerLivingAttributes(TEST_DUMMY, EntityDummy::createAttributes);
+        FabricRegistrar.registerLivingAttributes(TEST_DUMMY, EntityDummy::createAttributes);
 
         BLOCK_SPIDER =
                 Reg.entity(
@@ -606,6 +617,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityBlockSpider>of(
                                                 EntityBlockSpider::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(0.95F, 1.25F)
                                         .clientTrackingRange(63)
@@ -614,7 +626,7 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_taintcrawler"))));
-        r.registerLivingAttributes(BLOCK_SPIDER, EntityBlockSpider::createAttributes);
+        FabricRegistrar.registerLivingAttributes(BLOCK_SPIDER, EntityBlockSpider::createAttributes);
 
         QUACKOS =
                 Reg.entity(
@@ -630,7 +642,7 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_elder_one"))));
-        r.registerLivingAttributes(QUACKOS, Chicken::createAttributes);
+        FabricRegistrar.registerLivingAttributes(QUACKOS, Chicken::createAttributes);
 
         PLASTIC_BAG =
                 Reg.entity(
@@ -646,9 +658,8 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_plastic_bag"))));
-        r.registerLivingAttributes(PLASTIC_BAG, EntityPlasticBag::createAttributes);
-
-        r.registerSpawnPlacement(
+        FabricRegistrar.registerLivingAttributes(PLASTIC_BAG, EntityPlasticBag::createAttributes);
+        FabricRegistrar.registerSpawnPlacement(
                 PLASTIC_BAG,
                 SpawnPlacementTypes.IN_WATER,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -668,9 +679,8 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_pigeon"))));
-        r.registerLivingAttributes(PIGEON, EntityPigeon::createAttributes);
-
-        r.registerSpawnPlacement(
+        FabricRegistrar.registerLivingAttributes(PIGEON, EntityPigeon::createAttributes);
+        FabricRegistrar.registerSpawnPlacement(
                 PIGEON,
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -693,6 +703,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityGlyphid>of(
                                                 EntityGlyphid::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(1.75F, 1F)
                                         .clientTrackingRange(5)
@@ -702,10 +713,10 @@ public final class ModEntities {
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_glyphid"))));
         GLYPHID = grunt;
-        r.registerLivingAttributes(GLYPHID, EntityGlyphid::createAttributes);
+        FabricRegistrar.registerLivingAttributes(GLYPHID, EntityGlyphid::createAttributes);
         EntityGlyphidBrenda.GRUNT_TYPE = grunt;
 
-        EntityGlyphidBrawler.register(r);
+        EntityGlyphidBrawler.register();
         GLYPHID_BRAWLER = EntityGlyphidBrawler.TYPE;
 
         GLYPHID_BEHEMOTH =
@@ -714,6 +725,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityGlyphidBehemoth>of(
                                                 EntityGlyphidBehemoth::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(2.5F, 1.5F)
                                         .clientTrackingRange(5)
@@ -722,7 +734,8 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_glyphid_behemoth"))));
-        r.registerLivingAttributes(GLYPHID_BEHEMOTH, EntityGlyphidBehemoth::createAttributes);
+        FabricRegistrar.registerLivingAttributes(
+                GLYPHID_BEHEMOTH, EntityGlyphidBehemoth::createAttributes);
 
         GLYPHID_BRENDA =
                 Reg.entity(
@@ -730,6 +743,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityGlyphidBrenda>of(
                                                 EntityGlyphidBrenda::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(2.5F, 1.75F)
                                         .clientTrackingRange(5)
@@ -738,12 +752,13 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_glyphid_brenda"))));
-        r.registerLivingAttributes(GLYPHID_BRENDA, EntityGlyphidBrenda::createAttributes);
+        FabricRegistrar.registerLivingAttributes(
+                GLYPHID_BRENDA, EntityGlyphidBrenda::createAttributes);
 
-        EntityGlyphidBombardier.register(r);
+        EntityGlyphidBombardier.register();
         GLYPHID_BOMBARDIER = EntityGlyphidBombardier.TYPE;
 
-        EntityGlyphidBlaster.register(r);
+        EntityGlyphidBlaster.register();
         GLYPHID_BLASTER = EntityGlyphidBlaster.TYPE;
 
         GLYPHID_SCOUT =
@@ -752,6 +767,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityGlyphidScout>of(
                                                 EntityGlyphidScout::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(1.25F, 0.75F)
                                         .clientTrackingRange(5)
@@ -760,7 +776,8 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_glyphid_scout"))));
-        r.registerLivingAttributes(GLYPHID_SCOUT, EntityGlyphidScout::createAttributes);
+        FabricRegistrar.registerLivingAttributes(
+                GLYPHID_SCOUT, EntityGlyphidScout::createAttributes);
 
         GLYPHID_NUCLEAR =
                 Reg.entity(
@@ -768,6 +785,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityGlyphidNuclear>of(
                                                 EntityGlyphidNuclear::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(2.5F, 1.75F)
                                         .clientTrackingRange(5)
@@ -776,18 +794,19 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_glyphid_nuclear"))));
-        r.registerLivingAttributes(GLYPHID_NUCLEAR, EntityGlyphidNuclear::createAttributes);
+        FabricRegistrar.registerLivingAttributes(
+                GLYPHID_NUCLEAR, EntityGlyphidNuclear::createAttributes);
 
-        EntityGlyphidDigger.register(r);
+        EntityGlyphidDigger.register();
         GLYPHID_DIGGER = EntityGlyphidDigger.TYPE;
 
-        EntityWaypoint.register(r);
+        EntityWaypoint.register();
         GLYPHID_WAYPOINT = EntityWaypoint.TYPE;
 
-        EntityAcidBomb.register(r);
+        EntityAcidBomb.register();
         ACID_BOMB = EntityAcidBomb.TYPE;
 
-        EntityParasiteMaggot.register(r);
+        EntityParasiteMaggot.register();
         PARASITE_MAGGOT = EntityParasiteMaggot.TYPE;
 
         NUKE_TOREX =
@@ -820,7 +839,6 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_vortex"))));
-
         METEOR =
                 Reg.entity(
                         "entity_meteor",
@@ -1031,7 +1049,6 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("rubble"))));
-
         COG =
                 Reg.entity(
                         "entity_stray_cog",
@@ -1045,7 +1062,6 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_stray_cog"))));
-
         RBMK_DEBRIS =
                 Reg.entity(
                         "rbmk_debris",
@@ -1090,7 +1106,6 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_spear"))));
-
         WASTE_ITEM =
                 Reg.entity(
                         "waste_item",
@@ -1104,7 +1119,6 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("waste_item"))));
-
         MIST =
                 Reg.entity(
                         "mist",
@@ -1263,7 +1277,6 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_cart_destroyer"))));
-
         CART_TEST =
                 Reg.entity(
                         "entity_minecart_test",
@@ -1321,7 +1334,6 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_cargo_tram_trailer"))));
-
         BOUNDING_DUMMY =
                 Reg.entity(
                         "entity_bounding_dummy",
@@ -1414,6 +1426,7 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityFBIDrone>of(
                                                 EntityFBIDrone::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(0.6F, 1.8F)
@@ -1423,13 +1436,14 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_fbi_drone"))));
-        r.registerLivingAttributes(FBI_DRONE, EntityFBIDrone::createAttributes);
+        FabricRegistrar.registerLivingAttributes(FBI_DRONE, EntityFBIDrone::createAttributes);
         RAD_BEAST =
                 Reg.entity(
                         "entity_radiation_blaze",
                         () ->
                                 EntityType.Builder.<EntityRADBeast>of(
                                                 EntityRADBeast::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(0.6F, 1.8F)
@@ -1439,13 +1453,14 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_radiation_blaze"))));
-        r.registerLivingAttributes(RAD_BEAST, EntityRADBeast::createAttributes);
+        FabricRegistrar.registerLivingAttributes(RAD_BEAST, EntityRADBeast::createAttributes);
         MASK_MAN =
                 Reg.entity(
                         "entity_mob_mask_man",
                         () ->
                                 EntityType.Builder.<EntityMaskMan>of(
                                                 EntityMaskMan::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(2.0F, 5.0F)
@@ -1455,13 +1470,14 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_mob_mask_man"))));
-        r.registerLivingAttributes(MASK_MAN, EntityMaskMan::createAttributes);
+        FabricRegistrar.registerLivingAttributes(MASK_MAN, EntityMaskMan::createAttributes);
         UFO =
                 Reg.entity(
                         "entity_ufo",
                         () ->
                                 EntityType.Builder.<EntityUFO>of(
                                                 EntityUFO::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(15.0F, 4.0F)
@@ -1471,14 +1487,14 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_ufo"))));
-        r.registerLivingAttributes(UFO, EntityUFO::createAttributes);
-
+        FabricRegistrar.registerLivingAttributes(UFO, EntityUFO::createAttributes);
         BALLS_O_TRON =
                 Reg.entity(
                         "entity_balls_o_tron",
                         () ->
                                 EntityType.Builder.<EntityBOTPrimeHead>of(
                                                 EntityBOTPrimeHead::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(3.0F, 3.0F)
@@ -1489,13 +1505,15 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_balls_o_tron"))));
-        r.registerLivingAttributes(BALLS_O_TRON, EntityBOTPrimeHead::createAttributes);
+        FabricRegistrar.registerLivingAttributes(
+                BALLS_O_TRON, EntityBOTPrimeHead::createAttributes);
         BALLS_O_TRON_SEG =
                 Reg.entity(
                         "entity_balls_o_tron_seg",
                         () ->
                                 EntityType.Builder.<EntityBOTPrimeBody>of(
                                                 EntityBOTPrimeBody::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(2.0F, 2.0F)
@@ -1506,13 +1524,15 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_balls_o_tron_seg"))));
-        r.registerLivingAttributes(BALLS_O_TRON_SEG, EntityBOTPrimeBody::createAttributes);
+        FabricRegistrar.registerLivingAttributes(
+                BALLS_O_TRON_SEG, EntityBOTPrimeBody::createAttributes);
         HUNTER_CHOPPER =
                 Reg.entity(
                         "entity_mob_hunter_chopper",
                         () ->
                                 EntityType.Builder.<EntityHunterChopper>of(
                                                 EntityHunterChopper::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(8.25F, 3.0F)
@@ -1522,7 +1542,8 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_mob_hunter_chopper"))));
-        r.registerLivingAttributes(HUNTER_CHOPPER, EntityHunterChopper::createAttributes);
+        FabricRegistrar.registerLivingAttributes(
+                HUNTER_CHOPPER, EntityHunterChopper::createAttributes);
         TNT_NTM =
                 Reg.entity(
                         "tnt",
@@ -1539,7 +1560,6 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("tnt"))));
-
         FALLING_BLOCK_NT =
                 Reg.entity(
                         "entity_falling_block",
@@ -1553,7 +1573,20 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_falling_block"))));
-
+        FALLING_BLOCK_BATCH =
+                Reg.entity(
+                        "entity_falling_block_batch",
+                        () ->
+                                EntityType.Builder.of(
+                                                EntityFallingBlockBatch::new, MobCategory.MISC)
+                                        .noLootTable()
+                                        .sized(0.01F, 0.01F)
+                                        .clientTrackingRange(63)
+                                        .updateInterval(Integer.MAX_VALUE)
+                                        .build(
+                                                ResourceKey.create(
+                                                        Registries.ENTITY_TYPE,
+                                                        Library.id("entity_falling_block_batch"))));
         FALLING_MULTIBLOCK =
                 Reg.entity(
                         "entity_falling_multiblock",
@@ -1609,7 +1642,6 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_zeta"))));
-
         GRENADE_UNIVERSAL =
                 Reg.entity(
                         "grenade_universal",
@@ -1666,7 +1698,6 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("disperser_canister"))));
-
         ITEM_BUOYANT =
                 Reg.entity(
                         "item_buoyant",
@@ -1680,7 +1711,6 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("item_buoyant"))));
-
         NUKE_EXPLOSION_MK3 =
                 Reg.entity(
                         "nuke_mk3",
@@ -1695,7 +1725,6 @@ public final class ModEntities {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("nuke_mk3"))));
-
         CLOUD_FLEIJA =
                 Reg.entity(
                         "cloud_fleija",
@@ -2208,7 +2237,7 @@ public final class ModEntities {
             int weight,
             int min,
             int max) {
-        Services.BIOME_MODIFIER.addSpawn(biomes, NO_DEFAULT_MONSTERS, type, weight, min, max);
+        FabricBiomeInjection.addSpawn(biomes, NO_DEFAULT_MONSTERS, type, weight, min, max);
     }
 
     private static TagKey<Biome> convention(String path) {
@@ -2217,7 +2246,6 @@ public final class ModEntities {
 
     private static <T extends EntityMissileBaseNT> Reg.EntityHandle<T> missile(
             String name, EntityType.EntityFactory<T> factory) {
-
         return Reg.entity(
                 name,
                 () ->

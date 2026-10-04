@@ -3,8 +3,8 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityMachineRadarLarge;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityMachineRadarLarge;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;

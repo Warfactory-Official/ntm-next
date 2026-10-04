@@ -41,7 +41,6 @@ import org.jspecify.annotations.Nullable;
 final class RadVisVisual implements EffectVisual<RadVisVisual.RadVisEffect>, SimpleDynamicVisual {
 
     private static final Material DEPTH = material(DepthTest.LEQUAL);
-
     private static final Material THROUGH = material(DepthTest.OFF);
     private static final Map<Marker, float[]> MARKERS = new EnumMap<>(Marker.class);
 

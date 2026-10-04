@@ -3,12 +3,12 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityRefueler;
 import com.hbm.blocks.machine.BlockMachineHorizontal;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityRefueler;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.pipeline.BlendFunction;
@@ -47,7 +47,6 @@ import org.jspecify.annotations.Nullable;
 public class RenderRefueler
         implements BlockEntityRenderer<BlockEntityRefueler, RenderRefueler.State>,
                 ConcurrentRenderStateExtraction {
-
     public static final RenderPipeline FLUID_PIPELINE =
             WorldRenderPipeline.of(
                     RenderPipeline.builder(RenderPipelines.MATRICES_FOG_LIGHT_DIR_SNIPPET)
@@ -69,7 +68,6 @@ public class RenderRefueler
                             .withTexture("Sampler0", RenderTextures.WHITE)
                             .useLightmap()
                             .createRenderSetup());
-
     private static final SpriteId FLUID_FILL_SPRITE =
             new SpriteId(
                     TextureAtlas.LOCATION_PARTICLES,

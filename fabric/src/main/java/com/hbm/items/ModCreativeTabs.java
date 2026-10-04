@@ -6,10 +6,11 @@ package com.hbm.items;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.material.Mats;
 import com.hbm.lib.Library;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.registration.RegistryHandle;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -28,44 +29,35 @@ public final class ModCreativeTabs {
 
     private ModCreativeTabs() {}
 
-    public static void register(IRegistrar r) {
-
+    public static void register() {
         PARTS =
                 register(
-                        r,
                         "parts",
                         CreativeContents.Tab.PARTS,
                         () -> new ItemStack(ModItems.ingot(Mats.MAT_URANIUM)));
         CONTROL =
                 register(
-                        r,
                         "control",
                         CreativeContents.Tab.CONTROL,
                         () -> new ItemStack(ModItems.PELLET_RTG));
-
         TEMPLATES =
                 register(
-                        r,
                         "templates",
                         CreativeContents.Tab.TEMPLATES,
                         () -> new ItemStack(ModItems.BLUEPRINTS),
-                        r.searchBar());
+                        FabricRegistrar.searchBar());
         BLOCKS =
                 register(
-                        r,
                         "blocks",
                         CreativeContents.Tab.BLOCKS,
                         () -> new ItemStack(ModBlocks.ORE_URANIUM));
         MACHINES =
                 register(
-                        r,
                         "machines",
                         CreativeContents.Tab.MACHINES,
                         () -> new ItemStack(ModBlocks.PWR_CONTROLLER));
-
         NUKES =
                 register(
-                        r,
                         "nukes",
                         CreativeContents.Tab.NUKES,
                         () -> new ItemStack(ModBlocks.NUKE_MAN),
@@ -75,38 +67,37 @@ public final class ModCreativeTabs {
                                                 "textures/gui/container/creative_inventory/tab_nuke.png")));
         MISSILES =
                 register(
-                        r,
                         "missiles",
                         CreativeContents.Tab.MISSILES,
                         () -> new ItemStack(ModItems.MISSILE_NUCLEAR));
         WEAPONS =
                 register(
-                        r,
                         "weapons",
                         CreativeContents.Tab.WEAPONS,
                         () -> new ItemStack(ModItems.GUN_GREASEGUN));
         CONSUMABLES =
                 register(
-                        r,
                         "consumables",
                         CreativeContents.Tab.CONSUMABLES,
                         () -> new ItemStack(ModItems.BOTTLE_NUKA));
 
-        CreativeContents.acceptLegacyVanillaTabs(r::addToVanillaTab);
+        CreativeContents.acceptLegacyVanillaTabs(
+                (tab, entry) ->
+                        CreativeModeTabEvents.modifyOutputEvent(tab)
+                                .register(output -> output.accept(entry.get())));
     }
 
     private static RegistryHandle<CreativeModeTab> register(
-            IRegistrar r, String name, CreativeContents.Tab tab, Supplier<ItemStack> icon) {
-        return register(r, name, tab, icon, builder -> {});
+            String name, CreativeContents.Tab tab, Supplier<ItemStack> icon) {
+        return register(name, tab, icon, builder -> {});
     }
 
     private static RegistryHandle<CreativeModeTab> register(
-            IRegistrar r,
             String name,
             CreativeContents.Tab tab,
             Supplier<ItemStack> icon,
             Consumer<CreativeModeTab.Builder> extra) {
-        return r.registerCreativeModeTab(
+        return FabricRegistrar.registerCreativeModeTab(
                 name,
                 builder -> {
                     builder.title(Component.translatable("itemGroup.hbm." + name))

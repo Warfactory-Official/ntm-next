@@ -1,0 +1,22 @@
+{
+  "actions": [
+    {
+      "type": "potion_sickness",
+      "seconds": 5
+    },
+    {
+      "type": "counter",
+      "amount": 2.0,
+      "counter": "digamma",
+      "operation": "min"
+    },
+    {
+      "type": "effect",
+      "duration": 60,
+      "effect": "minecraft:blindness"
+    }
+  ],
+  "block_when_potion_sick": true,
+  "targets": "hbm:fmn",
+  "trigger": "consume"
+}

@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
     "hbm:rod_quad_tritium",
     "hbm:cell_empty",
@@ -7,6 +7,11 @@
     "hbm:cell_empty",
     "hbm:cell_empty"
   ],
+  "input_state": {
+    "0": {
+      "preserve": "remainder"
+    }
+  },
   "result": {
     "count": 4,
     "id": "hbm:cell_tritium"

@@ -24,8 +24,8 @@ import com.hbm.items.weapon.sedna.mags.MagazineSingleReload;
 import com.hbm.main.ResourceManager;
 import com.hbm.particle.SpentCasing.CasingType;
 import com.hbm.particle.SpentCasing;
-import com.hbm.platform.Services;
-import com.hbm.registration.IRegistrar;
+import com.hbm.platform.FabricPlatform;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -490,7 +490,7 @@ public class XFactory40mm {
                         for (Direction dir : Direction.VALUES) {
                             BlockPos neighbor = pos.relative(dir);
                             BlockState state = world.getBlockState(neighbor);
-                            if (Services.PLATFORM.isFlammable(
+                            if (FabricPlatform.isFlammable(
                                     world, neighbor, state, dir.getOpposite())) {
                                 world.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
                                 break;
@@ -516,14 +516,13 @@ public class XFactory40mm {
             EntityC130 c130 = new EntityC130(ModEntities.C130.get(), bullet.level());
             int x = (int) Math.floor(bullet.getX());
             int z = (int) Math.floor(bullet.getZ());
-
             int y = bullet.level().getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
             c130.fac(bullet.level(), x, y, z, payload);
             bullet.level().addFreshEntity(c130);
         }
     }
 
-    public static void init(IRegistrar r) {
+    public static void init() {
 
         g26_flare =
                 new BulletConfig()
@@ -627,7 +626,7 @@ public class XFactory40mm {
                                         .register("g40phos"));
 
         ModItems.GUN_FLAREGUN =
-                r.registerItem(
+                FabricRegistrar.registerItem(
                         "gun_flaregun",
                         props ->
                                 new ItemGunBaseNT(
@@ -672,7 +671,7 @@ public class XFactory40mm {
                         Item.Properties::new);
 
         ModItems.GUN_CONGOLAKE =
-                r.registerItem(
+                FabricRegistrar.registerItem(
                         "gun_congolake",
                         props ->
                                 new ItemGunBaseNT(
@@ -721,7 +720,7 @@ public class XFactory40mm {
                         Item.Properties::new);
 
         ModItems.GUN_MK108 =
-                r.registerItem(
+                FabricRegistrar.registerItem(
                         "gun_mk108",
                         props ->
                                 new ItemGunBaseNT(

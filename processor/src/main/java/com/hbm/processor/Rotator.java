@@ -26,7 +26,6 @@ final class Rotator {
             Map.of(
                     "rotate", "net.minecraft.world.level.block.Rotation",
                     "mirror", "net.minecraft.world.level.block.Mirror");
-
     private static final List<String> RING = List.of("NORTH", "EAST", "SOUTH", "WEST");
     private static final Map<String, List<String>> CASES =
             Map.of(
@@ -193,7 +192,6 @@ final class Rotator {
 
         com.sun.tools.javac.util.List<JCTree.JCStatement> body;
         if (rings.isEmpty()) {
-
             body =
                     com.sun.tools.javac.util.List.of(
                             make.Return(turned(state, operation, method, rings, facings, null)));
@@ -276,9 +274,7 @@ final class Rotator {
             case "CLOCKWISE_90" -> (target + 3) % 4;
             case "CLOCKWISE_180" -> (target + 2) % 4;
             case "COUNTERCLOCKWISE_90" -> (target + 1) % 4;
-
             case "LEFT_RIGHT" -> target % 2 == 0 ? (target + 2) % 4 : target;
-
             case "FRONT_BACK" -> target % 2 == 1 ? (target + 2) % 4 : target;
             default -> target;
         };

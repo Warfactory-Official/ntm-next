@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.BlockEntityBedrockOre;
+import com.hbm.blockentity.BlockEntityBedrockOre;
 import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;

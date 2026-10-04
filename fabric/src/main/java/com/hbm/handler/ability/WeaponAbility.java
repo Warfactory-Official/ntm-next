@@ -3,13 +3,13 @@
 
 package com.hbm.handler.ability;
 
-import com.hbm.blocks.ModBlocks;
+import com.hbm.blockentity.BlockEntityBobble;
 import com.hbm.blocks.generic.BlockBobble.BobbleType;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.factory.ConfettiUtil;
+import com.hbm.potion.CloudEffect;
 import com.hbm.potion.HbmPotion;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.BlockEntityBobble;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.ContaminationUtil;
@@ -75,7 +75,6 @@ public enum WeaponAbility implements BaseAbility {
             if (victim.getHealth() <= 0.0F) return;
 
             victim.setHealth(victim.getHealth() - amount);
-
             if (victim.getHealth() <= 0.0F) victim.die(level.damageSources().magic());
             attacker.heal(amount);
         }
@@ -97,8 +96,8 @@ public enum WeaponAbility implements BaseAbility {
         public void onHit(
                 ServerLevel level, int abilityLevel, Player attacker, LivingEntity victim) {
             int duration = DURATIONS[abilityLevel] * 20;
-            victim.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, duration, 4));
-            victim.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, duration, 4));
+            victim.addEffect(CloudEffect.local(MobEffects.SLOWNESS, duration, 4));
+            victim.addEffect(CloudEffect.local(MobEffects.WEAKNESS, duration, 4));
         }
     },
     PHOSPHORUS("weapon.ability.phosphorus", 204) {
@@ -142,7 +141,6 @@ public enum WeaponAbility implements BaseAbility {
     },
     CHAINSAW("weapon.ability.chainsaw", 207) {
         private static final int[] DIVIDERS = {15, 10};
-
         private static final int MAX_NITRA = 250;
 
         @Override

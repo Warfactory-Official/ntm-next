@@ -3,8 +3,8 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityCore;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityCore;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.DepthTest;
@@ -355,19 +355,25 @@ public final class CoreVisual extends HbmDynamicBlockEntityVisual<BlockEntityCor
 
         private void write(Matrix4f base, int seed) {
             random.setSeed(seed);
-            Vector3f direction =
-                    from.set(
-                                    (float) (random.nextDouble() - .5D),
-                                    (float) (random.nextDouble() - .5D),
-                                    (float) (random.nextDouble() - .5D))
-                            .normalize();
+            double dirX = random.nextDouble() - .5D;
+            double dirY = random.nextDouble() - .5D;
+            double dirZ = random.nextDouble() - .5D;
+            double magnitude = Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
+            if (magnitude < 1.0E-4D) {
+                dirX = dirY = dirZ = 0D;
+            } else {
+                dirX /= magnitude;
+                dirY /= magnitude;
+                dirZ /= magnitude;
+            }
             double x = 0D, y = 0D, z = 0D;
             int start = used, i = 0;
             for (; i < 5 + random.nextInt(10); i++) {
                 double px = x, py = y, pz = z;
-                x = px + direction.x * 1.5F * random.nextFloat();
-                y = py + direction.y * 1.5F * random.nextFloat();
-                z = pz + direction.z * 1.5F * random.nextFloat();
+                float step = 1.5F * random.nextFloat();
+                x = px + dirX * step;
+                y = py + dirY * step;
+                z = pz + dirZ * step;
                 segment(base, px, py, pz, x, y, z, 0xFFFF00, true, start + i);
                 segment(base, px, py, pz, x, y, z, 0xFFFFFF, false, start + i);
             }

@@ -10,6 +10,7 @@ import com.hbm.blocks.network.FluidDuctBlockBase;
 import com.hbm.lib.Library;
 import com.hbm.packet.IPayloadHandlerContext;
 import com.hbm.packet.threading.ThreadedPayload;
+import com.hbm.util.ChunkUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.DecoderException;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -17,8 +18,11 @@ import it.unimi.dsi.fastutil.objects.Reference2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.server.level.ChunkTrackingView;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,7 +41,6 @@ public final class FluidPipeTintRequestPayload extends ThreadedPayload {
 
     private static FluidPipeTintRequestPayload decode(ByteBuf buf) {
         int count = buf.readInt();
-
         if (count < 0 || count > buf.readableBytes() / Long.BYTES) {
             throw new DecoderException("fluid_pipe_tint_request count " + count);
         }
@@ -51,9 +54,12 @@ public final class FluidPipeTintRequestPayload extends ThreadedPayload {
         ServerLevel level = player.level();
         Reference2ObjectOpenHashMap<Fluid, LongArrayList> byFluid =
                 new Reference2ObjectOpenHashMap<>();
+        ChunkTrackingView view = player.getChunkTrackingView();
         for (long key : payload.posKeys) {
             BlockPos pos = BlockPos.of(key);
-            if (!(level.getBlockState(pos).getBlock() instanceof FluidDuctBlockBase)) continue;
+            if (!view.contains(ChunkPos.containing(pos))) continue;
+            BlockState state = ChunkUtil.blockStateIfLoaded(level, pos);
+            if (state == null || !(state.getBlock() instanceof FluidDuctBlockBase)) continue;
             PipeData data = FluidPipeGraph.dataAt(level, key);
             if (data == null) continue;
             byFluid.computeIfAbsent(data.fluid(), f -> new LongArrayList()).add(key);

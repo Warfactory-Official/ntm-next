@@ -1,0 +1,10 @@
+{
+  "filter_exclusions": [
+    "gas_blistering"
+  ],
+  "filter_tooltip_after_item": true,
+  "hazards": [
+    "sand"
+  ],
+  "targets": "hbm:attachment_mask"
+}

@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityHeatBoiler;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.RefreshesNeighborState;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -17,15 +18,12 @@ import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.BlockEntityHeatBoiler;
-import com.hbm.util.I18nUtil;
 import java.util.List;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -140,7 +138,10 @@ public class MachineHeatBoiler extends BlockMultiblockCore
         if (core == null) return;
         if (!(level.getBlockEntity(core) instanceof BlockEntityHeatBoiler be)) return;
         if (be.hasExploded) return;
-        info.title(I18nUtil.resolveKey(getDescriptionId()), 0xFFFF00, 0x404000);
+        info.title(
+                Component.empty().append(Component.translatable(getDescriptionId())),
+                0xFFFF00,
+                0x404000);
         info.line(String.format(Locale.US, "%,d", be.heat) + "TU");
         info.line(
                 ChatFormatting.GREEN

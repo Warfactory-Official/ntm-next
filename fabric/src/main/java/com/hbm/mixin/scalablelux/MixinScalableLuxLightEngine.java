@@ -33,7 +33,6 @@ public abstract class MixinScalableLuxLightEngine implements IBulkLightEngine {
     public CompletableFuture<Void> hbm$updateLight(
             LevelChunk chunk, LongList positions, long sectionMask) {
         ScalableLuxBatch batch = new ScalableLuxBatch(lightEngine, chunk, positions, sectionMask);
-
         scalablelux$queueTaskForSection(
                 chunk.getPos().x(), chunk.getMinSectionY(), chunk.getPos().z(), batch);
         return batch.completion();

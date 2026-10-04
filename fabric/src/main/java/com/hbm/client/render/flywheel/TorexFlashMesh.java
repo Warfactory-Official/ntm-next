@@ -21,7 +21,6 @@ public final class TorexFlashMesh implements Mesh {
 
     private final float[] positions = new float[VERTICES * 3];
     private final float[] alphas = new float[VERTICES];
-
     private final Vector4f boundingSphere = new Vector4f(0F, 0F, 0F, 7.1F);
 
     private TorexFlashMesh() {
@@ -66,7 +65,6 @@ public final class TorexFlashMesh implements Mesh {
             dst.g(v, 1F);
             dst.b(v, 1F);
             dst.a(v, alphas[v]);
-
             dst.u(v, 0F);
             dst.v(v, 0F);
             dst.light(v, LightCoordsUtil.FULL_BRIGHT);

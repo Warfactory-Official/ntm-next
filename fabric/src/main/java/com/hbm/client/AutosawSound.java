@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.machine.BlockEntityMachineAutosaw;
+import com.hbm.blockentity.machine.BlockEntityMachineAutosaw;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 

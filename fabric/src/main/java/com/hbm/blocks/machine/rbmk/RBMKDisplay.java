@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.machine.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKDisplay;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.interfaces.IToolable;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKDisplay;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;

@@ -8,7 +8,7 @@ import com.hbm.inventory.fluid.FluidBuilder;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.util.BobMathUtil;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -36,16 +36,18 @@ public final class FluidTraitTooltip {
     }
 
     public static void addGenericInfo(NTMFluidProperty prop, Consumer<Component> adder) {
-        List<String> info = new ArrayList<>();
+        List<Component> info = new ArrayList<>();
 
         int temperature = prop.temperature();
         if (temperature != FluidBuilder.ROOM_TEMPERATURE) {
-            if (temperature < 0) info.add(ChatFormatting.BLUE + "" + temperature + "°C");
-            if (temperature > 0) info.add(ChatFormatting.RED + "" + temperature + "°C");
+            if (temperature < 0)
+                info.add(Component.literal(temperature + "°C").withStyle(ChatFormatting.BLUE));
+            if (temperature > 0)
+                info.add(Component.literal(temperature + "°C").withStyle(ChatFormatting.RED));
         }
 
-        boolean shiftHeld = ModifierKeys.leftShiftHeld();
-        List<String> hidden = new ArrayList<>();
+        boolean shiftHeld = ModifierKeys.detailsHeld();
+        List<Component> hidden = new ArrayList<>();
         for (Class<? extends FluidTrait> clazz : FluidTrait.traitList) {
             FluidTrait trait = prop.getTrait(clazz);
             if (trait != null) {
@@ -55,9 +57,9 @@ public final class FluidTraitTooltip {
             }
         }
         if (!hidden.isEmpty() && !shiftHeld) {
-            info.add(I18nUtil.resolveKey("desc.tooltip.hold", "LSHIFT"));
+            info.add(TooltipStyle.holdDetails());
         }
 
-        for (String line : info) adder.accept(Component.literal(line));
+        for (Component line : info) adder.accept(line);
     }
 }

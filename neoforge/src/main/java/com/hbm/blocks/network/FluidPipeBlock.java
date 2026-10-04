@@ -10,6 +10,7 @@ import com.hbm.lib.Library;
 import com.hbm.uninos.graph.GraphNode;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.AutoRotate;
+import com.hbm.util.ChunkUtil;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.core.BlockPos;
@@ -118,7 +119,7 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
             return data != null ? data.fluid() : Fluids.EMPTY;
         }
         if (level instanceof Level l && l.isClientSide()) {
-            return FluidPipeTintData.fluidAt(l.dimension(), pos);
+            return FluidPipeTintData.fluidAt(l, pos);
         }
         return Fluids.EMPTY;
     }
@@ -132,20 +133,18 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
     public static boolean retypeNodeNoSync(ServerLevel level, long key, Fluid fluid) {
         LevelNodeGraph<PipeData> from = FluidPipeGraph.graphAt(level, key);
         if (from == null) return false;
-
         GraphNode<PipeData> node = from.firstClass(key);
+        if (node.machineOwned) return false;
         if (node.data.fluid() == fluid) return false;
         PipeData newData = new PipeData(fluid);
         LevelNodeGraph<PipeData> to = FluidPipeGraph.get(level, fluid);
         if (from == to) {
             from.replaceNodeData(key, newData);
         } else {
-
             int mask = node.openConnections;
             boolean device = node.device;
             long[] links = from.removeNodeKeepingLinks(key);
             to.addNode(key, newData, mask);
-
             if (device) to.firstClass(key).device = true;
             for (long peer : links) {
                 if (to.containsCell(peer)) to.addRemoteLink(key, peer);
@@ -178,9 +177,8 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
                 if (graph == null) continue;
                 PipeData curData = graph.dataAt(cur);
                 GraphNode<PipeData> node = graph.getNode(cur);
-
                 if (curData == null || curData.fluid() != original) continue;
-                if (node != null && node.selfEndpoint) continue;
+                if (node != null && (node.machineOwned || node.selfEndpoint)) continue;
                 long[] links =
                         node != null && node.hasRemoteLinks()
                                 ? node.remoteLinks.toLongArray()
@@ -192,7 +190,6 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
                     long n = p.relative(d).asLong();
                     if (visited.add(n)) next.add(n);
                 }
-
                 if (links != null) {
                     for (long peer : links) {
                         if (visited.add(peer)) next.add(peer);
@@ -201,18 +198,16 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
             }
             frontier = next;
         }
-
         FluidPipeGraph.get(level, fluid).compact();
         fromGraph.compact();
         FluidPipeTintData.sync(level, retyped.toLongArray(), fluid);
-
         for (int i = 0; i < retyped.size(); i++)
             refreshAround(level, BlockPos.of(retyped.getLong(i)));
     }
 
     public static void refreshConnections(ServerLevel level, BlockPos pos) {
-        BlockState state = level.getBlockState(pos);
-        if (!(state.getBlock() instanceof FluidPipeBlock pipe)) return;
+        BlockState state = ChunkUtil.blockStateIfLoaded(level, pos);
+        if (state == null || !(state.getBlock() instanceof FluidPipeBlock pipe)) return;
         Fluid self = pipeFluidAt(level, pos);
         BlockState updated = state;
         for (Direction dir : Direction.VALUES) {
@@ -298,11 +293,9 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
             @Nullable LivingEntity by,
             ItemStack stack) {
         super.setPlacedBy(level, pos, state, by, stack);
-
         if (!(level instanceof ServerLevel sl)) return;
         Fluid fluid = stampedFluid(stack);
         if (fluid == Fluids.EMPTY) return;
-
         createNodes(sl, pos, state);
         retypeNode(sl, pos.asLong(), fluid);
         refreshConnections(sl, pos);
@@ -313,7 +306,6 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
     protected ItemStack getCloneItemStack(
             LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
         ItemStack stack = super.getCloneItemStack(level, pos, state, includeData);
-
         Fluid fluid = pipeFluidAt(level, pos);
         if (fluid != Fluids.EMPTY) {
             stack.set(ModDataComponents.FLUID_CONTENT.get(), new FluidStackNTM(fluid, 0, 0));

@@ -47,10 +47,13 @@ public final class SectionedModel implements BlockStateModel {
     private final int[] appearanceHashes = new int[4];
     private int nextAppearance;
     private final Map<CardinalLighting, SectionGeometry.Prepared> uniform = new HashMap<>(2);
+    private final Object[] cellKeys = new Object[4];
+    private final SectionGeometry.Cells[] cells = new SectionGeometry.Cells[4];
+    private int nextCells;
 
-    final Map<Object, SectionGeometry.Cells> cells = new IdentityHashMap<>();
-
-    public static Map<BlockState, BlockStateModel> wrap(Map<BlockState, BlockStateModel> models) {
+    public static Map<BlockState, BlockStateModel> wrap(
+            Map<BlockState, BlockStateModel> models,
+            Map<BlockStateModel, SectionGeometry.Mesh> captured) {
         var result = new IdentityHashMap<BlockState, BlockStateModel>(models);
         var byState = new IdentityHashMap<BlockState, SectionedModel>();
         var shared = new IdentityHashMap<BlockStateModel, SectionedModel>();
@@ -67,7 +70,9 @@ public final class SectionedModel implements BlockStateModel {
             if (!(state.getBlock() instanceof ISectionGeometry owner)) continue;
             SectionedModel sectioned = shared.get(complete);
             if (sectioned == null) {
-                var mesh = SectionGeometry.mesh(complete, state);
+                var mesh =
+                        captured.computeIfAbsent(
+                                complete, model -> SectionGeometry.mesh(model, state));
                 if (mesh.contained() && !owner.contextualGeometry()) continue;
                 mesh = meshes.computeIfAbsent(new MeshKey(mesh), key -> key.mesh);
                 sectioned = new SectionedModel(complete, mesh);
@@ -85,7 +90,6 @@ public final class SectionedModel implements BlockStateModel {
     }
 
     public static @Nullable SectionedModel forState(BlockState state) {
-
         return published.get(state);
     }
 
@@ -93,6 +97,20 @@ public final class SectionedModel implements BlockStateModel {
         this.complete = complete;
         this.mesh = mesh;
         this.contextual = complete.getClass() != SingleVariant.class || !mesh.ownBlock();
+    }
+
+    SectionGeometry.@Nullable Cells cells(@Nullable Object key) {
+        if (key == null) return null;
+        for (int i = 0; i < cellKeys.length; i++) {
+            if (key.equals(cellKeys[i])) return cells[i];
+        }
+        return null;
+    }
+
+    void cells(Object key, SectionGeometry.Cells value) {
+        int at = nextCells++ & 3;
+        cellKeys[at] = key;
+        cells[at] = value;
     }
 
     SectionGeometryLayout acquire(BlockPos core, SectionGeometry.Mesh geometry) {
@@ -122,7 +140,6 @@ public final class SectionedModel implements BlockStateModel {
     static void release(SectionGeometryLayout layout) {
         synchronized (LAYOUTS) {
             var entry = ENTRIES.get(layout);
-
             if (entry == null) return;
             assert entry.references > 0;
             if (--entry.references != 0) return;
@@ -157,7 +174,15 @@ public final class SectionedModel implements BlockStateModel {
     }
 
     SectionGeometry.Prepared prepare(ClientLevel level, BlockPos pos, BlockState state) {
-        if (contextual) return share(SectionGeometry.prepare(this, level, pos, state));
+        return prepare(level, pos, state, null);
+    }
+
+    SectionGeometry.Prepared prepare(
+            ClientLevel level,
+            BlockPos pos,
+            BlockState state,
+            SectionGeometry.@Nullable Prepared previous) {
+        if (contextual) return share(SectionGeometry.prepare(this, level, pos, state), previous);
         return uniform.computeIfAbsent(
                 ((BlockAndTintGetter) level).cardinalLighting(),
                 lighting ->
@@ -165,7 +190,9 @@ public final class SectionedModel implements BlockStateModel {
                                 mesh, SectionGeometry.colors(this, state, lighting)));
     }
 
-    private SectionGeometry.Prepared share(SectionGeometry.Prepared value) {
+    private SectionGeometry.Prepared share(
+            SectionGeometry.Prepared value, SectionGeometry.@Nullable Prepared previous) {
+        if (previous != null && sameAppearance(previous, value)) return previous;
         var geometry = value.mesh();
         if (Arrays.equals(geometry.vertices(), mesh.vertices())
                 && Arrays.equals(geometry.normals(), mesh.normals())
@@ -185,19 +212,23 @@ public final class SectionedModel implements BlockStateModel {
                         + Arrays.hashCode(value.lit().light());
         for (int i = 0; i < appearances.length; i++) {
             var old = appearances[i];
-            if (old != null
-                    && appearanceHashes[i] == hash
-                    && Arrays.equals(old.mesh().vertices(), geometry.vertices())
-                    && Arrays.equals(old.mesh().layers(), geometry.layers())
-                    && Arrays.equals(old.mesh().normals(), geometry.normals())
-                    && Arrays.equals(old.mesh().surface(), geometry.surface())
-                    && Arrays.equals(old.lit().colors(), value.lit().colors())
-                    && Arrays.equals(old.lit().light(), value.lit().light())) return old;
+            if (old != null && appearanceHashes[i] == hash && sameAppearance(old, value))
+                return old;
         }
         int index = nextAppearance++ & 3;
         appearances[index] = value;
         appearanceHashes[index] = hash;
         return value;
+    }
+
+    private static boolean sameAppearance(
+            SectionGeometry.Prepared old, SectionGeometry.Prepared value) {
+        return Arrays.equals(old.lit().colors(), value.lit().colors())
+                && Arrays.equals(old.lit().light(), value.lit().light())
+                && Arrays.equals(old.mesh().vertices(), value.mesh().vertices())
+                && Arrays.equals(old.mesh().normals(), value.mesh().normals())
+                && Arrays.equals(old.mesh().layers(), value.mesh().layers())
+                && Arrays.equals(old.mesh().surface(), value.mesh().surface());
     }
 
     private static final class MeshKey {

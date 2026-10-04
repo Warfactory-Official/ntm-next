@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.blockentity.network.BlockEntityPylon;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.tileentity.network.BlockEntityPylon;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -27,7 +27,6 @@ public class PylonBlock extends BlockMultiblockCore implements EntityBlock {
 
     public static final MapCodec<PylonBlock> CODEC = simpleCodec(PylonBlock::new);
     private static final int[] DIMENSIONS = {4, 0, 0, 0, 0, 0};
-
     private static final int HORIZONTAL_MASK =
             (1 << Direction.NORTH.ordinal())
                     | (1 << Direction.SOUTH.ordinal())

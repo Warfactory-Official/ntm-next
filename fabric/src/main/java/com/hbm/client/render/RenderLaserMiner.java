@@ -3,11 +3,11 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineMiningLaser;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.BeamPronter.EnumBeamType;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
 import com.hbm.render.util.BeamPronter;
-import com.hbm.tileentity.machine.BlockEntityMachineMiningLaser;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -18,9 +18,7 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
@@ -80,7 +78,6 @@ public class RenderLaserMiner
         state.standoff = n;
         state.vec = vec;
         state.yaw = (float) Math.toDegrees(Math.atan2(vec.x, vec.z));
-
         double flat = Math.sqrt(vec.x * vec.x + vec.z * vec.z);
         state.pitch = (float) Math.toDegrees(Math.atan2(vec.y, flat));
         state.beam = be.beam;

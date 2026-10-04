@@ -3,6 +3,8 @@
 
 package com.hbm.blocks.machine.storage;
 
+import com.hbm.blockentity.machine.storage.BlockEntityMachineCapacitor;
+import com.hbm.blockentity.machine.storage.CapacitorCharge;
 import com.hbm.blocks.BlockDirectionalBase;
 import com.hbm.blocks.IPersistentInfoProvider;
 import com.hbm.blocks.ITickingBlock;
@@ -10,8 +12,6 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.items.ModDataComponents;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineCapacitor;
-import com.hbm.tileentity.machine.storage.CapacitorCharge;
 import com.hbm.util.BobMathUtil;
 import com.mojang.serialization.MapCodec;
 import java.util.function.Consumer;

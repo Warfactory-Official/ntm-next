@@ -4,8 +4,13 @@
 
 package com.hbm.particle;
 
+import com.hbm.client.particle.CasingSmokeVisual;
+import com.hbm.client.particle.VisualParticle;
 import com.hbm.lib.Library;
 import com.hbm.util.BobMathUtil;
+import dev.engine_room.flywheel.api.visual.EffectVisual;
+import dev.engine_room.flywheel.api.visualization.VisualizationContext;
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -18,9 +23,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import org.jspecify.annotations.Nullable;
 
-public class ParticleSpentCasing extends Particle {
-
+public class ParticleSpentCasing extends Particle implements VisualParticle {
     public static final ParticleRenderType CASING_GROUP =
             new ParticleRenderType("hbm:casing", "HCA");
 
@@ -36,11 +41,12 @@ public class ParticleSpentCasing extends Particle {
     private int nodeLife = 30;
     private final boolean isSmoking;
     private float momentumPitch, momentumYaw;
-
     private boolean setupDeltas = false;
     private double prevRenderX;
     private double prevRenderY;
     private double prevRenderZ;
+    private @Nullable VisualizationManager visualManager;
+    private volatile @Nullable SmokeFrame smokeFrame;
 
     public ParticleSpentCasing(
             ClientLevel level,
@@ -278,6 +284,44 @@ public class ParticleSpentCasing extends Particle {
     public int lightCoords(float interp) {
         return this.getLightCoords(interp);
     }
+
+    public @Nullable SmokeFrame smokeFrame() {
+        return smokeFrame;
+    }
+
+    public void smokeFrame(@Nullable SmokeFrame frame) {
+        smokeFrame = frame;
+    }
+
+    @Override
+    public ClientLevel level() {
+        return level;
+    }
+
+    @Override
+    public @Nullable VisualizationManager visualManager() {
+        return visualManager;
+    }
+
+    @Override
+    public void visualManager(@Nullable VisualizationManager manager) {
+        visualManager = manager;
+    }
+
+    @Override
+    public EffectVisual<?> visualize(VisualizationContext context, float partialTick) {
+        return new CasingSmokeVisual(context, this, partialTick);
+    }
+
+    public record SmokeFrame(
+            double x,
+            double y,
+            double z,
+            float heightQuarter,
+            float widthX,
+            float widthZ,
+            int light,
+            float[] nodes) {}
 
     public static final class SmokeNode {
         public double x, y, z;

@@ -3,10 +3,10 @@
 
 package com.hbm.blocks.machine.fusion;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionBreeder;
+import com.hbm.blockentity.machine.fusion.FusionPorts;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionBreeder;
-import com.hbm.tileentity.machine.fusion.FusionPorts;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

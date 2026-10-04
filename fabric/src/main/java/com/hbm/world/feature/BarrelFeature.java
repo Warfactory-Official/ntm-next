@@ -10,7 +10,6 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BarrelFeature extends PlaceTemplateFeature {
-
     private static final List<BlockPos> CORNERS =
             List.of(
                     new BlockPos(0, 0, 0), new BlockPos(4, 0, 0),
@@ -32,7 +31,7 @@ public class BarrelFeature extends PlaceTemplateFeature {
         BlockPos check = pos.below();
         BlockState checkState = level.getBlockState(check);
         BlockState belowState = level.getBlockState(check.below());
-        return LocationIsValidSpawn.isValidGround(checkState, belowState, false);
+        return LocationIsValidSpawn.isValidGround(checkState, belowState);
     }
 
     @Override

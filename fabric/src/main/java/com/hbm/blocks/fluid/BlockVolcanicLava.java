@@ -95,7 +95,6 @@ public class BlockVolcanicLava extends BlockFluidClassicBase {
         if (state.is(BlockTags.LOGS)) return ModBlocks.WASTE_LOG.get();
         if (state.is(BlockTags.PLANKS)) return wastePlanks();
         if (state.is(BlockTags.LEAVES)) return Blocks.FIRE;
-
         if (state.is(Blocks.DIAMOND_ORE)) return requireBlock("ore_basalt_gem");
         return null;
     }

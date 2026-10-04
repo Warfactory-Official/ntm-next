@@ -3,32 +3,26 @@
 
 package com.hbm.world.feature;
 
+import com.hbm.blockentity.BlockEntityBobble;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockBobble.BobbleType;
 import com.hbm.blocks.generic.BlockBobble;
-import com.hbm.blocks.generic.BlockDecoTapeRecorder;
-import com.hbm.tileentity.BlockEntityBobble;
 import com.hbm.world.gen.WorldgenHeight;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public class ArcticVaultFeature extends Feature<NoneFeatureConfiguration> {
 
-    private static final TagKey<Block> C_ORES =
-            TagKey.create(Registries.BLOCK, Identifier.parse("c:ores"));
     private static final BobbleType[] BOBBLE_TYPES = BobbleType.values();
 
     private static final int BRICK = 0;
@@ -120,13 +114,20 @@ public class ArcticVaultFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos.MutableBlockPos pos =
                 new BlockPos.MutableBlockPos(origin.getX(), origin.getY() - 1, origin.getZ());
 
-        if (level.getBiome(pos).value().getBaseTemperature() >= 0.2F) return false;
+        BlockPos surface =
+                origin.atY(
+                        level.getHeight(
+                                Heightmap.Types.WORLD_SURFACE_WG, origin.getX(), origin.getZ()));
+        if (level.getBiome(surface).value().getBaseTemperature() >= 0.2F) return false;
 
-        BlockState anchor = level.getBlockState(pos);
-        if (!anchor.is(BlockTags.BASE_STONE_OVERWORLD) && !anchor.is(C_ORES)) return false;
+        if (!isAnchor(level.getBlockState(pos))) return false;
 
         build(level, rand, pos);
         return true;
+    }
+
+    public static boolean isAnchor(BlockState state) {
+        return state.is(BlockTags.MINEABLE_WITH_PICKAXE);
     }
 
     private void build(WorldGenLevel level, RandomSource rand, BlockPos.MutableBlockPos o) {
@@ -177,8 +178,7 @@ public class ArcticVaultFeature extends Feature<NoneFeatureConfiguration> {
         int iy = WorldgenHeight.lightBlocking(level, x, z);
         BlockPos.MutableBlockPos ground = at.set(x, iy - 1, z);
 
-        if (level.getBlockState(ground).isFaceSturdy(level, ground, Direction.UP)) {
-
+        if (LockedSafeFeature.canPlaceTorchOnTop(level.getBlockState(ground))) {
             level.setBlock(at.set(x, iy, z), ModBlocks.TAPE_RECORDER.get().defaultBlockState(), 3);
         }
     }

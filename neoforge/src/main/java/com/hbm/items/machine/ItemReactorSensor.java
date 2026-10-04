@@ -32,7 +32,6 @@ public class ItemReactorSensor extends Item {
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
-
         BlockPos core = MultiblockSurface.coreOfAny(level, pos, level.getBlockState(pos));
         if (core == null || !level.getBlockState(core).is(ModBlocks.REACTOR_RESEARCH.get())) {
             return InteractionResult.PASS;

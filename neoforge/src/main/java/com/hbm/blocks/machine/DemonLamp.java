@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityDemonLamp;
 import com.hbm.blocks.BlockDirectionalBase;
 import com.hbm.blocks.ITickingBlock;
-import com.hbm.tileentity.machine.BlockEntityDemonLamp;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

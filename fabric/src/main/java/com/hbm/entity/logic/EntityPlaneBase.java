@@ -30,7 +30,6 @@ public abstract class EntityPlaneBase extends Entity {
     private final InterpolationHandler interpolation = new InterpolationHandler(this);
     public float health = getMaxHealth();
     public int timer = getLifetime();
-
     public float renderPitch = -90F;
     public float renderPitchO = -90F;
     public float renderYaw;
@@ -78,7 +77,6 @@ public abstract class EntityPlaneBase extends Entity {
             this.health = this.entityData.get(DATA_HEALTH);
             Vec3 step = position().subtract(prePos);
             updateRenderRotation(step);
-
             if (this.health <= 0) {
                 for (int i = 0; i < 10; i++) {
                     ClientEffects.spawnPlaneFlame(

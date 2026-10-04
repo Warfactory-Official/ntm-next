@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineLPW2;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityMachineLPW2;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
@@ -208,7 +208,6 @@ public class RenderLPW2
         ps.pushPose();
         ps.translate(s.sy * SERVER_SWAY, 0, s.sx * SERVER_SWAY);
         part(col, ps, light, MONITOR);
-
         float scroll = (float) s.errorScroll;
         final HFRWavefrontObject m = this.model;
         col.submitCustomGeometry(

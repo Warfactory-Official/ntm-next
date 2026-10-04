@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = LivingEntity.class, priority = 1100)
 abstract class LivingEntityArmorModMixin {
-
     @Inject(
             method = "hurtServer",
             at =

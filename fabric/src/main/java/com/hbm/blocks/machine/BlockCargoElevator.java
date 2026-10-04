@@ -3,11 +3,10 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityCargoElevator;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockSurface;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityCargoElevator;
 import com.hbm.util.BlockReadBounds;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +106,6 @@ public class BlockCargoElevator extends BlockMultiblockCore implements ITickingB
     @Override
     protected void visitTeardownCells(
             LevelAccessor level, BlockPos core, Direction facing, CellVisitor visitor) {
-
         visitSections(core, level.getMaxY() - core.getY(), visitor);
     }
 
@@ -251,7 +249,7 @@ public class BlockCargoElevator extends BlockMultiblockCore implements ITickingB
         if (isCellState(state)
                 && level instanceof ServerLevel server
                 && !player.preventsBlockDrops()
-                && Services.PLATFORM.canHarvestBlock(level, pos, state, player)) {
+                && player.hasCorrectToolForDrops(state)) {
             BlockEntityCargoElevator elevator = elevator(level, pos);
             if (elevator != null) {
                 Block.dropResources(

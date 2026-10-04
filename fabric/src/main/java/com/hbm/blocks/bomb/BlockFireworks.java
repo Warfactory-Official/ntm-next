@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.bomb;
 
+import com.hbm.blockentity.bomb.BlockEntityFireworks;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.items.ModItems;
-import com.hbm.tileentity.bomb.BlockEntityFireworks;
 import com.hbm.util.ColorUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

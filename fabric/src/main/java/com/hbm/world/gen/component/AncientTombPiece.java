@@ -26,7 +26,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 public class AncientTombPiece extends NtmComponentPiece {
 
     private static final int PYRAMID_SIZE = 15;
-
     private static final double TUNNEL_ANGLE_STEP = 2.0 * Math.PI / 32.0;
     private static final long CONCRETE_DOMAIN =
             WorldgenHash.identifier(Library.id("structure/ancient_tomb_concrete"));
@@ -36,7 +35,6 @@ public class AncientTombPiece extends NtmComponentPiece {
 
     public AncientTombPiece(int x, int z, int yOff, int[] spikeX, int[] spikeZ, int[] spikeY) {
         super(HbmStructureTypes.ANCIENT_TOMB_PIECE.get(), 0, boundingBoxFor(x, z, yOff, spikeY));
-
         this.setOrientation(null);
         this.originX = x;
         this.originZ = z;
@@ -63,7 +61,6 @@ public class AncientTombPiece extends NtmComponentPiece {
             minSpikeY = Math.min(minSpikeY, sy);
             maxSpikeY = Math.max(maxSpikeY, sy);
         }
-
         int minY = Math.min(14, minSpikeY - 3);
         int maxY = Math.max(yOff + PYRAMID_SIZE + 1, maxSpikeY + 8);
         return new BoundingBox(x - 30, minY, z - 30, x + 30, maxY, z + 30);

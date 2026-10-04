@@ -35,7 +35,6 @@ public final class ItemRepairKit extends Item {
 
             for (int index = 0; index < gun.getConfigCount(); index++) {
                 float maxDurability = gun.getConfig(gunStack, index).getDurability(gunStack);
-
                 if (Math.min(ItemGunBaseNT.getWear(gunStack, index), maxDurability) > 0) {
                     ItemGunBaseNT.setWear(
                             gunStack,

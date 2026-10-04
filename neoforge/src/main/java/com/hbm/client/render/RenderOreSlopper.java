@@ -3,13 +3,13 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineOreSlopper;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.render.flywheel.HbmBlockEntityVisual;
 import com.hbm.client.render.flywheel.WorldItem;
 import com.hbm.items.ModItems;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityMachineOreSlopper;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -93,7 +93,6 @@ public class RenderOreSlopper
     }
 
     public static void samplePose(PoseStack ps) {
-
         ps.translate(0.0, 4.3125, 2.0);
         ps.mulPose(Axis.YP.rotationDegrees(90));
         ps.mulPose(Axis.XP.rotationDegrees(-90));
@@ -118,7 +117,6 @@ public class RenderOreSlopper
             state.blades = Mth.lerp(pt, be.prevBlades, be.blades);
             state.fan = Mth.lerp(pt, be.prevFan, be.fan);
         }
-
         boolean drawn =
                 be.animation == BlockEntityMachineOreSlopper.SlopperAnimation.LIFTING
                         && (!state.visualized

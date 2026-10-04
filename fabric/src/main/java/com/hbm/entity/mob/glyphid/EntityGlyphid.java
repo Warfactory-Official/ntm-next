@@ -18,14 +18,13 @@ import com.hbm.explosion.vanillant.standard.BlockAllocatorGlyphidDig;
 import com.hbm.explosion.vanillant.standard.BlockProcessorStandard;
 import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.handler.pollution.PollutionType;
-import com.hbm.handler.threading.TargetPoint;
 import com.hbm.items.ModItems;
 import com.hbm.lib.Library;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.main.ResourceManager;
 import com.hbm.particle.ParticleGiblet;
 import com.hbm.particle.helper.ParticleCreators;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricPlatform;
 import com.hbm.util.MobUtil;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -354,9 +353,8 @@ public class EntityGlyphid extends Monster implements IResistanceProvider {
 
                         if (isLanternBlock(block)
                                 && level() instanceof ServerLevel server
-                                && Services.PLATFORM.canEntityDestroyBlock(
+                                && FabricPlatform.canEntityDestroyBlock(
                                         server, pos, server.getBlockState(pos), this)) {
-
                             setYRot(360F / 16 * i);
                             yBodyRot = getYRot();
                             swing(InteractionHand.MAIN_HAND);
@@ -516,7 +514,6 @@ public class EntityGlyphid extends Monster implements IResistanceProvider {
 
     @Override
     public boolean doHurtTarget(ServerLevel level, Entity target) {
-
         if (swinging) return false;
         swing(InteractionHand.MAIN_HAND);
 

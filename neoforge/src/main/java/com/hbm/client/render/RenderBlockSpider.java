@@ -70,7 +70,6 @@ public class RenderBlockSpider extends EntityRenderer<EntityBlockSpider, RenderB
             PoseStack poseStack,
             SubmitNodeCollector collector,
             CameraRenderState camera) {
-
         if (state.disguise.isEmpty()) {
             super.submit(state, poseStack, collector, camera);
             return;
@@ -79,7 +78,6 @@ public class RenderBlockSpider extends EntityRenderer<EntityBlockSpider, RenderB
         int light = state.lightCoords;
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(180F - state.bodyYaw));
-
         poseStack.mulPose(Axis.YP.rotationDegrees(90F));
 
         poseStack.pushPose();
@@ -95,7 +93,6 @@ public class RenderBlockSpider extends EntityRenderer<EntityBlockSpider, RenderB
         poseStack.popPose();
 
         poseStack.pushPose();
-
         poseStack.translate(-0.5D, 0.25D, -0.5D);
         state.disguise.submit(
                 poseStack, collector, light, OverlayTexture.NO_OVERLAY, state.outlineColor);

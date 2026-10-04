@@ -49,7 +49,6 @@ public final class MeteorVisual extends HbmDynamicEntityVisual<EntityMeteor> {
             +0.5F, +0.5F, -0.5F, 1F, 1F
         }
     };
-
     private static final float AXIS = (float) (1D / Math.sqrt(3D));
     private static final float REACH = (float) (2.5D * Math.sqrt(3D));
     private static final Model MODEL =

@@ -4,7 +4,7 @@
 package com.hbm.client.model;
 
 import com.hbm.blocks.multiblock.MultiblockSurface;
-import com.hbm.platform.Services;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.RegistryHandle;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import java.util.ArrayList;
@@ -14,26 +14,26 @@ import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.IntStream;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class OccluderMasks {
-
     static final double SOLID = 0.9;
     private static final int SAMPLES = 8;
-
     private static final float[] JITTER = {0.0137F, 0.0071F, 0.0103F};
     private static final float TIE = 1.0E-4F;
     private static final int CUTOUT_ALPHA = 128;
-
     private static final double MIN_PROJECTED_AREA = 3.6;
     private static volatile IdentityHashMap<BlockState, Mask> published = new IdentityHashMap<>();
 
@@ -56,10 +56,11 @@ public final class OccluderMasks {
         }
     }
 
-    public static void derive(Map<BlockState, BlockStateModel> models) {
+    public static Map<BlockStateModel, SectionGeometry.Mesh> derive(
+            Map<BlockState, BlockStateModel> models) {
         var distinct = new IdentityHashMap<BlockStateModel, Integer>();
         var owners = new ArrayList<BlockState>();
-        for (RegistryHandle<? extends Block> handle : Services.REGISTRAR.blocks()) {
+        for (RegistryHandle<? extends Block> handle : NeoForgeRegistrar.registeredBlocks) {
             for (BlockState state : handle.get().getStateDefinition().getPossibleStates()) {
                 BlockStateModel model = models.get(state);
                 if (model != null
@@ -71,20 +72,25 @@ public final class OccluderMasks {
             }
         }
         MeshKey[] meshes = new MeshKey[owners.size()];
+        var byParts = new ConcurrentHashMap<PartsKey, MeshKey>();
         IntStream.range(0, meshes.length)
                 .parallel()
                 .forEach(
                         i -> {
-                            List<TextureAtlasSprite> sprites = new ArrayList<>();
+                            BlockState state = owners.get(i);
+                            List<BlockStateModelPart> parts = new ArrayList<>();
+                            models.get(state).collectParts(RandomSource.create(0), parts);
                             meshes[i] =
-                                    new MeshKey(
-                                            SectionGeometry.mesh(
-                                                    models.get(owners.get(i)),
-                                                    owners.get(i),
-                                                    sprites),
-                                            sprites);
+                                    byParts.computeIfAbsent(
+                                            new PartsKey(parts),
+                                            key -> {
+                                                List<TextureAtlasSprite> sprites =
+                                                        new ArrayList<>();
+                                                return new MeshKey(
+                                                        SectionGeometry.mesh(parts, state, sprites),
+                                                        sprites);
+                                            });
                         });
-
         var unique = new HashMap<MeshKey, Integer>();
         int[] maskOf = new int[meshes.length];
         for (int i = 0; i < meshes.length; i++)
@@ -96,7 +102,7 @@ public final class OccluderMasks {
                 .parallel()
                 .forEach(i -> masks[i] = mask(keys[i].mesh(), keys[i].sprites()));
         var result = new IdentityHashMap<BlockState, Mask>();
-        for (RegistryHandle<? extends Block> handle : Services.REGISTRAR.blocks()) {
+        for (RegistryHandle<? extends Block> handle : NeoForgeRegistrar.registeredBlocks) {
             for (BlockState state : handle.get().getStateDefinition().getPossibleStates()) {
                 BlockStateModel model = models.get(state);
                 if (model == null) continue;
@@ -108,6 +114,26 @@ public final class OccluderMasks {
             }
         }
         published = result;
+        var captured = new IdentityHashMap<BlockStateModel, SectionGeometry.Mesh>();
+        distinct.forEach((model, index) -> captured.put(model, meshes[index].mesh()));
+        return captured;
+    }
+
+    private record PartsKey(List<BlockStateModelPart> parts) {
+        @Override
+        public boolean equals(Object other) {
+            if (!(other instanceof PartsKey key) || parts.size() != key.parts.size()) return false;
+            for (int i = 0; i < parts.size(); i++)
+                if (parts.get(i) != key.parts.get(i)) return false;
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 1;
+            for (var part : parts) hash = hash * 31 + System.identityHashCode(part);
+            return hash;
+        }
     }
 
     private record MeshKey(SectionGeometry.Mesh mesh, List<TextureAtlasSprite> sprites) {
@@ -174,7 +200,6 @@ public final class OccluderMasks {
                     uv[t * 6 + c * 2] = vertices[base + 3];
                     uv[t * 6 + c * 2 + 1] = vertices[base + 4];
                 }
-
                 if (layers[q] == cutout) alpha[t] = sprites.get(q);
                 t++;
             }
@@ -198,7 +223,6 @@ public final class OccluderMasks {
         Line line = new Line(count);
         for (int axis = 0; axis < 3; axis++) {
             int u = (axis + 1) % 3, w = (axis + 2) % 3;
-
             int[] start = new int[n[u] * n[w] + 1];
             int[] range = new int[count * 4];
             for (int pass = 0; pass < 2; pass++) {
@@ -271,7 +295,6 @@ public final class OccluderMasks {
                     for (int kx = 0; kx < SAMPLES; kx++) {
                         for (int ky = 0; ky < SAMPLES; ky++) {
                             for (int kz = 0; kz < SAMPLES; kz++) {
-
                                 int vote =
                                         votes[
                                                 ((cx * SAMPLES + kx) * n[1] + cy * SAMPLES + ky)
@@ -417,7 +440,6 @@ public final class OccluderMasks {
                 float au = p[b + u], aw = p[b + w];
                 float e1u = p[b + 3 + u] - au, e1w = p[b + 3 + w] - aw;
                 float e2u = p[b + 6 + u] - au, e2w = p[b + 6 + w] - aw;
-
                 float area = e1u * e2w - e1w * e2u;
                 if (Math.abs(area) < 1.0E-12F) continue;
                 float du = pu - au, dw = pw - aw;

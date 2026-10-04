@@ -6,8 +6,8 @@ package com.hbm.explosion.vanillant.standard;
 import com.hbm.explosion.vanillant.ExplosionVNT;
 import com.hbm.explosion.vanillant.interfaces.IExplosionSFX;
 import com.hbm.handler.threading.TargetPoint;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.AmatFlashPayload;
-import com.hbm.platform.Services;
 import com.hbm.sound.ModSounds;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -48,7 +48,7 @@ public class ExplosionEffectAmat implements IExplosionSFX {
                     1.0F);
         }
 
-        Services.NETWORK.sendToAllAround(
+        PacketWire.sendToAllAround(
                 new AmatFlashPayload(x, y, z, size), new TargetPoint(level, x, y, z, 200));
     }
 }

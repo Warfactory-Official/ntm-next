@@ -3,49 +3,49 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.bomb.BlockEntityBombMulti;
+import com.hbm.blockentity.bomb.BlockEntityCompactLauncher;
+import com.hbm.blockentity.bomb.BlockEntityLaunchPad;
+import com.hbm.blockentity.bomb.BlockEntityLaunchPadLarge;
+import com.hbm.blockentity.bomb.BlockEntityLaunchPadRusted;
+import com.hbm.blockentity.bomb.BlockEntityLaunchTable;
+import com.hbm.blockentity.bomb.BlockEntityNukeBalefire;
+import com.hbm.blockentity.bomb.BlockEntityNukeCustom;
+import com.hbm.blockentity.machine.*;
+import com.hbm.blockentity.machine.albion.*;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionBreeder;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionKlystron;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionPlasmaForge;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorus;
+import com.hbm.blockentity.machine.oil.*;
+import com.hbm.blockentity.machine.rbmk.*;
+import com.hbm.blockentity.machine.storage.*;
+import com.hbm.blockentity.network.BlockEntityCraneBoxer;
+import com.hbm.blockentity.network.BlockEntityCraneExtractor;
+import com.hbm.blockentity.network.BlockEntityCraneGrabber;
+import com.hbm.blockentity.network.BlockEntityCraneInserter;
+import com.hbm.blockentity.network.BlockEntityCraneRouter;
+import com.hbm.blockentity.network.BlockEntityCraneUnboxer;
+import com.hbm.blockentity.network.BlockEntityDroneCrate;
+import com.hbm.blockentity.network.BlockEntityDroneDock;
+import com.hbm.blockentity.network.BlockEntityDroneProvider;
+import com.hbm.blockentity.network.BlockEntityDroneRequester;
+import com.hbm.blockentity.network.BlockEntityRadioTorchCounter;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageAccess;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageClutter;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageExporter;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageImporter;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageMono;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTube;
+import com.hbm.blockentity.turret.BlockEntityTurretBaseNT;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.tool.ItemAmmoBag;
 import com.hbm.items.tool.ItemCasingBag;
 import com.hbm.items.tool.ItemLeadBox;
 import com.hbm.items.tool.ItemPlasticBag;
 import com.hbm.items.tool.ItemToolBox;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.RegistryHandle;
-import com.hbm.tileentity.bomb.BlockEntityBombMulti;
-import com.hbm.tileentity.bomb.BlockEntityCompactLauncher;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPad;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPadLarge;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPadRusted;
-import com.hbm.tileentity.bomb.BlockEntityLaunchTable;
-import com.hbm.tileentity.bomb.BlockEntityNukeBalefire;
-import com.hbm.tileentity.bomb.BlockEntityNukeCustom;
-import com.hbm.tileentity.machine.*;
-import com.hbm.tileentity.machine.albion.*;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionBreeder;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionKlystron;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionPlasmaForge;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionTorus;
-import com.hbm.tileentity.machine.oil.*;
-import com.hbm.tileentity.machine.rbmk.*;
-import com.hbm.tileentity.machine.storage.*;
-import com.hbm.tileentity.network.BlockEntityCraneBoxer;
-import com.hbm.tileentity.network.BlockEntityCraneExtractor;
-import com.hbm.tileentity.network.BlockEntityCraneGrabber;
-import com.hbm.tileentity.network.BlockEntityCraneInserter;
-import com.hbm.tileentity.network.BlockEntityCraneRouter;
-import com.hbm.tileentity.network.BlockEntityCraneUnboxer;
-import com.hbm.tileentity.network.BlockEntityDroneCrate;
-import com.hbm.tileentity.network.BlockEntityDroneDock;
-import com.hbm.tileentity.network.BlockEntityDroneProvider;
-import com.hbm.tileentity.network.BlockEntityDroneRequester;
-import com.hbm.tileentity.network.BlockEntityRadioTorchCounter;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageAccess;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageClutter;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageExporter;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageImporter;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageMono;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoTube;
-import com.hbm.tileentity.turret.BlockEntityTurretBaseNT;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.world.inventory.MenuType;
@@ -53,7 +53,6 @@ import net.minecraft.world.inventory.MenuType;
 public final class ModMenus {
 
     private static final RegistryHandle<MenuType<MenuCrate>>[] CRATE = newCrateArray();
-
     private static final Map<Integer, RegistryHandle<MenuType<MenuAnvil>>> ANVIL = new HashMap<>();
     public static RegistryHandle<MenuType<MenuTrainCargoTram>> TRAIN_CARGO_TRAM;
     public static RegistryHandle<MenuType<MenuTrainCargoTramTrailer>> TRAIN_CARGO_TRAM_TRAILER;
@@ -143,7 +142,6 @@ public final class ModMenus {
     public static RegistryHandle<MenuType<MenuMachineEPress>> MACHINE_EPRESS;
     public static RegistryHandle<MenuType<MenuMachineShredder>> MACHINE_SHREDDER;
     public static RegistryHandle<MenuType<MenuMachineFluidTank>> MACHINE_FLUID_TANK;
-
     public static RegistryHandle<MenuType<MenuTurretBase>> TURRET_BASE;
     public static RegistryHandle<MenuType<MenuBarrel>> BARREL;
     public static RegistryHandle<MenuType<MenuMassStorage>> MASS_STORAGE;
@@ -227,338 +225,482 @@ public final class ModMenus {
 
     private ModMenus() {}
 
-    public static void register(IRegistrar r) {
-        MACHINE_CENTRIFUGE = r.registerMenu("machine_centrifuge", MenuMachineCentrifuge::new);
-
+    public static void register() {
+        MACHINE_CENTRIFUGE =
+                NeoForgeRegistrar.registerMenu("machine_centrifuge", MenuMachineCentrifuge::new);
         MACHINE_GASCENT =
-                r.registerBlockEntityMenu("machine_gascent", BlockEntityMachineGasCent.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_gascent", BlockEntityMachineGasCent.class);
         MACHINE_ELECTRIC_FURNACE =
-                r.registerMenu("machine_electric_furnace", MenuMachineElectricFurnace::new);
-        MACHINE_PRESS = r.registerBlockEntityMenu("machine_press", BlockEntityMachinePress.class);
-
+                NeoForgeRegistrar.registerMenu(
+                        "machine_electric_furnace", MenuMachineElectricFurnace::new);
+        MACHINE_PRESS =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_press", BlockEntityMachinePress.class);
         MACHINE_AUTOCRAFTER =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_autocrafter", BlockEntityMachineAutocrafter.class);
-
-        PNEUMATIC_TUBE = r.registerBlockEntityMenu("pneumatic_tube", BlockEntityPneumoTube.class);
-
+        PNEUMATIC_TUBE =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "pneumatic_tube", BlockEntityPneumoTube.class);
         CRANE_INSERTER =
-                r.registerBlockEntityMenu("crane_inserter", BlockEntityCraneInserter.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "crane_inserter", BlockEntityCraneInserter.class);
         CRANE_EXTRACTOR =
-                r.registerBlockEntityMenu("crane_extractor", BlockEntityCraneExtractor.class);
-        CRANE_GRABBER = r.registerBlockEntityMenu("crane_grabber", BlockEntityCraneGrabber.class);
-        CRANE_BOXER = r.registerBlockEntityMenu("crane_boxer", BlockEntityCraneBoxer.class);
-        CRANE_UNBOXER = r.registerBlockEntityMenu("crane_unboxer", BlockEntityCraneUnboxer.class);
-        CRANE_ROUTER = r.registerBlockEntityMenu("crane_router", BlockEntityCraneRouter.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "crane_extractor", BlockEntityCraneExtractor.class);
+        CRANE_GRABBER =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "crane_grabber", BlockEntityCraneGrabber.class);
+        CRANE_BOXER =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "crane_boxer", BlockEntityCraneBoxer.class);
+        CRANE_UNBOXER =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "crane_unboxer", BlockEntityCraneUnboxer.class);
+        CRANE_ROUTER =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "crane_router", BlockEntityCraneRouter.class);
         PNEUMATIC_STORAGE_ACCESS =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "pneumatic_storage_access", BlockEntityPneumoStorageAccess.class);
         PNEUMATIC_STORAGE_CLUTTER =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "pneumatic_storage_clutter", BlockEntityPneumoStorageClutter.class);
         PNEUMATIC_STORAGE_MONO =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "pneumatic_storage_mono", BlockEntityPneumoStorageMono.class);
         PNEUMATIC_STORAGE_IMPORTER =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "pneumatic_storage_importer", BlockEntityPneumoStorageImporter.class);
         PNEUMATIC_STORAGE_EXPORTER =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "pneumatic_storage_exporter", BlockEntityPneumoStorageExporter.class);
         MACHINE_ASSEMBLY_MACHINE =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_assembly_machine", BlockEntityMachineAssemblyMachine.class);
         MACHINE_ASSEMBLY_FACTORY =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_assembly_factory", BlockEntityMachineAssemblyFactory.class);
         MACHINE_CUSTOM =
-                r.registerBlockEntityMenu("machine_custom", BlockEntityCustomMachine.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_custom", BlockEntityCustomMachine.class);
         MACHINE_CHEMICAL_PLANT =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_chemical_plant", BlockEntityMachineChemicalPlant.class);
         MACHINE_ROCK_MILL =
-                r.registerBlockEntityMenu("machine_rockmill", BlockEntityMachineRockMill.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_rockmill", BlockEntityMachineRockMill.class);
         MACHINE_RADIOLYSIS =
-                r.registerBlockEntityMenu("machine_radiolysis", BlockEntityMachineRadiolysis.class);
-        FUSION_TORUS = r.registerBlockEntityMenu("fusion_torus", BlockEntityFusionTorus.class);
-        CORE_CORE = r.registerBlockEntityMenu("dfc_core", BlockEntityCore.class);
-        CORE_EMITTER = r.registerBlockEntityMenu("dfc_emitter", BlockEntityCoreEmitter.class);
-        CORE_RECEIVER = r.registerBlockEntityMenu("dfc_receiver", BlockEntityCoreReceiver.class);
-        CORE_INJECTOR = r.registerBlockEntityMenu("dfc_injector", BlockEntityCoreInjector.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_radiolysis", BlockEntityMachineRadiolysis.class);
+        FUSION_TORUS =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "fusion_torus", BlockEntityFusionTorus.class);
+        CORE_CORE = NeoForgeRegistrar.registerBlockEntityMenu("dfc_core", BlockEntityCore.class);
+        CORE_EMITTER =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "dfc_emitter", BlockEntityCoreEmitter.class);
+        CORE_RECEIVER =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "dfc_receiver", BlockEntityCoreReceiver.class);
+        CORE_INJECTOR =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "dfc_injector", BlockEntityCoreInjector.class);
         CORE_STABILIZER =
-                r.registerBlockEntityMenu("dfc_stabilizer", BlockEntityCoreStabilizer.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "dfc_stabilizer", BlockEntityCoreStabilizer.class);
         FUSION_KLYSTRON =
-                r.registerBlockEntityMenu("fusion_klystron", BlockEntityFusionKlystron.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "fusion_klystron", BlockEntityFusionKlystron.class);
         FUSION_BREEDER =
-                r.registerBlockEntityMenu("fusion_breeder", BlockEntityFusionBreeder.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "fusion_breeder", BlockEntityFusionBreeder.class);
         MACHINE_PLASMA_FORGE =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_plasma_forge", BlockEntityFusionPlasmaForge.class);
         MACHINE_CHEMICAL_FACTORY =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_chemical_factory", BlockEntityMachineChemicalFactory.class);
         MACHINE_ELECTROLYSER_FLUID =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_electrolyser_fluid", BlockEntityMachineElectrolyser.class);
         MACHINE_ELECTROLYSER_METAL =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_electrolyser_metal", BlockEntityMachineElectrolyser.class);
         MACHINE_REFINERY =
-                r.registerBlockEntityMenu("machine_refinery", BlockEntityMachineRefinery.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_refinery", BlockEntityMachineRefinery.class);
         MACHINE_CATALYTIC_REFORMER =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_catalytic_reformer", BlockEntityMachineCatalyticReformer.class);
         MACHINE_HYDROTREATER =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_hydrotreater", BlockEntityMachineHydrotreater.class);
-        MACHINE_PUREX = r.registerBlockEntityMenu("machine_purex", BlockEntityMachinePUREX.class);
-        MACHINE_MIXER = r.registerBlockEntityMenu("machine_mixer", BlockEntityMachineMixer.class);
-        MACHINE_SILEX = r.registerBlockEntityMenu("machine_silex", BlockEntitySILEX.class);
-        MACHINE_ICF = r.registerBlockEntityMenu("icf", BlockEntityICF.class);
+        MACHINE_PUREX =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_purex", BlockEntityMachinePUREX.class);
+        MACHINE_MIXER =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_mixer", BlockEntityMachineMixer.class);
+        MACHINE_SILEX =
+                NeoForgeRegistrar.registerBlockEntityMenu("machine_silex", BlockEntitySILEX.class);
+        MACHINE_ICF = NeoForgeRegistrar.registerBlockEntityMenu("icf", BlockEntityICF.class);
         MACHINE_ICF_PRESS =
-                r.registerBlockEntityMenu("machine_icf_press", BlockEntityICFPress.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_icf_press", BlockEntityICFPress.class);
         MACHINE_ORE_SLOPPER =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_ore_slopper", BlockEntityMachineOreSlopper.class);
         MACHINE_ANNIHILATOR =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_annihilator", BlockEntityMachineAnnihilator.class);
         MACHINE_BLAST_FURNACE =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_blast_furnace", BlockEntityMachineBlastFurnace.class);
-        MACHINE_CRUCIBLE = r.registerBlockEntityMenu("machine_crucible", BlockEntityCrucible.class);
+        MACHINE_CRUCIBLE =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_crucible", BlockEntityCrucible.class);
         MACHINE_STRAND_CASTER =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_strand_caster", BlockEntityMachineStrandCaster.class);
         MACHINE_PRECASS =
-                r.registerBlockEntityMenu("machine_precass", BlockEntityMachinePrecAss.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_precass", BlockEntityMachinePrecAss.class);
         MACHINE_MINING_LASER =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_mining_laser", BlockEntityMachineMiningLaser.class);
-        FORCEFIELD = r.registerBlockEntityMenu("machine_forcefield", BlockEntityForceField.class);
+        FORCEFIELD =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_forcefield", BlockEntityForceField.class);
         MACHINE_EXCAVATOR =
-                r.registerBlockEntityMenu("machine_excavator", BlockEntityMachineExcavator.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_excavator", BlockEntityMachineExcavator.class);
         MACHINE_CYCLOTRON =
-                r.registerBlockEntityMenu("machine_cyclotron", BlockEntityMachineCyclotron.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_cyclotron", BlockEntityMachineCyclotron.class);
         MACHINE_EXPOSURE_CHAMBER =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_exposure_chamber", BlockEntityMachineExposureChamber.class);
         MACHINE_RADGEN =
-                r.registerBlockEntityMenu("machine_radgen", BlockEntityMachineRadGen.class);
-        MACHINE_RADAR = r.registerBlockEntityMenu("machine_radar", BlockEntityMachineRadar.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_radgen", BlockEntityMachineRadGen.class);
+        MACHINE_RADAR =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_radar", BlockEntityMachineRadar.class);
         MACHINE_RADAR_SLOTS =
-                r.registerBlockEntityMenu("machine_radar_slots", BlockEntityMachineRadar.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_radar_slots", BlockEntityMachineRadar.class);
         MACHINE_REACTOR_BREEDING =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_reactor", BlockEntityMachineReactorBreeding.class);
         REACTOR_RESEARCH =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_reactor_small", BlockEntityReactorResearch.class);
         REACTOR_CONTROL =
-                r.registerBlockEntityMenu("machine_controller", BlockEntityReactorControl.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_controller", BlockEntityReactorControl.class);
         MACHINE_ARC_FURNACE =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_arc_furnace", BlockEntityMachineArcFurnace.class);
         MACHINE_ROTARY_FURNACE =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_rotary_furnace", BlockEntityMachineRotaryFurnace.class);
         HEATER_FIREBOX =
-                r.registerBlockEntityMenu("heater_firebox", BlockEntityHeaterFirebox.class);
-
-        MACHINE_WELL = r.registerBlockEntityMenu("machine_well", BlockEntityOilDrillBase.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "heater_firebox", BlockEntityHeaterFirebox.class);
+        MACHINE_WELL =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_well", BlockEntityOilDrillBase.class);
         MACHINE_COMPRESSOR =
-                r.registerBlockEntityMenu("machine_compressor", BlockEntityMachineCompressor.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_compressor", BlockEntityMachineCompressor.class);
         MACHINE_GAS_FLARE =
-                r.registerBlockEntityMenu("machine_flare", BlockEntityMachineGasFlare.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_flare", BlockEntityMachineGasFlare.class);
         REACTOR_ZIRNOX =
-                r.registerBlockEntityMenu("reactor_zirnox", BlockEntityReactorZirnox.class);
-        WATZ = r.registerBlockEntityMenu("watz", BlockEntityWatz.class);
-        MACHINE_FEL = r.registerBlockEntityMenu("machine_fel", BlockEntityFEL.class);
-        PA_SOURCE = r.registerBlockEntityMenu("pa_source", BlockEntityPASource.class);
-        PA_RFC = r.registerBlockEntityMenu("pa_rfc", BlockEntityPARFC.class);
-        PA_QUADRUPOLE = r.registerBlockEntityMenu("pa_quadrupole", BlockEntityPAQuadrupole.class);
-        PA_DIPOLE = r.registerBlockEntityMenu("pa_dipole", BlockEntityPADipole.class);
-        PA_DETECTOR = r.registerBlockEntityMenu("pa_detector", BlockEntityPADetector.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "reactor_zirnox", BlockEntityReactorZirnox.class);
+        WATZ = NeoForgeRegistrar.registerBlockEntityMenu("watz", BlockEntityWatz.class);
+        MACHINE_FEL =
+                NeoForgeRegistrar.registerBlockEntityMenu("machine_fel", BlockEntityFEL.class);
+        PA_SOURCE =
+                NeoForgeRegistrar.registerBlockEntityMenu("pa_source", BlockEntityPASource.class);
+        PA_RFC = NeoForgeRegistrar.registerBlockEntityMenu("pa_rfc", BlockEntityPARFC.class);
+        PA_QUADRUPOLE =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "pa_quadrupole", BlockEntityPAQuadrupole.class);
+        PA_DIPOLE =
+                NeoForgeRegistrar.registerBlockEntityMenu("pa_dipole", BlockEntityPADipole.class);
+        PA_DETECTOR =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "pa_detector", BlockEntityPADetector.class);
         MACHINE_SOLDERING_STATION =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_soldering_station", BlockEntityMachineSolderingStation.class);
         MACHINE_ARC_WELDER =
-                r.registerBlockEntityMenu("machine_arc_welder", BlockEntityMachineArcWelder.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_arc_welder", BlockEntityMachineArcWelder.class);
         MACHINE_EPRESS =
-                r.registerBlockEntityMenu("machine_epress", BlockEntityMachineEPress.class);
-        MACHINE_SHREDDER = r.registerMenu("machine_shredder", MenuMachineShredder::new);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_epress", BlockEntityMachineEPress.class);
+        MACHINE_SHREDDER =
+                NeoForgeRegistrar.registerMenu("machine_shredder", MenuMachineShredder::new);
         MACHINE_FLUID_TANK =
-                r.registerBlockEntityMenu("machine_fluidtank", BlockEntityMachineFluidTank.class);
-        TURRET_BASE = r.registerBlockEntityMenu("turret_base", BlockEntityTurretBaseNT.class);
-        BARREL = r.registerBlockEntityMenu("barrel", BlockEntityBarrel.class);
-        MASS_STORAGE = r.registerBlockEntityMenu("mass_storage", BlockEntityMassStorage.class);
-        FILE_CABINET = r.registerBlockEntityMenu("filing_cabinet", BlockEntityFileCabinet.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_fluidtank", BlockEntityMachineFluidTank.class);
+        TURRET_BASE =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "turret_base", BlockEntityTurretBaseNT.class);
+        BARREL = NeoForgeRegistrar.registerBlockEntityMenu("barrel", BlockEntityBarrel.class);
+        MASS_STORAGE =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "mass_storage", BlockEntityMassStorage.class);
+        FILE_CABINET =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "filing_cabinet", BlockEntityFileCabinet.class);
         MACHINE_WOOD_BURNER =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_wood_burner", BlockEntityMachineWoodBurner.class);
         MACHINE_DIESEL =
-                r.registerBlockEntityMenu("machine_diesel", BlockEntityMachineDiesel.class);
-        MACHINE_RTG = r.registerBlockEntityMenu("machine_rtg", BlockEntityMachineRTG.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_diesel", BlockEntityMachineDiesel.class);
+        MACHINE_RTG =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_rtg", BlockEntityMachineRTG.class);
         MACHINE_TURBINE =
-                r.registerBlockEntityMenu("machine_turbine", BlockEntityMachineTurbine.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_turbine", BlockEntityMachineTurbine.class);
         MACHINE_LARGE_TURBINE =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_large_turbine", BlockEntityMachineLargeTurbine.class);
         MACHINE_COMBUSTION_ENGINE =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_combustion_engine", BlockEntityMachineCombustionEngine.class);
         MACHINE_TURBINEGAS =
-                r.registerBlockEntityMenu("machine_turbinegas", BlockEntityMachineTurbineGas.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_turbinegas", BlockEntityMachineTurbineGas.class);
         MACHINE_TURBOFAN =
-                r.registerBlockEntityMenu("machine_turbofan", BlockEntityMachineTurbofan.class);
-        WASTE_DRUM = r.registerMenu("machine_waste_drum", MenuWasteDrum::new);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_turbofan", BlockEntityMachineTurbofan.class);
+        WASTE_DRUM = NeoForgeRegistrar.registerMenu("machine_waste_drum", MenuWasteDrum::new);
         STORAGE_DRUM =
-                r.registerBlockEntityMenu("machine_storage_drum", BlockEntityStorageDrum.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_storage_drum", BlockEntityStorageDrum.class);
         BATTERY_SOCKET =
-                r.registerBlockEntityMenu("machine_battery_socket", BlockEntityBatterySocket.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_battery_socket", BlockEntityBatterySocket.class);
         MACHINE_BATTERY =
-                r.registerBlockEntityMenu("machine_battery", BlockEntityMachineBattery.class);
-        BATTERY_REDD = r.registerBlockEntityMenu("battery_redd", BlockEntityBatteryREDD.class);
-        NUKE_MAN = r.registerMenu("nuke_man", MenuNukeMan::new);
-        NUKE_GADGET = r.registerMenu("nuke_gadget", MenuNukeGadget::new);
-        NUKE_BOY = r.registerMenu("nuke_boy", MenuNukeBoy::new);
-        NUKE_MIKE = r.registerMenu("nuke_mike", MenuNukeMike::new);
-        NUKE_TSAR = r.registerMenu("nuke_tsar", MenuNukeTsar::new);
-        NUKE_FLEIJA = r.registerMenu("nuke_fleija", MenuNukeFleija::new);
-        NUKE_PROTOTYPE = r.registerMenu("nuke_prototype", MenuNukePrototype::new);
-        NUKE_SOLINIUM = r.registerMenu("nuke_solinium", MenuNukeSolinium::new);
-        NUKE_N2 = r.registerMenu("nuke_n2", MenuNukeN2::new);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_battery", BlockEntityMachineBattery.class);
+        BATTERY_REDD =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "battery_redd", BlockEntityBatteryREDD.class);
+        NUKE_MAN = NeoForgeRegistrar.registerMenu("nuke_man", MenuNukeMan::new);
+        NUKE_GADGET = NeoForgeRegistrar.registerMenu("nuke_gadget", MenuNukeGadget::new);
+        NUKE_BOY = NeoForgeRegistrar.registerMenu("nuke_boy", MenuNukeBoy::new);
+        NUKE_MIKE = NeoForgeRegistrar.registerMenu("nuke_mike", MenuNukeMike::new);
+        NUKE_TSAR = NeoForgeRegistrar.registerMenu("nuke_tsar", MenuNukeTsar::new);
+        NUKE_FLEIJA = NeoForgeRegistrar.registerMenu("nuke_fleija", MenuNukeFleija::new);
+        NUKE_PROTOTYPE = NeoForgeRegistrar.registerMenu("nuke_prototype", MenuNukePrototype::new);
+        NUKE_SOLINIUM = NeoForgeRegistrar.registerMenu("nuke_solinium", MenuNukeSolinium::new);
+        NUKE_N2 = NeoForgeRegistrar.registerMenu("nuke_n2", MenuNukeN2::new);
         MACHINE_MISSILE_ASSEMBLY =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_missile_assembly", BlockEntityMachineMissileAssembly.class);
-        LAUNCH_PAD = r.registerBlockEntityMenu("launch_pad", BlockEntityLaunchPad.class);
+        LAUNCH_PAD =
+                NeoForgeRegistrar.registerBlockEntityMenu("launch_pad", BlockEntityLaunchPad.class);
         LAUNCH_PAD_RUSTED =
-                r.registerBlockEntityMenu("launch_pad_rusted", BlockEntityLaunchPadRusted.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "launch_pad_rusted", BlockEntityLaunchPadRusted.class);
         LAUNCH_PAD_LARGE =
-                r.registerBlockEntityMenu("launch_pad_large", BlockEntityLaunchPadLarge.class);
-        LAUNCH_TABLE = r.registerBlockEntityMenu("launch_table", BlockEntityLaunchTable.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "launch_pad_large", BlockEntityLaunchPadLarge.class);
+        LAUNCH_TABLE =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "launch_table", BlockEntityLaunchTable.class);
         COMPACT_LAUNCHER =
-                r.registerBlockEntityMenu("compact_launcher", BlockEntityCompactLauncher.class);
-        NUKE_CUSTOM = r.registerBlockEntityMenu("nuke_custom", BlockEntityNukeCustom.class);
-        NUKE_FSTBMB = r.registerBlockEntityMenu("nuke_fstbmb", BlockEntityNukeBalefire.class);
-        BOMB_MULTI = r.registerBlockEntityMenu("bomb_multi", BlockEntityBombMulti.class);
-        SOYUZ_CAPSULE = r.registerBlockEntityMenu("soyuz_capsule", BlockEntitySoyuzCapsule.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "compact_launcher", BlockEntityCompactLauncher.class);
+        NUKE_CUSTOM =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "nuke_custom", BlockEntityNukeCustom.class);
+        NUKE_FSTBMB =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "nuke_fstbmb", BlockEntityNukeBalefire.class);
+        BOMB_MULTI =
+                NeoForgeRegistrar.registerBlockEntityMenu("bomb_multi", BlockEntityBombMulti.class);
+        SOYUZ_CAPSULE =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "soyuz_capsule", BlockEntitySoyuzCapsule.class);
         SOYUZ_LAUNCHER =
-                r.registerBlockEntityMenu("soyuz_launcher", BlockEntitySoyuzLauncher.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "soyuz_launcher", BlockEntitySoyuzLauncher.class);
         LAUNCHPAD_SOYUZ =
-                r.registerBlockEntityMenu("launchpad_soyuz", BlockEntityLaunchpadSoyuz.class);
-        SAT_DOCK = r.registerBlockEntityMenu("sat_dock", BlockEntityMachineSatDock.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "launchpad_soyuz", BlockEntityLaunchpadSoyuz.class);
+        SAT_DOCK =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "sat_dock", BlockEntityMachineSatDock.class);
         RADIO_TORCH_COUNTER =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "radio_torch_counter", BlockEntityRadioTorchCounter.class);
-        DRONE_CRATE = r.registerBlockEntityMenu("drone_crate", BlockEntityDroneCrate.class);
-        DRONE_DOCK = r.registerBlockEntityMenu("drone_dock", BlockEntityDroneDock.class);
+        DRONE_CRATE =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "drone_crate", BlockEntityDroneCrate.class);
+        DRONE_DOCK =
+                NeoForgeRegistrar.registerBlockEntityMenu("drone_dock", BlockEntityDroneDock.class);
         DRONE_PROVIDER =
-                r.registerBlockEntityMenu("drone_provider", BlockEntityDroneProvider.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "drone_provider", BlockEntityDroneProvider.class);
         DRONE_REQUESTER =
-                r.registerBlockEntityMenu("drone_requester", BlockEntityDroneRequester.class);
-        WEAPON_TABLE = r.registerMenu("weapon_table", MenuWeaponTable::new);
-        BOOK_OF = r.registerMenu("book_of_", MenuBook::new);
-        LEMEGETON = r.registerMenu("lemegeton", MenuLemegeton::new);
-        ARMOR_TABLE = r.registerMenu("armor_table", MenuArmorTable::new);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "drone_requester", BlockEntityDroneRequester.class);
+        WEAPON_TABLE = NeoForgeRegistrar.registerMenu("weapon_table", MenuWeaponTable::new);
+        BOOK_OF = NeoForgeRegistrar.registerMenu("book_of_", MenuBook::new);
+        LEMEGETON = NeoForgeRegistrar.registerMenu("lemegeton", MenuLemegeton::new);
+        ARMOR_TABLE = NeoForgeRegistrar.registerMenu("armor_table", MenuArmorTable::new);
 
-        RBMK_ROD = r.registerBlockEntityMenu("rbmk_fuel_rod", BlockEntityRBMKRod.class);
+        RBMK_ROD =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "rbmk_fuel_rod", BlockEntityRBMKRod.class);
         RBMK_CONTROL =
-                r.registerBlockEntityMenu("rbmk_control", BlockEntityRBMKControlManual.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "rbmk_control", BlockEntityRBMKControlManual.class);
         RBMK_CONTROL_AUTO =
-                r.registerBlockEntityMenu("rbmk_control_auto", BlockEntityRBMKControlAuto.class);
-        RBMK_BOILER = r.registerBlockEntityMenu("rbmk_boiler", BlockEntityRBMKBoiler.class);
-        RBMK_STORAGE = r.registerBlockEntityMenu("rbmk_storage", BlockEntityRBMKStorage.class);
-        RBMK_HEATER = r.registerBlockEntityMenu("rbmk_heater", BlockEntityRBMKHeater.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "rbmk_control_auto", BlockEntityRBMKControlAuto.class);
+        RBMK_BOILER =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "rbmk_boiler", BlockEntityRBMKBoiler.class);
+        RBMK_STORAGE =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "rbmk_storage", BlockEntityRBMKStorage.class);
+        RBMK_HEATER =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "rbmk_heater", BlockEntityRBMKHeater.class);
         RBMK_OUTGASSER =
-                r.registerBlockEntityMenu("rbmk_outgasser", BlockEntityRBMKOutgasser.class);
-        RBMK_CONSOLE = r.registerBlockEntityMenu("rbmk_console", BlockEntityRBMKConsole.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "rbmk_outgasser", BlockEntityRBMKOutgasser.class);
+        RBMK_CONSOLE =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "rbmk_console", BlockEntityRBMKConsole.class);
         RBMK_AUTOLOADER =
-                r.registerBlockEntityMenu("rbmk_autoloader", BlockEntityRBMKAutoloader.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "rbmk_autoloader", BlockEntityRBMKAutoloader.class);
         PWR_CONTROLLER =
-                r.registerBlockEntityMenu("pwr_controller", BlockEntityMachinePWRController.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "pwr_controller", BlockEntityMachinePWRController.class);
 
-        FURNACE_IRON = r.registerBlockEntityMenu("furnace_iron", BlockEntityFurnaceIron.class);
-        FURNACE_STEEL = r.registerBlockEntityMenu("furnace_steel", BlockEntityFurnaceSteel.class);
+        FURNACE_IRON =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "furnace_iron", BlockEntityFurnaceIron.class);
+        FURNACE_STEEL =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "furnace_steel", BlockEntityFurnaceSteel.class);
         FURNACE_COMBINATION =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "furnace_combination", BlockEntityFurnaceCombination.class);
         FURNACE_BRICK =
-                r.registerBlockEntityMenu("machine_furnace_brick", BlockEntityFurnaceBrick.class);
-        HEATER_OVEN = r.registerBlockEntityMenu("heater_oven", BlockEntityHeaterOven.class);
-        MACHINE_ASHPIT = r.registerBlockEntityMenu("machine_ashpit", BlockEntityAshpit.class);
-        MACHINE_SIREN = r.registerBlockEntityMenu("machine_siren", BlockEntityMachineSiren.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_furnace_brick", BlockEntityFurnaceBrick.class);
+        HEATER_OVEN =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "heater_oven", BlockEntityHeaterOven.class);
+        MACHINE_ASHPIT =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_ashpit", BlockEntityAshpit.class);
+        MACHINE_SIREN =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_siren", BlockEntityMachineSiren.class);
         HEATER_OILBURNER =
-                r.registerBlockEntityMenu("heater_oilburner", BlockEntityHeaterOilburner.class);
-        HEATER_HEATEX = r.registerBlockEntityMenu("heater_heatex", BlockEntityHeaterHeatex.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "heater_oilburner", BlockEntityHeaterOilburner.class);
+        HEATER_HEATEX =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "heater_heatex", BlockEntityHeaterHeatex.class);
         MACHINE_CRYSTALLIZER =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_crystallizer", BlockEntityMachineCrystallizer.class);
-        MACHINE_COKER = r.registerBlockEntityMenu("machine_coker", BlockEntityMachineCoker.class);
+        MACHINE_COKER =
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_coker", BlockEntityMachineCoker.class);
         MACHINE_LIQUEFACTOR =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_liquefactor", BlockEntityMachineLiquefactor.class);
         MACHINE_SOLIDIFIER =
-                r.registerBlockEntityMenu("machine_solidifier", BlockEntityMachineSolidifier.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_solidifier", BlockEntityMachineSolidifier.class);
         MACHINE_PYROOVEN =
-                r.registerBlockEntityMenu("machine_pyrooven", BlockEntityMachinePyroOven.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_pyrooven", BlockEntityMachinePyroOven.class);
         MACHINE_VACUUM_DISTILL =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_vacuum_distill", BlockEntityMachineVacuumDistill.class);
         MACHINE_FUNNEL =
-                r.registerBlockEntityMenu("machine_funnel", BlockEntityMachineFunnel.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_funnel", BlockEntityMachineFunnel.class);
         MACHINE_MICROWAVE =
-                r.registerBlockEntityMenu("machine_microwave", BlockEntityMicrowave.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_microwave", BlockEntityMicrowave.class);
         MACHINE_SATLINKER =
-                r.registerBlockEntityMenu("machine_satlinker", BlockEntityMachineSatLinker.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_satlinker", BlockEntityMachineSatLinker.class);
         MACHINE_SUPERCOMPUTER =
-                r.registerBlockEntityMenu(
+                NeoForgeRegistrar.registerBlockEntityMenu(
                         "machine_supercomputer", BlockEntityMachineSuperComputer.class);
         MACHINE_TAPE_DRIVE =
-                r.registerBlockEntityMenu("machine_tape_drive", BlockEntityMachineTapeDrive.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_tape_drive", BlockEntityMachineTapeDrive.class);
         MACHINE_KEYFORGE =
-                r.registerBlockEntityMenu("machine_keyforge", BlockEntityMachineKeyForge.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_keyforge", BlockEntityMachineKeyForge.class);
         MACHINE_AMMO_PRESS =
-                r.registerBlockEntityMenu("machine_ammo_press", BlockEntityMachineAmmoPress.class);
+                NeoForgeRegistrar.registerBlockEntityMenu(
+                        "machine_ammo_press", BlockEntityMachineAmmoPress.class);
 
-        TRAIN_CARGO_TRAM = r.registerMenu("train_cargo_tram", MenuTrainCargoTram::new);
+        TRAIN_CARGO_TRAM =
+                NeoForgeRegistrar.registerMenu("train_cargo_tram", MenuTrainCargoTram::new);
         TRAIN_CARGO_TRAM_TRAILER =
-                r.registerMenu("train_cargo_tram_trailer", MenuTrainCargoTramTrailer::new);
-        CART_DESTROYER = r.registerMenu("cart_destroyer", MenuCartDestroyer::new);
+                NeoForgeRegistrar.registerMenu(
+                        "train_cargo_tram_trailer", MenuTrainCargoTramTrailer::new);
+        CART_DESTROYER = NeoForgeRegistrar.registerMenu("cart_destroyer", MenuCartDestroyer::new);
         CONTAINMENT_BOX =
-                r.registerMenu(
+                NeoForgeRegistrar.registerMenu(
                         "containment_box",
                         (id, inv) ->
                                 new MenuItemBox(
                                         CONTAINMENT_BOX.get(), id, inv, ItemLeadBox.LAYOUT));
         TOOLBOX =
-                r.registerMenu(
+                NeoForgeRegistrar.registerMenu(
                         "toolbox",
                         (id, inv) -> new MenuItemBox(TOOLBOX.get(), id, inv, ItemToolBox.LAYOUT));
         AMMO_BAG =
-                r.registerMenu(
+                NeoForgeRegistrar.registerMenu(
                         "ammo_bag",
                         (id, inv) -> new MenuItemBox(AMMO_BAG.get(), id, inv, ItemAmmoBag.LAYOUT));
         CASING_BAG =
-                r.registerMenu(
+                NeoForgeRegistrar.registerMenu(
                         "casing_bag",
                         (id, inv) ->
                                 new MenuItemBox(CASING_BAG.get(), id, inv, ItemCasingBag.LAYOUT));
         PLASTIC_BAG =
-                r.registerMenu(
+                NeoForgeRegistrar.registerMenu(
                         "plastic_bag",
                         (id, inv) ->
                                 new MenuItemBox(PLASTIC_BAG.get(), id, inv, ItemPlasticBag.LAYOUT));
-        REBAR_PLACER = r.registerMenu("rebar_placer", MenuRebarPlacer::new);
+        REBAR_PLACER = NeoForgeRegistrar.registerMenu("rebar_placer", MenuRebarPlacer::new);
 
         for (CrateType type : CrateType.values()) {
             CRATE[type.ordinal()] =
-                    r.registerMenu(type.id, (id, inv) -> new MenuCrate(id, inv, type));
+                    NeoForgeRegistrar.registerMenu(
+                            type.id, (id, inv) -> new MenuCrate(id, inv, type));
         }
         for (int tier : ModBlocks.ANVIL_TIERS) {
             ANVIL.put(
                     tier,
-                    r.registerMenu("anvil_" + tier, (id, inv) -> new MenuAnvil(id, inv, tier)));
+                    NeoForgeRegistrar.registerMenu(
+                            "anvil_" + tier, (id, inv) -> new MenuAnvil(id, inv, tier)));
         }
     }
 

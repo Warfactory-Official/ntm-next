@@ -3,11 +3,13 @@
 
 package com.hbm.world.structure;
 
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.RegistryHandle;
 import com.hbm.world.gen.component.*;
 import com.hbm.world.gen.dungeon.HolePunchPiece;
 import com.hbm.world.gen.dungeon.JungleDungeonStructure;
+import com.hbm.world.gen.nbt.ConductorPoolElement;
+import com.hbm.world.gen.nbt.LegacyStartPoolElement;
 import com.hbm.world.gen.nbt.ParentOverlapPoolElement;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
@@ -57,6 +59,10 @@ public final class HbmStructureTypes {
     public static RegistryHandle<StructurePieceType> JUNGLE_HOLE_PUNCH;
     public static RegistryHandle<StructurePoolElementType<ParentOverlapPoolElement>>
             PARENT_OVERLAP_POOL_ELEMENT;
+    public static RegistryHandle<StructurePoolElementType<LegacyStartPoolElement>>
+            LEGACY_START_POOL_ELEMENT;
+    public static RegistryHandle<StructurePoolElementType<ConductorPoolElement>>
+            CONDUCTOR_POOL_ELEMENT;
 
     public static RegistryHandle<StructureType<AncientTombStructure>> ANCIENT_TOMB;
     public static RegistryHandle<StructurePieceType> ANCIENT_TOMB_PIECE;
@@ -71,70 +77,114 @@ public final class HbmStructureTypes {
 
     private HbmStructureTypes() {}
 
-    public static void register(IRegistrar r) {
-        SINGLE_PIECE = r.registerStructureType("single_piece", SinglePieceStructure.CODEC);
+    public static void register() {
+        SINGLE_PIECE =
+                NeoForgeRegistrar.registerStructureType("single_piece", SinglePieceStructure.CODEC);
+        CONDUCTOR_POOL_ELEMENT =
+                NeoForgeRegistrar.registerStructurePoolElementType(
+                        "conductor_template", ConductorPoolElement.CODEC);
         PARENT_OVERLAP_POOL_ELEMENT =
-                r.registerStructurePoolElementType(
+                NeoForgeRegistrar.registerStructurePoolElementType(
                         "parent_overlap", ParentOverlapPoolElement.CODEC);
-        NULL_SPAWN = r.registerStructureType("null_spawn", NullSpawnStructure.CODEC);
-        NULL_SPAWN_PIECE = r.registerStructurePieceType("null_spawn_piece", NullSpawnPiece::new);
-        NTM_FEATURES = r.registerStructureType("features", NtmFeaturesStructure.CODEC);
-        NTM_PROCEDURAL = r.registerStructureType("procedural", NtmProceduralStructure.CODEC);
+        LEGACY_START_POOL_ELEMENT =
+                NeoForgeRegistrar.registerStructurePoolElementType(
+                        "legacy_start", LegacyStartPoolElement.CODEC);
+        NULL_SPAWN =
+                NeoForgeRegistrar.registerStructureType("null_spawn", NullSpawnStructure.CODEC);
+        NULL_SPAWN_PIECE =
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "null_spawn_piece", NullSpawnPiece::new);
+        NTM_FEATURES =
+                NeoForgeRegistrar.registerStructureType("features", NtmFeaturesStructure.CODEC);
+        NTM_PROCEDURAL =
+                NeoForgeRegistrar.registerStructureType("procedural", NtmProceduralStructure.CODEC);
         NTM_PROCEDURAL_PIECE =
-                r.registerStructurePieceType("procedural_piece", NtmProceduralPiece::new);
-        NTM_HOUSE1_PIECE = r.registerStructurePieceType("house1_piece", NTMHouse1Piece::new);
-        NTM_HOUSE2_PIECE = r.registerStructurePieceType("house2_piece", NTMHouse2Piece::new);
-        NTM_LAB1_PIECE = r.registerStructurePieceType("lab1_piece", NTMLab1Piece::new);
-        NTM_LAB2_PIECE = r.registerStructurePieceType("lab2_piece", NTMLab2Piece::new);
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "procedural_piece", NtmProceduralPiece::new);
+        NTM_HOUSE1_PIECE =
+                NeoForgeRegistrar.registerStructurePieceType("house1_piece", NTMHouse1Piece::new);
+        NTM_HOUSE2_PIECE =
+                NeoForgeRegistrar.registerStructurePieceType("house2_piece", NTMHouse2Piece::new);
+        NTM_LAB1_PIECE =
+                NeoForgeRegistrar.registerStructurePieceType("lab1_piece", NTMLab1Piece::new);
+        NTM_LAB2_PIECE =
+                NeoForgeRegistrar.registerStructurePieceType("lab2_piece", NTMLab2Piece::new);
         NTM_RURAL_HOUSE1_PIECE =
-                r.registerStructurePieceType("rural_house1_piece", RuralHouse1Piece::new);
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "rural_house1_piece", RuralHouse1Piece::new);
         NTM_LARGE_OFFICE_PIECE =
-                r.registerStructurePieceType("large_office_piece", LargeOfficePiece::new);
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "large_office_piece", LargeOfficePiece::new);
         NTM_LARGE_OFFICE_CORNER_PIECE =
-                r.registerStructurePieceType(
+                NeoForgeRegistrar.registerStructurePieceType(
                         "large_office_corner_piece", LargeOfficeCornerPiece::new);
-        NTM_SILO_PIECE = r.registerStructurePieceType("silo_piece", SiloComponentPiece::new);
+        NTM_SILO_PIECE =
+                NeoForgeRegistrar.registerStructurePieceType("silo_piece", SiloComponentPiece::new);
         NTM_RUIN1_PIECE =
-                r.registerStructurePieceType("ruin1_piece", RuinFeaturesPieces.NTMRuin1Piece::new);
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "ruin1_piece", RuinFeaturesPieces.NTMRuin1Piece::new);
         NTM_RUIN2_PIECE =
-                r.registerStructurePieceType("ruin2_piece", RuinFeaturesPieces.NTMRuin2Piece::new);
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "ruin2_piece", RuinFeaturesPieces.NTMRuin2Piece::new);
         NTM_RUIN3_PIECE =
-                r.registerStructurePieceType("ruin3_piece", RuinFeaturesPieces.NTMRuin3Piece::new);
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "ruin3_piece", RuinFeaturesPieces.NTMRuin3Piece::new);
         NTM_RUIN4_PIECE =
-                r.registerStructurePieceType("ruin4_piece", RuinFeaturesPieces.NTMRuin4Piece::new);
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "ruin4_piece", RuinFeaturesPieces.NTMRuin4Piece::new);
         SELLAFIELD_CRATER =
-                r.registerStructureType("sellafield_crater", SellafieldCraterStructure.CODEC);
+                NeoForgeRegistrar.registerStructureType(
+                        "sellafield_crater", SellafieldCraterStructure.CODEC);
         SELLAFIELD_CRATER_PIECE =
-                r.registerStructurePieceType("sellafield_crater_piece", SellafieldCraterPiece::new);
-        OIL_BUBBLE = r.registerStructureType("oil_bubble", OilBubbleStructure.CODEC);
-        OIL_BUBBLE_PIECE = r.registerStructurePieceType("oil_bubble_piece", OilBubblePiece::new);
-        NTM_BUNKER = r.registerStructureType("bunker", NtmBunkerStructure.CODEC);
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "sellafield_crater_piece", SellafieldCraterPiece::new);
+        OIL_BUBBLE =
+                NeoForgeRegistrar.registerStructureType("oil_bubble", OilBubbleStructure.CODEC);
+        OIL_BUBBLE_PIECE =
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "oil_bubble_piece", OilBubblePiece::new);
+        NTM_BUNKER = NeoForgeRegistrar.registerStructureType("bunker", NtmBunkerStructure.CODEC);
         NTM_BUNKER_STARTING_HUB =
-                r.registerStructurePieceType("bunker_starting_hub", StartingHubPiece::new);
-        NTM_BUNKER_CORRIDOR = r.registerStructurePieceType("bunker_corridor", CorridorPiece::new);
-        NTM_BUNKER_BEDROOM_L = r.registerStructurePieceType("bunker_bedroom_l", BedroomLPiece::new);
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "bunker_starting_hub", StartingHubPiece::new);
+        NTM_BUNKER_CORRIDOR =
+                NeoForgeRegistrar.registerStructurePieceType("bunker_corridor", CorridorPiece::new);
+        NTM_BUNKER_BEDROOM_L =
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "bunker_bedroom_l", BedroomLPiece::new);
         NTM_BUNKER_FUN_JUNCTION =
-                r.registerStructurePieceType("bunker_fun_junction", FunJunctionPiece::new);
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "bunker_fun_junction", FunJunctionPiece::new);
         NTM_BUNKER_BATHROOM_L =
-                r.registerStructurePieceType("bunker_bathroom_l", BathroomLPiece::new);
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "bunker_bathroom_l", BathroomLPiece::new);
         NTM_BUNKER_LABORATORY =
-                r.registerStructurePieceType("bunker_laboratory", LaboratoryPiece::new);
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "bunker_laboratory", LaboratoryPiece::new);
         NTM_BUNKER_POWER_ROOM =
-                r.registerStructurePieceType("bunker_power_room", PowerRoomPiece::new);
-        JUNGLE_DUNGEON = r.registerStructureType("jungle_dungeon", JungleDungeonStructure.CODEC);
-        JUNGLE_HOLE_PUNCH = r.registerStructurePieceType("jungle_hole_punch", HolePunchPiece::new);
-        ANCIENT_TOMB = r.registerStructureType("ancient_tomb", AncientTombStructure.CODEC);
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "bunker_power_room", PowerRoomPiece::new);
+        JUNGLE_DUNGEON =
+                NeoForgeRegistrar.registerStructureType(
+                        "jungle_dungeon", JungleDungeonStructure.CODEC);
+        JUNGLE_HOLE_PUNCH =
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "jungle_hole_punch", HolePunchPiece::new);
+        ANCIENT_TOMB =
+                NeoForgeRegistrar.registerStructureType("ancient_tomb", AncientTombStructure.CODEC);
         ANCIENT_TOMB_PIECE =
-                r.registerStructurePieceType("ancient_tomb_piece", AncientTombPiece::new);
-        DESERT_ATOM = r.registerStructureType("desert_atom", DesertAtomStructure.CODEC);
+                NeoForgeRegistrar.registerStructurePieceType(
+                        "ancient_tomb_piece", AncientTombPiece::new);
+        DESERT_ATOM =
+                NeoForgeRegistrar.registerStructureType("desert_atom", DesertAtomStructure.CODEC);
         DESERT_ATOM_PIECE =
-                r.registerStructurePieceType(
+                NeoForgeRegistrar.registerStructurePieceType(
                         "desert_atom_piece",
                         (context, tag) ->
                                 new TemplateStructurePiece(DESERT_ATOM_PIECE.get(), context, tag));
-        SPACESHIP = r.registerStructureType("spaceship", SpaceshipStructure.CODEC);
+        SPACESHIP = NeoForgeRegistrar.registerStructureType("spaceship", SpaceshipStructure.CODEC);
         SPACESHIP_PIECE =
-                r.registerStructurePieceType(
+                NeoForgeRegistrar.registerStructurePieceType(
                         "spaceship_piece",
                         (context, tag) ->
                                 new TemplateStructurePiece(SPACESHIP_PIECE.get(), context, tag));

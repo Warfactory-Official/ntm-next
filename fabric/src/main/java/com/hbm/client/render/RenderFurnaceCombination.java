@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityFurnaceCombination;
 import com.hbm.lib.Library;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.BlockEntityFurnaceCombination;
 import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.ColorTargetState;
@@ -108,7 +108,6 @@ public class RenderFurnaceCombination
         float uMax = uMin + f0;
 
         ps.pushPose();
-
         ps.translate(0.5, 1.75, 0.5);
         ps.mulPose(Axis.YP.rotationDegrees(-camera.yRot));
 

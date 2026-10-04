@@ -7,13 +7,12 @@ package com.hbm.entity.mob.glyphid;
 import com.hbm.entity.mob.glyphid.GlyphidStats.StatBundle;
 import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.registration.Reg;
 import com.hbm.util.MobUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -25,13 +24,14 @@ public class EntityGlyphidBlaster extends EntityGlyphidBombardier {
 
     public static Reg.@Nullable EntityHandle<EntityGlyphidBlaster> TYPE;
 
-    public static void register(IRegistrar r) {
+    public static void register() {
         TYPE =
                 Reg.entity(
                         "entity_glyphid_blaster",
                         () ->
                                 EntityType.Builder.<EntityGlyphidBlaster>of(
                                                 EntityGlyphidBlaster::new, MobCategory.MONSTER)
+                                        .notInPeaceful()
                                         .noLootTable()
                                         .sized(2F, 1.125F)
                                         .clientTrackingRange(5)
@@ -40,7 +40,7 @@ public class EntityGlyphidBlaster extends EntityGlyphidBombardier {
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
                                                         Library.id("entity_glyphid_blaster"))));
-        r.registerLivingAttributes(TYPE, EntityGlyphidBlaster::createAttributes);
+        FabricRegistrar.registerLivingAttributes(TYPE, EntityGlyphidBlaster::createAttributes);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

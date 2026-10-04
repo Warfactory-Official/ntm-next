@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "R": "#c:fine_wires/mingrade",
     "W": "hbm:plate_polymer"

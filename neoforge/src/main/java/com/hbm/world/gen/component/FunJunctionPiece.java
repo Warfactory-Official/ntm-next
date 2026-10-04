@@ -10,12 +10,10 @@ import com.hbm.world.gen.nbt.PieceGeometry;
 import com.hbm.world.gen.nbt.WeightedOption;
 import com.hbm.world.structure.HbmStructureTypes;
 import java.util.List;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
@@ -102,7 +100,6 @@ public class FunJunctionPiece extends NtmBranchingPiece {
                 BlockState decoTungsten = hbmState("deco_tungsten");
                 BlockState vinylTileSmall = hbmState("vinyl_tile_small");
                 BlockState vinylTileLarge = hbmState("vinyl_tile_large");
-
                 BlockState concreteSmoothSlab = hbmState("concrete_smooth_slab");
 
                 out.airBox(1, 1, 1, 6, 3, 10);
@@ -137,7 +134,6 @@ public class FunJunctionPiece extends NtmBranchingPiece {
 
                 out.block(6, 1, 2, Blocks.OAK_FENCE.defaultBlockState());
                 out.block(6, 2, 2, Blocks.OAK_PRESSURE_PLATE.defaultBlockState());
-
                 out.container(
                         6,
                         1,
@@ -157,7 +153,6 @@ public class FunJunctionPiece extends NtmBranchingPiece {
                         9,
                         hbmState("deco_computer")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.EAST));
-
                 out.maybeBobble(1, 2, 8, 0.5F);
 
                 out.box(
@@ -170,7 +165,6 @@ public class FunJunctionPiece extends NtmBranchingPiece {
                         Blocks.NOTE_BLOCK.defaultBlockState(),
                         Blocks.NOTE_BLOCK.defaultBlockState());
                 out.block(6, 1, 9, decoTungsten);
-
                 out.block(
                         6,
                         2,

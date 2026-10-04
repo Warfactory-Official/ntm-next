@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.fusion;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionBoiler;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionBoiler;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class FusionBoilerPeripheral extends SnapshotPeripheral<BlockEntityFusionBoiler> {

@@ -3,8 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMultiblock;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.tileentity.machine.BlockEntityMultiblock;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -25,10 +25,8 @@ import org.jspecify.annotations.Nullable;
 public class RenderMultiblockStructPreview
         implements BlockEntityRenderer<BlockEntityMultiblock, RenderMultiblockStructPreview.State>,
                 ConcurrentRenderStateExtraction {
-
     private static final int COLUMN_PERIOD_MS = 4000;
     private static final int COLUMN_STEP_MS = 1000;
-
     private static final Direction[] COLUMN_SIDES = {
         Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH
     };

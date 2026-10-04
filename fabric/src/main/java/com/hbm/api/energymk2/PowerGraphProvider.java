@@ -6,6 +6,7 @@ package com.hbm.api.energymk2;
 import com.hbm.uninos.graph.IGraphProvider;
 import com.hbm.uninos.graph.NodeNetwork;
 import com.mojang.serialization.Codec;
+import java.util.List;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class PowerGraphProvider implements IGraphProvider<CableData> {
@@ -25,8 +26,8 @@ public final class PowerGraphProvider implements IGraphProvider<CableData> {
     }
 
     @Override
-    public Codec<CableData> dataCodec() {
-        return CableData.CODEC;
+    public Codec<List<CableData>> dataTableCodec() {
+        return CableData.CODEC.listOf();
     }
 
     @Override

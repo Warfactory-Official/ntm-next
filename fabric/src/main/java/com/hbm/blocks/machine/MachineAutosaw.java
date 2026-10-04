@@ -3,6 +3,8 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineAutosaw;
+import com.hbm.blockentity.machine.BlockEntityThresher;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
@@ -13,9 +15,6 @@ import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.BlockEntityMachineAutosaw;
-import com.hbm.tileentity.machine.BlockEntityThresher;
-import com.hbm.util.I18nUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -112,7 +111,11 @@ public class MachineAutosaw extends Block
                         + "mB");
         if (be.isSuspended)
             info.line(
-                    "! " + I18nUtil.resolveKey(getDescriptionId() + ".suspended") + " !", 0xFF5555);
+                    Component.empty()
+                            .append(Component.literal("! "))
+                            .append(Component.translatable(getDescriptionId() + ".suspended"))
+                            .append(Component.literal(" !")),
+                    0xFF5555);
     }
 
     @Override

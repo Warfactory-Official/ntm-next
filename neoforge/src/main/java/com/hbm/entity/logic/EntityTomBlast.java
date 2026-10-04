@@ -4,10 +4,10 @@
 package com.hbm.entity.logic;
 
 import com.hbm.NuclearTech;
+import com.hbm.config.NeoForgeHbmConfig;
 import com.hbm.explosion.ExplosionNukeGeneric;
 import com.hbm.explosion.ExplosionTom;
 import com.hbm.handler.threading.BombForkJoinPool;
-import com.hbm.platform.Services;
 import com.hbm.saveddata.TomSaveData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -77,7 +77,7 @@ public class EntityTomBlast extends EntityExplosionChunkloading
         if (!(level() instanceof ServerLevel server)) return;
 
         if (!this.did) {
-            if (Services.CONFIG.runtime().extendedLogging())
+            if (NeoForgeHbmConfig.runtime().extendedLogging())
                 NuclearTech.LOGGER.info(
                         "[NUKE] Initialized TOM explosion at {} / {} / {} with strength {}!",
                         getX(),
@@ -88,7 +88,6 @@ public class EntityTomBlast extends EntityExplosionChunkloading
             seed = random.nextLong();
             this.did = true;
         }
-
         if (exp == null)
             exp =
                     new ExplosionTom(

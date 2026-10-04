@@ -4,7 +4,6 @@
 
 package com.hbm.items.weapon.sedna.impl;
 
-import com.hbm.config.GunVisualConfig;
 import com.hbm.items.weapon.sedna.GunConfig;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.sound.ModSounds;
@@ -51,7 +50,6 @@ public class ItemGunStinger extends ItemGunBaseNT {
 
         Vec3 delta = player.getViewVector(1F).scale(distance);
         Vec3 look = delta.add(x, y, z);
-
         Vec3 left = delta.yRot((float) Math.toRadians(-angleThreshold)).add(x, y, z).add(0, 10, 0);
         Vec3 right = delta.yRot((float) Math.toRadians(angleThreshold)).add(x, y, z).add(0, -10, 0);
         Vec3 pos = new Vec3(x, y, z);

@@ -89,7 +89,6 @@ public final class SpearVisual extends HbmDynamicEntityVisual<EntitySpear> {
                         .backfaceCulling(true)
                         .useOverlay(false)
                         .build();
-
         Material ghost =
                 SimpleMaterial.builder()
                         .texture(ResourceManager.white_tex)
@@ -182,7 +181,6 @@ public final class SpearVisual extends HbmDynamicEntityVisual<EntitySpear> {
 
     private void writeFrame(float partialTick, Vec3 camera) {
         boolean visible = entity.shouldRender(camera.x, camera.y, camera.z);
-
         Vector3f position =
                 entity.tickCount == 0
                         ? getVisualPosition(interpolatedPosition)

@@ -18,9 +18,7 @@ public class MagazineLiquidEngine implements IMagazine<Fluid> {
     public static final String KEY_MAG_COUNT = "magcount";
     public static final String KEY_MAG_PREV = "magprev";
     public static final String KEY_MAG_AFTER = "magafter";
-
     private final Supplier<Fluid[]> acceptedSupplier;
-
     public int index;
     public int capacity;
     private Fluid[] acceptedTypes;

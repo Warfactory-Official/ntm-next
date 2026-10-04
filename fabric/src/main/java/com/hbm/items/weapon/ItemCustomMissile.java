@@ -98,7 +98,6 @@ public class ItemCustomMissile extends Item {
                 stat(
                         "chipInaccuracy",
                         Component.literal((chip != null ? chip.inaccuracy() * 100 : 100F) + "%")));
-
         adder.accept(
                 stat(
                         "finInaccuracy",

@@ -25,7 +25,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public abstract class BombRotatableBlock extends Block implements EntityBlock, IBomb {
-
     public static final IntegerProperty FACING = IntegerProperty.create("facing", 2, 5);
 
     protected BombRotatableBlock(Properties props) {
@@ -66,7 +65,6 @@ public abstract class BombRotatableBlock extends Block implements EntityBlock, I
             BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (player.isSecondaryUseActive()) return InteractionResult.PASS;
         if (!level.isClientSide() && level.getBlockEntity(pos) instanceof MenuProvider provider) {
-
             if (provider instanceof IGUIProvider gui) {
                 IGUIProvider.openBlockMenu(player, gui, pos);
             } else {

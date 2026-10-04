@@ -58,7 +58,6 @@ public class BlockSpotlightBeam extends LightBlock {
         super.neighborChanged(state, level, pos, block, orientation, movedByPiston);
         if (!(level instanceof ServerLevel server)) return;
         if (block == this) return;
-
         if (BlockSpotlight.sourceDirections(server, pos).isEmpty()) {
             server.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
             return;

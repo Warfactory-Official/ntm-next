@@ -5,6 +5,7 @@ package com.hbm.client.model;
 
 import com.hbm.blocks.network.CraneBlockBase;
 import com.hbm.util.Facing;
+import com.mojang.math.Quadrant;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ResolvedModel;
@@ -101,10 +102,39 @@ public record CraneModel() implements SimpleBlockModel {
                 BlockState state, ModelBaker baker, ResolvedModel carrier, TextureSlots slots) {
             QuadCollection.Builder builder = new QuadCollection.Builder();
 
+            UvRotation[] uvs =
+                    (new UvRotation[] {
+                        new UvRotation(new CuboidFace.UVs(0.0F, 16.0F, 16.0F, 0.0F), Quadrant.R0),
+                        switch (topRot) {
+                            case 0 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F),
+                                            Quadrant.R0));
+                            case 1 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F),
+                                            Quadrant.R90));
+                            case 2 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 16.0F, 0.0F, 0.0F),
+                                            Quadrant.R90));
+                            case 3 ->
+                                    (new UvRotation(
+                                            new CuboidFace.UVs(16.0F, 16.0F, 0.0F, 0.0F),
+                                            Quadrant.R0));
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "uvRotate value " + topRot + " outside 0..3");
+                        },
+                        new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0)
+                    });
             for (Direction face : Direction.VALUES) {
                 Material.Baked material =
                         BlockModel.slot(baker, carrier, slots, slotFor(face, input, output));
-                CraneUv.Uv uv = CraneUv.WINDOWS[topRot][face.ordinal()];
+                UvRotation uv = uvs[face.ordinal()];
                 builder.addCulledFace(
                         face,
                         Boxes.face(

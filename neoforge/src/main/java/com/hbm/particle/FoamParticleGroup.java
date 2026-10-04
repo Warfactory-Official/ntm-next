@@ -34,6 +34,7 @@ public class FoamParticleGroup extends ParticleGroup<ParticleFoam> {
         Vec3 cam = camera.position();
 
         for (ParticleFoam fx : this.particles) {
+            if (fx.ownsVisual()) continue;
             int bubbles = fx.bubbleCount();
             float spread = fx.spread();
             int light = fx.light(partialTicks);

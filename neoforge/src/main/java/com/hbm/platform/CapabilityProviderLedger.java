@@ -3,6 +3,7 @@
 
 package com.hbm.platform;
 
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.RegistryHandle;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
@@ -38,7 +39,7 @@ public final class CapabilityProviderLedger {
                     for (Reference2IntMap.Entry<Object> entry : keys.reference2IntEntrySet()) {
                         if (entry.getKey() instanceof BlockEntityType<?> type) {
                             for (RegistryHandle<? extends Block> handle :
-                                    Services.REGISTRAR.blocks()) {
+                                    NeoForgeRegistrar.registeredBlocks) {
                                 if (type.isValid(handle.get().defaultBlockState())) {
                                     perBlock.addTo(handle.get(), entry.getIntValue());
                                 }

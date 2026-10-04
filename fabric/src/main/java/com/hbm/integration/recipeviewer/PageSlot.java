@@ -13,7 +13,6 @@ import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
 public interface PageSlot {
-
     PageSlot background();
 
     PageSlot item(ItemStack stack);
@@ -44,7 +43,6 @@ public interface PageSlot {
 
     @FunctionalInterface
     interface Tooltip {
-
         void append(@Nullable ItemStack shown, Consumer<Component> lines);
     }
 }

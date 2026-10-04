@@ -7,6 +7,5 @@ import com.hbm.capability.NtmCapabilities;
 import org.jspecify.annotations.Nullable;
 
 public interface PortView {
-
     <T> @Nullable T as(Class<T> type, NtmCapabilities.CapRole role);
 }

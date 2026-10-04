@@ -3,8 +3,8 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKHeater;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKHeater;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

@@ -4,9 +4,9 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.BlockEntityFEL;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.items.machine.ItemFELCrystal;
-import com.hbm.tileentity.machine.BlockEntityFEL;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

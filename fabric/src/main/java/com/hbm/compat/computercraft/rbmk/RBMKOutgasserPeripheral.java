@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKOutgasser;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKOutgasser;
 import dan200.computercraft.api.lua.LuaFunction;
 import net.minecraft.world.item.ItemStack;
 
@@ -31,7 +31,6 @@ public final class RBMKOutgasserPeripheral extends RBMKColumnPeripheral<BlockEnt
         put(GAS_ID, NTMFluids.legacyId(machine.gas.getTankType()));
         putRef(GAS_NAME, NTMFluids.legacyName(machine.gas.getTankType()));
         ItemStack input = machine.getItem(BlockEntityRBMKOutgasser.SLOT_INPUT);
-
         putRef(INPUT_NAME, input.isEmpty() ? "" : input.getItem().getDescriptionId());
         put(INPUT_SIZE, input.isEmpty() ? 0 : input.getCount());
     }

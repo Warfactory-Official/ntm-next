@@ -3,11 +3,10 @@
 
 package com.hbm.main;
 
-import com.hbm.util.I18nUtil;
 import java.util.Random;
+import net.minecraft.network.chat.Component;
 
 public final class Polaroid {
-
     public static final int BALEFIRE_ID = 11;
 
     private static int polaroidID = 1;
@@ -25,8 +24,8 @@ public final class Polaroid {
         return polaroidID;
     }
 
-    public static String[] loreLines(String prefix) {
-        return I18nUtil.loreLines(prefix + polaroidID);
+    public static Component lore(String prefix) {
+        return Component.translatableWithFallback(prefix + polaroidID, "");
     }
 
     public static boolean isBalefireDay() {

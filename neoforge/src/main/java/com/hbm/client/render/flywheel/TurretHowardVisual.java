@@ -3,9 +3,9 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.turret.BlockEntityTurretHoward;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.turret.BlockEntityTurretHoward;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;

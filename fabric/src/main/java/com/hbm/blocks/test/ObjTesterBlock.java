@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.test;
 
+import com.hbm.blockentity.deco.BlockEntityObjTester;
 import com.hbm.blocks.ISectionGeometry;
-import com.hbm.tileentity.deco.BlockEntityObjTester;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;

@@ -53,7 +53,6 @@ public final class QuadLighting {
 
     public static BakedQuad.MaterialInfo copy(
             BakedQuad.MaterialInfo info, int origin, boolean ambientOcclusion) {
-
         var copy =
                 new BakedQuad.MaterialInfo(
                         info.sprite(),
@@ -63,7 +62,6 @@ public final class QuadLighting {
                         info.shade(),
                         info.lightEmission(),
                         info.ambientOcclusion() && ambientOcclusion);
-
         copy.hbm$setLightOrigin(origin);
         return copy;
     }

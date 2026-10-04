@@ -59,7 +59,6 @@ public class ItemCigarette extends ItemCustomLore {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         if (!entity.level().isClientSide()) {
-
             ItemStack smoked = stack.copyWithCount(1);
             stack.shrink(1);
             level.playSound(

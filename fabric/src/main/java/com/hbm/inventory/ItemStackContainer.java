@@ -3,6 +3,7 @@
 
 package com.hbm.inventory;
 
+import com.hbm.handler.UnstableFuses;
 import com.hbm.items.tool.ItemLeadBox;
 import com.hbm.items.tool.ItemPlasticBag;
 import com.hbm.sound.ModSounds;
@@ -39,6 +40,10 @@ public class ItemStackContainer extends SimpleContainer {
         return target;
     }
 
+    public Player inventoryHolder() {
+        return owner;
+    }
+
     @Override
     public int getMaxStackSize() {
         return target.getItem() instanceof ItemLeadBox || target.getItem() instanceof ItemPlasticBag
@@ -49,6 +54,12 @@ public class ItemStackContainer extends SimpleContainer {
     @Override
     public void setChanged() {
         store.write(target, ItemContainerContents.fromItems(getItems()));
+        if (owner != null && !InventorySlotBinding.isBound(target)) UnstableFuses.changed(owner);
+    }
+
+    public void refreshFromTarget() {
+        target.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY)
+                .copyInto(getItems());
     }
 
     @Override
@@ -69,7 +80,6 @@ public class ItemStackContainer extends SimpleContainer {
     }
 
     public interface Store {
-
         Store CONTAINER =
                 new Store() {
                     @Override

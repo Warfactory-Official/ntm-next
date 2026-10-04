@@ -3,9 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.bomb.BlockEntityLaunchPad;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPad;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;

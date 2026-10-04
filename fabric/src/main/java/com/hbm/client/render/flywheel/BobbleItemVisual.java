@@ -3,9 +3,9 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.BlockEntityBobble;
 import com.hbm.blocks.generic.BlockBobble.BobbleType;
 import com.hbm.client.render.RenderBobble;
-import com.hbm.tileentity.BlockEntityBobble;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;

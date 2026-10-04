@@ -1,0 +1,12 @@
+{
+  "armor": {
+    "chest": "hbm:euphemium_plate",
+    "feet": "hbm:euphemium_boots",
+    "head": "hbm:euphemium_helmet",
+    "legs": "hbm:euphemium_legs"
+  },
+  "protections": [
+    "hazmat",
+    "sealed"
+  ]
+}

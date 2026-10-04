@@ -593,5 +593,6 @@
   "matshape.nuggets": "%s Pepite",
   "matshape.quanta": "%s Quanti",
   "matshape.quantum": "%s Quanto",
-  "tool.ability.hammer_flat": "AoE piatta"
+  "tool.ability.hammer_flat": "AoE piatta",
+  "trait.radshield": "Schermatura contro le radiazioni"
 }

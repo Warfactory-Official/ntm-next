@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -67,7 +66,6 @@ public class BlockTritiumLamp extends Block implements ISpotlight {
             @Nullable Orientation orientation,
             boolean movedByPiston) {
         super.neighborChanged(state, level, pos, block, orientation, movedByPiston);
-
         if (level instanceof ServerLevel server) update(state, server, pos);
     }
 
@@ -76,7 +74,6 @@ public class BlockTritiumLamp extends Block implements ISpotlight {
         boolean lit = state.getValue(LIT);
         if (lit && !powered) level.scheduleTick(pos, this, TURN_OFF_DELAY);
         else if (!lit && powered) setLit(level, pos, state, true);
-
         if (state.getValue(LIT)) beam(level, pos, true);
     }
 

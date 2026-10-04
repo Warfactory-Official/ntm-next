@@ -2,7 +2,10 @@
   "type": "minecraft:smelting",
   "cookingtime": 200,
   "experience": 1.0,
-  "ingredient": "hbm:powder_asbestos",
+  "ingredient": {
+    "neoforge:ingredient_type": "hbm:recipe_input",
+    "base": "hbm:powder_asbestos"
+  },
   "result": {
     "id": "hbm:ingot_asbestos"
   }

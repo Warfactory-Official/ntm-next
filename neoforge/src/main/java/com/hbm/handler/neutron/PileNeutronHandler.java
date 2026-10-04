@@ -3,13 +3,13 @@
 
 package com.hbm.handler.neutron;
 
+import com.hbm.blockentity.machine.pile.BlockEntityPileBase;
 import com.hbm.blocks.machine.pile.BlockGraphiteDrilledBase;
 import com.hbm.blocks.machine.pile.BlockGraphiteNeutronDetector;
 import com.hbm.blocks.machine.pile.BlockGraphiteRod;
 import com.hbm.handler.neutron.NeutronNodeWorld.StreamWorld;
 import com.hbm.interfaces.IPileNeutronReceiver;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.pile.BlockEntityPileBase;
 import com.hbm.util.ContaminationUtil;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -25,7 +25,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class PileNeutronHandler {
-
     private static final TagKey<Block> FLUX_ABSORBER =
             TagKey.create(Registries.BLOCK, Library.id("pile/flux_absorber"));
     private static final TagKey<Block> FLUX_ATTENUATOR =
@@ -37,7 +36,7 @@ public class PileNeutronHandler {
         return node instanceof PileNeutronNode pile ? pile : new PileNeutronNode(tile);
     }
 
-    private static @Nullable BlockEntity blockPosToTE(Level level, BlockPos pos) {
+    private static @Nullable BlockEntity blockPosToBE(Level level, BlockPos pos) {
         return level.getBlockEntity(pos);
     }
 
@@ -57,8 +56,8 @@ public class PileNeutronHandler {
         @Override
         public void runStreamInteraction(Level level, StreamWorld streamWorld) {
 
-            BlockEntity originTE = origin.tile;
-            BlockPos.MutableBlockPos pos = originTE.getBlockPos().mutable();
+            BlockEntity originBE = origin.tile;
+            BlockPos.MutableBlockPos pos = originBE.getBlockPos().mutable();
 
             for (float i = 1; i <= range; i += 0.5F) {
 
@@ -78,7 +77,7 @@ public class PileNeutronHandler {
                 if (node instanceof PileNeutronNode) {
                     tile = node.tile;
                 } else {
-                    tile = blockPosToTE(level, nodePos);
+                    tile = blockPosToBE(level, nodePos);
                     if (tile == null) return;
 
                     if (tile instanceof BlockEntityPileBase pileTile) {

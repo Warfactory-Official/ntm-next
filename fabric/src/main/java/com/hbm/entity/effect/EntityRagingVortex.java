@@ -29,7 +29,6 @@ public class EntityRagingVortex extends EntityBlackHole {
 
     @Override
     public void tick() {
-
         if (level() instanceof ServerLevel server) {
 
             timer++;
@@ -42,7 +41,6 @@ public class EntityRagingVortex extends EntityBlackHole {
 
             if (random.nextInt(100) == 0) {
                 dec = 0.1F;
-
                 server.explode(
                         this,
                         null,

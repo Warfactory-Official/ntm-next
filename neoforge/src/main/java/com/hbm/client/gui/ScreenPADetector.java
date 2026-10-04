@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.albion.BlockEntityPADetector;
 import com.hbm.inventory.container.MenuPADetector;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.albion.BlockEntityPADetector;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;

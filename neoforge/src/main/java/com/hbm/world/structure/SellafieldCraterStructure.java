@@ -27,7 +27,6 @@ public class SellafieldCraterStructure extends Structure {
         ChunkPos chunkPos = context.chunkPos();
         int blockX = chunkPos.getMiddleBlockX();
         int blockZ = chunkPos.getMiddleBlockZ();
-
         BlockPos origin = new BlockPos(blockX, 0, blockZ);
 
         int radius = MIN_SIZE + context.random().nextInt(MAX_SIZE - MIN_SIZE);

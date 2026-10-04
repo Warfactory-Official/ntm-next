@@ -31,7 +31,6 @@ public class ItemGrenadeFishing extends ItemGenericGrenade {
                 level.getServer()
                         .reloadableRegistries()
                         .getLootTable(BuiltInLootTables.FISHING_FISH);
-
         List<ItemStack> loot =
                 table.getRandomItems(
                         new LootParams.Builder(level).create(LootContextParamSets.EMPTY));
@@ -41,7 +40,6 @@ public class ItemGrenadeFishing extends ItemGenericGrenade {
     @Override
     public void explode(
             Entity grenade, LivingEntity thrower, Level level, double x, double y, double z) {
-
         level.explode(null, x, y + 0.25D, z, 3F, Level.ExplosionInteraction.NONE);
 
         if (!(level instanceof ServerLevel server)) return;

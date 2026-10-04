@@ -35,10 +35,4 @@ public final class FabricReedsModel extends ReedsModel {
         collectParts(level, pos, state, random, parts);
         for (int i = 0; i < parts.size(); i++) parts.get(i).emitQuads(emitter, cullTest);
     }
-
-    @Override
-    public @Nullable Object createGeometryKey(
-            BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random) {
-        return geometryKey(level, pos, state);
-    }
 }

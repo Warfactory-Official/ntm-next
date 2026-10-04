@@ -6,6 +6,7 @@ package com.hbm.entity.item;
 import com.hbm.api.conveyor.IConveyorPackage;
 import com.hbm.api.conveyor.IEnterableBlock;
 import com.hbm.entity.ModEntities;
+import com.hbm.handler.UnstableFuses;
 import com.hbm.interfaces.StoredItems;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,7 @@ public class EntityMovingPackage extends EntityMovingConveyorObject
     public void setItemStacks(List<ItemStack> stacks) {
         this.contents = new ArrayList<>();
         for (ItemStack stack : stacks) if (!stack.isEmpty()) this.contents.add(stack.copy());
+        UnstableFuses.changed(this);
     }
 
     @Override
@@ -115,7 +117,6 @@ public class EntityMovingPackage extends EntityMovingConveyorObject
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
-
         this.contents =
                 new ArrayList<>(input.read("contents", ItemStack.CODEC.listOf()).orElse(List.of()));
     }

@@ -1,0 +1,11 @@
+{
+  "armor": {
+    "chest": "hbm:asbestos_plate",
+    "feet": "hbm:asbestos_boots",
+    "head": "hbm:asbestos_helmet",
+    "legs": "hbm:asbestos_legs"
+  },
+  "protections": [
+    "asbestos"
+  ]
+}

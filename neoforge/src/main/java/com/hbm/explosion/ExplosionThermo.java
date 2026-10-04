@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public final class ExplosionThermo {
-
     private static final int CAGE_WEST = -2, CAGE_EAST = 1;
     private static final int CAGE_UP = 3;
     private static final int CAGE_NORTH = -1, CAGE_SOUTH = 2;
@@ -115,7 +114,6 @@ public final class ExplosionThermo {
         double reach = bombStartStrength;
         for (Entity entity : near(level, center, reach)) {
             if (!inside(entity, center, reach, bombStartStrength * 2)) continue;
-
             if (entity instanceof Ocelot || entity instanceof Cat) continue;
             if (!(entity instanceof LivingEntity living)) continue;
 
@@ -144,7 +142,6 @@ public final class ExplosionThermo {
         AABB box = new AABB(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius);
         for (Entity entity : level.getEntities((Entity) null, box, e -> true)) {
             if (entity.distanceToSqr(x, y, z) > (double) radius * radius) continue;
-
             if (entity instanceof Player player && ArmorUtil.checkForAsbestos(player)) continue;
             if (entity instanceof LivingEntity living) {
                 living.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 15 * 20, 4));

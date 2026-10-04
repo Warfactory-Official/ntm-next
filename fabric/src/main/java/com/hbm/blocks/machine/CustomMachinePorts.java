@@ -3,11 +3,11 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityCustomMachine;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.capability.ICapabilityBlock;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityCustomMachine;
+import com.hbm.platform.FabricCaps;
 import com.hbm.uninos.graph.EndpointRegistry;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import java.util.List;
@@ -45,7 +45,7 @@ public final class CustomMachinePorts {
             ICapabilityBlock block = (ICapabilityBlock) level.getBlockState(cell).getBlock();
             endpoints.declare(
                     cell, core, BlockMultiblockCore.MASK_ALL, block.caps().declaredBits());
-            Services.CAPS.invalidateCaps(level, cell);
+            FabricCaps.invalidateCaps(level, cell);
             LevelNodeGraph.invalidateEndpointsAround(level, cell);
             BlockMultiblockCore.renotifyNeighbours(level, cell);
         }
@@ -61,7 +61,6 @@ public final class CustomMachinePorts {
             BlockMultiblockCore.unindexCell(level, cell);
         }
         withdraw(level, core, cells);
-
         for (BlockPos cell : cells) BlockMultiblockCore.renotifyNeighbours(level, cell);
     }
 
@@ -71,7 +70,7 @@ public final class CustomMachinePorts {
             EndpointRegistry.Endpoint declared = endpoints.declared(cell.asLong());
             if (declared != null && declared.owner() != core.asLong()) continue;
             endpoints.withdraw(cell);
-            Services.CAPS.invalidateCaps(level, cell);
+            FabricCaps.invalidateCaps(level, cell);
             LevelNodeGraph.invalidateEndpointsAround(level, cell);
         }
     }

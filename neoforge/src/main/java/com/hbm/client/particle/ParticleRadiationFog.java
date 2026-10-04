@@ -26,14 +26,12 @@ public class ParticleRadiationFog extends SingleQuadParticle {
             float size,
             TextureAtlasSprite sprite) {
         super(level, x, y, z, sprite);
-
         this.lifetime = 400;
         this.quadSize = size;
         this.gravity = 0.0F;
         this.friction = 0.96F;
         this.hasPhysics = false;
         this.setColor(0.85F, 0.9F, 0.5F);
-
         this.setAlpha(alphaForAge(0));
     }
 

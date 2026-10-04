@@ -58,7 +58,6 @@ public class BlockSellafieldSlaked extends Block {
 
     @Override
     protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
-
         if (this == ModBlocks.SELLAFIELD_BEDROCK.get()) return List.of();
         return List.of(new ItemStack(this.asItem()));
     }

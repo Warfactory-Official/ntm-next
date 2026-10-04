@@ -5,7 +5,7 @@ package com.hbm.items.machine;
 
 import com.hbm.items.ModDataComponents;
 import com.hbm.util.BobMathUtil;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -63,19 +63,19 @@ public class ItemZirnoxRod extends Item {
         double depletion =
                 ((int) ((((double) getLifeTime(stack)) / (double) type.maxLife) * 100000)) / 1000D;
         adder.accept(
-                Component.literal(I18nUtil.resolveKey("trait.rbmk.depletion", depletion + "%"))
+                Component.translatable("trait.rbmk.depletion", depletion + "%")
                         .withStyle(ChatFormatting.YELLOW));
 
-        String[] loc =
+        Component description =
                 type.breeding
-                        ? I18nUtil.resolveKeyArray(
+                        ? Component.translatable(
                                 "desc.item.zirnoxBreedingRod",
                                 BobMathUtil.getShortNumber(type.maxLife))
-                        : I18nUtil.resolveKeyArray(
+                        : Component.translatable(
                                 "desc.item.zirnoxRod",
                                 type.heat,
                                 BobMathUtil.getShortNumber(type.maxLife));
-        for (String s : loc) adder.accept(Component.literal(s));
+        for (Component line : TooltipStyle.lines(description)) adder.accept(line);
     }
 
     public enum EnumZirnoxType {
@@ -101,7 +101,7 @@ public class ItemZirnoxRod extends Item {
 
         EnumZirnoxType(String id, int life, int heat, boolean breeding, float freshRad) {
             this.id = id;
-            this.maxLife = life;
+            maxLife = life;
             this.heat = heat;
             this.breeding = breeding;
             this.freshRad = freshRad;

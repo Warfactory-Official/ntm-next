@@ -99,7 +99,6 @@ public class NtmFeaturesStructure extends Structure {
     private static Optional<GenerationStub> grounded(
             GenerationContext context, BlockPos origin, NtmComponentPiece piece) {
         int surface = WorldgenHeight.averageGround(context, piece.getBoundingBox());
-
         piece.move(0, surface - origin.getY(), 0);
         return Optional.of(
                 new GenerationStub(

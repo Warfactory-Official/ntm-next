@@ -3,11 +3,11 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityVent;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.entity.particle.EntityChlorineFX;
 import com.hbm.entity.particle.EntityCloudFX;
 import com.hbm.entity.particle.EntityPinkCloudFX;
-import com.hbm.tileentity.BlockEntityVent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;

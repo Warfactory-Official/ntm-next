@@ -3,9 +3,9 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityMachinePWRController;
 import com.hbm.items.machine.FluidIdentifierItem;
 import com.hbm.items.machine.ItemPWRFuel;
-import com.hbm.tileentity.machine.BlockEntityMachinePWRController;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

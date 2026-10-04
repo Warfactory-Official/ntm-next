@@ -102,7 +102,6 @@ public class NTMHouse1Piece extends NtmComponentPiece {
                 out.block(4, 0, 4, hbmState("reinforced_sand"));
 
                 out.block(1, 0, 1, hbmState("crate_weapon"));
-
                 out.container(
                         3,
                         0,

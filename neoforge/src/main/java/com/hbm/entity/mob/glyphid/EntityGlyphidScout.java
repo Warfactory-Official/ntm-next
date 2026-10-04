@@ -11,7 +11,6 @@ import com.hbm.entity.mob.glyphid.GlyphidStats.StatBundle;
 import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
-import com.hbm.platform.Services;
 import com.hbm.util.MobUtil;
 import com.hbm.world.feature.GlyphidHiveFeature;
 import java.util.List;
@@ -49,7 +48,6 @@ public class EntityGlyphidScout extends EntityGlyphid {
     int scoutingRange = 45;
     int minDistanceToHive = 8;
     boolean useLargeHive = false;
-    float largeHiveChance = MobData.LARGE_HIVE_CHANCE.get();
 
     public EntityGlyphidScout(EntityType<? extends EntityGlyphidScout> type, Level level) {
         super(type, level);
@@ -308,7 +306,6 @@ public class EntityGlyphidScout extends EntityGlyphid {
 
             if (isBasalt(b)) {
                 useLargeHive = true;
-                largeHiveChance /= 2;
                 addEffect(new MobEffectInstance(MobEffects.SPEED, 60 * 20, 3));
             }
 
@@ -395,7 +392,6 @@ public class EntityGlyphidScout extends EntityGlyphid {
     }
 
     public static Vec3 playerBaseDirFinder(Vec3 currentLocation, Vec3 target) {
-
         Vec3 dirVec = target.subtract(currentLocation).normalize();
         return new Vec3(
                 currentLocation.x + dirVec.x * 10,

@@ -37,7 +37,6 @@ public abstract class MixinEntityRenderer implements CullableRenderer {
         EntityRenderState state = cir.getReturnValue();
         ((VanishedRenderState) state).hbm$setVanished(VanishedEntities.isVanished(entity));
         if (state instanceof MotionRenderState motion) {
-
             double motionY =
                     entity.isClientAuthoritative() && !entity.isLocalInstanceAuthoritative()
                             ? entity.getY() - entity.yOld

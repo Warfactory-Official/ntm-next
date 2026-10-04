@@ -3,9 +3,11 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityLaunchpadSoyuz;
+import com.hbm.blockentity.machine.BlockEntitySoyuzRenderAnchor;
+import com.hbm.blockentity.machine.SoyuzRenderSource;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityLaunchpadSoyuz;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -15,11 +17,13 @@ import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.util.LightCoordsUtil;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public final class RenderLaunchpadSoyuz
-        implements BlockEntityRenderer<BlockEntityLaunchpadSoyuz, RenderLaunchpadSoyuz.State>,
+public final class RenderLaunchpadSoyuz<T extends BlockEntity & SoyuzRenderSource>
+        implements BlockEntityRenderer<T, RenderLaunchpadSoyuz.State>,
                 ConcurrentRenderStateExtraction {
 
     private static final String[] STRUTS = {"Strut1", "Strut2", "Strut3", "Strut4", "Strut5"};
@@ -66,7 +70,7 @@ public final class RenderLaunchpadSoyuz
 
     @Override
     public void extractRenderState(
-            BlockEntityLaunchpadSoyuz pad,
+            T pad,
             State state,
             float partialTicks,
             Vec3 camera,
@@ -81,15 +85,24 @@ public final class RenderLaunchpadSoyuz
                     default -> 0F;
                 };
         for (int i = 0; i < state.positions.length; i++)
-            state.positions[i] = pad.getInterpPos(i, partialTicks);
-        state.loadedType = pad.loadedType;
-        state.status = pad.soyuzStatus;
+            state.positions[i] = pad.renderPosition(i, partialTicks);
+        state.loadedType = pad.renderSkin();
+        state.status = pad.renderStatus();
+        state.selected = pad.renderSelected();
+        var core = pad.renderCorePos();
+        state.dx = core.getX() - pad.getBlockPos().getX();
+        state.dy = core.getY() - pad.getBlockPos().getY();
+        state.dz = core.getZ() - pad.getBlockPos().getZ();
+        if (pad instanceof BlockEntitySoyuzRenderAnchor anchor)
+            state.lightCoords = LightCoordsUtil.pack(anchor.blockLight(), anchor.skyLight());
     }
 
     @Override
     public void submit(
             State state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
+        if (!state.selected) return;
         pose.pushPose();
+        pose.translate(state.dx, state.dy, state.dz);
         pose.translate(0.5D, 0D, 0.5D);
         pose.mulPose(Axis.YP.rotationDegrees(state.rotation));
         pose.translate(-4D, 0D, -4D);
@@ -173,6 +186,8 @@ public final class RenderLaunchpadSoyuz
     public static final class State extends BlockEntityRenderState {
         final float[] positions = new float[8];
         float rotation;
+        int dx, dy, dz;
+        boolean selected;
         int loadedType = -1;
         BlockEntityLaunchpadSoyuz.SoyuzStatus status = BlockEntityLaunchpadSoyuz.SoyuzStatus.ABSENT;
     }

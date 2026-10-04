@@ -4,9 +4,9 @@
 package com.hbm.world;
 
 import com.hbm.lib.Library;
-import com.hbm.platform.NeoForgeBiomeModifierService.Request;
-import com.hbm.platform.NeoForgeBiomeModifierService.SpawnRequest;
-import com.hbm.platform.NeoForgeBiomeModifierService;
+import com.hbm.platform.NeoForgeBiomeInjection.Request;
+import com.hbm.platform.NeoForgeBiomeInjection.SpawnRequest;
+import com.hbm.platform.NeoForgeBiomeInjection;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.Holder;
@@ -35,7 +35,7 @@ public final class HbmBiomeModifiers {
         HolderGetter<Biome> biomes = ctx.lookup(Registries.BIOME);
         HolderGetter<PlacedFeature> placed = ctx.lookup(Registries.PLACED_FEATURE);
 
-        for (Request req : NeoForgeBiomeModifierService.requests()) {
+        for (Request req : NeoForgeBiomeInjection.REQUESTS) {
             List<Holder<PlacedFeature>> features = new ArrayList<>(req.features().size());
             for (ResourceKey<PlacedFeature> key : req.features())
                 features.add(placed.getOrThrow(key));
@@ -44,8 +44,7 @@ public final class HbmBiomeModifiers {
                     new BiomeModifiers.AddFeaturesBiomeModifier(
                             holders(biomes, req.biomes()), HolderSet.direct(features), req.step()));
         }
-
-        for (SpawnRequest req : NeoForgeBiomeModifierService.spawns()) {
+        for (SpawnRequest req : NeoForgeBiomeInjection.SPAWNS) {
             EntityType<?> type = req.type().get();
             String path = "spawn/" + BuiltInRegistries.ENTITY_TYPE.getKey(type).getPath();
             ctx.register(

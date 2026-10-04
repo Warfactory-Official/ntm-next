@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.bomb;
 
+import com.hbm.blockentity.bomb.BlockEntityBombMulti;
 import com.hbm.blocks.machine.BlockMachineHorizontal;
 import com.hbm.entity.effect.EntityMist;
 import com.hbm.explosion.ExplosionChaos;
@@ -10,8 +11,6 @@ import com.hbm.explosion.ExplosionLarge;
 import com.hbm.explosion.ExplosionNukeGeneric;
 import com.hbm.interfaces.IBomb;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.tileentity.bomb.BlockEntityBombMulti.Payload;
-import com.hbm.tileentity.bomb.BlockEntityBombMulti;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -28,7 +27,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class BombMulti extends BlockMachineHorizontal implements IBomb {
-
     private static final float BASE_STRENGTH = 8.0F;
     private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 8, 16);
 

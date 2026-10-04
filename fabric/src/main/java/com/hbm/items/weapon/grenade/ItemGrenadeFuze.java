@@ -49,7 +49,6 @@ public class ItemGrenadeFuze extends Item {
 
     private static void airburst(EntityGrenadeUniversal grenade) {
         if (grenade.getTimer() < 30) return;
-
         HitResult trace =
                 grenade.level()
                         .clip(

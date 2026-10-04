@@ -1,0 +1,12 @@
+{
+  "cladding": {
+    "resistance": 0.025,
+    "slots": [
+      "head",
+      "chest",
+      "legs",
+      "feet"
+    ]
+  },
+  "targets": "hbm:cladding_paint"
+}

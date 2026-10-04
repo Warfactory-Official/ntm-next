@@ -6,7 +6,6 @@
 package com.hbm.render.anim;
 
 import com.hbm.config.GunVisualConfig;
-import com.hbm.platform.Services;
 
 public class BusAnimationKeyframe {
 
@@ -17,17 +16,14 @@ public class BusAnimationKeyframe {
     public EType easingType;
     public int originalDuration;
     public int duration;
-
     public double leftX;
     public double leftY;
     public HType leftType;
     public double rightX;
     public double rightY;
     public HType rightType;
-
     public double amplitude;
     public double period;
-
     public double back;
 
     public BusAnimationKeyframe() {
@@ -396,7 +392,6 @@ public class BusAnimationKeyframe {
     double elastic_blend(
             double time, double change, double duration, double amplitude, double s, double f) {
         if (change != 0) {
-
             double t = Math.abs(s);
             if (amplitude != 0) {
                 f *= amplitude / Math.abs(change);
@@ -628,13 +623,9 @@ public class BusAnimationKeyframe {
 
     public enum IType {
         CONSTANT,
-
         LINEAR,
-
         SIN_UP,
-
         SIN_DOWN,
-
         SIN_FULL,
 
         BEZIER,

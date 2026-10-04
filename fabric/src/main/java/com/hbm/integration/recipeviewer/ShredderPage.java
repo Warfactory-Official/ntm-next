@@ -51,10 +51,8 @@ public final class ShredderPage extends TablePage<ShredderRecipe> {
 
     @Override
     public void layout(ShredderRecipe recipe, PageLayout page) {
-
         page.input(39, 24).items(claimedInputs(recipe));
         page.output(129, 24).item(recipe.output());
-
         List<ItemStack> blades =
                 List.of(
                         new ItemStack(ModItems.BLADES_STEEL.get()),
@@ -67,7 +65,6 @@ public final class ShredderPage extends TablePage<ShredderRecipe> {
     @Override
     public void draw(ShredderRecipe recipe, GuiGraphicsExtractor graphics) {
         RecipePanel.page(graphics, RecipePanel.SHREDDER);
-
         RecipePanel.progress(graphics, RecipePanel.SHREDDER, 3, 6, 36, 86, 16, 52, 480, 7);
         RecipePanel.progress(graphics, RecipePanel.SHREDDER, 80, 23, 100, 118, 24, 16, 48, 0);
     }

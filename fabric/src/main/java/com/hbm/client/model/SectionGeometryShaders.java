@@ -3,13 +3,13 @@
 
 package com.hbm.client.model;
 
-import com.hbm.platform.Services;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 final class SectionGeometryShaders {
-    private static final boolean IRIS = Services.PLATFORM.isModLoaded("iris");
+    private static final boolean IRIS = FabricLoader.getInstance().isModLoaded("iris");
 
     private SectionGeometryShaders() {}
 

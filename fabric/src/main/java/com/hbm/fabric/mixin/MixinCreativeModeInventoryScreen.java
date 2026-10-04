@@ -68,12 +68,14 @@ public abstract class MixinCreativeModeInventoryScreen
                                     "Lnet/minecraft/world/item/CreativeModeTab;getType()Lnet/minecraft/world/item/CreativeModeTab$Type;"))
     private CreativeModeTab.Type hbm$searchTab(
             CreativeModeTab tab, Operation<CreativeModeTab.Type> original) {
-        return FabricRegistrar.hasSearchBar(tab) ? CreativeModeTab.Type.SEARCH : original.call(tab);
+        return FabricRegistrar.SEARCH_TABS.contains(tab)
+                ? CreativeModeTab.Type.SEARCH
+                : original.call(tab);
     }
 
     @Inject(method = "refreshSearchResults", at = @At("HEAD"), cancellable = true)
     private void hbm$searchOwnItems(CallbackInfo ci) {
-        if (!FabricRegistrar.hasSearchBar(selectedTab)) return;
+        if (!FabricRegistrar.SEARCH_TABS.contains(selectedTab)) return;
         ci.cancel();
         menu.items.clear();
         String term = searchBox.getValue();

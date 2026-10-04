@@ -4,6 +4,7 @@
 package com.hbm.inventory.recipes.anvil;
 
 import com.hbm.inventory.recipes.ingredient.CountIngredient;
+import com.hbm.inventory.recipes.ingredient.RecipeInputState;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.items.ModDataComponents;
@@ -87,17 +88,21 @@ public class AnvilSmithingRecipe extends GenericRecipe {
                     AnvilSmithingRecipe::new, EXTRAS_STREAM_CODEC, APPLY_EXTRAS, EXTRACT_EXTRAS);
     public static final RecipeSerializer<AnvilSmithingRecipe> SERIALIZER =
             new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
-
     private static final Style RENAMED =
             Style.EMPTY.withItalic(false).withColor(ChatFormatting.WHITE);
     public int tier;
     public Kind kind = Kind.PLAIN;
     public boolean shapeless;
-
     public String shapeTag;
 
     public AnvilSmithingRecipe(String name) {
         super(name);
+    }
+
+    private static long heatExpiry(ItemStack stack) {
+        if (!(stack.getItem() instanceof ItemHot)) return Long.MAX_VALUE;
+        Long until = stack.get(ModDataComponents.HOT_UNTIL.get());
+        return until == null ? Long.MAX_VALUE : until - (ItemHot.getMaxHeat(stack) + 1L) / 2 + 1;
     }
 
     public AnvilSmithingRecipe setTier(int tier) {
@@ -106,7 +111,7 @@ public class AnvilSmithingRecipe extends GenericRecipe {
     }
 
     public AnvilSmithingRecipe makeShapeless() {
-        this.shapeless = true;
+        shapeless = true;
         return this;
     }
 
@@ -117,7 +122,7 @@ public class AnvilSmithingRecipe extends GenericRecipe {
 
     public AnvilSmithingRecipe setShape(String shapeTag) {
         this.shapeTag = shapeTag;
-        this.kind = Kind.MOLD;
+        kind = Kind.MOLD;
         return this;
     }
 
@@ -148,9 +153,10 @@ public class AnvilSmithingRecipe extends GenericRecipe {
         }
         if (kind == Kind.MOLD) {
             if (!doesStackMatch(right, right(), gameTime)) return -1;
-
-            if (left.getCount() != left().count()) return -1;
-            return (shapeTag != null ? matchesShape(left) : left().matchesItem(left)) ? 0 : -1;
+            if (left.getCount() != left().count() || left.isDamaged()) return -1;
+            return (shapeTag != null ? matchesShape(left) : left().ingredient().test(left))
+                    ? 0
+                    : -1;
         }
         if (doesStackMatch(left, left(), gameTime) && doesStackMatch(right, right(), gameTime))
             return 0;
@@ -164,20 +170,22 @@ public class AnvilSmithingRecipe extends GenericRecipe {
     }
 
     public boolean doesStackMatch(ItemStack input, CountIngredient recipe, long gameTime) {
-        if (kind == Kind.HOT
-                && input.getItem() instanceof ItemHot
-                && ItemHot.getHeat(input, gameTime) < 0.5D) return false;
+        if (kind == Kind.RENAME)
+            return input.getCount() >= recipe.count() && recipe.ingredient().test(input);
+        if (kind == Kind.HOT && input.getItem() instanceof ItemHot) {
+            return ItemHot.getHeat(input, gameTime) >= 0.5D
+                    && input.getCount() >= recipe.count()
+                    && recipe.ingredient().test(input)
+                    && RecipeInputState.only(
+                            input,
+                            ModDataComponents.HOT_ITEM_HEAT.get(),
+                            ModDataComponents.HOT_UNTIL.get());
+        }
         return recipe.test(input);
     }
 
     public long expiresAt(ItemStack left, ItemStack right) {
         return kind == Kind.HOT ? Math.min(heatExpiry(left), heatExpiry(right)) : Long.MAX_VALUE;
-    }
-
-    private static long heatExpiry(ItemStack stack) {
-        if (!(stack.getItem() instanceof ItemHot)) return Long.MAX_VALUE;
-        Long until = stack.get(ModDataComponents.HOT_UNTIL.get());
-        return until == null ? Long.MAX_VALUE : until - (ItemHot.getMaxHeat(stack) + 1L) / 2 + 1;
     }
 
     private boolean matchesShape(ItemStack stack) {
@@ -235,7 +243,6 @@ public class AnvilSmithingRecipe extends GenericRecipe {
 
     public int amountConsumed(int index, boolean mirrored) {
         if (kind == Kind.MOLD) return index == 1 ? right().count() : 0;
-
         if (kind == Kind.RENAME) return index == 0 ? left().count() : 0;
         if (index == 0) return mirrored ? right().count() : left().count();
         if (index == 1) return mirrored ? left().count() : right().count();
@@ -249,12 +256,9 @@ public class AnvilSmithingRecipe extends GenericRecipe {
 
     public enum Kind {
         PLAIN,
-
         MOLD,
-
         HOT,
         POISON,
-
         RENAME
     }
 

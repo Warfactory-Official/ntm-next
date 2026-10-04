@@ -52,7 +52,6 @@ public class RenderMissileAntiBallistic
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(state.yaw - 90F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(state.pitch));
-
         poseStack.mulPose(Axis.YN.rotationDegrees(state.yaw - 90F));
         collector.submitCustomGeometry(
                 poseStack,

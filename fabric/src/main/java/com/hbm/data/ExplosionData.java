@@ -37,10 +37,8 @@ public final class ExplosionData {
     public static final DataGroups.Param<Integer> SOLINIUM_RADIUS =
             EXPLOSIONS.positive("solinium_radius", 150);
     public static final DataGroups.Param<Integer> N2_RADIUS = EXPLOSIONS.positive("n2_radius", 200);
-
     public static final DataGroups.Param<Integer> FATMAN_RADIUS =
             EXPLOSIONS.positive("fatman_radius", 35);
-
     public static final DataGroups.Param<Integer> A_SCHRAB_RADIUS =
             EXPLOSIONS.positive("a_schrab_radius", 20);
     public static final DataGroups.Param<Integer> FALLOUT_RANGE =
@@ -49,14 +47,6 @@ public final class ExplosionData {
             EXPLOSIONS.bool("crater_biomes", true);
     public static final DataGroups.Param<Boolean> DISABLE_NUCLEAR =
             EXPLOSIONS.bool("disable_nuclear", false);
-    public static final DataGroups.Param<Double> CRATER_BIOME_RAD =
-            EXPLOSIONS.real("crater_biome_rad", 5D);
-    public static final DataGroups.Param<Double> CRATER_BIOME_INNER_RAD =
-            EXPLOSIONS.real("crater_biome_inner_rad", 25D);
-    public static final DataGroups.Param<Double> CRATER_BIOME_OUTER_RAD =
-            EXPLOSIONS.real("crater_biome_outer_rad", 0.5D);
-    public static final DataGroups.Param<Double> CRATER_BIOME_WATER_MULT =
-            EXPLOSIONS.real("crater_biome_water_mult", 5D);
     public static final DataGroups.Param<Integer> SCHRAB_ORE_RATE =
             EXPLOSIONS.positive("schrab_ore_rate", 20);
 

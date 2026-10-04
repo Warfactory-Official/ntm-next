@@ -8,11 +8,11 @@ import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 
-final class NeoForgeFluidHandlerView implements IFluidHandlerView {
+public final class NeoForgeFluidHandlerView implements IFluidHandlerView {
 
     private final ResourceHandler<FluidResource> handler;
 
-    NeoForgeFluidHandlerView(ResourceHandler<FluidResource> handler) {
+    public NeoForgeFluidHandlerView(ResourceHandler<FluidResource> handler) {
         this.handler = handler;
     }
 

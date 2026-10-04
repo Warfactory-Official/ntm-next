@@ -3,11 +3,11 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.network.BlockEntityCraneExtractor;
 import com.hbm.inventory.slot.SlotPattern;
 import com.hbm.inventory.slot.SlotUpgrade;
 import com.hbm.items.machine.upgrade.ItemMachineUpgrade;
 import com.hbm.items.machine.upgrade.UpgradeType;
-import com.hbm.tileentity.network.BlockEntityCraneExtractor;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerInput;

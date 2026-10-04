@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.util.I18nUtil;
+import com.mojang.blaze3d.systems.RenderSystem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -15,7 +15,12 @@ public final class PileRodLore {
     private PileRodLore() {}
 
     public static void add(String key, Consumer<Component> adder) {
-        for (String line : wrap(I18nUtil.resolveKey(key), 225))
+        var text = Component.translatable(key).withStyle(ChatFormatting.YELLOW);
+        if (!RenderSystem.isOnRenderThread()) {
+            adder.accept(text);
+            return;
+        }
+        for (String line : wrap(text.getString(), 225))
             adder.accept(Component.literal(line).withStyle(ChatFormatting.YELLOW));
     }
 

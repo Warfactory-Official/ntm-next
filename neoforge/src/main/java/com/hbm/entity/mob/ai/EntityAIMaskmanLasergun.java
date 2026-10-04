@@ -28,7 +28,6 @@ public class EntityAIMaskmanLasergun extends Goal {
     @Override
     public boolean canUse() {
         LivingEntity target = this.owner.getTarget();
-
         return target != null && Math.sqrt(this.owner.distanceToSqr(target)) > 10D;
     }
 
@@ -91,7 +90,6 @@ public class EntityAIMaskmanLasergun extends Goal {
                                 target,
                                 0F);
                 if (missile == null) return;
-
                 Vec3 flat =
                         new Vec3(
                                 target.getX() - this.owner.getX(),

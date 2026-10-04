@@ -3,13 +3,15 @@
 
 package com.hbm.util;
 
-import com.hbm.platform.Services;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.chunk.RenderSectionRegion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 
 public final class BlockReadBounds {
-    private static final boolean CLIENT = Services.PLATFORM.isPhysicalClient();
+    private static final boolean CLIENT =
+            FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
 
     private BlockReadBounds() {}
 

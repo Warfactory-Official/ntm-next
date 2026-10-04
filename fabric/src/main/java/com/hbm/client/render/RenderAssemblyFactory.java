@@ -3,6 +3,7 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineAssemblyFactory;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.render.flywheel.HbmBlockEntityVisual;
 import com.hbm.client.render.flywheel.WorldItem;
@@ -11,7 +12,6 @@ import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.BlockEntityMachineAssemblyFactory;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.pipeline.BlendFunction;
@@ -49,7 +49,6 @@ public class RenderAssemblyFactory
         implements BlockEntityRenderer<
                         BlockEntityMachineAssemblyFactory, RenderAssemblyFactory.State>,
                 ConcurrentRenderStateExtraction {
-
     private static final float ALPHA_DISCARD_ONLY_ZERO = 0.5F / 255.0F;
 
     static final RenderPipeline SPARKS_PIPELINE =
@@ -129,7 +128,6 @@ public class RenderAssemblyFactory
         float uMaxMirrored = (float) (uMin + 1 + 0.5);
         float u0 = (float) uMin;
         float u1 = (float) (uMin + 1);
-
         col.submitCustomGeometry(
                 ps,
                 SPARKS,

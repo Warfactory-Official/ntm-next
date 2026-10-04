@@ -8,7 +8,6 @@ import com.hbm.explosion.vanillant.ExplosionVNT;
 import com.hbm.explosion.vanillant.standard.EntityProcessorCrossSmooth;
 import com.hbm.explosion.vanillant.standard.ExplosionEffectWeapon;
 import com.hbm.explosion.vanillant.standard.PlayerProcessorStandard;
-import com.hbm.platform.Services;
 import java.util.Locale;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
@@ -23,7 +22,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BlockLandmineAP extends BlockLandmine {
-
     public static final EnumProperty<Ground> GROUND = EnumProperty.create("ground", Ground.class);
 
     private static final VoxelShape SHAPE = Block.box(5, 0, 5, 11, 1, 11);
@@ -49,10 +47,9 @@ public class BlockLandmineAP extends BlockLandmine {
     public static Ground groundFor(Level level, BlockPos pos) {
         if (covered(level, pos)) return Ground.STONE;
         Biome biome = level.getBiome(pos).value();
-
         if (biome.getPrecipitationAt(pos, level.getSeaLevel()) == Biome.Precipitation.SNOW)
             return Ground.SNOW;
-        if (biome.getBaseTemperature() >= 1.5F && Services.PLATFORM.biomeDownfall(biome) <= 0.1F) {
+        if (biome.getBaseTemperature() >= 1.5F && biome.climateSettings.downfall() <= 0.1F) {
             return Ground.DESERT;
         }
         return Ground.GRASS;

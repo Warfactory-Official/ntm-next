@@ -3,13 +3,13 @@
 
 package com.hbm.world.gen.util;
 
+import com.hbm.blockentity.BlockEntityLogicBlock;
+import com.hbm.blockentity.BlockEntityPedestal;
+import com.hbm.blockentity.bomb.BlockEntityCharge;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.bomb.BlockChargeBase;
 import com.hbm.entity.mob.EntityUndeadSoldier;
 import com.hbm.items.ModItems;
-import com.hbm.tileentity.BlockEntityLogicBlock;
-import com.hbm.tileentity.BlockEntityPedestal;
-import com.hbm.tileentity.bomb.BlockEntityCharge;
 import com.hbm.util.TickPhase;
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -55,6 +55,7 @@
     "hbm:part_emitter",
     "hbm:lamp_demon",
     "hbm:refueler",
+    "hbm:multiblock_cell_launchpad_soyuz_anchor",
     "hbm:launchpad_soyuz",
     "hbm:lantern_behemoth",
     "hbm:statue_elb_f",

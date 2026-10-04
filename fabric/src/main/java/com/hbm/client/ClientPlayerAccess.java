@@ -4,13 +4,19 @@
 package com.hbm.client;
 
 import com.hbm.client.gui.ScreenWeaponTable;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import org.jspecify.annotations.Nullable;
 
 public final class ClientPlayerAccess {
 
     private ClientPlayerAccess() {}
+
+    public static Component keyLabel(String name) {
+        return KeyMapping.get(name).getTranslatedKeyMessage();
+    }
 
     public static @Nullable Player player() {
         return Minecraft.getInstance().player;

@@ -44,7 +44,6 @@ public final class EntityOrbitalLaser extends Entity {
 
     @Override
     public void tick() {
-
         super.tick();
         if (tickCount >= MAX_AGE && !level().isClientSide()) discard();
     }

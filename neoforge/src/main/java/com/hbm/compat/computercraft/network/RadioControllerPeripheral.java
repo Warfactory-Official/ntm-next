@@ -3,9 +3,9 @@
 
 package com.hbm.compat.computercraft.network;
 
+import com.hbm.blockentity.network.BlockEntityRadioTorchController;
+import com.hbm.blockentity.network.RTTYSystem;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.network.BlockEntityRadioTorchController;
-import com.hbm.tileentity.network.RTTYSystem;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class RadioControllerPeripheral

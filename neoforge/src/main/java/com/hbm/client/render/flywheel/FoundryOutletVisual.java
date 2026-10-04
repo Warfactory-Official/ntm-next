@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityCrucible.PourStream;
+import com.hbm.blockentity.machine.BlockEntityFoundryOutlet;
 import com.hbm.blocks.machine.FoundryOutlet;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityCrucible.PourStream;
-import com.hbm.tileentity.machine.BlockEntityFoundryOutlet;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
 import dev.engine_room.flywheel.api.instance.Instance;

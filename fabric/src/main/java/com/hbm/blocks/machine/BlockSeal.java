@@ -36,7 +36,6 @@ import org.jspecify.annotations.Nullable;
 public class BlockSeal extends Block implements IBomb {
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
-
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     private static final int MAX_SIZE = 6;

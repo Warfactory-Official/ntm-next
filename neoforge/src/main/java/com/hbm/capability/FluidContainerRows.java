@@ -5,7 +5,6 @@ package com.hbm.capability;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.BalanceConfig;
-import com.hbm.config.RadiationConfig;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.IFluidContainerItem;
@@ -178,7 +177,6 @@ public final class FluidContainerRows {
     }
 
     private static void add(List<Item> out, Item item) {
-
         assert !(item instanceof IFluidContainerItem) : item;
         if (!out.contains(item)) out.add(item);
     }

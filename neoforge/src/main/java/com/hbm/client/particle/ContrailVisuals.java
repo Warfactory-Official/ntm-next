@@ -20,7 +20,6 @@ public final class ContrailVisuals {
     public static boolean trySpawnInstanced(
             Level level, double x, double y, double z, float r, float g, float b, float scale) {
         if (!VisualizationManager.supportsVisualization(level)) return false;
-
         ContrailEffect effect =
                 new ContrailEffect(
                         level, x, y, z, r, g, b, scale, 100 + level.getRandom().nextInt(40));
@@ -31,16 +30,18 @@ public final class ContrailVisuals {
 
     public static void tick() {
         if (ACTIVE.isEmpty()) return;
-        Level current = Minecraft.getInstance().level;
+        Minecraft mc = Minecraft.getInstance();
+        Level current = mc.level;
+        boolean advance =
+                current != null && !mc.isPaused() && current.tickRateManager().runsNormally();
         Iterator<ContrailEffect> it = ACTIVE.iterator();
         while (it.hasNext()) {
             ContrailEffect e = it.next();
-
             if (e.level() != current) {
                 it.remove();
                 continue;
             }
-            e.age++;
+            if (advance) e.age++;
             if (e.expired()) {
                 VisualizationHelper.queueRemove(e);
                 it.remove();

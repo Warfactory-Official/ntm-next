@@ -61,7 +61,6 @@ public class DigammaMatter extends Block {
     @Override
     protected VoxelShape getShape(
             BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-
         return SHAPES[Math.floorMod(pos.hashCode(), SHAPE_POOL)];
     }
 
@@ -85,7 +84,6 @@ public class DigammaMatter extends Block {
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int age = state.getValue(AGE);
-
         level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
         if (age >= 7) return;
 

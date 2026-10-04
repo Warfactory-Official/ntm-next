@@ -3,10 +3,10 @@
 
 package com.hbm.blocks.network.pneumatic;
 
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageMono;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageMono;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;

@@ -5,9 +5,13 @@ package com.hbm.client;
 
 import com.hbm.extprop.HbmPlayerProps;
 import com.hbm.items.armor.ArmorDash;
+import com.hbm.items.armor.ArmorFlight;
 import com.hbm.items.armor.ArmorSuitEffects.Jetpack;
 import com.hbm.items.armor.ArmorSuitEffects;
 import com.hbm.items.armor.ItemWings;
+import com.hbm.items.armor.ModArmorItem;
+import com.hbm.packet.PacketWire;
+import com.hbm.packet.toserver.ArmorFlightPayload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.player.LocalPlayer;
@@ -20,13 +24,28 @@ public final class ArmorMovementHandler {
     public static void clientTick() {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
-
         if (player == null || minecraft.isPaused()) return;
 
         ArmorSuitEffects.Jetpack kind = ArmorSuitEffects.jetpackKind(player);
-        if (kind != null) jetpack(player, kind);
         ItemWings.Kind wings = ArmorSuitEffects.wingsKind(player);
+        HbmPlayerProps props = HbmPlayerProps.getData(player);
+        int intent = ArmorFlight.mode(player, kind, wings).ordinal();
+        if (kind != null) jetpack(player, kind);
         if (wings != null) wings(player, wings);
+        boolean capped =
+                !player.isFallFlying()
+                        && player.getDeltaMovement().y < -0.25D
+                        && ArmorSuitEffects.hasFullSet(player, ModArmorItem.Suit.EUPHEMIUM);
+        if (capped) {
+            Vec3 motion = player.getDeltaMovement();
+            player.setDeltaMovement(motion.x, -0.25D, motion.z);
+            player.fallDistance = 0;
+        }
+        if (props.armorFlightIntent != intent || props.euphemiumFallCapped != capped) {
+            props.armorFlightIntent = intent;
+            props.euphemiumFallCapped = capped;
+            PacketWire.sendToServer(new ArmorFlightPayload(intent, capped));
+        }
         if (ArmorSuitEffects.hasEnvsuitSwim(player)) envsuitSwim(player);
         ArmorDash.tick(player, forwardInput(), strafeInput());
     }
@@ -36,18 +55,22 @@ public final class ArmorMovementHandler {
         Vec3 motion = player.getDeltaMovement();
 
         if (props.isJetpackActive() && !(kind == Jetpack.BRAKE && player.isShiftKeyDown())) {
-
             if (motion.y < kind.ceiling)
                 player.setDeltaMovement(motion.x, motion.y + kind.thrust, motion.z);
             if (kind.lookThrust == 0D) player.fallDistance = 0;
-
             if (kind.lookThrust > 0D && player.getDeltaMovement().length() < kind.speedCap) {
                 Vec3 look = player.getLookAngle();
                 player.setDeltaMovement(player.getDeltaMovement().add(look.scale(kind.lookThrust)));
                 if (look.y > 0D) player.fallDistance = 0;
             }
+            if (kind == Jetpack.DNS && player.isShiftKeyDown() && !player.onGround()) {
+                Vec3 current = player.getDeltaMovement();
+                player.setDeltaMovement(current.x, current.y - 0.1D, current.z);
+            }
             return;
         }
+
+        if (player.isFallFlying() && !props.isJetpackActive()) return;
 
         if (kind == Jetpack.BRAKE) {
             brakeHover(player, motion, props);
@@ -105,6 +128,9 @@ public final class ArmorMovementHandler {
 
     private static void wings(LocalPlayer player, ItemWings.Kind kind) {
         if (player.onGround()) return;
+        if (player.isFallFlying()
+                && (kind == ItemWings.Kind.LIMP
+                        || !HbmPlayerProps.getData(player).isJetpackActive())) return;
         player.fallDistance = 0;
         Vec3 motion = player.getDeltaMovement();
 
@@ -138,7 +164,6 @@ public final class ArmorMovementHandler {
         if (props.enableBackpack) {
             Vec3 look = player.getLookAngle().horizontal().normalize();
             double mod = player.isSprinting() ? 1D : 0.25D;
-
             if (player.zza != 0F) {
                 dx += look.x * 0.35D * player.zza * mod;
                 dz += look.z * 0.35D * player.zza * mod;

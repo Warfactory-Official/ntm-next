@@ -22,7 +22,6 @@ public final class ShieldHudRenderer {
         float maximum = props.getEffectiveMaxShield(player);
         if (maximum <= 0F) return false;
         int left = graphics.guiWidth() / 2 - 91;
-
         graphics.blit(
                 RenderPipelines.GUI_TEXTURED,
                 RenderScreenOverlay.misc,

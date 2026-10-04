@@ -3,6 +3,9 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.FoldedCoreResident;
+import com.hbm.blockentity.GraphResident;
+import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.material.MaterialShapes;
@@ -12,9 +15,6 @@ import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.items.machine.ItemScraps;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
-import com.hbm.tileentity.FoldedCoreResident;
-import com.hbm.tileentity.GraphResident;
-import com.hbm.tileentity.Synced;
 import io.netty.buffer.ByteBuf;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -145,7 +145,6 @@ public class BlockDynamicSlag extends Block implements EntityBlock {
 
     @Override
     protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
-
         Float radius = params.getOptionalParameter(LootContextParams.EXPLOSION_RADIUS);
         if (radius != null && params.getLevel().getRandom().nextFloat() > 1.0F / radius)
             return List.of();

@@ -19,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(value = FluidVariantRendering.class, remap = false)
 abstract class MixinFluidVariantRendering {
-
     @WrapOperation(
             method =
                     "getTooltip(Lnet/fabricmc/fabric/api/transfer/v1/fluid/FluidVariant;Lnet/minecraft/world/item/TooltipFlag;)Ljava/util/List;",

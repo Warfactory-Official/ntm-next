@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "B": "#c:ingots/boron",
     "F": "hbm:debris_fuel",

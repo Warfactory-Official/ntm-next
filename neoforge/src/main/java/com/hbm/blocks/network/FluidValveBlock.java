@@ -5,9 +5,9 @@ package com.hbm.blocks.network;
 
 import com.hbm.api.fluidmk2.FluidPipeGraph;
 import com.hbm.api.fluidmk2.PipeData;
+import com.hbm.blockentity.network.BlockEntityFluidCounterValve;
 import com.hbm.items.machine.FluidIdentifierItem;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.network.BlockEntityFluidCounterValve;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -52,7 +52,6 @@ public class FluidValveBlock extends FluidDuctBlockBase {
             Player player,
             InteractionHand hand,
             BlockHitResult hit) {
-
         if (stack.getItem() instanceof FluidIdentifierItem) return InteractionResult.PASS;
         return toggle(state, level, pos, player);
     }

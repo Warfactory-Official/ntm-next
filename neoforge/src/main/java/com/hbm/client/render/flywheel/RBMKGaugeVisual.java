@@ -3,11 +3,11 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGauge.GaugeUnit;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGauge;
 import com.hbm.blocks.machine.rbmk.RBMKMiniPanelBase;
 import com.hbm.client.render.RenderRBMKGauge;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKGauge.GaugeUnit;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKGauge;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;

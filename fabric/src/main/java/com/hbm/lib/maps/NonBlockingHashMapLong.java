@@ -39,11 +39,9 @@ public class NonBlockingHashMapLong<TypeV> extends AbstractLong2ObjectMap<TypeV>
     private static final Object MATCH_ANY = new Object();
     private static final Object TOMBSTONE = new Object();
     private static final Prime TOMBPRIME = new Prime(TOMBSTONE);
-
     private static final long NO_KEY = 0L;
     private final boolean _opt_for_space;
     private transient volatile CHM _chm;
-
     private transient volatile Object _val_1;
     private transient long _last_resize_milli;
     private transient ObjectCollection<TypeV> _values = null;
@@ -366,7 +364,6 @@ public class NonBlockingHashMapLong<TypeV> extends AbstractLong2ObjectMap<TypeV>
         if (action == null) throw new NullPointerException();
         Object v0 = _val_1;
         if (v0 != TOMBSTONE) {
-
             TypeV vv0 = (TypeV) v0;
             action.accept(NO_KEY, vv0);
         }
@@ -402,7 +399,6 @@ public class NonBlockingHashMapLong<TypeV> extends AbstractLong2ObjectMap<TypeV>
         if (action == null) throw new NullPointerException();
         Object v0 = _val_1;
         if (v0 != TOMBSTONE) {
-
             TypeV vv0 = (TypeV) v0;
             action.accept(NO_KEY, vv0, ref);
         }

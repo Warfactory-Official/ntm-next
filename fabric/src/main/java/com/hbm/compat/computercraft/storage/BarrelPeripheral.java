@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.storage;
 
+import com.hbm.blockentity.machine.storage.BlockEntityBarrel;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
-import com.hbm.tileentity.machine.storage.BlockEntityBarrel;
 
 public final class BarrelPeripheral extends FluidTankPeripheral<BlockEntityBarrel> {
 

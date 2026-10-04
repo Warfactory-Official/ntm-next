@@ -12,9 +12,7 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 public final class ClientCompatPlugin implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String target, String mixin) {
-        return !mixin.contains(".iris.")
-                || getClass().getClassLoader().getResource("net/irisshaders/iris/Iris.class")
-                        != null;
+        return getClass().getClassLoader().getResource("net/irisshaders/iris/Iris.class") != null;
     }
 
     @Override

@@ -3,9 +3,9 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityMicrowave;
 import com.hbm.blocks.machine.MachineMicrowave;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityMicrowave;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
 import dev.engine_room.flywheel.api.instance.Instance;

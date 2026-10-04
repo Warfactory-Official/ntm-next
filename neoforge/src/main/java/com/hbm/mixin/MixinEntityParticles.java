@@ -27,7 +27,6 @@ public abstract class MixinEntityParticles {
             BlockState original, @Local(ordinal = 0) BlockPos pos) {
         Entity self = (Entity) (Object) this;
         BlockState owner = MultiblockSurface.particleState(self.level(), pos, original);
-
         return owner == null ? original : owner;
     }
 }

@@ -19,7 +19,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
@@ -118,7 +117,6 @@ public class EntityMinecartDestroyer extends EntityMinecartContainerBase {
     private boolean matchesFilter(ItemStack stack) {
         for (int i = 0; i < EXACT_SLOTS; i++) {
             ItemStack filter = getItem(i);
-
             if (!filter.isEmpty() && ItemStack.isSameItemSameComponents(filter, stack)) return true;
         }
         for (int i = EXACT_SLOTS; i < FILTER_SLOTS; i++) {

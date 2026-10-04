@@ -2,7 +2,10 @@
   "type": "minecraft:smelting",
   "cookingtime": 200,
   "experience": 1.0,
-  "ingredient": "hbm:powder_red_copper",
+  "ingredient": {
+    "neoforge:ingredient_type": "hbm:recipe_input",
+    "base": "hbm:powder_red_copper"
+  },
   "result": {
     "id": "hbm:ingot_red_copper"
   }

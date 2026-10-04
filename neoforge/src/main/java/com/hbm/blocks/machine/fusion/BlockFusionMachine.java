@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.machine.fusion;
 
+import com.hbm.blockentity.machine.fusion.FusionPorts;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.tileentity.machine.fusion.FusionPorts;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,7 +20,6 @@ public abstract class BlockFusionMachine extends BlockMultiblockCore implements 
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-
         return RenderShape.MODEL;
     }
 

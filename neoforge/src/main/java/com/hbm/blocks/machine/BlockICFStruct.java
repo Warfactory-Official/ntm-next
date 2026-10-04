@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityICFStruct;
 import com.hbm.blocks.ITickingBlock;
-import com.hbm.tileentity.machine.BlockEntityICFStruct;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;

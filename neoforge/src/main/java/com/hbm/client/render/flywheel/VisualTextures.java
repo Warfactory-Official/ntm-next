@@ -3,7 +3,6 @@
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.platform.Services;
 import com.mojang.blaze3d.platform.NativeImage;
 import dev.engine_room.flywheel.api.backend.BackendManager;
 import java.io.IOException;
@@ -16,10 +15,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.Identifier;
+import net.neoforged.fml.ModList;
 
 public final class VisualTextures {
     private static final Map<Identifier, Boolean> TRANSLUCENT = new ConcurrentHashMap<>();
-    private static final boolean SODIUM = Services.PLATFORM.isModLoaded("sodium");
+    private static final boolean SODIUM = ModList.get().isLoaded("sodium");
     private static final Set<TextureAtlasSprite> ANIMATED = ConcurrentHashMap.newKeySet();
 
     private VisualTextures() {}

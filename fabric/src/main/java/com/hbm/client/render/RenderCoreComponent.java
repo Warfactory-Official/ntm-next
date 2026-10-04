@@ -3,14 +3,14 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.BlockEntityMachineBase;
+import com.hbm.blockentity.machine.BlockEntityCoreEmitter;
+import com.hbm.blockentity.machine.BlockEntityCoreInjector;
+import com.hbm.blockentity.machine.BlockEntityCoreStabilizer;
 import com.hbm.blocks.machine.CoreComponent;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.render.util.BeamPronter;
-import com.hbm.tileentity.BlockEntityMachineBase;
-import com.hbm.tileentity.machine.BlockEntityCoreEmitter;
-import com.hbm.tileentity.machine.BlockEntityCoreInjector;
-import com.hbm.tileentity.machine.BlockEntityCoreStabilizer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -27,7 +27,6 @@ import org.jspecify.annotations.Nullable;
 public class RenderCoreComponent
         implements BlockEntityRenderer<BlockEntityMachineBase, RenderCoreComponent.State>,
                 ConcurrentRenderStateExtraction {
-
     private static final double MUZZLE = 0.5D;
 
     private static final int EMITTER_SPIRAL = 0x404000;
@@ -80,7 +79,6 @@ public class RenderCoreComponent
         if (state.kind == null || state.beam <= 0) return;
 
         ps.pushPose();
-
         ps.translate(0.5, 0.0, 0.5);
         ps.mulPose(Axis.YP.rotationDegrees(90));
         switch (state.facing) {

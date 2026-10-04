@@ -3,13 +3,13 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineSuperComputer;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.BlockEntityMachineSuperComputer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -24,7 +24,6 @@ public class MachineSuperComputer extends BlockMultiblockCore
     private static final int[] CROSS = {6, -6, 1, 1, 3, 3};
     private static final int[] CAP = {7, -7, 1, 1, 1, 1};
     private static final int[] EXTENSION = {2, 0, -3, 8, 1, 1};
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         5, 0, 3, 3, 3, 3, 0, 0, 0,
         6, -6, 3, 3, 1, 1, 0, 0, 0,
@@ -80,7 +79,6 @@ public class MachineSuperComputer extends BlockMultiblockCore
         visitor.cell(core.relative(facing, 7).relative(rot), MASK_WEST);
         visitor.cell(core.relative(facing, 7).relative(rot.getOpposite()), MASK_EAST);
         visitor.cell(core.relative(facing, 5).relative(rot), MASK_WEST);
-
         visitor.cell(core.relative(facing, 5).relative(rot.getOpposite()), MASK_EAST);
     }
 

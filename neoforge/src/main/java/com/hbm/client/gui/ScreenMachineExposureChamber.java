@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineExposureChamber;
 import com.hbm.inventory.container.MenuMachineExposureChamber;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachineExposureChamber;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;

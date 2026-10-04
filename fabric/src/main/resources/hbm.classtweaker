@@ -1,5 +1,35 @@
 classTweaker	v2	official
 
+transitive-accessible field net/minecraft/world/entity/player/Inventory items Lnet/minecraft/core/NonNullList;
+transitive-mutable field net/minecraft/world/entity/player/Inventory items Lnet/minecraft/core/NonNullList;
+
+transitive-accessible method net/minecraft/world/level/block/entity/BaseContainerBlockEntity getItems ()Lnet/minecraft/core/NonNullList;
+transitive-accessible method net/minecraft/world/level/block/entity/BaseContainerBlockEntity setItems (Lnet/minecraft/core/NonNullList;)V
+transitive-accessible method net/minecraft/world/level/block/entity/ChestBlockEntity getItems ()Lnet/minecraft/core/NonNullList;
+transitive-accessible method net/minecraft/world/level/block/entity/ChestBlockEntity setItems (Lnet/minecraft/core/NonNullList;)V
+transitive-accessible method net/minecraft/world/level/block/entity/BarrelBlockEntity getItems ()Lnet/minecraft/core/NonNullList;
+transitive-accessible method net/minecraft/world/level/block/entity/BarrelBlockEntity setItems (Lnet/minecraft/core/NonNullList;)V
+transitive-accessible method net/minecraft/world/level/block/entity/HopperBlockEntity getItems ()Lnet/minecraft/core/NonNullList;
+transitive-accessible method net/minecraft/world/level/block/entity/HopperBlockEntity setItems (Lnet/minecraft/core/NonNullList;)V
+transitive-accessible method net/minecraft/world/level/block/entity/DispenserBlockEntity getItems ()Lnet/minecraft/core/NonNullList;
+transitive-accessible method net/minecraft/world/level/block/entity/DispenserBlockEntity setItems (Lnet/minecraft/core/NonNullList;)V
+transitive-accessible method net/minecraft/world/level/block/entity/ShulkerBoxBlockEntity getItems ()Lnet/minecraft/core/NonNullList;
+transitive-accessible method net/minecraft/world/level/block/entity/ShulkerBoxBlockEntity setItems (Lnet/minecraft/core/NonNullList;)V
+transitive-accessible method net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity getItems ()Lnet/minecraft/core/NonNullList;
+transitive-accessible method net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity setItems (Lnet/minecraft/core/NonNullList;)V
+transitive-accessible method net/minecraft/world/level/block/entity/BrewingStandBlockEntity getItems ()Lnet/minecraft/core/NonNullList;
+transitive-accessible method net/minecraft/world/level/block/entity/BrewingStandBlockEntity setItems (Lnet/minecraft/core/NonNullList;)V
+transitive-accessible method net/minecraft/world/level/block/entity/CrafterBlockEntity getItems ()Lnet/minecraft/core/NonNullList;
+transitive-accessible method net/minecraft/world/level/block/entity/CrafterBlockEntity setItems (Lnet/minecraft/core/NonNullList;)V
+
+transitive-accessible method net/minecraft/world/level/block/entity/vault/VaultServerData getItemsToEject ()Ljava/util/List;
+
+transitive-inject-interface net/minecraft/world/SimpleContainer com/hbm/interfaces/injected/FuseContainerOwner
+transitive-inject-interface net/minecraft/world/inventory/AbstractContainerMenu com/hbm/interfaces/injected/FuseContainerOwner
+
+transitive-accessible field net/minecraft/world/effect/MobEffectInstance duration I
+transitive-accessible field net/minecraft/world/effect/MobEffectInstance hiddenEffect Lnet/minecraft/world/effect/MobEffectInstance;
+
 transitive-accessible field net/minecraft/world/level/block/entity/BlockEntityType validBlocks Ljava/util/Set;
 
 transitive-accessible field net/minecraft/world/phys/shapes/VoxelShape shape Lnet/minecraft/world/phys/shapes/DiscreteVoxelShape;
@@ -52,7 +82,7 @@ transitive-accessible field net/minecraft/world/level/biome/Biome climateSetting
 transitive-accessible class net/minecraft/world/level/biome/Biome$ClimateSettings
 
 transitive-accessible method net/minecraft/client/particle/SuspendedParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
-transitive-accessible field net/minecraft/client/particle/Particle stoppedByCollision Z
+transitive-accessible field net/minecraft/client/particle/Particle MAXIMUM_COLLISION_VELOCITY_SQUARED D
 
 transitive-accessible field net/minecraft/client/gui/GuiGraphicsExtractor guiRenderState Lnet/minecraft/client/renderer/state/gui/GuiRenderState;
 
@@ -97,6 +127,7 @@ transitive-accessible field net/minecraft/world/entity/item/PrimedTnt owner Lnet
 transitive-accessible field net/minecraft/world/level/levelgen/structure/StructurePiece mirror Lnet/minecraft/world/level/block/Mirror;
 transitive-accessible field net/minecraft/world/level/levelgen/structure/StructurePiece rotation Lnet/minecraft/world/level/block/Rotation;
 
+transitive-inject-interface	net/minecraft/server/MinecraftServer	com/hbm/interfaces/injected/UnstableFuseSchedule
 transitive-inject-interface	net/minecraft/client/multiplayer/ClientLevel	com/hbm/interfaces/injected/IClientLevelExtension
 transitive-inject-interface	net/minecraft/server/level/ServerLevel	com/hbm/interfaces/injected/IServerLevelExtension
 transitive-inject-interface	net/minecraft/world/level/chunk/ChunkAccess	com/hbm/interfaces/injected/IChunkExtension
@@ -139,3 +170,5 @@ transitive-accessible field net/minecraft/client/particle/SingleQuadParticle alp
 transitive-accessible field net/minecraft/client/particle/SingleQuadParticle roll F
 transitive-accessible field net/minecraft/client/particle/SingleQuadParticle oRoll F
 transitive-accessible field net/minecraft/client/particle/ParticleGroup particles Ljava/util/Queue;
+transitive-accessible field net/minecraft/core/component/DataComponentExactPredicate expectedComponents Ljava/util/List;
+transitive-accessible field net/minecraft/world/item/component/CustomData tag Lnet/minecraft/nbt/CompoundTag;

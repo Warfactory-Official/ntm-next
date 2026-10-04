@@ -24,7 +24,6 @@ public class BlockYellowBarrel extends BlockBarrelExplosive {
     private final boolean chainPrimes;
 
     public BlockYellowBarrel(BlockBehaviour.Properties props, boolean chainPrimes) {
-
         super(props, 100, false);
         this.chainPrimes = chainPrimes;
     }
@@ -51,11 +50,9 @@ public class BlockYellowBarrel extends BlockBarrelExplosive {
     public void explodeEntity(
             Level level, double x, double y, double z, @Nullable EntityTntNtm entity) {
         BlockPos center = BlockPos.containing(x, y, z);
-
         if (level.getRandom().nextInt(3) == 0) {
             level.setBlockAndUpdate(center, ModBlocks.TOXIC_BLOCK.get().defaultBlockState());
         } else {
-
             level.explode(entity, x, y, z, 12.0F, false, Level.ExplosionInteraction.TNT);
         }
         if (level instanceof ServerLevel serverLevel) {
@@ -73,7 +70,6 @@ public class BlockYellowBarrel extends BlockBarrelExplosive {
                     }
                 }
             }
-
             RadiationSystemNT.incrementRad(serverLevel, center, 35.0, 100.0);
         }
     }

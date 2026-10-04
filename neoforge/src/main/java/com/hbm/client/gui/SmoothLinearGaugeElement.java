@@ -92,7 +92,6 @@ final class SmoothLinearGaugeElement implements GuiElementRenderState {
     }
 
     private void polygon(VertexConsumer buffer, float[] points, int color) {
-
         for (int i = 1; i < 4; i++) {
             Vertices.emit(buffer, pose, points[0], points[1], color);
             Vertices.emit(buffer, pose, points[i * 2], points[i * 2 + 1], color);

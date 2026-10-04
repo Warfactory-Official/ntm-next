@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineRadar;
 import com.hbm.inventory.container.MenuMachineRadarSlots;
 import com.hbm.lib.Library;
 import com.hbm.main.Polaroid;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineRadar;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -20,7 +20,6 @@ import net.minecraft.world.entity.player.Inventory;
 public class ScreenMachineRadarSlots extends ScreenInfoContainer<MenuMachineRadarSlots> {
 
     private static final Identifier TEXTURE = Library.id("textures/gui/machine/gui_radar_link.png");
-
     private static final Component POLAROID_TITLE =
             Component.translatable("desc.gui.machineRadarSlots.reda");
 
@@ -69,8 +68,7 @@ public class ScreenMachineRadarSlots extends ScreenInfoContainer<MenuMachineRada
             playClick();
             CompoundTag data = new CompoundTag();
             data.putBoolean("gui0", true);
-            Services.NETWORK.sendToServer(
-                    new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
             return true;
         }
         return super.mouseClicked(event, doubleClick);

@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.storage.BlockEntityBarrel;
 import com.hbm.inventory.container.MenuBarrel;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.storage.BlockEntityBarrel;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -31,7 +31,6 @@ public class ScreenBarrel extends ScreenInfoContainer<MenuBarrel> {
 
     private static final int BAR_X = 71, BAR_Y = 17, BAR_W = 34, BAR_H = 52;
     private static final int BTN_X = 151, BTN_Y = 34, BTN_W = 18, BTN_H = 18;
-
     private static final int BTN_HIT_Y = 35;
 
     public ScreenBarrel(MenuBarrel menu, Inventory playerInventory, Component title) {
@@ -54,7 +53,7 @@ public class ScreenBarrel extends ScreenInfoContainer<MenuBarrel> {
 
         BlockEntityBarrel be = menu.blockEntity();
         drawFluidBar(graphics, BAR_X, BAR_Y, BAR_W, BAR_H, be.tank);
-        int mode = Mth.positiveModulo(be.mode, BlockEntityBarrel.MODES);
+        int mode = Mth.positiveModulo(be.getMode(), BlockEntityBarrel.MODES);
         graphics.blit(
                 RenderPipelines.GUI_TEXTURED,
                 TEXTURE,
@@ -68,7 +67,6 @@ public class ScreenBarrel extends ScreenInfoContainer<MenuBarrel> {
                 256);
 
         drawFluidGaugeInfo(graphics, mouseX, mouseY, BAR_X, BAR_Y, BAR_W, BAR_H, be.tank);
-
         if (checkClick(mouseX, mouseY, BTN_X, BTN_Y, BTN_W, BTN_H)) {
             drawCustomInfoStat(
                     graphics,
@@ -93,7 +91,7 @@ public class ScreenBarrel extends ScreenInfoContainer<MenuBarrel> {
             if (checkClick(mx, my, BTN_X, BTN_HIT_Y, BTN_W, BTN_H)) {
                 CompoundTag data = new CompoundTag();
                 data.putBoolean("mode", true);
-                Services.NETWORK.sendToServer(
+                PacketWire.sendToServer(
                         new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
                 playClick();
                 return true;

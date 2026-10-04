@@ -5,7 +5,7 @@ package com.hbm.items.tool;
 
 import com.hbm.handler.ability.AvailableAbilities;
 import com.hbm.registration.RegistryHandle;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
@@ -37,8 +37,10 @@ public class ItemSwordMeteorite extends ItemSwordAbility {
             Consumer<Component> adder,
             TooltipFlag flag) {
         super.appendHoverText(stack, context, display, adder, flag);
-        for (String line : I18nUtil.loreLines(getDescriptionId() + ".desc")) {
-            adder.accept(Component.literal(line).withStyle(ChatFormatting.ITALIC));
+        for (Component line :
+                TooltipStyle.lines(
+                        Component.translatableWithFallback(getDescriptionId() + ".desc", ""))) {
+            adder.accept(line.copy().withStyle(ChatFormatting.ITALIC));
         }
     }
 }

@@ -3,9 +3,9 @@
 
 package com.hbm.items.tool;
 
+import com.hbm.blockentity.machine.BlockEntityMachineTeleporter;
 import com.hbm.items.ModDataComponents;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntityMachineTeleporter;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

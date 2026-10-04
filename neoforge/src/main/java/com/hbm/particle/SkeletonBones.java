@@ -21,7 +21,6 @@ public final class SkeletonBones {
     }
 
     public static Bone @Nullable [] of(LivingEntity entity) {
-
         if (entity instanceof Zombie || entity instanceof AbstractSkeleton) return zombie(entity);
         if (entity instanceof AbstractVillager || entity instanceof Witch) return villager(entity);
         if (entity instanceof Player) return biped(entity);

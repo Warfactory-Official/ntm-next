@@ -25,7 +25,6 @@ import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 
 public record SatelliteReceiverModel() implements BlockModel<HFRWavefrontObject> {
-
     private static final Shape[] SHAPES = {
         new Shape(0, 0, 0F, 0F, 0F, 12F, 16F, 12F, -6F, 8F, -6F, 0F, 0F, 0F),
         new Shape(10, 28, 3F, 9F, -8F, 8F, 8F, 2F, -3F, 6F, 0F, -0.2617994F, -0.4363323F, 0F),
@@ -91,7 +90,6 @@ public record SatelliteReceiverModel() implements BlockModel<HFRWavefrontObject>
                             64F,
                             64F,
                             EnumSet.allOf(Direction.class));
-
             groups.add(GroupObject.ofPosUv("shape" + i, corners(cube)));
         }
         return new HFRWavefrontObject("satellite_receiver boxes", groups);
@@ -134,7 +132,6 @@ public record SatelliteReceiverModel() implements BlockModel<HFRWavefrontObject>
             Material.Baked material =
                     BlockModel.slot(baker, carrier, slots, ObjUnbakedGeometry.SINGLE_SLOT);
             Matrix4fc facingMatrix = matrixFor(facing);
-
             List<ObjUnbakedGeometry.Group> groups = new ArrayList<>(SHAPES.length);
             for (int i = 0; i < SHAPES.length; i++) {
                 Shape shape = SHAPES[i];

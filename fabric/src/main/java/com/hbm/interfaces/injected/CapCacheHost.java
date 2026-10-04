@@ -6,6 +6,5 @@ package com.hbm.interfaces.injected;
 import com.hbm.fabric.platform.CapCacheIndex;
 
 public interface CapCacheHost {
-
     CapCacheIndex hbm$capCaches();
 }

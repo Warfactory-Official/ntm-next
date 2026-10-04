@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.pile.BlockEntityPileVent;
 import com.hbm.blocks.machine.pile.BlockPileDevice;
 import com.hbm.client.model.PileDeviceModel;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.pile.BlockEntityPileVent;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;

@@ -19,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntityRenderer.class)
 public abstract class MixinLivingEntityRenderer {
-
     @Inject(
             method =
                     "submit(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;"
@@ -45,7 +44,6 @@ public abstract class MixinLivingEntityRenderer {
             boolean glowing,
             CallbackInfoReturnable<RenderType> cir) {
         if (!(state instanceof AvatarRenderState avatar)) return;
-
         if (avatar.isSpectator) return;
         if ((avatar.hbm$appearance() & PlayerAppearance.MANLY) != 0) cir.setReturnValue(null);
     }

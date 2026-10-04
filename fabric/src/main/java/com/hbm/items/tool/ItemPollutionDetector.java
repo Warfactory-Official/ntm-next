@@ -6,8 +6,8 @@ package com.hbm.items.tool;
 import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.handler.pollution.PollutionSavedData.PollutionData;
 import com.hbm.handler.pollution.PollutionType;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.PlayerInformPayload;
-import com.hbm.platform.Services;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
 public class ItemPollutionDetector extends Item {
-
     private static final int SOOT_ID = 100, POISON_ID = 101, METAL_ID = 102;
     private static final int LIFETIME = 4000;
     private static final int CADENCE = 10;
@@ -50,8 +49,7 @@ public class ItemPollutionDetector extends Item {
     }
 
     private static void line(ServerPlayer player, int id, PollutionType type, float value) {
-        Services.NETWORK.sendTo(
-                new PlayerInformPayload(readout(type, value), id, LIFETIME), player);
+        PacketWire.sendTo(new PlayerInformPayload(readout(type, value), id, LIFETIME), player);
     }
 
     public static Component readout(PollutionType type, float value) {

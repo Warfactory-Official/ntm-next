@@ -30,7 +30,7 @@ import org.joml.Quaternionf;
 import org.jspecify.annotations.Nullable;
 
 public final class ParticleLaunchSmoke extends SingleQuadParticle implements VisualParticle {
-
+    static final int WISPS = 6;
     private static final VarHandle NEXT_PARTICLE_ID;
     private static long nextParticleId;
 
@@ -46,6 +46,7 @@ public final class ParticleLaunchSmoke extends SingleQuadParticle implements Vis
     }
 
     private final long particleId = (long) NEXT_PARTICLE_ID.getAndAdd(1L) + 1L;
+    private volatile float @Nullable [] wispPattern;
     private @Nullable VisualizationManager visualManager;
 
     private ParticleLaunchSmoke(
@@ -92,15 +93,16 @@ public final class ParticleLaunchSmoke extends SingleQuadParticle implements Vis
         float x = (float) (Mth.lerp(partialTick, this.xo, this.x) - cameraPosition.x);
         float y = (float) (Mth.lerp(partialTick, this.yo, this.y) - cameraPosition.y);
         float z = (float) (Mth.lerp(partialTick, this.zo, this.z) - cameraPosition.z);
-        Quaternionf rotation = new Quaternionf(camera.rotation());
-        Random random = new Random(this.particleId);
-        for (int i = 0; i < 6; i++) {
-            float grey = random.nextFloat() * .75F + .1F;
+        Quaternionf rotation = camera.rotation();
+        float[] pattern = wispPattern();
+        for (int i = 0; i < WISPS; i++) {
+            int at = i * 4;
+            float grey = pattern[at + 3];
             state.add(
                     ParticleLayers.TRANSLUCENT_SEPARATE,
-                    x + (float) random.nextGaussian() * .5F * this.quadSize,
-                    y + (float) random.nextGaussian() * .5F * this.quadSize,
-                    z + (float) random.nextGaussian() * .5F * this.quadSize,
+                    x + pattern[at] * this.quadSize,
+                    y + pattern[at + 1] * this.quadSize,
+                    z + pattern[at + 2] * this.quadSize,
                     rotation.x,
                     rotation.y,
                     rotation.z,
@@ -115,8 +117,26 @@ public final class ParticleLaunchSmoke extends SingleQuadParticle implements Vis
         }
     }
 
-    long visualParticleId() {
-        return particleId;
+    float[] wispPattern() {
+        float[] pattern = wispPattern;
+        if (pattern == null) {
+            pattern = createWispPattern(particleId);
+            wispPattern = pattern;
+        }
+        return pattern;
+    }
+
+    private static float[] createWispPattern(long seed) {
+        float[] pattern = new float[WISPS * 4];
+        Random random = new Random(seed);
+        for (int i = 0; i < WISPS; i++) {
+            int at = i * 4;
+            pattern[at + 3] = random.nextFloat() * .75F + .1F;
+            pattern[at] = (float) random.nextGaussian() * .5F;
+            pattern[at + 1] = (float) random.nextGaussian() * .5F;
+            pattern[at + 2] = (float) random.nextGaussian() * .5F;
+        }
+        return pattern;
     }
 
     float visualU0() {

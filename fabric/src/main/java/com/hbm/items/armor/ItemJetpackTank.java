@@ -5,7 +5,7 @@ package com.hbm.items.armor;
 
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.sound.ModSounds;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -34,8 +34,10 @@ public class ItemJetpackTank extends Item {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-        for (String line : I18nUtil.loreLines(getDescriptionId() + ".desc")) {
-            adder.accept(Component.literal(line));
+        for (Component line :
+                TooltipStyle.lines(
+                        Component.translatableWithFallback(getDescriptionId() + ".desc", ""))) {
+            adder.accept(line);
         }
     }
 
@@ -45,7 +47,6 @@ public class ItemJetpackTank extends Item {
 
         ItemStack pack = ArmorSuitEffects.wornPack(player);
         if (!(pack.getItem() instanceof ItemJetpack jetpack)) return InteractionResult.PASS;
-
         if (jetpack.fill(pack, NTMFluids.KEROSENE, CHARGE, 0) <= 0) return InteractionResult.PASS;
         ArmorSuitEffects.storeWornPack(player, pack);
 

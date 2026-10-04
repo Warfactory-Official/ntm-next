@@ -36,6 +36,7 @@ public class MukeCloudParticleGroup extends ParticleGroup<ParticleMukeCloud> {
         Vec3 cam = camera.position();
 
         for (ParticleMukeCloud cloud : this.particles) {
+            if (cloud.ownsVisual()) continue;
             out.add(
                     new Instance(
                             cloud.interpX(partialTicks) - cam.x,
@@ -78,7 +79,7 @@ public class MukeCloudParticleGroup extends ParticleGroup<ParticleMukeCloud> {
 
                 collector.submitCustomGeometry(
                         pose,
-                        WeaponRenderTypes.cloudSeparate(in.texture),
+                        WeaponRenderTypes.flashLit(in.texture),
                         (p, tess) -> {
                             Vertices.emit(
                                     tess, p, c4.x, c4.y, c4.z, -1, uMax, vMax, LIGHT, 0F, 1F, 0F);

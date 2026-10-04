@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityHeaterFirebox;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityHeaterFirebox;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -40,7 +40,6 @@ public class RenderFirebox
     public RenderFirebox() {
         this.model = ResourceManager.heater_firebox;
         this.bodyType = RenderTypes.entityCutoutCull(ResourceManager.heater_firebox_tex);
-
         this.hotType = FlatCutout.of(ResourceManager.heater_firebox_tex);
     }
 
@@ -94,11 +93,9 @@ public class RenderFirebox
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-
         ps.mulPose(Axis.YP.rotationDegrees(fireboxYaw(s.facing) - 90F));
 
         ps.pushPose();
-
         ps.translate(1.375, 0.0, 0.375);
         ps.mulPose(Axis.YN.rotationDegrees(s.doorAngle));
         ps.translate(-1.375, 0.0, -0.375);

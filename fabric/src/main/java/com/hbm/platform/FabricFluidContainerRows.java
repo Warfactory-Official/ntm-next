@@ -17,13 +17,13 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-final class FabricFluidContainerRows {
+public final class FabricFluidContainerRows {
 
     private static final long DROPLETS_PER_MB = FluidConstants.BUCKET / 1000;
 
     private FabricFluidContainerRows() {}
 
-    static void register() {
+    public static void register() {
         for (Item item : FluidContainerRows.fullItems()) {
             FluidStorage.combinedItemApiProvider(item)
                     .register(

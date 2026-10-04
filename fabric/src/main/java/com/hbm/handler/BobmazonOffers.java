@@ -3,6 +3,8 @@
 
 package com.hbm.handler;
 
+import com.hbm.blockentity.BlockEntityPlushie;
+import com.hbm.blockentity.BlockEntitySnowglobe;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockPlushie.PlushieType;
 import com.hbm.blocks.generic.BlockSnowglobe.SnowglobeType;
@@ -16,8 +18,6 @@ import com.hbm.items.machine.ItemBlueprintFolder;
 import com.hbm.items.special.ItemKitCustom;
 import com.hbm.items.special.ItemKitNBT;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
-import com.hbm.tileentity.BlockEntityPlushie;
-import com.hbm.tileentity.BlockEntitySnowglobe;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.component.DataComponents;
@@ -85,7 +85,6 @@ public final class BobmazonOffers {
                 new BobmazonOffer(
                         new ItemStack(ModItems.GEIGER_COUNTER), BobmazonRequirement.NONE, 16));
         out.add(new BobmazonOffer(new ItemStack(ModItems.MATCHSTICK, 16), STEEL, 2));
-
         out.add(
                 new BobmazonOffer(
                         ModItems.BLUEPRINT_FOLDER.stack(ItemBlueprintFolder.Kind.ALT),
@@ -98,14 +97,12 @@ public final class BobmazonOffers {
                         256));
         out.add(new BobmazonOffer(new ItemStack(ModBlocks.VENDING_MACHINE), CHEMICS, 64));
         out.add(new BobmazonOffer(new ItemStack(ModBlocks.VENDING_MACHINE_SNACKS), CHEMICS, 64));
-
         out.add(new BobmazonOffer(new ItemStack(Items.JUNGLE_SAPLING), STEEL, 12, 9));
         out.add(new BobmazonOffer(new ItemStack(ModBlocks.PLANT_FLOWER_FOXGLOVE), STEEL, 16, 5));
         out.add(new BobmazonOffer(new ItemStack(ModBlocks.PLANT_FLOWER_TOBACCO), STEEL, 16, 9));
         out.add(new BobmazonOffer(new ItemStack(ModBlocks.PLANT_FLOWER_NIGHTSHADE), STEEL, 16, 3));
         out.add(new BobmazonOffer(new ItemStack(ModBlocks.PLANT_FLOWER_WEED), STEEL, 4, 10));
         out.add(new BobmazonOffer(new ItemStack(ModBlocks.PLANT_FLOWER_CD0), NUCLEAR, 64, 8));
-
         out.add(new BobmazonOffer(new ItemStack(ModBlocks.CONCRETE_EXT_MACHINE, 16), CHEMICS, 4));
         out.add(
                 new BobmazonOffer(
@@ -116,11 +113,9 @@ public final class BobmazonOffers {
         out.add(new BobmazonOffer(new ItemStack(ModBlocks.CONCRETE_EXT_HAZARD, 16), CHEMICS, 4));
         out.add(new BobmazonOffer(new ItemStack(ModBlocks.CONCRETE_EXT_SAND, 16), CHEMICS, 4));
         out.add(new BobmazonOffer(new ItemStack(ModBlocks.CONCRETE_EXT_BRONZE, 16), CHEMICS, 4));
-
         for (SnowglobeType globe : SnowglobeType.values()) {
             out.add(new BobmazonOffer(BlockEntitySnowglobe.stackOf(globe), CHEMICS, 128));
         }
-
         for (int ordinal = 1; ordinal < PlushieType.count(); ordinal++) {
             out.add(
                     new BobmazonOffer(
@@ -138,7 +133,6 @@ public final class BobmazonOffers {
 
         out.add(new BobmazonOffer(new ItemStack(Items.IRON_INGOT, 64), STEEL, 1));
         out.add(new BobmazonOffer(ingot(Mats.MAT_STEEL, 64), STEEL, 1));
-
         out.add(new BobmazonOffer(new ItemStack(Items.COPPER_INGOT, 64), STEEL, 1));
         out.add(new BobmazonOffer(ingot(Mats.MAT_MINGRADE, 64), STEEL, 1));
         out.add(new BobmazonOffer(ingot(Mats.MAT_TITANIUM, 64), STEEL, 1));

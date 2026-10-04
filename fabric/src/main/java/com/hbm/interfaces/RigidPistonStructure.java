@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.Block;
 import org.jspecify.annotations.Nullable;
 
 public interface RigidPistonStructure {
-
     @Nullable BlockPos rigidStructureCore(Level level, BlockPos member);
 
     List<BlockPos> rigidStructureBlocks(Level level, BlockPos core);

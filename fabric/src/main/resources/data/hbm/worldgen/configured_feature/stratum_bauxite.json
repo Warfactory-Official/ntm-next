@@ -6,7 +6,7 @@
     "domain_z": "hbm:noise/stratum_bauxite/z",
     "replaceable": {
       "predicate_type": "minecraft:tag_match",
-      "tag": "minecraft:stone_ore_replaceables"
+      "tag": "minecraft:base_stone_overworld"
     },
     "scale_h": 0.03,
     "scale_v": 0.15,

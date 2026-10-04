@@ -18,9 +18,9 @@ import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
 import com.hbm.items.weapon.sedna.mags.MagazineSingleReload;
 import com.hbm.main.Polaroid;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.MukePayload;
-import com.hbm.platform.Services;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -182,7 +182,6 @@ public class XFactoryCatapult {
                                 SoundSource.BLOCKS,
                                 15.0F,
                                 1.0F);
-
                 sendMuke(
                         bullet.level(),
                         hit,
@@ -375,12 +374,12 @@ public class XFactoryCatapult {
 
     private static void sendMuke(Level level, Vec3 hit, boolean tinytot, boolean balefire) {
         if (!(level instanceof ServerLevel server)) return;
-        Services.NETWORK.sendToAllAround(
+        PacketWire.sendToAllAround(
                 new MukePayload(hit.x, hit.y + 0.5, hit.z, tinytot, balefire),
                 new TargetPoint(server, hit.x, hit.y, hit.z, 250));
     }
 
-    public static void init(IRegistrar r) {
+    public static void init() {
 
         nuke_standard =
                 new BulletConfig()
@@ -436,7 +435,7 @@ public class XFactoryCatapult {
                 new BulletConfig().setLife(1_200).setGrav(0.025F).setOnImpact(LAMBDA_SUBMUNITION);
 
         ModItems.GUN_FATMAN =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_fatman",
                         props ->
                                 new ItemGunBaseNT(

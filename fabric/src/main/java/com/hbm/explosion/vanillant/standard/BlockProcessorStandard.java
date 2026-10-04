@@ -6,7 +6,6 @@ package com.hbm.explosion.vanillant.standard;
 import com.hbm.explosion.vanillant.ExplosionVNT;
 import com.hbm.explosion.vanillant.interfaces.IBlockMutator;
 import com.hbm.explosion.vanillant.interfaces.IBlockProcessor;
-import com.hbm.platform.Services;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.function.BiConsumer;
@@ -87,12 +86,10 @@ public class BlockProcessorStandard implements IBlockProcessor {
                 continue;
             }
 
-            if (!tool.isEmpty()
-                    && Services.PLATFORM.canDropFromExplosion(level, pos, state, explosion)) {
+            if (!tool.isEmpty() && state.getBlock().dropFromExplosion((Explosion) explosion)) {
                 dropWithFortune(level, pos, state, explosion, tool);
             }
             state.onExplosionHit(level, pos, explosion, drops);
-
             if (convert != null) convert.mutatePre(explosion, state, pos);
         }
 

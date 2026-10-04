@@ -30,7 +30,6 @@ public record DeuteriumTowerModel() implements BlockModel<HFRWavefrontObject> {
     private static final int NORTH_YAW = 0;
 
     private static Matrix4fc matrixFor(Direction facing) {
-
         float tx;
         float tz;
         switch (facing) {

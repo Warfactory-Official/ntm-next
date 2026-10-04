@@ -3,13 +3,13 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineCatalyticReformer;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.BlockEntityMachineCatalyticReformer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -19,7 +19,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineCatalyticReformer extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         2, 0, 1, 1, 2, 2, 0, 0, 0,
         3, -3, 1, 0, -1, 2, 0, 0, 0,
@@ -94,7 +93,6 @@ public class MachineCatalyticReformer extends BlockMultiblockCore
 
     @Override
     public MachineCaps caps() {
-
         return MachineCaps.of(ModBlockEntities.CATALYTIC_REFORMER)
                 .powerIn()
                 .fluidIn()

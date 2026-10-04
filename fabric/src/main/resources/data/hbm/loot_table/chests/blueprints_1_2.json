@@ -1,5 +1,6 @@
 {
   "type": "minecraft:chest",
+  "hbm:random_slots": true,
   "pools": [
     {
       "entries": [

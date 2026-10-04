@@ -3,9 +3,9 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityReactorResearch;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.GroupObject;
-import com.hbm.tileentity.machine.BlockEntityReactorResearch;
 import com.hbm.util.GameTime;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;

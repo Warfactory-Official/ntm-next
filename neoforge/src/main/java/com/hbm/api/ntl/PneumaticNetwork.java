@@ -3,10 +3,13 @@
 
 package com.hbm.api.ntl;
 
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineAutocrafter;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumaticStorageBase;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoTube;
+import com.hbm.blockentity.machine.BlockEntityMachineAutocrafter;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumaticStorageBase;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTube;
+import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.platform.NeoForgeServerEvents;
+import com.hbm.platform.SophisticatedCoreNesting;
+import com.hbm.tags.HbmItemTags;
 import com.hbm.uninos.graph.EdgeFaces;
 import com.hbm.uninos.graph.GraphNode;
 import com.hbm.uninos.graph.LevelNodeGraph;
@@ -17,23 +20,21 @@ import com.hbm.util.InventoryUtil;
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenCustomHashMap;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.saveddata.SavedDataType;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 import org.jspecify.annotations.Nullable;
 
 public final class PneumaticNetwork {
@@ -44,10 +45,6 @@ public final class PneumaticNetwork {
     public static final byte RECEIVE_ROBIN = 0;
     public static final byte RECEIVE_RANDOM = 1;
     public static final int ITEMS_PER_TRANSFER = 64;
-
-    private static final int MAX_ATTEMPTS = 5;
-    public final RandomSource rand = RandomSource.create();
-
     public static final Hash.Strategy<ItemStack> TYPE_AND_COMPONENTS =
             new Hash.Strategy<>() {
 
@@ -63,11 +60,14 @@ public final class PneumaticNetwork {
                     return a.isEmpty() == b.isEmpty() && ItemStack.isSameItemSameComponents(a, b);
                 }
             };
-
-    private @Nullable NodeNetwork<PneumaticData> net;
+    public static final SavedDataType<LevelNodeGraph<PneumaticData>> GRAPH =
+            LevelNodeGraph.type(PneumaticGraphProvider.INSTANCE, "pneumatic_graph");
+    private static final int MAX_ATTEMPTS = 5;
+    public final RandomSource rand = RandomSource.create();
+    private @Nullable NodeNetwork<PneumaticData> network;
 
     public static void init() {
-        Services.SERVER.onServerTickPost(PneumaticNetwork::onServerTick);
+        NeoForgeServerEvents.onServerTickPost(PneumaticNetwork::onServerTick);
     }
 
     public static @Nullable PneumaticNetwork at(ServerLevel level, BlockPos pos) {
@@ -75,7 +75,7 @@ public final class PneumaticNetwork {
         if (net == null) return null;
         if (net.attachment instanceof PneumaticNetwork state) return state;
         PneumaticNetwork state = new PneumaticNetwork();
-        state.net = net;
+        state.network = net;
         net.attachment = state;
         return state;
     }
@@ -87,15 +87,24 @@ public final class PneumaticNetwork {
         }
     }
 
-    private static LevelNodeGraph.Probe isDestination(ServerLevel level, long nodeKey, int face) {
+    private static LevelNodeGraph.Probe isDestination(
+            ServerLevel level,
+            LevelNodeGraph<PneumaticData> graph,
+            long nodeKey,
+            LevelChunk cellChunk,
+            int face) {
         if (face != EdgeFaces.SELF) return LevelNodeGraph.Probe.ABSENT;
         BlockPos pos = BlockPos.of(nodeKey);
-        if (!(level.getBlockEntity(pos) instanceof BlockEntityPneumoTube tube))
+        if (!(cellChunk.getBlockEntity(pos) instanceof BlockEntityPneumoTube tube))
             return LevelNodeGraph.Probe.ABSENT;
         if (tube.ejectionDir == null) return LevelNodeGraph.Probe.ABSENT;
         BlockPos target = pos.relative(tube.ejectionDir);
-        if (!LevelNodeGraph.resident(level, target.asLong())) return LevelNodeGraph.Probe.UNKNOWN;
-        return presentAt(level, target, tube.ejectionDir.getOpposite())
+        if (BlockMultiblockCore.readableChunk(level, target.getX(), target.getZ(), cellChunk)
+                == null) {
+            graph.probeBlocker = LevelNodeGraph.chunkOf(target.asLong());
+            return LevelNodeGraph.Probe.UNKNOWN;
+        }
+        return ForeignItems.present(level, target, tube.ejectionDir.getOpposite())
                 ? LevelNodeGraph.Probe.PRESENT
                 : LevelNodeGraph.Probe.ABSENT;
     }
@@ -109,11 +118,16 @@ public final class PneumaticNetwork {
                 graph.drainProbes(
                         net,
                         level,
-                        (lvl, g, cellPos, faces, face) -> isDestination(lvl, cellPos, face))) {
+                        (lvl, g, cellPos, cellChunk, faces, face) ->
+                                isDestination(lvl, g, cellPos, cellChunk, face))) {
             EdgeFaces ef = member.ef;
             if (ef == null || (ef.activeMask & (1 << EdgeFaces.SELF)) == 0) continue;
             BlockPos node = BlockPos.of(member.posKey);
-            if (!(level.getBlockEntity(node) instanceof BlockEntityPneumoTube tube)) continue;
+            LevelChunk nodeChunk =
+                    BlockMultiblockCore.readableChunk(level, node.getX(), node.getZ());
+            if (nodeChunk == null
+                    || !(nodeChunk.getBlockEntity(node) instanceof BlockEntityPneumoTube tube))
+                continue;
             if (tube.ejectionDir == null) continue;
             BlockPos at = node.relative(tube.ejectionDir);
             if (presentAt(level, at, tube.ejectionDir.getOpposite())) {
@@ -124,17 +138,52 @@ public final class PneumaticNetwork {
     }
 
     public static boolean presentAt(ServerLevel level, BlockPos pos, @Nullable Direction face) {
-        if (level.getChunkSource().getChunkNow(pos.getX() >> 4, pos.getZ() >> 4) == null)
-            return false;
+        if (BlockMultiblockCore.readableChunk(level, pos.getX(), pos.getZ()) == null) return false;
         return ForeignItems.present(level, pos, face);
     }
 
+    private static boolean passesEndpoint(BlockEntityPneumoTube endpoint, List<ItemStack> offered) {
+        for (ItemStack stack : offered) if (passes(endpoint, stack)) return true;
+        return false;
+    }
+
+    public static LevelNodeGraph<PneumaticData> get(ServerLevel level) {
+        return LevelNodeGraph.getOrCreate(level, GRAPH);
+    }
+
+    public static void addNode(ServerLevel level, BlockPos pos) {
+        get(level).addNode(pos.asLong(), PneumaticData.INSTANCE, 0x3F);
+    }
+
+    public static void removeNode(ServerLevel level, BlockPos pos) {
+        get(level).removeNode(pos.asLong());
+    }
+
+    public static void setEndpoint(ServerLevel level, BlockPos pos, boolean on) {
+        get(level).setSelfEndpoint(pos.asLong(), on);
+    }
+
+    public static @Nullable NodeNetwork<PneumaticData> netAt(ServerLevel level, BlockPos pos) {
+        return get(level).networkAt(pos.asLong());
+    }
+
+    public static Comparator<Destination> nearestFirst(BlockPos origin) {
+        return Comparator.comparingDouble((Destination d) -> d.pos().distSqr(origin))
+                .thenComparingInt(d -> BlockEntityPneumoTube.getIdentifier(d.pos()));
+    }
+
+    private static boolean passes(BlockEntityPneumoTube tube, ItemStack stack) {
+        return tube.matchesFilter(stack) == tube.whitelist;
+    }
+
     public List<BlockEntityPneumaticStorageBase> drives(ServerLevel level, BlockPos viewer) {
-        if (net == null) return List.of();
+        if (network == null) return List.of();
         List<BlockEntityPneumaticStorageBase> out = new ArrayList<>();
-        for (GraphNode<PneumaticData> node : net.nodes) {
+        for (GraphNode<PneumaticData> node : network.nodes) {
             BlockPos pos = BlockPos.of(node.posKey);
-            if (level.getBlockEntity(pos) instanceof BlockEntityPneumaticStorageBase drive
+            LevelChunk chunk = BlockMultiblockCore.readableChunk(level, pos.getX(), pos.getZ());
+            if (chunk != null
+                    && chunk.getBlockEntity(pos) instanceof BlockEntityPneumaticStorageBase drive
                     && drive.isAvailable()
                     && drive.reaches(viewer)) {
                 out.add(drive);
@@ -165,8 +214,18 @@ public final class PneumaticNetwork {
     }
 
     public long give(ServerLevel level, BlockPos viewer, ItemStack stack, long amount) {
-        if (stack.isEmpty() || amount <= 0 || !Services.PLATFORM.canFitInsideContainerItems(stack))
-            return 0L;
+        if (stack.isEmpty()
+                || amount <= 0
+                || !(stack.canFitInsideContainerItems()
+                        && !stack.is(HbmItemTags.NO_CONTAINER_NESTING)
+                        && !stack.has(DataComponents.CONTAINER)
+                        && !stack.has(DataComponents.BUNDLE_CONTENTS)
+                        && (stack.isEmpty()
+                                || stack.getCapability(
+                                                Capabilities.Item.ITEM, ItemAccess.forStack(stack))
+                                        == null)
+                        && (!ModList.get().isLoaded("sophisticatedcore")
+                                || !SophisticatedCoreNesting.hasStorage(stack)))) return 0L;
         List<BlockEntityPneumaticStorageBase> reachable = drives(level, viewer);
         long left = amount;
         for (BlockEntityPneumaticStorageBase drive : reachable) {
@@ -227,11 +286,6 @@ public final class PneumaticNetwork {
         return false;
     }
 
-    private static boolean passesEndpoint(BlockEntityPneumoTube endpoint, List<ItemStack> offered) {
-        for (ItemStack stack : offered) if (passes(endpoint, stack)) return true;
-        return false;
-    }
-
     private boolean deliver(
             ServerLevel level,
             BlockPos sourcePos,
@@ -252,19 +306,10 @@ public final class PneumaticNetwork {
             int wanted = BobMathUtil.min(stack.getCount(), budget / proportional, hardCap);
             if (wanted <= 0) continue;
 
-            ItemStack taken =
-                    ForeignItems.extract(
-                            level,
-                            sourcePos,
-                            sourceFace,
-                            held -> ItemStack.isSameItemSameComponents(held, stack),
-                            wanted);
-            if (taken.isEmpty()) continue;
-
             Direction destFace = candidate.pipeDir().getOpposite();
-            ItemStack refused = ForeignItems.insert(level, candidate.pos(), destFace, taken);
-            if (!refused.isEmpty()) ForeignItems.insert(level, sourcePos, sourceFace, refused);
-            int sent = taken.getCount() - refused.getCount();
+            int sent =
+                    ForeignItems.move(
+                            level, sourcePos, sourceFace, candidate.pos(), destFace, stack, wanted);
             if (sent <= 0) continue;
 
             budget -= sent * proportional;
@@ -272,38 +317,6 @@ public final class PneumaticNetwork {
             if (budget <= 0) break;
         }
         return moved;
-    }
-
-    public static final SavedDataType<LevelNodeGraph<PneumaticData>> GRAPH =
-            LevelNodeGraph.type(PneumaticGraphProvider.INSTANCE, "pneumatic_graph");
-
-    public static LevelNodeGraph<PneumaticData> get(ServerLevel level) {
-        return LevelNodeGraph.getOrCreate(level, GRAPH);
-    }
-
-    public static void addNode(ServerLevel level, BlockPos pos) {
-        get(level).addNode(pos.asLong(), PneumaticData.INSTANCE, 0x3F);
-    }
-
-    public static void removeNode(ServerLevel level, BlockPos pos) {
-        get(level).removeNode(pos.asLong());
-    }
-
-    public static void setEndpoint(ServerLevel level, BlockPos pos, boolean on) {
-        get(level).setSelfEndpoint(pos.asLong(), on);
-    }
-
-    public static @Nullable NodeNetwork<PneumaticData> netAt(ServerLevel level, BlockPos pos) {
-        return get(level).networkAt(pos.asLong());
-    }
-
-    public static Comparator<Destination> nearestFirst(BlockPos origin) {
-        return Comparator.comparingDouble((Destination d) -> d.pos().distSqr(origin))
-                .thenComparingInt(d -> BlockEntityPneumoTube.getIdentifier(d.pos()));
-    }
-
-    private static boolean passes(BlockEntityPneumoTube tube, ItemStack stack) {
-        return tube.matchesFilter(stack) == tube.whitelist;
     }
 
     public record Destination(BlockPos pos, Direction pipeDir, BlockEntityPneumoTube tube) {}

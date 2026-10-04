@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
     "#c:dusts/coal",
     "minecraft:milk_bucket",
@@ -12,6 +12,11 @@
     },
     "minecraft:sugar"
   ],
+  "input_state": {
+    "1": {
+      "preserve": "remainder"
+    }
+  },
   "result": {
     "id": "hbm:coffee"
   }

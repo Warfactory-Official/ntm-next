@@ -185,7 +185,6 @@ public abstract class BlockTNTBase extends TntBlock implements IToolable, IFucki
                 SoundSource.BLOCKS,
                 1.0F,
                 1.0F);
-
         level.gameEvent(igniter, GameEvent.PRIME_FUSE, pos);
         return true;
     }

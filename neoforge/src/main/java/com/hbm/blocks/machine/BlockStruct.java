@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMultiblock;
 import com.hbm.blocks.ITickingBlock;
-import com.hbm.tileentity.machine.BlockEntityMultiblock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;

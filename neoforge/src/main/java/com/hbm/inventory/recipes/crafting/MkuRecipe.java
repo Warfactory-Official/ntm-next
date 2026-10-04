@@ -15,12 +15,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
 
-public final class MkuRecipe extends CustomRecipe {
+public final class MkuRecipe extends HbmCustomRecipe {
 
     public static final MkuRecipe INSTANCE = new MkuRecipe();
     public static final MapCodec<MkuRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
@@ -28,31 +27,6 @@ public final class MkuRecipe extends CustomRecipe {
             StreamCodec.unit(INSTANCE);
     public static final RecipeSerializer<MkuRecipe> SERIALIZER =
             new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
-
-    @Override
-    public boolean matches(CraftingInput input, Level level) {
-
-        if (!(level instanceof ServerLevel server)) return false;
-
-        Pattern pattern = patternFor(server.getSeed());
-        if (input.width() != pattern.width() || input.height() != pattern.height()) return false;
-
-        for (int y = 0; y < pattern.height(); y++) {
-            for (int x = 0; x < pattern.width(); x++) {
-                ItemStack held = input.getItem(x, y);
-                Item wanted = pattern.slots().get(x + y * pattern.width());
-                if (wanted == null) {
-                    if (!held.isEmpty()) return false;
-                } else if (!held.is(wanted)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private record Pattern(long seed, int width, int height, List<@Nullable Item> slots) {}
-
     private static volatile @Nullable Pattern pattern;
 
     private static Pattern patternFor(long worldSeed) {
@@ -85,6 +59,27 @@ public final class MkuRecipe extends CustomRecipe {
     }
 
     @Override
+    protected boolean matchesInput(CraftingInput input, Level level) {
+        if (!(level instanceof ServerLevel server)) return false;
+
+        Pattern pattern = patternFor(server.getSeed());
+        if (input.width() != pattern.width() || input.height() != pattern.height()) return false;
+
+        for (int y = 0; y < pattern.height(); y++) {
+            for (int x = 0; x < pattern.width(); x++) {
+                ItemStack held = input.getItem(x, y);
+                Item wanted = pattern.slots().get(x + y * pattern.width());
+                if (wanted == null) {
+                    if (!held.isEmpty()) return false;
+                } else if (!held.is(wanted)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
     public ItemStack assemble(CraftingInput input) {
         return new ItemStack(ModItems.SYRINGE_MKUNICORN);
     }
@@ -93,4 +88,6 @@ public final class MkuRecipe extends CustomRecipe {
     public RecipeSerializer<MkuRecipe> getSerializer() {
         return SERIALIZER;
     }
+
+    private record Pattern(long seed, int width, int height, List<@Nullable Item> slots) {}
 }

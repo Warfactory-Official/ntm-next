@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.bomb.BlockEntityCompactLauncher;
 import com.hbm.handler.MissileStruct;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.bomb.BlockEntityCompactLauncher;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -22,7 +22,6 @@ import org.jspecify.annotations.Nullable;
 public final class RenderCompactLauncher
         implements BlockEntityRenderer<BlockEntityCompactLauncher, RenderCompactLauncher.State>,
                 ConcurrentRenderStateExtraction {
-
     private static final double MISSILE_Y = 1.0625D;
 
     private static final RenderType BODY =

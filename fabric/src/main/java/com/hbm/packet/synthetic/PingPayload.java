@@ -6,8 +6,8 @@ package com.hbm.packet.synthetic;
 import com.hbm.NuclearTech;
 import com.hbm.lib.Library;
 import com.hbm.packet.IPayloadHandlerContext;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.threading.ThreadedPayload;
-import com.hbm.platform.Services;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
@@ -37,7 +37,7 @@ public final class PingPayload extends ThreadedPayload {
     public static void handleServer(PingPayload payload, IPayloadHandlerContext ctx) {
         NuclearTech.LOGGER.info("PingPayload C2S received: nonce={}", payload.nonce);
         if (ctx.player() instanceof ServerPlayer sp) {
-            Services.NETWORK.sendTo(new PingPayload(payload.nonce, true), sp);
+            PacketWire.sendTo(new PingPayload(payload.nonce, true), sp);
         }
     }
 

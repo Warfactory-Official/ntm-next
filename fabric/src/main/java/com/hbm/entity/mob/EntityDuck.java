@@ -71,7 +71,6 @@ public class EntityDuck extends Chicken {
 
     @Override
     public void die(DamageSource source) {
-
         if (level() instanceof ServerLevel server) {
             server.getServer()
                     .getPlayerList()

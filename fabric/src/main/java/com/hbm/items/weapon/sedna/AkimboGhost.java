@@ -34,14 +34,11 @@ public final class AkimboGhost {
         ItemStack off = player.getItemInHand(InteractionHand.OFF_HAND);
 
         if (isAkimbo(main)) {
-
             if (!off.isEmpty() && !isGhost(off)) {
-
                 player.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
                 giveBack(player, off);
                 off = ItemStack.EMPTY;
             }
-
             ItemStack ghost = ghostOf(main);
             if (!ItemStack.matches(off, ghost))
                 player.setItemInHand(InteractionHand.OFF_HAND, ghost);
@@ -52,7 +49,6 @@ public final class AkimboGhost {
             player.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
         } else if (isAkimbo(off)) {
             player.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-
             if (main.isEmpty()) player.setItemInHand(InteractionHand.MAIN_HAND, off);
             else giveBack(player, off);
         }

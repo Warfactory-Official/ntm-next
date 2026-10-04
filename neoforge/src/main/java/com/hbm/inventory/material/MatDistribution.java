@@ -6,7 +6,7 @@ package com.hbm.inventory.material;
 import com.hbm.inventory.material.Mats.MaterialStack;
 import com.hbm.inventory.recipes.loader.RecipeSource;
 import com.hbm.inventory.recipes.loader.SerializableRecipe;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import java.util.*;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
@@ -33,9 +33,10 @@ public class MatDistribution extends SerializableRecipe
     }
 
     @Override
-    public void registerType(IRegistrar registrar) {
-        this.typeId = registrar.registerRecipeType(REGISTRY_NAME, this).id();
-        registrar.registerRecipeSerializer(REGISTRY_NAME, MaterialDistributionRecipe.SERIALIZER);
+    public void registerType() {
+        this.typeId = NeoForgeRegistrar.registerRecipeType(REGISTRY_NAME, this).id();
+        NeoForgeRegistrar.registerRecipeSerializer(
+                REGISTRY_NAME, MaterialDistributionRecipe.SERIALIZER);
     }
 
     public RecipeType<MaterialDistributionRecipe> type() {
@@ -91,7 +92,6 @@ public class MatDistribution extends SerializableRecipe
             RecipeSource.Token token,
             Map<Item, List<MaterialStack>> byItem,
             Map<TagKey<Item>, List<MaterialStack>> byOreTag) {
-
         static Distribution empty() {
             return new Distribution(RecipeSource.NEVER_FILLED, Map.of(), Map.of());
         }

@@ -3,7 +3,6 @@
 
 package com.hbm.items.weapon.sedna.mods;
 
-import com.hbm.config.GunVisualConfig;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.ModItems;

@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "B": "#c:storage_blocks/starmetal",
     "M": "hbm:motor_desh",

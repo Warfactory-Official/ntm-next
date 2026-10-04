@@ -4,7 +4,7 @@
 package com.hbm.inventory.container;
 
 import com.hbm.inventory.slot.SlotPattern;
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgePlatform;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -42,7 +42,7 @@ public class MenuRebarPlacer extends NtmContainerMenu {
             super.clicked(slotId, button, input, player);
             return;
         }
-        if (Services.PLATFORM.canFitInsideContainerItems(getCarried())) pattern().set(getCarried());
+        if (NeoForgePlatform.canFitInsideContainerItems(getCarried())) pattern().set(getCarried());
     }
 
     @Override

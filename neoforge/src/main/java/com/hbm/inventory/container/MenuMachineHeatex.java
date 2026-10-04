@@ -3,9 +3,9 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityHeaterHeatex;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.BlockEntityHeaterHeatex;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

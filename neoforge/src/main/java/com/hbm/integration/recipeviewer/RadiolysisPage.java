@@ -42,11 +42,9 @@ public final class RadiolysisPage extends TablePage<RadiolysisRecipe> {
     @Override
     public void layout(RadiolysisRecipe recipe, PageLayout page) {
         page.input(34, 25).fluid(recipe.inputFluid[0]);
-
         int[] y = {16, 34};
         for (int i = 0; i < recipe.outputFluid.length && i < y.length; i++) {
             FluidStackNTM output = recipe.outputFluid[i];
-
             if (output.type() == Fluids.EMPTY) continue;
             page.output(118, y[i]).fluid(output);
         }

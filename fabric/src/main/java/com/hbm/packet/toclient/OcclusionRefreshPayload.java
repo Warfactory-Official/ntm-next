@@ -50,7 +50,6 @@ public record OcclusionRefreshPayload(long chunkPos) implements CustomPacketPayl
             pos.set(cx << 4, chunk.getSectionYFromSectionIndex(i) << 4, cz << 4);
             SectionRenderDispatcher.RenderSection rs = viewArea.getRenderSectionAt(pos);
             if (rs == null) continue;
-
             SectionMesh mesh = rs.getSectionMesh();
             if (sections[i].hasOnlyAir()
                     && mesh != CompiledSectionMesh.UNCOMPILED

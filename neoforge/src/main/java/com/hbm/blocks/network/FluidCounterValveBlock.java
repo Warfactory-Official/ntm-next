@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.blockentity.network.BlockEntityFluidCounterValve;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.interfaces.ILookOverlay;
-import com.hbm.tileentity.network.BlockEntityFluidCounterValve;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;

@@ -3,7 +3,7 @@
 
 package com.hbm.compat.computercraft.albion;
 
-import com.hbm.tileentity.machine.albion.BlockEntityPARFC;
+import com.hbm.blockentity.machine.albion.BlockEntityPARFC;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class PARFCPeripheral extends CooledPeripheral<BlockEntityPARFC> {

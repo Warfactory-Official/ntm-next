@@ -4,10 +4,10 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.BlockEntityMachineElectrolyser;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.items.machine.FluidIdentifierItem;
 import com.hbm.items.machine.upgrade.ItemMachineUpgrade;
-import com.hbm.tileentity.machine.BlockEntityMachineElectrolyser;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;

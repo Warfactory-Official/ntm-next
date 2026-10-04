@@ -12,7 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 public final class CyclotronPage extends TablePage<CyclotronRecipe> {
-
     private static final int PARTICLE_X = 21, PARTICLE_Y = 24;
     private static final int TARGET_X = 75, TARGET_Y = 24;
     private static final int OUTPUT_X = 129, OUTPUT_Y = 24;
@@ -51,7 +50,6 @@ public final class CyclotronPage extends TablePage<CyclotronRecipe> {
     @Override
     public void draw(CyclotronRecipe recipe, GuiGraphicsExtractor graphics) {
         RecipePanel.page(graphics, RecipePanel.CYCLOTRON);
-
         RecipePanel.progress(graphics, RecipePanel.CYCLOTRON, 44, 24, 100, 119, 24, 16, 48, 0);
     }
 }

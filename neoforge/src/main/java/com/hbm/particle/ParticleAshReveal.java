@@ -21,9 +21,7 @@ import net.minecraft.util.RandomSource;
 import org.jspecify.annotations.Nullable;
 
 public class ParticleAshReveal extends SingleQuadParticle implements VisualParticle {
-
     private static final float BASE_SCALE = 0.1F * 7.5F;
-
     private static final float TINT_JITTER = 0.1F;
     private static final float RAMP = 32.0F;
 
@@ -43,7 +41,6 @@ public class ParticleAshReveal extends SingleQuadParticle implements VisualParti
         this.friction = 0.96F;
         this.quadSize = BASE_SCALE;
         this.hasPhysics = false;
-
         this.xd = 0.0D;
         this.yd = 0.0D;
         this.zd = 0.0D;

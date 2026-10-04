@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKTerminal;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKTerminal;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class RBMKTerminalPeripheral extends SnapshotPeripheral<BlockEntityRBMKTerminal> {

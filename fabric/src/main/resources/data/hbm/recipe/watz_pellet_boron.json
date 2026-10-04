@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "G": "#c:ingots/graphite",
     "I": "#c:ingots/boron"

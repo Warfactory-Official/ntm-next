@@ -8,12 +8,12 @@ import com.hbm.handler.EnumCraneKey;
 import com.hbm.handler.EnumToolKey;
 import com.hbm.handler.HbmKeybinds.EnumKeybind;
 import com.hbm.items.armor.ItemModShield;
-import com.hbm.platform.Services;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 
@@ -69,33 +69,27 @@ public final class HbmPlayerProps {
                                                     .optionalFieldOf("radMark", false)
                                                     .forGetter(p -> p.radMark))
                                     .apply(i, HbmPlayerProps::create));
-
     public final boolean[] craneKeysPressed = new boolean[EnumCraneKey.VALUES.length];
     public final boolean[] toolKeysPressed = new boolean[EnumToolKey.VALUES.length];
-
     public final boolean[] keysPressed = new boolean[EnumKeybind.VALUES.length];
     public float shield;
     public float maxShield;
-
     public int lastDamage;
     public int plinkCooldown;
     public int dashCount;
     public int dashCooldown;
     public int stamina;
     public int reputation;
-
     public boolean enableHUD = true;
-
     public boolean enableBackpack = true;
-
     public boolean enableMagnet = true;
-
     public boolean crateOpenHeld = true;
     public int maskManTimer;
     public long fbiMark;
     public boolean radMark;
     public boolean dashKeyPressed;
-
+    public int armorFlightIntent;
+    public boolean euphemiumFallCapped;
     public int grenadeDeployment;
 
     public HbmPlayerProps() {}
@@ -134,7 +128,7 @@ public final class HbmPlayerProps {
     }
 
     public static HbmPlayerProps getData(Player player) {
-        return Services.ENTITY_DATA.get(player, ModEntityData.PLAYER_PROPS);
+        return ((Entity) player).getAttachedOrCreate(ModEntityData.PLAYER_PROPS);
     }
 
     public boolean isCraneKeyPressed(EnumCraneKey key) {
@@ -189,8 +183,8 @@ public final class HbmPlayerProps {
         float maximum = maxShield;
         var chest = player.getItemBySlot(EquipmentSlot.CHEST);
         if (chest.isEmpty()) return maximum;
-        var mod = ArmorModHandler.pryMod(chest, ArmorModHandler.KEVLAR);
-        if (mod.getItem() instanceof ItemModShield shieldMod) maximum += shieldMod.shield;
+        var mod = ArmorModHandler.modItem(chest, ArmorModHandler.KEVLAR);
+        if (mod instanceof ItemModShield shieldMod) maximum += shieldMod.shield;
         return maximum;
     }
 }

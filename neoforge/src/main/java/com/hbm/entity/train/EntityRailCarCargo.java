@@ -3,6 +3,8 @@
 
 package com.hbm.entity.train;
 
+import com.hbm.handler.UnstableFuses;
+import com.hbm.inventory.StoredInventory;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -19,7 +21,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class EntityRailCarCargo extends EntityRailCarBase
         implements Container, MenuProvider {
-
     private static final EntityDataAccessor<Integer> OCCUPIED =
             SynchedEntityData.defineId(EntityRailCarCargo.class, EntityDataSerializers.INT);
 
@@ -27,7 +28,7 @@ public abstract class EntityRailCarCargo extends EntityRailCarBase
 
     public EntityRailCarCargo(EntityType<? extends EntityRailCarCargo> type, Level level) {
         super(type, level);
-        this.slots = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+        this.slots = StoredInventory.create(this, this.getContainerSize());
     }
 
     @Override
@@ -89,7 +90,9 @@ public abstract class EntityRailCarCargo extends EntityRailCarBase
     }
 
     @Override
-    public void setChanged() {}
+    public void setChanged() {
+        UnstableFuses.changed(this);
+    }
 
     @Override
     public boolean stillValid(Player player) {
@@ -110,7 +113,7 @@ public abstract class EntityRailCarCargo extends EntityRailCarBase
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
-        this.slots = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+        this.slots = StoredInventory.create(this, this.getContainerSize());
         ContainerHelper.loadAllItems(input, this.slots);
         this.entityData.set(OCCUPIED, this.countOccupiedSlots());
     }

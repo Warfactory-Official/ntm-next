@@ -10,7 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 
 public class EntityCombineBallNT extends EntityThrowableInterp {
-
     public float overrideDamage;
 
     public EntityCombineBallNT(EntityType<? extends EntityCombineBallNT> type, Level level) {
@@ -35,7 +34,6 @@ public class EntityCombineBallNT extends EntityThrowableInterp {
 
     @Override
     protected void onImpact(HitResult mop) {
-
         if (!this.level().isClientSide()) {
             this.discard();
         }

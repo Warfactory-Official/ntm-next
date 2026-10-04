@@ -3,22 +3,18 @@
 
 package com.hbm.render.item.weapon.sedna;
 
-import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.items.weapon.sedna.mags.IMagazine;
 import com.hbm.main.ResourceManager;
 import com.hbm.particle.SpentCasing;
-import com.hbm.registration.RegistryHandle;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.HbmAnimations;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.joml.Matrix4f;
 
@@ -79,7 +75,6 @@ public class ItemRenderCongoLake extends ItemRenderWeaponBase {
 
         pose.pushPose();
         IMagazine mag = gun.getConfig(stack, 0).getReceivers(stack)[0].getMagazine(stack);
-
         if (ItemGunBaseNT.getLastAnim(stack, 0) != GunAnimation.INSPECT
                 || mag.getAmount(stack, Minecraft.getInstance().player.getInventory()) > 0) {
 

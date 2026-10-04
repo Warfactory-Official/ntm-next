@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.machine.BlockEntityMachinePWRController;
+import com.hbm.blockentity.machine.BlockEntityMachinePWRController;
 
 public final class PWRControllerSound {
 

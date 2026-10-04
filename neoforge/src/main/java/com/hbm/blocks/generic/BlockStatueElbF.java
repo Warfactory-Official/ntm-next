@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityStatueElbF;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.items.ModItems;
-import com.hbm.tileentity.BlockEntityStatueElbF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;

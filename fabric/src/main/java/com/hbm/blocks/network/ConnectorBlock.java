@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.network;
 
-import com.hbm.tileentity.network.BlockEntityConnector;
-import com.hbm.tileentity.network.BlockEntityConnectorSuper;
+import com.hbm.blockentity.network.BlockEntityConnector;
+import com.hbm.blockentity.network.BlockEntityConnectorSuper;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -87,7 +87,6 @@ public class ConnectorBlock extends PylonBlockBase implements SimpleWaterloggedB
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
-
         return defaultBlockState()
                 .setValue(FACING, ctx.getClickedFace())
                 .setValue(

@@ -3,9 +3,9 @@
 
 package com.hbm.client.model;
 
+import com.hbm.blockentity.BlockEntityRebar;
 import com.hbm.config.RenderConfig;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.BlockEntityRebar;
+import com.mojang.math.Quadrant;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
@@ -28,7 +28,6 @@ import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 
 public final class RebarModel implements BlockStateModel {
-
     private static final float LO = 7F;
     private static final float OFFSET = 4F;
     private static final float MIN = -0.016F;
@@ -44,7 +43,7 @@ public final class RebarModel implements BlockStateModel {
             new BlockStateModelPart[BlockEntityRebar.FULL + 1];
 
     private RebarModel(ModelBaker baker, ResolvedModel base) {
-        this.baker = baker;
+        this.baker = RuntimeBaker.capture(baker, base);
         this.base = base;
         TextureSlots slots = base.getTopTextureSlots();
         this.particle = base.resolveParticleMaterial(slots, baker);
@@ -52,136 +51,498 @@ public final class RebarModel implements BlockStateModel {
         this.concrete = BlockModel.slot(baker, base, slots, "fill");
 
         List<ObjUnbakedGeometry.BoxQuad> full = new ArrayList<>();
-        box(
-                full,
-                rebar,
-                (LO - OFFSET),
-                MIN,
-                (LO - OFFSET),
-                (LO - OFFSET) + 2F,
-                MAX,
-                (LO - OFFSET) + 2F,
-                RebarUv.W0);
-        box(
-                full,
-                rebar,
-                MIN,
-                (LO - OFFSET),
-                (LO - OFFSET),
-                MAX,
-                (LO - OFFSET) + 2F,
-                (LO - OFFSET) + 2F,
-                RebarUv.W1);
-        box(
-                full,
-                rebar,
-                (LO - OFFSET),
-                (LO - OFFSET),
-                MIN,
-                (LO - OFFSET) + 2F,
-                (LO - OFFSET) + 2F,
-                MAX,
-                RebarUv.W2);
-
-        box(
-                full,
-                rebar,
-                (LO - OFFSET),
-                MIN,
-                (LO + OFFSET),
-                (LO - OFFSET) + 2F,
-                MAX,
-                (LO + OFFSET) + 2F,
-                RebarUv.W3);
-        box(
-                full,
-                rebar,
-                MIN,
-                (LO - OFFSET),
-                (LO + OFFSET),
-                MAX,
-                (LO - OFFSET) + 2F,
-                (LO + OFFSET) + 2F,
-                RebarUv.W4);
-        box(
-                full,
-                rebar,
-                (LO - OFFSET),
-                (LO + OFFSET),
-                MIN,
-                (LO - OFFSET) + 2F,
-                (LO + OFFSET) + 2F,
-                MAX,
-                RebarUv.W5);
-
-        box(
-                full,
-                rebar,
-                (LO + OFFSET),
-                MIN,
-                (LO - OFFSET),
-                (LO + OFFSET) + 2F,
-                MAX,
-                (LO - OFFSET) + 2F,
-                RebarUv.W6);
-        box(
-                full,
-                rebar,
-                MIN,
-                (LO + OFFSET),
-                (LO - OFFSET),
-                MAX,
-                (LO + OFFSET) + 2F,
-                (LO - OFFSET) + 2F,
-                RebarUv.W7);
-        box(
-                full,
-                rebar,
-                (LO + OFFSET),
-                (LO - OFFSET),
-                MIN,
-                (LO + OFFSET) + 2F,
-                (LO - OFFSET) + 2F,
-                MAX,
-                RebarUv.W8);
-
-        box(
-                full,
-                rebar,
-                (LO + OFFSET),
-                MIN,
-                (LO + OFFSET),
-                (LO + OFFSET) + 2F,
-                MAX,
-                (LO + OFFSET) + 2F,
-                RebarUv.W9);
-        box(
-                full,
-                rebar,
-                MIN,
-                (LO + OFFSET),
-                (LO + OFFSET),
-                MAX,
-                (LO + OFFSET) + 2F,
-                (LO + OFFSET) + 2F,
-                RebarUv.W10);
-        box(
-                full,
-                rebar,
-                (LO + OFFSET),
-                (LO + OFFSET),
-                MIN,
-                (LO + OFFSET) + 2F,
-                (LO + OFFSET) + 2F,
-                MAX,
-                RebarUv.W11);
-
+        {
+            {
+                {
+                    {
+                        {
+                            {
+                                final Vector3f from = new Vector3f(3.0F, MIN, 3.0F);
+                                final Vector3f to = new Vector3f(3.0F + 2F, MAX, 3.0F + 2F);
+                                this.faces(
+                                        full,
+                                        rebar,
+                                        from,
+                                        to,
+                                        new UvRotation[] {
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(3.0F, 5.0F, 5.0F, 3.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(3.0F, 3.0F, 5.0F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            11.0F, -0.016000748F, 13.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            3.0F, -0.016000748F, 5.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            3.0F, -0.016000748F, 5.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            11.0F, -0.016000748F, 13.0F, 16.016F),
+                                                    Quadrant.R0)
+                                        });
+                            }
+                        }
+                        {
+                            {
+                                final Vector3f from2 = new Vector3f(MIN, 3.0F, 3.0F);
+                                final Vector3f to2 = new Vector3f(MAX, 3.0F + 2F, 3.0F + 2F);
+                                this.faces(
+                                        full,
+                                        rebar,
+                                        from2,
+                                        to2,
+                                        new UvRotation[] {
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 5.0F, 16.016F, 3.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 3.0F, 16.016F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016000748F, 11.0F, 16.016F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 11.0F, 16.016F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(3.0F, 11.0F, 5.0F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(11.0F, 11.0F, 13.0F, 13.0F),
+                                                    Quadrant.R0)
+                                        });
+                            }
+                        }
+                        {
+                            {
+                                final Vector3f from3 = new Vector3f(3.0F, 3.0F, MIN);
+                                final Vector3f to3 = new Vector3f(3.0F + 2F, 3.0F + 2F, MAX);
+                                this.faces(
+                                        full,
+                                        rebar,
+                                        from3,
+                                        to3,
+                                        new UvRotation[] {
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            3.0F, 16.016F, 5.0F, -0.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            3.0F, -0.016F, 5.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(11.0F, 11.0F, 13.0F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(3.0F, 11.0F, 5.0F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 11.0F, 16.016F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016000748F, 11.0F, 16.016F, 13.0F),
+                                                    Quadrant.R0)
+                                        });
+                            }
+                        }
+                    }
+                    {
+                        {
+                            {
+                                final Vector3f from4 = new Vector3f(3.0F, MIN, 11.0F);
+                                final Vector3f to4 = new Vector3f(3.0F + 2F, MAX, 11.0F + 2F);
+                                this.faces(
+                                        full,
+                                        rebar,
+                                        from4,
+                                        to4,
+                                        new UvRotation[] {
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(3.0F, 13.0F, 5.0F, 11.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(3.0F, 11.0F, 5.0F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            11.0F, -0.016000748F, 13.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            3.0F, -0.016000748F, 5.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            11.0F, -0.016000748F, 13.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            3.0F, -0.016000748F, 5.0F, 16.016F),
+                                                    Quadrant.R0)
+                                        });
+                            }
+                        }
+                        {
+                            {
+                                final Vector3f from5 = new Vector3f(MIN, 3.0F, 11.0F);
+                                final Vector3f to5 = new Vector3f(MAX, 3.0F + 2F, 11.0F + 2F);
+                                this.faces(
+                                        full,
+                                        rebar,
+                                        from5,
+                                        to5,
+                                        new UvRotation[] {
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 13.0F, 16.016F, 11.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 11.0F, 16.016F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016000748F, 11.0F, 16.016F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 11.0F, 16.016F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(11.0F, 11.0F, 13.0F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(3.0F, 11.0F, 5.0F, 13.0F),
+                                                    Quadrant.R0)
+                                        });
+                            }
+                        }
+                        {
+                            {
+                                final Vector3f from6 = new Vector3f(3.0F, 11.0F, MIN);
+                                final Vector3f to6 = new Vector3f(3.0F + 2F, 11.0F + 2F, MAX);
+                                this.faces(
+                                        full,
+                                        rebar,
+                                        from6,
+                                        to6,
+                                        new UvRotation[] {
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            3.0F, 16.016F, 5.0F, -0.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            3.0F, -0.016F, 5.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(11.0F, 3.0F, 13.0F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(3.0F, 3.0F, 5.0F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 3.0F, 16.016F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016000748F, 3.0F, 16.016F, 5.0F),
+                                                    Quadrant.R0)
+                                        });
+                            }
+                        }
+                    }
+                }
+            }
+            {
+                {
+                    {
+                        {
+                            {
+                                final Vector3f from7 = new Vector3f(11.0F, MIN, 3.0F);
+                                final Vector3f to7 = new Vector3f(11.0F + 2F, MAX, 3.0F + 2F);
+                                this.faces(
+                                        full,
+                                        rebar,
+                                        from7,
+                                        to7,
+                                        new UvRotation[] {
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(11.0F, 5.0F, 13.0F, 3.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(11.0F, 3.0F, 13.0F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            3.0F, -0.016000748F, 5.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            11.0F, -0.016000748F, 13.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            3.0F, -0.016000748F, 5.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            11.0F, -0.016000748F, 13.0F, 16.016F),
+                                                    Quadrant.R0)
+                                        });
+                            }
+                        }
+                        {
+                            {
+                                final Vector3f from8 = new Vector3f(MIN, 11.0F, 3.0F);
+                                final Vector3f to8 = new Vector3f(MAX, 11.0F + 2F, 3.0F + 2F);
+                                this.faces(
+                                        full,
+                                        rebar,
+                                        from8,
+                                        to8,
+                                        new UvRotation[] {
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 5.0F, 16.016F, 3.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 3.0F, 16.016F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016000748F, 3.0F, 16.016F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 3.0F, 16.016F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(3.0F, 3.0F, 5.0F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(11.0F, 3.0F, 13.0F, 5.0F),
+                                                    Quadrant.R0)
+                                        });
+                            }
+                        }
+                        {
+                            {
+                                final Vector3f from9 = new Vector3f(11.0F, 3.0F, MIN);
+                                final Vector3f to9 = new Vector3f(11.0F + 2F, 3.0F + 2F, MAX);
+                                this.faces(
+                                        full,
+                                        rebar,
+                                        from9,
+                                        to9,
+                                        new UvRotation[] {
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            11.0F, 16.016F, 13.0F, -0.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            11.0F, -0.016F, 13.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(3.0F, 11.0F, 5.0F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(11.0F, 11.0F, 13.0F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 11.0F, 16.016F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016000748F, 11.0F, 16.016F, 13.0F),
+                                                    Quadrant.R0)
+                                        });
+                            }
+                        }
+                    }
+                    {
+                        {
+                            {
+                                final Vector3f from10 = new Vector3f(11.0F, MIN, 11.0F);
+                                final Vector3f to10 = new Vector3f(11.0F + 2F, MAX, 11.0F + 2F);
+                                this.faces(
+                                        full,
+                                        rebar,
+                                        from10,
+                                        to10,
+                                        new UvRotation[] {
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(11.0F, 13.0F, 13.0F, 11.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(11.0F, 11.0F, 13.0F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            3.0F, -0.016000748F, 5.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            11.0F, -0.016000748F, 13.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            11.0F, -0.016000748F, 13.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            3.0F, -0.016000748F, 5.0F, 16.016F),
+                                                    Quadrant.R0)
+                                        });
+                            }
+                        }
+                        {
+                            {
+                                final Vector3f from11 = new Vector3f(MIN, 11.0F, 11.0F);
+                                final Vector3f to11 = new Vector3f(MAX, 11.0F + 2F, 11.0F + 2F);
+                                this.faces(
+                                        full,
+                                        rebar,
+                                        from11,
+                                        to11,
+                                        new UvRotation[] {
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 13.0F, 16.016F, 11.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 11.0F, 16.016F, 13.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016000748F, 3.0F, 16.016F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 3.0F, 16.016F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(11.0F, 3.0F, 13.0F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(3.0F, 3.0F, 5.0F, 5.0F),
+                                                    Quadrant.R0)
+                                        });
+                            }
+                        }
+                        {
+                            {
+                                final Vector3f from12 = new Vector3f(11.0F, 11.0F, MIN);
+                                final Vector3f to12 = new Vector3f(11.0F + 2F, 11.0F + 2F, MAX);
+                                this.faces(
+                                        full,
+                                        rebar,
+                                        from12,
+                                        to12,
+                                        new UvRotation[] {
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            11.0F, 16.016F, 13.0F, -0.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            11.0F, -0.016F, 13.0F, 16.016F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(3.0F, 3.0F, 5.0F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(11.0F, 3.0F, 13.0F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016F, 3.0F, 16.016F, 5.0F),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            -0.016000748F, 3.0F, 16.016F, 5.0F),
+                                                    Quadrant.R0)
+                                        });
+                            }
+                        }
+                    }
+                }
+            }
+        }
         this.rods = part(full);
 
         List<ObjUnbakedGeometry.BoxQuad> three = new ArrayList<>();
-        box(three, rebar, LO, MIN, LO, LO + 2F, MAX, LO + 2F, RebarUv.W12);
-        box(three, rebar, MIN, LO, LO, MAX, LO + 2F, LO + 2F, RebarUv.W13);
-        box(three, rebar, LO, LO, MIN, LO + 2F, LO + 2F, MAX, RebarUv.W14);
+        final Vector3f from13 = new Vector3f(LO, MIN, LO);
+        final Vector3f to13 = new Vector3f(LO + 2F, MAX, LO + 2F);
+        this.faces(
+                three,
+                rebar,
+                from13,
+                to13,
+                new UvRotation[] {
+                    new UvRotation(new CuboidFace.UVs(7.0F, 9.0F, 9.0F, 7.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(7.0F, 7.0F, 9.0F, 9.0F), Quadrant.R0),
+                    new UvRotation(
+                            new CuboidFace.UVs(7.0F, -0.016000748F, 9.0F, 16.016F), Quadrant.R0),
+                    new UvRotation(
+                            new CuboidFace.UVs(7.0F, -0.016000748F, 9.0F, 16.016F), Quadrant.R0),
+                    new UvRotation(
+                            new CuboidFace.UVs(7.0F, -0.016000748F, 9.0F, 16.016F), Quadrant.R0),
+                    new UvRotation(
+                            new CuboidFace.UVs(7.0F, -0.016000748F, 9.0F, 16.016F), Quadrant.R0)
+                });
+        final Vector3f from14 = new Vector3f(MIN, LO, LO);
+        final Vector3f to14 = new Vector3f(MAX, LO + 2F, LO + 2F);
+        this.faces(
+                three,
+                rebar,
+                from14,
+                to14,
+                new UvRotation[] {
+                    new UvRotation(new CuboidFace.UVs(-0.016F, 9.0F, 16.016F, 7.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(-0.016F, 7.0F, 16.016F, 9.0F), Quadrant.R0),
+                    new UvRotation(
+                            new CuboidFace.UVs(-0.016000748F, 7.0F, 16.016F, 9.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(-0.016F, 7.0F, 16.016F, 9.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(7.0F, 7.0F, 9.0F, 9.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(7.0F, 7.0F, 9.0F, 9.0F), Quadrant.R0)
+                });
+        final Vector3f from15 = new Vector3f(LO, LO, MIN);
+        final Vector3f to15 = new Vector3f(LO + 2F, LO + 2F, MAX);
+        this.faces(
+                three,
+                rebar,
+                from15,
+                to15,
+                new UvRotation[] {
+                    new UvRotation(new CuboidFace.UVs(7.0F, 16.016F, 9.0F, -0.016F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(7.0F, -0.016F, 9.0F, 16.016F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(7.0F, 7.0F, 9.0F, 9.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(7.0F, 7.0F, 9.0F, 9.0F), Quadrant.R0),
+                    new UvRotation(new CuboidFace.UVs(-0.016F, 7.0F, 16.016F, 9.0F), Quadrant.R0),
+                    new UvRotation(
+                            new CuboidFace.UVs(-0.016000748F, 7.0F, 16.016F, 9.0F), Quadrant.R0)
+                });
         this.simple = part(three);
     }
 
@@ -192,20 +553,14 @@ public final class RebarModel implements BlockStateModel {
                 particle);
     }
 
-    private void box(
+    private void faces(
             List<ObjUnbakedGeometry.BoxQuad> b,
             Material.Baked material,
-            float x0,
-            float y0,
-            float z0,
-            float x1,
-            float y1,
-            float z1,
-            RebarUv.Uv[] windows) {
-        Vector3f from = new Vector3f(x0, y0, z0);
-        Vector3f to = new Vector3f(x1, y1, z1);
+            Vector3f from,
+            Vector3f to,
+            UvRotation[] uvs) {
         for (Direction dir : Direction.VALUES) {
-            RebarUv.Uv uv = windows[dir.ordinal()];
+            UvRotation uv = uvs[dir.ordinal()];
             b.add(
                     new ObjUnbakedGeometry.BoxQuad(
                             Boxes.face(
@@ -232,16 +587,26 @@ public final class RebarModel implements BlockStateModel {
         BlockStateModelPart part = fills[progress];
         if (part == null) {
             List<ObjUnbakedGeometry.BoxQuad> b = new ArrayList<>(6);
-            box(
+            final float y1 = progress * 16F / BlockEntityRebar.FULL;
+            final Vector3f from = new Vector3f(0F, 0F, 0F);
+            final Vector3f to = new Vector3f(16F, y1, 16F);
+            this.faces(
                     b,
                     concrete,
-                    0F,
-                    0F,
-                    0F,
-                    16F,
-                    progress * 16F / BlockEntityRebar.FULL,
-                    16F,
-                    RebarUv.windows(0F, 0F, 0F, 16F, progress * 16F / BlockEntityRebar.FULL, 16F));
+                    from,
+                    to,
+                    new UvRotation[] {
+                        new UvRotation(new CuboidFace.UVs(0.0F, 16.0F, 16.0F, 0.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(0.0F, 16F - to.y(), 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(0.0F, 16F - to.y(), 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(0.0F, 16F - to.y(), 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(
+                                new CuboidFace.UVs(0.0F, 16F - to.y(), 16.0F, 16.0F), Quadrant.R0)
+                    });
             part = part(b);
             fills[progress] = part;
         }

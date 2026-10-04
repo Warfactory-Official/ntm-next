@@ -52,7 +52,6 @@ public final class NebCalls {
     }
 
     public static NebCodec context(Connection connection) {
-
         return __asm__(NebCodec) {
             aload connection;
             invokestatic "cn/ussshenzhou/notenoughbandwidth/zstd/ZstdHelper" "hbm$context"

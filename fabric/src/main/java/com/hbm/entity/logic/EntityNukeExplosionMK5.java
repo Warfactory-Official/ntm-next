@@ -8,6 +8,7 @@ import com.hbm.advancement.AwardRegions;
 import com.hbm.advancement.DetonationTrigger;
 import com.hbm.advancement.HbmCriteria;
 import com.hbm.config.BombConfig;
+import com.hbm.config.FabricHbmConfig;
 import com.hbm.data.ExplosionData;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.effect.EntityFalloutRain;
@@ -16,7 +17,6 @@ import com.hbm.explosion.ExplosionNukeRayBatched;
 import com.hbm.explosion.ExplosionNukeRayParallelized;
 import com.hbm.handler.threading.BombForkJoinPool;
 import com.hbm.interfaces.IExplosionRay;
-import com.hbm.platform.Services;
 import com.hbm.saveddata.satellites.SatelliteDetector;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.SectionGeneration;
@@ -55,7 +55,7 @@ public class EntityNukeExplosionMK5 extends EntityExplosionChunkloading
     }
 
     public static EntityNukeExplosionMK5 statFac(Level level, int r, double x, double y, double z) {
-        if (!level.isClientSide() && Services.CONFIG.runtime().extendedLogging()) {
+        if (!level.isClientSide() && FabricHbmConfig.runtime().extendedLogging()) {
             NuclearTech.LOGGER.info(
                     "[NUKE] Initialized explosion at {} / {} / {} with strength {}!", x, y, z, r);
         }
@@ -158,7 +158,7 @@ public class EntityNukeExplosionMK5 extends EntityExplosionChunkloading
         } else if (!explosion.isComplete()) {
             explosion.update(BombConfig.mk5);
         } else {
-            if (Services.CONFIG.runtime().extendedLogging()) {
+            if (FabricHbmConfig.runtime().extendedLogging()) {
                 NuclearTech.LOGGER.info(
                         "[NUKE] Explosion complete. Time elapsed: {}ms",
                         System.currentTimeMillis() - explosionStart);
@@ -170,7 +170,6 @@ public class EntityNukeExplosionMK5 extends EntityExplosionChunkloading
 
     private void spawnFallout() {
         if (!fallout) return;
-
         int falloutScale =
                 Math.max(
                         1,

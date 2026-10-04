@@ -47,7 +47,6 @@ public final class FluidTraitCodecs {
                         }
                     },
                     rgb -> "#" + HexFormat.of().toHexDigits(rgb, 6));
-
     public static final Codec<Integer> COLOR =
             Codec.either(HEX_RGB, Codec.INT)
                     .xmap(
@@ -332,7 +331,6 @@ public final class FluidTraitCodecs {
         Codec<Map<PollutionType, Float>> pollution =
                 Codec.unboundedMap(
                         Codec.STRING.xmap(PollutionType::valueOf, Enum::name), Codec.FLOAT);
-
         put(
                 "polluting",
                 RecordCodecBuilder.<FT_Polluting>mapCodec(

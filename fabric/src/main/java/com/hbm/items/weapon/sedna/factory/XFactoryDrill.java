@@ -17,9 +17,9 @@ import com.hbm.items.weapon.sedna.impl.ItemGunDrill;
 import com.hbm.items.weapon.sedna.mags.IMagazine;
 import com.hbm.items.weapon.sedna.mags.MagazineLiquidEngine;
 import com.hbm.items.weapon.sedna.mods.XWeaponModManager;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.BlockDestroyPayload;
-import com.hbm.platform.Services;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -140,10 +140,10 @@ public class XFactoryDrill {
                 }
             };
 
-    public static void init(IRegistrar r) {
+    public static void init() {
 
         ModItems.GUN_DRILL =
-                r.registerItem(
+                FabricRegistrar.registerItem(
                         "gun_drill",
                         props ->
                                 new ItemGunDrill(
@@ -260,7 +260,6 @@ public class XFactoryDrill {
         if (XWeaponModManager.hasUpgrade(stack, 0, XWeaponModManager.ID_ENGINE_ELECTRIC))
             ammoToUse = 1_000;
         mag.useUpAmmo(stack, ctx.inventory(), ammoToUse);
-
         if (calcWear)
             ItemGunBaseNT.setWear(
                     stack,
@@ -278,7 +277,7 @@ public class XFactoryDrill {
 
         BlockState state = world.getBlockState(pos);
 
-        if (!Services.PLATFORM.canHarvestBlock(world, pos, state, player)
+        if (!((Player) player).hasCorrectToolForDrops(state)
                 || (state.getDestroySpeed(world, pos) == -1.0F
                         && state.getDestroyProgress(player, world, pos) == 0.0F)
                 || state.is(ModBlocks.STONE_KEYHOLE.get())) {
@@ -304,7 +303,7 @@ public class XFactoryDrill {
                 player.connection.send(
                         new ClientboundLevelEventPacket(2001, pos, Block.getId(state), false));
             } else {
-                Services.NETWORK.sendTo(new BlockDestroyPayload(state, pos), player);
+                PacketWire.sendTo(new BlockDestroyPayload(state, pos), player);
             }
         }
     }

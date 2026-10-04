@@ -5,11 +5,10 @@ package com.hbm.particle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.world.level.block.Blocks;
 
-public class ParticleGiblet extends Particle implements IQuadParticle {
+public class ParticleGiblet extends LegacyMoveParticle implements IQuadParticle {
 
     public static final ParticleRenderType MEAT_GROUP =
             new ParticleRenderType("hbm:gib_meat", "HGM");

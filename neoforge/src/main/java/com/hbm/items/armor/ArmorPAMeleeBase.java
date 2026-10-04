@@ -29,11 +29,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class ArmorPAMeleeBase implements IPAMelee {
-
     protected static final float LIGHT_DAMAGE = 15F;
     protected static final float HEAVY_DAMAGE = 35F;
     protected static final double REACH = 3.0D;
-
     protected static final double THRESHOLD = 0.5D;
 
     protected abstract boolean isLightHit(int timer);
@@ -90,7 +88,6 @@ public abstract class ArmorPAMeleeBase implements IPAMelee {
             hitEntity(player, entity, entityHit.getEntity(), light);
         }
         if (mop instanceof BlockHitResult blockHit) {
-
             BlockPos pos = blockHit.getBlockPos();
             BlockState state = entity.level().getBlockState(pos);
             Vec3 at = mop.getLocation();
@@ -114,7 +111,6 @@ public abstract class ArmorPAMeleeBase implements IPAMelee {
         float pierce = light ? 0.1F : 0.25F;
 
         if (hit instanceof LivingEntity living) {
-
             if (living.getMaxHealth() >= 100F) damage *= 2.5F;
             EntityDamageUtil.attackEntityFromNT(
                     living,
@@ -125,7 +121,6 @@ public abstract class ArmorPAMeleeBase implements IPAMelee {
                     knockback,
                     dt,
                     pierce);
-
             if (gibsOnKill(light, living) && !living.isAlive()) ConfettiUtil.gib(living);
         } else if (hit.level() instanceof ServerLevel server) {
             hit.hurtServer(server, player.damageSources().playerAttack(player), damage);

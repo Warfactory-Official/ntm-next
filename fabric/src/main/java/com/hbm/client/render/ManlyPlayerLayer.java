@@ -143,7 +143,6 @@ public class ManlyPlayerLayer extends RenderLayer<AvatarRenderState, PlayerModel
             int outlineColor) {
         pose.pushPose();
         bone.translateAndRotate(pose);
-
         pose.translate(-originX / 16F, -originY / 16F, 0);
         pose.scale(1F / 16F, 1F / 16F, 1F / 16F);
         if (type != null) {

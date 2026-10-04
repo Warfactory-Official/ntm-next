@@ -3,8 +3,8 @@
 
 package com.hbm.items.tool;
 
+import com.hbm.blockentity.network.IDroneLinkable;
 import com.hbm.items.ModDataComponents;
-import com.hbm.tileentity.network.IDroneLinkable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

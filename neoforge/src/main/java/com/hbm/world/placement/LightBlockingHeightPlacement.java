@@ -3,7 +3,7 @@
 
 package com.hbm.world.placement;
 
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.RegistryHandle;
 import com.hbm.world.gen.WorldgenHeight;
 import com.mojang.serialization.MapCodec;
@@ -21,8 +21,8 @@ public final class LightBlockingHeightPlacement extends PlacementModifier {
 
     private LightBlockingHeightPlacement() {}
 
-    public static void register(IRegistrar registrar) {
-        type = registrar.registerPlacementModifierType("light_blocking_height", CODEC);
+    public static void register() {
+        type = NeoForgeRegistrar.registerPlacementModifierType("light_blocking_height", CODEC);
     }
 
     @Override

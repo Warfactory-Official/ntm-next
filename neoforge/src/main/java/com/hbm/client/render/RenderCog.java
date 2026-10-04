@@ -24,7 +24,6 @@ import net.minecraft.resources.Identifier;
 
 public class RenderCog<T extends EntityThrowableInterp> extends EntityRenderer<T, RenderCog.State>
         implements ConcurrentRenderStateExtraction {
-
     public static final float SPIN_DIVISOR = 3F;
     public static final long COG_SPIN_PERIOD = 360L * 3L;
     public static final long BLADE_SPIN_PERIOD = 360L * 5L;

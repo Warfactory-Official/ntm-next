@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.turret;
 
+import com.hbm.blockentity.turret.BlockEntityTurretHoward;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.turret.BlockEntityTurretHoward;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;

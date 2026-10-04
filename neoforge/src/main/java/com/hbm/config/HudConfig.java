@@ -9,7 +9,6 @@ public final class HudConfig {
     public static volatile boolean nukeShake = true;
     public static volatile int geigerOffsetHorizontal = 0;
     public static volatile int geigerOffsetVertical = 0;
-
     public static volatile int infoPosition = 0;
     public static volatile int infoOffsetHorizontal = 0;
     public static volatile int infoOffsetVertical = 0;

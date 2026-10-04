@@ -21,7 +21,6 @@ public final class EffectNTPayload extends ThreadedPayload {
 
     private final int effect;
     private final double x, y, z;
-
     private final float scale;
 
     public EffectNTPayload(HbmEffectNT effect, double x, double y, double z) {

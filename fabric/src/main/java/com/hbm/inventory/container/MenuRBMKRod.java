@@ -3,8 +3,8 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKRod;
 import com.hbm.items.machine.ItemRBMKRod;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKRod;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

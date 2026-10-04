@@ -3,6 +3,7 @@
 
 package com.hbm.packet.toclient;
 
+import com.hbm.blockentity.Synced;
 import com.hbm.client.ClientSyncRecovery;
 import com.hbm.lib.Library;
 import com.hbm.packet.IPayloadHandlerContext;
@@ -10,7 +11,6 @@ import com.hbm.packet.SyncUnitSchema;
 import com.hbm.packet.SyncUnitState;
 import com.hbm.packet.SyncWire;
 import com.hbm.packet.threading.ThreadedPayload;
-import com.hbm.tileentity.Synced;
 import com.hbm.util.ChunkUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;

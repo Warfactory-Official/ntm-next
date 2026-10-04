@@ -20,7 +20,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class CrucibleUtil {
-
     public static @Nullable MaterialStack pourSingleStack(
             Level level,
             double x,
@@ -134,7 +133,6 @@ public class CrucibleUtil {
                         hitY = topY;
                         side = Direction.UP;
                     } else if (startY >= botY) {
-
                         hitY = botY;
                         side = Direction.DOWN;
                     } else {

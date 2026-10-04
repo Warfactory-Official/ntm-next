@@ -16,7 +16,6 @@ public final class GasFlamePayload extends ThreadedPayload {
     public static final Type<GasFlamePayload> TYPE = new Type<>(Library.id("gas_flame"));
     public static final StreamCodec<ByteBuf, GasFlamePayload> STREAM_CODEC =
             streamCodec(GasFlamePayload::decode);
-
     public static final float DEFAULT_SCALE = 6.5F;
 
     private final double x;

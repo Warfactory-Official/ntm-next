@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Set;
 
 public record FixedGrid(CountIngredient[] inputs, int[] cells) {
-
     public static final MapCodec<FixedGrid> MAP_CODEC =
             RecordCodecBuilder.<Pattern>mapCodec(
                             i ->

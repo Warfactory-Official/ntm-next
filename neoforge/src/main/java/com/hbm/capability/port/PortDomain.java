@@ -27,7 +27,6 @@ public final class PortDomain<D> {
     public static <D extends PortView> PortDomain<D> of(String name, Class<?>... capabilities) {
         PortDomain<D> domain = new PortDomain<>(name);
         for (Class<?> capability : capabilities) {
-
             PortDomain<? extends PortView> prev = BY_CAPABILITY.putIfAbsent(capability, domain);
             if (prev != null) {
                 throw new IllegalStateException(

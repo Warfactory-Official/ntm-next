@@ -3,12 +3,12 @@
 
 package com.hbm.blocks.machine.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKAutoloader;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKAutoloader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,7 +22,6 @@ public class RBMKAutoloader extends BlockMultiblockCore implements ITickingBlock
 
     public RBMKAutoloader(Properties props) {
         super(props);
-
         this.bounding.add(new AABB(-0.125D, 0D, -0.125D, 0.125D, 4D, 0.125D));
         this.bounding.add(new AABB(-0.5D, 4D, -0.5D, 0.5D, 9D, 0.5D));
     }

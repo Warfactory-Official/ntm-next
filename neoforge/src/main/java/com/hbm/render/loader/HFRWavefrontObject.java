@@ -68,7 +68,6 @@ public class HFRWavefrontObject {
         for (GroupObject group : groups) {
             float[] quads = group.quads(true).clone();
             for (int face = 0; face < quads.length; face += GroupObject.QUAD) {
-
                 int corners = degenerate(quads, face) ? 3 : 4;
                 float meanU = 0F;
                 float meanV = 0F;

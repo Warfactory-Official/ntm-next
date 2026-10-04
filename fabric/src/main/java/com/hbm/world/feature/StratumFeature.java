@@ -47,7 +47,6 @@ public class StratumFeature extends Feature<StratumConfig> {
                 if (range < 0) continue;
 
                 for (int y = cfg.yLevel() - range; y <= cfg.yLevel() + range; y++) {
-
                     if (cfg.density() < 1.0F && rand.nextFloat() >= cfg.density()) continue;
                     pos.set(x, y, z);
                     if (cfg.replaceable().test(level.getBlockState(pos), rand)) {

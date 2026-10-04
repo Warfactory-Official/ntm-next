@@ -21,8 +21,7 @@ import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
 import com.hbm.particle.SpentCasing.CasingType;
 import com.hbm.particle.SpentCasing;
-import com.hbm.platform.Services;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -460,7 +459,7 @@ public class XFactory556mm {
                 return null;
             };
 
-    public static void init(IRegistrar r) {
+    public static void init() {
         SpentCasing casing556 =
                 new SpentCasing(CasingType.BOTTLENECK)
                         .setColor(SpentCasing.COLOR_CASE_BRASS)
@@ -507,7 +506,7 @@ public class XFactory556mm {
         r556_inc_ap = r556_ap.clone().setOnImpact(INCENDIARY);
 
         ModItems.GUN_G3 =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_g3",
                         props ->
                                 new ItemGunBaseNT(
@@ -557,7 +556,7 @@ public class XFactory556mm {
                                         .setNameMutator(LAMBDA_NAME_G3),
                         Item.Properties::new);
         ModItems.GUN_G3_ZEBRA =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_g3_zebra",
                         props ->
                                 new ItemGunBaseNT(
@@ -611,7 +610,7 @@ public class XFactory556mm {
                         Item.Properties::new);
 
         ModItems.GUN_STG77 =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_stg77",
                         props ->
                                 new ItemGunBaseNT(

@@ -4,14 +4,13 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.BlockEntityMachineShredder;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.items.machine.ItemBlades;
-import com.hbm.tileentity.machine.BlockEntityMachineShredder;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
@@ -99,7 +98,6 @@ public class MenuMachineShredder extends NtmContainerMenu {
 
                     if (index < machineEnd) {
                         if (!moveItemStackTo(stack, machineEnd, invEnd, true)) return false;
-
                     } else if (IBatteryItem.isBattery(stack)) {
                         if (!moveItemStackTo(
                                 stack,

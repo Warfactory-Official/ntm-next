@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "C": "#hbm:wires_dense/gold",
     "D": "#c:ingots/workers_alloy",

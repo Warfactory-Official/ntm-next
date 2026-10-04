@@ -71,10 +71,8 @@ public enum VectorBackend {
                     ? GRAAL
                     : C2;
         } catch (IllegalArgumentException e) {
-
             return C2;
         } catch (RuntimeException | LinkageError e) {
-
             return GRAAL;
         }
     }

@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityCraneConsole;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.rbmk.BlockEntityCraneConsole;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -34,7 +34,6 @@ public class RenderRBMKCraneConsole
     private static final int METER2 = ResourceManager.rbmk_crane_console.partId("Meter2");
     private static final int LAMP1 = ResourceManager.rbmk_crane_console.partId("Lamp1");
     private static final int LAMP2 = ResourceManager.rbmk_crane_console.partId("Lamp2");
-
     private static final int LOADING = ARGB.colorFromFloat(1F, 0.8F, 0.8F, 0F);
     private static final int LOADED = ARGB.colorFromFloat(1F, 0F, 1F, 0F);
     private static final int UNLOADED = ARGB.colorFromFloat(1F, 0F, 0.1F, 0F);
@@ -50,7 +49,6 @@ public class RenderRBMKCraneConsole
             WorldRenderPipeline.oneSidedCutout(ResourceManager.rbmk_crane_console_tex);
     private final RenderType craneType =
             WorldRenderPipeline.oneSidedCutout(ResourceManager.rbmk_crane_tex);
-
     private final RenderType lampType = FlatCutout.of(ResourceManager.white_tex);
 
     @Override

@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKBoiler;
 import com.hbm.compat.computercraft.SteamTypes;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKBoiler;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class RBMKBoilerPeripheral extends RBMKColumnPeripheral<BlockEntityRBMKBoiler> {

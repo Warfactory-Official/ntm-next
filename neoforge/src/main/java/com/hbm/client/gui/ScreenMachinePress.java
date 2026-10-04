@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachinePress;
 import com.hbm.inventory.container.MenuMachinePress;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachinePress;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;

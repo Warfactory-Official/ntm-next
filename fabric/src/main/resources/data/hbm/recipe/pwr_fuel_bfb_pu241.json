@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "B": "#hbm:billets/bismuth",
     "F": "#hbm:billets/plutonium_241",

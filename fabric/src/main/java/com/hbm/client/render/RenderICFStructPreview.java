@@ -3,8 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityICFStruct;
 import com.hbm.blocks.machine.BlockICFStruct;
-import com.hbm.tileentity.machine.BlockEntityICFStruct;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import java.util.ArrayList;
@@ -27,7 +27,6 @@ import org.jspecify.annotations.Nullable;
 public class RenderICFStructPreview
         implements BlockEntityRenderer<BlockEntityICFStruct, RenderICFStructPreview.State>,
                 ConcurrentRenderStateExtraction {
-
     private final Map<Direction, List<StructGhost>> ghostsByFacing = new ConcurrentHashMap<>();
 
     @Override
@@ -77,7 +76,6 @@ public class RenderICFStructPreview
             ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
         BlockEntityRenderer.super.extractRenderState(
                 be, state, partialTicks, cameraPosition, breakProgress);
-
         state.ghosts = ghosts(be, be.getBlockState().getValue(BlockICFStruct.FACING));
     }
 

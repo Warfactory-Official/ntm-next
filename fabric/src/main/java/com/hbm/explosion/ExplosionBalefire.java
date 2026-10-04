@@ -6,6 +6,7 @@ package com.hbm.explosion;
 
 import com.hbm.blocks.ModBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -152,7 +153,13 @@ public class ExplosionBalefire {
 
         for (int i = depth; i > depth - 5; i--) {
             BlockPos pos = new BlockPos(pX, i, pZ);
-            if (level.getBlockState(pos).is(Blocks.STONE)) {
+            BlockState state = level.getBlockState(pos);
+            if (state.is(BlockTags.BASE_STONE_OVERWORLD)
+                    || state.is(Blocks.CALCITE)
+                    || state.is(Blocks.DRIPSTONE_BLOCK)
+                    || state.is(Blocks.SULFUR)
+                    || state.is(Blocks.CINNABAR)
+                    || state.is(Blocks.SMOOTH_BASALT)) {
                 level.setBlock(
                         pos,
                         ModBlocks.SELLAFIELD_SLAKED.get().defaultBlockState(),

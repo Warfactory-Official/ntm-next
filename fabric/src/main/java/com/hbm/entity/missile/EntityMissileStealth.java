@@ -8,7 +8,6 @@ import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.EnumAshType;
-import com.hbm.items.special.Autogen;
 import com.hbm.particle.helper.ExplosionCreator;
 import java.util.List;
 import net.minecraft.world.entity.EntityType;
@@ -34,13 +33,11 @@ public class EntityMissileStealth extends EntityMissileBaseNT {
 
     @Override
     public List<ItemStack> getDebris() {
-
         return List.of(autogen(MaterialShapes.BOLT, Mats.MAT_STEEL, 4));
     }
 
     @Override
     public ItemStack getDebrisRareDrop() {
-
         return ModItems.POWDER_ASH.stack(EnumAshType.MISC);
     }
 

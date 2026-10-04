@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.machine.BlockEntityHeaterElectric;
+import com.hbm.blockentity.machine.BlockEntityHeaterElectric;
 
 public final class ElectricHeaterSound {
 

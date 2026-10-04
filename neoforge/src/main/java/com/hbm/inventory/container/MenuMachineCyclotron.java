@@ -4,10 +4,11 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.BlockEntityMachineCyclotron;
+import com.hbm.inventory.recipes.CyclotronRecipes;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.inventory.slot.SlotUpgrade;
 import com.hbm.items.machine.upgrade.ItemMachineUpgrade;
-import com.hbm.tileentity.machine.BlockEntityMachineCyclotron;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -47,12 +48,16 @@ public class MenuMachineCyclotron extends BlockEntityMenu<BlockEntityMachineCycl
                             BlockEntityMachineCyclotron.SLOT_PARTICLE_START + i,
                             11,
                             18 + i * 18));
+        }
+        for (int i = 0; i < BlockEntityMachineCyclotron.LINES; i++) {
             addSlot(
                     new Slot(
                             container,
                             BlockEntityMachineCyclotron.SLOT_TARGET_START + i,
                             101,
                             18 + i * 18));
+        }
+        for (int i = 0; i < BlockEntityMachineCyclotron.LINES; i++) {
             addSlot(
                     new SlotRecipeOutput(
                             playerInv.player,
@@ -108,11 +113,17 @@ public class MenuMachineCyclotron extends BlockEntityMenu<BlockEntityMachineCycl
                                 BlockEntityMachineCyclotron.SLOT_UPGRADE_START,
                                 BlockEntityMachineCyclotron.SLOT_UPGRADE_END + 1,
                                 false);
+                    if (CyclotronRecipes.isParticle(stack))
+                        return moveItemStackTo(
+                                stack,
+                                BlockEntityMachineCyclotron.SLOT_PARTICLE_START,
+                                BlockEntityMachineCyclotron.SLOT_TARGET_START,
+                                true);
                     return moveItemStackTo(
                             stack,
-                            BlockEntityMachineCyclotron.SLOT_PARTICLE_START,
+                            BlockEntityMachineCyclotron.SLOT_TARGET_START,
                             BlockEntityMachineCyclotron.SLOT_OUTPUT_START,
-                            false);
+                            true);
                 });
     }
 }

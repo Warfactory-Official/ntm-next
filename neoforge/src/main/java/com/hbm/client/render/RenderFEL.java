@@ -3,12 +3,12 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityFEL;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.items.machine.EnumWavelengths;
 import com.hbm.render.util.BeamPronter.EnumBeamType;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
 import com.hbm.render.util.BeamPronter;
-import com.hbm.tileentity.machine.BlockEntityFEL;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;

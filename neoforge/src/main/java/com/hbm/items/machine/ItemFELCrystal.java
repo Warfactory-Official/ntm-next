@@ -3,7 +3,6 @@
 
 package com.hbm.items.machine;
 
-import com.hbm.util.I18nUtil;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -28,18 +27,17 @@ public class ItemFELCrystal extends Item {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-
         adder.accept(
-                Component.literal(
-                        wavelength == EnumWavelengths.DRX
-                                ? ChatFormatting.OBFUSCATED + "THERADIANCEOFATHOUSANDSUNS"
-                                : I18nUtil.resolveKey(this.getDescriptionId() + ".desc")));
+                wavelength == EnumWavelengths.DRX
+                        ? Component.literal("THERADIANCEOFATHOUSANDSUNS")
+                                .withStyle(ChatFormatting.OBFUSCATED)
+                        : Component.translatable(getDescriptionId() + ".desc"));
         adder.accept(
-                Component.literal(
-                        wavelength.textColor
-                                + I18nUtil.resolveKey(wavelength.name)
-                                + " - "
-                                + wavelength.textColor
-                                + I18nUtil.resolveKey(wavelength.wavelengthRange)));
+                Component.translatable(wavelength.name)
+                        .withStyle(wavelength.textColor)
+                        .append(" - ")
+                        .append(
+                                Component.translatable(wavelength.wavelengthRange)
+                                        .withStyle(wavelength.textColor)));
     }
 }

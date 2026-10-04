@@ -3,14 +3,14 @@
 
 package com.hbm.lib.internal;
 
-import com.hbm.platform.Services;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Field;
 import jdk.internal.misc.Unsafe;
 
 final class UnsafeBootstrap {
-    static final MethodHandles.Lookup IMPL_LOOKUP = Services.TRUSTED_LOOKUP.implLookup();
+    static final MethodHandles.Lookup IMPL_LOOKUP = lookup();
 
     static {
         exportJavaBasePackage("jdk.internal.misc");
@@ -19,6 +19,22 @@ final class UnsafeBootstrap {
     static final Unsafe U = Unsafe.getUnsafe();
 
     private UnsafeBootstrap() {}
+
+    private static MethodHandles.Lookup lookup() {
+        try {
+            Field field = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            sun.misc.Unsafe unsafe = (sun.misc.Unsafe) field.get(null);
+            Field lookup =
+                    Class.forName("java.lang.invoke.MethodHandles$Lookup")
+                            .getDeclaredField("IMPL_LOOKUP");
+            return (MethodHandles.Lookup)
+                    unsafe.getObject(
+                            unsafe.staticFieldBase(lookup), unsafe.staticFieldOffset(lookup));
+        } catch (ReflectiveOperationException e) {
+            throw new ExceptionInInitializerError(e);
+        }
+    }
 
     private static void exportJavaBasePackage(String packageName) {
         try {

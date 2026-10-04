@@ -6,15 +6,11 @@ package com.hbm.fabric.client;
 import com.hbm.NuclearTech;
 import com.hbm.api.fluidmk2.FluidPipeTintData;
 import com.hbm.blocks.fluid.ClassicFluid;
-import com.hbm.client.AbilityKeybindHandler;
-import com.hbm.client.CalculatorKeybindHandler;
 import com.hbm.client.ClientRegistry;
-import com.hbm.client.CraneKeybindHandler;
-import com.hbm.client.GunKeybindHandler;
 import com.hbm.client.ItemTooltipEvents;
+import com.hbm.client.Keybinds;
 import com.hbm.client.NukeHud;
-import com.hbm.client.PlayerKeybindHandler;
-import com.hbm.client.ToolKeybindHandler;
+import com.hbm.client.RadiationResistanceTooltip;
 import com.hbm.client.WikiRenderCommand;
 import com.hbm.client.ctm.CtmEngine;
 import com.hbm.client.ctm.HbmCtmLoader;
@@ -23,6 +19,9 @@ import com.hbm.client.qmaw.QMAWClient;
 import com.hbm.command.ConfigCommand;
 import com.hbm.data.DataGroups;
 import com.hbm.handler.BobmazonOffers;
+import com.hbm.handler.EquipmentProtections;
+import com.hbm.handler.HazmatRegistry;
+import com.hbm.handler.SuitProtections;
 import com.hbm.hazard.HazardSystem;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
@@ -31,12 +30,11 @@ import com.hbm.inventory.machine.CustomMachineDefinitions;
 import com.hbm.inventory.recipes.ModRecipes;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.inventory.recipes.loader.RecipeSource;
+import com.hbm.items.food.ConsumableTreatments;
 import com.hbm.lib.Library;
 import com.hbm.packet.toserver.CrateOpenHeldPayload;
 import com.hbm.particle.HbmParticleGroups;
 import com.hbm.particle.HbmParticles;
-import com.hbm.platform.FabricNetworkService;
-import com.hbm.platform.Services;
 import com.hbm.render.loader.ObjMeshCache;
 import com.hbm.wiaj.CanneryClient;
 import com.hbm.world.ore.OreGeneration;
@@ -80,10 +78,9 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 public final class NuclearTechFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-
         NuclearTech.deriveClientConfigFacades();
 
-        FabricClientNetworkBinder.bind((FabricNetworkService) Services.NETWORK);
+        FabricClientNetworkBinder.bind();
 
         ClientRegistry.registerSpriteSources(SpriteSourceRegistry::register);
         ClientRegistry.bindClientHooks();
@@ -105,7 +102,6 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
         FabricMachineSilhouette.register();
         FabricRebarPlacerPreview.register();
         CtmEngine ctm = CtmEngine.selected();
-
         if (System.getProperty("fabric-api.datagen") == null
                 && ctm != CtmEngine.NONE
                 && !ResourceLoader.registerBuiltinPack(
@@ -145,12 +141,15 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
                                                                 .withSuffix("_flowing")),
                                                 null,
                                                 null)));
-
         ClientPlayConnectionEvents.JOIN.register(
                 (listener, sender, client) -> {
+                    RadiationResistanceTooltip.joined(listener.registryAccess());
                     if (!client.hasSingleplayerServer()) {
                         ModRecipes.bootstrapClientRecipes();
-
+                        HazmatRegistry.applyDataPack(listener.registryAccess());
+                        EquipmentProtections.applyDataPack(listener.registryAccess());
+                        SuitProtections.applyDataPack(listener.registryAccess());
+                        ConsumableTreatments.applyDataPack(listener.registryAccess());
                         HazardSystem.applyDataPack(listener.registryAccess());
                         CustomMachineDefinitions.applyDataPack(listener.registryAccess());
                         DataGroups.applyAll(listener.registryAccess());
@@ -158,9 +157,15 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
                     GenericRecipes.invalidateIndexes();
                     CrateOpenHeldPayload.report();
                 });
-
         ClientPlayConnectionEvents.DISCONNECT.register(
                 (listener, client) -> {
+                    RadiationResistanceTooltip.disconnected();
+                    if (!client.hasSingleplayerServer()) {
+                        HazmatRegistry.clear();
+                        EquipmentProtections.clear();
+                        SuitProtections.clear();
+                        ConsumableTreatments.clear();
+                    }
                     RecipeSource.clearClient();
                     QMAWClient.disconnected();
                     CanneryClient.disconnected();
@@ -174,28 +179,12 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
                 (listener, client) -> OreGeneration.disconnect());
         ClientTickEvents.END_CLIENT_TICK.register(client -> ClientRegistry.clientTick());
         ClientChunkEvents.CHUNK_UNLOAD.register(
-                (level, chunk) -> FluidPipeTintData.evictChunk(chunk.getPos().pack()));
+                (level, chunk) -> FluidPipeTintData.evictChunk(level, chunk.getPos().pack()));
         ItemTooltipCallback.EVENT.register(
                 (stack, tooltipContext, tooltipType, lines) ->
                         ItemTooltipEvents.append(
                                 stack, Minecraft.getInstance().player, tooltipType, lines));
-        for (KeyMapping key : CraneKeybindHandler.KEYS) {
-            KeyMappingHelper.registerKeyMapping(key);
-        }
-        for (KeyMapping key : ToolKeybindHandler.KEYS) {
-            KeyMappingHelper.registerKeyMapping(key);
-        }
-        for (KeyMapping key : GunKeybindHandler.KEYS) {
-            KeyMappingHelper.registerKeyMapping(key);
-        }
-        for (KeyMapping key : PlayerKeybindHandler.KEYS) {
-            KeyMappingHelper.registerKeyMapping(key);
-        }
-        for (KeyMapping key : AbilityKeybindHandler.KEYS) {
-            KeyMappingHelper.registerKeyMapping(key);
-        }
-        KeyMappingHelper.registerKeyMapping(CalculatorKeybindHandler.OPEN);
-        KeyMappingHelper.registerKeyMapping(QMAWClient.OPEN_MANUAL);
+        for (KeyMapping key : Keybinds.ALL) KeyMappingHelper.registerKeyMapping(key);
 
         ClientRegistry.registerMenuScreens(MenuScreens::register);
         ClientRegistry.registerBlockEntityRenderers(BlockEntityRendererRegistry::register);
@@ -230,11 +219,9 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
         ParticleProviderRegistry.getInstance()
                 .register(HbmParticles.ASH_REVEAL.get(), ClientRegistry::ashRevealProvider);
         HbmParticleGroups.forEach(ParticleGroupRegistry::register);
-
         ClientRegistry.registerItemTintSources(ItemTintSources.ID_MAPPER::put);
         ClientRegistry.registerSelectItemModelProperties(SelectItemModelProperties.ID_MAPPER::put);
         ClientRegistry.registerBlockTintSources(BlockColorRegistry::register);
-
         ClientRegistry.registerSpecialModelRenderers(SpecialModelRenderers.ID_MAPPER::put);
         ClientRegistry.registerItemModels(ItemModels.ID_MAPPER::put);
         HbmModelDeserializers.register();
@@ -245,7 +232,6 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
         HudElementRegistry.addLast(
                 ClientRegistry.RADIATION_HUD_ID,
                 (graphics, deltaTracker) -> ClientRegistry.renderRadiationHud(graphics));
-
         HudElementRegistry.attachElementBefore(
                 VanillaHudElements.CROSSHAIR,
                 ClientRegistry.GUN_SCOPE_ID,
@@ -258,7 +244,6 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
                 VanillaHudElements.CROSSHAIR,
                 ClientRegistry.INFO_HUD_ID,
                 (graphics, deltaTracker) -> ClientRegistry.renderInfoHud(graphics));
-
         for (Identifier shaken :
                 List.of(
                         VanillaHudElements.HOTBAR,

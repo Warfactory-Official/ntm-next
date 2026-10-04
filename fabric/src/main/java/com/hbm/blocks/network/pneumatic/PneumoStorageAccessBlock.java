@@ -3,7 +3,7 @@
 
 package com.hbm.blocks.network.pneumatic;
 
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageAccess;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageAccess;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;

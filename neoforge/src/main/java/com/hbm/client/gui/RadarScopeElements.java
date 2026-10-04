@@ -17,10 +17,8 @@ import org.joml.Matrix3x2fc;
 import org.jspecify.annotations.Nullable;
 
 public final class RadarScopeElements {
-
     private static final int MAP_X = 8;
     private static final int MAP_Y = 17;
-
     public static final int SCOPE_X = 108;
     public static final int SCOPE_Y = 117;
 

@@ -3,10 +3,10 @@
 
 package com.hbm.util.noise;
 
+import com.hbm.lib.internal.Accelerator;
 import com.hbm.lib.internal.FusedMath;
 import com.hbm.lib.internal.VectorApi;
 import com.hbm.lib.internal.VectorBackend;
-import com.hbm.lib.internal.natives.NativeLibrary;
 import java.util.Arrays;
 import net.minecraft.util.Mth;
 import org.slf4j.LoggerFactory;
@@ -174,13 +174,9 @@ public interface SimplexBatch {
         boolean enabled = Boolean.parseBoolean(System.getProperty("hbm.vector.simplex", "true"));
         if (!enabled) return new SimplexBatchScalar();
 
-        try {
-
-            if (NativeLibrary.AVAILABLE && nativeOptIn()) return new SimplexBatchNative();
-        } catch (Throwable t) {
-            LoggerFactory.getLogger("NTM")
-                    .warn("Native simplex kernel unavailable; using a Java kernel", t);
-        }
+        Accelerator accelerator = Accelerator.INSTALLED;
+        SimplexBatch accelerated = accelerator == null ? null : accelerator.simplex();
+        if (accelerated != null) return accelerated;
 
         if (!FusedMath.AVAILABLE) return new SimplexBatchScalar();
 
@@ -195,10 +191,6 @@ public interface SimplexBatch {
                     .warn("Vector simplex kernel unavailable; using scalar", t);
         }
         return new SimplexBatchScalar();
-    }
-
-    private static boolean nativeOptIn() {
-        return Boolean.parseBoolean(System.getProperty("hbm.natives.simplex", "true"));
     }
 
     private static boolean gatherOptIn() {

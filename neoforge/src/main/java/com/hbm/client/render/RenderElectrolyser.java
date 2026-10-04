@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineElectrolyser.PourStream;
+import com.hbm.blockentity.machine.BlockEntityMachineElectrolyser;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityMachineElectrolyser.PourStream;
-import com.hbm.tileentity.machine.BlockEntityMachineElectrolyser;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import java.util.ArrayList;
@@ -28,7 +28,6 @@ public class RenderElectrolyser
                 ConcurrentRenderStateExtraction {
 
     private static final float MAX_AGE = 20F;
-
     private static final double LIP_OUT = 5.875D;
     private static final double LIP_Y = 2.0D;
     private static final float LIP_OFFSET = 0.625F;

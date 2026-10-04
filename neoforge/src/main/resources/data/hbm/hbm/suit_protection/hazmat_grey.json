@@ -1,0 +1,11 @@
+{
+  "armor": {
+    "chest": "hbm:hazmat_plate_grey",
+    "feet": "hbm:hazmat_boots_grey",
+    "head": "hbm:hazmat_helmet_grey",
+    "legs": "hbm:hazmat_legs_grey"
+  },
+  "protections": [
+    "hazmat"
+  ]
+}

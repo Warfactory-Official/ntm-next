@@ -9,9 +9,9 @@ import com.hbm.handler.HbmKeybinds.EnumKeybind;
 import com.hbm.items.IKeybindReceiver;
 import com.hbm.lib.Library;
 import com.hbm.packet.IPayloadHandlerContext;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.threading.ThreadedPayload;
 import com.hbm.packet.toclient.PlayerInformPayload;
-import com.hbm.platform.Services;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -27,7 +27,6 @@ public final class KeybindPayload extends ThreadedPayload {
     public static final Type<KeybindPayload> TYPE = new Type<>(Library.id("keybind"));
     public static final StreamCodec<ByteBuf, KeybindPayload> STREAM_CODEC =
             streamCodec(KeybindPayload::decode);
-
     private static final int ID_HUD = 7;
     private static final int ID_MAGNET = 6;
     private static final int ID_JETPACK = 5;
@@ -55,10 +54,9 @@ public final class KeybindPayload extends ThreadedPayload {
         EnumKeybind key = EnumKeybind.VALUES[payload.key];
 
         HbmPlayerProps props = HbmPlayerProps.getData(player);
-
         if (payload.pressed && !props.getKeyPressed(key) && key == EnumKeybind.TOGGLE_HEAD) {
             props.enableHUD = !props.enableHUD;
-            Services.NETWORK.sendTo(
+            PacketWire.sendTo(
                     new PlayerInformPayload(
                             toggled(props.enableHUD, "chat.toggle.hudOn", "chat.toggle.hudOff"),
                             ID_HUD,
@@ -67,7 +65,7 @@ public final class KeybindPayload extends ThreadedPayload {
         }
         if (payload.pressed && !props.getKeyPressed(key) && key == EnumKeybind.TOGGLE_JETPACK) {
             props.enableBackpack = !props.enableBackpack;
-            Services.NETWORK.sendTo(
+            PacketWire.sendTo(
                     new PlayerInformPayload(
                             toggled(
                                     props.enableBackpack,
@@ -79,7 +77,7 @@ public final class KeybindPayload extends ThreadedPayload {
         }
         if (payload.pressed && !props.getKeyPressed(key) && key == EnumKeybind.TOGGLE_MAGNET) {
             props.enableMagnet = !props.enableMagnet;
-            Services.NETWORK.sendTo(
+            PacketWire.sendTo(
                     new PlayerInformPayload(
                             toggled(
                                     props.enableMagnet,
@@ -89,7 +87,6 @@ public final class KeybindPayload extends ThreadedPayload {
                             1_000),
                     player);
         }
-
         if (payload.pressed
                 && !props.getKeyPressed(key)
                 && key == EnumKeybind.TRAIN

@@ -3,12 +3,15 @@
 
 package com.hbm.items.tool;
 
+import com.hbm.handler.UnstableFuses;
 import com.hbm.inventory.ItemStackContainer;
 import com.hbm.inventory.container.MenuItemBox;
 import com.hbm.inventory.container.ModMenus;
 import com.hbm.items.ModDataComponents;
 import com.hbm.lib.Library;
-import com.hbm.platform.Services;
+import com.hbm.platform.SophisticatedCoreNesting;
+import com.hbm.tags.HbmItemTags;
+import com.hbm.util.KeyHints;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -28,9 +31,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 
 public class ItemToolBox extends Item {
-
     public static final MenuItemBox.Layout LAYOUT =
             new MenuItemBox.Layout(
                     3,
@@ -47,7 +52,6 @@ public class ItemToolBox extends Item {
                     117,
                     Library.id("textures/gui/gui_toolbox.png"));
     private static final int ROW = 8;
-
     private static final int HOTBAR = 9;
 
     public ItemToolBox(Properties properties) {
@@ -95,7 +99,18 @@ public class ItemToolBox extends Item {
         for (int slot = 0; slot < HOTBAR; slot++) {
             if (slot == held) continue;
             ItemStack carried = inventory.getItem(slot);
-            if (!carried.isEmpty() && !Services.PLATFORM.canFitInsideContainerItems(carried)) {
+            if (!carried.isEmpty()
+                    && !(carried.canFitInsideContainerItems()
+                            && !carried.is(HbmItemTags.NO_CONTAINER_NESTING)
+                            && !carried.has(DataComponents.CONTAINER)
+                            && !carried.has(DataComponents.BUNDLE_CONTENTS)
+                            && (carried.isEmpty()
+                                    || carried.getCapability(
+                                                    Capabilities.Item.ITEM,
+                                                    ItemAccess.forStack(carried))
+                                            == null)
+                            && (!ModList.get().isLoaded("sophisticatedcore")
+                                    || !SophisticatedCoreNesting.hasStorage(carried)))) {
                 extra++;
                 player.drop(carried, true);
                 inventory.setItem(slot, ItemStack.EMPTY);
@@ -118,7 +133,6 @@ public class ItemToolBox extends Item {
             if (active.contains(row)) lowestActive = Math.min(row, lowestActive);
             else lowestInactive = Math.min(row, lowestInactive);
         }
-
         lowestInactive =
                 lowestInactive > LAYOUT.rows() - 1
                         ? LAYOUT.rows() - 1
@@ -145,6 +159,7 @@ public class ItemToolBox extends Item {
             inventory.setItem(slot, arriving == null ? ItemStack.EMPTY : arriving);
         }
         box.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(ending));
+        UnstableFuses.changed(player);
     }
 
     private static int boxSlot(int hotbarSlot, int held) {
@@ -171,8 +186,14 @@ public class ItemToolBox extends Item {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-        adder.accept(Component.translatable("desc.item.toolbox.clickToSwap"));
-        adder.accept(Component.translatable("desc.item.toolbox.shiftClickToOpen"));
+        adder.accept(
+                Component.translatable(
+                        "tooltip.hbm.toolbox.swap", KeyHints.key("key.use", "key.mouse.right")));
+        adder.accept(
+                Component.translatable(
+                        "tooltip.hbm.toolbox.open",
+                        KeyHints.key("key.sneak", "key.keyboard.left.shift"),
+                        KeyHints.key("key.use", "key.mouse.right")));
     }
 
     @Override

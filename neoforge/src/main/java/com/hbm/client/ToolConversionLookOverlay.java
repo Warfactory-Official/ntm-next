@@ -25,23 +25,32 @@ public final class ToolConversionLookOverlay {
         long millis = GameTime.millis(level);
         List<Item> tools = tool.items();
         info.title(title, 0xFFFF00, 0x404000);
-        info.line(Component.translatable("desc.tooling.requires").getString(), 0xFFAA00);
         info.line(
-                Component.translatable(
-                                "desc.tooling.tool",
-                                new ItemStack(tools.get((int) (millis / 1000 % tools.size())))
-                                        .getHoverName())
-                        .getString(),
+                Component.empty().append(Component.translatable("desc.tooling.requires")),
+                0xFFAA00);
+        info.line(
+                Component.empty()
+                        .append(
+                                Component.translatable(
+                                        "desc.tooling.tool",
+                                        new ItemStack(
+                                                        tools.get(
+                                                                (int)
+                                                                        (millis
+                                                                                / 1000
+                                                                                % tools.size())))
+                                                .getHoverName())),
                 0x5555FF);
         for (CountIngredient material : cost) {
             ItemStack display = material.extractForCyclingDisplay(millis, 20);
             if (display.isEmpty()) continue;
             info.line(
-                    Component.translatable(
-                                    "desc.tooling.material",
-                                    display.getHoverName(),
-                                    display.getCount())
-                            .getString());
+                    Component.empty()
+                            .append(
+                                    Component.translatable(
+                                            "desc.tooling.material",
+                                            display.getHoverName(),
+                                            display.getCount())));
         }
     }
 }

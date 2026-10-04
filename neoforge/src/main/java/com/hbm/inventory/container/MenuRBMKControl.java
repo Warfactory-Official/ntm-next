@@ -3,7 +3,7 @@
 
 package com.hbm.inventory.container;
 
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControlManual;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlManual;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

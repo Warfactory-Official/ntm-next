@@ -1171,5 +1171,6 @@
   "jukebox_song.hbm.lc": "Valve - Guitare adrénaline diabolique / noyau lambda",
   "jukebox_song.hbm.ss": "Valve - balayage de secteur",
   "jukebox_song.hbm.vc": "Valve - Combat Vortal",
-  "potion.hbm_taint": "Contaminé"
+  "potion.hbm_taint": "Contaminé",
+  "trait.radshield": "Protection contre les radiations"
 }

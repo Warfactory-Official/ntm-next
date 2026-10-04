@@ -1,0 +1,8 @@
+{
+  "filter": true,
+  "hazards": [
+    "particle_coarse",
+    "gas_lung"
+  ],
+  "targets": "hbm:gas_mask_filter_piss"
+}

@@ -4,7 +4,6 @@
 package com.hbm.render.anim;
 
 public class AnimationEnums {
-
     public enum GunAnimation {
         RELOAD,
         RELOAD_CYCLE,

@@ -29,7 +29,6 @@ public class FluoroModel implements BlockStateModel {
     public static Factory FACTORY = FluoroModel::new;
 
     private static final Identifier OBJ = Library.id("models/lights/fluorescent_lamp.obj");
-
     private static final String[] PARTS = {"FluoroSingle", "FluoroCap", "FluoroMid"};
 
     private final ModelBaker baker;
@@ -43,7 +42,7 @@ public class FluoroModel implements BlockStateModel {
     private final BlockStateModelPart fallback;
 
     public FluoroModel(ModelBaker baker, ResolvedModel base, Direction facing) {
-        this.baker = baker;
+        this.baker = RuntimeBaker.capture(baker, base);
         this.base = base;
         this.slots = base.getTopTextureSlots();
         this.particle = base.resolveParticleMaterial(slots, baker);

@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.machine.storage;
 
-import com.hbm.api.fluidmk2.FluidPipeGraph;
-import com.hbm.api.fluidmk2.PipeData;
+import com.hbm.blockentity.BlockEntityMachineBase;
+import com.hbm.blockentity.machine.storage.BlockEntityBarrel;
 import com.hbm.blocks.IPersistentInfoProvider;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
@@ -17,9 +17,6 @@ import com.hbm.items.ModDataComponents;
 import com.hbm.items.PersistentInfoBlockItem;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.BlockEntityMachineBase;
-import com.hbm.tileentity.machine.storage.BlockEntityBarrel;
-import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.AutoRotate;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -27,7 +24,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -111,7 +107,6 @@ public class BlockFluidBarrel extends Block implements IPersistentInfoProvider {
                 Player player,
                 InteractionHand hand,
                 BlockHitResult hit) {
-
             if (stack.getItem() instanceof FluidIdentifierItem && !player.isShiftKeyDown()) {
                 if (!level.isClientSide()
                         && level.getBlockEntity(pos) instanceof BlockEntityBarrel barrel) {
@@ -130,29 +125,18 @@ public class BlockFluidBarrel extends Block implements IPersistentInfoProvider {
                 }
                 return InteractionResult.SUCCESS;
             }
-
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 
         @Override
         protected InteractionResult useWithoutItem(
                 BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-
             if (player.isSecondaryUseActive()) return InteractionResult.SUCCESS;
             if (!level.isClientSide()
                     && level.getBlockEntity(pos) instanceof MenuProvider provider) {
                 IGUIProvider.openBlockMenu(player, provider, pos);
             }
             return InteractionResult.SUCCESS;
-        }
-
-        @Override
-        protected void affectNeighborsAfterRemoval(
-                BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-
-            LevelNodeGraph<PipeData> graph = FluidPipeGraph.graphAt(level, pos.asLong());
-            if (graph != null) graph.removeNode(pos.asLong());
-            super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
         }
 
         @Override
@@ -165,7 +149,7 @@ public class BlockFluidBarrel extends Block implements IPersistentInfoProvider {
                 boolean movedByPiston) {
             super.neighborChanged(state, level, pos, block, orientation, movedByPiston);
             if (level.getBlockEntity(pos) instanceof BlockEntityBarrel barrel)
-                barrel.markConnectorsDirty();
+                barrel.refreshConnectors();
         }
 
         @Override
@@ -210,7 +194,6 @@ public class BlockFluidBarrel extends Block implements IPersistentInfoProvider {
                 TooltipFlag flag) {
             BlockFluidBarrel barrel = (BlockFluidBarrel) getBlock();
             String key = "desc.hbm." + BuiltInRegistries.BLOCK.getKey(barrel).getPath();
-
             adder.accept(
                     Component.translatable(key + ".capacity", String.format("%,d", barrel.capacity))
                             .withStyle(ChatFormatting.AQUA));

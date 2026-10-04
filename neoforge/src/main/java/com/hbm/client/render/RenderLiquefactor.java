@@ -3,12 +3,12 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.oil.BlockEntityMachineLiquefactor;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineLiquefactor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -29,9 +29,7 @@ public class RenderLiquefactor
     private static final int GLASS = ResourceManager.liquefactor.partId("Glass");
 
     private final HFRWavefrontObject model;
-
     private final RenderType fluidType = FlatCutout.of(ResourceManager.white_tex);
-
     private final RenderType glassType = FlatTranslucent.of(ResourceManager.white_tex);
 
     public RenderLiquefactor() {
@@ -76,7 +74,6 @@ public class RenderLiquefactor
         FluidTankNTM tank = be.tank;
         state.fluidFrac = tank.getMaxFill() > 0 ? (double) tank.getFill() / tank.getMaxFill() : 0D;
         NTMFluidProperty prop = tank.getFill() > 0 ? NTMFluidProperties.get(tank.getFluid()) : null;
-
         state.fluidColor = prop != null ? prop.colorARGB() : 0;
     }
 

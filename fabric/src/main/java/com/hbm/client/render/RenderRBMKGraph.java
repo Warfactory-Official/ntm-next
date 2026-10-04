@@ -3,11 +3,11 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGraph.GraphUnit;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGraph;
 import com.hbm.blocks.machine.rbmk.RBMKMiniPanelBase;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKGraph.GraphUnit;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKGraph;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.pipeline.ColorTargetState;

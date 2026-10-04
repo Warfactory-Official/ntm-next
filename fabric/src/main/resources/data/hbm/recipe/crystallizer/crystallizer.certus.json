@@ -1,0 +1,30 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "ae2"
+      ]
+    }
+  ],
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "ae2:quartz_cluster"
+    }
+  ],
+  "name": "crystallizer.certus",
+  "output_items": [
+    {
+      "count": 12,
+      "id": "ae2:certus_quartz_crystal"
+    }
+  ]
+}

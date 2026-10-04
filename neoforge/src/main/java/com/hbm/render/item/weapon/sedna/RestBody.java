@@ -11,7 +11,6 @@ import org.joml.Matrix4fc;
 import org.joml.Vector3fc;
 
 public interface RestBody {
-
     void part(
             Matrix4fc pose,
             HFRWavefrontObject model,

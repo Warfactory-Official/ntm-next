@@ -22,7 +22,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 public class LineParticleGroup extends ParticleGroup<Particle> {
-
     private static final float SPARK_WIDTH = 3F;
     private static final float DEBUG_WIDTH = 1F;
 

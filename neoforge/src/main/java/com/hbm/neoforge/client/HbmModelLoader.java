@@ -6,7 +6,6 @@ package com.hbm.neoforge.client;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.hbm.client.model.HbmModelJson;
 import java.util.function.Function;
 import net.minecraft.client.resources.model.geometry.UnbakedGeometry;
 import net.neoforged.neoforge.client.model.StandardModelParameters;

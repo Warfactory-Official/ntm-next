@@ -3,6 +3,7 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.storage.BlockEntityBatterySocket;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.render.flywheel.HbmBlockEntityVisual;
 import com.hbm.client.render.flywheel.WorldItem;
@@ -17,7 +18,6 @@ import com.hbm.render.util.BeamPronter.EnumBeamType;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
 import com.hbm.render.util.BeamPronter;
 import com.hbm.render.util.HorsePronter;
-import com.hbm.tileentity.machine.storage.BlockEntityBatterySocket;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -63,7 +63,6 @@ public class RenderBatterySocket
     private final HFRWavefrontObject model;
     private final ItemModelResolver itemModelResolver;
     private final Map<Identifier, RenderType> bodyTypes = new HashMap<>();
-
     private final Map<EnumBatteryPack, Identifier> tierTextures = new ConcurrentHashMap<>();
 
     public RenderBatterySocket(BlockEntityRendererProvider.Context context) {
@@ -100,7 +99,6 @@ public class RenderBatterySocket
         long gameTime = socket.getLevel() == null ? 0L : socket.getLevel().getGameTime();
         state.spin = (float) (gameTime % 360L) + partialTicks;
         state.arcSeed = gameTime / 5L;
-
         state.arcStart = (int) (gameTime % 20L);
 
         ItemStack stack = socket.syncStack;
@@ -142,7 +140,6 @@ public class RenderBatterySocket
         poseStack.mulPose(Axis.YP.rotationDegrees(dummyableYaw(state.facing)));
         poseStack.translate(-0.5, 0.0, 0.5);
         int light = state.lightCoords;
-
         if (state.frame && !state.itemsOnly) {
             RenderType socketType =
                     bodyTypes.computeIfAbsent(
@@ -190,7 +187,6 @@ public class RenderBatterySocket
         poseStack.pushPose();
         poseStack.scale((float) UNICORN_SCALE, (float) UNICORN_SCALE, (float) UNICORN_SCALE);
         poseStack.mulPose(Axis.YN.rotationDegrees(state.spin * UNICORN_DEGREES_PER_TICK));
-
         RenderType horseType =
                 bodyTypes.computeIfAbsent(
                         ResourceManager.horse_sunburst_tex, RenderTypes::entityCutout);
@@ -201,7 +197,6 @@ public class RenderBatterySocket
     }
 
     private void submitArcs(State state, PoseStack poseStack, SubmitNodeCollector collector) {
-
         Random rand = new Random(state.arcSeed);
         rand.nextBoolean();
         for (int i = -1; i <= 1; i += 2) {

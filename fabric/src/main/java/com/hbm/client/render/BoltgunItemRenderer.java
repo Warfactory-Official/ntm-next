@@ -78,11 +78,9 @@ public final class BoltgunItemRenderer
             boolean foil,
             int outline) {
         if (recoils == null) return;
-
         RenderType type = RenderTypes.entityCutoutCull(ResourceManager.boltgun_tex);
 
         if (recoils) {
-
             pose.pushPose();
             pose.translate(0F, 0F, recoil());
             part(collector, pose, type, BARREL, light);
@@ -90,7 +88,6 @@ public final class BoltgunItemRenderer
         }
 
         part(collector, pose, type, GUN, light);
-
         if (!recoils) part(collector, pose, type, BARREL, light);
     }
 

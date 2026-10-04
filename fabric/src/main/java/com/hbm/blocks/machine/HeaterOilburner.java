@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityHeaterOilburner;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
@@ -11,7 +12,6 @@ import com.hbm.interfaces.ILookOverlay;
 import com.hbm.interfaces.IToolable;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.trait.FT_Flammable;
-import com.hbm.tileentity.machine.BlockEntityHeaterOilburner;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

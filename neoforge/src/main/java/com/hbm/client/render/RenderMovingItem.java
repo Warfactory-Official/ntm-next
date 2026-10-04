@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderMovingItem extends EntityRenderer<EntityMovingItem, RenderMovingItem.State>
@@ -66,11 +65,9 @@ public class RenderMovingItem extends EntityRenderer<EntityMovingItem, RenderMov
                     state.outlineColor,
                     FramedItem.miniBlockCount(state.count));
         } else {
-
             poseStack.mulPose(Axis.XP.rotationDegrees(90F));
             poseStack.translate(0F, -0.1875F, 0F);
             if (state.arm.mesh()) {
-
                 FramedItem.framedMeshPrefix(poseStack, state.arm);
                 state.item.submit(
                         poseStack,

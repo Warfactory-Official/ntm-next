@@ -3,6 +3,7 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.bomb.BlockEntityLaunchTable;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.handler.MissileStruct;
 import com.hbm.items.weapon.ItemCustomMissilePart.PartSize;
@@ -10,7 +11,6 @@ import com.hbm.items.weapon.ItemCustomMissilePart.PartType;
 import com.hbm.items.weapon.ItemCustomMissilePart;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.bomb.BlockEntityLaunchTable;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.SectionTrackedVisual;
@@ -73,7 +73,6 @@ public final class LaunchTableVisual extends HbmDynamicBlockEntityVisual<BlockEn
     private final Matrix4f instancePose = new Matrix4f();
     private final double[] lightBoundsAccumulator = new double[6];
     private final AABB anchorBounds;
-
     private int height;
     private MissileStruct trackedMissile;
     private @Nullable Key currentKey;

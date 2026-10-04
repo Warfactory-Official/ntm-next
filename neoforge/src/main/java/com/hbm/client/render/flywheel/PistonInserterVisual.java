@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityPistonInserter;
 import com.hbm.client.render.FramedItem;
 import com.hbm.client.render.RenderPistonInserter;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityPistonInserter;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;

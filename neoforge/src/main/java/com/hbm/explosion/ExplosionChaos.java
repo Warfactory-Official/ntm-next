@@ -12,7 +12,6 @@ import com.hbm.handler.ArmorUtil;
 import com.hbm.hazard.HazardClass;
 import com.hbm.items.weapon.sedna.factory.XFactoryCatapult;
 import com.hbm.lib.ModDamageTypes;
-import com.hbm.platform.Services;
 import com.hbm.potion.HbmPotion;
 import com.hbm.util.ArmorRegistry;
 import net.minecraft.core.BlockPos;
@@ -26,6 +25,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.sheep.Sheep;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
@@ -120,9 +120,9 @@ public final class ExplosionChaos {
                 for (int zz = -bound; zz < bound; zz++) {
                     if (yySq + zz * zz >= threshold) continue;
                     pos.set(x + xx, y + yy, z + zz);
-
-                    if (!Services.PLATFORM.isFlammable(
-                            level, pos, level.getBlockState(pos), Direction.UP)) continue;
+                    if (!level.getBlockState(pos)
+                            .isFlammable((BlockGetter) level, (BlockPos) pos, Direction.UP))
+                        continue;
                     BlockPos above = pos.above();
                     if (level.getBlockState(above).isAir()) {
                         level.setBlock(above, BaseFireBlock.getState(level, above), 3);
@@ -231,7 +231,6 @@ public final class ExplosionChaos {
                     ArmorRegistry.hasProtection(entity, EquipmentSlot.HEAD, HazardClass.GAS_LUNG)
                             || ArmorRegistry.hasProtection(
                                     entity, EquipmentSlot.HEAD, HazardClass.GAS_BLISTERING);
-
             if (protectedFromGas) {
                 ArmorUtil.damageGasMaskFilter(entity, 1);
                 continue;

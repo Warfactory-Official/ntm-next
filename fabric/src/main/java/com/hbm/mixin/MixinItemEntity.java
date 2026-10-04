@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemEntity.class)
 public class MixinItemEntity {
-
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void hbm$updateItem(CallbackInfo ci) {
         ItemEntity self = (ItemEntity) (Object) this;

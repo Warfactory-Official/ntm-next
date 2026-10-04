@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.BlockEntityBobble;
 import com.hbm.blocks.generic.BlockBobble.BobbleType;
 import com.hbm.blocks.generic.BlockBobble;
 import com.hbm.client.render.RenderBobble;
-import com.hbm.tileentity.BlockEntityBobble;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -63,7 +63,6 @@ public final class BobbleVisual extends HbmDynamicBlockEntityVisual<BlockEntityB
     public static boolean vanillaNeeded(BlockEntityBobble be) {
         int i = be.type.ordinal();
         Prop prop = (Prop) PROP.getAcquire(PROPS, i);
-
         if (prop == null || prop.stack().getPrototype() != prop.components()) {
             ItemStack stack = RenderBobble.prop(be.type);
             prop = new Prop(stack, stack.getPrototype());

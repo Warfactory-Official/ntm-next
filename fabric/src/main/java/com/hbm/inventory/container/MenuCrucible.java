@@ -3,7 +3,7 @@
 
 package com.hbm.inventory.container;
 
-import com.hbm.tileentity.machine.BlockEntityCrucible;
+import com.hbm.blockentity.machine.BlockEntityCrucible;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

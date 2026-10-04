@@ -4,9 +4,9 @@
 package com.hbm.client.render;
 
 import com.hbm.api.fluidmk2.FluidPipeTintData;
+import com.hbm.blockentity.network.BlockEntityPipeAnchor;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.network.BlockEntityPipeAnchor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;

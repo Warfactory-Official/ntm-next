@@ -17,7 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public abstract class MagazineSingleTypeBase implements IMagazine<BulletConfig> {
-
     private static final int INFINITE_ROUNDS = 9_999;
 
     public static final String KEY_MAG_COUNT = "magcount";
@@ -28,7 +27,6 @@ public abstract class MagazineSingleTypeBase implements IMagazine<BulletConfig> 
     public List<BulletConfig> acceptedBullets = new ArrayList<>();
 
     public int index;
-
     public int capacity;
 
     public MagazineSingleTypeBase(int index, int capacity) {
@@ -124,7 +122,6 @@ public abstract class MagazineSingleTypeBase implements IMagazine<BulletConfig> 
             if (loadLimit <= 0) return;
 
             if (!slot.isEmpty()) {
-
                 if (this.getAmount(stack, null) == 0) {
 
                     for (BulletConfig config : this.acceptedBullets) {
@@ -144,7 +141,6 @@ public abstract class MagazineSingleTypeBase implements IMagazine<BulletConfig> 
                             break;
                         }
                     }
-
                 } else {
                     BulletConfig config = this.getType(stack, null);
                     if (config == null) {
@@ -176,7 +172,6 @@ public abstract class MagazineSingleTypeBase implements IMagazine<BulletConfig> 
                     for (int j = 0; j < bag.getContainerSize(); j++) {
                         ItemStack inBag = bag.getItem(j);
                         if (inBag.isEmpty()) continue;
-
                         int available = infinite ? INFINITE_ROUNDS : inBag.getCount();
 
                         if (this.getAmount(stack, null) == 0) {
@@ -203,7 +198,6 @@ public abstract class MagazineSingleTypeBase implements IMagazine<BulletConfig> 
                                 this.setType(stack, config);
                             }
                             if (!config.matchesAmmo(inBag)) continue;
-
                             int alreadyLoaded = this.getAmount(stack, bag);
                             int wantsToLoad =
                                     (int)

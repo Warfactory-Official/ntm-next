@@ -150,7 +150,6 @@ public class AnimatedModel {
     public static final class Mesh {
         public final String name;
         public final float[] vertexData;
-
         private final Matrix3f normalMatrix = new Matrix3f();
         private final Matrix4f normalScratch = new Matrix4f();
         private final Vector3f normal = new Vector3f();

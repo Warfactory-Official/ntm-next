@@ -3,13 +3,12 @@
 
 package com.hbm.api.fluidmk2;
 
-import com.hbm.platform.ICapabilityService;
+import com.hbm.platform.FacedContext;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
-public record FluidFace(@Nullable Direction side, @Nullable Fluid fluid)
-        implements ICapabilityService.FacedContext {
+public record FluidFace(@Nullable Direction side, @Nullable Fluid fluid) implements FacedContext {
 
     public static FluidFace of(@Nullable Direction side, @Nullable Fluid fluid) {
         return new FluidFace(side, fluid);

@@ -25,7 +25,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ItemAnchorRemote extends ItemBattery {
-
     private static final long JUMP_COST = 10_000;
     private static final float ARRIVAL_BLAST = 2F;
     private static final int PORTAL_PARTICLES = 32;
@@ -54,7 +53,6 @@ public class ItemAnchorRemote extends ItemBattery {
         if (packed == null || getCharge(stack) < JUMP_COST) return refuse(sl, player);
 
         BlockPos target = BlockPos.of(packed);
-
         sl.getChunk(target);
         BlockState state = sl.getBlockState(target);
         if (!state.is(ModBlocks.TELEANCHOR.get())) return refuse(sl, player);

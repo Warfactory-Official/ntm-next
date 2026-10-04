@@ -140,12 +140,10 @@ public final class AssemblyMarkers {
 
             poseStack.pushPose();
             poseStack.translate(vx * mult, vy * mult + 1.0, vz * mult);
-
             poseStack.mulPose(camera.orientation);
             poseStack.scale(LABEL_SCALE, -LABEL_SCALE, LABEL_SCALE);
             FormattedCharSequence text = label.getVisualOrderText();
             int x = -font.width(text) / 2;
-
             collector.submitText(
                     poseStack,
                     x,

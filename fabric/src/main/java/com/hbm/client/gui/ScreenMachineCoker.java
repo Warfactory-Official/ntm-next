@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.oil.BlockEntityMachineCoker;
 import com.hbm.inventory.container.MenuMachineCoker;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineCoker;
 import java.util.List;
 import java.util.Locale;
 import net.minecraft.client.gui.GuiGraphicsExtractor;

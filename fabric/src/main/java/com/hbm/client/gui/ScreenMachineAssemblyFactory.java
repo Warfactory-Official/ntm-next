@@ -3,15 +3,13 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineAssemblyFactory;
 import com.hbm.inventory.container.MenuMachineAssemblyFactory;
 import com.hbm.inventory.recipes.AssemblyMachineRecipes;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachineAssemblyFactory;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -32,8 +30,8 @@ public class ScreenMachineAssemblyFactory extends ScreenInfoContainer<MenuMachin
     public ScreenMachineAssemblyFactory(
             MenuMachineAssemblyFactory menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 256, 240);
-        this.inventoryLabelX = 33;
-        this.inventoryLabelY = this.imageHeight - 96 + 2;
+        inventoryLabelX = 33;
+        inventoryLabelY = imageHeight - 96 + 2;
     }
 
     private static int inputSlotIndex(int module, int i) {
@@ -50,12 +48,6 @@ public class ScreenMachineAssemblyFactory extends ScreenInfoContainer<MenuMachin
     private static int inputSlotY(int module, int i) {
         int row = i / 6;
         return 20 + (module / 2) * 56 + row * 16;
-    }
-
-    private static List<Component> toComponents(List<String> strings) {
-        List<Component> out = new ArrayList<>(strings.size());
-        for (String s : strings) out.add(Component.literal(s));
-        return out;
     }
 
     @Override
@@ -224,16 +216,10 @@ public class ScreenMachineAssemblyFactory extends ScreenInfoContainer<MenuMachin
             GenericRecipe recipe = be.module[i].getRecipe();
             if (recipe != null) {
                 GUIElements.drawHoveringTextRecipe(
-                        graphics,
-                        this.font,
-                        toComponents(recipe.print()),
-                        mouseX,
-                        mouseY,
-                        this.width,
-                        this.height);
+                        graphics, font, recipe.print(), mouseX, mouseY, width, height);
             } else {
                 graphics.setTooltipForNextFrame(
-                        this.font,
+                        font,
                         Component.translatable("gui.recipe.setRecipe")
                                 .withStyle(ChatFormatting.YELLOW),
                         mouseX,

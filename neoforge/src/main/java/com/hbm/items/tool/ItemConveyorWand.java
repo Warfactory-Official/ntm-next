@@ -11,7 +11,6 @@ import com.hbm.client.ModifierKeys;
 import com.hbm.interfaces.IItemLookOverlay;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.items.ModDataComponents;
-import com.hbm.util.I18nUtil;
 import com.hbm.util.TooltipStyle;
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -39,7 +38,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class ItemConveyorWand extends Item implements IItemLookOverlay {
-
     private static final int BREAK_DEPTH = 32;
 
     public final ConveyorType type;
@@ -68,13 +66,15 @@ public class ItemConveyorWand extends Item implements IItemLookOverlay {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-        if (!ModifierKeys.leftShiftHeld()) {
-            adder.accept(TooltipStyle.holdLshift());
+        if (!ModifierKeys.detailsHeld()) {
+            adder.accept(TooltipStyle.holdDetails());
             return;
         }
 
-        for (String line : I18nUtil.loreLines("item.hbm.conveyor_wand.desc")) {
-            adder.accept(Component.literal(line).withStyle(ChatFormatting.YELLOW));
+        for (Component line :
+                TooltipStyle.lines(
+                        Component.translatableWithFallback("item.hbm.conveyor_wand.desc", ""))) {
+            adder.accept(line.copy().withStyle(ChatFormatting.YELLOW));
         }
         if (hasSnakesAndLadders(getType(stack))) {
             adder.accept(

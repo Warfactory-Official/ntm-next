@@ -5,7 +5,7 @@
       "modid": "computercraft"
     }
   ],
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
     "computercraft:disk",
     "hbm:pwr_casing"

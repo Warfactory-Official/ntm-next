@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.blockentity.network.BlockEntityDroneCrate;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
@@ -10,7 +11,6 @@ import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.inventory.IGUIProvider;
 import com.hbm.items.ModItems;
-import com.hbm.tileentity.network.BlockEntityDroneCrate;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;

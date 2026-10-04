@@ -206,7 +206,7 @@ public final class OreGenerationProfiles {
                 conditions.addFirst(text("oil_bubble", oil.minSize(), oil.maxSize() - 1));
             }
             case BedrockOilDepositConfig oil -> {
-                targets.add(oil.core());
+                target(oil.core(), oil.replaceable(), targets, conditions);
                 height =
                         OreHeightProfile.band(
                                 level.getMinY(), level.getMinY() + BedrockOilDepositFeature.MAX_Y);
@@ -339,6 +339,7 @@ public final class OreGenerationProfiles {
                     switch (tag) {
                         case "minecraft:stone_ore_replaceables" -> text("stone");
                         case "minecraft:deepslate_ore_replaceables" -> text("deepslate");
+                        case "minecraft:base_stone_overworld" -> text("natural_stone");
                         default -> Component.literal("#" + tag);
                     };
         } else if (encoded.has("block")) {

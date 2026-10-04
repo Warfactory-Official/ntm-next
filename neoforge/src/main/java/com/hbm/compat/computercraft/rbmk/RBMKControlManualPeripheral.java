@@ -3,9 +3,9 @@
 
 package com.hbm.compat.computercraft.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlManual;
+import com.hbm.blockentity.machine.rbmk.RBMKColor;
 import com.hbm.compat.computercraft.OpenComputers;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControlManual;
-import com.hbm.tileentity.machine.rbmk.RBMKColor;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class RBMKControlManualPeripheral
@@ -25,7 +25,6 @@ public final class RBMKControlManualPeripheral
 
     @LuaFunction
     public final Object[] getColor() {
-
         return read(
                 s ->
                         s.intAt(COLOR) < 0

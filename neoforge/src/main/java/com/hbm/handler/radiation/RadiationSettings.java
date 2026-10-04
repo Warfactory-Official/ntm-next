@@ -3,7 +3,6 @@
 
 package com.hbm.handler.radiation;
 
-import com.hbm.config.RadiationConfig;
 import com.hbm.data.RadiationData;
 import com.hbm.lib.Library;
 import com.mojang.serialization.Codec;

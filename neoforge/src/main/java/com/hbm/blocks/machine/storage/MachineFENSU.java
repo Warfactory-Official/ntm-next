@@ -4,6 +4,9 @@
 
 package com.hbm.blocks.machine.storage;
 
+import com.hbm.blockentity.machine.storage.BatteryCharge;
+import com.hbm.blockentity.machine.storage.BlockEntityMachineBattery;
+import com.hbm.blockentity.machine.storage.BlockEntityMachineFENSU;
 import com.hbm.blocks.IPersistentInfoProvider;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
@@ -12,9 +15,6 @@ import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.items.ModDataComponents;
-import com.hbm.tileentity.machine.storage.BatteryCharge;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineBattery;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineFENSU;
 import com.hbm.util.BobMathUtil;
 import com.mojang.serialization.MapCodec;
 import java.util.function.Consumer;

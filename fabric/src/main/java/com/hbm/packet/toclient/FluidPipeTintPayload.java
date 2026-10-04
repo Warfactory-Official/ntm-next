@@ -47,8 +47,7 @@ public final class FluidPipeTintPayload extends ThreadedPayload {
         if (player == null) return;
         Level level = player.level();
         Fluid fluid = BuiltInRegistries.FLUID.byId(payload.fluidId);
-        FluidPipeTintData.set(
-                level.dimension(), payload.pos.asLong(), fluid == null ? Fluids.EMPTY : fluid);
+        FluidPipeTintData.set(level, payload.pos.asLong(), fluid == null ? Fluids.EMPTY : fluid);
         BlockState state = level.getBlockState(payload.pos);
         if (state.getBlock() instanceof FluidPipeBlock)
             level.sendBlockUpdated(payload.pos, state, state, 0);

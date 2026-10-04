@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.machine.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKBase;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKModerator;
 import com.hbm.blocks.ModBlockEntities;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKBase;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKModerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;

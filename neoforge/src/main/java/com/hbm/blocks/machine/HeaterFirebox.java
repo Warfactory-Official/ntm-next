@@ -3,13 +3,13 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityHeaterFirebox;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockMaskTable;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.BlockEntityHeaterFirebox;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class HeaterFirebox extends BlockMultiblockCore implements ITickingBlock, ICapabilityBlock {
-
     private static final int[] DIMENSIONS = {0, 0, 1, 1, 1, 1};
 
     public HeaterFirebox(Properties props) {
@@ -46,7 +45,6 @@ public class HeaterFirebox extends BlockMultiblockCore implements ITickingBlock,
 
     @Override
     public int maskAt(int lx, int ly, int lz) {
-
         if (maskTable().maskAtLocal(lx, ly, lz) == MultiblockMaskTable.NOT_A_CELL)
             return MultiblockMaskTable.NOT_A_CELL;
         int mask = MASK_NONE;

@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityFEL;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.items.machine.EnumWavelengths;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
-import com.hbm.tileentity.machine.BlockEntityFEL;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;

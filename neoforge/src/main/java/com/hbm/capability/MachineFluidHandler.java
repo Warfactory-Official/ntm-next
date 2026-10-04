@@ -66,7 +66,6 @@ public final class MachineFluidHandler implements ResourceHandler<FluidResource>
         Journal journal = ref == null ? null : ref.get();
         int tanks = machine.getAllTanks().length;
         if (journal == null || journal.staging.tanks() != tanks) {
-
             JOURNALS.put(owner, new WeakReference<>(journal = new Journal(machine, owner, tanks)));
         }
         return journal;

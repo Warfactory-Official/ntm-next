@@ -3,13 +3,13 @@
 
 package com.hbm.integration.recipeviewer;
 
+import com.hbm.blockentity.machine.BlockEntityMachineOreSlopper;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.ModItems;
 import com.hbm.items.special.ItemBedrockOreNew.BedrockOreGrade;
 import com.hbm.items.special.ItemBedrockOreNew.BedrockOreType;
 import com.hbm.items.special.ItemBedrockOreNew;
-import com.hbm.tileentity.machine.BlockEntityMachineOreSlopper;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;

@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntitySoyuzLauncher;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -10,7 +11,6 @@ import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.handler.BossSpawnHandler;
-import com.hbm.tileentity.machine.BlockEntitySoyuzLauncher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -24,7 +24,6 @@ import org.jspecify.annotations.Nullable;
 
 @Deprecated
 public class SoyuzLauncher extends BlockMultiblockCore implements ITickingBlock, ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         0, 1, 6, 6, 6, 6, 0, 0, 0,
         -2, 4, -3, 6, -3, 6, 0, 0, 0,
@@ -41,19 +40,14 @@ public class SoyuzLauncher extends BlockMultiblockCore implements ITickingBlock,
     }
 
     public static final int HEIGHT = 4;
-
     public static final Direction FACING = Direction.EAST;
 
     private static final int RADIUS = 6;
-
     private static final int[] PAD = {0, 1, RADIUS, RADIUS, RADIUS, RADIUS};
-
     private static final int[][] LEGS = {
         {-2, 4, -3, 6, -3, 6}, {-2, 4, 6, -3, -3, 6}, {-2, 4, 6, -3, 6, -3}, {-2, 4, -3, 6, 6, -3}
     };
-
     private static final int[] SUPPORT = {0, 4, 1, 1, -6, 8};
-
     private static final int[] TOWER = {0, 4, 2, 2, 9, -5};
 
     public SoyuzLauncher(Properties props) {
@@ -94,7 +88,6 @@ public class SoyuzLauncher extends BlockMultiblockCore implements ITickingBlock,
 
     @Override
     protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-
         super.visitCells(core, facing, visitor);
         for (int[] leg : LEGS) MultiblockHandlerXR.visitBox(core, leg, facing, visitor);
         MultiblockHandlerXR.visitBox(core, SUPPORT, facing, visitor);
@@ -125,7 +118,6 @@ public class SoyuzLauncher extends BlockMultiblockCore implements ITickingBlock,
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-
         return RenderShape.MODEL;
     }
 

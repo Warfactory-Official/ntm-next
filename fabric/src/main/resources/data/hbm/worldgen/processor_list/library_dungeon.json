@@ -47,6 +47,23 @@
       "processor_type": "hbm:weighted_place"
     },
     {
+      "mobs": [
+        {
+          "data": "minecraft:skeleton",
+          "weight": 100
+        },
+        {
+          "data": "minecraft:zombie",
+          "weight": 200
+        },
+        {
+          "data": "minecraft:spider",
+          "weight": 100
+        }
+      ],
+      "processor_type": "hbm:spawner_entity"
+    },
+    {
       "processor_type": "hbm:loot_pile"
     }
   ]

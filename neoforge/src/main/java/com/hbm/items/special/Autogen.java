@@ -30,9 +30,7 @@ public final class Autogen {
             for (MaterialShapes shape : mat.autogen) {
                 if (shape.autogenItemPrefix == null) continue;
                 String name = shape.autogenItemId(mat.tagPath).getPath();
-
                 boolean owns = AutogenIcons.ownsSprite(shape, mat);
-
                 String layer = "item/" + AutogenIcons.sprite(shape, mat);
                 Identifier model = owns ? Library.id(name) : Library.id(shape.autogenItemPrefix);
                 RegistryHandle<MaterialShapeItem> handle =

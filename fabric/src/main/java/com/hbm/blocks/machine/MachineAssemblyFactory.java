@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineAssemblyFactory;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
@@ -10,7 +11,6 @@ import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
-import com.hbm.tileentity.machine.BlockEntityMachineAssemblyFactory;
 import com.hbm.util.BobMathUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,7 +22,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineAssemblyFactory extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
     private static final int[] DIMENSIONS = {2, 0, 2, 2, 2, 2};
 
     public MachineAssemblyFactory(Properties props) {
@@ -39,7 +38,7 @@ public class MachineAssemblyFactory extends BlockMultiblockCore
     }
 
     private static int gradient(double frac) {
-        frac = Math.clamp(frac, 0D, 1D);
+        frac = Math.clamp(frac, 0.0D, 1.0D);
         return ((int) (0xFF - 0xFF * frac) << 16) | ((int) (0xFF * frac) << 8);
     }
 
@@ -55,7 +54,6 @@ public class MachineAssemblyFactory extends BlockMultiblockCore
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-
         return RenderShape.MODEL;
     }
 
@@ -146,7 +144,8 @@ public class MachineAssemblyFactory extends BlockMultiblockCore
         for (int i = 0; i < BlockEntityMachineAssemblyFactory.MODULES; i++) {
             if (be.module[i].getRecipeName().isEmpty()) continue;
             GenericRecipe rec = be.module[i].getRecipe();
-            String name = rec != null ? rec.getLocalizedName() : be.module[i].getRecipeName();
+            String name =
+                    rec != null ? rec.getLocalizedName().getString() : be.module[i].getRecipeName();
             info.line(
                     "Module "
                             + (i + 1)

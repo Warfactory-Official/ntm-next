@@ -3,13 +3,12 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineSatLink;
 import com.hbm.blocks.ITickingBlock;
-import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.items.ISatChip;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntityMachineSatLink;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -98,8 +97,10 @@ public final class MachineSatLink extends BlockMultiblockCore
         BlockEntityMachineSatLink link = (BlockEntityMachineSatLink) level.getBlockEntity(pos);
         info.title(getName().getString(), 0xFFFF00, 0x404000);
         info.line(
-                Component.translatable("desc.block.machineSatLink.frequency", link.freq)
-                        .getString());
+                Component.empty()
+                        .append(
+                                Component.translatable(
+                                        "desc.block.machineSatLink.frequency", link.freq)));
         String answer =
                 (link.connected ? ChatFormatting.GREEN : ChatFormatting.RED)
                         + Component.translatable(
@@ -108,7 +109,10 @@ public final class MachineSatLink extends BlockMultiblockCore
                                                 : "tile.machine_satlink.no")
                                 .getString();
         info.line(
-                Component.translatable("desc.block.machineSatLink.connected", answer).getString());
+                Component.empty()
+                        .append(
+                                Component.translatable(
+                                        "desc.block.machineSatLink.connected", answer)));
         for (Component line : link.info) info.line(line.getString());
     }
 }

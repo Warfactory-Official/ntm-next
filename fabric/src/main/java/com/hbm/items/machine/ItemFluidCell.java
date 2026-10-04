@@ -14,7 +14,6 @@ import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
 public class ItemFluidCell extends ItemCustomLore implements IFluidContainerItem {
-
     public static final int CAPACITY = 1000;
 
     private static final List<ItemFluidCell> FILLED = new ArrayList<>();
@@ -80,7 +79,6 @@ public class ItemFluidCell extends ItemCustomLore implements IFluidContainerItem
 
     @Override
     public ItemStack emptyContainer(ItemStack stack) {
-
         return emptyCell == null ? stack.copyWithCount(1) : new ItemStack(emptyCell.get());
     }
 
@@ -91,7 +89,6 @@ public class ItemFluidCell extends ItemCustomLore implements IFluidContainerItem
                     "cells only convert to 1000mB at zero pressure, got " + content);
         }
         if (fluid != null) {
-
             if (content.type() != fluid.get()) {
                 throw new IllegalArgumentException(
                         this + " holds " + fluid.get() + ", not " + content.type());

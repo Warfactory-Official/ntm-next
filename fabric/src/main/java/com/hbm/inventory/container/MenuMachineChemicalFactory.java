@@ -4,12 +4,12 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.BlockEntityMachineChemicalFactory;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.inventory.slot.SlotUpgrade;
 import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.items.machine.upgrade.ItemMachineUpgrade;
-import com.hbm.tileentity.machine.BlockEntityMachineChemicalFactory;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -40,7 +40,6 @@ public class MenuMachineChemicalFactory extends BlockEntityMenu<BlockEntityMachi
         for (int i = 0; i < BlockEntityMachineChemicalFactory.MODULES; i++) {
             int base = i * BlockEntityMachineChemicalFactory.SLOTS_PER_MODULE;
             int y = 20 + i * 22;
-
             addSlot(
                     new SlotFiltered(
                             container(),
@@ -48,10 +47,8 @@ public class MenuMachineChemicalFactory extends BlockEntityMenu<BlockEntityMachi
                             93,
                             y,
                             stack -> stack.getItem() instanceof ItemBlueprints));
-
             for (int j = 0; j < 3; j++)
                 addSlot(SlotFiltered.gated(container(), 5 + base + j, 10 + j * 16, y));
-
             for (int j = 0; j < BlockEntityMachineChemicalFactory.OUTPUTS_PER_MODULE; j++) {
                 addSlot(
                         new SlotRecipeOutput(

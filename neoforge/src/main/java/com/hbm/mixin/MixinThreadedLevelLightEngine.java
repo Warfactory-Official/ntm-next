@@ -30,7 +30,6 @@ public abstract class MixinThreadedLevelLightEngine extends LevelLightEngine
         ThreadedLevelLightEngine engine = (ThreadedLevelLightEngine) (Object) this;
         ServerLevel level = (ServerLevel) chunk.getLevel();
         assert level.getServer().isSameThread();
-
         if (engine.getClass() != ThreadedLevelLightEngine.class) {
             return ChunkUtil.updateLightIndividually(level, chunk, positions, sectionMask);
         }
@@ -53,7 +52,6 @@ public abstract class MixinThreadedLevelLightEngine extends LevelLightEngine
         }
         long emptyMask = emptySections;
         int minSectionY = chunk.getMinSectionY();
-
         Runnable checks =
                 () -> {
                     for (long mask = sectionMask; mask != 0; mask &= mask - 1) {

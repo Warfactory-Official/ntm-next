@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.turret.BlockEntityTurretSentry;
+import com.hbm.blockentity.turret.BlockEntityTurretSentryDamaged;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.turret.BlockEntityTurretSentry;
-import com.hbm.tileentity.turret.BlockEntityTurretSentryDamaged;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.Material;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
@@ -171,7 +171,6 @@ public final class TurretSentryVisual extends HbmDynamicBlockEntityVisual<BlockE
         }
         if (yawChanged || pitchChanged || rightChanged) {
             barrelRightPose.set(bodyPose);
-
             if (damaged) {
                 barrelRightPose
                         .translate(0F, 1.5F, 0.5F)

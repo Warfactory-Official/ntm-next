@@ -3,6 +3,7 @@
 
 package com.hbm.mixin;
 
+import com.hbm.client.particle.DebrisVisuals;
 import com.hbm.client.particle.VisualParticle;
 import java.util.Map;
 import net.minecraft.client.particle.ParticleEngine;
@@ -21,6 +22,7 @@ abstract class MixinParticleVisuals {
 
     @Inject(method = "clearParticles", at = @At("HEAD"))
     private void hbm$clearParticles(CallbackInfo ci) {
+        DebrisVisuals.clear();
         for (var group : particles.values())
             for (var particle : group.particles)
                 if (particle instanceof VisualParticle visual) visual.removeVisual();

@@ -3,15 +3,15 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineArcFurnace;
 import com.hbm.client.ModifierKeys;
 import com.hbm.client.render.HbmRenderPipelines;
 import com.hbm.inventory.container.MenuMachineArcFurnace;
 import com.hbm.inventory.material.Mats.MaterialStack;
 import com.hbm.inventory.material.Mats;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineArcFurnace;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -39,7 +39,7 @@ public class ScreenMachineArcFurnace extends ScreenInfoContainer<MenuMachineArcF
     public ScreenMachineArcFurnace(
             MenuMachineArcFurnace menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 176, 256);
-        this.inventoryLabelY = this.imageHeight - 96 + 2;
+        inventoryLabelY = imageHeight - 96 + 2;
     }
 
     @Override
@@ -183,13 +183,13 @@ public class ScreenMachineArcFurnace extends ScreenInfoContainer<MenuMachineArcF
         if (stack.isEmpty())
             list.add(Component.translatable("desc.shared.empty").withStyle(ChatFormatting.RED));
 
-        boolean shift = ModifierKeys.leftShiftHeld();
+        boolean shift = ModifierKeys.detailsHeld();
         for (MaterialStack sta : stack) {
             list.add(
-                    Component.literal(
-                                    sta.material.getLocalizedName()
-                                            + ": "
-                                            + Mats.formatAmount(sta.amount, shift))
+                    Component.empty()
+                            .append(sta.material.getLocalizedName())
+                            .append(Component.literal(": "))
+                            .append(Mats.formatAmount(sta.amount, shift))
                             .withStyle(ChatFormatting.YELLOW));
         }
 
@@ -202,7 +202,7 @@ public class ScreenMachineArcFurnace extends ScreenInfoContainer<MenuMachineArcF
                 && checkClick((int) event.x(), (int) event.y(), TOGGLE_X, TOGGLE_Y, 18, 18)) {
             CompoundTag data = new CompoundTag();
             data.putBoolean("liquid", true);
-            Services.NETWORK.sendToServer(new NbtControlPayload(furnace().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(furnace().getBlockPos(), data));
             playClick();
             return true;
         }

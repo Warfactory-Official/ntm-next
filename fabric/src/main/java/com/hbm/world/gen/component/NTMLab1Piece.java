@@ -84,7 +84,6 @@ public class NTMLab1Piece extends NtmComponentPiece {
             for (int z = 6; z <= 7; z++)
                 this.fillFoundationColumn(level, stoneBricks, x, -1, z, chunkBB);
         }
-
         if (this.getBlock(level, 2, 0, 6, chunkBB).canBeReplaced()) {
             this.fillFoundationColumn(level, stoneBricks, 2, -1, 6, chunkBB);
             this.placeBlock(
@@ -160,7 +159,6 @@ public class NTMLab1Piece extends NtmComponentPiece {
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.EAST);
                 out.box(2, 1, 1, 2, 1, 4, steelWallEast, steelWallEast);
                 out.box(2, 3, 1, 2, 3, 4, steelWallEast, steelWallEast);
-
                 out.block(1, 2, 1, hbmState("plant_flower_foxglove"));
                 out.block(1, 2, 2, hbmState("plant_flower_tobacco"));
                 out.block(1, 2, 3, hbmState("plant_flower_nightshade"));
@@ -193,7 +191,6 @@ public class NTMLab1Piece extends NtmComponentPiece {
                 out.lootPile(6, 2, 3, LootGenerator.LOOT_MEDICINE);
 
                 out.block(8, 1, 5, hbmState("crate_can"));
-
                 out.container(8, 1, 6, hbmState("crate_iron"), ComponentLoot.GENERIC_8);
             };
 }

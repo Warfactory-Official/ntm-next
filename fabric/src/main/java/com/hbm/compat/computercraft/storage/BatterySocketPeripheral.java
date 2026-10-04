@@ -5,7 +5,7 @@ package com.hbm.compat.computercraft.storage;
 
 import com.hbm.api.energymk2.IBatteryItem;
 import com.hbm.api.energymk2.IEnergyHandlerMK2.ConnectionPriority;
-import com.hbm.tileentity.machine.storage.BlockEntityBatterySocket;
+import com.hbm.blockentity.machine.storage.BlockEntityBatterySocket;
 import dan200.computercraft.api.lua.LuaFunction;
 import net.minecraft.world.item.ItemStack;
 
@@ -41,12 +41,16 @@ public final class BatterySocketPeripheral
 
     @Override
     protected void applyRedLow(BlockEntityBatterySocket machine, int mode) {
+        if (machine.redLow == mode) return;
         machine.redLow = mode;
+        machine.setChanged();
     }
 
     @Override
     protected void applyRedHigh(BlockEntityBatterySocket machine, int mode) {
+        if (machine.redHigh == mode) return;
         machine.redHigh = mode;
+        machine.setChanged();
     }
 
     @Override
@@ -65,7 +69,6 @@ public final class BatterySocketPeripheral
         put(HAS_PACK, pack);
         if (pack) {
             IBatteryItem battery = (IBatteryItem) stack.getItem();
-
             putRef(PACK_NAME, stack.getItem().getDescriptionId());
             put(CHARGE_RATE, battery.getChargeRate(stack));
             put(DISCHARGE_RATE, battery.getDischargeRate(stack));

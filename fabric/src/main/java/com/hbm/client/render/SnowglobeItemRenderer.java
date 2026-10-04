@@ -3,11 +3,11 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.BlockEntitySnowglobe;
 import com.hbm.blocks.generic.BlockSnowglobe.SnowglobeType;
 import com.hbm.client.render.flywheel.ItemVisuals;
 import com.hbm.client.render.flywheel.SnowglobeItemVisual;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.BlockEntitySnowglobe;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

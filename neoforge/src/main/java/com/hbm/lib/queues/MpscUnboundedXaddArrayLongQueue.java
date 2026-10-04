@@ -16,7 +16,6 @@ public final class MpscUnboundedXaddArrayLongQueue
         implements LongMessagePassingQueue {
 
     public static final long EMPTY = Long.MIN_VALUE;
-
     private static final int RECOMMENDED_OFFER_BATCH =
             Runtime.getRuntime().availableProcessors() * 4;
 
@@ -383,7 +382,6 @@ public final class MpscUnboundedXaddArrayLongQueue
             }
             final long ccChunkIndex = cChunk.index;
             if (producerChunkIndex == ccChunkIndex) {
-
                 next = appendNextChunks(cChunk, ccChunkIndex, 1);
             }
             while (next == null) {

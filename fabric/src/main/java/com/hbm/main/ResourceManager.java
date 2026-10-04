@@ -16,7 +16,6 @@ import java.util.HashMap;
 import net.minecraft.resources.Identifier;
 
 public final class ResourceManager {
-
     public static final HFRWavefrontObject conveyor_press =
             load("models/machines/conveyor_press.obj");
     public static final Identifier conveyor_press_tex =
@@ -54,7 +53,6 @@ public final class ResourceManager {
     public static final HFRWavefrontObject armor_dnt = load("models/armor/dnt.obj");
     public static final HFRWavefrontObject armor_trenchmaster =
             load("models/armor/trenchmaster.obj");
-
     public static final HFRWavefrontObject armor_steamsuit = load("models/armor/steamsuit.obj");
     public static final HFRWavefrontObject armor_bnuuy = load("models/armor/bnuuy.obj");
 
@@ -79,7 +77,6 @@ public final class ResourceManager {
     public static final Identifier bj_chest_tex = Library.id("textures/armor/bj_chest.png");
     public static final Identifier bj_arm_tex = Library.id("textures/armor/bj_arm.png");
     public static final Identifier bj_leg_tex = Library.id("textures/armor/bj_leg.png");
-
     public static final Identifier bj_jetpack_tex = Library.id("textures/armor/bj_jetpack.png");
     public static final Identifier envsuit_helmet_tex =
             Library.id("textures/armor/envsuit_helmet.png");
@@ -94,9 +91,7 @@ public final class ResourceManager {
     public static final Identifier fau_chest_tex = Library.id("textures/armor/fau_chest.png");
     public static final Identifier fau_arm_tex = Library.id("textures/armor/fau_arm.png");
     public static final Identifier fau_leg_tex = Library.id("textures/armor/fau_leg.png");
-
     public static final Identifier fau_cassette_tex = Library.id("textures/armor/fau_cassette.png");
-
     public static final Identifier dns_helmet_tex = Library.id("textures/armor/dnt_helmet.png");
     public static final Identifier dns_chest_tex = Library.id("textures/armor/dnt_chest.png");
     public static final Identifier dns_arm_tex = Library.id("textures/armor/dnt_arm.png");
@@ -150,10 +145,8 @@ public final class ResourceManager {
     public static final HFRWavefrontObject epress_body = load("models/epress_body.obj");
     public static final HFRWavefrontObject epress_head = load("models/epress_head.obj");
     public static final HFRWavefrontObject black_hole = load("models/sphere.obj");
-
     public static final HFRWavefrontObject sphere_new = load("models/sphere_new.obj");
     public static final HFRWavefrontObject sphere_uv = load("models/sphere_uv.obj");
-
     public static final HFRWavefrontObject sphere_ruv = load("models/sphere_ruv.obj");
 
     public static final HFRWavefrontObject assembly_machine =
@@ -210,16 +203,13 @@ public final class ResourceManager {
             load("models/machines/industrial_turbine.obj");
     public static final HFRWavefrontObject lpw2 = load("models/machines/lpw2.obj");
     public static final HFRWavefrontObject chungus = load("models/machines/chungus.obj");
-
     public static final HFRWavefrontObject boiler = load("models/machines/boiler.obj");
     public static final HFRWavefrontObject boiler_burst = load("models/machines/boiler_burst.obj");
     public static final HFRWavefrontObject steam_engine = load("models/machines/steam_engine.obj");
-
     public static final HFRWavefrontObject fensu = load("models/machines/fensu.obj");
     public static final HFRWavefrontObject battery_redd = load("models/machines/fensu2.obj");
     public static final HFRWavefrontObject combustion_engine =
             load("models/machines/combustion_engine.obj");
-
     public static final HFRWavefrontObject pump = load("models/machines/pump.obj");
     public static final HFRWavefrontObject solar_mirror = load("models/machines/solar_mirror.obj");
     public static final HFRWavefrontObject heater_firebox = load("models/machines/firebox.obj");
@@ -251,7 +241,6 @@ public final class ResourceManager {
     public static final HFRWavefrontObject sawmill = load("models/machines/sawmill.obj");
     public static final HFRWavefrontObject stirling = load("models/machines/stirling.obj");
     public static final HFRWavefrontObject ammo_press = load("models/machines/ammo_press.obj");
-
     public static final HFRWavefrontObject deb_zirnox_blank = load("models/zirnox/deb_blank.obj");
     public static final HFRWavefrontObject deb_zirnox_concrete =
             flat("models/zirnox/deb_concrete.obj");
@@ -315,7 +304,6 @@ public final class ResourceManager {
     public static final HFRWavefrontObject missileHuge = load("models/missile_huge.obj");
     public static final HFRWavefrontObject missileNuclear = load("models/missile_atlas.obj");
     public static final HFRWavefrontObject missileMicro = load("models/missile_micro.obj");
-
     public static final HFRWavefrontObject missileStealth =
             load("models/missile_stealth.obj").noSmooth();
     public static final HFRWavefrontObject turret_chekhov =
@@ -326,7 +314,6 @@ public final class ResourceManager {
     public static final HFRWavefrontObject turret_arty = load("models/turrets/turret_arty.obj");
     public static final HFRWavefrontObject turret_fritz = load("models/turrets/turret_fritz.obj");
     public static final HFRWavefrontObject turret_jeremy = load("models/turrets/turret_jeremy.obj");
-
     public static final HFRWavefrontObject turret_maxwell =
             load("models/turrets/turret_microwave.obj");
     public static final HFRWavefrontObject turret_richard =
@@ -509,7 +496,6 @@ public final class ResourceManager {
 
     public static final Identifier mining_drill_tex =
             Library.id("textures/block/models/machines/mining_drill.png");
-
     public static final Identifier mining_drill_cobble_tex =
             Library.id("textures/models/machines/cobblestone.png");
     public static final Identifier mining_drill_gravel_tex =
@@ -527,7 +513,6 @@ public final class ResourceManager {
     public static final Identifier industrial_turbine_tex =
             Library.id("textures/block/models/machines/industrial_turbine.png");
     public static final Identifier lpw2_tex = Library.id("textures/block/models/machines/lpw2.png");
-
     public static final Identifier lpw2_error_tex =
             Library.id("textures/models/machines/lpw2_term_error.png");
     public static final Identifier chungus_tex =
@@ -608,10 +593,8 @@ public final class ResourceManager {
             Library.id("textures/block/models/machines/stirling_creative.png");
     public static final Identifier ammo_press_tex =
             Library.id("textures/block/models/machines/ammo_press.png");
-
     public static final Identifier foundry_lava_tex =
             Library.id("textures/models/machines/lava.png");
-
     public static final Identifier foundry_stream_tex =
             Library.id("textures/models/machines/lava_gray.png");
     public static final Identifier zirnox_tex =
@@ -648,7 +631,6 @@ public final class ResourceManager {
             Library.id("textures/models/machines/rbmk_crane.png");
     public static final Identifier rbmk_control_auto_tex =
             Library.id("textures/block/rbmk/rbmk_control_auto.png");
-
     public static final Identifier[] rbmk_control_color_tex = {
         Library.id("textures/block/rbmk/rbmk_control_red.png"),
         Library.id("textures/block/rbmk/rbmk_control_yellow.png"),
@@ -656,7 +638,6 @@ public final class ResourceManager {
         Library.id("textures/block/rbmk/rbmk_control_blue.png"),
         Library.id("textures/block/rbmk/rbmk_control_purple.png"),
     };
-
     public static final Identifier deb_element_tex =
             Library.id("textures/entity/rbmk_debris/element.png");
     public static final Identifier deb_fuel_tex =
@@ -669,7 +650,6 @@ public final class ResourceManager {
     public static final Identifier deb_graphite_tex =
             Library.id("textures/entity/rbmk_debris/graphite.png");
     public static final Identifier lance_tex = Library.id("textures/models/weapons/lance.png");
-
     public static final Identifier dud_balefire_tex =
             Library.id("textures/block/models/bombs/dud_balefire.png");
     public static final Identifier dud_conventional_tex =
@@ -678,7 +658,6 @@ public final class ResourceManager {
             Library.id("textures/block/models/bombs/dud_nuke.png");
     public static final Identifier dud_salted_tex =
             Library.id("textures/block/models/bombs/dud_salted.png");
-
     public static final Identifier white_tex = RenderTextures.WHITE;
     public static final Identifier rbmk_gauge_tex = Library.id("textures/models/network/gauge.png");
     public static final Identifier rbmk_numitron_tex =
@@ -873,7 +852,6 @@ public final class ResourceManager {
             Library.id("textures/block/models/launchpad/silo_rusted.png");
 
     public static final HFRWavefrontObject bobble = load("models/trinkets/bobble.obj");
-
     public static final HFRWavefrontObject fatman = load("models/weapons/fatman.obj");
     public static final HFRWavefrontObject double_barrel = load("models/weapons/sacred_dragon.obj");
     public static final HFRWavefrontObject n_i_4_n_i = load("models/weapons/n_i_4_n_i.obj");
@@ -886,7 +864,6 @@ public final class ResourceManager {
             Library.id("textures/block/models/trinkets/socket.png");
     public static final Identifier bobble_glow_tex =
             Library.id("textures/models/trinkets/glow.png");
-
     public static final Identifier fluorescent_lamp_tex =
             Library.id("textures/block/fluorescent_lamp.png");
     public static final Identifier bobble_vaultboy_tex =
@@ -926,7 +903,6 @@ public final class ResourceManager {
             Library.id("textures/models/trinkets/abel.png");
     public static final Identifier bobble_abel_glow_tex =
             Library.id("textures/models/trinkets/abel_glow.png");
-
     public static final HFRWavefrontObject snowglobe = load("models/trinkets/snowglobe.obj");
     public static final Identifier snowglobe_tex =
             Library.id("textures/models/trinkets/snowglobe.png");
@@ -1057,7 +1033,6 @@ public final class ResourceManager {
     public static final HFRWavefrontObject projectiles = load("models/projectiles/projectiles.obj");
     public static final Identifier rocket_mirv_tex =
             Library.id("textures/models/projectiles/rocket_mirv.png");
-
     public static final HFRWavefrontObject grenades = load("models/weapons/grenades.obj");
     public static final Identifier grenade_frag_tex =
             Library.id("textures/models/grenades/frag.png");
@@ -1183,7 +1158,6 @@ public final class ResourceManager {
     public static final Identifier bomblet_zeta_tex =
             Library.id("textures/models/bomblet_zeta_texture.png");
     public static final HFRWavefrontObject folly = load("models/weapons/folly.obj");
-
     public static final Identifier folly_tex = Library.id("textures/models/weapons/moonlight.png");
     public static final HFRWavefrontObject aberrator = load("models/weapons/aberrator.obj");
     public static final Identifier aberrator_tex =
@@ -1211,7 +1185,6 @@ public final class ResourceManager {
     public static final HFRWavefrontObject soyuz = load("models/soyuz.obj");
     public static final Identifier soyuz_memento_tex =
             Library.id("textures/item/polaroid_memento.png");
-
     public static final Identifier[][] soyuz_skin_tex =
             soyuzSkins("soyuz", "soyuz_luna", "soyuz_authentic");
 
@@ -1239,9 +1212,7 @@ public final class ResourceManager {
     public static final HFRWavefrontObject tom_main = flat("models/weapons/tom_main.obj");
     public static final Identifier tom_main_tex =
             Library.id("textures/models/weapons/tom_main.png");
-
     private static final float HMF_UV_INSET = 0.0005F;
-
     public static final HFRWavefrontObject tom_flame =
             load("models/weapons/tom_flame.obj").noSmooth().insetUv(HMF_UV_INSET);
     public static final Identifier tom_flame_tex =
@@ -1299,7 +1270,6 @@ public final class ResourceManager {
             Library.id("textures/entity/creeper_gold.png");
     public static final HFRWavefrontObject conservecrate = load("models/blocks/conservecrate.obj");
     public static final Identifier supply_crate_tex = Library.id("textures/block/crate_can.png");
-
     public static final HFRWavefrontObject file_cabinet = load("models/blocks/file_cabinet.obj");
     public static final Identifier file_cabinet_tex =
             Library.id("textures/block/filing_cabinet.png");
@@ -1343,7 +1313,6 @@ public final class ResourceManager {
     public static final Identifier rbmk_jet_steam_tex =
             Library.id("textures/particle/rbmk_jet_steam.png");
     public static final Identifier contrail_tex = Library.id("textures/particle/contrail.png");
-
     public static final HFRWavefrontObject skeleton_obj = load("models/effect/skeleton.obj");
     public static final Identifier skeleton_tex = Library.id("textures/particle/skeleton.png");
     public static final Identifier skeleton_blood_tex =
@@ -1351,12 +1320,10 @@ public final class ResourceManager {
     public static final Identifier skoilet_tex = Library.id("textures/particle/skoilet.png");
     public static final Identifier skoilet_blood_tex =
             Library.id("textures/particle/skoilet_blood.png");
-
     public static final Identifier dead_leaf_tex = Library.id("textures/particle/dead_leaf.png");
     public static final Identifier meat_tex = Library.id("textures/particle/meat.png");
     public static final Identifier slime_tex = Library.id("textures/particle/slime.png");
     public static final Identifier metal_tex = Library.id("textures/particle/metal.png");
-
     private static AnimatedModel transition_seal;
     private static Animation transition_seal_anim;
 

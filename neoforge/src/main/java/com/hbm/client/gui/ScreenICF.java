@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityICF;
 import com.hbm.inventory.container.MenuICF;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityICF;
 import com.hbm.util.BobMathUtil;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -27,7 +27,6 @@ public class ScreenICF extends ScreenInfoContainer<MenuICF> {
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-
         graphics.blit(
                 RenderPipelines.GUI_TEXTURED, TEXTURE, 0, 0, 0.0F, 0.0F, imageWidth, 114, 256, 256);
         graphics.blit(

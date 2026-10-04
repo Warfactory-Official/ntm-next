@@ -3,10 +3,10 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.bomb.BlockEntityCompactLauncher;
 import com.hbm.inventory.container.MenuCompactLauncher;
 import com.hbm.items.weapon.ItemCustomMissile;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.bomb.BlockEntityCompactLauncher;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -46,7 +46,6 @@ public class ScreenCompactLauncher extends ScreenInfoContainer<MenuCompactLaunch
     @Override
     protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         BlockEntityCompactLauncher launcher = launcher();
-
         ItemStack missile = menu.getSlot(BlockEntityCompactLauncher.SLOT_MISSILE).getItem();
         ItemStack designator = menu.getSlot(BlockEntityCompactLauncher.SLOT_DESIGNATOR).getItem();
 

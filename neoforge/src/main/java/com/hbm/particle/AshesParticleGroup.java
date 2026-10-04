@@ -28,15 +28,14 @@ public class AshesParticleGroup extends ParticleGroup<ParticleAshes> {
     @Override
     public ParticleGroupRenderState extractRenderState(
             Frustum frustum, Camera camera, float partialTicks) {
-        int count = this.particles.size();
-
-        float[] geo = new float[count * 5];
-
-        int[] tint = new int[count * 3];
+        int capacity = this.particles.size();
+        float[] geo = new float[capacity * 5];
+        int[] tint = new int[capacity * 3];
         Vec3 cam = camera.position();
 
         int i = 0;
         for (ParticleAshes fx : this.particles) {
+            if (fx.ownsVisual()) continue;
             geo[i * 5] = (float) (fx.interpX(partialTicks) - cam.x);
             geo[i * 5 + 1] = (float) (fx.interpY(partialTicks) - cam.y);
             geo[i * 5 + 2] = (float) (fx.interpZ(partialTicks) - cam.z);
@@ -50,7 +49,7 @@ public class AshesParticleGroup extends ParticleGroup<ParticleAshes> {
             i++;
         }
 
-        return new State(count, geo, tint);
+        return new State(i, geo, tint);
     }
 
     private record State(int count, float[] geo, int[] tint) implements ParticleGroupRenderState {
@@ -92,7 +91,6 @@ public class AshesParticleGroup extends ParticleGroup<ParticleAshes> {
             for (int c = 0; c < 4; c++) {
                 float a = (spin + c * 90F) * Mth.DEG_TO_RAD;
                 float cos = Mth.cos(a), sin = Mth.sin(a);
-
                 float vx = s * cos + s * sin;
                 float vz = s * cos - s * sin;
                 float u = c == 0 || c == 1 ? 1F : 0F;

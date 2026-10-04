@@ -23,7 +23,6 @@ public abstract class EntityExplosionChunkloading extends Entity {
     @Override
     public void tick() {
         super.tick();
-
         ChunkUtil.holdOwnChunk(this);
     }
 

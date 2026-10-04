@@ -52,7 +52,6 @@ public final class MissilePronter {
 
         ItemCustomMissilePart fuselage = missile.fuselage();
         if (fuselage != null && fuselage.type == PartType.FUSELAGE) {
-
             ItemCustomMissilePart fins = missile.fins();
             if (fins != null && fins.type == PartType.FINS) parts.get(fins).visit(visitor, y);
             parts.get(fuselage).visit(visitor, y);

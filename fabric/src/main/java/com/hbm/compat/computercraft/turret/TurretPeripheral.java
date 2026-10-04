@@ -3,11 +3,11 @@
 
 package com.hbm.compat.computercraft.turret;
 
+import com.hbm.blockentity.turret.BlockEntityTurretBaseNT;
 import com.hbm.compat.computercraft.OpenComputers;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemTurretBiometry;
-import com.hbm.tileentity.turret.BlockEntityTurretBaseNT;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.List;
 import net.minecraft.world.item.ItemStack;
@@ -94,7 +94,6 @@ public class TurretPeripheral<BE extends BlockEntityTurretBaseNT> extends Snapsh
     public final Object[] removeWhitelist(String name) {
         BE machine = machine();
         List<String> names = machine.getWhitelist();
-
         if (names == null) return OpenComputers.unknownError();
         if (!names.contains(name)) return new Object[] {false};
         machine.removeName(names.indexOf(name));

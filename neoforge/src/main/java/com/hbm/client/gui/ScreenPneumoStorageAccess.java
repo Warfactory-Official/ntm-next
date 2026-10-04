@@ -7,8 +7,8 @@ import com.hbm.inventory.container.MenuPneumoStorageAccess.ClickOp;
 import com.hbm.inventory.container.MenuPneumoStorageAccess.SlotPneumo;
 import com.hbm.inventory.container.MenuPneumoStorageAccess;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.PneumoAccessInputPayload;
-import com.hbm.platform.Services;
 import com.hbm.util.BobMathUtil;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -335,7 +335,6 @@ public class ScreenPneumoStorageAccess extends ScreenInfoContainer<MenuPneumoSto
     @Override
     public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
         if (draggingScroll) {
-
             int travel = Mth.clamp((int) event.y() - topPos - 24, 0, DRAG_TRAVEL);
             setScroll((int) Math.round(scrollBounds * ((double) travel / DRAG_TRAVEL)));
             return true;
@@ -403,6 +402,6 @@ public class ScreenPneumoStorageAccess extends ScreenInfoContainer<MenuPneumoSto
     }
 
     private void send(ClickOp op, int entryId) {
-        Services.NETWORK.sendToServer(new PneumoAccessInputPayload(menu.containerId, op, entryId));
+        PacketWire.sendToServer(new PneumoAccessInputPayload(menu.containerId, op, entryId));
     }
 }

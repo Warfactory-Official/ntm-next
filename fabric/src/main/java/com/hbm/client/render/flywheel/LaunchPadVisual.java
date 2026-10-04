@@ -3,11 +3,11 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.bomb.BlockEntityLaunchPad;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.render.PadMissiles;
 import com.hbm.items.ModItems;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPad;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;

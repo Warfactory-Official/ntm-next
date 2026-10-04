@@ -48,7 +48,6 @@ import org.jspecify.annotations.Nullable;
 public class GunItemRenderer
         implements SpecialModelRenderer<GunItemRenderer.Argument>,
                 ItemVisuals.Factory<GunItemRenderer.Argument> {
-
     public static final Matrix4fc MOD_TABLE_BASE =
             new Matrix4f().scale(-5F).rotate((float) Math.toRadians(90), 0F, 1F, 0F);
     private static final Matrix4f IDENTITY = new Matrix4f();
@@ -62,7 +61,6 @@ public class GunItemRenderer
     private final List<BakedMuzzle> equippedMuzzles;
     private final List<BakedMuzzle> akimboMuzzles;
     private final List<Map<ItemDisplayContext, Matrix4f>> poseVariants;
-
     private final List<Matrix4fc> modTableVariants;
     private final int equippedShotConfig;
     private final int akimboShotConfig;
@@ -131,7 +129,6 @@ public class GunItemRenderer
     private static boolean loaded(ItemStack stack) {
         if (!(stack.getItem() instanceof ItemGunBaseNT gun)) return false;
         IMagazine<?> magazine = gun.getConfig(stack, 0).getReceivers(stack)[0].getMagazine(stack);
-
         return magazine != null && magazine.getAmount(stack, null) > 0;
     }
 
@@ -141,7 +138,6 @@ public class GunItemRenderer
         IMagazine<?> magazine = gun.getConfig(stack, 0).getReceivers(stack)[0].getMagazine(stack);
         Object type = magazine.getType(stack, null);
         if (!(type instanceof BulletConfig bullet)) return null;
-
         if (bullet.ammoItem == null) return null;
         return new AmmoReference(BuiltInRegistries.ITEM.getKey(bullet.ammoItem.get()));
     }
@@ -164,7 +160,6 @@ public class GunItemRenderer
         FirstPerson firstPerson = null;
         if (context == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND
                 || context == ItemDisplayContext.FIRST_PERSON_LEFT_HAND) {
-
             boolean live = HandPass.local(context, owner);
             boolean otherArm = context == ItemDisplayContext.FIRST_PERSON_LEFT_HAND;
             boolean drawn =
@@ -348,7 +343,6 @@ public class GunItemRenderer
             FirstPerson firstPerson = arg.firstPerson();
             ItemRenderWeaponBase renderer = firstPerson.renderer();
             if (renderer == null) return;
-
             if (firstPerson.live()) {
                 renderer.submitFirstPerson(
                         firstPerson.stack(), ps, col, lightCoords, firstPerson.otherArm());
@@ -1047,7 +1041,6 @@ public class GunItemRenderer
                         new PosePredicate(
                                 List.copyOf(override.requiresMods()),
                                 List.copyOf(override.excludesMods())));
-
             ModelRenderProperties weapon = DynamicSpecialWrapper.properties(context, base);
             ModelRenderProperties secondGun =
                     akimboBase

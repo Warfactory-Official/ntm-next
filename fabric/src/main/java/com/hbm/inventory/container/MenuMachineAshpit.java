@@ -3,8 +3,8 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityAshpit;
 import com.hbm.inventory.slot.SlotFiltered;
-import com.hbm.tileentity.machine.BlockEntityAshpit;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

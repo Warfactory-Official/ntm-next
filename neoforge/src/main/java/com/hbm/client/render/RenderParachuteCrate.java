@@ -20,7 +20,6 @@ public class RenderParachuteCrate
         extends EntityRenderer<EntityParachuteCrate, RenderParachuteCrate.State>
         implements ConcurrentRenderStateExtraction {
     private static final int CHUTE = ResourceManager.soyuz_lander.partId("Chute");
-
     private static final int PIVOT_HEIGHT = 7;
     private final RenderType crate = RenderTypes.entityCutoutCull(ResourceManager.supply_crate_tex);
     private final RenderType chute = RenderTypes.entityCutoutCull(ResourceManager.soyuz_chute_tex);

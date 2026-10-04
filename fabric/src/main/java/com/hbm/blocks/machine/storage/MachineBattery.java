@@ -3,23 +3,20 @@
 
 package com.hbm.blocks.machine.storage;
 
-import com.hbm.api.energymk2.PowerGraph;
+import com.hbm.blockentity.machine.storage.BatteryCharge;
+import com.hbm.blockentity.machine.storage.BlockEntityMachineBattery;
 import com.hbm.blocks.IPersistentInfoProvider;
 import com.hbm.blocks.ModBlockEntities;
-import com.hbm.blocks.RefreshesNeighborState;
 import com.hbm.blocks.machine.BlockMachineHorizontal;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.inventory.IGUIProvider;
 import com.hbm.items.ModDataComponents;
-import com.hbm.tileentity.machine.storage.BatteryCharge;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineBattery;
 import com.hbm.util.BobMathUtil;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +29,6 @@ import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
-@RefreshesNeighborState(be = BlockEntityMachineBattery.class, calling = "refreshMode")
 public class MachineBattery extends BlockMachineHorizontal
         implements ICapabilityBlock, IPersistentInfoProvider {
 
@@ -48,10 +44,18 @@ public class MachineBattery extends BlockMachineHorizontal
     }
 
     @Override
-    protected void affectNeighborsAfterRemoval(
-            BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-        PowerGraph.get(level).removeNode(pos.asLong());
-        super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
+    protected void neighborChanged(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Block block,
+            @Nullable Orientation orientation,
+            boolean movedByPiston) {
+        super.neighborChanged(state, level, pos, block, orientation, movedByPiston);
+        if (!level.isClientSide()
+                && level.getBlockEntity(pos) instanceof BlockEntityMachineBattery battery) {
+            battery.refreshMode();
+        }
     }
 
     @Override

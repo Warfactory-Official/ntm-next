@@ -3,10 +3,10 @@
 
 package com.hbm.blocks.bomb;
 
+import com.hbm.blockentity.bomb.BlockEntityLandmine;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.interfaces.IBomb;
 import com.hbm.interfaces.IToolable;
-import com.hbm.tileentity.bomb.BlockEntityLandmine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -27,7 +27,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public abstract class BlockLandmine extends Block implements ITickingBlock, IBomb, IToolable {
-
     private static final ThreadLocal<Boolean> SAFE_REMOVAL = ThreadLocal.withInitial(() -> false);
 
     public final double range;
@@ -74,7 +73,6 @@ public abstract class BlockLandmine extends Block implements ITickingBlock, IBom
             return;
         }
         if (!canSurvive(state, level, pos)) {
-
             if (SAFE_REMOVAL.get()) level.removeBlock(pos, false);
             else explode(level, pos, null);
         }
@@ -108,7 +106,6 @@ public abstract class BlockLandmine extends Block implements ITickingBlock, IBom
     @Override
     public BombReturnCode explode(Level level, BlockPos pos, @Nullable Entity detonator) {
         if (level.isClientSide()) return BombReturnCode.UNDEFINED;
-
         safely(() -> level.destroyBlock(pos, false));
         explodeVariant(level, pos);
         return BombReturnCode.DETONATED;

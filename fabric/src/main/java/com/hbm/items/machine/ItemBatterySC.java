@@ -4,7 +4,7 @@
 package com.hbm.items.machine;
 
 import com.hbm.util.BobMathUtil;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -36,8 +36,10 @@ public class ItemBatterySC extends ItemBattery {
                                     BobMathUtil.getShortNumber(tier.power))
                             .withStyle(ChatFormatting.YELLOW));
         }
-        for (String line : I18nUtil.loreLines("item.hbm.battery_sc.desc")) {
-            adder.accept(Component.literal(line).withStyle(ChatFormatting.RED));
+        for (Component line :
+                TooltipStyle.lines(
+                        Component.translatableWithFallback("item.hbm.battery_sc.desc", ""))) {
+            adder.accept(line.copy().withStyle(ChatFormatting.RED));
         }
     }
 

@@ -3,7 +3,6 @@
 
 package com.hbm.blocks.bomb;
 
-import com.hbm.config.BombConfig;
 import com.hbm.data.ExplosionData;
 import com.hbm.entity.effect.EntityNukeTorex;
 import com.hbm.entity.logic.EntityNukeExplosionMK5;
@@ -65,7 +64,6 @@ public class NukeMk5 extends Block {
                         level, radius, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
         mk5.setDetonator(detonator);
         level.addFreshEntity(mk5);
-
         EntityNukeTorex.statFac(
                 level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, radius);
     }

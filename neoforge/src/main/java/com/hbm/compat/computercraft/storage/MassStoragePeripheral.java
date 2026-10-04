@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.storage;
 
+import com.hbm.blockentity.machine.storage.BlockEntityMassStorage;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.storage.BlockEntityMassStorage;
 import dan200.computercraft.api.lua.LuaFunction;
 import net.minecraft.world.item.ItemStack;
 

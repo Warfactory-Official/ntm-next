@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityTowerLarge;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -10,7 +11,6 @@ import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
-import com.hbm.tileentity.machine.BlockEntityTowerLarge;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -22,7 +22,6 @@ public class MachineTowerLarge extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
 
     private static final int[] DIMENSIONS = {12, 0, 4, 4, 4, 4};
-
     private static final int PORT_REACH = 4;
     private static final int PORT_SPREAD = 3;
 

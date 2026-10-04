@@ -45,7 +45,7 @@ public class DetCordModel implements BlockStateModel {
     private final BlockStateModelPart fallback;
 
     public DetCordModel(ModelBaker baker, ResolvedModel base) {
-        this.baker = baker;
+        this.baker = RuntimeBaker.capture(baker, base);
         this.base = base;
         this.slots = base.getTopTextureSlots();
         this.particle = base.resolveParticleMaterial(slots, baker);
@@ -65,7 +65,6 @@ public class DetCordModel implements BlockStateModel {
         if ((mask & N_X) != 0) parts[i++] = "negX";
         if ((mask & P_Y) != 0) parts[i++] = "posY";
         if ((mask & N_Y) != 0) parts[i++] = "negY";
-
         if ((mask & N_Z) != 0) parts[i++] = "posZ";
         if ((mask & P_Z) != 0) parts[i++] = "negZ";
         return parts;

@@ -3,9 +3,9 @@
 
 package com.hbm.items.machine.upgrade;
 
+import com.hbm.blockentity.IUpgradeInfoProvider;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncSource;
-import com.hbm.tileentity.IUpgradeInfoProvider;
 import java.util.Arrays;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;

@@ -4,9 +4,9 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.BlockEntityMachineMiningLaser;
 import com.hbm.inventory.slot.SlotUpgrade;
 import com.hbm.items.machine.upgrade.ItemMachineUpgrade;
-import com.hbm.tileentity.machine.BlockEntityMachineMiningLaser;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -97,7 +97,6 @@ public class MenuMachineMiningLaser extends BlockEntityMenu<BlockEntityMachineMi
                                 BlockEntityMachineMiningLaser.SLOT_UPGRADE_START,
                                 BlockEntityMachineMiningLaser.SLOT_UPGRADE_END + 1,
                                 false);
-
                     return false;
                 });
     }

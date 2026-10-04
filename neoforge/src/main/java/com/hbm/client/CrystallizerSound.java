@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.machine.BlockEntityMachineCrystallizer;
+import com.hbm.blockentity.machine.BlockEntityMachineCrystallizer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;

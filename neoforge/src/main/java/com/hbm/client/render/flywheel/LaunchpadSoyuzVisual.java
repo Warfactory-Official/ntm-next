@@ -3,23 +3,26 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityLaunchpadSoyuz;
+import com.hbm.blockentity.machine.SoyuzRenderSource;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityLaunchpadSoyuz;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import java.util.function.Consumer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class LaunchpadSoyuzVisual
-        extends HbmDynamicBlockEntityVisual<BlockEntityLaunchpadSoyuz>
-        implements ShaderLightVisual {
+public final class LaunchpadSoyuzVisual<T extends BlockEntity & SoyuzRenderSource>
+        extends HbmDynamicBlockEntityVisual<T> implements ShaderLightVisual {
 
     private static final double[] WHEEL_FORWARD = {17D, 19D, 29D, 31D};
     private static final double[] WHEEL_SIDE = {6.75D, 5.25D, -5.25D, -6.75D};
@@ -36,18 +39,26 @@ public final class LaunchpadSoyuzVisual
     private final Matrix4f instancePose = new Matrix4f();
     private final double[] bounds = new double[6];
     private final float[] lastPositions = new float[8];
+    private final BlockPos sourcePos;
+    private final int sourceDx, sourceDy, sourceDz;
     private @Nullable AABB lastLightBounds;
     private Piece @Nullable [] rocket;
     private int lastSkin = Integer.MIN_VALUE;
     private BlockEntityLaunchpadSoyuz.SoyuzStatus lastStatus;
     private boolean initialized;
+    private boolean lastSelected;
 
-    public LaunchpadSoyuzVisual(
-            VisualizationContext context,
-            BlockEntityLaunchpadSoyuz blockEntity,
-            float partialTick) {
+    public LaunchpadSoyuzVisual(VisualizationContext context, T blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
-        for (int i = 0; i < moving.length; i++) moving[i] = piece(PARTS[i]);
+        sourcePos = blockEntity.renderCorePos();
+        sourceDx = sourcePos.getX() - pos.getX();
+        sourceDy = sourcePos.getY() - pos.getY();
+        sourceDz = sourcePos.getZ() - pos.getZ();
+        lastSelected = blockEntity.renderSelected();
+        for (int i = 0; i < moving.length; i++) {
+            moving[i] = piece(PARTS[i]);
+            moving[i].instance.setVisible(lastSelected);
+        }
         updateMovingParts(partialTick);
     }
 
@@ -93,7 +104,10 @@ public final class LaunchpadSoyuzVisual
         if (rocket != null) delete(rocket);
         MeshPart[] parts = SoyuzLauncherVisual.rocketParts(skin);
         rocket = new Piece[parts.length];
-        for (int i = 0; i < parts.length; i++) rocket[i] = piece(parts[i]);
+        for (int i = 0; i < parts.length; i++) {
+            rocket[i] = piece(parts[i]);
+            rocket[i].instance.setVisible(lastSelected);
+        }
     }
 
     @Override
@@ -101,12 +115,32 @@ public final class LaunchpadSoyuzVisual
         updateMovingParts(context.partialTick());
     }
 
+    @Override
+    protected void trackExtent() {
+        updateSelection();
+    }
+
+    private void updateSelection() {
+        boolean selected = blockEntity.renderSelected();
+        if (selected == lastSelected) return;
+        lastSelected = selected;
+        for (Piece piece : moving) piece.instance.setVisible(selected);
+        if (rocket != null) for (Piece piece : rocket) piece.instance.setVisible(selected);
+        if (selected) {
+            initialized = false;
+            lastLightBounds = LightBounds.sections(lightSections, bounds, null);
+        } else {
+            if (lightSections != null) lightSections.sections(new LongOpenHashSet());
+            lastLightBounds = null;
+        }
+    }
+
     private void updateMovingParts(float partialTick) {
-        int skin = blockEntity.loadedType;
-        var status = blockEntity.soyuzStatus;
+        int skin = blockEntity.renderSkin();
+        var status = blockEntity.renderStatus();
         boolean changed = !initialized || skin != lastSkin || status != lastStatus;
         for (int i = 0; i < lastPositions.length; i++) {
-            float position = blockEntity.getInterpPos(i, partialTick);
+            float position = blockEntity.renderPosition(i, partialTick);
             if (Float.compare(position, lastPositions[i]) != 0) changed = true;
             lastPositions[i] = position;
         }
@@ -183,7 +217,8 @@ public final class LaunchpadSoyuzVisual
             local.set(mountPose).translate(0F, 4F, 0F).rotateY(-rotation * Mth.DEG_TO_RAD);
             writeRocket(local);
         }
-        lastLightBounds = LightBounds.sections(lightSections, bounds, lastLightBounds);
+        if (lastSelected)
+            lastLightBounds = LightBounds.sections(lightSections, bounds, lastLightBounds);
     }
 
     private void writeRocket(Matrix4f pose) {
@@ -191,20 +226,25 @@ public final class LaunchpadSoyuzVisual
     }
 
     private void write(Piece piece, Matrix4f pose) {
-        instancePose.translation(visualPos.getX(), visualPos.getY(), visualPos.getZ()).mul(pose);
+        instancePose
+                .translation(
+                        visualPos.getX() + sourceDx,
+                        visualPos.getY() + sourceDy,
+                        visualPos.getZ() + sourceDz)
+                .mul(pose);
         piece.instance.setTransform(instancePose).light(0).setChanged();
-        LightBounds.includeLightBounds(bounds, piece.part.model(), pose, pos);
+        LightBounds.includeLightBounds(bounds, piece.part.model(), pose, sourcePos);
     }
 
     @Override
     protected AABB getRenderBoundingBox() {
         return new AABB(
-                pos.getX() - 60,
-                pos.getY() - 2,
-                pos.getZ() - 60,
-                pos.getX() + 61,
-                pos.getY() + 57,
-                pos.getZ() + 61);
+                sourcePos.getX() - 60,
+                sourcePos.getY() - 2,
+                sourcePos.getZ() - 60,
+                sourcePos.getX() + 61,
+                sourcePos.getY() + 57,
+                sourcePos.getZ() + 61);
     }
 
     @Override

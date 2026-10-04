@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.albion;
 
+import com.hbm.blockentity.machine.albion.BlockEntityCooledBase;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.albion.BlockEntityCooledBase;
 import dan200.computercraft.api.lua.LuaFunction;
 import net.minecraft.world.item.ItemStack;
 
@@ -36,7 +36,6 @@ public abstract class CooledPeripheral<BE extends BlockEntityCooledBase>
     protected final void captureCrafting(BE machine, int firstCount, int firstName) {
         for (int i = 0; i < 4; i++) {
             ItemStack stack = machine.getItem(i + 1);
-
             putRef(firstName + i, stack.isEmpty() ? "" : stack.getItem().getDescriptionId());
             put(firstCount + i, stack.isEmpty() ? 0 : stack.getCount());
         }

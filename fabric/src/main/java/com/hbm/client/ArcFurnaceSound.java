@@ -3,9 +3,9 @@
 
 package com.hbm.client;
 
+import com.hbm.blockentity.machine.BlockEntityMachineArcFurnace;
 import com.hbm.sound.AudioSystem;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntityMachineArcFurnace;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 

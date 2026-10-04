@@ -14,19 +14,18 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-public final class NeoForgeHbmConfig implements HbmConfig {
+public final class NeoForgeHbmConfig {
+    public static final Map<ConfigEntry<?>, ModConfigSpec.ConfigValue<?>> VALUES = new HashMap<>();
+    public static final ModConfigSpec CONTENT_SPEC = build(Domain.CONTENT);
+    public static final ModConfigSpec RUNTIME_SPEC = build(Domain.RUNTIME);
+    public static final ModConfigSpec CLIENT_SPEC = build(Domain.CLIENT);
 
-    private final Map<ConfigEntry<?>, ModConfigSpec.ConfigValue<?>> values = new HashMap<>();
-    private final ModConfigSpec contentSpec;
-    private final ModConfigSpec runtimeSpec;
-    private final ModConfigSpec clientSpec;
-
-    private final ConfigStore store =
+    public static final ConfigStore STORE =
             new ConfigStore() {
                 @Override
                 @SuppressWarnings("unchecked")
                 public <T> T get(ConfigEntry<T> entry) {
-                    ModConfigSpec.ConfigValue<?> value = values.get(entry);
+                    ModConfigSpec.ConfigValue<?> value = VALUES.get(entry);
                     if (value == null) {
                         throw new IllegalStateException(
                                 "config entry not in the spec: " + entry.key());
@@ -35,37 +34,31 @@ public final class NeoForgeHbmConfig implements HbmConfig {
                 }
             };
 
-    private static final VarHandle EXTERNAL_EDIT;
-    private volatile boolean externalEdit;
+    public static final VarHandle EXTERNAL_EDIT;
+    public static volatile boolean externalEdit;
 
     static {
         try {
             EXTERNAL_EDIT =
                     MethodHandles.lookup()
-                            .findVarHandle(NeoForgeHbmConfig.class, "externalEdit", boolean.class);
+                            .findStaticVarHandle(
+                                    NeoForgeHbmConfig.class, "externalEdit", boolean.class);
         } catch (ReflectiveOperationException e) {
             throw new ExceptionInInitializerError(e);
         }
     }
 
-    private final ConfigStore.Content content = new ConfigStore.Content(store);
-    private final ConfigStore.Runtime runtime = new ConfigStore.Runtime(store);
+    public static final ConfigStore.Content CONTENT = new ConfigStore.Content(STORE);
+    public static final ConfigStore.Runtime RUNTIME = new ConfigStore.Runtime(STORE);
 
-    public NeoForgeHbmConfig() {
-        contentSpec = build(Domain.CONTENT);
-        runtimeSpec = build(Domain.RUNTIME);
-        clientSpec = build(Domain.CLIENT);
-    }
-
-    private ModConfigSpec build(Domain domain) {
+    public static ModConfigSpec build(Domain domain) {
         ModConfigSpec.Builder b = new ModConfigSpec.Builder();
         for (ConfigEntry<?> entry : ConfigSchema.of(domain)) {
             if (!entry.comment().isEmpty()) {
                 b.comment(entry.comment());
             }
-
             List<String> path = List.of(entry.section(), entry.key());
-            values.put(
+            VALUES.put(
                     entry,
                     switch (entry.kind()) {
                         case BOOL -> b.define(path, (boolean) (Boolean) entry.defaultValue());
@@ -87,64 +80,45 @@ public final class NeoForgeHbmConfig implements HbmConfig {
         return b.build();
     }
 
-    public void raiseExternalEdit() {
-        externalEdit = true;
-    }
-
-    @Override
-    public boolean pollForExternalEdit() {
-        return EXTERNAL_EDIT.compareAndSet(this, true, false);
-    }
-
-    public ModConfigSpec spec(Domain domain) {
+    public static ModConfigSpec spec(Domain domain) {
         return switch (domain) {
-            case CONTENT -> contentSpec;
-            case RUNTIME -> runtimeSpec;
-            case CLIENT -> clientSpec;
+            case CONTENT -> CONTENT_SPEC;
+            case RUNTIME -> RUNTIME_SPEC;
+            case CLIENT -> CLIENT_SPEC;
         };
     }
 
-    @Override
     @SuppressWarnings("unchecked")
-    public <T> void set(ConfigEntry<T> entry, T value) {
-        ModConfigSpec.ConfigValue<T> config = (ModConfigSpec.ConfigValue<T>) values.get(entry);
+    public static <T> void set(ConfigEntry<T> entry, T value) {
+        ModConfigSpec.ConfigValue<T> config = (ModConfigSpec.ConfigValue<T>) VALUES.get(entry);
         if (config == null) {
             throw new IllegalStateException("config entry not in the spec: " + entry.key());
         }
         config.set(value);
         spec(entry.domain()).save();
         NuclearTech.deriveConfigFacades();
-
         externalEdit = false;
     }
 
-    @Override
-    public void reload() {
+    public static void reload() {
         NuclearTech.deriveConfigFacades();
         externalEdit = false;
     }
 
-    @Override
-    public ContentConfig content() {
-        return content;
+    public static ContentConfig content() {
+        return CONTENT;
     }
 
-    @Override
-    public RuntimeConfig runtime() {
-        return runtime;
+    public static RuntimeConfig runtime() {
+        return RUNTIME;
     }
 
-    @Override
-    public ConfigStore clientStore() {
-        return store;
-    }
-
-    public void registerSpecs(ModContainer container) {
+    public static void registerSpecs(ModContainer container) {
         container.registerConfig(
-                ModConfig.Type.COMMON, contentSpec, ConfigFiles.neoForgeFile(Domain.CONTENT));
+                ModConfig.Type.COMMON, CONTENT_SPEC, ConfigFiles.neoForgeFile(Domain.CONTENT));
         container.registerConfig(
-                ModConfig.Type.COMMON, runtimeSpec, ConfigFiles.neoForgeFile(Domain.RUNTIME));
+                ModConfig.Type.COMMON, RUNTIME_SPEC, ConfigFiles.neoForgeFile(Domain.RUNTIME));
         container.registerConfig(
-                ModConfig.Type.CLIENT, clientSpec, ConfigFiles.neoForgeFile(Domain.CLIENT));
+                ModConfig.Type.CLIENT, CLIENT_SPEC, ConfigFiles.neoForgeFile(Domain.CLIENT));
     }
 }

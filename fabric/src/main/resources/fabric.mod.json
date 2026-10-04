@@ -14,6 +14,7 @@
     "NuclearGrandFather - raw ore textures: aluminium, beryllium, lead, plutonium, titanium, tungsten, uranium"
   ],
   "license": "LGPL-3.0-only",
+  "icon": "hbm.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -39,7 +40,6 @@
   "mixins": [
     "hbm-common.mixins.json",
     "hbm-compat.mixins.json",
-    "hbm-storage-compat.mixins.json",
     "hbm-network-compat.mixins.json",
     "hbm-fabric-createfluid.mixins.json",
     "hbm-fabric-storage.mixins.json",

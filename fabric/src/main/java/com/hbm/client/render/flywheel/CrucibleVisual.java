@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityCrucible;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.data.MachineData;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityCrucible;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;

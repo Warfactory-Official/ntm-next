@@ -3,6 +3,8 @@
 
 package com.hbm.blocks.machine.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKBase;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKRod;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.capability.ICapabilityBlock;
@@ -10,8 +12,6 @@ import com.hbm.capability.MachineCaps;
 import com.hbm.handler.BossSpawnHandler;
 import com.hbm.items.machine.ItemRBMKRod;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKBase;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKRod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class RBMKRod extends RBMKBase implements ICapabilityBlock {
-
     public final boolean moderated;
 
     public RBMKRod(Properties properties, boolean moderated) {

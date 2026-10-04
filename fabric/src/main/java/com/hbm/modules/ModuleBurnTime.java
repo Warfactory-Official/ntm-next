@@ -3,15 +3,16 @@
 
 package com.hbm.modules;
 
+import com.hbm.blocks.ModBlocks;
 import com.hbm.handler.FuelHandler;
 import com.hbm.items.ModItems;
+import com.hbm.tags.HbmItemTags;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 import static com.hbm.inventory.OreDictManager.LIGNITE;
@@ -86,8 +87,10 @@ public class ModuleBurnTime {
                 || item == ModItems.SOLID_FUEL_PRESTO_TRIPLET_BF.get()) return mod[MOD_BALEFIRE];
         if (item == ModItems.ROCKET_FUEL.get()) return mod[MOD_ROCKET];
 
-        if (ModItems.COKE.typeOf(item) != null) return mod[MOD_COKE];
-
+        if (ModItems.COKE.typeOf(item) != null
+                || item == ModBlocks.BLOCK_COKE_COAL.get().asItem()
+                || item == ModBlocks.BLOCK_COKE_LIGNITE.get().asItem()
+                || item == ModBlocks.BLOCK_COKE_PETROLEUM.get().asItem()) return mod[MOD_COKE];
         var briquette = ModItems.BRIQUETTE.typeOf(item);
         if (briquette != null)
             return switch (briquette) {
@@ -95,8 +98,7 @@ public class ModuleBurnTime {
                 case LIGNITE -> mod[MOD_LIGNITE];
                 case WOOD -> mod[MOD_WOOD];
             };
-
-        if (stack.is(Items.COAL) || stack.is(Items.COAL_BLOCK)) return mod[MOD_COAL];
+        if (stack.is(HbmItemTags.COAL_FUELS)) return mod[MOD_COAL];
         if (stack.is(LIGNITE.gem()) || stack.is(LIGNITE.dust()) || stack.is(LIGNITE.ore()))
             return mod[MOD_LIGNITE];
         if (stack.is(ItemTags.LOGS)) return mod[MOD_LOG];

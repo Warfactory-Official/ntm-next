@@ -51,6 +51,11 @@ public class ItemModLodestone extends ItemArmorMod {
     }
 
     @Override
+    public boolean ticksServer() {
+        return true;
+    }
+
+    @Override
     public void modUpdate(LivingEntity entity, ItemStack armor) {
         if (entity.level() instanceof ServerLevel level) pull(entity, level);
     }
@@ -71,7 +76,6 @@ public class ItemModLodestone extends ItemArmorMod {
             Vec3 motion = item.getDeltaMovement().add(towards.scale(PULL));
             if (towards.y > 0 && motion.y < LIFT_BELOW) motion = motion.add(0D, LIFT, 0D);
             item.setDeltaMovement(motion);
-
             level.getChunkSource()
                     .sendToTrackingPlayers(item, new ClientboundSetEntityMotionPacket(item));
         }

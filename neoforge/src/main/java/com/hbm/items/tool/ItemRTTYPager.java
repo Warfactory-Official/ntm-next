@@ -3,15 +3,15 @@
 
 package com.hbm.items.tool;
 
+import com.hbm.blockentity.network.RTTYSystem.RTTYChannel;
+import com.hbm.blockentity.network.RTTYSystem;
 import com.hbm.explosion.vanillant.ExplosionVNT;
 import com.hbm.explosion.vanillant.standard.EntityProcessorCrossSmooth;
 import com.hbm.explosion.vanillant.standard.ExplosionEffectWeapon;
 import com.hbm.explosion.vanillant.standard.PlayerProcessorStandard;
 import com.hbm.items.ModDataComponents;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.PlayerInformPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.network.RTTYSystem.RTTYChannel;
-import com.hbm.tileentity.network.RTTYSystem;
 import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -94,13 +94,11 @@ public class ItemRTTYPager extends Item {
                         + ") ] "
                         + ChatFormatting.YELLOW
                         + receiver.signal;
-        Services.NETWORK.sendTo(
-                new PlayerInformPayload(message, ID_PAGER_DYN + slot, 5_000), player);
+        PacketWire.sendTo(new PlayerInformPayload(message, ID_PAGER_DYN + slot, 5_000), player);
     }
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
-
         if (hand != InteractionHand.MAIN_HAND) return InteractionResult.PASS;
         if (level.isClientSide()) OPEN_SCREEN.accept(player);
         return InteractionResult.SUCCESS;

@@ -3,15 +3,15 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKConsole;
+import com.hbm.blockentity.machine.rbmk.RBMKColumn;
+import com.hbm.blockentity.machine.rbmk.RBMKColumnType;
 import com.hbm.inventory.container.MenuRBMKConsole;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKConsole;
-import com.hbm.tileentity.machine.rbmk.RBMKColumn;
-import com.hbm.tileentity.machine.rbmk.RBMKColumnType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -461,7 +461,6 @@ public class ScreenRBMKConsole extends ScreenInfoContainer<MenuRBMKConsole> {
 
     private void drawTooltips(
             GuiGraphicsExtractor graphics, int mouseX, int mouseY, BlockEntityRBMKConsole console) {
-
         if (console != null && checkClick(mouseX, mouseY, 86, 11, 150, 150)) {
             int lx = mouseX - leftPos - 86, ly = mouseY - topPos - 11;
             int index = lx / 10 + ly / 10 * 15;
@@ -632,7 +631,6 @@ public class ScreenRBMKConsole extends ScreenInfoContainer<MenuRBMKConsole> {
         if (checkClick(mx, my, 48, 82, 12, 12)) {
             try {
                 double typed = Double.parseDouble(field.getValue());
-
                 if (!Double.isFinite(typed)) return true;
                 int pct = (int) Math.clamp(typed, 0, 100);
                 field.setValue(String.valueOf(pct));
@@ -697,7 +695,7 @@ public class ScreenRBMKConsole extends ScreenInfoContainer<MenuRBMKConsole> {
 
     private void send(CompoundTag data) {
         BlockPos core = corePos();
-        if (core != null) Services.NETWORK.sendToServer(new NbtControlPayload(core, data));
+        if (core != null) PacketWire.sendToServer(new NbtControlPayload(core, data));
     }
 
     private BlockPos corePos() {

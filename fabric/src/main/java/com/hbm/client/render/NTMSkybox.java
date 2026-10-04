@@ -8,7 +8,6 @@ import com.hbm.config.RenderConfig;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.handler.ImpactWorldHandler;
 import com.hbm.lib.Library;
-import com.hbm.platform.Services;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.buffers.GpuBuffer;

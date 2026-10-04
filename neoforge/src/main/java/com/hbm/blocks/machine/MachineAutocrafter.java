@@ -3,12 +3,12 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineAutocrafter;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.inventory.IGUIProvider;
-import com.hbm.tileentity.machine.BlockEntityMachineAutocrafter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +35,6 @@ public class MachineAutocrafter extends Block implements ITickingBlock, ICapabil
             BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (player.isShiftKeyDown()) return InteractionResult.PASS;
         if (level.isClientSide()) return InteractionResult.SUCCESS;
-
         if (level.getBlockEntity(pos) instanceof IGUIProvider provider) {
             IGUIProvider.openBlockMenu(player, provider, pos);
         }

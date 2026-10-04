@@ -35,9 +35,7 @@ public class BobbleRandomizerProcessor implements StructureProcessor {
                 processedBlockInfo.nbt() == null
                         ? new CompoundTag()
                         : processedBlockInfo.nbt().copy();
-
         nbt.putString("id", "hbm:bobblehead");
-
         nbt.putByte(
                 "type",
                 (byte)

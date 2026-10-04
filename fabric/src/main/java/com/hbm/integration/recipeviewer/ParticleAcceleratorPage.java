@@ -40,7 +40,6 @@ public final class ParticleAcceleratorPage extends TablePage<ParticleAccelerator
 
     @Override
     public void layout(ParticleAcceleratorRecipe recipe, PageLayout page) {
-
         int[][] positions = GenericMachinePage.universalInputPositions(2);
         page.input(positions[0][0], positions[0][1])
                 .background()
@@ -59,7 +58,6 @@ public final class ParticleAcceleratorPage extends TablePage<ParticleAccelerator
     @Override
     public void draw(ParticleAcceleratorRecipe recipe, GuiGraphicsExtractor graphics) {
         RecipePanel.universalPage(graphics);
-
         RecipePanel.leftAligned(
                 graphics,
                 Component.translatable(

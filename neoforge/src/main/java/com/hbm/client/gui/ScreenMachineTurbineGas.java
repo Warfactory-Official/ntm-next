@@ -3,15 +3,15 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineTurbineGas;
 import com.hbm.inventory.container.MenuMachineTurbineGas;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.trait.FT_Combustible.FuelGrade;
 import com.hbm.inventory.fluid.trait.FT_Combustible;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineTurbineGas;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.SharedConstants;
@@ -322,7 +322,6 @@ public class ScreenMachineTurbineGas extends ScreenInfoContainer<MenuMachineTurb
         if (event.button() == 0) {
             BlockEntityMachineTurbineGas be = turbine();
             int mx = (int) event.x(), my = (int) event.y();
-
             int handleY = topPos + 97 - be.powerSliderPos;
             sliderGrabbed = my >= handleY && my < handleY + 6;
 
@@ -360,7 +359,6 @@ public class ScreenMachineTurbineGas extends ScreenInfoContainer<MenuMachineTurb
     public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
         BlockEntityMachineTurbineGas be = turbine();
         int mx = (int) event.x(), my = (int) event.y();
-
         if (sliderGrabbed
                 && be.state == 1
                 && !be.autoMode
@@ -389,8 +387,7 @@ public class ScreenMachineTurbineGas extends ScreenInfoContainer<MenuMachineTurb
     }
 
     private void send(CompoundTag data) {
-        Services.NETWORK.sendToServer(
-                new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
     }
 
     private BlockEntityMachineTurbineGas turbine() {

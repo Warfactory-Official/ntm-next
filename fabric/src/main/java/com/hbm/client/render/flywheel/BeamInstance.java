@@ -23,6 +23,8 @@ public final class BeamInstance extends AbstractInstance {
         super(type, handle);
     }
 
+    public static void initTypes() {}
+
     private static InstanceType<BeamInstance> type(String vertex) {
         return SimpleInstanceType.builder(BeamInstance::new)
                 .layout(
@@ -30,7 +32,7 @@ public final class BeamInstance extends AbstractInstance {
                                 .vector("outerColor", FloatRepr.NORMALIZED_UNSIGNED_BYTE, 4)
                                 .vector("innerColor", FloatRepr.NORMALIZED_UNSIGNED_BYTE, 4)
                                 .matrix("pose", FloatRepr.FLOAT, 4)
-                                .scalar("length", FloatRepr.FLOAT)
+                                .scalar("beamLength", FloatRepr.FLOAT)
                                 .scalar("size", FloatRepr.FLOAT)
                                 .scalar("thickness", FloatRepr.FLOAT)
                                 .scalar("phase", IntegerRepr.INT)

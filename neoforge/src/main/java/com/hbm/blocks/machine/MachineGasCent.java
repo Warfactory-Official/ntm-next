@@ -3,12 +3,12 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineGasCent;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.BlockEntityMachineGasCent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -48,10 +48,8 @@ public class MachineGasCent extends BlockMultiblockCore implements ITickingBlock
     @Override
     protected InteractionResult useAtCore(
             BlockState coreState, Level level, BlockPos core, Player player, BlockHitResult hit) {
-
         if (player.isSecondaryUseActive()) return InteractionResult.PASS;
         if (level.isClientSide()) return InteractionResult.SUCCESS;
-
         if (level.getBlockEntity(core) instanceof MenuProvider menu) {
             openCoreMenu(player, core, menu);
         }

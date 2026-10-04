@@ -13,10 +13,8 @@ public abstract class NeutronStream {
 
     public NeutronNode origin;
     public double fluxQuantity;
-
     public double fluxRatio;
     public NeutronType type = NeutronType.DUMMY;
-
     public Vec3 vector;
 
     public NeutronStream(NeutronNode origin, Vec3 vector) {

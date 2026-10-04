@@ -1,5 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
+  "input_state": {
+    "A": {
+      "preserve": "remainder"
+    },
+    "S": {
+      "preserve": "remainder"
+    }
+  },
   "key": {
     "A": "hbm:cell_anti_schrabidium",
     "E": "hbm:plate_euphemium",

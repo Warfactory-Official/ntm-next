@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HazardData {
-
     public static final int DEFAULT_PRIORITY = 1000;
 
     public int mutexBits = 0;

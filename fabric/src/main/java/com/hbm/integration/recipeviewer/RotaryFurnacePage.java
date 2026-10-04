@@ -47,7 +47,6 @@ public final class RotaryFurnacePage extends TablePage<RotaryFurnaceRecipe> {
     public void layout(RotaryFurnaceRecipe recipe, PageLayout page) {
         FluidStackNTM fluid = recipe.fluid();
         int count = recipe.inputItem.length + (fluid == null ? 0 : 1);
-
         int[][] positions = GenericMachinePage.universalInputPositions(count);
         int slot = 0;
         for (CountIngredient input : recipe.inputItem) {
@@ -58,7 +57,7 @@ public final class RotaryFurnacePage extends TablePage<RotaryFurnaceRecipe> {
         }
         if (fluid != null)
             page.input(positions[slot][0], positions[slot][1]).background().fluid(fluid);
-        page.output(102, 24).background().item(ItemScraps.create(recipe.output));
+        page.output(102, 24).background().item(ItemScraps.create(recipe.output, true));
         page.catalyst(75, 31).item(ModBlocks.MACHINE_ROTARY_FURNACE.get());
     }
 

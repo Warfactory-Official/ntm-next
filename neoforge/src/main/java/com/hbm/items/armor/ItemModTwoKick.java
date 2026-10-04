@@ -34,9 +34,8 @@ public class ItemModTwoKick extends ItemArmorMod {
         if (chest.isEmpty() || !ArmorModHandler.hasMods(chest)) return;
         ItemStack held = player.getMainHandItem();
         if (carriesAttackDamage(held)) return;
-        if (!ArmorModHandler.pryMod(chest, ArmorModHandler.SERVOS)
-                .is(ModItems.BALLISTIC_GAUNTLET.get())) return;
-
+        if (!(ArmorModHandler.modItem(chest, ArmorModHandler.SERVOS)
+                == ModItems.BALLISTIC_GAUNTLET.get())) return;
         BulletConfig[] configs = {
             XFactory12ga.g12_bp,
             XFactory12ga.g12_bp_magnum,

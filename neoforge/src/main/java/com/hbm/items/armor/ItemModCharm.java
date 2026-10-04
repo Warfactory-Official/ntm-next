@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class ItemModCharm extends ItemArmorMod {
     public ItemModCharm(Item.Properties properties) {
-        super(properties, ArmorModHandler.HELMET_ONLY, true, false, false, false);
+        super(properties, ArmorModHandler.HELMET_ONLY, true, true, false, false);
     }
 
     @Override

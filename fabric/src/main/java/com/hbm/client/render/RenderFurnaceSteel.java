@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityFurnaceSteel;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.BlockEntityFurnaceSteel;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -42,7 +42,6 @@ public class RenderFurnaceSteel
     }
 
     private static void quad(PoseStack.Pose pose, VertexConsumer buf, int argb, double x) {
-
         Vertices.emit(buf, pose, (float) x, 1F, -1F, argb);
         Vertices.emit(buf, pose, (float) x, 1F, 1F, argb);
         Vertices.emit(buf, pose, (float) x, 0.5F, 1F, argb);
@@ -82,7 +81,6 @@ public class RenderFurnaceSteel
         if (!s.wasOn) return;
 
         ps.pushPose();
-
         ps.translate(0.5, 0.0, 0.5);
         ps.mulPose(Axis.YP.rotationDegrees(steelYaw(s.facing) - 90F));
 

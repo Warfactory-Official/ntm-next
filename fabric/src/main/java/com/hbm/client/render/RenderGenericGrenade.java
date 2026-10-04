@@ -66,15 +66,12 @@ public class RenderGenericGrenade<T extends Entity>
     public void submit(
             State state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
         pose.pushPose();
-
         pose.scale(0.5F, 0.5F, 0.5F);
-
         pose.mulPose(camera.orientation);
 
         quad(state, pose, collector, state.base, 1F, 1F, 1F);
 
         if (state.overlay != null) {
-
             int rgb = state.overlayColor;
             quad(
                     state,

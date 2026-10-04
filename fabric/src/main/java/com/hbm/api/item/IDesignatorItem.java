@@ -6,7 +6,6 @@ package com.hbm.api.item;
 import net.minecraft.world.item.ItemStack;
 
 public interface IDesignatorItem {
-
     static long pack(int x, int z) {
         return ((long) x & 0xFFFFFFFFL) << 32 | ((long) z & 0xFFFFFFFFL);
     }

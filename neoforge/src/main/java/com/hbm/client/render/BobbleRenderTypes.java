@@ -19,7 +19,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
 
 public final class BobbleRenderTypes {
-
     private static final float ALPHA_DISCARD_ONLY_ZERO = 0.5F / 255.0F;
 
     public static final RenderPipeline FIGURINE_PIPELINE =

@@ -6,8 +6,8 @@ package com.hbm.client.gui;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.tool.ItemSatelliteInterface;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.ItemControlPayload;
-import com.hbm.platform.Services;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -54,7 +54,6 @@ public class ScreenSatCoord extends Screen {
         try {
             return (int) Double.parseDouble(text);
         } catch (NumberFormatException e) {
-
             return null;
         }
     }
@@ -87,7 +86,6 @@ public class ScreenSatCoord extends Screen {
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
         if (!connected()) return false;
-
         setFocused(null);
         if (super.mouseClicked(event, doubleClick)) return true;
         int mouseX = (int) event.x();
@@ -109,7 +107,7 @@ public class ScreenSatCoord extends Screen {
         data.putInt("x", x);
         data.putInt("z", z);
         if (y != null) data.putInt("y", y);
-        Services.NETWORK.sendToServer(new ItemControlPayload(data));
+        PacketWire.sendToServer(new ItemControlPayload(data));
         onClose();
         return true;
     }

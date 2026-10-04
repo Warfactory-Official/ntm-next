@@ -10,7 +10,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
 
 public final class ModDamageTypes {
-
     public static final ResourceKey<DamageType> PHYSICAL = key("physical");
     public static final ResourceKey<DamageType> FIRE = key("fire");
     public static final ResourceKey<DamageType> EXPLOSIVE = key("explosive");
@@ -33,7 +32,6 @@ public final class ModDamageTypes {
     public static final ResourceKey<DamageType> RUBBLE = key("rubble");
     public static final ResourceKey<DamageType> SHRAPNEL = key("shrapnel");
     public static final ResourceKey<DamageType> BLACKHOLE = key("blackhole");
-
     public static final ResourceKey<DamageType> BLENDER = key("blender");
     public static final ResourceKey<DamageType> METEORITE = key("meteorite");
     public static final ResourceKey<DamageType> BOXCAR = key("boxcar");
@@ -44,12 +42,10 @@ public final class ModDamageTypes {
     public static final ResourceKey<DamageType> AMS_CORE = key("ams_core");
     public static final ResourceKey<DamageType> BROADCAST = key("broadcast");
     public static final ResourceKey<DamageType> BANG = key("bang");
-
     public static final ResourceKey<DamageType> PINK_CLOUD = key("pink_cloud");
     public static final ResourceKey<DamageType> CLOUD = key("cloud");
     public static final ResourceKey<DamageType> LEAD = key("lead");
     public static final ResourceKey<DamageType> ENERVATION = key("enervation");
-
     public static final ResourceKey<DamageType> ELECTRICITY = key("electricity");
     public static final ResourceKey<DamageType> EXHAUST = key("exhaust");
     public static final ResourceKey<DamageType> SPIKES = key("spikes");
@@ -60,32 +56,20 @@ public final class ModDamageTypes {
     public static final ResourceKey<DamageType> MKU = key("mku");
     public static final ResourceKey<DamageType> VACUUM = key("vacuum");
     public static final ResourceKey<DamageType> OVERDOSE = key("overdose");
-
     public static final ResourceKey<DamageType> BOIL = key("boil");
-
     public static final ResourceKey<DamageType> FLAMETHROWER = key("flamethrower");
-
     public static final ResourceKey<DamageType> ICE = key("ice");
-
     public static final ResourceKey<DamageType> ACID_PLAYER = key("acid_player");
-
     public static final ResourceKey<DamageType> REVOLVER_BULLET = key("revolver_bullet");
-
     public static final ResourceKey<DamageType> EMPLACER = key("emplacer");
-
     public static final ResourceKey<DamageType> TAU = key("tau");
-
     public static final ResourceKey<DamageType> ELECTRIFIED = key("electrified");
-
     public static final ResourceKey<DamageType> EUTHANIZED = key("euthanized");
-
     public static final ResourceKey<DamageType> COMBINE = key("combine");
 
     public static final ResourceKey<DamageType> BOLT = key("bolt");
-
     public static final TagKey<DamageType> IS_BOLT =
             TagKey.create(Registries.DAMAGE_TYPE, Library.id("is_bolt"));
-
     public static final ResourceKey<DamageType> SHOCKWAVE = key("shockwave");
 
     private ModDamageTypes() {}

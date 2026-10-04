@@ -57,7 +57,6 @@ public class RenderTorex extends EntityRenderer<EntityNukeTorex, RenderTorex.Sta
     private static void renderCloudlets(
             PoseStack.Pose pose, VertexConsumer buf, State state, Vector3f right, Vector3f up) {
         int n = state.cloudletCount;
-
         IBufferBuilderExtension block =
                 buf instanceof IBufferBuilderExtension fast && fast.hbm$beginBlock(n * 4)
                         ? fast
@@ -113,7 +112,6 @@ public class RenderTorex extends EntityRenderer<EntityNukeTorex, RenderTorex.Sta
     private static void renderFlash(
             PoseStack.Pose pose, VertexConsumer buf, State state, float flashDuration) {
         double intensityRaw = state.age / flashDuration;
-
         double intensity = intensityRaw * Math.pow(Math.E, -intensityRaw) * 2.717391304D;
         float scale = 50F * state.torexScale;
         float oy = 0.8F * state.coreHeight;
@@ -126,7 +124,6 @@ public class RenderTorex extends EntityRenderer<EntityNukeTorex, RenderTorex.Sta
             float x1 = k * corners[at], y1 = k * corners[at + 1] + oy, z1 = k * corners[at + 2];
             float x2 = k * corners[at + 3], y2 = k * corners[at + 4] + oy, z2 = k * corners[at + 5];
             float x3 = k * corners[at + 6], y3 = k * corners[at + 7] + oy, z3 = k * corners[at + 8];
-
             flashTri(buf, pose, oy, x1, y1, z1, x2, y2, z2, centerColor, rimColor);
             flashTri(buf, pose, oy, x2, y2, z2, x3, y3, z3, centerColor, rimColor);
             flashTri(buf, pose, oy, x3, y3, z3, x1, y1, z1, centerColor, rimColor);
@@ -216,7 +213,6 @@ public class RenderTorex extends EntityRenderer<EntityNukeTorex, RenderTorex.Sta
     public void extractRenderState(EntityNukeTorex entity, State state, float partialTicks) {
         super.extractRenderState(entity, state, partialTicks);
         state.tickCount = entity.age();
-
         state.age = entity.age() + partialTicks;
         state.torexScale = (float) entity.getScaleVal();
         state.coreHeight = (float) entity.coreHeight;
@@ -254,7 +250,6 @@ public class RenderTorex extends EntityRenderer<EntityNukeTorex, RenderTorex.Sta
             PoseStack poseStack,
             SubmitNodeCollector collector,
             CameraRenderState camera) {
-
         Quaternionf q = camera.orientation;
         Vector3f right = q.transform(new Vector3f(1F, 0F, 0F));
         Vector3f up = q.transform(new Vector3f(0F, 1F, 0F));

@@ -20,7 +20,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public abstract class BlockBarrelExplosive extends Block implements IFuckingExplode {
-
     private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 16, 14);
 
     private final int popFuse;
@@ -72,7 +71,6 @@ public abstract class BlockBarrelExplosive extends Block implements IFuckingExpl
         for (Direction dir : Direction.VALUES) {
             if (level.getBlockState(pos.relative(dir)).is(Blocks.FIRE)) {
                 level.removeBlock(pos, false);
-
                 primeFromBlast(level, pos, null);
                 return;
             }

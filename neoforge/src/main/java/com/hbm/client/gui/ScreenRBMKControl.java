@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControl;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlManual;
 import com.hbm.inventory.container.MenuRBMKControl;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControl;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControlManual;
 import com.hbm.util.BobMathUtil;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -127,7 +127,6 @@ public class ScreenRBMKControl extends ScreenInfoContainer<MenuRBMKControl> {
                     playClick();
                     return true;
                 }
-
                 if (checkClick(mx, my, 28, 26 + k * 11, 12, 10)) {
                     sendColor(k);
                     playClick();
@@ -143,7 +142,7 @@ public class ScreenRBMKControl extends ScreenInfoContainer<MenuRBMKControl> {
         if (core == null) return;
         CompoundTag data = new CompoundTag();
         data.putDouble("level", level);
-        Services.NETWORK.sendToServer(new NbtControlPayload(core, data));
+        PacketWire.sendToServer(new NbtControlPayload(core, data));
     }
 
     private void sendColor(int ordinal) {
@@ -151,7 +150,7 @@ public class ScreenRBMKControl extends ScreenInfoContainer<MenuRBMKControl> {
         if (core == null) return;
         CompoundTag data = new CompoundTag();
         data.putInt("color", ordinal);
-        Services.NETWORK.sendToServer(new NbtControlPayload(core, data));
+        PacketWire.sendToServer(new NbtControlPayload(core, data));
     }
 
     private BlockPos corePos() {

@@ -9,6 +9,7 @@ import com.hbm.blocks.network.ConveyorBlockBase;
 import com.hbm.blocks.network.ConveyorLiftBlock;
 import com.hbm.blocks.network.ConveyorLiftPart;
 import com.mojang.math.OctahedralGroup;
+import com.mojang.math.Quadrant;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.renderer.block.dispatch.BlockModelRotation;
@@ -29,7 +30,6 @@ import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 
 public record ConveyorModel() implements SimpleBlockModel {
-
     private static final float LIP = 4F;
     private static final float INNER_MIN = 4F;
     private static final float INNER_MAX = 12F;
@@ -69,90 +69,21 @@ public record ConveyorModel() implements SimpleBlockModel {
                 BlockModel.base(block), facing, state.getValue(ConveyorBendableBlock.BEND), null);
     }
 
-    static void box(
-            List<ObjUnbakedGeometry.BoxQuad> builder,
-            ModelBaker baker,
-            ResolvedModel carrier,
-            TextureSlots slots,
-            ModelState turn,
-            String slot,
-            ConveyorUv.Uv[] windows,
-            float x0,
-            float y0,
-            float z0,
-            float x1,
-            float y1,
-            float z1) {
-        box(
-                builder,
-                baker,
-                carrier,
-                slots,
-                turn,
-                local -> slot,
-                windows,
-                null,
-                x0,
-                y0,
-                z0,
-                x1,
-                y1,
-                z1);
-    }
-
-    static void box(
+    public static void faces(
             List<ObjUnbakedGeometry.BoxQuad> builder,
             ModelBaker baker,
             ResolvedModel carrier,
             TextureSlots slots,
             ModelState turn,
             SlotBySide slotBySide,
-            ConveyorUv.Uv[] windows,
-            float x0,
-            float y0,
-            float z0,
-            float x1,
-            float y1,
-            float z1) {
-        box(
-                builder,
-                baker,
-                carrier,
-                slots,
-                turn,
-                slotBySide,
-                windows,
-                null,
-                x0,
-                y0,
-                z0,
-                x1,
-                y1,
-                z1);
-    }
-
-    static void box(
-            List<ObjUnbakedGeometry.BoxQuad> builder,
-            ModelBaker baker,
-            ResolvedModel carrier,
-            TextureSlots slots,
-            ModelState turn,
-            SlotBySide slotBySide,
-            ConveyorUv.Uv[] windows,
             @Nullable Direction culled,
-            float x0,
-            float y0,
-            float z0,
-            float x1,
-            float y1,
-            float z1) {
-        Vector3f from = new Vector3f(x0, y0, z0);
-        Vector3f to = new Vector3f(x1, y1, z1);
-
+            Vector3f from,
+            Vector3f to,
+            UvRotation[] uvs) {
         for (Direction local : Direction.VALUES) {
             Material.Baked material =
                     BlockModel.slot(baker, carrier, slots, slotBySide.slot(local));
-            ConveyorUv.Uv uv = windows[local.ordinal()];
+            UvRotation uv = uvs[local.ordinal()];
             BakedQuad quad =
                     Boxes.face(
                             baker,
@@ -174,19 +105,8 @@ public record ConveyorModel() implements SimpleBlockModel {
         }
     }
 
-    private static int[] rot(int down, int up, int north, int south, int west, int east) {
-        int[] rot = new int[6];
-        rot[Direction.DOWN.ordinal()] = down;
-        rot[Direction.UP.ordinal()] = up;
-        rot[Direction.NORTH.ordinal()] = north;
-        rot[Direction.SOUTH.ordinal()] = south;
-        rot[Direction.WEST.ordinal()] = west;
-        rot[Direction.EAST.ordinal()] = east;
-        return rot;
-    }
-
     @FunctionalInterface
-    interface SlotBySide {
+    public interface SlotBySide {
         String slot(Direction local);
     }
 
@@ -213,41 +133,56 @@ public record ConveyorModel() implements SimpleBlockModel {
                 TextureSlots slots,
                 ModelState turn) {
             if (bend == ConveyorBend.STRAIGHT) {
-
-                box(
+                final Vector3f from = new Vector3f(0F, 0F, 0F);
+                final Vector3f to = new Vector3f(16F, LIP, 16F);
+                faces(
                         builder,
                         baker,
                         carrier,
                         slots,
                         turn,
                         ConveyorModel::beltSlot,
-                        ConveyorUv.W0,
                         Direction.DOWN,
-                        0F,
-                        0F,
-                        0F,
-                        16F,
-                        LIP,
-                        16F);
+                        from,
+                        to,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(16.0F, 0.0F, 0.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(16.0F, 4.0F, 0.0F, 0.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0)
+                        });
                 return;
             }
 
             String curve = bend == ConveyorBend.LEFT ? CURVE_LEFT : CURVE_RIGHT;
-            box(
+            final Vector3f from2 = new Vector3f(0F, 0F, 0F);
+            final Vector3f to2 = new Vector3f(16F, LIP, 16F);
+            faces(
                     builder,
                     baker,
                     carrier,
                     slots,
                     turn,
                     local -> local.getAxis().isVertical() ? curve : SIDE,
-                    ConveyorUv.W1,
                     Direction.DOWN,
-                    0F,
-                    0F,
-                    0F,
-                    16F,
-                    LIP,
-                    16F);
+                    from2,
+                    to2,
+                    new UvRotation[] {
+                        new UvRotation(new CuboidFace.UVs(16.0F, 0.0F, 0.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0)
+                    });
         }
 
         private void lift(
@@ -257,169 +192,276 @@ public record ConveyorModel() implements SimpleBlockModel {
                 TextureSlots slots,
                 ModelState turn) {
             if (part == ConveyorLiftPart.TOP) {
-                box(
+                final Vector3f from = new Vector3f(0F, 0F, 0F);
+                final Vector3f to = new Vector3f(INNER_MIN, HEAD, 16F);
+                faces(
                         builder,
                         baker,
                         carrier,
                         slots,
                         turn,
-                        CONCRETE,
-                        ConveyorUv.W2,
-                        0F,
-                        0F,
-                        0F,
-                        INNER_MIN,
-                        HEAD,
-                        16F);
-                box(
+                        local -> CONCRETE,
+                        (Direction) null,
+                        from,
+                        to,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 16.0F, 4.0F, 0.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 8.0F, 4.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 8.0F, 4.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 8.0F, 16.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 8.0F, 16.0F, 16.0F), Quadrant.R0)
+                        });
+                final Vector3f from2 = new Vector3f(INNER_MAX, 0F, 0F);
+                final Vector3f to2 = new Vector3f(16F, HEAD, 16F);
+                faces(
                         builder,
                         baker,
                         carrier,
                         slots,
                         turn,
-                        CONCRETE,
-                        ConveyorUv.W3,
-                        INNER_MAX,
-                        0F,
-                        0F,
-                        16F,
-                        HEAD,
-                        16F);
-                box(
+                        local2 -> CONCRETE,
+                        (Direction) null,
+                        from2,
+                        to2,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 16.0F, 16.0F, 0.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 8.0F, 16.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 8.0F, 16.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 8.0F, 16.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 8.0F, 16.0F, 16.0F), Quadrant.R0)
+                        });
+                final Vector3f from3 = new Vector3f(INNER_MIN, 0F, 0F);
+                final Vector3f to3 = new Vector3f(INNER_MAX, LIP, STRIP);
+                faces(
                         builder,
                         baker,
                         carrier,
                         slots,
                         turn,
                         ConveyorModel::beltSlot,
-                        ConveyorUv.W4,
-                        INNER_MIN,
-                        0F,
-                        0F,
-                        INNER_MAX,
-                        LIP,
-                        STRIP);
+                        (Direction) null,
+                        from3,
+                        to3,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 6.0F, 12.0F, 0.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 6.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 4.0F, 4.0F, 0.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 12.0F, 6.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 12.0F, 6.0F, 16.0F), Quadrant.R0)
+                        });
                 return;
             }
 
             if (part == ConveyorLiftPart.BOTTOM) {
-
-                box(
+                final Vector3f from4 = new Vector3f(0F, 0F, INNER_MIN);
+                final Vector3f to4 = new Vector3f(INNER_MIN, LIP, INNER_MAX);
+                faces(
                         builder,
                         baker,
                         carrier,
                         slots,
                         turn,
-                        BELT,
-                        ConveyorUv.W5,
-                        0F,
-                        0F,
-                        INNER_MIN,
-                        INNER_MIN,
-                        LIP,
-                        INNER_MAX);
-                box(
+                        local3 -> BELT,
+                        (Direction) null,
+                        from4,
+                        to4,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 4.0F, 12.0F, 0.0F), Quadrant.R90),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R90),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 12.0F, 4.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 12.0F, 4.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0)
+                        });
+                final Vector3f from5 = new Vector3f(INNER_MAX, 0F, INNER_MIN);
+                final Vector3f to5 = new Vector3f(16F, LIP, INNER_MAX);
+                faces(
                         builder,
                         baker,
                         carrier,
                         slots,
                         turn,
-                        BELT,
-                        ConveyorUv.W6,
-                        INNER_MAX,
-                        0F,
-                        INNER_MIN,
-                        16F,
-                        LIP,
-                        INNER_MAX);
-                box(
+                        local4 -> BELT,
+                        (Direction) null,
+                        from5,
+                        to5,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 0.0F, 4.0F, 4.0F), Quadrant.R90),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 16.0F, 4.0F, 12.0F), Quadrant.R90),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0)
+                        });
+                final Vector3f from6 = new Vector3f(INNER_MIN, 0F, INNER_MAX);
+                final Vector3f to6 = new Vector3f(INNER_MAX, LIP, 16F);
+                faces(
                         builder,
                         baker,
                         carrier,
                         slots,
                         turn,
-                        BELT,
-                        ConveyorUv.W7,
-                        INNER_MIN,
-                        0F,
-                        INNER_MAX,
-                        INNER_MAX,
-                        LIP,
-                        16F);
+                        local5 -> BELT,
+                        (Direction) null,
+                        from6,
+                        to6,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 0.0F, 4.0F, 4.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0)
+                        });
             }
 
-            box(
+            final Vector3f from7 = new Vector3f(0F, 0F, 0F);
+            final Vector3f to7 = new Vector3f(16F, 16F, INNER_MIN);
+            faces(
                     builder,
                     baker,
                     carrier,
                     slots,
                     turn,
-                    CONCRETE,
-                    ConveyorUv.W8,
-                    0F,
-                    0F,
-                    0F,
-                    16F,
-                    16F,
-                    INNER_MIN);
-            box(
+                    local6 -> CONCRETE,
+                    (Direction) null,
+                    from7,
+                    to7,
+                    new UvRotation[] {
+                        new UvRotation(new CuboidFace.UVs(0.0F, 4.0F, 16.0F, 0.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 4.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 16.0F), Quadrant.R0)
+                    });
+            final Vector3f from8 = new Vector3f(0F, 0F, INNER_MAX);
+            final Vector3f to8 = new Vector3f(INNER_MIN, 16F, 16F);
+            faces(
                     builder,
                     baker,
                     carrier,
                     slots,
                     turn,
-                    CONCRETE,
-                    ConveyorUv.W9,
-                    0F,
-                    0F,
-                    INNER_MAX,
-                    INNER_MIN,
-                    16F,
-                    16F);
-            box(
+                    local7 -> CONCRETE,
+                    (Direction) null,
+                    from8,
+                    to8,
+                    new UvRotation[] {
+                        new UvRotation(new CuboidFace.UVs(0.0F, 16.0F, 4.0F, 12.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 12.0F, 4.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 0.0F, 4.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0)
+                    });
+            final Vector3f from9 = new Vector3f(INNER_MAX, 0F, INNER_MAX);
+            final Vector3f to9 = new Vector3f(16F, 16F, 16F);
+            faces(
                     builder,
                     baker,
                     carrier,
                     slots,
                     turn,
-                    CONCRETE,
-                    ConveyorUv.W10,
-                    INNER_MAX,
-                    0F,
-                    INNER_MAX,
-                    16F,
-                    16F,
-                    16F);
-            box(
+                    local8 -> CONCRETE,
+                    (Direction) null,
+                    from9,
+                    to9,
+                    new UvRotation[] {
+                        new UvRotation(new CuboidFace.UVs(12.0F, 16.0F, 16.0F, 12.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(12.0F, 12.0F, 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(12.0F, 0.0F, 16.0F, 16.0F), Quadrant.R0)
+                    });
+            final Vector3f from10 = new Vector3f(INNER_MIN, 0F, INNER_MIN);
+            final Vector3f to10 = new Vector3f(INNER_MAX, 16F, STRIP);
+            faces(
                     builder,
                     baker,
                     carrier,
                     slots,
                     turn,
-                    BELT,
-                    ConveyorUv.W11,
-                    INNER_MIN,
-                    0F,
-                    INNER_MIN,
-                    INNER_MAX,
-                    16F,
-                    STRIP);
+                    local9 -> BELT,
+                    (Direction) null,
+                    from10,
+                    to10,
+                    new UvRotation[] {
+                        new UvRotation(new CuboidFace.UVs(4.0F, 6.0F, 12.0F, 4.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(4.0F, 4.0F, 12.0F, 6.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(4.0F, 0.0F, 6.0F, 16.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(4.0F, 0.0F, 6.0F, 16.0F), Quadrant.R0)
+                    });
 
             if (part == ConveyorLiftPart.BOTTOM) {
-                box(
+                final Vector3f from11 = new Vector3f(INNER_MIN, 0F, STRIP);
+                final Vector3f to11 = new Vector3f(INNER_MAX, LIP, INNER_MAX);
+                faces(
                         builder,
                         baker,
                         carrier,
                         slots,
                         turn,
-                        IRON,
-                        ConveyorUv.W12,
-                        INNER_MIN,
-                        0F,
-                        STRIP,
-                        INNER_MAX,
-                        LIP,
-                        INNER_MAX);
+                        local10 -> IRON,
+                        (Direction) null,
+                        from11,
+                        to11,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 6.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 6.0F, 12.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(6.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(6.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0)
+                        });
             }
         }
 

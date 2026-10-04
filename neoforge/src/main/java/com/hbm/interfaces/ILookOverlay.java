@@ -6,6 +6,7 @@ package com.hbm.interfaces;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
@@ -16,11 +17,11 @@ public interface ILookOverlay {
 
     final class LookInfo {
 
-        private final List<String> lines = new ArrayList<>();
+        private final List<Component> lines = new ArrayList<>();
         private final List<Integer> colors = new ArrayList<>();
         private final List<Heading> headings = new ArrayList<>();
         private boolean shadowedLines = true;
-        private @Nullable String title;
+        private @Nullable Component title;
         private int titleColor = 0xFFFF00;
         private int bgColor = 0x404000;
         private int titleOffset = -10;
@@ -37,6 +38,10 @@ public interface ILookOverlay {
         }
 
         public LookInfo title(String title, int titleColor, int bgColor) {
+            return title(Component.literal(title), titleColor, bgColor);
+        }
+
+        public LookInfo title(Component title, int titleColor, int bgColor) {
             this.title = title;
             this.titleColor = titleColor;
             this.bgColor = bgColor;
@@ -44,8 +49,12 @@ public interface ILookOverlay {
         }
 
         public LookInfo titleOnly(String title, int titleColor, int bgColor, int offset) {
+            return titleOnly(Component.literal(title), titleColor, bgColor, offset);
+        }
+
+        public LookInfo titleOnly(Component title, int titleColor, int bgColor, int offset) {
             title(title, titleColor, bgColor);
-            this.titleOffset = offset;
+            titleOffset = offset;
             titleOnly = true;
             return this;
         }
@@ -55,6 +64,10 @@ public interface ILookOverlay {
         }
 
         public LookInfo heading(String text, int color, int bgColor, int offset) {
+            return heading(Component.literal(text), color, bgColor, offset);
+        }
+
+        public LookInfo heading(Component text, int color, int bgColor, int offset) {
             headings.add(new Heading(text, color, bgColor, offset));
             return this;
         }
@@ -77,12 +90,20 @@ public interface ILookOverlay {
         }
 
         public LookInfo line(String text, int rgb) {
+            return line(Component.literal(text), rgb);
+        }
+
+        public LookInfo line(Component text) {
+            return line(text, TextColor.WHITE.getValue());
+        }
+
+        public LookInfo line(Component text, int rgb) {
             lines.add(text);
             colors.add(rgb);
             return this;
         }
 
-        public @Nullable String getTitle() {
+        public @Nullable Component getTitle() {
             return title;
         }
 
@@ -102,7 +123,7 @@ public interface ILookOverlay {
             return lines.size();
         }
 
-        public String line(int i) {
+        public Component line(int i) {
             return lines.get(i);
         }
 
@@ -111,5 +132,5 @@ public interface ILookOverlay {
         }
     }
 
-    record Heading(String text, int color, int bgColor, int offset) {}
+    record Heading(Component text, int color, int bgColor, int offset) {}
 }

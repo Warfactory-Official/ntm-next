@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineICFController;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
@@ -10,9 +11,8 @@ import com.hbm.blocks.multiblock.AssembledMembers;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.MarkerPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineICFController;
 import com.hbm.util.BobMathUtil;
 import java.util.*;
 import net.minecraft.core.BlockPos;
@@ -133,7 +133,6 @@ public class MachineICFController extends Block
                 else if (b == ModBlocks.ICF_EMITTER.get()) emitters.add(p);
                 else if (b == ModBlocks.ICF_CAPACITOR.get()) capacitors.add(p);
                 else turbochargers.add(p);
-
                 stack.push(p.north());
                 stack.push(p.south());
                 stack.push(p.below());
@@ -148,7 +147,7 @@ public class MachineICFController extends Block
 
         if (!errors.isEmpty()) {
             if (player instanceof ServerPlayer sp) {
-                Services.NETWORK.sendTo(new MarkerPayload(0xff0000, 5000, 128.0, errors), sp);
+                PacketWire.sendTo(new MarkerPayload(0xff0000, 5000, 128.0, errors), sp);
             }
             return;
         }

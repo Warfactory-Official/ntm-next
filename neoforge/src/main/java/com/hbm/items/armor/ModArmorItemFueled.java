@@ -3,7 +3,6 @@
 
 package com.hbm.items.armor;
 
-import com.hbm.interfaces.ILookOverlay;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.items.ModDataComponents;
@@ -97,7 +96,6 @@ public class ModArmorItemFueled extends ModArmorItem implements IFluidContainerI
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-
         adder.accept(
                 Component.literal(
                                 NTMFluidProperties.clientName(fuel.get())

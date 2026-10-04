@@ -19,7 +19,6 @@ import net.minecraft.util.Mth;
 
 public class RenderCloudFleija extends EntityRenderer<EntityCloudFleija, RenderCloudFleija.State>
         implements ConcurrentRenderStateExtraction {
-
     private static final int CORE = ARGB.colorFromFloat(1F, 0F, 1F, 1F);
     private static final int SHELL = ARGB.colorFromFloat(1F, 0F, 0.125F, 0.125F);
 
@@ -85,7 +84,6 @@ public class RenderCloudFleija extends EntityRenderer<EntityCloudFleija, RenderC
         {
             double shockwave = 5 * baseScale;
             poseStack.scale((float) shockwave, (float) shockwave, (float) shockwave);
-
             float shockTint = Mth.clamp((1F - (float) ageScale) * 0.75F, 0F, 1F);
             submitSphere(
                     poseStack,

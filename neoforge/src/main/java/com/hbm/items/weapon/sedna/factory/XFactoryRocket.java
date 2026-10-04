@@ -17,8 +17,7 @@ import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
 import com.hbm.items.weapon.sedna.impl.ItemGunStinger;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
 import com.hbm.items.weapon.sedna.mags.MagazineSingleReload;
-import com.hbm.platform.Services;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -36,6 +35,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -76,7 +76,6 @@ public class XFactoryRocket {
             (entity) -> {
                 steeringAccelerate(entity, false);
             };
-
     public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_STANDARD_EXPLODE =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult && bullet.tickCount < 3) return;
@@ -374,8 +373,8 @@ public class XFactoryRocket {
                         for (Direction dir : Direction.VALUES) {
                             BlockPos neighbor = pos.relative(dir);
                             BlockState state = world.getBlockState(neighbor);
-                            if (Services.PLATFORM.isFlammable(
-                                    world, neighbor, state, dir.getOpposite())) {
+                            if (state.isFlammable(
+                                    (BlockGetter) world, neighbor, dir.getOpposite())) {
                                 world.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
                                 break;
                             }
@@ -401,7 +400,7 @@ public class XFactoryRocket {
         return original.clone();
     }
 
-    public static void init(IRegistrar r) {
+    public static void init() {
 
         rocket_template = new BulletConfig[5];
 
@@ -457,7 +456,7 @@ public class XFactoryRocket {
         }
 
         ModItems.GUN_PANZERSCHRECK =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_panzerschreck",
                         props ->
                                 new ItemGunBaseNT(
@@ -502,7 +501,7 @@ public class XFactoryRocket {
                         Item.Properties::new);
 
         ModItems.GUN_STINGER =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_stinger",
                         props ->
                                 new ItemGunStinger(
@@ -548,7 +547,7 @@ public class XFactoryRocket {
                         Item.Properties::new);
 
         ModItems.GUN_QUADRO =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_quadro",
                         props ->
                                 new ItemGunBaseNT(
@@ -594,7 +593,7 @@ public class XFactoryRocket {
                         Item.Properties::new);
 
         ModItems.GUN_MISSILE_LAUNCHER =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_missile_launcher",
                         props ->
                                 new ItemGunBaseNT(

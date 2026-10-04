@@ -3,10 +3,9 @@
 
 package com.hbm.data;
 
-import com.hbm.inventory.fluid.trait.FT_Combustible.FuelGrade;
+import com.hbm.blockentity.machine.rbmk.RBMKConfig;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.rbmk.RBMKConfig;
 import com.hbm.util.DataCodecs;
 import java.util.ArrayList;
 import java.util.List;

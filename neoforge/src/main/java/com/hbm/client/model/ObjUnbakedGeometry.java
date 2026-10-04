@@ -39,9 +39,7 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
     public static final String OVERLAY_SLOT = "overlay";
     public static final float RAW_OFFSET_Y = 0.5F;
     private static final int FULL_BRIGHT = 15;
-
     private static final float UV_EPS = 1.0e-4F;
-
     private static final int MAX_TILES = 64;
     private static final int CLIP_MAX = 12;
     private final @Nullable Identifier meshId;
@@ -58,7 +56,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
     private final String[] hidden;
     private final Overrides overrides;
     private final boolean smooth;
-
     private final Map<String, float[]> uvScales;
 
     public ObjUnbakedGeometry(
@@ -241,14 +238,12 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
 
     private static BakedQuad.MaterialInfo meshInfo(
             Material.Baked material, Transparency transparency, int tintIndex, int lightEmission) {
-
         return QuadLighting.ownBlock(
                 BakedQuad.MaterialInfo.of(
                         material, transparency, tintIndex, true, lightEmission, false));
     }
 
     private static BakedQuad.MaterialInfo fullBright(BakedQuad.MaterialInfo info) {
-
         var result =
                 new BakedQuad.MaterialInfo(
                         info.sprite(),
@@ -258,7 +253,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                         info.shade(),
                         FULL_BRIGHT,
                         info.ambientOcclusion());
-
         result.hbm$setLightOrigin(info.hbm$lightOrigin());
         return result;
     }
@@ -290,9 +284,7 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
             float offsetY,
             float offsetZ,
             Overrides overrides) {
-
         QuadCollection.Builder builder = new QuadCollection.Builder();
-
         QuadScratch scratch = new QuadScratch();
         for (Group g : groups) {
             Matrix4fc matrix = g.state().transformation().getMatrix();
@@ -313,7 +305,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                         float[] src = cut == null ? q : cut[f];
                         int at = cut == null ? base : 0;
                         float[] back = twoSided ? reversed(src, at) : null;
-
                         builder.addUnculledFace(
                                 makeQuad(
                                         scratch,
@@ -350,7 +341,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
             }
         }
         for (BoxQuad box : boxQuads) {
-
             BakedQuad q = box.quad();
             BakedQuad tinted =
                     box.color() == WHITE && box.origin() == QuadLighting.VANILLA
@@ -378,7 +368,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
             if (box.cull() == null) builder.addUnculledFace(tinted);
             else builder.addCulledFace(box.cull(), tinted);
         }
-
         return builder.build();
     }
 
@@ -465,7 +454,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                 overrides.emissive() == null ? info : fullBright(info);
 
         QuadCollection.Builder builder = new QuadCollection.Builder();
-
         QuadScratch scratch = new QuadScratch();
         for (GroupObject group : model.groups) {
             if (parts != null && !contains(parts, group.name)) continue;
@@ -483,7 +471,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                     float[] src = cut == null ? q : cut[f];
                     int at = cut == null ? base : 0;
                     float[] back = twoSided ? reversed(src, at) : null;
-
                     builder.addUnculledFace(
                             makeQuad(
                                     scratch,
@@ -515,9 +502,7 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                                         uv[0],
                                         uv[1],
                                         groupColor));
-
                     if (overlaySprite != null) {
-
                         builder.addUnculledFace(
                                 makeQuad(
                                         scratch,
@@ -537,7 +522,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                 }
             }
         }
-
         return builder.build();
     }
 
@@ -675,7 +659,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
             int v = base + i * GroupObject.STRIDE;
             Vector3f transformed =
                     normalMatrix.transform(normals[i].set(q[v + 5], q[v + 6], q[v + 7]));
-
             if (transformed.lengthSquared() < 1e-12F) {
                 normalMatrix.transform(transformed.set(direction.getUnitVec3f()));
             }
@@ -736,7 +719,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                 BakedNormals.of(
                         BakedNormals.pack(normals[0]), BakedNormals.pack(normals[1]),
                         BakedNormals.pack(normals[2]), BakedNormals.pack(normals[3]));
-
         return new BakedQuad(
                 new Vector3f(pos[0]),
                 new Vector3f(pos[1]),

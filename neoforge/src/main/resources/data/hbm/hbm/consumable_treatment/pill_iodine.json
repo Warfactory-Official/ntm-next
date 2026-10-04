@@ -1,0 +1,25 @@
+{
+  "actions": [
+    {
+      "type": "potion_sickness",
+      "seconds": 5
+    },
+    {
+      "type": "remove_effects",
+      "effects": [
+        "minecraft:blindness",
+        "minecraft:nausea",
+        "minecraft:mining_fatigue",
+        "minecraft:hunger",
+        "minecraft:slowness",
+        "minecraft:poison",
+        "minecraft:weakness",
+        "minecraft:wither",
+        "hbm:radiation"
+      ]
+    }
+  ],
+  "block_when_potion_sick": true,
+  "targets": "hbm:pill_iodine",
+  "trigger": "consume"
+}

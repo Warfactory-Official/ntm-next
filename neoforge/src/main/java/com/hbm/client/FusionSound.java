@@ -3,11 +3,11 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.AudioLoop;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionKlystron;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionKlystronCreative;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionMHDT;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionTorus;
+import com.hbm.blockentity.AudioLoop;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionKlystron;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionKlystronCreative;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionMHDT;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;

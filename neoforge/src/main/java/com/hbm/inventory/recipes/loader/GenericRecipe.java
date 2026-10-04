@@ -11,7 +11,7 @@ import com.hbm.inventory.recipes.ingredient.CountIngredient;
 import com.hbm.items.machine.ItemFluidIcon;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.DataCodecs;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -22,6 +22,7 @@ import java.util.function.Function;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ExtraCodecs;
@@ -36,7 +37,6 @@ import net.minecraft.world.level.block.Block;
 import org.jspecify.annotations.Nullable;
 
 public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRecipe {
-
     private @Nullable String name;
     public CountIngredient[] inputItem;
     public FluidStackNTM[] inputFluid = FluidStackNTM.EMPTY;
@@ -44,27 +44,19 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
     public int duration;
     public long power;
     public String autoSwitchGroup = null;
-
     public int order = Integer.MAX_VALUE;
-
     public List<String> conditions = List.of();
     protected String nameWrapper;
-
     protected WeightedList<Optional<ItemStackTemplate>>[] outputTemplate;
     protected Optional<ItemStackTemplate> iconTemplate = Optional.empty();
     protected boolean writeIcon = false;
-
     protected boolean iconFromFirstIngredient = false;
     protected boolean customLocalization = false;
-
     protected String[] authoredPools = null;
     protected String[] blueprintPools = null;
     protected String[] blueprintPools528 = null;
-
     protected ResourceKey<Recipe<?>> id;
-
     private volatile WeightedList<ItemStack>[] outputItem;
-
     private volatile ItemStack icon;
 
     protected GenericRecipe(@Nullable String name) {
@@ -79,7 +71,7 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
             Function<String, T> factory, boolean fixedGrid) {
         MapCodec<List<CountIngredient>> inputs =
                 fixedGrid
-                        ? MapCodec.unit(List.<CountIngredient>of())
+                        ? MapCodec.unit(List.of())
                         : CountIngredient.CODEC.listOf().optionalFieldOf("input_items", List.of());
         return RecordCodecBuilder.mapCodec(
                 i ->
@@ -271,7 +263,6 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
 
     public static <T extends GenericRecipe> StreamCodec<RegistryFriendlyByteBuf, T> streamCodec(
             Function<String, T> factory) {
-
         return StreamCodec.of(
                 (buf, recipe) -> {
                     buf.writeUtf(recipe.getInternalName());
@@ -308,7 +299,6 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
                             (b, pools) ->
                                     b.writeCollection(
                                             Arrays.asList(pools), FriendlyByteBuf::writeUtf));
-
                     buf.writeBoolean(
                             recipe.blueprintPools528 != null
                                     && recipe.blueprintPools == recipe.blueprintPools528);
@@ -396,7 +386,7 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
         return outputs.toArray(templateArray(0));
     }
 
-    protected static List<String> label(WeightedList<ItemStack> output) {
+    protected static List<Component> label(WeightedList<ItemStack> output) {
         List<Weighted<ItemStack>> entries = output.unwrap();
         List<Weighted<ItemStack>> real = new ArrayList<>(entries.size());
         for (Weighted<ItemStack> w : entries) if (!w.value().isEmpty()) real.add(w);
@@ -408,50 +398,52 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
         if (real.size() == 1) {
             Weighted<ItemStack> only = real.get(0);
             ItemStack stack = only.value();
-            float chance = total == 0 ? 1F : (float) only.weight() / (float) total;
-            return List.of(
-                    ChatFormatting.GRAY
-                            + ""
-                            + stack.getCount()
-                            + "x "
-                            + stack.getHoverName().getString()
-                            + (chance >= 1 ? "" : " (" + (int) (chance * 1000) / 10F + "%)"));
+            float chance = total == 0 ? 1.0F : (float) only.weight() / (float) total;
+            var line =
+                    Component.literal(stack.getCount() + "x ")
+                            .withStyle(ChatFormatting.GRAY)
+                            .append(stack.getHoverName());
+            if (chance < 1)
+                line.append(" (")
+                        .append(
+                                Component.translatable(
+                                        "unit.percent", (int) (chance * 1000) / 10.0F))
+                        .append(")");
+            return List.of(line);
         }
 
-        List<String> label = new ArrayList<>(real.size() + 1);
-        label.add("One of:");
+        List<Component> label = new ArrayList<>(real.size() + 1);
+        label.add(Component.translatable("gui.recipe.one_of"));
         for (Weighted<ItemStack> w : real) {
             ItemStack stack = w.value();
             float chance = (float) w.weight() / (float) total;
             label.add(
-                    "  "
-                            + ChatFormatting.GRAY
-                            + stack.getCount()
-                            + "x "
-                            + stack.getHoverName().getString()
-                            + " ("
-                            + (int) (chance * 1000F) / 10F
-                            + "%)");
+                    Component.literal("  " + stack.getCount() + "x ")
+                            .withStyle(ChatFormatting.GRAY)
+                            .append(stack.getHoverName())
+                            .append(" (")
+                            .append(
+                                    Component.translatable(
+                                            "unit.percent", (int) (chance * 1000.0F) / 10.0F))
+                            .append(")"));
         }
         return label;
     }
 
-    private static String fluidLine(FluidStackNTM fluid) {
-        String pressurePart =
-                fluid.pressure() == 0
-                        ? ""
-                        : " "
-                                + I18nUtil.resolveKey("gui.recipe.atPressure")
-                                + " "
-                                + ChatFormatting.RED
-                                + fluid.pressure()
-                                + " PU";
-        return ChatFormatting.BLUE
-                + ""
-                + fluid.amount()
-                + "mB "
-                + NTMFluidProperties.getDisplayName(fluid.type()).getString()
-                + pressurePart;
+    private static Component fluidLine(FluidStackNTM fluid) {
+        var line =
+                Component.translatable("unit.millibuckets", fluid.amount())
+                        .withStyle(ChatFormatting.BLUE)
+                        .append(" ")
+                        .append(NTMFluidProperties.getDisplayName(fluid.type()));
+        if (fluid.pressure() != 0)
+            line.append(" ")
+                    .append(Component.translatable("gui.recipe.atPressure"))
+                    .append(" ")
+                    .append(
+                            Component.translatable("unit.pressure", fluid.pressure())
+                                    .withStyle(ChatFormatting.RED));
+        return line;
     }
 
     public void materialize() {
@@ -466,7 +458,6 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
                 }
                 built[i] = slot.build();
             }
-
             outputItem = built;
         }
         iconTemplate.ifPresent(itemStackTemplate -> icon = itemStackTemplate.create());
@@ -510,14 +501,14 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
     @SafeVarargs
     public final GenericRecipe outputTemplates(
             WeightedList<Optional<ItemStackTemplate>>... output) {
-        this.outputTemplate = output;
+        outputTemplate = output;
         return this;
     }
 
     public GenericRecipe outputTemplates(ItemStackTemplate... output) {
         WeightedList<Optional<ItemStackTemplate>>[] slots = templateArray(output.length);
         for (int i = 0; i < output.length; i++) slots[i] = WeightedList.of(Optional.of(output[i]));
-        this.outputTemplate = slots;
+        outputTemplate = slots;
         return this;
     }
 
@@ -540,7 +531,7 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
     }
 
     public GenericRecipe setNameWrapper(String wrapper) {
-        this.nameWrapper = wrapper;
+        nameWrapper = wrapper;
         return this;
     }
 
@@ -549,7 +540,7 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
     }
 
     public GenericRecipe setNamed() {
-        this.customLocalization = true;
+        customLocalization = true;
         return this;
     }
 
@@ -559,41 +550,40 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
     }
 
     public GenericRecipe setGroup(String autoSwitch) {
-        this.autoSwitchGroup = autoSwitch;
+        autoSwitchGroup = autoSwitch;
         return this;
     }
 
     public GenericRecipe inputItems(CountIngredient... input) {
-        this.inputItem = input;
+        inputItem = input;
         return this;
     }
 
     public GenericRecipe inputFluids(FluidStackNTM... input) {
-        this.inputFluid = input;
+        inputFluid = input;
         return this;
     }
 
     public GenericRecipe outputFluids(FluidStackNTM... output) {
-        this.outputFluid = output;
+        outputFluid = output;
         return this;
     }
 
     @SafeVarargs
     public final GenericRecipe outputItems(WeightedList<ItemStack>... output) {
-        this.outputItem = output;
+        outputItem = output;
         return this;
     }
 
     public GenericRecipe outputItems(ItemStack... output) {
-
         WeightedList<ItemStack>[] built = outputArray(output.length);
         for (int i = 0; i < output.length; i++) built[i] = Outputs.fixed(output[i]);
-        this.outputItem = built;
+        outputItem = built;
         return this;
     }
 
     public GenericRecipe setIconToFirstIngredient() {
-        this.iconFromFirstIngredient = true;
+        iconFromFirstIngredient = true;
         return this;
     }
 
@@ -606,13 +596,13 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
     }
 
     public GenericRecipe setPools(String... pools) {
-        this.authoredPools = pools;
-        this.blueprintPools = pools;
+        authoredPools = pools;
+        blueprintPools = pools;
         return this;
     }
 
     public GenericRecipe setPools528(String... pools) {
-        this.blueprintPools528 = pools;
+        blueprintPools528 = pools;
         return this;
     }
 
@@ -639,7 +629,6 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
                 List<Weighted<ItemStack>> entries = outputs[0].unwrap();
                 if (!entries.isEmpty()) icon = held = entries.get(0).value();
             } else if (outputFluid.length > 0) {
-
                 icon = held = ItemFluidIcon.make(outputFluid[0]);
             }
         }
@@ -647,14 +636,14 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
     }
 
     public GenericRecipe setIcon(ItemStackTemplate icon) {
-        this.iconTemplate = Optional.of(icon);
-        this.writeIcon = true;
+        iconTemplate = Optional.of(icon);
+        writeIcon = true;
         return this;
     }
 
     public GenericRecipe setIcon(ItemStack icon) {
         this.icon = icon;
-        this.writeIcon = true;
+        writeIcon = true;
         return this;
     }
 
@@ -674,24 +663,27 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
         return held;
     }
 
-    public String getLocalizedName() {
-        String localized;
+    public Component getLocalizedName() {
+        Component localized;
         if (customLocalization) {
-            localized = I18nUtil.resolveKey(getInternalName());
+            localized = Component.translatable(getInternalName());
         } else {
             ItemStack ic = getIcon();
-            localized = ic.isEmpty() ? getInternalName() : ic.getHoverName().getString();
+            localized = ic.isEmpty() ? Component.literal(getInternalName()) : ic.getHoverName();
         }
-        if (nameWrapper != null) localized = I18nUtil.resolveKey(nameWrapper, localized);
+        if (nameWrapper != null) localized = Component.translatable(nameWrapper, localized);
         return localized;
     }
 
     public boolean matchesSearch(String substring) {
-        return getLocalizedName().toLowerCase(Locale.US).contains(substring.toLowerCase(Locale.US));
+        return getLocalizedName()
+                .getString()
+                .toLowerCase(Locale.US)
+                .contains(substring.toLowerCase(Locale.US));
     }
 
-    public List<String> print() {
-        List<String> list = new ArrayList<>();
+    public List<Component> print() {
+        List<Component> list = new ArrayList<>();
         header(list);
         autoSwitch(list);
         duration(list);
@@ -701,67 +693,78 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
         return list;
     }
 
-    protected void header(List<String> list) {
-        list.add(ChatFormatting.YELLOW + getLocalizedName());
-        if (ModifierKeys.leftShiftHeld())
-            list.add(ChatFormatting.DARK_GRAY + "Internal: " + getInternalName());
+    protected void header(List<Component> list) {
+        list.add(getLocalizedName().copy().withStyle(ChatFormatting.YELLOW));
+        if (ModifierKeys.detailsHeld())
+            list.add(
+                    Component.translatable("gui.recipe.internal", getInternalName())
+                            .withStyle(ChatFormatting.DARK_GRAY));
     }
 
-    protected void autoSwitch(List<String> list) {
+    protected void autoSwitch(List<Component> list) {
         if (autoSwitchGroup != null) {
-            for (String line :
-                    I18nUtil.resolveKeyArray("autoswitch", I18nUtil.resolveKey(autoSwitchGroup))) {
-                list.add(ChatFormatting.GOLD + line);
+            for (Component line :
+                    TooltipStyle.lines(
+                            Component.translatable(
+                                    "autoswitch", Component.translatable(autoSwitchGroup)))) {
+                list.add(line.copy().withStyle(ChatFormatting.GOLD));
             }
         }
     }
 
-    protected void duration(List<String> list) {
+    protected void duration(List<Component> list) {
         if (duration > 0) {
             list.add(
-                    ChatFormatting.RED
-                            + I18nUtil.resolveKey("gui.recipe.duration")
-                            + ": "
-                            + duration / 20D
-                            + "s");
+                    Component.translatable("gui.recipe.duration")
+                            .append(": ")
+                            .append(Component.translatable("unit.seconds", duration / 20.0D))
+                            .withStyle(ChatFormatting.RED));
         }
     }
 
-    protected void power(List<String> list) {
+    protected void power(List<Component> list) {
         if (power > 0) {
             list.add(
-                    ChatFormatting.RED
-                            + I18nUtil.resolveKey("gui.recipe.consumption")
-                            + ": "
-                            + BobMathUtil.getShortNumber(power)
-                            + "HE/t");
+                    Component.translatable("gui.recipe.consumption")
+                            .append(": ")
+                            .append(
+                                    Component.translatable(
+                                            "unit.energy_per_tick",
+                                            BobMathUtil.getShortNumber(power)))
+                            .withStyle(ChatFormatting.RED));
         }
     }
 
-    protected void input(List<String> list) {
-        list.add(ChatFormatting.BOLD + I18nUtil.resolveKey("gui.recipe.input") + ":");
+    protected void input(List<Component> list) {
+        list.add(
+                Component.translatable("gui.recipe.input")
+                        .append(":")
+                        .withStyle(ChatFormatting.BOLD));
         if (inputItem != null)
             for (CountIngredient ci : inputItem) {
                 ItemStack display = ci.extractForCyclingDisplay(20);
                 if (display.isEmpty()) continue;
                 list.add(
-                        "  "
-                                + ChatFormatting.GRAY
-                                + display.getCount()
-                                + "x "
-                                + display.getHoverName().getString());
+                        Component.literal("  " + display.getCount() + "x ")
+                                .withStyle(ChatFormatting.GRAY)
+                                .append(display.getHoverName()));
             }
-        for (FluidStackNTM fluid : inputFluid) list.add("  " + fluidLine(fluid));
+        for (FluidStackNTM fluid : inputFluid)
+            list.add(Component.literal("  ").append(fluidLine(fluid)));
     }
 
-    protected void output(List<String> list) {
-        list.add(ChatFormatting.BOLD + I18nUtil.resolveKey("gui.recipe.output") + ":");
+    protected void output(List<Component> list) {
+        list.add(
+                Component.translatable("gui.recipe.output")
+                        .append(":")
+                        .withStyle(ChatFormatting.BOLD));
         WeightedList<ItemStack>[] outputs = outputItems();
         if (outputs != null)
             for (WeightedList<ItemStack> slot : outputs) {
-                for (String line : label(slot)) list.add("  " + line);
+                for (Component line : label(slot)) list.add(Component.literal("  ").append(line));
             }
-        for (FluidStackNTM fluid : outputFluid) list.add("  " + fluidLine(fluid));
+        for (FluidStackNTM fluid : outputFluid)
+            list.add(Component.literal("  ").append(fluidLine(fluid)));
     }
 
     @Override

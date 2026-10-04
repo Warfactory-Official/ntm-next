@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.machine.BlockEntityHeatBoilerBase;
+import com.hbm.blockentity.machine.BlockEntityHeatBoilerBase;
 
 public final class BoilerSound {
 

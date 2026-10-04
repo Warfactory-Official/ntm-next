@@ -4,8 +4,9 @@
 package com.hbm.handler.radiation;
 
 import com.hbm.interfaces.ServerThread;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.RadVisSnapshotPayload;
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgeServerEvents;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import java.util.BitSet;
 import java.util.HashMap;
@@ -34,8 +35,8 @@ public final class RadVisServer {
     private RadVisServer() {}
 
     public static void init() {
-        Services.SERVER.onPlayerDisconnect(player -> WATCHES.remove(player.getUUID()));
-        Services.SERVER.onServerStopping(server -> WATCHES.clear());
+        NeoForgeServerEvents.onPlayerDisconnect(player -> WATCHES.remove(player.getUUID()));
+        NeoForgeServerEvents.onServerStopping(server -> WATCHES.clear());
     }
 
     public static boolean allowed(ServerPlayer player) {
@@ -83,8 +84,7 @@ public final class RadVisServer {
                 watch.sent.clear();
                 watch.dimension = level.dimension();
             }
-            Services.NETWORK.sendTo(
-                    new RadVisSnapshotPayload(snap, layouts(snap, watch.sent)), player);
+            PacketWire.sendTo(new RadVisSnapshotPayload(snap, layouts(snap, watch.sent)), player);
         }
     }
 

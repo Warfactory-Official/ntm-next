@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityForceField;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.BlockEntityForceField;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.pipeline.ColorTargetState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
@@ -29,7 +29,6 @@ import org.jspecify.annotations.Nullable;
 public class RenderMachineForceField
         implements BlockEntityRenderer<BlockEntityForceField, RenderMachineForceField.State>,
                 ConcurrentRenderStateExtraction {
-
     static final RenderPipeline SHELL_PIPELINE =
             WorldRenderPipeline.of(
                     RenderPipeline.builder(RenderPipelines.LINES_SNIPPET)
@@ -167,7 +166,6 @@ public class RenderMachineForceField
         state.radius = be.radius;
         state.color = ARGB.opaque(be.color);
         state.up = be.isOn && be.health > 0 && be.power > 0 && be.cooldown == 0;
-
         state.spin = (float) ((GameTime.now() / 10.0D) % 360.0D);
     }
 
@@ -177,7 +175,6 @@ public class RenderMachineForceField
         int light = state.lightCoords;
 
         ps.pushPose();
-
         ps.translate(0.5D, 0.0D, 0.5D);
         ps.mulPose(Axis.YP.rotationDegrees(180F));
         ps.translate(0.0D, 0.5D, 0.0D);

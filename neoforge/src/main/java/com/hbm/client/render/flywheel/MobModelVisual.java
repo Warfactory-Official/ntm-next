@@ -121,7 +121,6 @@ public final class MobModelVisual<T extends LivingEntity, S extends LivingEntity
                 OverlayTexture.pack(
                         OverlayTexture.u(spec.whiteOverlay().applyAsFloat(state)),
                         OverlayTexture.v(state.hasRedOverlay));
-
         if (written && !revealed && !shown && light == lastLight && overlay == lastOverlay) return;
         lastLight = light;
         lastOverlay = overlay;

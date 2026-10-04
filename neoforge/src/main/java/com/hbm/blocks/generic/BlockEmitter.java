@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityEmitter;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.interfaces.IToolable;
-import com.hbm.tileentity.BlockEntityEmitter;
 import com.hbm.util.ColorUtil;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;

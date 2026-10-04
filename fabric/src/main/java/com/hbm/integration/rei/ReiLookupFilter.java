@@ -28,7 +28,6 @@ final class ReiLookupFilter {
         if (search.getCategories().contains(category)) return true;
         boolean refused = false;
         for (EntryStack<?> looked : search.getUsagesFor()) {
-
             if (workstation(category, looked)) return true;
             if (!answers(filter, looked, RecipePage.Lookup.USES)) refused = true;
             else if (names(display.getInputEntries(), looked)) return true;

@@ -3,8 +3,8 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageMono;
 import com.hbm.inventory.slot.SlotPattern;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageMono;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerInput;

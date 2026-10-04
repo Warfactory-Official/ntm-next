@@ -3,10 +3,10 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKIndicator;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKIndicator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
@@ -125,7 +125,6 @@ public final class ScreenRBMKIndicator extends Screen {
     public void extractBackground(
             GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
         super.extractBackground(graphics, mouseX, mouseY, partialTick);
-
         graphics.blit(
                 RenderPipelines.GUI_TEXTURED,
                 texture,
@@ -253,7 +252,6 @@ public final class ScreenRBMKIndicator extends Screen {
         data.putByte("polling", pollingMask);
 
         for (int i = 0; i < LAMPS; i++) {
-
             try {
                 data.putInt("color" + i, Integer.parseInt(color[i].getValue(), 16));
             } catch (Exception ex) {
@@ -269,7 +267,7 @@ public final class ScreenRBMKIndicator extends Screen {
             } catch (Exception ex) {
             }
         }
-        Services.NETWORK.sendToServer(new NbtControlPayload(indicator.getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(indicator.getBlockPos(), data));
     }
 
     @Override

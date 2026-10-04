@@ -6,17 +6,18 @@ package com.hbm.inventory.recipes.crafting;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.network.FluidPipeBlock;
 import com.hbm.blocks.network.FluidPipeBlockItem;
+import com.hbm.inventory.recipes.ingredient.RecipeInputState;
+import com.hbm.items.ModDataComponents;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 
-public class DuctUntypeRecipe extends CustomRecipe {
+public class DuctUntypeRecipe extends HbmCustomRecipe {
 
     public static final DuctUntypeRecipe INSTANCE = new DuctUntypeRecipe();
     public static final MapCodec<DuctUntypeRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
@@ -26,7 +27,7 @@ public class DuctUntypeRecipe extends CustomRecipe {
             new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
     @Override
-    public boolean matches(CraftingInput input, Level level) {
+    protected boolean matchesInput(CraftingInput input, Level level) {
         boolean typedDuct = false;
         for (int slot = 0; slot < input.size(); slot++) {
             ItemStack stack = input.getItem(slot);
@@ -37,6 +38,11 @@ public class DuctUntypeRecipe extends CustomRecipe {
             typedDuct = true;
         }
         return typedDuct;
+    }
+
+    @Override
+    public boolean acceptsInputState(CraftingInput input, int slot, ItemStack output) {
+        return RecipeInputState.only(input.getItem(slot), ModDataComponents.FLUID_CONTENT.get());
     }
 
     @Override

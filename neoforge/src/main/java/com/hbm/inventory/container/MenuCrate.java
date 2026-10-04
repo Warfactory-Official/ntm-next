@@ -3,16 +3,21 @@
 
 package com.hbm.inventory.container;
 
-import com.hbm.tileentity.machine.storage.BlockEntityCrate;
-import com.hbm.tileentity.machine.storage.CrateType;
+import com.hbm.blockentity.machine.storage.BlockEntityCrate;
+import com.hbm.blockentity.machine.storage.CrateType;
+import com.hbm.platform.SophisticatedCoreNesting;
+import com.hbm.tags.HbmItemTags;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ShulkerBoxSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 
 public class MenuCrate extends NtmContainerMenu {
 
@@ -36,7 +41,24 @@ public class MenuCrate extends NtmContainerMenu {
                 int slot = col + row * type.columns;
                 addSlot(
                         new ShulkerBoxSlot(
-                                container, slot, type.crateX + col * 18, type.crateY + row * 18));
+                                container, slot, type.crateX + col * 18, type.crateY + row * 18) {
+                            @Override
+                            public boolean mayPlace(ItemStack stack) {
+                                return (stack.canFitInsideContainerItems()
+                                                && !stack.is(HbmItemTags.NO_CONTAINER_NESTING)
+                                                && !stack.has(DataComponents.CONTAINER)
+                                                && !stack.has(DataComponents.BUNDLE_CONTENTS)
+                                                && (stack.isEmpty()
+                                                        || stack.getCapability(
+                                                                        Capabilities.Item.ITEM,
+                                                                        ItemAccess.forStack(stack))
+                                                                == null)
+                                                && (!ModList.get().isLoaded("sophisticatedcore")
+                                                        || !SophisticatedCoreNesting.hasStorage(
+                                                                stack)))
+                                        && super.mayPlace(stack);
+                            }
+                        });
             }
         }
 

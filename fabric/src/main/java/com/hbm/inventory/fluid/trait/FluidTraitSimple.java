@@ -3,9 +3,9 @@
 
 package com.hbm.inventory.fluid.trait;
 
-import com.hbm.util.I18nUtil;
 import java.util.List;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 
 public final class FluidTraitSimple {
 
@@ -18,12 +18,14 @@ public final class FluidTraitSimple {
         private FT_Gaseous() {}
 
         @Override
-        public void addInfoHidden(List<String> info) {
+        public void addInfoHidden(List<Component> info) {
             info.add(
-                    ChatFormatting.BLUE
-                            + "["
-                            + I18nUtil.resolveKey("hbmfluid.trait.gaseous")
-                            + "]");
+                    Component.empty()
+                            .append(Component.literal("[").withStyle(ChatFormatting.BLUE))
+                            .append(
+                                    Component.translatable("hbmfluid.trait.gaseous")
+                                            .withStyle(ChatFormatting.BLUE))
+                            .append(Component.literal("]").withStyle(ChatFormatting.BLUE)));
         }
     }
 
@@ -34,12 +36,14 @@ public final class FluidTraitSimple {
         private FT_Gaseous_ART() {}
 
         @Override
-        public void addInfoHidden(List<String> info) {
+        public void addInfoHidden(List<Component> info) {
             info.add(
-                    ChatFormatting.BLUE
-                            + "["
-                            + I18nUtil.resolveKey("hbmfluid.trait.gaseousRoom")
-                            + "]");
+                    Component.empty()
+                            .append(Component.literal("[").withStyle(ChatFormatting.BLUE))
+                            .append(
+                                    Component.translatable("hbmfluid.trait.gaseousRoom")
+                                            .withStyle(ChatFormatting.BLUE))
+                            .append(Component.literal("]").withStyle(ChatFormatting.BLUE)));
         }
     }
 
@@ -50,9 +54,14 @@ public final class FluidTraitSimple {
         private FT_Liquid() {}
 
         @Override
-        public void addInfoHidden(List<String> info) {
+        public void addInfoHidden(List<Component> info) {
             info.add(
-                    ChatFormatting.BLUE + "[" + I18nUtil.resolveKey("hbmfluid.trait.liquid") + "]");
+                    Component.empty()
+                            .append(Component.literal("[").withStyle(ChatFormatting.BLUE))
+                            .append(
+                                    Component.translatable("hbmfluid.trait.liquid")
+                                            .withStyle(ChatFormatting.BLUE))
+                            .append(Component.literal("]").withStyle(ChatFormatting.BLUE)));
         }
     }
 
@@ -63,12 +72,14 @@ public final class FluidTraitSimple {
         private FT_Viscous() {}
 
         @Override
-        public void addInfoHidden(List<String> info) {
+        public void addInfoHidden(List<Component> info) {
             info.add(
-                    ChatFormatting.BLUE
-                            + "["
-                            + I18nUtil.resolveKey("hbmfluid.trait.viscous")
-                            + "]");
+                    Component.empty()
+                            .append(Component.literal("[").withStyle(ChatFormatting.BLUE))
+                            .append(
+                                    Component.translatable("hbmfluid.trait.viscous")
+                                            .withStyle(ChatFormatting.BLUE))
+                            .append(Component.literal("]").withStyle(ChatFormatting.BLUE)));
         }
     }
 
@@ -80,8 +91,12 @@ public final class FluidTraitSimple {
         private FT_Plasma() {}
 
         @Override
-        public void addInfoHidden(List<String> info) {
-            info.add(ChatFormatting.LIGHT_PURPLE + "[Plasma]");
+        public void addInfoHidden(List<Component> info) {
+            info.add(
+                    Component.empty()
+                            .append(
+                                    Component.literal("[Plasma]")
+                                            .withStyle(ChatFormatting.LIGHT_PURPLE)));
         }
     }
 
@@ -92,12 +107,14 @@ public final class FluidTraitSimple {
         private FT_Amat() {}
 
         @Override
-        public void addInfo(List<String> info) {
+        public void addInfo(List<Component> info) {
             info.add(
-                    ChatFormatting.DARK_RED
-                            + "["
-                            + I18nUtil.resolveKey("hbmfluid.trait.antimatter")
-                            + "]");
+                    Component.empty()
+                            .append(Component.literal("[").withStyle(ChatFormatting.DARK_RED))
+                            .append(
+                                    Component.translatable("hbmfluid.trait.antimatter")
+                                            .withStyle(ChatFormatting.DARK_RED))
+                            .append(Component.literal("]").withStyle(ChatFormatting.DARK_RED)));
         }
     }
 
@@ -108,12 +125,14 @@ public final class FluidTraitSimple {
         private FT_LeadContainer() {}
 
         @Override
-        public void addInfo(List<String> info) {
+        public void addInfo(List<Component> info) {
             info.add(
-                    ChatFormatting.DARK_RED
-                            + "["
-                            + I18nUtil.resolveKey("hbmfluid.trait.leadContainer")
-                            + "]");
+                    Component.empty()
+                            .append(Component.literal("[").withStyle(ChatFormatting.DARK_RED))
+                            .append(
+                                    Component.translatable("hbmfluid.trait.leadContainer")
+                                            .withStyle(ChatFormatting.DARK_RED))
+                            .append(Component.literal("]").withStyle(ChatFormatting.DARK_RED)));
         }
     }
 
@@ -124,12 +143,14 @@ public final class FluidTraitSimple {
         private FT_Delicious() {}
 
         @Override
-        public void addInfoHidden(List<String> info) {
+        public void addInfoHidden(List<Component> info) {
             info.add(
-                    ChatFormatting.DARK_GREEN
-                            + "["
-                            + I18nUtil.resolveKey("hbmfluid.trait.delicious")
-                            + "]");
+                    Component.empty()
+                            .append(Component.literal("[").withStyle(ChatFormatting.DARK_GREEN))
+                            .append(
+                                    Component.translatable("hbmfluid.trait.delicious")
+                                            .withStyle(ChatFormatting.DARK_GREEN))
+                            .append(Component.literal("]").withStyle(ChatFormatting.DARK_GREEN)));
         }
     }
 
@@ -140,12 +161,14 @@ public final class FluidTraitSimple {
         private FT_Unsiphonable() {}
 
         @Override
-        public void addInfoHidden(List<String> info) {
+        public void addInfoHidden(List<Component> info) {
             info.add(
-                    ChatFormatting.BLUE
-                            + "["
-                            + I18nUtil.resolveKey("hbmfluid.trait.unsiphonable")
-                            + "]");
+                    Component.empty()
+                            .append(Component.literal("[").withStyle(ChatFormatting.BLUE))
+                            .append(
+                                    Component.translatable("hbmfluid.trait.unsiphonable")
+                                            .withStyle(ChatFormatting.BLUE))
+                            .append(Component.literal("]").withStyle(ChatFormatting.BLUE)));
         }
     }
 

@@ -38,7 +38,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityMissileCustom extends EntityMissileBaseNT {
-
     private static final EntityDataAccessor<ItemStack> WARHEAD =
             SynchedEntityData.defineId(EntityMissileCustom.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<ItemStack> FUSELAGE =
@@ -118,7 +117,6 @@ public class EntityMissileCustom extends EntityMissileBaseNT {
 
     @Override
     public void tick() {
-
         WarheadType warhead = getWarheadType();
         if (warhead != null && warhead.updateCustom != null) {
             warhead.updateCustom.accept(this);
@@ -138,7 +136,6 @@ public class EntityMissileCustom extends EntityMissileBaseNT {
 
         ItemCustomMissilePart fuselage = getPart(FUSELAGE);
         FuelType fuel = fuselage != null ? fuselage.fuelType() : null;
-
         if (fuel == null) return;
 
         ClientEffects.Contrail contrail =
@@ -161,7 +158,6 @@ public class EntityMissileCustom extends EntityMissileBaseNT {
 
     @Override
     public void onMissileImpact(BlockHitResult mop) {
-
         WarheadType type = getWarheadType();
         float strength = getWarheadStrength();
 
@@ -231,7 +227,6 @@ public class EntityMissileCustom extends EntityMissileBaseNT {
                 break;
             case TAINT:
                 int r = (int) strength;
-
                 for (int i = 0; i < r * 10; i++) {
                     BlockPos pos =
                             new BlockPos(
@@ -263,7 +258,6 @@ public class EntityMissileCustom extends EntityMissileBaseNT {
             case TURBINE:
                 ExplosionLarge.explode(level(), getX(), getY(), getZ(), 10, true, false, true);
                 int count = (int) strength;
-
                 Vec3 fan = new Vec3(0.5D, 0D, 0D);
                 for (int i = 0; i < count; i++) {
                     level().addFreshEntity(

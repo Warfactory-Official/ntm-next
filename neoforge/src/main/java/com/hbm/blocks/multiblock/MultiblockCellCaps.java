@@ -7,14 +7,15 @@ import com.hbm.api.energymk2.EnergyCaps;
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.fluidmk2.FluidCaps;
 import com.hbm.api.fluidmk2.IFluidHandlerMK2;
+import com.hbm.blockentity.machine.fusion.FusionPorts;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.capability.NtmCapabilities;
 import com.hbm.capability.NtmContracts.Contract;
 import com.hbm.capability.NtmContracts;
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgeCaps;
 import com.hbm.registration.RegistryHandle;
-import com.hbm.tileentity.machine.fusion.FusionPorts;
 import java.util.List;
+import java.util.function.Supplier;
 import net.minecraft.world.level.block.Block;
 
 public final class MultiblockCellCaps {
@@ -33,12 +34,10 @@ public final class MultiblockCellCaps {
                         NtmContracts.ENTERABLE)) {
             proxy(contract, MultiblockSurface::coreOfFoldedCell);
         }
-
         for (Contract<?> contract :
                 List.of(NtmContracts.ROR_VALUE_PROVIDER, NtmContracts.ROR_INTERACTIVE)) {
             proxy(contract, selfCelled, MultiblockSurface::rorCoreOfCell);
         }
-
         proxy(
                 NtmContracts.INVENTORY,
                 selfCelled,
@@ -46,52 +45,55 @@ public final class MultiblockCellCaps {
                         MultiblockSurface.proxyCoreOfCell(
                                 level, pos, state, BlockMultiblockCore.PASSIVE_ITEMS));
         for (RegistryHandle<? extends Block> cell : CELLS) {
-
-            Services.CAPS.registerBlockProvider(
-                    EnergyCaps.RECEIVER,
-                    cell,
-                    (level, pos, state, be, side) ->
-                            NtmCapabilities.fullSurfaceCap(
-                                    level,
-                                    pos,
-                                    state,
-                                    side,
-                                    IEnergyHandlerMK2.class,
-                                    NtmCapabilities.CapRole.POWER_IN));
-            Services.CAPS.registerBlockProvider(
-                    EnergyCaps.PROVIDER,
-                    cell,
-                    (level, pos, state, be, side) ->
-                            NtmCapabilities.fullSurfaceCap(
-                                    level,
-                                    pos,
-                                    state,
-                                    side,
-                                    IEnergyHandlerMK2.class,
-                                    NtmCapabilities.CapRole.POWER_OUT));
-            Services.CAPS.registerBlockProvider(
-                    FluidCaps.RECEIVER,
-                    cell,
-                    (level, pos, state, be, face) ->
-                            NtmCapabilities.fullSurfaceCap(
-                                    level,
-                                    pos,
-                                    state,
-                                    face.side(),
-                                    IFluidHandlerMK2.class,
-                                    NtmCapabilities.CapRole.FLUID_IN));
-            Services.CAPS.registerBlockProvider(
-                    FluidCaps.PROVIDER,
-                    cell,
-                    (level, pos, state, be, face) ->
-                            NtmCapabilities.fullSurfaceCap(
-                                    level,
-                                    pos,
-                                    state,
-                                    face.side(),
-                                    IFluidHandlerMK2.class,
-                                    NtmCapabilities.CapRole.FLUID_OUT));
-            Services.CAPS.exposeItemAtBlock(cell);
+            NeoForgeCaps.pendingBlocks.add(
+                    new NeoForgeCaps.BlockRegistration<>(
+                            EnergyCaps.RECEIVER,
+                            (Supplier<? extends Block>) cell,
+                            (level, pos, state, be, side) ->
+                                    NtmCapabilities.fullSurfaceCap(
+                                            level,
+                                            pos,
+                                            state,
+                                            side,
+                                            IEnergyHandlerMK2.class,
+                                            NtmCapabilities.CapRole.POWER_IN)));
+            NeoForgeCaps.pendingBlocks.add(
+                    new NeoForgeCaps.BlockRegistration<>(
+                            EnergyCaps.PROVIDER,
+                            (Supplier<? extends Block>) cell,
+                            (level, pos, state, be, side) ->
+                                    NtmCapabilities.fullSurfaceCap(
+                                            level,
+                                            pos,
+                                            state,
+                                            side,
+                                            IEnergyHandlerMK2.class,
+                                            NtmCapabilities.CapRole.POWER_OUT)));
+            NeoForgeCaps.pendingBlocks.add(
+                    new NeoForgeCaps.BlockRegistration<>(
+                            FluidCaps.RECEIVER,
+                            (Supplier<? extends Block>) cell,
+                            (level, pos, state, be, face) ->
+                                    NtmCapabilities.fullSurfaceCap(
+                                            level,
+                                            pos,
+                                            state,
+                                            face.side(),
+                                            IFluidHandlerMK2.class,
+                                            NtmCapabilities.CapRole.FLUID_IN)));
+            NeoForgeCaps.pendingBlocks.add(
+                    new NeoForgeCaps.BlockRegistration<>(
+                            FluidCaps.PROVIDER,
+                            (Supplier<? extends Block>) cell,
+                            (level, pos, state, be, face) ->
+                                    NtmCapabilities.fullSurfaceCap(
+                                            level,
+                                            pos,
+                                            state,
+                                            face.side(),
+                                            IFluidHandlerMK2.class,
+                                            NtmCapabilities.CapRole.FLUID_OUT)));
+            NeoForgeCaps.itemBlockExposures.add((Supplier<? extends Block>) cell);
             NtmCapabilities.exposeEnergyAtBlock(cell);
             NtmCapabilities.exposeFluid(cell);
             FusionPorts.declareAtCell(cell);

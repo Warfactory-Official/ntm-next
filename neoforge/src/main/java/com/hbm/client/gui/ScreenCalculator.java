@@ -98,7 +98,6 @@ public final class ScreenCalculator extends Screen {
             input.moveCursorToEnd(false);
             input.setHighlightPos(0);
         } catch (Exception ignored) {
-
         }
     }
 

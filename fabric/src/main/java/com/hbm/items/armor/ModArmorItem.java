@@ -7,7 +7,6 @@ import com.hbm.handler.ArmorModHandler;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
 import com.hbm.util.BobMathUtil;
-import com.hbm.util.DamageResistanceHandler;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -26,7 +25,6 @@ public class ModArmorItem extends Item implements IPAWeaponsProvider {
 
     private final Suit suit;
     private final boolean powered;
-
     private final long maxPower;
     private final long consumption;
 
@@ -67,7 +65,7 @@ public class ModArmorItem extends Item implements IPAWeaponsProvider {
     }
 
     public long maxPower(ItemStack stack) {
-        return ArmorModHandler.pryMod(stack, ArmorModHandler.BATTERY).getItem()
+        return ArmorModHandler.modItem(stack, ArmorModHandler.BATTERY)
                         instanceof ItemModBattery battery
                 ? (long) (maxPower * battery.mod)
                 : maxPower;

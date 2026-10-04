@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "C": "#c:dyes/green",
     "P": "hbm:deco_pipe_quad_green"

@@ -7,7 +7,6 @@ import com.hbm.api.conveyor.IConveyorItem;
 import com.hbm.api.conveyor.IEnterableBlock;
 import com.hbm.entity.ModEntities;
 import com.hbm.interfaces.StoredItems;
-import com.hbm.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -29,7 +28,6 @@ import org.jspecify.annotations.Nullable;
 
 public class EntityMovingItem extends EntityMovingConveyorObject
         implements IConveyorItem, StoredItems {
-
     private static final EntityDataAccessor<ItemStack> STACK =
             SynchedEntityData.defineId(EntityMovingItem.class, EntityDataSerializers.ITEM_STACK);
 
@@ -107,7 +105,7 @@ public class EntityMovingItem extends EntityMovingConveyorObject
                         getY() + motion.y * 2,
                         getZ() + motion.z * 2,
                         getItemStack());
-        Services.PLATFORM.setItemLifespan(item, 60 * 20);
+        item.lifespan = 60 * 20;
         item.setDeltaMovement(motion.x * 2, 0.1, motion.z * 2);
         level().addFreshEntity(item);
 

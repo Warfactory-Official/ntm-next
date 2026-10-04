@@ -38,9 +38,9 @@ public class ReedsModel implements BlockStateModel {
     private final BlockStateModelPart lone;
 
     public ReedsModel(ModelBaker baker) {
-        this.baker = baker;
         for (int i = 0; i < SHEETS.length; i++) crosses[i] = baker.getModel(cross(SHEETS[i]));
         this.particle = crosses[0].resolveParticleMaterial(crosses[0].getTopTextureSlots(), baker);
+        this.baker = RuntimeBaker.capture(baker, crosses);
         this.lone = buildPart(1);
     }
 
@@ -66,6 +66,12 @@ public class ReedsModel implements BlockStateModel {
         output.add(byDepth.computeIfAbsent(BlockReeds.depth(level, pos), this::buildPart));
     }
 
+    @Override
+    public Object createGeometryKey(
+            BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random) {
+        return geometryKey(level, pos, state);
+    }
+
     public Object geometryKey(BlockAndTintGetter level, BlockPos pos, BlockState state) {
         return new Key(BlockReeds.depth(level, pos));
     }
@@ -84,7 +90,6 @@ public class ReedsModel implements BlockStateModel {
         List<ObjUnbakedGeometry.BoxQuad> quads = new ArrayList<>();
         for (int level = 0; level < depth; level++) {
             ResolvedModel sheet = crosses[level == 0 ? 0 : level == depth - 1 ? 2 : 1];
-
             var posed =
                     Boxes.pose(new Transformation(new Vector3f(0F, -level, 0F), null, null, null));
             for (var quad :

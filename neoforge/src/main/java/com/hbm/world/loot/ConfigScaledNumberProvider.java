@@ -3,9 +3,7 @@
 
 package com.hbm.world.loot;
 
-import com.hbm.config.ConfigSchema;
 import com.hbm.data.WorldData;
-import com.hbm.platform.Services;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -38,11 +36,11 @@ public record ConfigScaledNumberProvider(NumberProvider value) implements Number
 
     @Override
     public float getFloat(LootContext context) {
-        return scaledRolls(value.getFloat(context), factor());
+        return scaledRolls(value.getInt(context), factor());
     }
 
     @Override
     public int getInt(LootContext context) {
-        return scaledRolls(value.getFloat(context), factor());
+        return scaledRolls(value.getInt(context), factor());
     }
 }

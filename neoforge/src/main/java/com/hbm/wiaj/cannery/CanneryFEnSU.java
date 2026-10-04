@@ -19,9 +19,9 @@ import com.hbm.wiaj.actions.ActionRotateBy;
 import com.hbm.wiaj.actions.ActionSetBlock;
 import com.hbm.wiaj.actions.ActionSetZoom;
 import com.hbm.wiaj.actions.ActionWait;
+import com.hbm.wiaj.actors.ActorBlockEntity;
 import com.hbm.wiaj.actors.ActorFancyPanel.Orientation;
 import com.hbm.wiaj.actors.ActorFancyPanel;
-import com.hbm.wiaj.actors.ActorTileEntity;
 import com.hbm.wiaj.actors.ITileActorRenderer;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.rendertype.RenderType;
@@ -61,7 +61,7 @@ public class CanneryFEnSU extends CanneryBase {
         fensu.putDouble("z", 2);
         fensu.putInt("rotation", 4);
         fensu.putFloat("speed", 10F);
-        scene0.add(new ActionCreateActor(0, new ActorTileEntity(new ActorFEnSU(), fensu)));
+        scene0.add(new ActionCreateActor(0, new ActorBlockEntity(new ActorFEnSU(), fensu)));
 
         scene0.add(
                 new ActionCreateActor(
@@ -164,7 +164,6 @@ public class CanneryFEnSU extends CanneryBase {
     }
 
     private static net.minecraft.world.level.block.state.BlockState lever(boolean powered) {
-
         return Blocks.LEVER
                 .defaultBlockState()
                 .setValue(LeverBlock.FACE, AttachFace.WALL)

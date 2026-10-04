@@ -3,6 +3,7 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineChemicalPlant;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluidProperties;
@@ -10,7 +11,6 @@ import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityMachineChemicalPlant;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -39,12 +39,10 @@ public class RenderChemicalPlant
     private static final int FLUID = ResourceManager.chemical_plant.partId("Fluid");
 
     private static final float BASE_YAW = 90F;
-
     private static final int NO_TYPE_COLOR = 0x888888;
 
     private final HFRWavefrontObject model;
     private final RenderType baseType;
-
     private final RenderType fluidType =
             FlatTranslucent.culled(ResourceManager.chemical_plant_fluid_tex);
 
@@ -58,7 +56,6 @@ public class RenderChemicalPlant
     }
 
     private static float facingYaw(Direction facing) {
-
         return Facing.yaw(facing, 0);
     }
 
@@ -121,7 +118,6 @@ public class RenderChemicalPlant
 
         float[] rgb = new float[3];
         int colors = sumChannels(recipe.outputFluid, rgb);
-
         if (colors == 0) colors = sumChannels(recipe.inputFluid, rgb);
         if (colors == 0) return;
 

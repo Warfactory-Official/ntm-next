@@ -104,7 +104,6 @@ public final class SyncBlob {
 
     public void writeInitial(ByteBuf output) {
         Level level = ((BlockEntity) owner).getLevel();
-
         if (!SyncWire.replayCompat() || level == null || !level.isClientSide()) prepare();
         VarLong.write(output, revision);
         output.writeBytes(bytes);

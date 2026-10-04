@@ -4,6 +4,7 @@
 package com.hbm.util;
 
 import com.hbm.api.entity.IResistanceProvider;
+import com.hbm.config.FabricHbmConfig;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.handler.PlayerShield;
@@ -11,7 +12,6 @@ import com.hbm.interfaces.NtmDamageContext;
 import com.hbm.items.armor.ArmorDamageHandler;
 import com.hbm.items.armor.ModArmorItem;
 import com.hbm.lib.ModDamageTypes;
-import com.hbm.platform.Services;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -66,9 +66,8 @@ public final class EntityDamageUtil {
         boolean previousCancellation = context.hbm$ignoreEarlyCancellation();
         context.hbm$setPiercing(pierceDT, pierce);
         context.hbm$setKnockbackMultiplier(knockbackMultiplier);
-
         context.hbm$setIgnoreEarlyCancellation(
-                !allowSpecialCancel && !Services.CONFIG.runtime().damageCompatibilityMode());
+                !allowSpecialCancel && !FabricHbmConfig.runtime().damageCompatibilityMode());
         try {
             if (ignoreIFrame) living.invulnerableTime = 0;
             return living.hurtServer(serverLevel, source, amount);
@@ -87,19 +86,16 @@ public final class EntityDamageUtil {
                 getDTDR(entity, source, amount, context.hbm$pierceDT(), context.hbm$pierceDR());
         float dt = values[0] - context.hbm$pierceDT();
         float dr = values[1] - context.hbm$pierceDR();
-
         return !((dt > 0F && dt >= amount) || dr >= 1F);
     }
 
     public static float modifyAcceptedDamage(
             LivingEntity entity, DamageSource source, float amount) {
-
         if (entity instanceof Player player) amount = PlayerShield.absorb(player, amount);
         HbmLivingProps props = HbmLivingProps.peek(entity);
         if (props != null && props.contagion > 0 && amount < 100F) amount *= 2F;
         amount = ArmorModHandler.modifyDamage(entity, source, amount);
         amount = ArmorDamageHandler.filterHurt(entity, source, amount);
-
         if (source.is(ModDamageTypes.ELECTRIC)
                 && entity.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ModArmorItem armor
                 && armor.maxPower() > 0) {
@@ -121,7 +117,6 @@ public final class EntityDamageUtil {
 
     public static float calculateDamage(
             LivingEntity entity, DamageSource damage, float amount, float pierceDT, float pierce) {
-
         if (damage.is(DamageTypeTags.BYPASSES_EFFECTS)) return amount;
 
         float[] vals = getDTDR(entity, damage, amount, pierceDT, pierce);
@@ -131,7 +126,6 @@ public final class EntityDamageUtil {
         dt = Math.max(0F, dt - pierceDT);
         if (dt >= amount) return 0F;
         amount -= dt;
-
         dr *= Mth.clamp(1F - pierce, 0F, 2F);
 
         return amount * (1F - dr);

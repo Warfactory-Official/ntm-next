@@ -3,6 +3,7 @@
 
 package com.hbm.interfaces.injected;
 
+import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public interface IChunkExtension {
@@ -10,6 +11,8 @@ public interface IChunkExtension {
     String RADIATION_NBT_KEY = "hbm_rad";
 
     String CORE_INDEX_NBT_KEY = "hbm_core_index";
+
+    String PENDING_FALLERS_NBT_KEY = "hbm_pending_fallers";
 
     byte @Nullable [] hbm$getRadiation();
 
@@ -20,4 +23,13 @@ public interface IChunkExtension {
     int hbm$coreIndexSize();
 
     void hbm$setCoreIndex(long @Nullable [] entries, int size);
+
+    long @Nullable [] hbm$pendingFallerPositions();
+
+    BlockState @Nullable [] hbm$pendingFallerStates();
+
+    int hbm$pendingFallerSize();
+
+    void hbm$setPendingFallers(
+            long @Nullable [] positions, BlockState @Nullable [] states, int size);
 }

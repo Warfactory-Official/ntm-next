@@ -69,7 +69,6 @@ public final class SectionSnapshot {
                 return false;
             }
         }
-
         for (long mask = changed; mask != 0; mask &= mask - 1) {
             int index = Long.numberOfTrailingZeros(mask);
             boolean replaced =

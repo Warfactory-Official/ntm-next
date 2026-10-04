@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.blockentity.network.BlockEntityPipeAnchor;
 import com.hbm.blocks.ITickingBlock;
-import com.hbm.tileentity.network.BlockEntityPipeAnchor;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -3,6 +3,7 @@
 
 package com.hbm.compat.computercraft.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineCombustionEngine;
 import com.hbm.compat.computercraft.OpenComputers;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
 import com.hbm.inventory.fluid.NTMFluidProperties;
@@ -10,7 +11,6 @@ import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.trait.FT_Combustible;
 import com.hbm.items.ItemPistons.EnumPistonType;
 import com.hbm.items.ItemPistons;
-import com.hbm.tileentity.machine.BlockEntityMachineCombustionEngine;
 import dan200.computercraft.api.lua.LuaFunction;
 import net.minecraft.world.item.ItemStack;
 
@@ -41,7 +41,6 @@ public final class CombustionEnginePeripheral
         ItemStack stack = machine.getItem(BlockEntityMachineCombustionEngine.SLOT_PISTON);
         FT_Combustible trait =
                 NTMFluidProperties.getTrait(machine.tank.getTankType(), FT_Combustible.class);
-
         boolean known = !stack.isEmpty() && trait != null;
         put(HAS_EFFICIENCY, known);
         if (known) {

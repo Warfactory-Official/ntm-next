@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "P": "#c:plates/steel",
     "S": "hbm:steel_scaffold"

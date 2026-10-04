@@ -3,8 +3,8 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.storage.FluidTankContents;
 import com.hbm.client.render.FluidTankItemRenderer;
-import com.hbm.tileentity.machine.storage.FluidTankContents;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import java.util.ArrayList;

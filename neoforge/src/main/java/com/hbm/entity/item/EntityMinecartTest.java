@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityMinecartTest extends MinecartTNT {
-
     private static final EntityDataAccessor<Byte> SIGN_X =
             SynchedEntityData.defineId(EntityMinecartTest.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Byte> SIGN_Z =

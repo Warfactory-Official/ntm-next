@@ -3,16 +3,15 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.bomb.BlockEntityNukeBalefire;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.items.ModItems;
-import com.hbm.tileentity.bomb.BlockEntityNukeBalefire;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class MenuNukeFstbmb extends BlockEntityMenu<BlockEntityNukeBalefire> {
-
     private static final int PLAYER_DROP = 56;
 
     public MenuNukeFstbmb(int containerId, Inventory playerInv, BlockEntityNukeBalefire bomb) {

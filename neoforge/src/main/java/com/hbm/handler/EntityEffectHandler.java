@@ -4,27 +4,25 @@
 package com.hbm.handler;
 
 import com.hbm.advancement.HbmCriteria;
-import com.hbm.config.BombConfig;
-import com.hbm.config.RadiationConfig;
-import com.hbm.data.ExplosionData;
 import com.hbm.data.ItemData;
 import com.hbm.data.RadiationData;
-import com.hbm.entity.ModEntities;
-import com.hbm.entity.mob.EntityDuck;
 import com.hbm.explosion.ExplosionNukeSmall;
 import com.hbm.extprop.ContaminationEffect;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.handler.pollution.PollutionType;
+import com.hbm.handler.radiation.BiomeRadiation;
+import com.hbm.handler.radiation.IrradiationTransformations;
 import com.hbm.handler.radiation.RadiationSystemNT;
 import com.hbm.hazard.HazardClass;
+import com.hbm.hazard.HazardSystem;
 import com.hbm.items.weapon.sedna.factory.ConfettiUtil;
 import com.hbm.lib.ModDamageTypes;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.HbmPlayerSyncPayload;
 import com.hbm.packet.toclient.VomitPayload;
 import com.hbm.particle.helper.FlameCreator;
 import com.hbm.particle.helper.ParticleCreators;
-import com.hbm.platform.Services;
 import com.hbm.potion.HbmPotion;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ArmorRegistry;
@@ -52,12 +50,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.animal.cow.Cow;
-import net.minecraft.world.entity.animal.cow.MushroomCow;
-import net.minecraft.world.entity.animal.equine.Horse;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -67,7 +60,6 @@ import net.minecraft.world.level.block.Blocks;
 import org.jspecify.annotations.Nullable;
 
 public final class EntityEffectHandler {
-
     public static final int BLACK_FIRE_DAMAGE_PERIOD = 10;
 
     private static final int MINUTE = 60 * SharedConstants.TICKS_PER_SECOND;
@@ -75,10 +67,16 @@ public final class EntityEffectHandler {
     public static final int CONTAGION_DURATION = 3 * HOUR;
 
     public static @Nullable IntConsumer CLIENT_RADIATION_FX;
-
     public static @Nullable Consumer<Player> CLIENT_CRATER_AURA;
 
     private EntityEffectHandler() {}
+
+    public static void onLivingTick(LivingEntity entity) {
+        if (entity.level() instanceof ServerLevel level)
+            ImpactWorldHandler.livingTick(level, entity);
+        HazardSystem.tickMobEquipment(entity);
+        onUpdate(entity);
+    }
 
     public static void onUpdate(LivingEntity entity) {
         if (entity.level().isClientSide()) {
@@ -94,14 +92,14 @@ public final class EntityEffectHandler {
             props.radBuf = props.radEnv;
             props.radEnv = 0D;
             if (entity instanceof ServerPlayer sp)
-                Services.NETWORK.sendTo(new HbmPlayerSyncPayload(props), sp);
+                PacketWire.sendTo(new HbmPlayerSyncPayload(props), sp);
         }
 
         if (props != null) {
             handleBombTimer(entity, props);
             handleContamination(entity, props);
         }
-        handleCraterBiomeRadiation(entity);
+        handleBiomeRadiation(entity);
         handleRadiation(entity);
         if (props != null) {
             handleRadiationEffect(entity, props);
@@ -170,7 +168,6 @@ public final class EntityEffectHandler {
                         entity, EquipmentSlot.HEAD, HazardClass.PARTICLE_FINE)) {
             float metal =
                     PollutionHandler.getPollution(entity.level(), eye, PollutionType.HEAVYMETAL);
-
             if (metal > 25)
                 entity.addEffect(new MobEffectInstance(HbmPotion.lead(), 100, metal < 50 ? 0 : 2));
         }
@@ -192,13 +189,11 @@ public final class EntityEffectHandler {
         }
     }
 
-    private static void handleCraterBiomeRadiation(LivingEntity entity) {
+    private static void handleBiomeRadiation(LivingEntity entity) {
         Holder<Biome> biome =
-                entity.level() instanceof ServerLevel server
-                        ? BiomeUtil.biomeAt(server, entity.blockPosition())
-                        : entity.level().getBiome(entity.blockPosition());
-        float radiation = craterDose(biome, entity.isInWaterOrRain());
-        if (radiation > 0F) {
+                BiomeUtil.biomeAt((ServerLevel) entity.level(), entity.blockPosition());
+        double radiation = BiomeRadiation.dose(biome, entity.isInWaterOrRain());
+        if (radiation > 0D) {
             ContaminationUtil.contaminate(
                     entity,
                     HazardType.RADIATION,
@@ -207,22 +202,9 @@ public final class EntityEffectHandler {
         }
     }
 
-    public static float craterDose(Holder<Biome> biome, boolean wet) {
-        float radiation = 0F;
-        if (biome.is(NtmBiomes.CRATER_OUTER))
-            radiation = ExplosionData.CRATER_BIOME_OUTER_RAD.get().floatValue();
-        if (biome.is(NtmBiomes.CRATER))
-            radiation = ExplosionData.CRATER_BIOME_RAD.get().floatValue();
-        if (biome.is(NtmBiomes.CRATER_INNER))
-            radiation = ExplosionData.CRATER_BIOME_INNER_RAD.get().floatValue();
-        if (wet) radiation *= ExplosionData.CRATER_BIOME_WATER_MULT.get().floatValue();
-        return radiation;
-    }
-
     private static void handleRadiation(LivingEntity entity) {
         if (ContaminationUtil.isRadImmune(entity)) return;
         if (!(entity.level() instanceof ServerLevel server)) return;
-
         double rad = RadiationSystemNT.doseAt(server, entity.blockPosition());
         if (rad > 0D) {
             ContaminationUtil.contaminate(
@@ -244,21 +226,7 @@ public final class EntityEffectHandler {
         DamageSource radSource = world.damageSources().source(ModDamageTypes.RADIATION);
         if (entity.isInvulnerableTo(world, radSource)) return;
 
-        if (eRad >= 200D && entity.getClass() == Creeper.class) {
-            if (world.getRandom().nextInt(3) != 0) {
-                entity.hurtServer(world, radSource, 100F);
-                return;
-            }
-            if (replaceWith(entity, ModEntities.CREEPER_NUCLEAR.get())) return;
-        } else if (eRad >= 50D && entity instanceof Cow && !(entity instanceof MushroomCow)) {
-            if (replaceWith(entity, EntityTypes.MOOSHROOM)) return;
-        } else if (eRad >= 500D && entity instanceof Villager) {
-            if (replaceWith(entity, EntityTypes.ZOMBIE_VILLAGER)) return;
-        } else if (eRad >= 800D && entity instanceof Horse) {
-            if (replaceWith(entity, EntityTypes.ZOMBIE_HORSE)) return;
-        } else if (eRad >= 200D && entity.getClass() == EntityDuck.class) {
-            if (replaceWith(entity, ModEntities.QUACKOS.get())) return;
-        }
+        if (IrradiationTransformations.apply(entity, eRad)) return;
 
         if (eRad < 200D || ContaminationUtil.isRadImmune(entity)) return;
 
@@ -327,7 +295,6 @@ public final class EntityEffectHandler {
                 entity.addEffect(
                         new MobEffectInstance(
                                 MobEffects.WEAKNESS, 5 * SharedConstants.TICKS_PER_SECOND, 0));
-
             if (entity instanceof ServerPlayer player) HbmCriteria.radiation(player, eRad, false);
         }
     }
@@ -373,7 +340,6 @@ public final class EntityEffectHandler {
                 || player.level().getBiome(player.blockPosition()).is(NtmBiomes.CRATER_INNER)) {
             if (CLIENT_CRATER_AURA != null) CLIENT_CRATER_AURA.accept(player);
         }
-
         HbmLivingProps props = HbmLivingProps.peek(player);
         if (props == null || CLIENT_RADIATION_FX == null) return;
         double radiation = props.radiation;
@@ -446,7 +412,6 @@ public final class EntityEffectHandler {
                 && (contagion + entity.getId()) % 200 < 20
                 && canVomit(entity)) {
             ParticleCreators.vomit(world, entity, VomitPayload.MODE_BLOOD, 25);
-
             if ((contagion + entity.getId()) % 200 == 19) playVomit(world, entity);
         }
 
@@ -608,17 +573,5 @@ public final class EntityEffectHandler {
         double y = entity.getY() + rand.nextDouble() * entity.getBbHeight();
         double z = entity.getZ() - width / 2D + width * rand.nextDouble();
         FlameCreator.composeEffect(server, x, y, z, meta);
-    }
-
-    private static boolean replaceWith(LivingEntity src, EntityType<?> type) {
-        if (!(src.level() instanceof ServerLevel server)) return false;
-        Entity replacement = type.create(server, EntitySpawnReason.CONVERSION);
-        if (replacement == null) return false;
-        replacement.snapTo(src.getX(), src.getY(), src.getZ(), src.getYRot(), src.getXRot());
-        if (server.addFreshEntity(replacement)) {
-            src.discard();
-            return true;
-        }
-        return false;
     }
 }

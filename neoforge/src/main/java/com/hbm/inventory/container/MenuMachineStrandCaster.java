@@ -3,10 +3,10 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityMachineStrandCaster;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.items.machine.ItemMold;
-import com.hbm.tileentity.machine.BlockEntityMachineStrandCaster;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -60,7 +60,6 @@ public class MenuMachineStrandCaster extends BlockEntityMenu<BlockEntityMachineS
                     int machineEnd = BlockEntityMachineStrandCaster.SLOT_COUNT;
                     if (index < machineEnd)
                         return moveItemStackTo(stack, machineEnd, slots.size(), true);
-
                     return moveItemStackTo(
                             stack,
                             BlockEntityMachineStrandCaster.SLOT_OUTPUT_START,

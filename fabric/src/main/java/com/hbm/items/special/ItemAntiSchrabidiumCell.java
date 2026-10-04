@@ -3,7 +3,6 @@
 
 package com.hbm.items.special;
 
-import com.hbm.config.BombConfig;
 import com.hbm.data.ExplosionData;
 import com.hbm.data.ItemData;
 import com.hbm.entity.effect.EntityCloudFleija;
@@ -12,14 +11,12 @@ import com.hbm.interfaces.IItemEntityUpdate;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemFluidCell;
-import com.hbm.platform.Services;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
@@ -44,7 +41,6 @@ public class ItemAntiSchrabidiumCell extends ItemFluidCell implements IItemEntit
                             entity.getY(),
                             entity.getZ(),
                             ExplosionData.A_SCHRAB_RADIUS.get());
-
             if (!blast.isRemoved()) {
                 level.playSound(
                         null,

@@ -11,12 +11,13 @@ import com.hbm.handler.ability.ToolHarvestAbility;
 import com.hbm.handler.ability.ToolPreset;
 import com.hbm.items.tool.ItemToolAbility;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.PlayerInformPayload;
 import com.hbm.packet.toserver.ToolPresetPayload;
-import com.hbm.platform.Services;
 import com.hbm.sound.ModSounds;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -145,12 +146,13 @@ public final class ScreenToolAbility extends Screen {
     private Component tooltip(ToolPreset preset) {
         if (hoverArea != -1) {
             BaseAbility ability = AREA.get(hoverArea).ability();
-            return ToolPreset.name(ability, ability == preset.area() ? preset.areaLevel() : 0);
+            return ToolPreset.name(ability, ability == preset.area() ? preset.areaLevel() : 0)
+                    .withStyle(available(ability) ? ChatFormatting.WHITE : ChatFormatting.GRAY);
         }
         if (hoverHarvest != -1) {
             BaseAbility ability = HARVEST.get(hoverHarvest).ability();
-            return ToolPreset.name(
-                    ability, ability == preset.harvest() ? preset.harvestLevel() : 0);
+            return ToolPreset.name(ability, ability == preset.harvest() ? preset.harvestLevel() : 0)
+                    .withStyle(available(ability) ? ChatFormatting.WHITE : ChatFormatting.GRAY);
         }
         return hoverButton == -1 ? null : Button.VALUES[hoverButton].label();
     }
@@ -228,7 +230,6 @@ public final class ScreenToolAbility extends Screen {
     }
 
     private void drawNumber(GuiGraphicsExtractor graphics, int number, int x, int y) {
-
         number += 100;
         blit(graphics, x, y, (number / 10) % 10 * 10, 123, 10, 15);
         blit(graphics, x + 12, y, number % 10 * 10, 123, 10, 15);
@@ -240,7 +241,7 @@ public final class ScreenToolAbility extends Screen {
     }
 
     private boolean available(BaseAbility ability) {
-        if (!abilities.supports(ability)) return false;
+        if (!item.canSelectAbility(tool, ability)) return false;
 
         ToolPreset preset = presets.get(current);
         return !(ability instanceof ToolHarvestAbility)
@@ -292,7 +293,7 @@ public final class ScreenToolAbility extends Screen {
             ToolPreset preset, BaseAbility hovered, BaseAbility selected, int level, boolean area) {
         if (!available(hovered)) return preset;
 
-        int levels = abilities.maxLevel(hovered) + 1;
+        int levels = Math.max(1, abilities.maxLevel(hovered) + 1);
         if (hovered != selected || levels > 1) {
             minecraft
                     .getSoundManager()
@@ -322,7 +323,7 @@ public final class ScreenToolAbility extends Screen {
     @Override
     public void onClose() {
         item.setPresets(tool, presets, current);
-        Services.NETWORK.sendToServer(new ToolPresetPayload(presets, current));
+        PacketWire.sendToServer(new ToolPresetPayload(presets, current));
 
         ToolPreset active = presets.get(Math.clamp(current, 0, presets.size() - 1));
         InfoSystem.push(
@@ -345,7 +346,11 @@ public final class ScreenToolAbility extends Screen {
             @Override
             void apply(ScreenToolAbility screen) {
                 screen.presets.clear();
-                screen.presets.addAll(screen.abilities.defaultPresets());
+                for (ToolPreset preset : screen.abilities.defaultPresets()) {
+                    if (screen.item.canSelectAbility(screen.tool, preset.area())
+                            && screen.item.canSelectAbility(screen.tool, preset.harvest()))
+                        screen.presets.add(preset);
+                }
                 screen.current = 0;
             }
         },

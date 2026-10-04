@@ -31,7 +31,6 @@ public class StartingHubPiece extends NtmBranchingPiece {
     private boolean pathEast;
     private boolean pathAntiNormal;
     private boolean pathWest;
-
     private int hatchHeight;
 
     public StartingHubPiece(BlockPos origin, RandomSource random) {
@@ -124,7 +123,6 @@ public class StartingHubPiece extends NtmBranchingPiece {
                 false);
         this.placeBlock(level, concreteSlab, 2, hpos, 3, chunkBB);
         this.placeBlock(level, stair(Direction.SOUTH, false), 2, hpos, 4, chunkBB);
-
         this.placeBlock(
                 level,
                 hbmState("trapdoor_steel")
@@ -159,7 +157,6 @@ public class StartingHubPiece extends NtmBranchingPiece {
                 level, chunkBB, 3, 6, 4, 3, hpos - 1, 6, reinforcedStone, reinforcedStone, false);
         this.generateBox(
                 level, chunkBB, 2, 6, 4, 2, hpos - 1, 4, reinforcedStone, reinforcedStone, false);
-
         this.generateBox(
                 level,
                 chunkBB,
@@ -186,7 +183,6 @@ public class StartingHubPiece extends NtmBranchingPiece {
                         Blocks.CHEST
                                 .defaultBlockState()
                                 .setValue(ChestBlock.FACING, Direction.SOUTH);
-
                 BlockState vinylTileSmall = hbmState("vinyl_tile_small");
                 BlockState vinylTileLarge = hbmState("vinyl_tile_large");
 
@@ -209,7 +205,6 @@ public class StartingHubPiece extends NtmBranchingPiece {
                 out.block(5, 4, 2, fan);
                 out.block(5, 4, 5, fan);
                 out.block(3, 1, 6, decoTungsten);
-
                 out.container(4, 1, 6, chest, ComponentLoot.ANTENNA_5);
                 out.block(5, 1, 6, decoTungsten);
                 out.box(
@@ -221,7 +216,6 @@ public class StartingHubPiece extends NtmBranchingPiece {
                         6,
                         stair(Direction.SOUTH, true),
                         stair(Direction.SOUTH, true));
-
                 BlockState tapeRecorderNorth =
                         hbmState("tape_recorder")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH);

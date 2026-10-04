@@ -4,18 +4,17 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.oil.BlockEntityOilDrillBase;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.inventory.slot.SlotUpgrade;
 import com.hbm.items.machine.upgrade.ItemMachineUpgrade;
-import com.hbm.tileentity.machine.oil.BlockEntityOilDrillBase;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class MenuMachineOilWell extends BlockEntityMenu<BlockEntityOilDrillBase> {
-
     private static final int VISIBLE_MACHINE_SLOTS = 7;
 
     public MenuMachineOilWell(int containerId, Inventory playerInv, BlockEntityOilDrillBase be) {

@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineCompressor;
 import com.hbm.inventory.container.MenuMachineCompressor;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineCompressor;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -137,7 +137,7 @@ public class ScreenMachineCompressor extends ScreenInfoContainer<MenuMachineComp
                 if (!checkClick(mx, my, BTN_X0 + j * 11, BTN_Y, BTN_W, BTN_H)) continue;
                 CompoundTag data = new CompoundTag();
                 data.putInt("compression", j);
-                Services.NETWORK.sendToServer(
+                PacketWire.sendToServer(
                         new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
                 playClick();
                 return true;

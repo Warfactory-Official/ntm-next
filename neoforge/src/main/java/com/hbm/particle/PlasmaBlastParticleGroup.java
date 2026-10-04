@@ -34,6 +34,7 @@ public class PlasmaBlastParticleGroup extends ParticleGroup<ParticlePlasmaBlast>
         Vec3 cam = camera.position();
 
         for (ParticlePlasmaBlast blast : this.particles) {
+            if (blast.ownsVisual()) continue;
             out.add(
                     new Instance(
                             blast.interpX(partialTicks) - cam.x,

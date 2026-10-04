@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityRadioRec;
 import com.hbm.blocks.ITickingBlock;
-import com.hbm.tileentity.machine.BlockEntityRadioRec;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,10 +27,8 @@ import org.jspecify.annotations.Nullable;
 public class RadioRec extends Block implements ITickingBlock {
 
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
-
     private static final VoxelShape SHAPE_NS = Block.box(1, 0, 4, 15, 10, 12);
     private static final VoxelShape SHAPE_WE = Block.box(4, 0, 1, 12, 10, 15);
-
     public static Consumer<BlockEntityRadioRec> OPEN_GUI = be -> {};
 
     public RadioRec(BlockBehaviour.Properties props) {
@@ -45,7 +43,6 @@ public class RadioRec extends Block implements ITickingBlock {
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
-
         return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection());
     }
 

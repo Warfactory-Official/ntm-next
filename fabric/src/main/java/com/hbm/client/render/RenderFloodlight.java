@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityFloodlight;
 import com.hbm.blocks.machine.Floodlight;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityFloodlight;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -28,7 +28,6 @@ public class RenderFloodlight
 
     private static final RenderType BODY_TYPE =
             RenderTypes.entityCutoutCull(ResourceManager.floodlight_tex);
-
     private static final RenderType LAMPS_LIT_TYPE = FlatCutout.of(ResourceManager.floodlight_tex);
 
     @Override
@@ -70,7 +69,6 @@ public class RenderFloodlight
 
         poseStack.pushPose();
         poseStack.translate(0.5, 0.5, 0.5);
-
         switch (meta) {
             case 0, 6 -> poseStack.mulPose(Axis.XP.rotationDegrees(180F));
             case 1, 7 -> {}

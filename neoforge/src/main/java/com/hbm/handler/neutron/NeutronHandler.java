@@ -3,8 +3,8 @@
 
 package com.hbm.handler.neutron;
 
+import com.hbm.blockentity.machine.rbmk.RBMKConfig;
 import com.hbm.handler.neutron.NeutronNodeWorld.StreamWorld;
-import com.hbm.tileentity.machine.rbmk.RBMKConfig;
 import java.util.Map;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.Level;
@@ -16,7 +16,6 @@ public final class NeutronHandler {
     private NeutronHandler() {}
 
     public static void onServerTick(MinecraftServer server) {
-
         int cacheTime = 20;
         boolean cacheClear = ticks >= cacheTime;
         if (cacheClear) ticks = 0;
@@ -29,7 +28,6 @@ public final class NeutronHandler {
             RBMKNeutronHandler.reflectorEfficiency = RBMKConfig.getReflectorEfficiency(world);
             RBMKNeutronHandler.absorberEfficiency = RBMKConfig.getAbsorberEfficiency(world);
             RBMKNeutronHandler.moderatorEfficiency = RBMKConfig.getModeratorEfficiency(world);
-
             RBMKNeutronHandler.columnHeight = RBMKConfig.getColumnHeight(world) + 1;
             RBMKNeutronHandler.fluxRange = RBMKConfig.getFluxRange(world);
 

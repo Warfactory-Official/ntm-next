@@ -5,6 +5,9 @@ package com.hbm.blocks.machine.rbmk;
 
 import com.hbm.api.fluidmk2.FluidCaps;
 import com.hbm.api.fluidmk2.IFluidHandlerMK2;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKBase;
+import com.hbm.blockentity.machine.rbmk.RBMKConfig;
+import com.hbm.blockentity.machine.rbmk.RBMKDiagnostics;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockSurface;
@@ -16,11 +19,10 @@ import com.hbm.interfaces.ILookOverlay;
 import com.hbm.interfaces.IToolable;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemRBMKLid;
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgeCaps;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.RegistryHandle;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKBase;
-import com.hbm.tileentity.machine.rbmk.RBMKConfig;
-import com.hbm.tileentity.machine.rbmk.RBMKDiagnostics;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -52,28 +54,30 @@ public abstract class RBMKBase extends BlockMultiblockCore
     private static final VoxelShape LIDDED = Shapes.box(0D, 0D, 0D, 1D, 1.25D, 1D);
 
     protected static void declareColumnEnds(RegistryHandle<? extends Block> column) {
-        Services.CAPS.registerBlockProvider(
-                FluidCaps.RECEIVER,
-                column,
-                (level, pos, state, be, face) ->
-                        columnCap(
-                                level,
-                                pos,
-                                state,
-                                face.side(),
-                                NtmCapabilities.CapRole.FLUID_IN,
-                                false));
-        Services.CAPS.registerBlockProvider(
-                FluidCaps.PROVIDER,
-                column,
-                (level, pos, state, be, face) ->
-                        columnCap(
-                                level,
-                                pos,
-                                state,
-                                face.side(),
-                                NtmCapabilities.CapRole.FLUID_OUT,
-                                true));
+        NeoForgeCaps.pendingBlocks.add(
+                new NeoForgeCaps.BlockRegistration<>(
+                        FluidCaps.RECEIVER,
+                        (Supplier<? extends Block>) column,
+                        (level, pos, state, be, face) ->
+                                columnCap(
+                                        level,
+                                        pos,
+                                        state,
+                                        face.side(),
+                                        NtmCapabilities.CapRole.FLUID_IN,
+                                        false)));
+        NeoForgeCaps.pendingBlocks.add(
+                new NeoForgeCaps.BlockRegistration<>(
+                        FluidCaps.PROVIDER,
+                        (Supplier<? extends Block>) column,
+                        (level, pos, state, be, face) ->
+                                columnCap(
+                                        level,
+                                        pos,
+                                        state,
+                                        face.side(),
+                                        NtmCapabilities.CapRole.FLUID_OUT,
+                                        true)));
     }
 
     private static @Nullable IFluidHandlerMK2 columnCap(
@@ -93,13 +97,9 @@ public abstract class RBMKBase extends BlockMultiblockCore
 
     public static final EnumProperty<Lid> LID = EnumProperty.create("lid", Lid.class);
     public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
-
     public static final Direction DIR_NO_LID = Direction.NORTH;
-
     private static final int MAX_ABOVE = 15;
-
     public static boolean digamma = false;
-
     public static boolean dropLids = true;
 
     protected RBMKBase(Properties properties) {
@@ -145,7 +145,7 @@ public abstract class RBMKBase extends BlockMultiblockCore
     }
 
     public static void rebakeColumns() {
-        for (RegistryHandle<? extends Block> handle : Services.REGISTRAR.blocks()) {
+        for (RegistryHandle<? extends Block> handle : NeoForgeRegistrar.registeredBlocks) {
             if (handle.get() instanceof RBMKBase column)
                 column.bakeMaskTable(column.maskTable().declaredCaps);
         }
@@ -157,7 +157,6 @@ public abstract class RBMKBase extends BlockMultiblockCore
 
     @Override
     protected void visitTeardownCells(BlockPos core, Direction facing, CellVisitor visitor) {
-
         for (int y = 1; y <= MAX_ABOVE; y++) visitor.cell(core.above(y), MASK_NONE);
     }
 
@@ -246,7 +245,6 @@ public abstract class RBMKBase extends BlockMultiblockCore
     protected InteractionResult useWithoutItem(
             BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (level.isClientSide()) return InteractionResult.SUCCESS;
-
         if (player.isShiftKeyDown()) return InteractionResult.SUCCESS;
         BlockPos core = coreOf(level, pos, state);
         if (core == null) return InteractionResult.PASS;
@@ -294,7 +292,6 @@ public abstract class RBMKBase extends BlockMultiblockCore
     public void writeLid(ServerLevel level, BlockPos core, BlockState coreState, Lid lid) {
         setLid(level, core, coreState, lid);
         long corePacked = core.asLong();
-
         visitTeardownCells(
                 core,
                 coreState.getValue(FACING),

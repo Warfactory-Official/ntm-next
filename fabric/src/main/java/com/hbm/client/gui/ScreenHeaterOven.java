@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityHeaterOven;
 import com.hbm.inventory.container.MenuHeaterOven;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityHeaterOven;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;

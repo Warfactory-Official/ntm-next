@@ -7,6 +7,7 @@ public final class ParticleResources {
     private ParticleResources() {}
 
     public static void initialize() {
+        ParticleInstance.initTypes();
         ParticleModels.initModels();
         ContrailVisual.initModels();
         RadiationFogVisual.initModels();

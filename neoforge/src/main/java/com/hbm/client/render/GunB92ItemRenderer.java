@@ -43,7 +43,6 @@ public final class GunB92ItemRenderer
                     ResourceManager.b92.getGroupNames().stream()
                             .filter(name -> !PUMP.contains(name))
                             .toList());
-
     private static final float MAX_SLIDE = 0.25F;
 
     private final List<Vector3fc> extents = extentsOf();
@@ -83,7 +82,6 @@ public final class GunB92ItemRenderer
             boolean foil,
             int outline) {
         if (argument == null) return;
-
         RenderType type = RenderTypes.entityCutoutCull(ResourceManager.b92_tex);
 
         pose.pushPose();
@@ -113,7 +111,6 @@ public final class GunB92ItemRenderer
     }
 
     public static void pump(Argument argument, PoseStack.Pose pose) {
-
         pose.translate(GunB92.getTransFromAnim(argument.frame()), 0F, 0F);
         pose.scale(PX, PX, PX);
     }

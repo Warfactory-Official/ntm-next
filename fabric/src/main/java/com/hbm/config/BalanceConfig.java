@@ -9,6 +9,7 @@ public final class BalanceConfig {
     public static boolean enable528ReasimBoilers = false;
     public static boolean enable528PressurizedRecipes = false;
     public static boolean enable528MachineGravity = false;
+    public static boolean enable528BosniaSimulator = false;
 
     public static boolean enableLBSM = false;
     public static boolean enableLBSMFullSchrab = false;
@@ -21,6 +22,7 @@ public final class BalanceConfig {
     public static boolean enableLBSMUnlockAnvil = false;
     public static boolean enableLBSMSimpleMedicineRecipes = false;
     public static boolean enableLBSMSafeCrates = false;
+    public static boolean enableLBSMSafeMEDrives = false;
 
     public static boolean enableExpensiveMode = false;
 
@@ -32,6 +34,7 @@ public final class BalanceConfig {
         enable528PressurizedRecipes =
                 enable528 && c.get(ConfigSchema.ENABLE_528_PRESSURIZED_RECIPES);
         enable528MachineGravity = enable528 && c.get(ConfigSchema.ENABLE_528_MACHINE_GRAVITY);
+        enable528BosniaSimulator = enable528 && c.get(ConfigSchema.ENABLE_528_BOSNIA_SIMULATOR);
 
         enableLBSM = !enable528 && c.get(ConfigSchema.ENABLE_LBSM);
         enableLBSMFullSchrab = c.get(ConfigSchema.ENABLE_LBSM_FULL_SCHRAB);
@@ -44,6 +47,7 @@ public final class BalanceConfig {
         enableLBSMUnlockAnvil = c.get(ConfigSchema.ENABLE_LBSM_UNLOCK_ANVIL);
         enableLBSMSimpleMedicineRecipes = c.get(ConfigSchema.ENABLE_LBSM_SIMPLE_MEDICINE);
         enableLBSMSafeCrates = c.get(ConfigSchema.ENABLE_LBSM_SAFE_CRATES);
+        enableLBSMSafeMEDrives = c.get(ConfigSchema.ENABLE_LBSM_SAFE_ME_DRIVES);
 
         enableExpensiveMode = c.get(ConfigSchema.ENABLE_EXPENSIVE_MODE);
     }

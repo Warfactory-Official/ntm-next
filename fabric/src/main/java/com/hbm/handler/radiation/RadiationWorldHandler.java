@@ -34,7 +34,6 @@ final class RadiationWorldHandler {
                     pos, ModBlocks.WASTE_EARTH.get().defaultBlockState(), Block.UPDATE_CLIENTS);
             return;
         }
-
         if (block instanceof TallGrassBlock) {
             world.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
             return;

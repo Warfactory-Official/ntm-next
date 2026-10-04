@@ -3,11 +3,11 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.BlockEntitySnowglobe;
 import com.hbm.blocks.generic.BlockSnowglobe.SnowglobeType;
 import com.hbm.blocks.generic.BlockSnowglobe;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.BlockEntitySnowglobe;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -37,7 +37,6 @@ public class RenderSnowglobe
     public static final int GLASS_PART = ResourceManager.snowglobe.partId("Glass");
     public static final float SCALE = 0.0625F;
     public static final int LABEL_COLOR = 0xFFFFFFFF;
-
     private static final Map<SnowglobeType, Integer> FEATURE_PARTS =
             new EnumMap<>(SnowglobeType.class);
     private static final Quaternionfc TURN = Axis.YP.rotationDegrees(90);
@@ -94,7 +93,6 @@ public class RenderSnowglobe
     public void submit(State s, PoseStack ps, SubmitNodeCollector col, CameraRenderState camera) {
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-
         ps.mulPose(Axis.YN.rotationDegrees(22.5F * s.rotation + 90.0F));
         renderSnowglobe(s.type, ps, col, s.lightCoords);
         ps.popPose();
@@ -106,7 +104,6 @@ public class RenderSnowglobe
     }
 
     public static Matrix4f labelBase(Matrix4f pose) {
-
         float f3 = 0.05F;
         return pose.translate(4.025F, 0.5F, 0F).scale(f3, -f3, f3);
     }
@@ -127,7 +124,6 @@ public class RenderSnowglobe
         if (feature >= 0) part(col, ps, FEATURES, light, feature);
 
         labelWidth(labelBase(ps.last().pose()), font.width(type.label), font.lineHeight);
-
         col.submitText(
                 ps,
                 0,

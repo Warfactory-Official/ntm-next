@@ -40,7 +40,6 @@ public abstract class ClassicFluid extends FlowingFluid {
     public enum Physics {
         WATER(FluidTags.WATER),
         LAVA(FluidTags.LAVA),
-
         NONE(null);
 
         public final @Nullable TagKey<Fluid> tag;
@@ -155,7 +154,6 @@ public abstract class ClassicFluid extends FlowingFluid {
             case LAVA ->
                     state.getHeight(level, pos) >= LavaFluid.MIN_LEVEL_CUTOFF
                             && other.is(FluidTags.WATER);
-
             case NONE ->
                     !(other instanceof ClassicFluid sibling) || sibling.spec.density > spec.density;
         };

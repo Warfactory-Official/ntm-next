@@ -3,7 +3,7 @@
 
 package com.hbm.compat.computercraft.rbmk;
 
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControl;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControl;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public class RBMKControlPeripheral<BE extends BlockEntityRBMKControl>

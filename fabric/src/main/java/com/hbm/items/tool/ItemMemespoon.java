@@ -16,10 +16,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemMemespoon extends ItemCustomLore {
-
     private static final float CRIT_FALL = 2F, BLAST_FALL = 20F;
     private static final float CRIT_DAMAGE = 50F;
-
     private static final float BLAST = 15F;
     private static final int PIERCE = 25;
 

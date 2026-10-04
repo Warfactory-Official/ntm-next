@@ -3,7 +3,7 @@
 
 package com.hbm.blocks.network;
 
-import com.hbm.tileentity.network.BlockEntityPylonBase;
+import com.hbm.blockentity.network.BlockEntityPylonBase;
 import com.hbm.util.ColorUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;

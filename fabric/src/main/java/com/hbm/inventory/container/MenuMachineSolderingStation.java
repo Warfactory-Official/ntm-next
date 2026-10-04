@@ -4,6 +4,7 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.BlockEntityMachineSolderingStation;
 import com.hbm.inventory.recipes.SolderingRecipes;
 import com.hbm.inventory.recipes.ingredient.CountIngredient;
 import com.hbm.inventory.slot.SlotFiltered;
@@ -11,7 +12,6 @@ import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.inventory.slot.SlotUpgrade;
 import com.hbm.items.machine.FluidIdentifierItem;
 import com.hbm.items.machine.upgrade.ItemMachineUpgrade;
-import com.hbm.tileentity.machine.BlockEntityMachineSolderingStation;
 import java.util.List;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -61,18 +61,15 @@ public class MenuMachineSolderingStation
                         BlockEntityMachineSolderingStation.SLOT_TOPPING_START + 2,
                         53,
                         18));
-
         addSlot(
                 SlotFiltered.gated(
                         container, BlockEntityMachineSolderingStation.SLOT_PCB_START, 17, 36));
         addSlot(
                 SlotFiltered.gated(
                         container, BlockEntityMachineSolderingStation.SLOT_PCB_START + 1, 35, 36));
-
         addSlot(
                 SlotFiltered.gated(
                         container, BlockEntityMachineSolderingStation.SLOT_SOLDER, 53, 36));
-
         addSlot(
                 new SlotRecipeOutput(
                         playerInv.player,
@@ -80,7 +77,6 @@ public class MenuMachineSolderingStation
                         BlockEntityMachineSolderingStation.SLOT_OUTPUT,
                         107,
                         27));
-
         addSlot(
                 new SlotFiltered(
                         container,
@@ -88,9 +84,7 @@ public class MenuMachineSolderingStation
                         152,
                         72,
                         IBatteryItem::isBattery));
-
         addSlot(new Slot(container, BlockEntityMachineSolderingStation.SLOT_FLUID_ID, 17, 63));
-
         addSlot(
                 new SlotUpgrade(
                         container, BlockEntityMachineSolderingStation.SLOT_UPGRADE_START, 89, 63));
@@ -103,7 +97,7 @@ public class MenuMachineSolderingStation
     }
 
     private static boolean matchesAny(List<CountIngredient> group, ItemStack stack) {
-        for (CountIngredient ing : group) if (ing.ingredient().test(stack)) return true;
+        for (CountIngredient ing : group) if (ing.matchesItem(stack)) return true;
         return false;
     }
 

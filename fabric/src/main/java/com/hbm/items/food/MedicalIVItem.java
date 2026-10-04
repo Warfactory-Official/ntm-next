@@ -7,11 +7,11 @@ import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.machine.IFluidContainerItem;
 import com.hbm.items.special.ItemCustomLore;
-import com.hbm.platform.Services;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ExperienceUtil;
 import com.hbm.util.InventoryUtil;
 import java.util.function.Supplier;
+import net.fabricmc.fabric.api.entity.FakePlayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -39,8 +39,7 @@ public final class MedicalIVItem extends ItemCustomLore implements IFluidContain
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (!(level instanceof ServerLevel server)) return InteractionResult.SUCCESS;
 
-        if ((type == Type.EMPTY || type == Type.XP_EMPTY)
-                && Services.PLATFORM.isFakePlayer(player)) {
+        if ((type == Type.EMPTY || type == Type.XP_EMPTY) && (player instanceof FakePlayer)) {
             return InteractionResult.PASS;
         }
 

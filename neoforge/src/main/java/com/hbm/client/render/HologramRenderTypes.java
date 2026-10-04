@@ -32,7 +32,6 @@ public final class HologramRenderTypes {
                                     new DepthStencilState(
                                             DepthStencilState.DEFAULT.depthTest(), false))
                             .withCull(true));
-
     public static final RenderType GHOST =
             RenderType.create(
                     "ntm_hologram_ghost",

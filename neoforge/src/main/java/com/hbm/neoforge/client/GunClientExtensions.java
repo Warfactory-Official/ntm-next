@@ -42,7 +42,6 @@ public final class GunClientExtensions implements IClientItemExtensions {
         if (hand == InteractionHand.OFF_HAND) {
             return AkimboGhost.isGhost(stack) ? AKIMBO_POSE.getValue() : null;
         }
-
         if (AkimboGhost.isAkimbo(stack)
                 && AkimboGhost.isGhost(entity.getItemInHand(InteractionHand.OFF_HAND))) {
             return AKIMBO_POSE.getValue();

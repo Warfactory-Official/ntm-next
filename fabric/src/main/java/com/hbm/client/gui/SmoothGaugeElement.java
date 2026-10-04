@@ -53,7 +53,6 @@ public final class SmoothGaugeElement implements GuiElementRenderState {
 
         double angle = Math.toRadians(-progress * 270 - 45);
         double c = Math.cos(angle), s = Math.sin(angle);
-
         double tipX = 0 * c + tipLength * s, tipY = tipLength * c - 0 * s;
         double leftX = backSide * c + (-backLength) * s, leftY = (-backLength) * c - backSide * s;
         double rightX = (-backSide) * c + (-backLength) * s,
@@ -81,7 +80,6 @@ public final class SmoothGaugeElement implements GuiElementRenderState {
 
     @Override
     public void buildVertices(VertexConsumer vc) {
-
         Vertices.emit(vc, pose, pts[0], pts[1], outerColor);
         Vertices.emit(vc, pose, pts[2], pts[3], outerColor);
         Vertices.emit(vc, pose, pts[4], pts[5], outerColor);

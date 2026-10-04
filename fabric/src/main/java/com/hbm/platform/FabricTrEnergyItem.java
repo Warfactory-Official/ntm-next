@@ -49,7 +49,6 @@ final class FabricTrEnergyItem implements EnergyStorage {
         long quantum = EnergyConversion.feQuantum();
         long offered = EnergyConversion.heFromFe(maxAmount);
         long accepted = ForeignEnergyItemAccess.insertableHe(held, offered);
-
         long fe = EnergyConversion.feFromHe(accepted) / quantum * quantum;
         if (fe <= 0) return 0;
         long he = EnergyConversion.heFromFe(fe);
@@ -65,7 +64,6 @@ final class FabricTrEnergyItem implements EnergyStorage {
         long given = ForeignEnergyItemAccess.extractableHe(held, offered);
         long fe = EnergyConversion.feFromHe(given) / quantum * quantum;
         if (fe <= 0) return 0;
-
         if (ForeignEnergyItemAccess.isCreative(held)) return fe;
         long he = EnergyConversion.heFromFe(fe);
         return exchange(ForeignEnergyItemAccess.withCharge(held, -he), transaction) ? fe : 0;

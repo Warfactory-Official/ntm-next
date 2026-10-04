@@ -3,12 +3,12 @@
 
 package com.hbm.wiaj;
 
+import com.hbm.client.Keybinds;
 import com.hbm.client.gui.GUIElements;
 import com.hbm.lib.Library;
 import com.hbm.wiaj.actors.ActorFancyPanel;
 import com.hbm.wiaj.actors.ISpecialActor;
 import com.hbm.wiaj.cannery.CanneryBase;
-import com.mojang.blaze3d.platform.InputConstants;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -20,7 +20,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
-import org.lwjgl.glfw.GLFW;
 
 public final class ScreenWorldInAJar extends Screen {
     private static final Identifier GUI = Library.id("textures/gui/gui_utility.png");
@@ -86,8 +85,7 @@ public final class ScreenWorldInAJar extends Screen {
             actor.drawForegroundComponent(
                     graphics, width, height, script.ticksElapsed, script.interp);
         }
-
-        if (InputConstants.isKeyDown(minecraft.getWindow(), GLFW.GLFW_KEY_LEFT_ALT)) {
+        if (Keybinds.DIAGNOSTICS.isDown()) {
             GUIElements.drawStackText(
                     graphics,
                     font,

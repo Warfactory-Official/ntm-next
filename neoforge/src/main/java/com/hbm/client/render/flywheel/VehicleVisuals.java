@@ -85,7 +85,6 @@ public final class VehicleVisuals {
                                 new CraftVisual<>(
                                         ctx, entity, partialTick, e -> Rigs.PARACHUTE_CRATE))
                 .apply();
-
         SimpleEntityVisualizer.builder(ModEntities.RBMK_DEBRIS.get())
                 .factory(
                         (ctx, entity, partialTick) ->
@@ -182,7 +181,6 @@ public final class VehicleVisuals {
     private static final class Rigs {
         private static final float PIVOT = 7F;
         private static final float DIAG = 0.57735026F;
-
         private static final float[][] C130_PROPS = {
             {10F, 4.2F, -20.5F}, {10F, 4.2F, -11.16F}, {10F, 4.2F, 11.16F}, {10F, 4.2F, 20.5F}
         };

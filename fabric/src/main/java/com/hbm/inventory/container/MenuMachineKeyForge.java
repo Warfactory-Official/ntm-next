@@ -3,7 +3,7 @@
 
 package com.hbm.inventory.container;
 
-import com.hbm.tileentity.machine.BlockEntityMachineKeyForge;
+import com.hbm.blockentity.machine.BlockEntityMachineKeyForge;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;

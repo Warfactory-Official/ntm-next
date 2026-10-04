@@ -17,7 +17,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(SinglePoolElement.class)
 public abstract class MixinSinglePoolElement {
-
     @WrapOperation(
             method = "place",
             at =

@@ -9,7 +9,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
 public class RocketTargetingPredictive implements IRocketTargetingBehavior {
-
     private final double[][] targetMotion = new double[20][3];
 
     @Override
@@ -39,7 +38,6 @@ public class RocketTargetingPredictive implements IRocketTargetingBehavior {
         targetMotion[19][2] = target.getDeltaMovement().z;
 
         if (eta <= 1) {
-
             rocket.setTarget(
                     target.getX(), target.getY() + target.getBbHeight() * 0.5D, target.getZ());
             return;

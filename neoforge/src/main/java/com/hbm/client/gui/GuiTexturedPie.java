@@ -103,7 +103,6 @@ final class GuiTexturedPie {
                 vertex(buffer, triangles[i], triangles[i + 1]);
                 vertex(buffer, triangles[i + 2], triangles[i + 3]);
                 vertex(buffer, triangles[i + 4], triangles[i + 5]);
-
                 vertex(buffer, triangles[i + 4], triangles[i + 5]);
             }
         }

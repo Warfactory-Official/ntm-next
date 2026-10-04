@@ -3,24 +3,24 @@
 
 package com.hbm.compat.computercraft.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKBase;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKBoiler;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKConsole;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControl;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlAuto;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlManual;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKCooler;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKHeater;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKOutgasser;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKRod;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKStorage;
+import com.hbm.blockentity.machine.rbmk.RBMKColor;
+import com.hbm.blockentity.machine.rbmk.RBMKColumn;
 import com.hbm.compat.computercraft.OpenComputers;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.machine.ItemRBMKRod;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKBase;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKBoiler;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKConsole;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControl;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControlAuto;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControlManual;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKCooler;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKHeater;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKOutgasser;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKRod;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKStorage;
-import com.hbm.tileentity.machine.rbmk.RBMKColor;
-import com.hbm.tileentity.machine.rbmk.RBMKColumn;
 import com.hbm.util.ChunkUtil;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.LinkedHashMap;
@@ -57,7 +57,6 @@ public final class RBMKConsolePeripheral extends SnapshotPeripheral<BlockEntityR
     }
 
     private static String itemName(ItemStack stack) {
-
         return stack.isEmpty() ? "" : stack.getItem().getDescriptionId();
     }
 
@@ -93,7 +92,6 @@ public final class RBMKConsolePeripheral extends SnapshotPeripheral<BlockEntityR
         int index = (j + 7) * 15 + (i + 7);
 
         if (!(columnAt(x, y) instanceof BlockEntityRBMKBase column)) return new Object[] {null};
-
         RBMKColumn cached =
                 index >= 0 && index < console.columns.length ? console.columns[index] : null;
         if (cached == null) return OpenComputers.unknownError();
@@ -105,7 +103,6 @@ public final class RBMKConsolePeripheral extends SnapshotPeripheral<BlockEntityR
         data.put("realSimSteam", column.reasimSteam);
         data.put("moderated", cached.moderated);
         data.put("level", cached instanceof RBMKColumn.ControlColumn control ? control.level : 0D);
-
         data.put(
                 "targetLevel", column instanceof BlockEntityRBMKControl rod ? rod.targetLevel : 0D);
         data.put(

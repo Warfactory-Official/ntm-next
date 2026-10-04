@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKHeater;
 import com.hbm.inventory.container.MenuRBMKHeater;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKHeater;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -36,10 +36,8 @@ public class ScreenRBMKHeater extends ScreenInfoContainer<MenuRBMKHeater> {
 
         BlockEntityRBMKHeater be = be();
         if (be != null) {
-
             drawFluidBar(graphics, 68, 24, 14, 58, be.feed);
             drawFluidBar(graphics, 126, 24, 14, 58, be.steam);
-
             graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, 72, 72, 176, 0, 10, 10, 256, 256);
             graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, 130, 72, 186, 0, 10, 10, 256, 256);
             drawFluidGaugeInfo(graphics, mouseX, mouseY, 68, 24, 16, 58, be.feed);

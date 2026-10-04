@@ -3,11 +3,11 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityMachineMissileAssembly;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.items.weapon.ItemCustomMissilePart.PartType;
 import com.hbm.items.weapon.ItemCustomMissilePart;
-import com.hbm.tileentity.machine.BlockEntityMachineMissileAssembly;
 import java.util.function.Predicate;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -51,7 +51,6 @@ public class MenuMachineMissileAssembly extends BlockEntityMenu<BlockEntityMachi
                         80,
                         36,
                         is(PartType.THRUSTER)));
-
         addSlot(
                 new SlotRecipeOutput(
                         playerInv.player,

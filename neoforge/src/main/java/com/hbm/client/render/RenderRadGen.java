@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineRadGen;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityMachineRadGen;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -33,22 +33,17 @@ public class RenderRadGen
     private static final int GLASS = ResourceManager.radgen.partId("Glass");
 
     private static final double PIVOT = 1.5D;
-
     private static final long SPIN_PERIOD = 3600L;
     private static final float SPIN_RATE = -0.1F;
 
     private static final int LAMP_ON = ARGB.colorFromFloat(1F, 0F, 1F, 0F);
     private static final int LAMP_OFF = ARGB.colorFromFloat(1F, 0F, 0.1F, 0F);
-
     private static final int GLASS_TINT = ARGB.colorFromFloat(0.3F, 0.5F, 0.75F, 1F);
 
     private final HFRWavefrontObject model = ResourceManager.radgen;
-
     private final RenderType bodyType =
             WorldRenderPipeline.oneSidedCutout(ResourceManager.radgen_tex);
-
     private final RenderType lampType = FlatCutout.of(ResourceManager.white_tex);
-
     private final RenderType tintType = FlatTranslucent.lit(ResourceManager.white_tex);
 
     @Override

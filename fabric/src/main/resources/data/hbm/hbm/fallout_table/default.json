@@ -271,7 +271,10 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:waste_leaves"
+            "Name": "hbm:waste_leaves",
+            "Properties": {
+              "waterlogged": "false"
+            }
           },
           "weight": 1
         }
@@ -454,6 +457,31 @@
         }
       ],
       "restrict_depth": true,
+      "targets": "hbm:ore_uranium_deepslate"
+    },
+    {
+      "max_distance_percent": 5.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_schrabidium",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_uranium_scorched",
+            "Properties": {
+              "shade": "9"
+            }
+          },
+          "weight": 9
+        }
+      ],
+      "restrict_depth": true,
       "targets": "hbm:ore_gneiss_uranium"
     },
     {
@@ -675,6 +703,31 @@
         }
       ],
       "restrict_depth": true,
+      "targets": "hbm:ore_uranium_deepslate"
+    },
+    {
+      "max_distance_percent": 10.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_schrabidium",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_uranium_scorched",
+            "Properties": {
+              "shade": "8"
+            }
+          },
+          "weight": 9
+        }
+      ],
+      "restrict_depth": true,
       "targets": "hbm:ore_gneiss_uranium"
     },
     {
@@ -896,6 +949,31 @@
         }
       ],
       "restrict_depth": true,
+      "targets": "hbm:ore_uranium_deepslate"
+    },
+    {
+      "max_distance_percent": 15.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_schrabidium",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_uranium_scorched",
+            "Properties": {
+              "shade": "7"
+            }
+          },
+          "weight": 9
+        }
+      ],
+      "restrict_depth": true,
       "targets": "hbm:ore_gneiss_uranium"
     },
     {
@@ -1117,6 +1195,31 @@
         }
       ],
       "restrict_depth": true,
+      "targets": "hbm:ore_uranium_deepslate"
+    },
+    {
+      "max_distance_percent": 20.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_schrabidium",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_uranium_scorched",
+            "Properties": {
+              "shade": "6"
+            }
+          },
+          "weight": 9
+        }
+      ],
+      "restrict_depth": true,
       "targets": "hbm:ore_gneiss_uranium"
     },
     {
@@ -1314,6 +1417,31 @@
       ],
       "restrict_depth": true,
       "targets": "hbm:ore_uranium"
+    },
+    {
+      "max_distance_percent": 25.0,
+      "primary": [
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_schrabidium",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "state": {
+            "Name": "hbm:ore_sellafield_uranium_scorched",
+            "Properties": {
+              "shade": "5"
+            }
+          },
+          "weight": 9
+        }
+      ],
+      "restrict_depth": true,
+      "targets": "hbm:ore_uranium_deepslate"
     },
     {
       "max_distance_percent": 25.0,

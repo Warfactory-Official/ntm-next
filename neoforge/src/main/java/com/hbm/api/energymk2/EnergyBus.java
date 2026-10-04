@@ -17,18 +17,15 @@ public final class EnergyBus {
             Distribution.Apply<IEnergyHandlerMK2> apply) {
         long delivered = 0;
         long remaining = budget;
-
         for (int t = byPriority.length - 1; t >= 0 && remaining > 0; t--) {
             List<Distribution.Share<IEnergyHandlerMK2>> tier = byPriority[t];
             if (tier == null || tier.isEmpty()) continue;
             long remainingDemand = demand[t];
             if (remainingDemand <= 0) continue;
             long tierBudget = remaining;
-
             for (int i = 0, size = tier.size(); i < size && tierBudget > 0; i++) {
                 Distribution.Share<IEnergyHandlerMK2> row = tier.get(i);
                 long want = row.amount();
-
                 long offer =
                         Distribution.weightedShare(
                                 tierBudget, want, remainingDemand, Math.min(want, tierBudget));
@@ -39,7 +36,6 @@ public final class EnergyBus {
                 tierBudget -= taken;
                 delivered += taken;
             }
-
             remaining = tierBudget;
         }
         return delivered;

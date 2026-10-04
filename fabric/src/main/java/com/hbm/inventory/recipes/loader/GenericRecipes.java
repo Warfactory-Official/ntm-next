@@ -5,7 +5,7 @@ package com.hbm.inventory.recipes.loader;
 
 import com.hbm.NuclearTech;
 import com.hbm.packet.SyncWire;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.FabricRegistrar;
 import java.util.*;
 import java.util.function.Predicate;
 import net.minecraft.resources.Identifier;
@@ -28,7 +28,6 @@ public abstract class GenericRecipes<T extends GenericRecipe, I> extends Seriali
     public static final String POOL_PREFIX_SECRET = "secret.";
     public static final String POOL_PREFIX_528 = "528.";
     private static Pools pools = new Pools(RecipeSource.NEVER_FILLED, Map.of(), Map.of());
-
     private static volatile int tagEpoch;
     private Generation<T, I> generation = Generation.empty();
     private Identifier typeId;
@@ -84,9 +83,9 @@ public abstract class GenericRecipes<T extends GenericRecipe, I> extends Seriali
     protected abstract RecipeSerializer<? extends T> serializer();
 
     @Override
-    public final void registerType(IRegistrar registrar) {
-        this.typeId = registrar.registerRecipeType(registryName(), this).id();
-        registrar.registerRecipeSerializer(registryName(), serializer());
+    public final void registerType() {
+        this.typeId = FabricRegistrar.registerRecipeType(registryName(), this).id();
+        FabricRegistrar.registerRecipeSerializer(registryName(), serializer());
     }
 
     public final RecipeType<T> type() {
@@ -111,7 +110,6 @@ public abstract class GenericRecipes<T extends GenericRecipe, I> extends Seriali
     @Override
     public void ensureFilled() {
         RecipeSource.Token token = RecipeSource.token();
-
         if (token == null) return;
         int epoch = tagEpoch;
         Generation<T, I> held = generation;
@@ -163,7 +161,6 @@ public abstract class GenericRecipes<T extends GenericRecipe, I> extends Seriali
                                 recipe.inputFluid != null && recipe.inputFluid.length > 0
                                         ? recipe.inputFluid[0].type()
                                         : null);
-
         RecipeIndex<Item, T> byItem =
                 RecipeIndex.of(
                         rows,
@@ -178,7 +175,6 @@ public abstract class GenericRecipes<T extends GenericRecipe, I> extends Seriali
                                                 file.accept(item.value());
                                                 filed[0]++;
                                             });
-
                             if (filed[0] == 0) {
                                 NuclearTech.LOGGER.warn(
                                         "{}: recipe {} has an input ingredient matching no item, so nothing can "

@@ -6,7 +6,6 @@ package com.hbm.inventory.fluid.trait;
 import com.hbm.handler.ArmorUtil;
 import com.hbm.hazard.HazardClass;
 import com.hbm.util.ArmorRegistry;
-import com.hbm.util.I18nUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +14,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -34,12 +34,14 @@ public class FT_Toxin extends FluidTrait {
     }
 
     @Override
-    public void addInfoHidden(List<String> info) {
+    public void addInfoHidden(List<Component> info) {
         info.add(
-                ChatFormatting.LIGHT_PURPLE
-                        + "["
-                        + I18nUtil.resolveKey("hbmfluid.trait.toxin")
-                        + "]");
+                Component.empty()
+                        .append(Component.literal("[").withStyle(ChatFormatting.LIGHT_PURPLE))
+                        .append(
+                                Component.translatable("hbmfluid.trait.toxin")
+                                        .withStyle(ChatFormatting.LIGHT_PURPLE))
+                        .append(Component.literal("]").withStyle(ChatFormatting.LIGHT_PURPLE)));
         for (ToxinEntry entry : entries) entry.addInfo(info);
     }
 
@@ -76,7 +78,7 @@ public class FT_Toxin extends FluidTrait {
 
         public abstract void poison(LivingEntity entity, double intensity);
 
-        public abstract void addInfo(List<String> info);
+        public abstract void addInfo(List<Component> info);
     }
 
     public static class ToxinDirectDamage extends ToxinEntry {
@@ -113,25 +115,29 @@ public class FT_Toxin extends FluidTrait {
         }
 
         @Override
-        public void addInfo(List<String> info) {
-            info.add(
-                    ChatFormatting.YELLOW
-                            + "- "
-                            + I18nUtil.resolveKey(clazz.lang)
-                            + (fullBody
-                                    ? ChatFormatting.RED
-                                            + " ("
-                                            + I18nUtil.resolveKey("hbmfluid.trait.hazmat")
-                                            + ")"
-                                    : "")
-                            + ": "
-                            + ChatFormatting.YELLOW
-                            + String.format(
-                                    Locale.US,
-                                    "%,.1f",
-                                    amount * SharedConstants.TICKS_PER_SECOND / delay)
-                            + " "
-                            + I18nUtil.resolveKey("hbmfluid.trait.perDamage"));
+        public void addInfo(List<Component> info) {
+            var line =
+                    Component.literal("- ")
+                            .withStyle(ChatFormatting.YELLOW)
+                            .append(Component.translatable(clazz.lang));
+            if (fullBody)
+                line.append(
+                        Component.literal(" (")
+                                .append(Component.translatable("hbmfluid.trait.hazmat"))
+                                .append(")")
+                                .withStyle(ChatFormatting.RED));
+            line.append(
+                    Component.literal(
+                                    ": "
+                                            + String.format(
+                                                    Locale.US,
+                                                    "%,.1f",
+                                                    amount
+                                                            * SharedConstants.TICKS_PER_SECOND
+                                                            / delay)
+                                            + " ")
+                            .withStyle(ChatFormatting.YELLOW));
+            info.add(line.append(Component.translatable("hbmfluid.trait.perDamage")));
         }
     }
 
@@ -144,7 +150,7 @@ public class FT_Toxin extends FluidTrait {
         }
 
         public ToxinEffects add(MobEffectInstance... effs) {
-            Collections.addAll(this.effects, effs);
+            Collections.addAll(effects, effs);
             return this;
         }
 
@@ -163,33 +169,31 @@ public class FT_Toxin extends FluidTrait {
         }
 
         @Override
-        public void addInfo(List<String> info) {
-            info.add(
-                    ChatFormatting.YELLOW
-                            + "- "
-                            + I18nUtil.resolveKey(clazz.lang)
-                            + (fullBody
-                                    ? ChatFormatting.RED
-                                            + " ("
-                                            + I18nUtil.resolveKey("hbmfluid.trait.hazmat")
-                                            + ")"
-                                            + ChatFormatting.YELLOW
-                                    : "")
-                            + ":");
+        public void addInfo(List<Component> info) {
+            var line =
+                    Component.literal("- ")
+                            .withStyle(ChatFormatting.YELLOW)
+                            .append(Component.translatable(clazz.lang));
+            if (fullBody)
+                line.append(
+                        Component.literal(" (")
+                                .append(Component.translatable("hbmfluid.trait.hazmat"))
+                                .append(")")
+                                .withStyle(ChatFormatting.RED));
+            info.add(line.append(":"));
             for (MobEffectInstance eff : effects) {
+                var effect =
+                        Component.literal("   - ")
+                                .withStyle(ChatFormatting.YELLOW)
+                                .append(eff.getEffect().value().getDisplayName());
+                if (eff.getAmplifier() > 0)
+                    effect.append(" ")
+                            .append(Component.translatable("potion.potency." + eff.getAmplifier()));
                 info.add(
-                        ChatFormatting.YELLOW
-                                + "   - "
-                                + eff.getEffect().value().getDisplayName().getString()
-                                + (eff.getAmplifier() > 0
-                                        ? " "
-                                                + I18nUtil.resolveKey(
-                                                        "potion.potency." + eff.getAmplifier())
-                                        : "")
-                                + " "
-                                + MobEffectUtil.formatDuration(
-                                                eff, 1.0F, SharedConstants.TICKS_PER_SECOND)
-                                        .getString());
+                        effect.append(" ")
+                                .append(
+                                        MobEffectUtil.formatDuration(
+                                                eff, 1.0F, SharedConstants.TICKS_PER_SECOND)));
             }
         }
     }

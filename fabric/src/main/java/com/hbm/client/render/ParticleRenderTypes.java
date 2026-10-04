@@ -23,7 +23,6 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
 
 public final class ParticleRenderTypes {
-
     public static final Identifier ENTITY_NO_FOG = Library.id("core/entity_nofog");
 
     public static final Identifier PARTICLE_NO_FOG = Library.id("core/particle_nofog");
@@ -254,6 +253,7 @@ public final class ParticleRenderTypes {
         return WorldRenderPipeline.of(
                 RenderPipeline.builder(MATRICES_NO_FOG_SNIPPET)
                         .withLocation(location)
+                        .withShaderDefine("ADDITIVE_EMISSION")
                         .withVertexShader(ENTITY_NO_FOG)
                         .withFragmentShader(ENTITY_NO_FOG)
                         .withShaderDefine("NO_OVERLAY")

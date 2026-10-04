@@ -43,12 +43,10 @@ final class FrameCompression {
                 output.writeBytes(wire, wire.readerIndex(), length);
                 return output;
             }
-
             output.writeZero(3);
             VarInt.write(output, length);
             Deflater deflater = DEFLATER.get();
             try {
-
                 deflater.setInput(wire.internalNioBuffer(wire.readerIndex(), length));
                 deflater.finish();
                 while (!deflater.finished()) {

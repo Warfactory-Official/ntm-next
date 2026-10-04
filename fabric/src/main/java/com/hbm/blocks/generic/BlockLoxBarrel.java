@@ -12,11 +12,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.jspecify.annotations.Nullable;
 
 public class BlockLoxBarrel extends BlockBarrelExplosive {
-
     private static final int FREEZER_RADIUS = 7;
 
     public BlockLoxBarrel(BlockBehaviour.Properties props) {
-
         super(props, 100, false);
     }
 

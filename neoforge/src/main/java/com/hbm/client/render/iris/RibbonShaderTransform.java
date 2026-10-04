@@ -80,7 +80,6 @@ public final class RibbonShaderTransform {
                                                             .getName())
                                     .collect(Collectors.toSet());
                     var colors = new LinkedHashMap<String, String>();
-
                     for (var declaration :
                             root.nodeIndex.getStream(TypeAndInitDeclaration.class).toList()) {
                         if (!storage(declaration, StorageQualifier.StorageType.OUT)

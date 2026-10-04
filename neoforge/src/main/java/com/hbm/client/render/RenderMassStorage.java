@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.storage.BlockEntityMassStorage;
 import com.hbm.blocks.machine.storage.BlockMassStorage;
 import com.hbm.client.render.flywheel.HbmBlockEntityVisual;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.storage.BlockEntityMassStorage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -36,7 +36,6 @@ public class RenderMassStorage
         implements BlockEntityRenderer<BlockEntityMassStorage, RenderMassStorage.State>,
                 ConcurrentRenderStateExtraction {
     public static final int TEXT_COLOR = 0xFF00FF00;
-
     public static final int VIEW_DISTANCE = 32;
 
     private final ItemModelResolver itemModelResolver;
@@ -78,7 +77,6 @@ public class RenderMassStorage
         poseStack.mulPose(Axis.ZP.rotationDegrees(180F));
         poseStack.mulPose(Axis.YP.rotationDegrees(panelAngle(facing)));
         poseStack.translate(-0.5F, -0.5F, -0.5F);
-
         poseStack.translate(0F, 0F, -0.005F);
         poseStack.scale(1F / 16F, 1F / 16F, -0.0001F);
     }
@@ -86,7 +84,6 @@ public class RenderMassStorage
     public static void iconPose(PoseStack poseStack) {
         poseStack.translate(4F, 2.5F, 0F);
         poseStack.scale(8F / 16F, 8F / 16F, 1F);
-
         poseStack.translate(8F, 8F, 0F);
         poseStack.scale(16F, -16F, 16F);
     }
@@ -115,7 +112,6 @@ public class RenderMassStorage
             ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
         BlockEntityRenderer.super.extractRenderState(
                 storage, state, partialTicks, cameraPosition, breakProgress);
-
         state.iconOnly = HbmBlockEntityVisual.hasVisual(storage);
         var type = storage.getItem(BlockEntityMassStorage.SLOT_TYPE);
         if (type.isEmpty()) {

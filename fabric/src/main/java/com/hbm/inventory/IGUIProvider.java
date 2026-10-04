@@ -3,7 +3,7 @@
 
 package com.hbm.inventory;
 
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricPlatform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
@@ -20,12 +20,12 @@ public interface IGUIProvider extends MenuProvider {
 
     static void openBlockMenu(Player player, MenuProvider provider, BlockPos pos, int dispatchId) {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
-
         if (provider instanceof RandomizableContainer container) {
             if (container.getLootTable() != null && serverPlayer.isSpectator()) return;
             container.unpackLootTable(serverPlayer);
         }
-        Services.PLATFORM.openMenu(serverPlayer, provider, new BlockMenuContext(pos, dispatchId));
+        serverPlayer.openMenu(
+                new FabricPlatform.BlockMenu(provider, new BlockMenuContext(pos, dispatchId)));
     }
 
     static AbstractContainerMenu createDispatchedMenu(

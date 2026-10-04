@@ -46,7 +46,6 @@ public final class FusionPlasmaRenderTypes {
                                             .withTexture("Sampler0", texture)
                                             .createRenderSetup()));
     private static final Identifier WHITE = RenderTextures.WHITE;
-
     public static final RenderType UNTEXTURED_ADDITIVE =
             RenderType.create(
                     "ntm_fusion_jet",
@@ -72,7 +71,6 @@ public final class FusionPlasmaRenderTypes {
                             .withTexture("Sampler0", WHITE)
                             .useLightmap()
                             .createRenderSetup());
-
     static final RenderPipeline BASE_PIPELINE =
             WorldRenderPipeline.of(
                     RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
@@ -96,7 +94,6 @@ public final class FusionPlasmaRenderTypes {
                                     RenderSetup.builder(BASE_PIPELINE)
                                             .withTexture("Sampler0", texture)
                                             .createRenderSetup()));
-
     static final RenderPipeline BEAM_PIPELINE =
             WorldRenderPipeline.of(
                     RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)

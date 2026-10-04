@@ -26,7 +26,6 @@ import com.hbm.items.machine.ItemRTGPellet;
 import com.hbm.items.machine.ItemZirnoxRod;
 import com.hbm.items.machine.ItemZirnoxRodDepleted;
 import com.hbm.lib.Library;
-import com.hbm.platform.Services;
 import com.hbm.registration.ItemFamily;
 import com.hbm.registration.RegistryHandle;
 import com.mojang.serialization.Codec;
@@ -115,12 +114,10 @@ public final class HazardRegistry {
     public static final double mult_ore = mult_ingot;
     public static final double mult_billet = 0.5D;
     public static final double mult_block = 10.0D;
-
     public static final double mult_rod = 0.5D;
     public static final double mult_rod_rbmk = mult_rod * 8D;
     public static final double mult_rtg = mult_billet * 3D;
     public static final double mult_crystal = mult_gem;
-
     public static final double co60 = 30.0D;
     public static final double tc99 = 2.75D;
     public static final double au198 = 500.0D;
@@ -143,10 +140,8 @@ public final class HazardRegistry {
     public static final double am241 = 8.5D;
     public static final double am242 = 9.5D;
     public static final double amrg = 9.0D;
-
     public static final double uf = 0.5D;
     public static final double saf = 5.85D;
-
     public static final double thf = 1.75D;
     public static final double uzh = 0.125D;
     public static final double npf = 1.5D;
@@ -162,7 +157,6 @@ public final class HazardRegistry {
     public static final double sr = sa326 * 0.1D;
     public static final double sb = sa326 * 0.1D;
     public static final double sas3 = 5.0D;
-
     public static final double sr90 = 15.0D;
     public static final double i131 = 150.0D;
     public static final double xe135 = 1250.0D;
@@ -173,7 +167,6 @@ public final class HazardRegistry {
     public static final double rabe = ra226 * radsource_mult;
     public static final double pobe = po210 * radsource_mult;
     public static final double pube = pu238 * radsource_mult;
-
     public static final double wst = 15.0D;
     public static final double wstv = 7.5D;
     public static final double fo = 10.0D;
@@ -196,10 +189,11 @@ public final class HazardRegistry {
         return TagKey.create(Registries.ITEM, Library.id("hazard/" + name));
     }
 
-    public static void registerItems() {
+    public static final List<TagKey<Item>> ORE_BLACKLIST =
+            List.of(OreDictManager.TH232.ore(), OreDictManager.U.ore());
 
-        HazardSystem.blacklist(OreDictManager.TH232.ore());
-        HazardSystem.blacklist(OreDictManager.U.ore());
+    public static void registerItems() {
+        ORE_BLACKLIST.forEach(HazardSystem::blacklist);
         registerZirnox();
         registerBreedingRods();
         registerWatzPellets();
@@ -208,7 +202,6 @@ public final class HazardRegistry {
         registerPlateFuel();
         registerDepletedFuel();
         registerPWRFuelStages();
-
         HazardSystem.register(
                 ModBlocks.SELLAFIELD.get(),
                 new HazardData()
@@ -334,7 +327,6 @@ public final class HazardRegistry {
                                                             ZIRNOX_DEPLETION))));
         }
         for (RegistryHandle<ItemZirnoxRodDepleted> handle : ModItems.DEPLETED) {
-
             if (handle == null) continue;
             ItemZirnoxRodDepleted dep = handle.get();
             HazardData data = new HazardData();
@@ -344,13 +336,10 @@ public final class HazardRegistry {
         }
         HazardSystem.register(
                 ModItems.ROD_ZIRNOX_TRITIUM.get(), makeData(RADIATION, ZIRNOX_TRITIUM_RAD));
-
         HazardSystem.register(ModItems.INSERT_POLONIUM.get(), makeData(RADIATION, 100D));
-
         HazardSystem.register(
                 ModItems.POWDER_CAESIUM.get(),
                 new HazardData().addEntry(HYDROACTIVE, 1D).addEntry(HOT, 3D));
-
         registerEach(ModItems.NUCLEAR_WASTE_LONG, () -> makeData(RADIATION, 5D));
         registerEach(ModItems.NUCLEAR_WASTE_LONG_TINY, () -> makeData(RADIATION, 0.5D));
         registerEach(
@@ -408,7 +397,6 @@ public final class HazardRegistry {
         for (var family : List.of(ModItems.ROD, ModItems.ROD_DUAL, ModItems.ROD_QUAD)) {
             for (var member : family) {
                 ItemBreedingRod rod = member.get();
-
                 if (rod.type.radiation == 0D) continue;
                 HazardSystem.register(
                         rod,
@@ -527,7 +515,6 @@ public final class HazardRegistry {
         b.pellet("rbmk_pellet_heaus", 0D, wst * mult_billet * 32.5D);
         b.pellet("rbmk_pellet_po210be", pobe * mult_billet, pobe * mult_billet * 0.1D, true);
         b.pellet("rbmk_pellet_ra226be", rabe * mult_billet, rabe * mult_billet * 0.4D, true);
-
         b.pellet("rbmk_pellet_pu238be", pube * mult_billet, wst * 1.5D);
         b.pellet("rbmk_pellet_balefire_gold", au198 * mult_billet, bf * mult_billet * 0.5D, true);
         b.pellet(
@@ -545,7 +532,6 @@ public final class HazardRegistry {
     private static void registerRTGPellets() {
         put(ModItems.PELLET_RTG, pu238 * mult_rtg, 0D, 3D, 0D);
         put(ModItems.PELLET_RTG_RADIUM, ra226 * mult_rtg, 0D, 0D, 0D);
-
         put(ModItems.PELLET_RTG_WEAK, (pu238 + (u238 * 2D)) * mult_billet, 0D, 0D, 0D);
         put(ModItems.PELLET_RTG_STRONTIUM, sr90 * mult_rtg, 0D, 0D, 0D);
         put(ModItems.PELLET_RTG_COBALT, co60 * mult_rtg, 0D, 0D, 0D);
@@ -645,9 +631,9 @@ public final class HazardRegistry {
     public static List<IHazardTransformer> transformers() {
         List<IHazardTransformer> out = new ArrayList<>();
         out.add(new HazardTransformerRadiationNBT());
+        out.add(new HazardTransformerItemContents());
         if (!(BalanceConfig.enableLBSM && BalanceConfig.enableLBSMSafeCrates))
             out.add(new HazardTransformerRadiationContainer());
-
         out.add(new HazardTransformerPostCustom());
         return out;
     }

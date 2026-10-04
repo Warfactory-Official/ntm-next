@@ -7,6 +7,7 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.handler.HbmKeybinds.EnumKeybind;
 import com.hbm.handler.ability.AvailableAbilities;
 import com.hbm.handler.ability.BaseAbility;
+import com.hbm.handler.ability.ToolAreaAbility;
 import com.hbm.handler.ability.ToolDig;
 import com.hbm.handler.ability.ToolHarvestAbility;
 import com.hbm.handler.ability.ToolPreset;
@@ -14,13 +15,16 @@ import com.hbm.handler.ability.WeaponAbility;
 import com.hbm.items.IKeybindReceiver;
 import com.hbm.items.ModDataComponents;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.PlayerInformPayload;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricPlatform;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import mov.movblock.tenon.strip.api.DropSafe;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
@@ -54,6 +58,8 @@ import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.component.Weapon;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -61,8 +67,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class ItemToolAbility extends Item implements IKeybindReceiver {
-
     public static @Nullable Consumer<ItemStack> OPEN_SCREEN;
+    public static @Nullable BooleanSupplier CYCLE_FROM_USE;
 
     static final Identifier MOVEMENT_MODIFIER_ID = Library.id("tool_movement");
 
@@ -111,7 +117,6 @@ public class ItemToolAbility extends Item implements IKeybindReceiver {
                         .stacksTo(1)
                         .component(DataComponents.TOOL, new Tool(rules, 1.0F, 1, true))
                         .component(DataComponents.WEAPON, new Weapon(1));
-
         if (tier.enchantmentValue() > 0) properties.enchantable(tier.enchantmentValue());
         if (tier.durability() > 0) properties.durability(tier.durability());
         if (repairItems != null) properties.repairable(repairItems);
@@ -204,18 +209,19 @@ public class ItemToolAbility extends Item implements IKeybindReceiver {
         boolean drops =
                 !skipDefaultDrops
                         && !player.getAbilities().instabuild
-                        && Services.PLATFORM.canHarvestBlock(level, pos, state, player);
+                        && ((Player) player).hasCorrectToolForDrops(state);
         BlockState adjusted = state.getBlock().playerWillDestroy(level, pos, state, player);
         if (!level.removeBlock(pos, false)) return;
         state.getBlock().destroy(level, pos, state);
-        Services.PLATFORM.afterPlayerBreak(level, player, pos, adjusted, blockEntity);
+        PlayerBlockBreakEvents.AFTER
+                .invoker()
+                .afterBlockBreak(level, player, pos, adjusted, blockEntity);
 
         if (player.getAbilities().instabuild) return;
         if (drops) {
-
             player.awardStat(Stats.BLOCK_MINED.get(state.getBlock()));
             player.causeFoodExhaustion(0.005F);
-            Services.PLATFORM.dropResources(
+            FabricPlatform.dropResources(
                     level, pos, dig.reference(), adjusted, blockEntity, player, dig.harvestTool());
         }
         ((ItemToolAbility) dig.held().getItem()).spendPerBlock(dig.held(), player);
@@ -229,9 +235,8 @@ public class ItemToolAbility extends Item implements IKeybindReceiver {
         if (!canHarvest(dig, state)) return;
         float strength = state.getDestroyProgress(dig.player(), level, pos);
         if (state.getDestroySpeed(level, pos) == -1.0F && strength == 0.0F) return;
-
         if (state.is(ModBlocks.STONE_KEYHOLE.get())) return;
-        if (!Services.PLATFORM.canHarvestBlock(level, pos, state, dig.player())) return;
+        if (!FabricPlatform.canHarvestBlock(level, pos, state, dig.player())) return;
 
         BlockState reference = level.getBlockState(dig.reference());
         float referenceStrength =
@@ -241,8 +246,8 @@ public class ItemToolAbility extends Item implements IKeybindReceiver {
         ServerPlayer player = dig.player();
         if (player.blockActionRestricted(level, pos, player.gameMode.getGameModeForPlayer()))
             return;
-        if (!Services.PLATFORM.allowPlayerBreak(
-                level, player, pos, state, level.getBlockEntity(pos))) return;
+        if (!FabricPlatform.allowPlayerBreak(level, player, pos, state, level.getBlockEntity(pos)))
+            return;
 
         dig.preset().harvest().onHarvestBlock(dig, dig.preset().harvestLevel(), pos, state);
     }
@@ -264,11 +269,51 @@ public class ItemToolAbility extends Item implements IKeybindReceiver {
 
     public List<ToolPreset> presets(ItemStack stack) {
         List<ToolPreset> stored = stack.get(ModDataComponents.TOOL_PRESETS.get());
-        if (stored == null || stored.isEmpty()) return abilities.defaultPresets();
+        boolean defaults = stored == null || stored.isEmpty();
+        if (defaults) stored = abilities.defaultPresets();
 
         List<ToolPreset> restricted = new ArrayList<>(stored.size());
-        for (ToolPreset preset : stored) restricted.add(preset.restrictTo(abilities));
+        for (ToolPreset preset : stored) {
+            ToolPreset available = restrictPreset(stack, preset);
+            if (!defaults || !available.isNone() || preset.isNone()) restricted.add(available);
+        }
         return restricted;
+    }
+
+    public boolean canSelectAbility(ItemStack stack, BaseAbility ability) {
+        if (ability == ToolAreaAbility.NONE || ability == ToolHarvestAbility.NONE) return true;
+        if (!abilities.supports(ability)) return false;
+
+        boolean silk = false;
+        boolean fortune = false;
+        for (var entry :
+                stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY)
+                        .entrySet()) {
+            if (entry.getIntValue() <= 0) continue;
+            silk |= entry.getKey().is(Enchantments.SILK_TOUCH);
+            fortune |= entry.getKey().is(Enchantments.FORTUNE);
+        }
+        if (!silk && !fortune) return true;
+        if (ability == ToolAreaAbility.EXPLOSION) return false;
+        return !(ability instanceof ToolHarvestAbility)
+                || ability == (silk ? ToolHarvestAbility.SILK : ToolHarvestAbility.LUCK);
+    }
+
+    private ToolPreset restrictPreset(ItemStack stack, ToolPreset preset) {
+        ToolPreset restricted = preset.restrictTo(abilities);
+        ToolAreaAbility area =
+                canSelectAbility(stack, restricted.area())
+                        ? restricted.area()
+                        : ToolAreaAbility.NONE;
+        ToolHarvestAbility harvest =
+                canSelectAbility(stack, restricted.harvest())
+                        ? restricted.harvest()
+                        : ToolHarvestAbility.NONE;
+        return new ToolPreset(
+                area,
+                area == restricted.area() ? restricted.areaLevel() : 0,
+                harvest,
+                harvest == restricted.harvest() ? restricted.harvestLevel() : 0);
     }
 
     public int currentPreset(ItemStack stack) {
@@ -284,7 +329,7 @@ public class ItemToolAbility extends Item implements IKeybindReceiver {
 
     public void setPresets(ItemStack stack, List<ToolPreset> presets, int current) {
         List<ToolPreset> restricted = new ArrayList<>(presets.size());
-        for (ToolPreset preset : presets) restricted.add(preset.restrictTo(abilities));
+        for (ToolPreset preset : presets) restricted.add(restrictPreset(stack, preset));
 
         stack.set(ModDataComponents.TOOL_PRESETS.get(), List.copyOf(restricted));
         stack.set(
@@ -319,7 +364,6 @@ public class ItemToolAbility extends Item implements IKeybindReceiver {
             ItemStack stack, BlockState state, Level level, BlockPos pos, LivingEntity user) {
         if (!(level instanceof ServerLevel server) || !(user instanceof ServerPlayer player))
             return true;
-
         if (state.is(ModBlocks.STONE_KEYHOLE.get())
                 || state.is(ModBlocks.STONE_KEYHOLE_META.get())) {
             return true;
@@ -341,42 +385,52 @@ public class ItemToolAbility extends Item implements IKeybindReceiver {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Player player = context.getPlayer();
-        if (player == null) return InteractionResult.PASS;
-        return cycle(context.getLevel(), player, context.getItemInHand());
+        if (player == null
+                || !context.getLevel().isClientSide()
+                || context.getHand() != InteractionHand.MAIN_HAND) {
+            return InteractionResult.PASS;
+        }
+        return cycleFromUse(context.getItemInHand());
     }
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        return cycle(level, player, player.getItemInHand(hand));
+        if (!level.isClientSide() || hand != InteractionHand.MAIN_HAND)
+            return InteractionResult.PASS;
+        return cycleFromUse(player.getItemInHand(hand));
     }
 
-    private InteractionResult cycle(Level level, Player player, ItemStack stack) {
+    private InteractionResult cycleFromUse(ItemStack stack) {
         if (!canOperate(stack)) return InteractionResult.PASS;
+        if (presets(stack).size() < 2) return InteractionResult.PASS;
+        return CYCLE_FROM_USE.getAsBoolean() ? InteractionResult.SUCCESS : InteractionResult.PASS;
+    }
 
+    private void cycle(ServerPlayer player, ItemStack stack) {
+        if (!canOperate(stack)) return;
         List<ToolPreset> presets = presets(stack);
-        if (presets.size() < 2) return InteractionResult.PASS;
-        if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
+        if (presets.size() < 2) return;
 
         int next = player.isShiftKeyDown() ? 0 : (currentPreset(stack) + 1) % presets.size();
         setPresets(stack, presets, next);
 
         ToolPreset active = presets.get(next);
-        Services.NETWORK.sendTo(
+        PacketWire.sendTo(
                 new PlayerInformPayload(
                         active.message(),
                         PlayerInformPayload.ID_TOOL_ABILITY,
                         PlayerInformPayload.DEFAULT_MILLIS),
-                serverPlayer);
-        level.playSound(
-                null,
-                player.getX(),
-                player.getY(),
-                player.getZ(),
-                SoundEvents.EXPERIENCE_ORB_PICKUP,
-                SoundSource.PLAYERS,
-                0.25F,
-                active.isNone() ? 0.75F : 1.25F);
-        return InteractionResult.SUCCESS;
+                player);
+        player.level()
+                .playSound(
+                        null,
+                        player.getX(),
+                        player.getY(),
+                        player.getZ(),
+                        SoundEvents.EXPERIENCE_ORB_PICKUP,
+                        SoundSource.PLAYERS,
+                        0.25F,
+                        active.isNone() ? 0.75F : 1.25F);
     }
 
     @Override
@@ -402,7 +456,7 @@ public class ItemToolAbility extends Item implements IKeybindReceiver {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-        abilities.appendTooltip(adder);
+        abilities.appendTooltip(adder, ability -> canSelectAbility(stack, ability));
 
         if (rockBreaker) {
             adder.accept(Component.empty());
@@ -414,11 +468,19 @@ public class ItemToolAbility extends Item implements IKeybindReceiver {
 
     @Override
     public boolean canHandleKeybind(Player player, ItemStack stack, EnumKeybind keybind) {
-        return keybind == EnumKeybind.ABILITY_ALT && player.level().isClientSide();
+        return player.level().isClientSide()
+                ? keybind == EnumKeybind.ABILITY_ALT
+                : keybind == EnumKeybind.ABILITY_CYCLE;
     }
 
     @Override
-    public void handleKeybind(Player player, ItemStack stack, EnumKeybind keybind, boolean state) {}
+    public void handleKeybind(Player player, ItemStack stack, EnumKeybind keybind, boolean state) {
+        if (keybind == EnumKeybind.ABILITY_CYCLE
+                && state
+                && player instanceof ServerPlayer serverPlayer) {
+            cycle(serverPlayer, stack);
+        }
+    }
 
     @Override
     public void handleKeybindClient(

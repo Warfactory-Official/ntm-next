@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityThresher;
 import com.hbm.blocks.machine.MachineThresher;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityThresher;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -83,7 +83,6 @@ public class RenderThresher
         BlockEntityRenderer.super.extractRenderState(
                 be, state, partialTicks, cameraPosition, breakProgress);
         state.yaw = facingYaw(be.getBlockState().getValue(MachineThresher.FACING));
-
         state.armAngle = 82.5F - Mth.lerp(partialTicks, be.prevAngle, be.angle);
         state.spin = Mth.lerp(partialTicks, be.lastSpin, be.spin);
         state.engine =

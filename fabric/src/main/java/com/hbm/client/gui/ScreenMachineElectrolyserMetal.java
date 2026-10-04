@@ -3,13 +3,13 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineElectrolyser;
 import com.hbm.client.ModifierKeys;
 import com.hbm.inventory.container.MenuMachineElectrolyserMetal;
 import com.hbm.inventory.material.Mats;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineElectrolyser;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -31,7 +31,7 @@ public class ScreenMachineElectrolyserMetal
     public ScreenMachineElectrolyserMetal(
             MenuMachineElectrolyserMetal menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 210, 204);
-        this.titleLabelY = 7;
+        titleLabelY = 7;
     }
 
     private BlockEntityMachineElectrolyser be() {
@@ -156,12 +156,12 @@ public class ScreenMachineElectrolyserMetal
                     34,
                     42,
                     List.of(
-                            Component.literal(
-                                            stack.material.getLocalizedName()
-                                                    + ": "
-                                                    + Mats.formatAmount(
-                                                            stack.amount,
-                                                            ModifierKeys.leftShiftHeld()))
+                            Component.empty()
+                                    .append(stack.material.getLocalizedName())
+                                    .append(Component.literal(": "))
+                                    .append(
+                                            Mats.formatAmount(
+                                                    stack.amount, ModifierKeys.detailsHeld()))
                                     .withStyle(ChatFormatting.YELLOW)));
         } else {
             drawCustomInfoStat(
@@ -183,7 +183,7 @@ public class ScreenMachineElectrolyserMetal
         if (event.button() == 0 && checkClick((int) event.x(), (int) event.y(), 8, 82, 54, 12)) {
             CompoundTag data = new CompoundTag();
             data.putBoolean("sgf", true);
-            Services.NETWORK.sendToServer(new NbtControlPayload(be().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(be().getBlockPos(), data));
             playClick();
             return true;
         }

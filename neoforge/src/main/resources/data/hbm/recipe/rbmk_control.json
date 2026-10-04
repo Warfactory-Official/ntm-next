@@ -5,7 +5,7 @@
       "name": "!enable_528"
     }
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "B": "hbm:motor",
     "G": "#c:ingots/graphite",

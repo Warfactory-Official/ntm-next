@@ -4,9 +4,8 @@
 package com.hbm.client.render;
 
 import com.hbm.animloader.AnimatedModel;
+import com.hbm.blockentity.BlockEntityDoorGeneric;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.BlockEntityDoorGeneric;
-import com.hbm.tileentity.DoorDecl;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.ColorTargetState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
@@ -14,8 +13,6 @@ import com.mojang.blaze3d.platform.BlendFactor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 import net.minecraft.client.renderer.BindGroupLayouts;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -28,10 +25,8 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 

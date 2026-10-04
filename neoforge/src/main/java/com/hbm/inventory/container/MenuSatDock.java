@@ -3,9 +3,9 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityMachineSatDock;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.items.machine.ItemSatelliteChip;
-import com.hbm.tileentity.machine.BlockEntityMachineSatDock;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

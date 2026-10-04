@@ -10,6 +10,7 @@ import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.uninos.graph.NodeNetwork;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Unit;
@@ -54,8 +55,8 @@ public final class RebarGraph implements IGraphProvider<Unit> {
     }
 
     @Override
-    public Codec<Unit> dataCodec() {
-        return Unit.CODEC;
+    public Codec<List<Unit>> dataTableCodec() {
+        return Unit.CODEC.listOf();
     }
 
     private static final class Layer {

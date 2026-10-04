@@ -62,7 +62,6 @@ public record RadiationDiffusivity(HolderSet<Block> blocks, float value) {
                 .forEach(
                         holder -> {
                             RadiationDiffusivity entry = holder.value();
-
                             if (entry.value() == NEUTRAL) return;
                             for (Holder<Block> member : entry.blocks()) {
                                 Block block = member.value();
@@ -92,7 +91,7 @@ public record RadiationDiffusivity(HolderSet<Block> blocks, float value) {
         return STATES.isEmpty();
     }
 
-    static boolean transportEnabled(ServerLevel level) {
+    public static boolean transportEnabled(ServerLevel level) {
         resolveFor(level);
         return RadiationSettings.forLevel(level).diffusivityTransport().orElse(!isTrivial());
     }

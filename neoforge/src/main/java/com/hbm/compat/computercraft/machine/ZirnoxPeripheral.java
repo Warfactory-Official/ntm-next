@@ -3,9 +3,9 @@
 
 package com.hbm.compat.computercraft.machine;
 
+import com.hbm.blockentity.machine.BlockEntityReactorZirnox;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
 import com.hbm.items.machine.ItemZirnoxRod;
-import com.hbm.tileentity.machine.BlockEntityReactorZirnox;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.Optional;
 import net.minecraft.world.item.ItemStack;
@@ -92,7 +92,6 @@ public final class ZirnoxPeripheral extends SnapshotPeripheral<BlockEntityReacto
         if (!(stack.getItem() instanceof ItemZirnoxRod rod) || rod.type.breeding) {
             return new Object[] {"", 0, 0, 0, false};
         }
-
         return new Object[] {
             rod.type.legacyName(), ItemZirnoxRod.getLifeTime(stack), rod.type.maxLife, 0, false
         };

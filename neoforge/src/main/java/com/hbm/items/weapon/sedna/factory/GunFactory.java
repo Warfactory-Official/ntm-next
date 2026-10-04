@@ -13,7 +13,7 @@ import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
 import com.hbm.particle.SpentCasing.CasingType;
 import com.hbm.particle.SpentCasing;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.Reg;
 import com.hbm.sound.ModSounds;
 import java.util.Locale;
@@ -53,9 +53,10 @@ public class GunFactory {
     public static BulletConfig ammo_debug;
     public static BulletConfig ammo_debug_shot;
 
-    public static void init(IRegistrar r) {
+    public static void init() {
 
-        ModItems.AMMO_DEBUG = r.registerItem("ammo_debug", Item::new, Item.Properties::new);
+        ModItems.AMMO_DEBUG =
+                NeoForgeRegistrar.registerItem("ammo_debug", Item::new, Item.Properties::new);
         ModItems.AMMO_STANDARD =
                 ModItems.dotted(
                         "ammo_standard",
@@ -71,7 +72,6 @@ public class GunFactory {
                                         : "ammo_shell_" + type.name().toLowerCase(Locale.ROOT),
                         (props, type) -> new Item(props),
                         Item.Properties::new);
-
         ModItems.AMMO_SECRET =
                 ModItems.dotted(
                         "ammo_secret",
@@ -123,7 +123,7 @@ public class GunFactory {
                         .setCasing(casing44.clone().register("DEBUG1"));
 
         ModItems.GUN_DEBUG =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_debug",
                         props ->
                                 new ItemGunBaseNT(
@@ -190,33 +190,33 @@ public class GunFactory {
                                                 .anim(Lego.LAMBDA_DEBUG_ANIMS)),
                         Item.Properties::new);
 
-        XFactoryBlackPowder.init(r);
-        XFactory357.init(r);
-        XFactory44.init(r);
-        XFactory9mm.init(r);
-        XFactory12ga.init(r);
-        XFactory40mm.init(r);
-        XFactory762mm.init(r);
-        XFactory22lr.init(r);
-        XFactoryFlamer.init(r);
-        XFactoryRocket.init(r);
-        XFactory556mm.init(r);
-        XFactory50.init(r);
-        XFactoryEnergy.init(r);
-        XFactoryAccelerator.init(r);
-        XFactoryCatapult.init(r);
-        XFactory75Bolt.init(r);
-        XFactoryFolly.init(r);
+        XFactoryBlackPowder.init();
+        XFactory357.init();
+        XFactory44.init();
+        XFactory9mm.init();
+        XFactory12ga.init();
+        XFactory40mm.init();
+        XFactory762mm.init();
+        XFactory22lr.init();
+        XFactoryFlamer.init();
+        XFactoryRocket.init();
+        XFactory556mm.init();
+        XFactory50.init();
+        XFactoryEnergy.init();
+        XFactoryAccelerator.init();
+        XFactoryCatapult.init();
+        XFactory75Bolt.init();
+        XFactoryFolly.init();
         XFactoryTurret.init();
         XFactoryWarhead.init();
         XFactoryPile.init();
         XFactoryNPC.init();
-        XFactory10ga.init(r);
-        XFactory35800.init(r);
+        XFactory10ga.init();
+        XFactory35800.init();
         XFactory45.init();
-        XFactoryTool.init(r);
-        XFactoryDrill.init(r);
-        XFactoryPA.init(r);
+        XFactoryTool.init();
+        XFactoryDrill.init();
+        XFactoryPA.init();
     }
 
     public enum EnumAmmo {

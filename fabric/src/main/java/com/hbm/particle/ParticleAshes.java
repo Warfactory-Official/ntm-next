@@ -3,12 +3,17 @@
 
 package com.hbm.particle;
 
+import com.hbm.client.particle.AshesVisual;
+import com.hbm.client.particle.VisualParticle;
+import dev.engine_room.flywheel.api.visual.EffectVisual;
+import dev.engine_room.flywheel.api.visualization.VisualizationContext;
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.core.particles.ParticleTypes;
+import org.jspecify.annotations.Nullable;
 
-public class ParticleAshes extends Particle {
+public class ParticleAshes extends LegacyMoveParticle implements VisualParticle {
 
     public static final ParticleRenderType ASHES_GROUP = new ParticleRenderType("hbm:ashes", "HAS");
 
@@ -18,6 +23,7 @@ public class ParticleAshes extends Particle {
     private final float shade;
     private final float scale;
     private float rotationPitch, prevRotationPitch;
+    private @Nullable VisualizationManager visualManager;
 
     public ParticleAshes(ClientLevel level, double x, double y, double z, float scale) {
         super(level, x, y, z);
@@ -94,6 +100,26 @@ public class ParticleAshes extends Particle {
 
     public double interpZ(float pt) {
         return this.zo + (this.z - this.zo) * pt;
+    }
+
+    @Override
+    public ClientLevel level() {
+        return level;
+    }
+
+    @Override
+    public @Nullable VisualizationManager visualManager() {
+        return visualManager;
+    }
+
+    @Override
+    public void visualManager(@Nullable VisualizationManager manager) {
+        visualManager = manager;
+    }
+
+    @Override
+    public EffectVisual<?> visualize(VisualizationContext context, float partialTick) {
+        return new AshesVisual(context, this, partialTick);
     }
 
     @Override

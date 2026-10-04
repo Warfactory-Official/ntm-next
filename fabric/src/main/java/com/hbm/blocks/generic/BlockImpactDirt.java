@@ -17,7 +17,6 @@ import net.minecraft.world.level.redstone.Orientation;
 import org.jspecify.annotations.Nullable;
 
 public class BlockImpactDirt extends Block {
-
     private static final int GRASS_LIGHT = 9;
 
     public BlockImpactDirt(Properties props) {

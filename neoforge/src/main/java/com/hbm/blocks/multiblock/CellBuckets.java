@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.MapColor;
 
 public final class CellBuckets {
-
     private static final List<Plain> PLAIN =
             List.of(
                     Plain.of(3F, 3F, MapColor.NONE),

@@ -11,6 +11,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -42,8 +43,13 @@ public class ItemModIron extends ItemArmorMod {
     }
 
     @Override
+    public boolean hasAttributes() {
+        return true;
+    }
+
+    @Override
     public void collectModifiers(
-            ItemStack armor,
+            EquipmentSlot slot,
             Identifier id,
             BiConsumer<Holder<Attribute>, AttributeModifier> adder) {
         adder.accept(

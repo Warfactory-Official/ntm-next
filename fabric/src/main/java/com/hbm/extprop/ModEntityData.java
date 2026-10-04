@@ -3,8 +3,8 @@
 
 package com.hbm.extprop;
 
-import com.hbm.platform.Services;
-import java.util.function.Supplier;
+import com.hbm.lib.Library;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 
 public final class ModEntityData {
@@ -16,10 +16,20 @@ public final class ModEntityData {
 
     public static void register() {
         PLAYER_PROPS =
-                Services.ENTITY_DATA.register(
-                        "player_props", HbmPlayerProps::new, HbmPlayerProps.MAP_CODEC, true);
+                AttachmentRegistry.create(
+                        Library.id("player_props"),
+                        builder -> {
+                            builder.initializer(HbmPlayerProps::new)
+                                    .persistent(HbmPlayerProps.MAP_CODEC.codec());
+                            if (true) builder.copyOnDeath();
+                        });
         LIVING_PROPS =
-                Services.ENTITY_DATA.register(
-                        "living_props", HbmLivingProps::new, HbmLivingProps.MAP_CODEC, false);
+                AttachmentRegistry.create(
+                        Library.id("living_props"),
+                        builder2 -> {
+                            builder2.initializer(HbmLivingProps::new)
+                                    .persistent(HbmLivingProps.MAP_CODEC.codec());
+                            if (false) builder2.copyOnDeath();
+                        });
     }
 }

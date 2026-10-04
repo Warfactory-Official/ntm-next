@@ -3,13 +3,13 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.storage.BlockEntityMachineOrbus;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineOrbus;
 import com.hbm.util.GameTime;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;

@@ -3,10 +3,10 @@
 
 package com.hbm.client.model;
 
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTube;
 import com.hbm.blocks.network.pneumatic.PneumoTubeBlock;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoTube;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import com.mojang.math.Quadrant;
+import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 import java.util.List;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
@@ -41,16 +41,19 @@ public class PneumoTubeModel implements BlockStateModel {
     private static final int NOZZLE_IN = 1;
     private static final int NOZZLE_OUT = 2;
     private static final int NOZZLE_AIR = 3;
+    private static final int[] PLAIN = new int[] {0, 0, 0, 0, 0, 0};
     public static Factory FACTORY = PneumoTubeModel::new;
     private final ModelBaker baker;
     private final ResolvedModel base;
     private final TextureSlots slots;
     private final Material.Baked particle;
     private final BlockStateModelPart fallback;
-    private final Int2ObjectMap<BlockStateModelPart> cache = new Int2ObjectOpenHashMap<>();
+    private static final int CACHE_PARTS = 512;
+    private final Int2ObjectLinkedOpenHashMap<BlockStateModelPart> cache =
+            new Int2ObjectLinkedOpenHashMap<>();
 
     public PneumoTubeModel(ModelBaker baker, ResolvedModel base) {
-        this.baker = baker;
+        this.baker = RuntimeBaker.capture(baker, base);
         this.base = base;
         this.slots = base.getTopTextureSlots();
         this.particle = base.resolveParticleMaterial(slots, baker);
@@ -125,7 +128,7 @@ public class PneumoTubeModel implements BlockStateModel {
 
     private BlockStateModelPart partFor(int k) {
         synchronized (cache) {
-            BlockStateModelPart part = cache.get(k);
+            BlockStateModelPart part = cache.getAndMoveToLast(k);
             if (part == null) {
                 part =
                         buildPart(
@@ -133,7 +136,8 @@ public class PneumoTubeModel implements BlockStateModel {
                                 (k >> 6) & 63,
                                 BlockEntityPneumoTube.dirFromIndex((k >> 12) & 7),
                                 BlockEntityPneumoTube.dirFromIndex((k >> 15) & 7));
-                cache.put(k, part);
+                cache.putAndMoveToLast(k, part);
+                if (cache.size() > CACHE_PARTS) cache.removeFirst();
             }
             return part;
         }
@@ -149,7 +153,6 @@ public class PneumoTubeModel implements BlockStateModel {
         boolean pX = has(arms, Direction.EAST), nX = has(arms, Direction.WEST);
         boolean pY = has(arms, Direction.UP), nY = has(arms, Direction.DOWN);
         boolean pZ = has(arms, Direction.SOUTH), nZ = has(arms, Direction.NORTH);
-
         int legacyMask =
                 (pX ? 32 : 0)
                         | (nX ? 16 : 0)
@@ -160,48 +163,81 @@ public class PneumoTubeModel implements BlockStateModel {
         boolean hasConnections = in != null || out != null;
 
         if (legacyMask == 0b110000 && !hasConnections) {
-            box(
+            final int hiddenMask = hidden(Direction.WEST, Direction.EAST);
+            final Vector3f from = new Vector3f((float) 0, LOWER, LOWER);
+            final Vector3f to = new Vector3f((float) 16, UPPER, UPPER);
+            this.faces(
                     b,
                     straight,
-                    PneumoTubeUv.STRAIGHT_X,
-                    hidden(Direction.WEST, Direction.EAST),
-                    0,
-                    LOWER,
-                    LOWER,
-                    16,
-                    UPPER,
-                    UPPER);
+                    hiddenMask,
+                    from,
+                    to,
+                    new UvRotation[] {
+                        new UvRotation(new CuboidFace.UVs(0.0F, 11.0F, 16.0F, 5.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 5.0F, 16.0F, 11.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 5.0F, 16.0F, 11.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 5.0F, 16.0F, 11.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0)
+                    });
 
         } else if (legacyMask == 0b000011 && !hasConnections) {
-            box(
+            final int hiddenMask2 = hidden(Direction.NORTH, Direction.SOUTH);
+            final Vector3f from2 = new Vector3f(LOWER, LOWER, (float) 0);
+            final Vector3f to2 = new Vector3f(UPPER, UPPER, (float) 16);
+            this.faces(
                     b,
                     straight,
-                    PneumoTubeUv.STRAIGHT_Z,
-                    hidden(Direction.NORTH, Direction.SOUTH),
-                    LOWER,
-                    LOWER,
-                    0,
-                    UPPER,
-                    UPPER,
-                    16);
+                    hiddenMask2,
+                    from2,
+                    to2,
+                    new UvRotation[] {
+                        new UvRotation(new CuboidFace.UVs(0.0F, 11.0F, 16.0F, 5.0F), Quadrant.R90),
+                        new UvRotation(new CuboidFace.UVs(16.0F, 11.0F, 0.0F, 5.0F), Quadrant.R90),
+                        new UvRotation(new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 5.0F, 16.0F, 11.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 5.0F, 16.0F, 11.0F), Quadrant.R0)
+                    });
 
         } else if (legacyMask == 0b001100 && !hasConnections) {
-            box(
+            final int hiddenMask3 = hidden(Direction.DOWN, Direction.UP);
+            final Vector3f from3 = new Vector3f(LOWER, (float) 0, LOWER);
+            final Vector3f to3 = new Vector3f(UPPER, (float) 16, UPPER);
+            this.faces(
                     b,
                     straight,
-                    PneumoTubeUv.STRAIGHT_Y,
-                    hidden(Direction.DOWN, Direction.UP),
-                    LOWER,
-                    0,
-                    LOWER,
-                    UPPER,
-                    16,
-                    UPPER);
+                    hiddenMask3,
+                    from3,
+                    to3,
+                    new UvRotation[] {
+                        new UvRotation(new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 5.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 11.0F, 16.0F, 5.0F), Quadrant.R90),
+                        new UvRotation(new CuboidFace.UVs(16.0F, 11.0F, 0.0F, 5.0F), Quadrant.R90),
+                        new UvRotation(new CuboidFace.UVs(16.0F, 11.0F, 0.0F, 5.0F), Quadrant.R90),
+                        new UvRotation(new CuboidFace.UVs(0.0F, 11.0F, 16.0F, 5.0F), Quadrant.R90)
+                    });
 
         } else {
             int core = 0;
             for (Direction dir : DIRS) if (has(arms, dir)) core |= 1 << dir.ordinal();
-            box(b, baseTex, PneumoTubeUv.CORE, core, LOWER, LOWER, LOWER, UPPER, UPPER, UPPER);
+            final Vector3f from4 = new Vector3f(LOWER, LOWER, LOWER);
+            final Vector3f to4 = new Vector3f(UPPER, UPPER, UPPER);
+            this.faces(
+                    b,
+                    baseTex,
+                    core,
+                    from4,
+                    to4,
+                    new UvRotation[] {
+                        new UvRotation(new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 5.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                        new UvRotation(new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0)
+                    });
             for (Direction dir : DIRS) if (has(arms, dir)) arm(b, baseTex, dir);
         }
 
@@ -223,148 +259,276 @@ public class PneumoTubeModel implements BlockStateModel {
         int caps = hidden(dir, dir.getOpposite());
         switch (dir) {
             case EAST -> {
-                box(
+                final Vector3f from = new Vector3f(UPPER, LOWER, LOWER);
+                final Vector3f to = new Vector3f(C_UPPER, UPPER, UPPER);
+                this.faces(
                         b,
                         baseTex,
-                        PneumoTubeUv.NOZZLE_EAST_BODY,
                         caps,
-                        UPPER,
-                        LOWER,
-                        LOWER,
-                        C_UPPER,
-                        UPPER,
-                        UPPER);
-                box(
+                        from,
+                        to,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(11.0F, 11.0F, 12.0F, 5.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(11.0F, 5.0F, 12.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 5.0F, 5.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(11.0F, 5.0F, 12.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0)
+                        });
+                final Vector3f from2 = new Vector3f(C_UPPER, C_LOWER, C_LOWER);
+                final Vector3f to2 = new Vector3f((float) 16, C_UPPER, C_UPPER);
+                this.faces(
                         b,
                         head,
-                        PneumoTubeUv.NOZZLE_EAST_HEAD,
                         0,
-                        C_UPPER,
-                        C_LOWER,
-                        C_LOWER,
-                        16,
-                        C_UPPER,
-                        C_UPPER);
+                        from2,
+                        to2,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 12.0F, 16.0F, 4.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 4.0F, 16.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 4.0F, 4.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 4.0F, 16.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 4.0F, 12.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 4.0F, 12.0F, 12.0F), Quadrant.R0)
+                        });
             }
             case WEST -> {
-                box(
+                final Vector3f from3 = new Vector3f(C_LOWER, LOWER, LOWER);
+                final Vector3f to3 = new Vector3f(LOWER, UPPER, UPPER);
+                this.faces(
                         b,
                         baseTex,
-                        PneumoTubeUv.NOZZLE_WEST_BODY,
                         caps,
-                        C_LOWER,
-                        LOWER,
-                        LOWER,
-                        LOWER,
-                        UPPER,
-                        UPPER);
-                box(
+                        from3,
+                        to3,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 11.0F, 5.0F, 5.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 5.0F, 5.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(11.0F, 5.0F, 12.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 5.0F, 5.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0)
+                        });
+                final Vector3f from4 = new Vector3f((float) 0, C_LOWER, C_LOWER);
+                final Vector3f to4 = new Vector3f(C_LOWER, C_UPPER, C_UPPER);
+                this.faces(
                         b,
                         head,
-                        PneumoTubeUv.NOZZLE_WEST_HEAD,
                         0,
-                        0,
-                        C_LOWER,
-                        C_LOWER,
-                        C_LOWER,
-                        C_UPPER,
-                        C_UPPER);
+                        from4,
+                        to4,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 12.0F, 4.0F, 4.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 4.0F, 4.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 4.0F, 16.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 4.0F, 4.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 4.0F, 12.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 4.0F, 12.0F, 12.0F), Quadrant.R0)
+                        });
             }
             case UP -> {
-                box(
+                final Vector3f from5 = new Vector3f(LOWER, UPPER, LOWER);
+                final Vector3f to5 = new Vector3f(UPPER, C_UPPER, UPPER);
+                this.faces(
                         b,
                         baseTex,
-                        PneumoTubeUv.NOZZLE_UP_BODY,
                         caps,
-                        LOWER,
-                        UPPER,
-                        LOWER,
-                        UPPER,
-                        C_UPPER,
-                        UPPER);
-                box(
+                        from5,
+                        to5,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 5.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 4.0F, 11.0F, 5.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 4.0F, 11.0F, 5.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 4.0F, 11.0F, 5.0F), Quadrant.R0),
+                            new UvRotation(new CuboidFace.UVs(5.0F, 4.0F, 11.0F, 5.0F), Quadrant.R0)
+                        });
+                final Vector3f from6 = new Vector3f(C_LOWER, C_UPPER, C_LOWER);
+                final Vector3f to6 = new Vector3f(C_UPPER, (float) 16, C_UPPER);
+                this.faces(
                         b,
                         head,
-                        PneumoTubeUv.NOZZLE_UP_HEAD,
                         0,
-                        C_LOWER,
-                        C_UPPER,
-                        C_LOWER,
-                        C_UPPER,
-                        16,
-                        C_UPPER);
+                        from6,
+                        to6,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 4.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 4.0F, 12.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 4.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 4.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 4.0F), Quadrant.R0),
+                            new UvRotation(new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 4.0F), Quadrant.R0)
+                        });
             }
             case DOWN -> {
-                box(
+                final Vector3f from7 = new Vector3f(LOWER, C_LOWER, LOWER);
+                final Vector3f to7 = new Vector3f(UPPER, LOWER, UPPER);
+                this.faces(
                         b,
                         baseTex,
-                        PneumoTubeUv.NOZZLE_DOWN_BODY,
                         caps,
-                        LOWER,
-                        C_LOWER,
-                        LOWER,
-                        UPPER,
-                        LOWER,
-                        UPPER);
-                box(
+                        from7,
+                        to7,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 5.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 12.0F), Quadrant.R0)
+                        });
+                final Vector3f from8 = new Vector3f(C_LOWER, (float) 0, C_LOWER);
+                final Vector3f to8 = new Vector3f(C_UPPER, C_LOWER, C_UPPER);
+                this.faces(
                         b,
                         head,
-                        PneumoTubeUv.NOZZLE_DOWN_HEAD,
                         0,
-                        C_LOWER,
-                        0,
-                        C_LOWER,
-                        C_UPPER,
-                        C_LOWER,
-                        C_UPPER);
+                        from8,
+                        to8,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 4.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 4.0F, 12.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0)
+                        });
             }
             case SOUTH -> {
-                box(
+                final Vector3f from9 = new Vector3f(LOWER, LOWER, UPPER);
+                final Vector3f to9 = new Vector3f(UPPER, UPPER, C_UPPER);
+                this.faces(
                         b,
                         baseTex,
-                        PneumoTubeUv.NOZZLE_SOUTH_BODY,
                         caps,
-                        LOWER,
-                        LOWER,
-                        UPPER,
-                        UPPER,
-                        UPPER,
-                        C_UPPER);
-                box(
+                        from9,
+                        to9,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 12.0F, 11.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(11.0F, 5.0F, 12.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(new CuboidFace.UVs(4.0F, 5.0F, 5.0F, 11.0F), Quadrant.R0)
+                        });
+                final Vector3f from10 = new Vector3f(C_LOWER, C_LOWER, C_UPPER);
+                final Vector3f to10 = new Vector3f(C_UPPER, C_UPPER, (float) 16);
+                this.faces(
                         b,
                         head,
-                        PneumoTubeUv.NOZZLE_SOUTH_HEAD,
                         0,
-                        C_LOWER,
-                        C_LOWER,
-                        C_UPPER,
-                        C_UPPER,
-                        C_UPPER,
-                        16);
+                        from10,
+                        to10,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 16.0F, 12.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 12.0F, 12.0F, 16.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 4.0F, 12.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 4.0F, 12.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 4.0F, 16.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(new CuboidFace.UVs(0.0F, 4.0F, 4.0F, 12.0F), Quadrant.R0)
+                        });
             }
             case NORTH -> {
-                box(
+                final Vector3f from11 = new Vector3f(LOWER, LOWER, C_LOWER);
+                final Vector3f to11 = new Vector3f(UPPER, UPPER, LOWER);
+                this.faces(
                         b,
                         baseTex,
-                        PneumoTubeUv.NOZZLE_NORTH_BODY,
                         caps,
-                        LOWER,
-                        LOWER,
-                        C_LOWER,
-                        UPPER,
-                        UPPER,
-                        LOWER);
-                box(
+                        from11,
+                        to11,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 4.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 4.0F, 11.0F, 5.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 5.0F, 5.0F, 11.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(11.0F, 5.0F, 12.0F, 11.0F), Quadrant.R0)
+                        });
+                final Vector3f from12 = new Vector3f(C_LOWER, C_LOWER, (float) 0);
+                final Vector3f to12 = new Vector3f(C_UPPER, C_UPPER, C_LOWER);
+                this.faces(
                         b,
                         head,
-                        PneumoTubeUv.NOZZLE_NORTH_HEAD,
                         0,
-                        C_LOWER,
-                        C_LOWER,
-                        0,
-                        C_UPPER,
-                        C_UPPER,
-                        C_LOWER);
+                        from12,
+                        to12,
+                        new UvRotation[] {
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 4.0F, 12.0F, 0.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 0.0F, 12.0F, 4.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 4.0F, 12.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(4.0F, 4.0F, 12.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(0.0F, 4.0F, 4.0F, 12.0F), Quadrant.R0),
+                            new UvRotation(
+                                    new CuboidFace.UVs(12.0F, 4.0F, 16.0F, 12.0F), Quadrant.R0)
+                        });
             }
         }
     }
@@ -372,47 +536,175 @@ public class PneumoTubeModel implements BlockStateModel {
     private void arm(QuadCollection.Builder b, Material.Baked tex, Direction dir) {
         int caps = hidden(dir, dir.getOpposite());
         switch (dir) {
-            case EAST ->
-                    box(b, tex, PneumoTubeUv.ARM_EAST, caps, UPPER, LOWER, LOWER, 16, UPPER, UPPER);
-            case WEST ->
-                    box(b, tex, PneumoTubeUv.ARM_WEST, caps, 0, LOWER, LOWER, LOWER, UPPER, UPPER);
-            case UP ->
-                    box(b, tex, PneumoTubeUv.ARM_UP, caps, LOWER, UPPER, LOWER, UPPER, 16, UPPER);
-            case DOWN ->
-                    box(b, tex, PneumoTubeUv.ARM_DOWN, caps, LOWER, 0, LOWER, UPPER, LOWER, UPPER);
-            case SOUTH ->
-                    box(
+            case EAST -> {
+                {
+                    final Vector3f from = new Vector3f(UPPER, LOWER, LOWER);
+                    final Vector3f to = new Vector3f((float) 16, UPPER, UPPER);
+                    this.faces(
                             b,
                             tex,
-                            PneumoTubeUv.ARM_SOUTH,
                             caps,
-                            LOWER,
-                            LOWER,
-                            UPPER,
-                            UPPER,
-                            UPPER,
-                            16);
-            case NORTH ->
-                    box(b, tex, PneumoTubeUv.ARM_NORTH, caps, LOWER, LOWER, 0, UPPER, UPPER, LOWER);
+                            from,
+                            to,
+                            new UvRotation[] {
+                                new UvRotation(
+                                        new CuboidFace.UVs(11.0F, 11.0F, 16.0F, 5.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(11.0F, 5.0F, 16.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(0.0F, 5.0F, 5.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(11.0F, 5.0F, 16.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0)
+                            });
+                }
+            }
+            case WEST -> {
+                {
+                    final Vector3f from2 = new Vector3f((float) 0, LOWER, LOWER);
+                    final Vector3f to2 = new Vector3f(LOWER, UPPER, UPPER);
+                    this.faces(
+                            b,
+                            tex,
+                            caps,
+                            from2,
+                            to2,
+                            new UvRotation[] {
+                                new UvRotation(
+                                        new CuboidFace.UVs(0.0F, 11.0F, 5.0F, 5.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(0.0F, 5.0F, 5.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(11.0F, 5.0F, 16.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(0.0F, 5.0F, 5.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0)
+                            });
+                }
+            }
+            case UP -> {
+                {
+                    final Vector3f from3 = new Vector3f(LOWER, UPPER, LOWER);
+                    final Vector3f to3 = new Vector3f(UPPER, (float) 16, UPPER);
+                    this.faces(
+                            b,
+                            tex,
+                            caps,
+                            from3,
+                            to3,
+                            new UvRotation[] {
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 5.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 0.0F, 11.0F, 5.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 0.0F, 11.0F, 5.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 0.0F, 11.0F, 5.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 0.0F, 11.0F, 5.0F), Quadrant.R0)
+                            });
+                }
+            }
+            case DOWN -> {
+                {
+                    final Vector3f from4 = new Vector3f(LOWER, (float) 0, LOWER);
+                    final Vector3f to4 = new Vector3f(UPPER, LOWER, UPPER);
+                    this.faces(
+                            b,
+                            tex,
+                            caps,
+                            from4,
+                            to4,
+                            new UvRotation[] {
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 5.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 16.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 16.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 16.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 16.0F), Quadrant.R0)
+                            });
+                }
+            }
+            case SOUTH -> {
+                {
+                    final Vector3f from5 = new Vector3f(LOWER, LOWER, UPPER);
+                    final Vector3f to5 = new Vector3f(UPPER, UPPER, (float) 16);
+                    this.faces(
+                            b,
+                            tex,
+                            caps,
+                            from5,
+                            to5,
+                            new UvRotation[] {
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 16.0F, 11.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 11.0F, 11.0F, 16.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(11.0F, 5.0F, 16.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(0.0F, 5.0F, 5.0F, 11.0F), Quadrant.R0)
+                            });
+                }
+            }
+            case NORTH -> {
+                {
+                    final Vector3f from6 = new Vector3f(LOWER, LOWER, (float) 0);
+                    final Vector3f to6 = new Vector3f(UPPER, UPPER, LOWER);
+                    this.faces(
+                            b,
+                            tex,
+                            caps,
+                            from6,
+                            to6,
+                            new UvRotation[] {
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 0.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 0.0F, 11.0F, 5.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(5.0F, 5.0F, 11.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(0.0F, 5.0F, 5.0F, 11.0F), Quadrant.R0),
+                                new UvRotation(
+                                        new CuboidFace.UVs(11.0F, 5.0F, 16.0F, 11.0F), Quadrant.R0)
+                            });
+                }
+            }
         }
     }
 
-    private void box(
+    private void faces(
             QuadCollection.Builder b,
             Material.Baked material,
-            PneumoTubeUv.Uv[] windows,
             int hiddenMask,
-            float x0,
-            float y0,
-            float z0,
-            float x1,
-            float y1,
-            float z1) {
-        Vector3f from = new Vector3f(x0, y0, z0);
-        Vector3f to = new Vector3f(x1, y1, z1);
+            Vector3f from,
+            Vector3f to,
+            UvRotation[] uvs) {
         for (Direction dir : DIRS) {
             if ((hiddenMask & (1 << dir.ordinal())) != 0) continue;
-            PneumoTubeUv.Uv uv = windows[dir.ordinal()];
+            UvRotation uv = uvs[dir.ordinal()];
             b.addUnculledFace(
                     Boxes.face(
                             baker,

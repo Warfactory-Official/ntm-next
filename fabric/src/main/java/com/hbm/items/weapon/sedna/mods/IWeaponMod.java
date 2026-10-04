@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 
 public interface IWeaponMod {
-
     int getModPriority();
 
     String[] getSlots();

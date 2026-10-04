@@ -5,7 +5,6 @@ package com.hbm.blocks.bomb;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.data.WorldData;
-import com.hbm.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;

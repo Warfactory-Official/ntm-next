@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.bomb;
 
+import com.hbm.blockentity.bomb.BlockEntityVolcanoCore;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.tileentity.bomb.BlockEntityVolcanoCore;
 import com.mojang.serialization.MapCodec;
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -20,7 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.component.TooltipDisplay;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;

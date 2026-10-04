@@ -13,8 +13,9 @@ import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemGeigerCounter;
 import com.hbm.lib.Library;
 import com.hbm.lib.ModDamageTypes;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.JetpackParticlePayload;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricServerEvents;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.TickPhase;
@@ -44,11 +45,8 @@ import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
 public final class ArmorSuitEffects {
-
     private static final double HARD_LANDING_RANGE = 3D;
-
     private static final float HARD_LANDING_THRESHOLD = 10F;
-
     private static final double STEP_STRIDE = 1D / 0.6D;
 
     private static final Map<ServerPlayer, GaitState> GAIT = new WeakHashMap<>();
@@ -56,7 +54,7 @@ public final class ArmorSuitEffects {
     private ArmorSuitEffects() {}
 
     public static void init() {
-        Services.SERVER.onServerTickPost(ArmorSuitEffects::tick);
+        FabricServerEvents.onServerTickPost(ArmorSuitEffects::tick);
     }
 
     private static void tick(MinecraftServer server) {
@@ -89,6 +87,7 @@ public final class ArmorSuitEffects {
             Jetpack jetpack = jetpackKind(player);
             if (jetpack != null) jetpackServerTick(player, jetpack);
             if (wingsKind(player) != null) wingsServerTick(player);
+            euphemiumServerTick(player, props.euphemiumFallCapped);
 
             bjBrownout(player);
 
@@ -126,7 +125,6 @@ public final class ArmorSuitEffects {
             }
 
             if (!state.onGround && onGround) {
-
                 if (state.fallDistance > 0.5D) playAt(player, bonus.fall(), 0.5F);
                 if (bonus.hardLanding() && state.fallDistance > HARD_LANDING_THRESHOLD)
                     hardLanding(player);
@@ -240,7 +238,6 @@ public final class ArmorSuitEffects {
             LivingEntity entity, ModArmorItem.Suit suit, boolean requireCharge) {
         if (!(entity.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ModArmorItem plate)
                 || plate.suit() != suit) return false;
-
         ArmorFullSetBonus bonus = ArmorFullSetBonus.get(suit);
         boolean noHelmet = bonus != null && bonus.noHelmet();
         for (EquipmentSlot slot : ArmorUtil.ARMOR_SLOTS) {
@@ -274,7 +271,6 @@ public final class ArmorSuitEffects {
     }
 
     private static final Identifier DNS_SPEED_ID = Library.id("dns_speed");
-
     private static final Identifier ENVSUIT_SPEED_ID = Library.id("envsuit_speed");
     private static final Identifier STEP_HEIGHT_ID = Library.id("suit_step_height");
 
@@ -327,7 +323,9 @@ public final class ArmorSuitEffects {
     }
 
     public static ItemWings.@Nullable Kind wingsKind(Player player) {
-        return wornPlateMod(player, ItemWings.class).getItem() instanceof ItemWings wings
+        ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
+        if (chest.getItem() instanceof ItemWings wings) return wings.kind;
+        return ArmorModHandler.modItem(chest, ArmorModHandler.PLATE_ONLY) instanceof ItemWings wings
                 ? wings.kind
                 : null;
     }
@@ -335,8 +333,9 @@ public final class ArmorSuitEffects {
     private static ItemStack wornPlateMod(Player player, Class<? extends ItemArmorMod> type) {
         ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
         if (type.isInstance(chest.getItem())) return chest;
-        ItemStack mod = ArmorModHandler.pryMod(chest, ArmorModHandler.PLATE_ONLY);
-        return type.isInstance(mod.getItem()) ? mod : ItemStack.EMPTY;
+        return type.isInstance(ArmorModHandler.modItem(chest, ArmorModHandler.PLATE_ONLY))
+                ? ArmorModHandler.pryMod(chest, ArmorModHandler.PLATE_ONLY)
+                : ItemStack.EMPTY;
     }
 
     public static void storeWornPack(Player player, ItemStack pack) {
@@ -347,19 +346,15 @@ public final class ArmorSuitEffects {
     public enum Jetpack {
         DNS(0.6D, 0.2D, 0D, 0D, 0, 0, 0F),
         BJ(0.4D, 0.1D, 0D, 0D, 0, 0, 0F),
-
         FLY(0.4D, 0.1D, 0D, 0D, 5, 5, 1.5F),
         VECTOR(0.4D, 0.1D, 0.1D, 2D, 3, 3, 1.5F),
         BOOST(0.6D, 0.1D, 0.25D, 5D, 1, 1, 1.0F),
-
         BRAKE(0.4D, 0.1D, 0D, 0D, 5, 10, 1.5F);
 
         public final double ceiling;
         public final double thrust;
-
         public final double lookThrust;
         public final double speedCap;
-
         public final int burnRate;
         public final int hoverBurnRate;
         public final float pitch;
@@ -412,7 +407,8 @@ public final class ArmorSuitEffects {
                         && (!player.isShiftKeyDown()
                                 || kind == Jetpack.BRAKE && props.isJetpackActive())
                         && !player.onGround()
-                        && props.enableBackpack;
+                        && props.enableBackpack
+                        && (!player.isFallFlying() || props.isJetpackActive());
 
         if (thrusting || gliding) {
             int plume =
@@ -422,7 +418,7 @@ public final class ArmorSuitEffects {
                         case FLY, BRAKE -> JetpackParticlePayload.REGULAR;
                         case VECTOR, BOOST -> JetpackParticlePayload.VECTOR;
                     };
-            Services.NETWORK.sendToAllAround(
+            PacketWire.sendToAllAround(
                     new JetpackParticlePayload(player.getId(), plume),
                     new TargetPoint(
                             player.level(), player.getX(), player.getY(), player.getZ(), 100D));
@@ -441,7 +437,6 @@ public final class ArmorSuitEffects {
                         pack, player.tickCount, thrusting ? kind.burnRate : kind.hoverBurnRate);
                 storeWornPack(player, pack);
             }
-
             player.level()
                     .playSound(
                             null,
@@ -467,7 +462,17 @@ public final class ArmorSuitEffects {
     }
 
     private static void wingsServerTick(ServerPlayer player) {
-        if (!player.onGround()) player.fallDistance = 0;
+        if (!player.onGround()
+                && (!player.isFallFlying()
+                        || wingsKind(player) == ItemWings.Kind.MURK
+                                && HbmPlayerProps.getData(player).isJetpackActive())) {
+            player.fallDistance = 0;
+        }
+    }
+
+    private static void euphemiumServerTick(ServerPlayer player, boolean capped) {
+        if (capped && !player.isFallFlying() && hasFullSet(player, ModArmorItem.Suit.EUPHEMIUM))
+            player.fallDistance = 0;
     }
 
     private static void bjBrownout(ServerPlayer player) {

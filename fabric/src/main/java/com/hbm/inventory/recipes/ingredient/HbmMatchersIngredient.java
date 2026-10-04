@@ -28,7 +28,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
 public record HbmMatchersIngredient(Ingredient base, DataComponentMatchers matchers)
-        implements CustomIngredient {
+        implements IngredientState, CustomIngredient {
 
     public static final Identifier ID = Library.id("matchers");
 
@@ -54,6 +54,16 @@ public record HbmMatchersIngredient(Ingredient base, DataComponentMatchers match
     @Override
     public boolean test(ItemStack stack) {
         return base.test(stack) && matchers.test(stack);
+    }
+
+    @Override
+    public boolean acceptsState(ItemStack stack) {
+        return RecipeInputState.accepts(matchers, stack);
+    }
+
+    @Override
+    public boolean acceptsState(ItemStack stack, DataComponentMatchers additional) {
+        return RecipeInputState.accepts(matchers, additional, stack);
     }
 
     @Override

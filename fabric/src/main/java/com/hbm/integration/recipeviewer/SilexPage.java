@@ -83,7 +83,6 @@ public final class SilexPage extends TablePage<SILEXRecipe> {
                     at[1] + 4,
                     RecipePanel.TEXT);
         }
-
         int produced = recipe.fluidConsumed == 0 ? 0 : recipe.fluidProduced / recipe.fluidConsumed;
         RecipePanel.centred(
                 graphics,

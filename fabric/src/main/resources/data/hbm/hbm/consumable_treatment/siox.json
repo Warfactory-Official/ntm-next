@@ -1,0 +1,22 @@
+{
+  "actions": [
+    {
+      "type": "potion_sickness",
+      "seconds": 5
+    },
+    {
+      "type": "counter",
+      "counter": "asbestos",
+      "operation": "set"
+    },
+    {
+      "type": "counter",
+      "counter": "black_lung",
+      "limit_divisor": 5,
+      "operation": "min"
+    }
+  ],
+  "block_when_potion_sick": true,
+  "targets": "hbm:siox",
+  "trigger": "consume"
+}

@@ -269,7 +269,6 @@ final class RadVisMeshes {
             facePockets[face] = pockets.toIntArray();
             int plane = boundaryPlaneForFace(face);
             sectionFaceQuads[face] = meshFaceRows(face, plane, union);
-
             int[] warn = new int[16];
             for (int i = 1; i < pockets.size(); i++) {
                 int base = pockets.getInt(i) * 96 + face * 16;

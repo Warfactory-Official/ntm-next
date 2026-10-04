@@ -45,7 +45,6 @@ public final class PressPage extends TablePage<PressRecipe> {
 
     @Override
     public void layout(PressRecipe recipe, PageLayout page) {
-
         page.input(48, 42).items(recipe.input().displayStacks());
 
         List<ItemStack> stamps = new ArrayList<>();
@@ -57,7 +56,6 @@ public final class PressPage extends TablePage<PressRecipe> {
     @Override
     public void draw(PressRecipe recipe, GuiGraphicsExtractor graphics) {
         RecipePanel.page(graphics, RecipePanel.PRESS);
-
         RecipePanel.progress(graphics, RecipePanel.PRESS, 47, 24, 0, 86, 18, 18, 20, 1);
     }
 }

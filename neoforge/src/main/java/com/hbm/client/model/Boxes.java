@@ -18,9 +18,7 @@ import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
 
 public final class Boxes {
-
     public static final ModelState IDENTITY = new ModelState() {};
-
     public static final Vector3fc UNIT_FROM = new Vector3f(0F, 0F, 0F);
     public static final Vector3fc UNIT_TO = new Vector3f(16F, 16F, 16F);
 

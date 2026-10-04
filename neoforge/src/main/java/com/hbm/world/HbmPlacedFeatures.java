@@ -64,7 +64,6 @@ public final class HbmPlacedFeatures {
     public static final ResourceKey<PlacedFeature> DEPOSIT_CINNABAR = key("deposit_cinnabar");
     public static final ResourceKey<PlacedFeature> DEPOSIT_ZIRCONIUM = key("deposit_zirconium");
     public static final ResourceKey<PlacedFeature> DEPOSIT_BORAX = key("deposit_borax");
-
     public static final ResourceKey<PlacedFeature> DEPOSIT_NETHER_NEODYMIUM_FLOOR =
             key("deposit_nether_neodymium_floor");
     public static final ResourceKey<PlacedFeature> DEPOSIT_NETHER_NEODYMIUM_ROOF =
@@ -91,6 +90,7 @@ public final class HbmPlacedFeatures {
     public static final ResourceKey<PlacedFeature> DUD = key("dud");
     public static final ResourceKey<PlacedFeature> LOCKED_SAFE = key("locked_safe");
     public static final ResourceKey<PlacedFeature> LANTERN_BEHEMOTH = key("lantern_behemoth");
+    public static final ResourceKey<PlacedFeature> BOSNIA_MINE = key("bosnia_mine");
     public static final ResourceKey<PlacedFeature> PINK_LOG = key("pink_log");
     public static final ResourceKey<PlacedFeature> LIBRARY_DUNGEON = key("library_dungeon");
     public static final ResourceKey<PlacedFeature> BARREL = key("barrel");

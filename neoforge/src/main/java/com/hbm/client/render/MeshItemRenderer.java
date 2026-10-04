@@ -79,7 +79,6 @@ public final class MeshItemRenderer
                                                                         draw.offset()))
                                                 .toList())
                         .toList();
-
         this.skins =
                 skins.stream()
                         .map(

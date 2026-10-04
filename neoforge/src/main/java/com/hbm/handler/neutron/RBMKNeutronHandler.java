@@ -4,10 +4,10 @@
 
 package com.hbm.handler.neutron;
 
+import com.hbm.blockentity.machine.rbmk.*;
 import com.hbm.blocks.machine.rbmk.RBMKBase;
 import com.hbm.handler.neutron.NeutronNodeWorld.StreamWorld;
 import com.hbm.handler.radiation.RadiationSystemNT;
-import com.hbm.tileentity.machine.rbmk.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,7 +26,7 @@ public class RBMKNeutronHandler {
     static int columnHeight;
     static int fluxRange;
 
-    private static BlockEntity blockPosToTE(Level world, BlockPos pos) {
+    private static BlockEntity blockPosToBE(Level world, BlockPos pos) {
         return world.getBlockEntity(pos);
     }
 
@@ -124,7 +124,7 @@ public class RBMKNeutronHandler {
                 if (node instanceof RBMKNeutronNode) {
                     positions[i - 1] = node;
                 } else if (origin.tile.getBlockState().getBlock() instanceof RBMKBase) {
-                    if (blockPosToTE(world, pos) instanceof BlockEntityRBMKBase rbmkBase) {
+                    if (blockPosToBE(world, pos) instanceof BlockEntityRBMKBase rbmkBase) {
                         node = makeNode(streamWorld, rbmkBase);
                         positions[i - 1] = node;
                         if (addNode) streamWorld.addNode(node);
@@ -140,15 +140,15 @@ public class RBMKNeutronHandler {
 
             BlockPos originPos = origin.tile.getBlockPos();
 
-            BlockEntityRBMKBase originTE;
+            BlockEntityRBMKBase originBE;
             NeutronNode node = streamWorld.getNode(originPos);
             if (node != null) {
-                originTE = (BlockEntityRBMKBase) node.tile;
+                originBE = (BlockEntityRBMKBase) node.tile;
             } else {
-                if (!(blockPosToTE(worldObj, originPos) instanceof BlockEntityRBMKBase b)) return;
-                originTE = b;
+                if (!(blockPosToBE(worldObj, originPos) instanceof BlockEntityRBMKBase b)) return;
+                originBE = b;
                 streamWorld.addNode(
-                        new RBMKNeutronNode(originTE, originTE.getRBMKType(), originTE.hasLid()));
+                        new RBMKNeutronNode(originBE, originBE.getRBMKType(), originBE.hasLid()));
             }
 
             int moderatedCount = 0;
@@ -160,7 +160,7 @@ public class RBMKNeutronHandler {
 
                 NeutronNode targetNode = streamWorld.getNode(targetPos);
                 if (targetNode == null) {
-                    if (blockPosToTE(worldObj, targetPos) instanceof BlockEntityRBMKBase rbmk) {
+                    if (blockPosToBE(worldObj, targetPos) instanceof BlockEntityRBMKBase rbmk) {
                         targetNode = makeNode(streamWorld, rbmk);
                         streamWorld.addNode(targetNode);
                     } else {
@@ -180,7 +180,7 @@ public class RBMKNeutronHandler {
                 RBMKType type = targetNode.get(RBMKNeutronNode.COLUMN_TYPE);
                 if (type == RBMKType.OTHER || type == null) continue;
 
-                BlockEntityRBMKBase nodeTE = (BlockEntityRBMKBase) targetNode.tile;
+                BlockEntityRBMKBase nodeBE = (BlockEntityRBMKBase) targetNode.tile;
 
                 if (Boolean.FALSE.equals(targetNode.get(RBMKNeutronNode.HAS_LID))) {
                     RadiationSystemNT.incrementRad(
@@ -190,12 +190,12 @@ public class RBMKNeutronHandler {
                             this.fluxQuantity * 0.05D * 1024D);
                 }
 
-                if (type == RBMKType.MODERATOR || nodeTE.isModerated()) {
+                if (type == RBMKType.MODERATOR || nodeBE.isModerated()) {
                     moderatedCount++;
                     moderateStream();
                 }
 
-                if (nodeTE instanceof IRBMKFluxReceiver column) {
+                if (nodeBE instanceof IRBMKFluxReceiver column) {
 
                     if (type == RBMKType.ROD) {
                         BlockEntityRBMKRod rod = (BlockEntityRBMKRod) column;
@@ -204,7 +204,6 @@ public class RBMKNeutronHandler {
                             return;
                         }
                     } else if (type == RBMKType.OUTGASSER) {
-
                         BlockEntityRBMKOutgasser outgasser = (BlockEntityRBMKOutgasser) column;
                         if (outgasser.canProcess()) {
                             outgasser.receiveFlux(this);
@@ -213,14 +212,14 @@ public class RBMKNeutronHandler {
                     }
 
                 } else if (type == RBMKType.CONTROL_ROD) {
-                    BlockEntityRBMKControl rod = (BlockEntityRBMKControl) nodeTE;
+                    BlockEntityRBMKControl rod = (BlockEntityRBMKControl) nodeBE;
                     if (rod.level > 0.0D) {
                         this.fluxQuantity *= rod.getMult();
                         continue;
                     }
                     return;
                 } else if (type == RBMKType.REFLECTOR) {
-                    if (originTE.isModerated()) moderatedCount++;
+                    if (originBE.isModerated()) moderatedCount++;
                     if (this.fluxRatio > 0 && moderatedCount > 0) {
                         for (int i = 0; i < moderatedCount; i++) moderateStream();
                     }
@@ -228,10 +227,10 @@ public class RBMKNeutronHandler {
                         this.fluxQuantity *= reflectorEfficiency;
                         continue;
                     }
-                    if (originTE instanceof BlockEntityRBMKRod rod) rod.receiveFlux(this);
+                    if (originBE instanceof BlockEntityRBMKRod rod) rod.receiveFlux(this);
                     return;
                 } else if (type == RBMKType.ABSORBER) {
-                    nodeTE.heat +=
+                    nodeBE.heat +=
                             RBMKConfig.getAbsorberHeatConversion(worldObj) * this.fluxQuantity;
                     if (absorberEfficiency == 1) return;
                     this.fluxQuantity *= absorberEfficiency;
@@ -260,9 +259,8 @@ public class RBMKNeutronHandler {
                                     (int) (lastNode.tile.getBlockPos().getX() + this.vector.x),
                                     lastNode.tile.getBlockPos().getY(),
                                     (int) (lastNode.tile.getBlockPos().getZ() + this.vector.z));
-
                     if (NeutronNodeWorld.getNode(worldObj, originPos) == null) {
-                        if (blockPosToTE(worldObj, posAfter) instanceof BlockEntityRBMKBase b) {
+                        if (blockPosToBE(worldObj, posAfter) instanceof BlockEntityRBMKBase b) {
                             StreamWorld sw = NeutronNodeWorld.getOrAddWorld(worldObj);
                             sw.addNode(makeNode(sw, b));
                         } else {

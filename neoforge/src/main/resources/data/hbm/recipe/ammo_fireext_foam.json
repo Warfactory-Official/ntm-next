@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "F": "hbm:ammo_fireext",
     "N": "#c:dusts/saltpeter"

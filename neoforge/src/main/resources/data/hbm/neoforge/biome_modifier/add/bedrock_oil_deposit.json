@@ -2,5 +2,5 @@
   "type": "neoforge:add_features",
   "biomes": "#minecraft:is_overworld",
   "features": "hbm:bedrock_oil_deposit",
-  "step": "underground_ores"
+  "step": "raw_generation"
 }

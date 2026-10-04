@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineRotaryFurnace;
 import com.hbm.client.ModifierKeys;
 import com.hbm.client.render.HbmRenderPipelines;
 import com.hbm.inventory.container.MenuMachineRotaryFurnace;
 import com.hbm.inventory.material.Mats;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachineRotaryFurnace;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -27,13 +27,13 @@ public class ScreenMachineRotaryFurnace extends ScreenInfoContainer<MenuMachineR
     public ScreenMachineRotaryFurnace(
             MenuMachineRotaryFurnace menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 176, 186);
-        this.titleLabelY = 6;
-        this.inventoryLabelY = this.imageHeight - 96 + 2;
+        titleLabelY = 6;
+        inventoryLabelY = imageHeight - 96 + 2;
     }
 
     @Override
     protected int titleCenterX() {
-        return (this.imageWidth - 54) / 2;
+        return (imageWidth - 54) / 2;
     }
 
     @Override
@@ -132,12 +132,12 @@ public class ScreenMachineRotaryFurnace extends ScreenInfoContainer<MenuMachineR
                     16,
                     52,
                     List.of(
-                            Component.literal(
-                                            be.output.material.getLocalizedName()
-                                                    + ": "
-                                                    + Mats.formatAmount(
-                                                            be.output.amount,
-                                                            ModifierKeys.leftShiftHeld()))
+                            Component.empty()
+                                    .append(be.output.material.getLocalizedName())
+                                    .append(Component.literal(": "))
+                                    .append(
+                                            Mats.formatAmount(
+                                                    be.output.amount, ModifierKeys.detailsHeld()))
                                     .withStyle(ChatFormatting.YELLOW)));
         }
 
@@ -148,7 +148,7 @@ public class ScreenMachineRotaryFurnace extends ScreenInfoContainer<MenuMachineR
             for (String line : BlockEntityMachineRotaryFurnace.BURN_MODULE.getDesc())
                 desc.add(Component.literal(line));
             if (!desc.isEmpty())
-                graphics.setComponentTooltipForNextFrame(this.font, desc, mouseX, mouseY);
+                graphics.setComponentTooltipForNextFrame(font, desc, mouseX, mouseY);
         }
 
         super.extractLabels(graphics, mouseX, mouseY);

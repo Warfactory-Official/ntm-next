@@ -3,6 +3,7 @@
 
 package com.hbm.mixin;
 
+import com.hbm.entity.item.PendingFallers;
 import com.hbm.packet.ChunkTrackerIndex;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -19,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerChunkSender.class)
 public abstract class MixinPlayerChunkSender {
-
     @WrapOperation(
             method = "sendNextChunks",
             at =
@@ -42,6 +42,7 @@ public abstract class MixinPlayerChunkSender {
             ChunkTrackerIndex.endInitial();
         }
         ChunkTrackerIndex.onChunkSent(level, connection.player, chunk.getPos().pack());
+        PendingFallers.promote(level, chunk);
     }
 
     @Inject(method = "dropChunk", at = @At("HEAD"))

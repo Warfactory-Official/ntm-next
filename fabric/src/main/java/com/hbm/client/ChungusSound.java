@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.machine.BlockEntityChungus;
+import com.hbm.blockentity.machine.BlockEntityChungus;
 
 public final class ChungusSound {
 
@@ -11,7 +11,6 @@ public final class ChungusSound {
 
     public static void tick(BlockEntityChungus be) {
         float speed = be.fanAcceleration / 25F;
-
         be.audioLoop(
                 be.isTurning() || be.fanAcceleration > 0F, 0.5F * speed, 0.25F + 0.75F * speed);
     }

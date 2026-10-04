@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.machine.BlockEntitySoyuzLauncher;
+import com.hbm.blockentity.machine.BlockEntitySoyuzLauncher;
 
 public final class SoyuzLauncherSound {
 

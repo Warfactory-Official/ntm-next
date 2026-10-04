@@ -33,7 +33,6 @@ public abstract class EntityThrowableNT extends ThrowableProjectile {
     public int ticksInAir;
     protected boolean inGround;
     private BlockPos stuckBlockPos = BlockPos.ZERO;
-
     private Block stuckBlock;
 
     public EntityThrowableNT(EntityType<? extends EntityThrowableNT> type, Level level) {
@@ -203,7 +202,6 @@ public abstract class EntityThrowableNT extends ThrowableProjectile {
                         Vec3 hitVec = aabb.clip(pos, nextPos).orElse(null);
 
                         if (hitVec != null) {
-
                             if (this.doesPenetrate()) {
                                 this.onImpact(new EntityHitResult(entity, hitVec));
                             } else {
@@ -226,7 +224,6 @@ public abstract class EntityThrowableNT extends ThrowableProjectile {
             }
 
             if (mop != null) {
-
                 this.onImpact(mop);
             }
 

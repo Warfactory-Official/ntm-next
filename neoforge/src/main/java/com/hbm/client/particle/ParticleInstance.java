@@ -21,10 +21,18 @@ public final class ParticleInstance extends BillboardInstance {
             type("particle_grow_in", "particle");
     public static final InstanceType<ParticleInstance> HADRON =
             type("particle_hadron", "particle_hadron");
+    public static final InstanceType<ParticleInstance> UPRIGHT =
+            type("particle_upright", "particle");
+    public static final InstanceType<ParticleInstance> RBMK_JET =
+            type("particle_rbmk_jet", "particle");
+    public static final InstanceType<ParticleInstance> CASING_SMOKE =
+            type("particle_casing_smoke", "particle_casing_smoke");
 
     public ParticleInstance(InstanceType<? extends ParticleInstance> type, InstanceHandle handle) {
         super(type, handle);
     }
+
+    public static void initTypes() {}
 
     private static InstanceType<ParticleInstance> type(String vertex, String cull) {
         return SimpleInstanceType.builder(ParticleInstance::new)

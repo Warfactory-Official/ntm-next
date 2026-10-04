@@ -101,7 +101,6 @@ public final class EntityAIFireGun extends Goal {
     private void updateState(FireState toState, int time, ItemGunBaseNT gun, ItemStack stack) {
         state = toState;
         stateTimer = time;
-
         switch (state) {
             case FIRING:
                 updateKeybind(gun, stack, EnumKeybind.GUN_PRIMARY);
@@ -126,9 +125,7 @@ public final class EntityAIFireGun extends Goal {
                                     .getHipfireSpread(stack)
                             * 20F;
             host.yHeadRot += (host.getRandom().nextFloat() - 0.5F) * spread;
-
             host.xRot += (host.getRandom().nextFloat() - 0.5F) * spread;
-
             host.yRot = host.yHeadRot;
             host.yBodyRot = host.yRot;
         }

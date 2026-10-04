@@ -13,7 +13,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BlockMetalFence extends FenceBlock {
-
     public static final MapCodec<FenceBlock> CODEC = simpleCodec(BlockMetalFence::new);
 
     private static final double MIN = 6 / 16D;
@@ -48,7 +47,6 @@ public class BlockMetalFence extends FenceBlock {
         if (n || s) {
             shape = Shapes.or(shape, Shapes.box(MIN, 0D, n ? 0D : MIN, MAX, 1D, s ? 1D : MAX));
         }
-
         if (e || w || (!n && !s)) {
             shape = Shapes.or(shape, Shapes.box(w ? 0D : MIN, 0D, MIN, e ? 1D : MAX, 1D, MAX));
         }

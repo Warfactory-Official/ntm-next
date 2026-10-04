@@ -5,14 +5,12 @@ package com.hbm.items.special;
 
 import com.hbm.data.ItemData;
 import com.hbm.interfaces.IItemEntityUpdate;
-import com.hbm.platform.Services;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;

@@ -3,10 +3,10 @@
 
 package com.hbm.blocks.turret;
 
+import com.hbm.blockentity.turret.BlockEntityTurretSentry;
+import com.hbm.blockentity.turret.BlockEntityTurretSentryDamaged;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.turret.BlockEntityTurretSentry;
-import com.hbm.tileentity.turret.BlockEntityTurretSentryDamaged;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -3,12 +3,10 @@
 
 package com.hbm.config;
 
-import com.hbm.platform.Services;
 import java.util.function.Predicate;
 
 public enum ForeignModChange {
     MEKANISM("mekanism", "mekanism_changes", ContentConfig::enableMekanismChanges),
-
     TECHREBORN("techreborn", "techreborn_changes", ContentConfig::enableTechRebornChanges);
 
     public final String modId;
@@ -22,7 +20,7 @@ public enum ForeignModChange {
     }
 
     public boolean enabled() {
-        ContentConfig config = Services.CONFIG.content();
+        ContentConfig config = FabricHbmConfig.CONTENT;
         return config.enableForeignModChanges() && entry.test(config);
     }
 

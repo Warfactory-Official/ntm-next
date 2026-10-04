@@ -6,7 +6,6 @@ package com.hbm.client.render;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
 public final class PigeonRenderState extends LivingEntityRenderState {
-
     public float flap;
     public boolean fat;
 }

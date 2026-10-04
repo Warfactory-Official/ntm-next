@@ -20,7 +20,6 @@ import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 
 public record ChargeModel(Identifier mesh) implements BlockModel<HFRWavefrontObject> {
-
     public static Matrix4fc matrixFor(Direction facing) {
         Matrix4f matrix = new Matrix4f().translate(0.5F, 0.5F, 0.5F);
         return switch (facing) {

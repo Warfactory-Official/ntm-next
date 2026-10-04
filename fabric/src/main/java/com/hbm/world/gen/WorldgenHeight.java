@@ -48,7 +48,6 @@ public final class WorldgenHeight {
 
     private static int scan(ChunkAccess chunk, int x, int z, boolean ground) {
         if (chunk instanceof ImposterProtoChunk imposter) chunk = imposter.getWrapped();
-
         int highest = chunk.getHighestFilledSectionIndex();
         int top =
                 highest == -1
@@ -60,7 +59,6 @@ public final class WorldgenHeight {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(x, top, z);
         for (int y = top; y >= chunk.getMinY(); y--) {
             BlockState state = chunk.getBlockState(pos.setY(y));
-
             if (ground
                     ? state.blocksMotion() && !state.is(BlockTags.LEAVES)
                     : state.getLightDampening() > 0) {
@@ -83,7 +81,6 @@ public final class WorldgenHeight {
             int z = symmetricSample(minZ, maxZ, zSamples, zi);
             for (int xi = 0; xi < xSamples; xi++) {
                 int x = symmetricSample(minX, maxX, xSamples, xi);
-
                 total +=
                         Math.max(
                                 context.chunkGenerator()

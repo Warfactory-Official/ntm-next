@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "D": "minecraft:diamond_block",
     "G": "hbm:reinforced_glass",

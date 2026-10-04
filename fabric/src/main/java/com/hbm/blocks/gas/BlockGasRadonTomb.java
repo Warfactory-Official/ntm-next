@@ -48,7 +48,6 @@ public class BlockGasRadonTomb extends BlockGasBase {
             InsideBlockEffectApplier applier,
             boolean isPrecise) {
         if (level.isClientSide() || !(entity instanceof LivingEntity living)) return;
-
         living.removeEffect(HbmPotion.radaway());
         living.removeEffect(HbmPotion.radx());
         ContaminationUtil.contaminate(
@@ -72,14 +71,12 @@ public class BlockGasRadonTomb extends BlockGasBase {
             BlockPos below = pos.below();
             BlockState belowState = level.getBlockState(below);
             if (belowState.is(Blocks.GRASS_BLOCK)) {
-
                 level.setBlockAndUpdate(
                         below,
                         random.nextInt(5) == 0
                                 ? Blocks.COARSE_DIRT.defaultBlockState()
                                 : ModBlocks.WASTE_EARTH.get().defaultBlockState());
             }
-
             if (belowState.getBlock() instanceof VegetationBlock
                     || belowState.getBlock() instanceof VineBlock
                     || belowState.is(BlockTags.LEAVES)) {

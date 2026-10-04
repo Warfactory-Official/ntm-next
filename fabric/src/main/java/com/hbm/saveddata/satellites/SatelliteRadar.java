@@ -4,7 +4,6 @@
 package com.hbm.saveddata.satellites;
 
 import com.hbm.api.redstoneoverradio.IRORInteractive;
-import com.hbm.tileentity.machine.BlockEntityMachineRadar;
 import com.mojang.serialization.MapCodec;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +33,7 @@ public class SatelliteRadar extends Satellite {
         switch (command[0]) {
             case "survey" -> {
                 cachedRadarResults.clear();
-                for (Entity entity : BlockEntityMachineRadar.MATCHING) {
-                    if (entity.level() != level) continue;
+                for (Entity entity : level.hbm$radarTargets()) {
                     int x = (int) Math.floor(entity.getX());
                     int z = (int) Math.floor(entity.getZ());
                     double dx = x - targetX;

@@ -130,6 +130,14 @@ public final class ConfigSchema {
                     true,
                     "When enabled, prevents crates from becoming radioactive");
 
+    public static final ConfigEntry<Boolean> ENABLE_LBSM_SAFE_ME_DRIVES =
+            bool(
+                    Domain.CONTENT,
+                    "lbsm",
+                    "safe_me_drives",
+                    true,
+                    "When enabled, prevents ME Drives and Portable Cells from becoming radioactive");
+
     public static final ConfigEntry<Boolean> ENABLE_FOREIGN_MOD_CHANGES =
             bool(
                     Domain.CONTENT,
@@ -196,6 +204,13 @@ public final class ConfigSchema {
                     "machine_gravity",
                     true,
                     "Requires most large machines to have a proper foundation, or else they tilt and break.");
+    public static final ConfigEntry<Boolean> ENABLE_528_BOSNIA_SIMULATOR =
+            bool(
+                    Domain.CONTENT,
+                    "mode_528",
+                    "bosnia_simulator",
+                    true,
+                    "Enables anti tank mines spawning all over the world.");
     public static final ConfigEntry<Boolean> ENABLE_528_FORCE_REASIM_BOILERS =
             bool(
                     Domain.CONTENT,
@@ -242,7 +257,6 @@ public final class ConfigSchema {
                     1,
                     Integer.MAX_VALUE,
                     "Columns per tick the MK3 spiral steps");
-
     public static final ConfigEntry<Integer> MK5_BLAST_TIME =
             integer(
                     Domain.RUNTIME,
@@ -261,7 +275,6 @@ public final class ConfigSchema {
                     0,
                     Integer.MAX_VALUE,
                     "How many ticks to wait for the next fallout chunk computation");
-
     public static final ConfigEntry<Integer> BLAST_CHUNKS_IN_FLIGHT =
             integer(
                     Domain.RUNTIME,
@@ -281,7 +294,6 @@ public final class ConfigSchema {
                     2,
                     "Configures the algorithm of mk5 explosion. 0 = Legacy, 1 = Threaded DDA, "
                             + "2 = Threaded DDA with damage accumulation.");
-
     public static final ConfigEntry<Integer> BOMB_MAX_THREADS =
             integer(
                     Domain.RUNTIME,
@@ -338,8 +350,8 @@ public final class ConfigSchema {
                     "radiation",
                     "unstable_recovery_sweep",
                     false,
-                    "Audit every loaded container every 20 ticks, so an armed item that left a mod's opaque storage "
-                            + "without notifying still detonates. Costs a walk of all loaded chunks and entities.");
+                    "Recover unreported changes in loaded entity and player inventories every 20 ticks. "
+                            + "Block storage requires slot notifications and is never audited.");
 
     public static final ConfigEntry<Integer> TOOL_HUD_INDICATOR_X =
             integer(
@@ -431,7 +443,6 @@ public final class ConfigSchema {
                     Integer.MIN_VALUE,
                     Integer.MAX_VALUE,
                     "");
-
     public static final ConfigEntry<Integer> INFO_POSITION =
             integer(
                     Domain.CLIENT,
@@ -498,6 +509,7 @@ public final class ConfigSchema {
                     ENABLE_LBSM_UNLOCK_ANVIL,
                     ENABLE_LBSM_SIMPLE_MEDICINE,
                     ENABLE_LBSM_SAFE_CRATES,
+                    ENABLE_LBSM_SAFE_ME_DRIVES,
                     ENABLE_FOREIGN_MOD_CHANGES,
                     ENABLE_MEKANISM_CHANGES,
                     ENABLE_TECHREBORN_CHANGES,
@@ -509,6 +521,7 @@ public final class ConfigSchema {
                     ENABLE_528_PRESSURIZED_RECIPES,
                     ENABLE_528_MACHINE_GRAVITY,
                     ENABLE_528_FORCE_REASIM_BOILERS,
+                    ENABLE_528_BOSNIA_SIMULATOR,
                     RAD_TICK_RATE,
                     HAZARD_RATE,
                     LIMIT_EXPLOSION_LIFESPAN,

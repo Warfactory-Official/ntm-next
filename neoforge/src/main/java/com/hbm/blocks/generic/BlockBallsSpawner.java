@@ -7,7 +7,7 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.mob.botprime.EntityBOTPrimeHead;
 import com.hbm.items.ModItems;
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgePlatform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class BlockBallsSpawner extends Block {
-
     private static final int DROP_HEIGHT = 300;
 
     public BlockBallsSpawner(Properties props) {
@@ -45,7 +44,7 @@ public class BlockBallsSpawner extends Block {
             if (bot != null) {
                 bot.snapTo(pos.getX() + 0.5, DROP_HEIGHT, pos.getZ() + 0.5, 0, 0);
                 bot.setDeltaMovement(0, -1.0, 0);
-                Services.PLATFORM.finalizeSpawn(
+                NeoForgePlatform.finalizeSpawn(
                         bot,
                         server,
                         server.getCurrentDifficultyAt(bot.blockPosition()),
@@ -55,7 +54,6 @@ public class BlockBallsSpawner extends Block {
             }
             server.setBlockAndUpdate(pos, ModBlocks.BRICK_JUNGLE_CRACKED.get().defaultBlockState());
         }
-
         return InteractionResult.PASS;
     }
 }

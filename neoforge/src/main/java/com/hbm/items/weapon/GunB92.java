@@ -11,6 +11,7 @@ import com.hbm.entity.projectile.EntityB92Beam;
 import com.hbm.items.ModDataComponents;
 import com.hbm.main.Polaroid;
 import com.hbm.sound.ModSounds;
+import com.hbm.util.KeyHints;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -157,7 +158,11 @@ public class GunB92 extends Item {
         }
         adder.accept(Component.empty());
         adder.accept(Component.translatable("desc.item.gunB92.projectilesExplodeOn"));
-        adder.accept(Component.translatable("desc.item.gunB92.sneakWhileHolding"));
+        adder.accept(
+                Component.translatable(
+                        "tooltip.hbm.b92.charge",
+                        KeyHints.key("key.sneak", "key.keyboard.left.shift"),
+                        KeyHints.key("key.use", "key.mouse.right")));
         adder.accept(Component.translatable("desc.item.gunB92.toChargeAdditional"));
         adder.accept(Component.translatable("desc.item.gunB92.theMoreEnergy"));
         adder.accept(Component.translatable("desc.item.gunB92.theBeamsBecome"));

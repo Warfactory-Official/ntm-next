@@ -4,10 +4,10 @@
 
 package com.hbm.inventory.fluid.trait;
 
-import com.hbm.util.I18nUtil;
 import java.util.*;
 import java.util.function.Supplier;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.material.Fluid;
 
 public class FT_Heatable extends FluidTrait {
@@ -26,43 +26,51 @@ public class FT_Heatable extends FluidTrait {
     }
 
     public double getEfficiency(HeatingType type) {
-        Double eff = this.efficiency.get(type);
+        Double eff = efficiency.get(type);
         return eff != null ? eff : 0.0D;
     }
 
     public HeatingStep getFirstStep() {
-        return this.steps.get(0);
+        return steps.get(0);
     }
 
     public List<HeatingStep> steps() {
-        return Collections.unmodifiableList(this.steps);
+        return Collections.unmodifiableList(steps);
     }
 
     @Override
-    public void addInfoHidden(List<String> info) {
+    public void addInfoHidden(List<Component> info) {
         info.add(
-                ChatFormatting.RED
-                        + I18nUtil.resolveKey("hbmfluid.trait.thermalCapacity")
-                        + ": "
-                        + getFirstStep().heatReq
-                        + " "
-                        + I18nUtil.resolveKey("hbmfluid.trait.perTU")
-                        + " "
-                        + getFirstStep().amountReq
-                        + "mB");
+                Component.empty()
+                        .append(
+                                Component.translatable("hbmfluid.trait.thermalCapacity")
+                                        .withStyle(ChatFormatting.RED))
+                        .append(
+                                Component.literal(": " + getFirstStep().heatReq + " ")
+                                        .withStyle(ChatFormatting.RED))
+                        .append(
+                                Component.translatable("hbmfluid.trait.perTU")
+                                        .withStyle(ChatFormatting.RED))
+                        .append(
+                                Component.literal(" " + getFirstStep().amountReq + "mB")
+                                        .withStyle(ChatFormatting.RED)));
         for (HeatingType type : HeatingType.values()) {
             double eff = getEfficiency(type);
             if (eff > 0) {
                 info.add(
-                        ChatFormatting.YELLOW
-                                + "["
-                                + type.getLocalizedName()
-                                + "] "
-                                + ChatFormatting.AQUA
-                                + I18nUtil.resolveKey("hbmfluid.trait.efficiency")
-                                + ": "
-                                + ((int) (eff * 100D))
-                                + "%");
+                        Component.empty()
+                                .append(Component.literal("[").withStyle(ChatFormatting.YELLOW))
+                                .append(
+                                        type.getLocalizedName()
+                                                .copy()
+                                                .withStyle(ChatFormatting.YELLOW))
+                                .append(Component.literal("] ").withStyle(ChatFormatting.YELLOW))
+                                .append(
+                                        Component.translatable("hbmfluid.trait.efficiency")
+                                                .withStyle(ChatFormatting.AQUA))
+                                .append(
+                                        Component.literal(": " + ((int) (eff * 100D)) + "%")
+                                                .withStyle(ChatFormatting.AQUA)));
             }
         }
     }
@@ -80,8 +88,8 @@ public class FT_Heatable extends FluidTrait {
             this.keySuffix = keySuffix;
         }
 
-        public String getLocalizedName() {
-            return I18nUtil.resolveKey("hbmfluid.trait." + keySuffix);
+        public Component getLocalizedName() {
+            return Component.translatable("hbmfluid.trait." + keySuffix);
         }
     }
 
@@ -92,10 +100,10 @@ public class FT_Heatable extends FluidTrait {
         private final Supplier<Fluid> typeProduced;
 
         public HeatingStep(int req, int heat, Supplier<Fluid> type, int prod) {
-            this.amountReq = req;
-            this.heatReq = heat;
-            this.typeProduced = type;
-            this.amountProduced = prod;
+            amountReq = req;
+            heatReq = heat;
+            typeProduced = type;
+            amountProduced = prod;
         }
 
         public Fluid typeProduced() {

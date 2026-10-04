@@ -6,22 +6,18 @@ package com.hbm.lib;
 import com.hbm.NuclearTech;
 import com.hbm.api.energymk2.CableData;
 import com.hbm.api.energymk2.EnergyCaps;
-import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.energymk2.PowerGraph;
 import com.hbm.api.fluidmk2.FluidCaps;
 import com.hbm.api.fluidmk2.FluidFace;
 import com.hbm.api.fluidmk2.FluidPipeGraph;
-import com.hbm.api.fluidmk2.IFluidHandlerMK2;
 import com.hbm.api.fluidmk2.PipeData;
-import com.hbm.blocks.machine.MachineRTG;
 import com.hbm.blocks.machine.rbmk.RBMKLoader;
 import com.hbm.blocks.network.CableBlock;
 import com.hbm.blocks.network.CableConductorBlockBase;
-import com.hbm.blocks.network.CableDiodeBlock;
 import com.hbm.blocks.network.FluidDuctBlockBase;
 import com.hbm.blocks.network.PylonMediumBlock;
 import com.hbm.capability.NtmCapabilities;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricCaps;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.ChunkUtil;
 import java.util.ArrayList;
@@ -81,20 +77,6 @@ public final class Library {
         Block.updateOrDestroy(state, drawn, level, pos, Block.UPDATE_CLIENTS);
     }
 
-    public static boolean armDrawerBeside(ServerLevel level, BlockPos pos) {
-        BlockPos.MutableBlockPos neighbour = new BlockPos.MutableBlockPos();
-        for (Direction dir : Direction.VALUES) {
-            neighbour.setWithOffset(pos, dir);
-            BlockState state = ChunkUtil.blockStateIfLoaded(level, neighbour);
-            if (state != null
-                    && (state.getBlock() instanceof CableDiodeBlock
-                            || state.getBlock() instanceof MachineRTG)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static boolean canConnect(LevelReader level, BlockPos pos, Direction side) {
         if (!(level instanceof Level world)) return false;
 
@@ -113,14 +95,12 @@ public final class Library {
         }
         if (state == null) return false;
 
-        if (Services.CAPS.find(EnergyCaps.PROVIDER, world, pos, side) != null
-                || Services.CAPS.find(EnergyCaps.RECEIVER, world, pos, side) != null) {
+        if (FabricCaps.find(EnergyCaps.PROVIDER, world, pos, side) != null
+                || FabricCaps.find(EnergyCaps.RECEIVER, world, pos, side) != null) {
             return true;
         }
-
         if (NtmCapabilities.ownsEnergyExposure(state)) return false;
-
-        return Services.CAPS.findEnergyHandler(world, pos, side) != null;
+        return FabricCaps.findEnergyHandler(world, pos, side) != null;
     }
 
     public static boolean canConnectFluid(
@@ -145,11 +125,10 @@ public final class Library {
         if (state == null) return false;
 
         FluidFace face = FluidFace.of(side, fluid);
-        if (Services.CAPS.find(FluidCaps.PROVIDER, world, pos, face) != null) return true;
-        if (Services.CAPS.find(FluidCaps.RECEIVER, world, pos, face) != null) return true;
-
+        if (FabricCaps.find(FluidCaps.PROVIDER, world, pos, face) != null) return true;
+        if (FabricCaps.find(FluidCaps.RECEIVER, world, pos, face) != null) return true;
         if (NtmCapabilities.ownsFluidExposure(state)) return false;
-        return Services.CAPS.findFluidHandler(world, pos, side) != null;
+        return FabricCaps.findFluidHandler(world, pos, side) != null;
     }
 
     public static int blockPosToLocal(long serialized) {

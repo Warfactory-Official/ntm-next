@@ -3,13 +3,13 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.bomb.BlockEntityLaunchPadRusted;
 import com.hbm.entity.missile.EntityMissileTier4.EntityMissileDoomsdayRusted;
 import com.hbm.inventory.container.MenuLaunchPadRusted;
 import com.hbm.items.ModItems;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPadRusted;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -67,7 +67,6 @@ public class ScreenLaunchPadRusted extends ScreenInfoContainer<MenuLaunchPadRust
                 graphics.blit(
                         RenderPipelines.GUI_TEXTURED, TEXTURE, 139, 32, 192, 0, 6, 8, 256, 256);
             if (codes && key && pad.missileLoaded) {
-
                 int launchCode =
                         new Random(pad.getBlockPos().getX() * 131_071 + pad.getBlockPos().getZ())
                                 .nextInt(100_000_000);
@@ -118,6 +117,7 @@ public class ScreenLaunchPadRusted extends ScreenInfoContainer<MenuLaunchPadRust
     private void drawMissilePreview(GuiGraphicsExtractor graphics) {
         if (minecraft == null || minecraft.level == null) return;
         EntityMissileDoomsdayRusted missile = new EntityMissileDoomsdayRusted(minecraft.level);
+        missile.setId(-1);
         EntityRenderState state =
                 minecraft
                         .getEntityRenderDispatcher()
@@ -148,8 +148,7 @@ public class ScreenLaunchPadRusted extends ScreenInfoContainer<MenuLaunchPadRust
                 RELEASE_SIZE)) {
             CompoundTag data = new CompoundTag();
             data.putBoolean("release", true);
-            Services.NETWORK.sendToServer(
-                    new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
             if (minecraft != null)
                 minecraft
                         .getSoundManager()

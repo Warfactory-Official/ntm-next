@@ -22,7 +22,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(NaturalSpawner.class)
 public abstract class MixinNaturalSpawner {
-
     @Inject(method = "spawnMobsForChunkGeneration", at = @At("HEAD"), cancellable = true)
     private static void hbm$impactDeniesAnimals(
             ServerLevelAccessor level,

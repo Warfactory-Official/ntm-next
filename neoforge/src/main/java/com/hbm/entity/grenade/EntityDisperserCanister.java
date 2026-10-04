@@ -21,7 +21,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class EntityDisperserCanister extends EntityGrenadeBase {
-
     private static final EntityDataAccessor<Integer> FLUID =
             SynchedEntityData.defineId(EntityDisperserCanister.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<ItemStack> TYPE =

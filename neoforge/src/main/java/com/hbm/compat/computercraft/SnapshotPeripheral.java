@@ -51,7 +51,6 @@ public abstract class SnapshotPeripheral<BE extends BlockEntity> implements IPer
         try {
             capture(machine);
         } finally {
-
             SEQ.setRelease(this, s + 2);
         }
     }

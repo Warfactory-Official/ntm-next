@@ -18,7 +18,6 @@ import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
 public class CrystallizerRecipe extends GenericRecipe {
-
     private static final MapCodec<Float> PRODUCTIVITY_MAP_CODEC =
             Codec.FLOAT.optionalFieldOf("productivity", 0F);
     private static final StreamCodec<RegistryFriendlyByteBuf, Float> PRODUCTIVITY_STREAM_CODEC =
@@ -41,7 +40,6 @@ public class CrystallizerRecipe extends GenericRecipe {
                     EXTRACT_PRODUCTIVITY);
     public static final RecipeSerializer<CrystallizerRecipe> SERIALIZER =
             new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
-
     public float productivity;
 
     public CrystallizerRecipe(String name) {

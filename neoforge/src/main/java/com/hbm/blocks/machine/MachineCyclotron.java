@@ -3,13 +3,13 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineCyclotron;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntityMachineCyclotron;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -27,7 +27,6 @@ public class MachineCyclotron extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
 
     private static final int[] DIMENSIONS = {2, 0, 2, 2, 2, 2};
-
     private static final int REACH = 2;
     private static final int OFFSET = 1;
 

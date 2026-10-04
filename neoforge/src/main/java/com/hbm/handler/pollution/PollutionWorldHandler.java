@@ -22,7 +22,6 @@ final class PollutionWorldHandler {
 
         if (block == Blocks.GRASS_BLOCK || block == Blocks.DIRT) {
             world.setBlock(pos, Blocks.COARSE_DIRT.defaultBlockState(), Block.UPDATE_CLIENTS);
-
         } else if (state.is(BlockTags.LEAVES)
                 || block == ModBlocks.LEAVES_LAYER.get()
                 || block instanceof VegetationBlock) {

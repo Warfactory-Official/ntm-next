@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionMHDT;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionMHDT;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -27,7 +27,6 @@ public class RenderFusionMHDT
     private static final int COILS = ResourceManager.fusion_mhdt.partId("Coils");
 
     private final HFRWavefrontObject model = ResourceManager.fusion_mhdt;
-
     private final RenderType baseType =
             RenderTypes.entityCutoutCull(ResourceManager.fusion_mhdt_tex);
 
@@ -56,7 +55,6 @@ public class RenderFusionMHDT
         BlockEntityRenderer.super.extractRenderState(
                 be, state, partialTicks, cameraPosition, breakProgress);
         state.yaw = FusionYaw.of(BlockMultiblockCore.coreFacing(be.getBlockState()));
-
         state.rotor = Mth.lerp(partialTicks, be.prevRotor, be.rotor) % 15F;
     }
 

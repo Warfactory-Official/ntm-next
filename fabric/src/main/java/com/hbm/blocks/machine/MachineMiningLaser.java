@@ -3,16 +3,15 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineMiningLaser;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.RefreshesNeighborState;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.BlockEntityMachineMiningLaser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -27,7 +26,6 @@ import org.jspecify.annotations.Nullable;
         calling = {"updateRedstonePower", "refreshUnloadTargets"})
 public class MachineMiningLaser extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
-
     private static final int[] DIMENSIONS = {1, 1, 1, 1, 1, 1};
 
     public MachineMiningLaser(Properties props) {

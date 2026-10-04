@@ -4,7 +4,6 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.config.RadiationConfig;
 import com.hbm.data.WorldData;
 import com.hbm.potion.HbmPotion;
 import net.minecraft.core.BlockPos;
@@ -58,7 +57,6 @@ public class BlockWasteMycelium extends WasteEarth {
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
-
         level.addParticle(
                 ParticleTypes.MYCELIUM,
                 pos.getX() + rand.nextFloat(),

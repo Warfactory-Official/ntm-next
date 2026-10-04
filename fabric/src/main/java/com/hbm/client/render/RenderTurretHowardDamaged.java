@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.turret.BlockEntityTurretHowardDamaged;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.turret.BlockEntityTurretHowardDamaged;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
@@ -83,7 +82,6 @@ public class RenderTurretHowardDamaged
             PoseStack poseStack,
             SubmitNodeCollector collector,
             CameraRenderState camera) {
-
         double offsetX =
                 state.facing == Direction.NORTH || state.facing == Direction.WEST ? 1D : 0D;
         double offsetZ =

@@ -197,7 +197,6 @@ public class EntityProcessorCross implements IEntityProcessor {
                     if (prev == null || prev < dmg) damageMap.put(entity, dmg);
 
                     if (shouldDealKnockback(entity)) {
-
                         double push = knockback * knockbackDamping(entity) * knockbackMult;
                         entity.setDeltaMovement(
                                 entity.getDeltaMovement()

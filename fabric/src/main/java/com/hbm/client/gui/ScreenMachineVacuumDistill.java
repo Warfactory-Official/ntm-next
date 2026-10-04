@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.oil.BlockEntityMachineVacuumDistill;
 import com.hbm.inventory.container.MenuMachineVacuumDistill;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineVacuumDistill;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -24,7 +24,6 @@ public class ScreenMachineVacuumDistill extends ScreenInfoContainer<MenuMachineV
     public ScreenMachineVacuumDistill(
             MenuMachineVacuumDistill menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 176, 238);
-
         this.titleLabelY = 5;
         this.inventoryLabelY = this.imageHeight - 96 + 2;
     }

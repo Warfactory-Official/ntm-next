@@ -19,7 +19,6 @@ public final class GUIElements {
     public static final int STANDARD_LINE_DIST = 10;
     public static final int STANDARD_HEADER_OFFSET = 2;
     public static final int RECIPE_HEADER_OFFSET = 6;
-
     public static final int STACK_COLOR_BACKGROUND = 0xF0100010;
     public static final int STACK_COLOR_LINE = 0x505000FF;
 
@@ -135,7 +134,7 @@ public final class GUIElements {
     public static void drawCyclingStackText(
             GuiGraphicsExtractor graphics,
             Font font,
-            @Nullable String header,
+            @Nullable Component header,
             List<ItemStack> stacks,
             int x,
             int y,
@@ -167,7 +166,7 @@ public final class GUIElements {
             lines.add(list.subList(bound0, bound1).toArray());
             lines.add(list.subList(bound1, list.size()).toArray());
         }
-        lines.add(new Object[] {selected.getHoverName().getString()});
+        lines.add(new Object[] {selected.getHoverName()});
 
         drawStackText(graphics, font, lines, x, y, screenWidth, screenHeight, highlight);
     }
@@ -190,7 +189,7 @@ public final class GUIElements {
             int lineWidth = 0;
             boolean hasStack = false;
             for (Object cell : line) {
-                if (cell instanceof String s) {
+                if (cell instanceof Component s) {
                     lineWidth += font.width(s);
                 } else {
                     lineWidth += 18;
@@ -240,10 +239,14 @@ public final class GUIElements {
             Object[] line = lines.get(index);
             int indent = 0;
             boolean hasStack = false;
-            for (Object cell : line) if (!(cell instanceof String)) hasStack = true;
+            for (Object cell : line)
+                if (!(cell instanceof Component)) {
+                    hasStack = true;
+                    break;
+                }
 
             for (Object cell : line) {
-                if (cell instanceof String s) {
+                if (cell instanceof Component s) {
                     graphics.text(font, s, minX + indent, minY + (hasStack ? 4 : 0), -1, true);
                     indent += font.width(s) + 2;
                 } else {

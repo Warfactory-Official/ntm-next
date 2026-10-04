@@ -134,7 +134,6 @@ final class SimplexBatchGather implements SimplexBatch {
                 DoubleVector vi1 =
                         DoubleVector.zero(D).blend(1.0D, px.compare(VectorOperators.GT, py));
                 DoubleVector vj1 = DoubleVector.broadcast(D, 1.0D).sub(vi1);
-
                 toInt(vi1).intoArray(i1, o);
                 toInt(vj1).intoArray(j1, o);
                 px.sub(vi1).add(G2).intoArray(x1, o);

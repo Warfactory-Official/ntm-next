@@ -140,7 +140,6 @@ public final class CrucibleItemRenderer
         boolean showBlade = charged;
         if (hand) {
             if (blocking) {
-
                 pose.translate(
                         0F,
                         (float) (-0.125D / (0.3D * Math.sqrt(2))),

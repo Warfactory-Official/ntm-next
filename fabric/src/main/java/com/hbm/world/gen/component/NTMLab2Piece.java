@@ -212,14 +212,12 @@ public class NTMLab2Piece extends NtmComponentPiece {
 
                 out.box(1, 8, 1, 1, 10, 1, decoSteel, decoSteel);
                 out.box(1, 8, 2, 1, 9, 3, steelGrate(7), steelGrate(7));
-
                 out.block(
                         1,
                         10,
                         2,
                         hbmState("tape_recorder")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.EAST));
-
                 out.block(
                         1,
                         10,
@@ -238,7 +236,6 @@ public class NTMLab2Piece extends NtmComponentPiece {
 
                 out.box(8, 8, 1, 8, 10, 1, steelWall(Direction.WEST), steelWall(Direction.WEST));
                 out.box(9, 10, 1, 10, 10, 1, steelGrate(0), steelGrate(0));
-
                 BlockState tapeRecorderSouth =
                         hbmState("tape_recorder")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.SOUTH);
@@ -247,20 +244,17 @@ public class NTMLab2Piece extends NtmComponentPiece {
                 out.box(11, 8, 1, 11, 10, 1, steelWall(Direction.EAST), steelWall(Direction.EAST));
 
                 out.box(2, 1, 2, 2, 1, 6, steelGrate(7), steelGrate(7));
-
                 out.block(2, 2, 2, hbmState("vitrified_barrel"));
                 out.box(3, 1, 2, 3, 3, 2, steelWall(Direction.EAST), steelWall(Direction.EAST));
                 out.box(3, 1, 4, 3, 3, 4, steelWall(Direction.EAST), steelWall(Direction.EAST));
                 out.box(3, 1, 6, 3, 3, 6, steelWall(Direction.EAST), steelWall(Direction.EAST));
                 out.block(4, 1, 6, hbmState("crate"));
                 out.block(4, 2, 6, hbmState("crate_lead"));
-
                 out.container(5, 1, 6, hbmState("crate_iron"), ComponentLoot.NUKE_FUEL_10);
                 out.box(4, 1, 5, 5, 1, 5, hbmState("crate_lead"), hbmState("crate_lead"));
 
                 out.box(7, 1, 6, 7, 3, 6, decoSteel, decoSteel);
                 out.box(8, 1, 6, 10, 1, 6, steelGrate(7), steelGrate(7));
-
                 BlockState tapeRecorderNorth =
                         hbmState("tape_recorder")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH);
@@ -272,7 +266,6 @@ public class NTMLab2Piece extends NtmComponentPiece {
                         hbmState("steel_beam")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH));
                 out.box(8, 3, 6, 10, 3, 6, hbmState("steel_roof"), hbmState("steel_roof"));
-
                 out.container(10, 1, 3, hbmState("crate_iron"), ComponentLoot.NUKE_TRASH_9);
             };
 }

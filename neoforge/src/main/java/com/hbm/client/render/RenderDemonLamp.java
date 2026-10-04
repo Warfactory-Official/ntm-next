@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityDemonLamp;
 import com.hbm.blocks.machine.DemonLamp;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.BlockEntityDemonLamp;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

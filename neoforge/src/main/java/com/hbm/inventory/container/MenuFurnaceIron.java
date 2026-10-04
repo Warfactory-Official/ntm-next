@@ -3,10 +3,10 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityFurnaceIron;
 import com.hbm.inventory.slot.SlotSmelting;
 import com.hbm.inventory.slot.SlotUpgrade;
 import com.hbm.items.machine.upgrade.ItemMachineUpgrade;
-import com.hbm.tileentity.machine.BlockEntityFurnaceIron;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

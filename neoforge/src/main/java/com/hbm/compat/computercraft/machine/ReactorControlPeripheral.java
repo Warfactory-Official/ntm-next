@@ -3,9 +3,9 @@
 
 package com.hbm.compat.computercraft.machine;
 
+import com.hbm.blockentity.machine.BlockEntityReactorControl.RodFunction;
+import com.hbm.blockentity.machine.BlockEntityReactorControl;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.BlockEntityReactorControl.RodFunction;
-import com.hbm.tileentity.machine.BlockEntityReactorControl;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.List;
 import net.minecraft.util.Mth;

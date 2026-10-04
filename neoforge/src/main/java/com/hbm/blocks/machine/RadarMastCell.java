@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineRadar;
 import com.hbm.blocks.multiblock.BlockMultiblockCell;
-import com.hbm.tileentity.machine.BlockEntityMachineRadar;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;

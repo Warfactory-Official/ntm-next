@@ -45,7 +45,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public abstract class NtmComponentPiece extends StructurePiece {
-
     private static final int FOUNDATION_DEPTH = 16;
 
     protected NtmComponentPiece(StructurePieceType type, int genDepth, BoundingBox boundingBox) {
@@ -201,7 +200,6 @@ public abstract class NtmComponentPiece extends StructurePiece {
         super.placeBlock(level, state, x, y, z, chunkBB);
         if (!derivesConnections(state)) return;
         BlockPos pos = this.getWorldPos(x, y, z);
-
         if (chunkBB.isInside(pos) && level.getBlockState(pos).is(state.getBlock())) {
             level.getChunk(pos).markPosForPostProcessing(pos);
         }

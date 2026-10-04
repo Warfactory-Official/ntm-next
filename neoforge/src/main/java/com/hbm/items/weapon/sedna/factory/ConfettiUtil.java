@@ -76,7 +76,6 @@ public final class ConfettiUtil {
     }
 
     public static void gib(LivingEntity entity) {
-
         if (entity instanceof Ocelot || entity instanceof Cat) return;
 
         int type = gibType(entity);

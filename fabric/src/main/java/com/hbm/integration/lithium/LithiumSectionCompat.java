@@ -28,7 +28,6 @@ public final class LithiumSectionCompat {
         if (!(level instanceof LithiumData data)) return;
         var callback = data.lithium$getData().chunkSectionChangeCallbacks().get(sectionPos);
         if (callback != null) {
-
             ((LithiumSectionData) replacement).lithium$getSectionData().setChangeListener(callback);
             callback.onChunkSectionInvalidated(SectionPos.of(sectionPos));
         }

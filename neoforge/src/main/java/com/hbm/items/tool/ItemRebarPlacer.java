@@ -4,12 +4,12 @@
 package com.hbm.items.tool;
 
 import com.google.common.base.Suppliers;
+import com.hbm.blockentity.BlockEntityRebar;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.ItemStackContainer;
 import com.hbm.inventory.container.MenuRebarPlacer;
 import com.hbm.items.ModDataComponents;
 import com.hbm.registration.RegistryHandle;
-import com.hbm.tileentity.BlockEntityRebar;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -179,7 +179,6 @@ public class ItemRebarPlacer extends Item {
                         x++) {
                     if (left <= 0) break outer;
                     BlockPos pos = new BlockPos(x, y, z);
-
                     if (level.getBlockState(pos).canBeReplaced()
                             && player.mayUseItemAt(pos, context.getClickedFace(), stack)
                             && level.setBlock(

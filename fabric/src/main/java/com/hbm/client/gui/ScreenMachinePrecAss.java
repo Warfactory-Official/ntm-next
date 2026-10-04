@@ -3,15 +3,13 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachinePrecAss;
 import com.hbm.inventory.container.MenuMachinePrecAss;
 import com.hbm.inventory.recipes.PrecAssRecipes;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachinePrecAss;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -42,7 +40,7 @@ public class ScreenMachinePrecAss extends ScreenInfoContainer<MenuMachinePrecAss
 
     public ScreenMachinePrecAss(MenuMachinePrecAss menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 176, 256);
-        this.inventoryLabelY = this.imageHeight - 96 + 2;
+        inventoryLabelY = imageHeight - 96 + 2;
     }
 
     private static int inputSlotX(int i) {
@@ -51,12 +49,6 @@ public class ScreenMachinePrecAss extends ScreenInfoContainer<MenuMachinePrecAss
 
     private static int inputSlotY(int i) {
         return IN_Y0 + (i / IN_COLS) * IN_STRIDE;
-    }
-
-    private static List<Component> toComponents(List<String> strings) {
-        List<Component> out = new ArrayList<>(strings.size());
-        for (String s : strings) out.add(Component.literal(s));
-        return out;
     }
 
     @Override
@@ -222,16 +214,10 @@ public class ScreenMachinePrecAss extends ScreenInfoContainer<MenuMachinePrecAss
         GenericRecipe recipe = assembler().selectedRecipe();
         if (recipe != null) {
             GUIElements.drawHoveringTextRecipe(
-                    graphics,
-                    this.font,
-                    toComponents(recipe.print()),
-                    mouseX,
-                    mouseY,
-                    this.width,
-                    this.height);
+                    graphics, font, recipe.print(), mouseX, mouseY, width, height);
         } else {
             graphics.setTooltipForNextFrame(
-                    this.font,
+                    font,
                     Component.translatable("gui.recipe.setRecipe").withStyle(ChatFormatting.YELLOW),
                     mouseX,
                     mouseY);

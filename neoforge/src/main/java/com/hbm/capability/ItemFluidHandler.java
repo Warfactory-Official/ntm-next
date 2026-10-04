@@ -3,7 +3,6 @@
 
 package com.hbm.capability;
 
-import com.hbm.items.machine.IFluidContainerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -69,7 +68,6 @@ public final class ItemFluidHandler extends ItemAccessResourceHandler<FluidResou
     @Override
     protected int getCapacity(int index, FluidResource resource) {
         ItemStack stack = itemAccess.getResource().toStack();
-
         Fluid fluid =
                 resource.isEmpty() ? ForeignFluidItemAccess.heldFluid(stack) : resource.getFluid();
         return (int) ForeignFluidItemAccess.capacityMb(stack, fluid);

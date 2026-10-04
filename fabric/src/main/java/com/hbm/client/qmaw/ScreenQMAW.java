@@ -379,7 +379,6 @@ public final class ScreenQMAW extends Screen {
 
     private static final class SingerSound extends SimpleSoundInstance {
         private SingerSound() {
-
             super(
                     ModSounds.QMAW_SINGER.get().location(),
                     SoundSource.PLAYERS,

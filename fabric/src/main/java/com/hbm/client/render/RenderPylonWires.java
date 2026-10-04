@@ -3,13 +3,12 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.network.BlockEntityPylonBase;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.config.RenderConfig;
 import com.hbm.interfaces.injected.IBufferBuilderExtension;
 import com.hbm.main.ResourceManager;
-import com.hbm.platform.Services;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.network.BlockEntityPylonBase;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -37,9 +36,7 @@ public class RenderPylonWires
 
     private static final double GIRTH = 0.03125D;
     private static final int SEGMENTS = 10;
-
     private static final double MAX_SAG = 2.5D;
-
     private static final double MAX_ARM = 3.375D - 0.5D;
 
     @Override
@@ -71,7 +68,6 @@ public class RenderPylonWires
 
             Vec3[] theirs = other.mounts();
             int lines = Math.min(mine.length, theirs.length);
-
             int shift = lines == 4 && crossed(be, other) ? 2 : 0;
             for (int line = 0; line < lines; line++) {
                 Vec3 from = mine[line % mine.length];
@@ -146,7 +142,6 @@ public class RenderPylonWires
                                 : ResourceManager.wire_greyscale_tex);
         int color = s.color == 0 ? 0xFFFFFFFF : 0xFF000000 | s.color;
         int ownLight = s.lightCoords;
-
         List<Segment> segments = s.segments;
         int verts = segments.size() * Segment.VERTICES;
         col.submitCustomGeometry(
@@ -176,7 +171,6 @@ public class RenderPylonWires
 
     public record Segment(
             Vec3 from, Vec3 to, double iX, double iY, double iZ, double jX, double jZ, int light) {
-
         private static final int VERTICES = 8;
 
         private void emit(

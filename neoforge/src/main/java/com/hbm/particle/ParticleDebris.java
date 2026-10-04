@@ -47,9 +47,7 @@ public class ParticleDebris extends Particle {
         this.xd = mX * mult;
         this.yd = mY * mult;
         this.zd = mZ * mult;
-
         this.lifetime = 100;
-
         this.gravity = 0.15F;
         this.hasPhysics = false;
 
@@ -83,7 +81,6 @@ public class ParticleDebris extends Particle {
         this.move(this.xd, this.yd, this.zd);
 
         this.age++;
-
         if (this.onGround
                 || this.age >= this.lifetime
                 || this.hasPhysics

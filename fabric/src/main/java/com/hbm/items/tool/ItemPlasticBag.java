@@ -22,7 +22,6 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
 public class ItemPlasticBag extends Item {
-
     public static final MenuItemBox.Layout LAYOUT =
             new MenuItemBox.Layout(
                     1,

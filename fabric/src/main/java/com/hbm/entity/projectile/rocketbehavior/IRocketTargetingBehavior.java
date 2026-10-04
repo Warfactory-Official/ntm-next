@@ -7,6 +7,5 @@ import com.hbm.entity.projectile.EntityArtilleryRocket;
 import net.minecraft.world.entity.Entity;
 
 public interface IRocketTargetingBehavior {
-
     void recalculateTargetPosition(EntityArtilleryRocket rocket, Entity target);
 }

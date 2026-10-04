@@ -44,7 +44,6 @@ public class BlockMud extends BlockFluidClassicBase {
             Entity entity,
             InsideBlockEffectApplier effectApplier,
             boolean isPrecise) {
-
         entity.makeStuckInBlock(state, new Vec3(0.25D, 0.05D, 0.25D));
         if (level.isClientSide()) return;
         if (entity instanceof Player p && (p.isSpectator() || p.getAbilities().instabuild)) return;
@@ -85,7 +84,6 @@ public class BlockMud extends BlockFluidClassicBase {
     private void erode(ServerLevel level, BlockPos pos, RandomSource rand) {
         BlockState state = level.getBlockState(pos);
         if (state.is(this)) return;
-
         if (state.isAir()) return;
 
         if (state.is(Blocks.STONE)

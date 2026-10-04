@@ -5,6 +5,8 @@ package com.hbm.blocks.network.pneumatic;
 
 import com.hbm.api.ntl.IPneumaticConnector;
 import com.hbm.api.ntl.PneumaticNetwork;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTube;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTubePaintable;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.network.FluidDuctPaintableBlock;
@@ -12,8 +14,6 @@ import com.hbm.blocks.network.PaintableCamoBlock;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.IToolable;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoTube;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoTubePaintable;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

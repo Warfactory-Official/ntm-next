@@ -10,7 +10,7 @@ import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -200,10 +200,10 @@ public class XFactoryBlackPowder {
                 return null;
             };
 
-    public static void init(IRegistrar r) {
+    public static void init() {
 
         ModItems.GUN_PEPPERBOX =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_pepperbox",
                         props ->
                                 new ItemGunBaseNT(

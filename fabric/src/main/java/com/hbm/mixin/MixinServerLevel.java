@@ -3,15 +3,21 @@
 
 package com.hbm.mixin;
 
+import com.hbm.blockentity.GraphResident;
 import com.hbm.capability.ResolvedCapCache;
+import com.hbm.handler.UnstableFuses;
 import com.hbm.interfaces.injected.IServerLevelExtension;
-import com.hbm.tileentity.GraphResident;
 import com.hbm.uninos.graph.EndpointRegistry;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.world.NtmWorldgenFields;
+import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,44 +32,62 @@ public abstract class MixinServerLevel implements IServerLevelExtension {
     @Unique private @Nullable EndpointRegistry hbm$endpoints;
     @Unique private @Nullable List<LevelNodeGraph<?>> hbm$graphs;
     @Unique private NtmWorldgenFields hbm$worldgenFields;
+    @Unique private @Nullable ResolvedCapCache hbm$resolvedCaps;
+
+    @Unique private final Set<Entity> hbm$radarTargets = new ObjectLinkedOpenHashSet<>();
+    @Unique private final Set<LivingEntity> hbm$livingTargets = new ObjectLinkedOpenHashSet<>();
+    @Unique private final Set<Entity> hbm$storageEntities = new ObjectOpenHashSet<>();
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void hbm$initializeWorldgenFields(CallbackInfo ci) {
         ServerLevel level = (ServerLevel) (Object) this;
-        this.hbm$worldgenFields =
-                new NtmWorldgenFields(level.getSeed(), level.dimension().identifier());
+        hbm$worldgenFields = new NtmWorldgenFields(level.getSeed(), level.dimension().identifier());
     }
 
     @Override
     public EndpointRegistry hbm$endpoints() {
-        EndpointRegistry registry = this.hbm$endpoints;
-        if (registry == null) this.hbm$endpoints = registry = new EndpointRegistry();
+        EndpointRegistry registry = hbm$endpoints;
+        if (registry == null) hbm$endpoints = registry = new EndpointRegistry();
         return registry;
     }
 
-    @Unique private @Nullable ResolvedCapCache hbm$resolvedCaps;
-
     @Override
     public ResolvedCapCache hbm$resolvedCaps() {
-        ResolvedCapCache cache = this.hbm$resolvedCaps;
-        if (cache == null) this.hbm$resolvedCaps = cache = new ResolvedCapCache();
+        ResolvedCapCache cache = hbm$resolvedCaps;
+        if (cache == null) hbm$resolvedCaps = cache = new ResolvedCapCache();
         return cache;
     }
 
     @Override
     public List<LevelNodeGraph<?>> hbm$graphs() {
-        List<LevelNodeGraph<?>> graphs = this.hbm$graphs;
-        if (graphs == null) this.hbm$graphs = graphs = new ArrayList<>();
+        List<LevelNodeGraph<?>> graphs = hbm$graphs;
+        if (graphs == null) hbm$graphs = graphs = new ArrayList<>();
         return graphs;
     }
 
     @Override
     public NtmWorldgenFields hbm$worldgenFields() {
-        return this.hbm$worldgenFields;
+        return hbm$worldgenFields;
+    }
+
+    @Override
+    public Set<Entity> hbm$radarTargets() {
+        return hbm$radarTargets;
+    }
+
+    @Override
+    public Set<LivingEntity> hbm$livingTargets() {
+        return hbm$livingTargets;
+    }
+
+    @Override
+    public Set<Entity> hbm$storageEntities() {
+        return hbm$storageEntities;
     }
 
     @Inject(method = "onBlockEntityAdded", at = @At("TAIL"))
     private void hbm$graphResidentLoad(BlockEntity blockEntity, CallbackInfo ci) {
+        UnstableFuses.onBlockLoad((ServerLevel) (Object) this, blockEntity);
         if (blockEntity instanceof GraphResident)
             GraphResident.onLoad((ServerLevel) (Object) this, blockEntity);
     }

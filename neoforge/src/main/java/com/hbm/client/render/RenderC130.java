@@ -21,7 +21,6 @@ import net.minecraft.util.Mth;
 public class RenderC130 extends EntityRenderer<EntityC130, RenderC130.State>
         implements ConcurrentRenderStateExtraction {
     private static final int PLANE = ResourceManager.c130.partId("Plane");
-
     private static final int[] PROP = {
         ResourceManager.c130.partId("Prop1"), ResourceManager.c130.partId("Prop2"),
         ResourceManager.c130.partId("Prop3"), ResourceManager.c130.partId("Prop4")

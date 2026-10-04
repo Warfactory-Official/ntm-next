@@ -26,7 +26,6 @@ public final class RegistryUtil {
     }
 
     public static <T> Identifier keyOrThrow(Registry<T> registry, T value) {
-
         Identifier id = registry.getKeyOrNull(value);
         if (id == null) throw new NoSuchElementException();
         return id;

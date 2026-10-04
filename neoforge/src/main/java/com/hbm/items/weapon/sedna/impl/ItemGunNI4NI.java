@@ -3,7 +3,6 @@
 
 package com.hbm.items.weapon.sedna.impl;
 
-import com.hbm.config.GunVisualConfig;
 import com.hbm.items.ICustomizable;
 import com.hbm.items.weapon.sedna.GunConfig;
 import com.hbm.items.weapon.sedna.GunTimers;

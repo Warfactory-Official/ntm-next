@@ -1,8 +1,13 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
     "hbm:rod_zirnox_depleted_thorium_fuel"
   ],
+  "input_state": {
+    "0": {
+      "preserve": "remainder"
+    }
+  },
   "result": {
     "components": {
       "hbm:decay_heat": true

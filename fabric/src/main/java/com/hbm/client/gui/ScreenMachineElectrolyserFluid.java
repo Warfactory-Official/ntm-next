@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineElectrolyser;
 import com.hbm.inventory.container.MenuMachineElectrolyserFluid;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineElectrolyser;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -108,7 +108,7 @@ public class ScreenMachineElectrolyserFluid
         if (event.button() == 0 && checkClick((int) event.x(), (int) event.y(), 8, 82, 54, 12)) {
             CompoundTag data = new CompoundTag();
             data.putBoolean("sgm", true);
-            Services.NETWORK.sendToServer(new NbtControlPayload(be().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(be().getBlockPos(), data));
             playClick();
             return true;
         }

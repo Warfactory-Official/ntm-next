@@ -3,9 +3,9 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityMachineElectrolyser.PourStream;
+import com.hbm.blockentity.machine.BlockEntityMachineElectrolyser;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.tileentity.machine.BlockEntityMachineElectrolyser.PourStream;
-import com.hbm.tileentity.machine.BlockEntityMachineElectrolyser;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import java.util.ArrayList;

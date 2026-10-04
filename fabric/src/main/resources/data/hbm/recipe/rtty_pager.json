@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "C": "hbm:circuit_basic",
     "R": "hbm:radio_torch_receiver",

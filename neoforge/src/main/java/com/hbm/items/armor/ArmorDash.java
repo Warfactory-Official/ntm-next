@@ -15,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 public final class ArmorDash {
-
     public static final int PER_DASH = 30;
 
     private ArmorDash() {}
@@ -32,7 +31,6 @@ public final class ArmorDash {
 
         if (props.dashCooldown > 0) {
             props.dashCooldown--;
-
             props.setKeyPressed(EnumKeybind.DASH, false);
         } else if (props.getKeyPressed(EnumKeybind.DASH) && stamina >= PER_DASH) {
             dash(player, forward, strafe);
@@ -43,7 +41,6 @@ public final class ArmorDash {
         if (stamina < dashes * PER_DASH) {
             stamina++;
             if (stamina % PER_DASH == PER_DASH - 1) {
-
                 if (!player.level().isClientSide()) {
                     player.level()
                             .playSound(
@@ -64,15 +61,12 @@ public final class ArmorDash {
     }
 
     private static void dash(Player player, float forward, float strafe) {
-
         if (player.level().isClientSide()) {
             int f = (int) Math.signum(forward);
             int s = (int) Math.signum(strafe);
-
             if (f == 0 && s == 0) f = 1;
 
             Vec3 look = player.getLookAngle();
-
             Vec3 right = new Vec3(-look.z, 0D, look.x);
             Vec3 motion = player.getDeltaMovement();
             player.setDeltaMovement(
@@ -104,8 +98,9 @@ public final class ArmorDash {
         for (EquipmentSlot slot : ArmorUtil.ARMOR_SLOTS) {
             ItemStack armor = player.getItemBySlot(slot);
             if (!ArmorModHandler.isArmor(armor)) continue;
-            for (ItemStack mod : ArmorModHandler.pryMods(armor)) {
-                if (mod.getItem() instanceof ItemModCloud cloud) count += cloud.dashes();
+            var mods = ArmorModHandler.mods(armor);
+            for (int socket = 0; socket < ArmorModHandler.MOD_SLOTS; socket++) {
+                if (mods.item(socket) instanceof ItemModCloud cloud) count += cloud.dashes();
             }
         }
         return count;

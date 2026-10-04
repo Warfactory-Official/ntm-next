@@ -3,9 +3,9 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityFoundryChannel;
 import com.hbm.blocks.machine.FoundryChannel;
 import com.hbm.client.render.FoundryFaces;
-import com.hbm.tileentity.machine.BlockEntityFoundryChannel;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.AffineUvTransformedInstance;

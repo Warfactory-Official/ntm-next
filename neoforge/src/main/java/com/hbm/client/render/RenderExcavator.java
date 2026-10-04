@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineExcavator;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.BlockEntityMachineExcavator;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -39,10 +39,8 @@ public class RenderExcavator
     private static final double CRUSHER1_PIVOT_Z = 2.8125D;
     private static final double CRUSHER2_PIVOT_Z = 2.1875D;
     private static final double CRUSHER_PIVOT_Y = 2.0D;
-
     private static final double SHAFT_STEP = 2.0D;
     private static final double SHAFT_END = -1.5D;
-
     private static final double SCROLL_PERIOD = 250D;
 
     private final RenderType bodyType;

@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityLogicBlock;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.RefreshesNeighborState;
-import com.hbm.tileentity.BlockEntityLogicBlock;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;

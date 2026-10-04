@@ -3,9 +3,9 @@
 
 package com.hbm.items.tool;
 
+import com.hbm.blockentity.machine.BlockEntityLockableBase;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntityLockableBase;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -26,7 +26,6 @@ public class ItemLock extends ItemKeyPin {
 
     private static BlockEntity lockableAt(Level level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
-
         if (MultiblockSurface.isFoldedCell(state)) {
             BlockPos core = MultiblockSurface.coreOfAny(level, pos);
             return core == null ? null : level.getBlockEntity(core);

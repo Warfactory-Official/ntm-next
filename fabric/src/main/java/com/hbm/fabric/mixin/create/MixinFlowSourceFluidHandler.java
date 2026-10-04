@@ -31,7 +31,6 @@ public abstract class MixinFlowSourceFluidHandler {
     private void hbm$attachWhereNoBlockEntitySits(
             Level world, BlockEntity networkBE, CallbackInfo ci) {
         if (fluidHandlerCache != null || !(world instanceof ServerLevel server)) return;
-
         BlockFace location = __asm__(BlockFace) {
             aload this;
             checkcast "com/zurrtum/create/content/fluids/FlowSource";

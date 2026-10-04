@@ -3,9 +3,9 @@
 
 package com.hbm.items.machine;
 
+import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.BlockEntityMachineBase;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;

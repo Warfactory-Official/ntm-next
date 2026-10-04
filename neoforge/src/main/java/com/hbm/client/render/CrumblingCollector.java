@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.feature.submit.SubmitNode;
 import net.minecraft.client.renderer.gizmos.DrawableGizmoPrimitives;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
@@ -35,7 +34,6 @@ import org.joml.Quaternionf;
 import org.jspecify.annotations.Nullable;
 
 public final class CrumblingCollector implements SubmitNodeCollector {
-
     private static final List<RenderType> STAGES =
             ModelBakery.BREAKING_LOCATIONS.stream()
                     .map(

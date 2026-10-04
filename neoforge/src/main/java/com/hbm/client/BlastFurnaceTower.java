@@ -3,8 +3,8 @@
 
 package com.hbm.client;
 
+import com.hbm.blockentity.machine.BlockEntityMachineBlastFurnace;
 import com.hbm.particle.CoolingTowerParticleOptions;
-import com.hbm.tileentity.machine.BlockEntityMachineBlastFurnace;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -29,7 +29,6 @@ public final class BlastFurnaceTower {
                         .setLife(100 + be.getLevel().getRandom().nextInt(20))
                         .setColor(0x202020)
                         .build();
-
         be.getLevel().addParticle(opts, true, false, x, y, z, 0, 0, 0);
     }
 }

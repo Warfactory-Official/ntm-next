@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKIndicator.IndicatorUnit;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKIndicator;
 import com.hbm.blocks.machine.rbmk.RBMKMiniPanelBase;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKIndicator.IndicatorUnit;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKIndicator;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;

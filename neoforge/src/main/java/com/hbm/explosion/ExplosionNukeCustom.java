@@ -22,7 +22,6 @@ public final class ExplosionNukeCustom {
     public static final int MAX_HYDRO = 350;
     public static final int MAX_AMAT = 350;
     public static final int MAX_SCHRAB = 250;
-
     public static final int MAX_DIRTY = 100;
 
     private ExplosionNukeCustom() {}
@@ -50,7 +49,6 @@ public final class ExplosionNukeCustom {
             ex.destructionRange = 150;
             ex.speed = BombConfig.blastSpeed;
             ex.coefficient = 1.0F;
-
             level.addFreshEntity(ex);
 
             level.playSound(
@@ -64,7 +62,6 @@ public final class ExplosionNukeCustom {
                     1.0F);
 
             level.addFreshEntity(EntityCloudFleijaRainbow.statFac(level, 50, x, y, z));
-
         } else if (schrab > 0) {
 
             schrab += amat / 2 + hydro / 4 + nuke / 8 + tnt / 16;
@@ -78,7 +75,6 @@ public final class ExplosionNukeCustom {
                 level.addFreshEntity(
                         EntityCloudFleija.statFac(level, (int) schrab, x + 0.5, y + 0.5, z + 0.5));
             }
-
         } else if (amat > 0) {
 
             amat += hydro / 2 + nuke / 4 + tnt / 8;
@@ -89,7 +85,6 @@ public final class ExplosionNukeCustom {
             bf.destructionRange = (int) amat;
             level.addFreshEntity(bf);
             EntityNukeTorex.statFacBale(level, x + 0.5, y + 5, z + 0.5, amat);
-
         } else if (hydro > 0) {
 
             hydro += nuke / 2 + tnt / 4;
@@ -100,7 +95,6 @@ public final class ExplosionNukeCustom {
                     EntityNukeExplosionMK5.statFac(level, (int) hydro, x + 0.5, y + 0.5, z + 0.5)
                             .moreFallout((int) dirty));
             EntityNukeTorex.statFac(level, x + 0.5, y + 5, z + 0.5, hydro);
-
         } else if (nuke > 0) {
 
             nuke += tnt / 2;
@@ -110,7 +104,6 @@ public final class ExplosionNukeCustom {
                     EntityNukeExplosionMK5.statFac(level, (int) nuke, x + 0.5, y + 5, z + 0.5)
                             .moreFallout((int) dirty));
             EntityNukeTorex.statFac(level, x + 0.5, y + 5, z + 0.5, nuke);
-
         } else if (tnt >= 75) {
 
             tnt = Math.min(tnt, MAX_TNT);

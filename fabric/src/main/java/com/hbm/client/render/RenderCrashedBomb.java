@@ -3,11 +3,11 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.bomb.BlockEntityCrashedBomb;
 import com.hbm.blocks.bomb.BlockCrashedBomb.EnumDudType;
 import com.hbm.blocks.bomb.BlockCrashedBomb;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.bomb.TileEntityCrashedBomb;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -24,7 +24,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class RenderCrashedBomb
-        implements BlockEntityRenderer<TileEntityCrashedBomb, RenderCrashedBomb.State>,
+        implements BlockEntityRenderer<BlockEntityCrashedBomb, RenderCrashedBomb.State>,
                 ConcurrentRenderStateExtraction {
 
     private static int identity(BlockPos pos) {
@@ -70,7 +70,7 @@ public class RenderCrashedBomb
 
     @Override
     public void extractRenderState(
-            TileEntityCrashedBomb be,
+            BlockEntityCrashedBomb be,
             State state,
             float partialTicks,
             Vec3 cameraPosition,
@@ -99,7 +99,6 @@ public class RenderCrashedBomb
         int light = state.lightCoords;
 
         poseStack.pushPose();
-
         poseStack.translate(0.5D, 0.0D, 0.5D);
         poseStack.mulPose(Axis.YP.rotationDegrees(state.yaw));
         poseStack.mulPose(Axis.XP.rotationDegrees(state.pitch));

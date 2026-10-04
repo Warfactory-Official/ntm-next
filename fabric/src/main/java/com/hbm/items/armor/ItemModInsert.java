@@ -17,6 +17,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -103,7 +104,6 @@ public class ItemModInsert extends ItemArmorMod {
                     body,
                     Component.translatable(
                             "desc.item.armorMod.insert.short.explosion", percent(explosionMod)));
-
         if (speed != 1F)
             append(
                     body,
@@ -159,14 +159,24 @@ public class ItemModInsert extends ItemArmorMod {
     }
 
     @Override
+    public boolean ticksServer() {
+        return this == ModItems.INSERT_POLONIUM.get();
+    }
+
+    @Override
     public void modUpdate(LivingEntity entity, ItemStack armor) {
         if (!entity.level().isClientSide() && this == ModItems.INSERT_POLONIUM.get())
             HbmLivingProps.incrementRadiation(entity, 100D);
     }
 
     @Override
+    public boolean hasAttributes() {
+        return true;
+    }
+
+    @Override
     public void collectModifiers(
-            ItemStack armor,
+            EquipmentSlot slot,
             Identifier id,
             BiConsumer<Holder<Attribute>, AttributeModifier> adder) {
         if (speed == 1F) return;

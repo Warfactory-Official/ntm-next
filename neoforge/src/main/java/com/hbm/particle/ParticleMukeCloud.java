@@ -3,13 +3,18 @@
 
 package com.hbm.particle;
 
+import com.hbm.client.particle.MukeCloudVisual;
+import com.hbm.client.particle.VisualParticle;
 import com.hbm.lib.Library;
+import dev.engine_room.flywheel.api.visual.EffectVisual;
+import dev.engine_room.flywheel.api.visualization.VisualizationContext;
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.resources.Identifier;
+import org.jspecify.annotations.Nullable;
 
-public class ParticleMukeCloud extends Particle {
+public class ParticleMukeCloud extends LegacyMoveParticle implements VisualParticle {
 
     public static final ParticleRenderType MUKE_CLOUD_GROUP =
             new ParticleRenderType("hbm:muke_cloud", "HMC");
@@ -17,6 +22,7 @@ public class ParticleMukeCloud extends Particle {
     private static final Identifier TEXTURE = Library.id("textures/particle/explosion.png");
 
     private final float friction;
+    private @Nullable VisualizationManager visualManager;
 
     public ParticleMukeCloud(
             ClientLevel level, double x, double y, double z, double mx, double my, double mz) {
@@ -88,6 +94,26 @@ public class ParticleMukeCloud extends Particle {
 
     public double interpZ(float pt) {
         return this.zo + (this.z - this.zo) * pt;
+    }
+
+    @Override
+    public ClientLevel level() {
+        return level;
+    }
+
+    @Override
+    public @Nullable VisualizationManager visualManager() {
+        return visualManager;
+    }
+
+    @Override
+    public void visualManager(@Nullable VisualizationManager manager) {
+        visualManager = manager;
+    }
+
+    @Override
+    public EffectVisual<?> visualize(VisualizationContext context, float partialTick) {
+        return new MukeCloudVisual(context, this, partialTick);
     }
 
     @Override

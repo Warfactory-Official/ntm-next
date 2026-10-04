@@ -19,7 +19,6 @@ public interface IRadarDetectableNT {
     int TIER_AB = 10;
     int PLAYER = 11;
     int ARTY = 12;
-
     int SPECIAL = 13;
 
     String getRadarName();

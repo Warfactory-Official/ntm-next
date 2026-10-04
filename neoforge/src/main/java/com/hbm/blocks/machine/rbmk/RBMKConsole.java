@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKConsole;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
@@ -10,7 +11,6 @@ import com.hbm.handler.BossSpawnHandler;
 import com.hbm.interfaces.IToolable;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemGuideBook;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKConsole;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -25,7 +25,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class RBMKConsole extends BlockMultiblockCore implements ITickingBlock, IToolable {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         3, 0, 0, 0, 2, 2, 0, 0, 0,
         0, 0, 0, 1, 2, 2, 0, 0, 0,
@@ -55,7 +54,6 @@ public class RBMKConsole extends BlockMultiblockCore implements ITickingBlock, I
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-
         return RenderShape.MODEL;
     }
 
@@ -76,7 +74,6 @@ public class RBMKConsole extends BlockMultiblockCore implements ITickingBlock, I
     protected InteractionResult useAtCore(
             BlockState coreState, Level level, BlockPos core, Player player, BlockHitResult hit) {
         if (level.isClientSide()) return InteractionResult.SUCCESS;
-
         if (player.isShiftKeyDown()) return InteractionResult.SUCCESS;
         BossSpawnHandler.markFBI(player);
         if (hit.getDirection() == Direction.UP) {

@@ -36,9 +36,7 @@ public final class CrucibleSmeltingPage extends RecipePage<CrucibleSmeltingPage.
             for (MaterialStack material : entry.getValue())
                 molten.add(ItemScraps.create(material, true));
             if (molten.isEmpty()) continue;
-
             List<ItemStack> input = entry.getKey().items().map(ItemStack::new).toList();
-
             if (input.isEmpty()) continue;
             out.add(new Recipe(rowId(entry.getKey()), input, molten));
         }

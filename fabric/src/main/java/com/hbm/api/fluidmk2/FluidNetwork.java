@@ -9,8 +9,9 @@ import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.capability.MachineCaps;
 import com.hbm.capability.NtmCapabilities;
 import com.hbm.platform.BlockLookupCache;
+import com.hbm.platform.FabricCaps;
+import com.hbm.platform.FabricServerEvents;
 import com.hbm.platform.IFluidHandlerView;
-import com.hbm.platform.Services;
 import com.hbm.uninos.graph.*;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import java.util.ArrayList;
@@ -30,9 +31,8 @@ import net.minecraft.world.level.material.Fluids;
 import org.jspecify.annotations.Nullable;
 
 public final class FluidNetwork {
-
     private static final LevelNodeGraph.FaceProbe<PipeData> FACE_PROBE =
-            (level, g, cellPos, ef, d) -> faceHasEndpoint(level, g, cellPos, ef, d);
+            FluidNetwork::faceHasEndpoint;
 
     private static final Direction[] DIRS = Direction.VALUES;
     private static final int PRIO = ConnectionPriority.VALUES.length;
@@ -46,7 +46,7 @@ public final class FluidNetwork {
     public static void init() {
         FluidCaps.register();
         FlushIndex.init();
-        Services.SERVER.onServerTickPost(FluidNetwork::onServerTick);
+        FabricServerEvents.onServerTickPost(FluidNetwork::onServerTick);
     }
 
     private static void onServerTick(MinecraftServer server) {
@@ -157,7 +157,6 @@ public final class FluidNetwork {
                     if (prov != null) {
                         if (seenProviders == null) seenProviders = scratch.seenProviders;
                         if (seenProviders.add(prov)) {
-
                             int buffered = prov.bufferedEndpoint() ? bufferTier(prov) : -1;
                             int[] range = prov.getProvidingPressureRange(fluid);
                             int lo = clamp(range[0]), hi = clamp(range[1]);
@@ -199,7 +198,6 @@ public final class FluidNetwork {
                         if (seenReceivers == null) seenReceivers = scratch.seenReceivers;
                         if (seenReceivers.add(rec) && rec.netSubscribed()) {
                             int pr = rec.getFluidPriority().ordinal();
-
                             boolean buffered = rec.bufferedEndpoint();
                             int[] range = rec.getReceivingPressureRange(fluid);
                             int lo = clamp(range[0]), hi = clamp(range[1]);
@@ -353,7 +351,6 @@ public final class FluidNetwork {
                                     available[p],
                                     provCursor,
                                     p);
-
                     long remainingOwed = owed - charged;
                     for (int t = 0; t < PRIO && remainingOwed > 0; t++) {
                         long tierSupply = bufferSupply[p][t];
@@ -618,6 +615,7 @@ public final class FluidNetwork {
             ServerLevel level,
             LevelNodeGraph<PipeData> graph,
             long cellPos,
+            LevelChunk cellChunk,
             @Nullable EdgeFaces ef,
             int faceIndex) {
         boolean self = faceIndex == EdgeFaces.SELF;
@@ -625,7 +623,11 @@ public final class FluidNetwork {
         Direction side = self ? null : DIRS[faceIndex].getOpposite();
         FaceCache fc = ef == null ? null : (FaceCache) ef.attachments[faceIndex];
         if (fc != null) fc.disarm();
-        if (!self && !LevelNodeGraph.resident(level, posKey)) {
+        int faceX = BlockPos.getX(posKey);
+        int faceZ = BlockPos.getZ(posKey);
+        LevelChunk faceChunk =
+                self ? null : BlockMultiblockCore.readableChunk(level, faceX, faceZ, cellChunk);
+        if (!self && faceChunk == null) {
             graph.probeBlocker = LevelNodeGraph.chunkOf(posKey);
             return LevelNodeGraph.Probe.UNKNOWN;
         }
@@ -644,26 +646,22 @@ public final class FluidNetwork {
                                     posKey,
                                     side,
                                     MachineCaps.FLUID_IN | MachineCaps.FLUID_OUT);
-
             int declaredBits = owner == null ? 0 : level.hbm$endpoints().declared(posKey).domains();
             p = (declaredBits & MachineCaps.FLUID_OUT) != 0;
             r = (declaredBits & MachineCaps.FLUID_IN) != 0;
         }
-        if (p || r) {
-            Services.CAPS.unwatchForeignCaps(level, npos);
-        }
         if (!p && !r) {
             if (!self && level.hbm$endpoints().declared(posKey) != null) {
                 owner = null;
-                Services.CAPS.unwatchForeignCaps(level, npos);
                 if (ef != null) ef.attachments[faceIndex] = null;
                 return LevelNodeGraph.Probe.ABSENT;
             }
             owner = null;
-            LevelChunk nchunk =
-                    self
-                            ? null
-                            : BlockMultiblockCore.readableChunk(level, npos.getX(), npos.getZ());
+            LevelChunk nchunk = faceChunk;
+            if (!self && !nchunk.getFullStatus().isOrAfter(FullChunkStatus.FULL)) {
+                graph.probeBlocker = LevelNodeGraph.chunkOf(posKey);
+                return LevelNodeGraph.Probe.UNKNOWN;
+            }
             BlockState nstate = nchunk == null ? null : nchunk.getBlockState(npos);
             if (nstate != null && MultiblockSurface.isSurface(nstate)) {
                 p =
@@ -687,26 +685,15 @@ public final class FluidNetwork {
                 if (p || r) {
                     owner = MultiblockSurface.resolveOwner(level, npos, nstate, side);
                 }
-                Services.CAPS.unwatchForeignCaps(level, npos);
             } else {
-                p =
-                        Services.CAPS.find(FluidCaps.PROVIDER, level, npos, FluidFace.any(side))
-                                != null;
-                r =
-                        Services.CAPS.find(FluidCaps.RECEIVER, level, npos, FluidFace.any(side))
-                                != null;
-
+                p = FabricCaps.find(FluidCaps.PROVIDER, level, npos, FluidFace.any(side)) != null;
+                r = FabricCaps.find(FluidCaps.RECEIVER, level, npos, FluidFace.any(side)) != null;
                 assert self || !(p || r);
-                if (!self && nstate != null && nstate.hasBlockEntity()) {
-                    Services.CAPS.watchForeignCaps(level, npos);
-                } else {
-                    Services.CAPS.unwatchForeignCaps(level, npos);
-                }
             }
             boolean foreign =
                     !self
                             && (nstate == null || !NtmCapabilities.ownsFluidExposure(nstate))
-                            && Services.CAPS.findFluidHandler(level, npos, side) != null;
+                            && FabricCaps.findFluidHandler(level, npos, side) != null;
             if (!p && !r && !foreign) {
                 long blocker =
                         self
@@ -797,18 +784,15 @@ public final class FluidNetwork {
         @Nullable ForeignFluidEndpoint endpoint;
         @Nullable IFluidHandlerMK2 memoProvider;
         @Nullable IFluidHandlerMK2 memoReceiver;
-
         private @Nullable BlockEntity anchor;
         private @Nullable LevelChunk anchorChunk;
 
         private FaceCache(ServerLevel level, long posKey, @Nullable Direction side) {
             this.posKey = posKey;
-            this.npos = BlockPos.of(posKey);
+            npos = BlockPos.of(posKey);
             this.side = side;
-            this.provider =
-                    Services.CAPS.createCache(FluidCaps.PROVIDER, level, npos, FluidFace.any(side));
-            this.receiver =
-                    Services.CAPS.createCache(FluidCaps.RECEIVER, level, npos, FluidFace.any(side));
+            provider = FabricCaps.createCache(FluidCaps.PROVIDER, level, npos, FluidFace.any(side));
+            receiver = FabricCaps.createCache(FluidCaps.RECEIVER, level, npos, FluidFace.any(side));
         }
 
         static FaceCache face(ServerLevel level, long nodeKey, Direction dir) {
@@ -820,7 +804,7 @@ public final class FluidNetwork {
         }
 
         @Nullable IFluidHandlerView foreignView(ServerLevel level) {
-            if (foreign == null) foreign = Services.CAPS.createFluidHandlerCache(level, npos, side);
+            if (foreign == null) foreign = FabricCaps.createFluidHandlerCache(level, npos, side);
             return foreign.find();
         }
 
@@ -907,7 +891,6 @@ public final class FluidNetwork {
         final BufferPool<IFluidHandlerMK2>[] pools = new BufferPool[PRESSURES];
 
         final LanePort lanePort = new LanePort();
-
         boolean inUse;
 
         BufferPool<IFluidHandlerMK2> pool(int p) {

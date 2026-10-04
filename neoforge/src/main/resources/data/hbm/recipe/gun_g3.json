@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "B": "#hbm:barrels_light/weapon_steel",
     "G": "#hbm:grips/rubber",

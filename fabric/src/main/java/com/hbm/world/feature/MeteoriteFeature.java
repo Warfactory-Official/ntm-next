@@ -3,6 +3,7 @@
 
 package com.hbm.world.feature;
 
+import com.hbm.world.LocationIsValidSpawn;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -21,7 +22,6 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
         WorldGenLevel level = ctx.level();
         RandomSource rand = ctx.random();
-
         BlockPos source = ctx.origin();
         BlockPos.MutableBlockPos origin =
                 new BlockPos.MutableBlockPos(
@@ -29,7 +29,7 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
 
         BlockState below2 = level.getBlockState(origin.move(0, -2, 0));
         origin.move(0, 2, 0);
-        if (below2.isAir() || below2.liquid() || origin.getY() <= 1) return false;
+        if (!LocationIsValidSpawn.isDryGround(below2) || origin.getY() <= 1) return false;
 
         Meteorite.INSTANCE.generate(level, rand, origin, false, false, false);
         return true;

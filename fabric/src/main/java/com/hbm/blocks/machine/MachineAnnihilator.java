@@ -3,12 +3,12 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineAnnihilator;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.BlockEntityMachineAnnihilator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -22,7 +22,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineAnnihilator extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         2, 0, 4, 4, 1, 1, 0, 0, 0,
         8, -2, 1, 1, 1, 1, -3, 0, 0,
@@ -34,7 +33,6 @@ public class MachineAnnihilator extends BlockMultiblockCore
     }
 
     private static final int[] DIMENSIONS = {2, 0, 4, 4, 1, 1};
-
     private static final int[] FLUE = {8, -2, 1, 1, 1, 1};
 
     public MachineAnnihilator(Properties props) {

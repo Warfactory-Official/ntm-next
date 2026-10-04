@@ -3,12 +3,13 @@
 
 package com.hbm.entity.missile;
 
+import com.hbm.blockentity.machine.BlockEntityMachineSatDock;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.client.ClientEffects;
 import com.hbm.entity.projectile.EntityThrowableInterp;
+import com.hbm.handler.UnstableFuses;
 import com.hbm.interfaces.StoredItems;
 import com.hbm.packet.toclient.GasFlamePayload;
-import com.hbm.tileentity.machine.BlockEntityMachineSatDock;
 import com.hbm.util.InventoryUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,7 @@ public final class EntitySatellitePod extends EntityThrowableInterp implements S
     public EntitySatellitePod setup(int callerY, List<ItemStack> cargo) {
         callerYPos = callerY;
         slots = cargo.stream().map(ItemStack::copy).toArray(ItemStack[]::new);
+        UnstableFuses.changed(this);
         return this;
     }
 

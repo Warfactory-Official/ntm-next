@@ -80,7 +80,6 @@ public class AudioDynamic extends AbstractTickableSoundInstance {
 
     public void start() {
         SoundManager manager = Minecraft.getInstance().getSoundManager();
-
         if (!manager.isActive(this)) {
             manager.play(this);
         }
@@ -121,7 +120,7 @@ public class AudioDynamic extends AbstractTickableSoundInstance {
     }
 
     public boolean isPlaying() {
-        return Minecraft.getInstance().getSoundManager().isActive(this);
+        return !isStopped() && Minecraft.getInstance().getSoundManager().isActive(this);
     }
 
     public float rawVolume() {

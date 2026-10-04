@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntitySolarMirror;
 import com.hbm.blocks.ITickingBlock;
-import com.hbm.tileentity.machine.BlockEntitySolarMirror;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;

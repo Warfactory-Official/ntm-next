@@ -91,7 +91,6 @@ final class ReiPageDisplay implements Display {
                     inputs.add(ingredient);
                     required.add(ingredient);
                 }
-
                 case CATALYST -> inputs.add(ingredient);
                 case OUTPUT -> outputs.add(ingredient);
                 case DISPLAY -> {}
@@ -241,7 +240,6 @@ final class ReiPageDisplay implements Display {
         private PageSlot fluid(Fluid fluid, long amount, Tooltip amountLines) {
             EntryStack<FluidStack> stack = EntryStacks.of(fluid, amount);
             stack.setting(EntryStack.Settings.FLUID_AMOUNT_VISIBLE, false);
-
             stack.withRenderer(
                     entry ->
                             new ForwardingEntryRenderer<>(
@@ -267,7 +265,6 @@ final class ReiPageDisplay implements Display {
                     stack,
                     (shown, lines) -> {
                         amountLines.append(shown, lines);
-
                         FluidTraitTooltip.addInfo(fluid, lines);
                     });
             entries.add(stack);

@@ -45,9 +45,7 @@ public record TurretHowardDamagedModel() implements BlockModel<HFRWavefrontObjec
                 TextureSlots slots) {
             Material.Baked material =
                     BlockModel.slot(baker, carrier, slots, ObjUnbakedGeometry.SINGLE_SLOT);
-
             Direction facing = state.getValue(BlockMultiblockCore.FACING);
-
             float x = facing == Direction.NORTH || facing == Direction.WEST ? .5F : -.5F;
             float z = facing == Direction.NORTH || facing == Direction.EAST ? .5F : -.5F;
             return ObjUnbakedGeometry.bakeGroups(

@@ -3,10 +3,10 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.oil.BlockEntityMachinePyroOven;
 import com.hbm.inventory.container.MenuMachinePyroOven;
 import com.hbm.items.machine.upgrade.UpgradeType;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.oil.BlockEntityMachinePyroOven;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;

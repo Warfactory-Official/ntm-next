@@ -3,13 +3,16 @@
 
 package com.hbm.inventory.container;
 
-import com.hbm.tileentity.machine.storage.BlockEntityCrate;
-import com.hbm.tileentity.machine.storage.CrateType;
+import com.hbm.blockentity.machine.storage.BlockEntityCrate;
+import com.hbm.blockentity.machine.storage.CrateType;
+import com.hbm.tags.HbmItemTags;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ShulkerBoxSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -36,7 +39,19 @@ public class MenuCrate extends NtmContainerMenu {
                 int slot = col + row * type.columns;
                 addSlot(
                         new ShulkerBoxSlot(
-                                container, slot, type.crateX + col * 18, type.crateY + row * 18));
+                                container, slot, type.crateX + col * 18, type.crateY + row * 18) {
+                            @Override
+                            public boolean mayPlace(ItemStack stack) {
+                                return (stack.getItem().canFitInsideContainerItems()
+                                                && !stack.is(HbmItemTags.NO_CONTAINER_NESTING)
+                                                && !stack.has(DataComponents.CONTAINER)
+                                                && !stack.has(DataComponents.BUNDLE_CONTENTS)
+                                                && ContainerItemContext.withConstant(stack)
+                                                                .find(ItemStorage.ITEM)
+                                                        == null)
+                                        && super.mayPlace(stack);
+                            }
+                        });
             }
         }
 

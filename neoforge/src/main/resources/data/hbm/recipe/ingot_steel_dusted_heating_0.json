@@ -3,11 +3,14 @@
   "cookingtime": 200,
   "experience": 1.0,
   "ingredient": {
-    "neoforge:ingredient_type": "neoforge:components",
-    "components": {
-      "hbm:forge_count": 0
-    },
-    "items": "hbm:ingot_steel_dusted"
+    "neoforge:ingredient_type": "hbm:recipe_input",
+    "base": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "hbm:forge_count": 0
+      },
+      "items": "hbm:ingot_steel_dusted"
+    }
   },
   "result": {
     "components": {

@@ -3,15 +3,20 @@
 
 package com.hbm.particle;
 
+import com.hbm.client.particle.SkeletonVisual;
+import com.hbm.client.particle.VisualParticle;
 import com.hbm.main.ResourceManager;
+import dev.engine_room.flywheel.api.visual.EffectVisual;
+import dev.engine_room.flywheel.api.visualization.VisualizationContext;
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import org.jspecify.annotations.Nullable;
 
-public class ParticleSkeleton extends Particle {
+public class ParticleSkeleton extends LegacyMoveParticle implements VisualParticle {
 
     public static final ParticleRenderType SKELETON_GROUP =
             new ParticleRenderType("hbm:skeleton", "HSK");
@@ -36,6 +41,7 @@ public class ParticleSkeleton extends Particle {
     private boolean gib;
     private float rotationPitch, prevRotationPitch;
     private float rotationYaw, prevRotationYaw;
+    private @Nullable VisualizationManager visualManager;
 
     public ParticleSkeleton(
             ClientLevel level, double x, double y, double z, float r, float g, float b, int part) {
@@ -62,7 +68,6 @@ public class ParticleSkeleton extends Particle {
     }
 
     public ParticleSkeleton makeGibKeepingTexture() {
-
         this.initialDelay = -2;
         this.gravity = 0.04F;
         this.lifetime = 600 + this.random.nextInt(20);
@@ -168,6 +173,26 @@ public class ParticleSkeleton extends Particle {
 
     public double interpZ(float pt) {
         return this.zo + (this.z - this.zo) * pt;
+    }
+
+    @Override
+    public ClientLevel level() {
+        return level;
+    }
+
+    @Override
+    public @Nullable VisualizationManager visualManager() {
+        return visualManager;
+    }
+
+    @Override
+    public void visualManager(@Nullable VisualizationManager manager) {
+        visualManager = manager;
+    }
+
+    @Override
+    public EffectVisual<?> visualize(VisualizationContext context, float partialTick) {
+        return new SkeletonVisual(context, this, partialTick);
     }
 
     @Override

@@ -3,8 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineSolderingStation;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.tileentity.machine.BlockEntityMachineSolderingStation;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
@@ -83,7 +82,6 @@ public class RenderSolderingStation
         poseStack.translate(0.0, 1.125, 0.0);
         poseStack.mulPose(Axis.YP.rotationDegrees(90));
         poseStack.mulPose(Axis.XP.rotationDegrees(-90));
-
         poseStack.scale(1.5F, 1.5F, 1.5F);
         FramedItem.decoArm(poseStack, state.arm);
         state.item.submit(poseStack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);

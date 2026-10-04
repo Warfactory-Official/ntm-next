@@ -7,7 +7,6 @@ import com.hbm.config.BalanceConfig;
 import com.hbm.inventory.recipes.ingredient.CountIngredient;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
-import com.hbm.platform.Services;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -63,7 +62,6 @@ public class AnvilConstructionRecipe extends GenericRecipe {
                 recipe.tierUpper = extras.tierUpper();
                 recipe.overlay = extras.overlay();
             };
-
     private static final BiConsumer<AnvilConstructionRecipe, Extras> APPLY_DATAPACK_EXTRAS =
             (recipe, extras) -> {
                 APPLY_EXTRAS.accept(recipe, extras);
@@ -140,7 +138,6 @@ public class AnvilConstructionRecipe extends GenericRecipe {
 
     public List<AnvilOutput> outputs() {
         if (outputs == null) {
-
             WeightedList<ItemStack>[] slots = outputItems();
             List<AnvilOutput> built = new ArrayList<>();
             if (slots != null) {

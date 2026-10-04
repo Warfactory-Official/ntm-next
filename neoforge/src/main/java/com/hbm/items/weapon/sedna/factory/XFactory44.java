@@ -21,7 +21,7 @@ import com.hbm.items.weapon.sedna.mods.XWeaponModManager;
 import com.hbm.lib.Library;
 import com.hbm.particle.SpentCasing.CasingType;
 import com.hbm.particle.SpentCasing;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -526,7 +526,7 @@ public class XFactory44 {
                 return null;
             };
 
-    public static void init(IRegistrar r) {
+    public static void init() {
         SpentCasing casing44 =
                 new SpentCasing(CasingType.STRAIGHT)
                         .setColor(SpentCasing.COLOR_CASE_BRASS)
@@ -602,7 +602,7 @@ public class XFactory44 {
                                         .register("m44equestrianMn7"));
 
         ModItems.GUN_HENRY =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_henry",
                         props ->
                                 new ItemGunBaseNT(
@@ -652,7 +652,7 @@ public class XFactory44 {
                         Item.Properties::new);
 
         ModItems.GUN_HENRY_LINCOLN =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_henry_lincoln",
                         props ->
                                 new ItemGunBaseNT(
@@ -703,7 +703,7 @@ public class XFactory44 {
                         Item.Properties::new);
 
         ModItems.GUN_HEAVY_REVOLVER =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_heavy_revolver",
                         props ->
                                 new ItemGunBaseNT(
@@ -753,7 +753,7 @@ public class XFactory44 {
                         Item.Properties::new);
 
         ModItems.GUN_HEAVY_REVOLVER_LILMAC =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_heavy_revolver_lilmac",
                         props ->
                                 new ItemGunBaseNT(
@@ -804,7 +804,7 @@ public class XFactory44 {
                         Item.Properties::new);
 
         ModItems.GUN_HEAVY_REVOLVER_PROTEGE =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_heavy_revolver_protege",
                         props ->
                                 new ItemGunBaseNT(
@@ -854,7 +854,7 @@ public class XFactory44 {
                         Item.Properties::new);
 
         ModItems.GUN_HANGMAN =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_hangman",
                         props ->
                                 new ItemGunBaseNT(

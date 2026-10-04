@@ -4,7 +4,6 @@
 package com.hbm.entity.mob.botprime;
 
 import com.hbm.entity.projectile.EntityBulletBaseMK4;
-import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.items.weapon.sedna.factory.XFactoryNPC;
 import com.hbm.sound.ModSounds;
 import java.util.function.Predicate;
@@ -23,7 +22,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public abstract class EntityBOTPrimeBase extends EntityWormBaseNT implements IRadiationImmune {
+public abstract class EntityBOTPrimeBase extends EntityWormBaseNT {
 
     public int attackCounter;
 

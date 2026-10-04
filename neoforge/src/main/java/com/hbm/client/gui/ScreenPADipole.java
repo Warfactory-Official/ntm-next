@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.albion.BlockEntityPADipole;
 import com.hbm.inventory.container.MenuPADipole;
 import com.hbm.items.machine.ItemPACoil;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.albion.BlockEntityPADipole;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -177,8 +177,7 @@ public class ScreenPADipole extends ScreenPACooled<MenuPADipole> {
         if (!text.chars().allMatch(Character::isDigit)) return;
         CompoundTag data = new CompoundTag();
         data.putInt("threshold", Integer.parseInt(text));
-        Services.NETWORK.sendToServer(
-                new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
     }
 
     @Override
@@ -188,7 +187,7 @@ public class ScreenPADipole extends ScreenPACooled<MenuPADipole> {
                 if (checkClick((int) event.x(), (int) event.y(), BUTTON_X, BUTTON_Y[i], 12, 12)) {
                     CompoundTag data = new CompoundTag();
                     data.putBoolean(CONTROL_KEY[i], true);
-                    Services.NETWORK.sendToServer(
+                    PacketWire.sendToServer(
                             new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
                     playClick();
                     return true;

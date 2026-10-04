@@ -3,11 +3,11 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityCrucible.PourStream;
+import com.hbm.blockentity.machine.BlockEntityMachineRotaryFurnace;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityCrucible.PourStream;
-import com.hbm.tileentity.machine.BlockEntityMachineRotaryFurnace;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -43,7 +43,6 @@ public class RenderRotaryFurnace
     public RenderRotaryFurnace() {
         this.model = ResourceManager.rotary_furnace;
         this.bodyType = RenderTypes.entityCutoutCull(ResourceManager.rotary_furnace_tex);
-
         this.streamType = FlatCutout.of(ResourceManager.foundry_stream_tex);
     }
 
@@ -102,13 +101,11 @@ public class RenderRotaryFurnace
     @Override
     public void submit(State s, PoseStack ps, SubmitNodeCollector col, CameraRenderState camera) {
         int light = s.lightCoords;
-
         Direction rot = s.facing.getCounterClockWise();
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
         ps.mulPose(Axis.YP.rotationDegrees(furnaceYaw(s.facing)));
-
         ps.translate(0.0, BobMathUtil.sps((s.anim * 0.75) * 0.125) * 0.5 - 0.5, 0.0);
         final HFRWavefrontObject m = this.model;
         col.submitCustomGeometry(

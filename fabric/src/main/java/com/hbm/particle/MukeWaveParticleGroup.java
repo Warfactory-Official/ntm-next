@@ -33,6 +33,7 @@ public class MukeWaveParticleGroup extends ParticleGroup<ParticleMukeWave> {
         Vec3 cam = camera.position();
 
         for (ParticleMukeWave wave : this.particles) {
+            if (wave.ownsVisual()) continue;
             out.add(
                     new Instance(
                             wave.interpX(partialTicks) - cam.x,

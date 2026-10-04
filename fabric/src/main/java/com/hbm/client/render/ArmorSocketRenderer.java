@@ -34,7 +34,6 @@ public final class ArmorSocketRenderer {
     private static final int WING_LEFT_TIP = ResourceManager.armor_wings.partId("LeftTip");
     private static final int WING_RIGHT_BASE = ResourceManager.armor_wings.partId("RightBase");
     private static final int WING_RIGHT_TIP = ResourceManager.armor_wings.partId("RightTip");
-
     private static final double PX = 0.0625D;
     private static final int PIVOT_SIDE = 1;
     private static final int PIVOT_FRONT = 5;
@@ -49,7 +48,6 @@ public final class ArmorSocketRenderer {
 
     private static ModelPart createJetpack() {
         MeshDefinition mesh = new MeshDefinition();
-
         PartDefinition root =
                 mesh.getRoot()
                         .addOrReplaceChild(
@@ -136,7 +134,6 @@ public final class ArmorSocketRenderer {
             HumanoidRenderState state,
             ItemWings.Kind kind) {
         MotionRenderState motion = (MotionRenderState) state;
-
         double rot = Math.sin(state.ageInTicks * 0.2D) * 20;
         double rot2 = Math.sin(state.ageInTicks * 0.2D - Math.PI * 0.5) * 50 + 30;
         if (kind == ItemWings.Kind.MURK && motion.hbm$onGround()) {
@@ -223,13 +220,18 @@ public final class ArmorSocketRenderer {
             EquipmentSlot slot,
             ItemStack armor,
             int outlineColor) {
-
         if (slot == EquipmentSlot.CHEST && armor.getItem() instanceof ItemJetpack bare) {
+            pose.pushPose();
+            model.root().translateAndRotate(pose);
             submitJetpack(pose, collector, light, model.body, state, bare, armor, outlineColor);
+            pose.popPose();
             return;
         }
         if (slot == EquipmentSlot.CHEST && armor.getItem() instanceof ItemWings bare) {
+            pose.pushPose();
+            model.root().translateAndRotate(pose);
             submitWings(pose, collector, light, model.body, state, bare.kind);
+            pose.popPose();
             return;
         }
         if (!ArmorModHandler.isArmor(armor) || !ArmorModHandler.hasMods(armor)) return;
@@ -237,6 +239,8 @@ public final class ArmorSocketRenderer {
             case HEAD -> {
                 ItemStack mod = ArmorModHandler.pryMod(armor, ArmorModHandler.HELMET_ONLY);
                 if (mod.getItem() instanceof ItemModGasmask attachment) {
+                    pose.pushPose();
+                    model.root().translateAndRotate(pose);
                     ArmorHeadRenderer.submitAttachment(
                             pose,
                             collector,
@@ -246,11 +250,14 @@ public final class ArmorSocketRenderer {
                             attachment,
                             mod,
                             outlineColor);
+                    pose.popPose();
                 }
             }
             case CHEST -> {
                 ItemStack mod = ArmorModHandler.pryMod(armor, ArmorModHandler.PLATE_ONLY);
                 if (mod.getItem() instanceof ItemModTesla) {
+                    pose.pushPose();
+                    model.root().translateAndRotate(pose);
                     ArmorWorldRenderer.submitGroup(
                             pose,
                             collector,
@@ -261,13 +268,20 @@ public final class ArmorSocketRenderer {
                             state,
                             ResourceManager.mod_tesla_tex,
                             TESLA);
+                    pose.popPose();
                 }
                 if (mod.getItem() instanceof ItemJetpack jetpack) {
+                    pose.pushPose();
+                    model.root().translateAndRotate(pose);
                     submitJetpack(
                             pose, collector, light, model.body, state, jetpack, mod, outlineColor);
+                    pose.popPose();
                 }
                 if (mod.getItem() instanceof ItemWings wings) {
+                    pose.pushPose();
+                    model.root().translateAndRotate(pose);
                     submitWings(pose, collector, light, model.body, state, wings.kind);
+                    pose.popPose();
                 }
             }
             default -> {}

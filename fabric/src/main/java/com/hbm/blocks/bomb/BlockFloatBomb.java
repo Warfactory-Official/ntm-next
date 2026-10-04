@@ -17,7 +17,6 @@ import net.minecraft.world.level.redstone.Orientation;
 import org.jspecify.annotations.Nullable;
 
 public class BlockFloatBomb extends Block implements IBomb {
-
     private static final int RADIUS = 15;
     private static final int LIFT = 50;
 

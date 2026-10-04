@@ -3,19 +3,23 @@
 
 package com.hbm.particle;
 
+import com.hbm.client.particle.FoamVisual;
+import com.hbm.client.particle.VisualParticle;
+import dev.engine_room.flywheel.api.visual.EffectVisual;
+import dev.engine_room.flywheel.api.visualization.VisualizationContext;
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Random;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
+import org.jspecify.annotations.Nullable;
 
-public class ParticleFoam extends Particle {
+public class ParticleFoam extends LegacyMoveParticle implements VisualParticle {
 
     public static final ParticleRenderType FOAM_GROUP = new ParticleRenderType("hbm:foam", "HFM");
 
     public static final int MAX_BUBBLES = 8;
-
     public static final int BUBBLE_STRIDE = 5;
 
     private static final int TRAIL_LENGTH = 15;
@@ -32,6 +36,7 @@ public class ParticleFoam extends Particle {
     private float scale;
     private float alpha;
     private int phase;
+    private @Nullable VisualizationManager visualManager;
 
     public ParticleFoam(ClientLevel level, double x, double y, double z) {
         super(level, x, y, z);
@@ -152,6 +157,26 @@ public class ParticleFoam extends Particle {
 
     public int light(float pt) {
         return getLightCoords(pt);
+    }
+
+    @Override
+    public ClientLevel level() {
+        return level;
+    }
+
+    @Override
+    public @Nullable VisualizationManager visualManager() {
+        return visualManager;
+    }
+
+    @Override
+    public void visualManager(@Nullable VisualizationManager manager) {
+        visualManager = manager;
+    }
+
+    @Override
+    public EffectVisual<?> visualize(VisualizationContext context, float partialTick) {
+        return new FoamVisual(context, this, partialTick);
     }
 
     @Override

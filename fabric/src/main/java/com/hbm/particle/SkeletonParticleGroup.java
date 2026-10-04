@@ -36,6 +36,7 @@ public class SkeletonParticleGroup extends ParticleGroup<ParticleSkeleton> {
         Vec3 cam = camera.position();
 
         for (ParticleSkeleton fx : this.particles) {
+            if (fx.ownsVisual()) continue;
             out.add(
                     new Instance(
                             (float) (fx.interpX(partialTicks) - cam.x),
@@ -71,7 +72,6 @@ public class SkeletonParticleGroup extends ParticleGroup<ParticleSkeleton> {
                             pose.translate(in.px, in.py, in.pz);
                             pose.mulPose(Axis.YP.rotationDegrees(in.yaw));
                             pose.mulPose(Axis.XP.rotationDegrees(in.pitch));
-
                             pose.mulPose(Axis.YP.rotationDegrees(-90F));
                             ResourceManager.skeleton_obj.renderPart(
                                     pose.last(), tess, in.light, in.color, in.part);

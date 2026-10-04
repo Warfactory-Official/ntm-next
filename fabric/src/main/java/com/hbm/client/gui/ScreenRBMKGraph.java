@@ -3,10 +3,10 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGraph;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKGraph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
@@ -224,7 +224,6 @@ public final class ScreenRBMKGraph extends Screen {
         for (int i = 0; i < GRAPHS; i++) {
             data.putString("label" + i, label[i].getValue());
             data.putString("rtty" + i, rtty[i].getValue());
-
             try {
                 if (!min[i].getValue().isEmpty())
                     data.putLong("min" + i, Long.parseLong(min[i].getValue()));
@@ -236,7 +235,7 @@ public final class ScreenRBMKGraph extends Screen {
             } catch (Exception ex) {
             }
         }
-        Services.NETWORK.sendToServer(new NbtControlPayload(graph.getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(graph.getBlockPos(), data));
     }
 
     @Override

@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControl;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlAuto;
 import com.hbm.inventory.container.MenuRBMKControlAuto;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControl;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControlAuto;
 import com.hbm.util.BobMathUtil;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -212,7 +212,7 @@ public class ScreenRBMKControlAuto extends ScreenInfoContainer<MenuRBMKControlAu
                     if (core != null) {
                         CompoundTag data = new CompoundTag();
                         data.putInt("function", k);
-                        Services.NETWORK.sendToServer(new NbtControlPayload(core, data));
+                        PacketWire.sendToServer(new NbtControlPayload(core, data));
                     }
                     playClick();
                     return true;
@@ -242,7 +242,7 @@ public class ScreenRBMKControlAuto extends ScreenInfoContainer<MenuRBMKControlAu
         data.putDouble("levelLower", vals[1]);
         data.putDouble("heatUpper", vals[2]);
         data.putDouble("heatLower", vals[3]);
-        Services.NETWORK.sendToServer(new NbtControlPayload(core, data));
+        PacketWire.sendToServer(new NbtControlPayload(core, data));
     }
 
     private BlockPos corePos() {

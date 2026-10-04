@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:chest",
+  "hbm:random_slots": true,
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "minecraft:chests/simple_dungeon"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:chests/vanilla/simple_dungeon"
+}

@@ -6,8 +6,8 @@ package com.hbm.client.render;
 import com.hbm.animloader.AnimatedModel;
 import com.hbm.animloader.Animation;
 import com.hbm.animloader.AnimationWrapper;
+import com.hbm.blockentity.BlockEntityDoorGeneric;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.BlockEntityDoorGeneric;
 
 public final class RenderTransitionSeal implements DoorRenderer {
 

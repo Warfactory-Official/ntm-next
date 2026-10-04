@@ -3,8 +3,8 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityMachineFunnel;
 import com.hbm.inventory.slot.SlotRecipeOutput;
-import com.hbm.tileentity.machine.BlockEntityMachineFunnel;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -37,7 +37,6 @@ public class MenuMachineFunnel extends BlockEntityMenu<BlockEntityMachineFunnel>
                     int machineEnd = BlockEntityMachineFunnel.SLOT_COUNT;
                     int invEnd = slots.size();
                     if (index < machineEnd) return moveItemStackTo(stack, machineEnd, invEnd, true);
-
                     return moveItemStackTo(stack, 0, 9, false);
                 });
     }

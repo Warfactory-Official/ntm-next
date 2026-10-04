@@ -4,9 +4,9 @@
 package com.hbm.compat.computercraft.network;
 
 import com.hbm.api.energymk2.IEnergyHandlerMK2.ConnectionPriority;
+import com.hbm.blockentity.network.BlockEntityFluidPump;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.tileentity.network.BlockEntityFluidPump;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.Locale;
 
@@ -25,9 +25,7 @@ public final class FluidPumpPeripheral extends SnapshotPeripheral<BlockEntityFlu
     protected void capture(BlockEntityFluidPump machine) {
         put(PRESSURE, machine.pressure);
         put(FLOW, machine.rate);
-
         putRef(FLUID, "hbmfluid." + NTMFluids.legacyName(machine.type).toLowerCase(Locale.US));
-
         putRef(PRIORITY, machine.getFluidPriority().toString());
     }
 

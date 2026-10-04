@@ -4,7 +4,7 @@
 package com.hbm.entity.grenade;
 
 import com.hbm.NuclearTech;
-import com.hbm.platform.Services;
+import com.hbm.config.FabricHbmConfig;
 import com.hbm.sound.ModSounds;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -115,7 +115,6 @@ public abstract class EntityGrenadeBouncyBase extends Projectile {
         super.tick();
 
         xRotO = getXRot();
-
         setXRot(getXRot() - (float) (getDeltaMovement().length() * 25));
 
         double px = getX();
@@ -205,7 +204,7 @@ public abstract class EntityGrenadeBouncyBase extends Projectile {
         if (timer >= getMaxTimer() && !level().isClientSide()) {
             explode();
 
-            if (Services.CONFIG.runtime().extendedLogging()) {
+            if (FabricHbmConfig.runtime().extendedLogging()) {
                 Entity thrower = getOwner();
                 NuclearTech.LOGGER.info(
                         "[GREN] Set off grenade at {} / {} / {} by {}!",

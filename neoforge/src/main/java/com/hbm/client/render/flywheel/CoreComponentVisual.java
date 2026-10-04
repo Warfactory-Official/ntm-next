@@ -3,6 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.BlockEntityMachineBase;
+import com.hbm.blockentity.machine.BlockEntityCoreEmitter;
+import com.hbm.blockentity.machine.BlockEntityCoreInjector;
+import com.hbm.blockentity.machine.BlockEntityCoreStabilizer;
 import com.hbm.blocks.machine.CoreComponent;
 import com.hbm.client.model.Meshes;
 import com.hbm.inventory.fluid.NTMFluidProperties;
@@ -10,10 +14,6 @@ import com.hbm.lib.Library;
 import com.hbm.render.loader.GroupObject;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
-import com.hbm.tileentity.BlockEntityMachineBase;
-import com.hbm.tileentity.machine.BlockEntityCoreEmitter;
-import com.hbm.tileentity.machine.BlockEntityCoreInjector;
-import com.hbm.tileentity.machine.BlockEntityCoreStabilizer;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import java.util.function.Consumer;

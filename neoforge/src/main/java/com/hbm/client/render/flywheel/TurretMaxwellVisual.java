@@ -3,9 +3,9 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.turret.BlockEntityTurretMaxwell;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
-import com.hbm.tileentity.turret.BlockEntityTurretMaxwell;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;

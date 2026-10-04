@@ -6,7 +6,6 @@ package com.hbm.items.machine;
 import net.minecraft.world.item.Item;
 
 public class ItemZirnoxRodDepleted extends Item {
-
     public final float wasteRad;
     public final float blinding;
 

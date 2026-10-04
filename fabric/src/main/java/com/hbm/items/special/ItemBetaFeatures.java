@@ -18,7 +18,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 
 public class ItemBetaFeatures extends Item implements IItemEntityUpdate {
-
     private static final int PINNED_FOOD = 10;
 
     public ItemBetaFeatures(Properties properties) {

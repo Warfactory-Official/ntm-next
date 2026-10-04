@@ -3,9 +3,9 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityFurnaceCombination;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.inventory.slot.SlotSmelting;
-import com.hbm.tileentity.machine.BlockEntityFurnaceCombination;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +35,6 @@ public class MenuFurnaceCombination extends BlockEntityMenu<BlockEntityFurnaceCo
                         BlockEntityFurnaceCombination.SLOT_OUTPUT,
                         89,
                         36));
-
         addSlot(new Slot(container, 2, 136, 18));
         addSlot(new SlotRecipeOutput(playerInv.player, container, 3, 136, 54));
 

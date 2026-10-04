@@ -9,7 +9,6 @@ import com.hbm.client.render.WeaponRenderTypes;
 import com.hbm.config.GunVisualConfig;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT.SmokeNode;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
-import com.hbm.platform.Services;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.loader.UnitQuad;
 import com.hbm.render.util.Vertices;
@@ -83,7 +82,6 @@ public abstract class ItemRenderWeaponBase {
     public static float adjustViewFov(float computed) {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
-
         if (player == null || minecraft.getCameraEntity() != player) return computed;
         ItemStack stack = player.getMainHandItem();
         ItemRenderWeaponBase renderer = get(stack);
@@ -395,7 +393,6 @@ public abstract class ItemRenderWeaponBase {
                         .getCameraEntityPartialTicks(minecraft.getDeltaTracker());
         pose.pushPose();
         pose.setIdentity();
-
         pose.mulPose(RenderSystem.getModelViewMatrixCopy().invert());
         if (otherArm) pose.scale(-1F, 1F, 1F);
         setupTransformsAndSubmit(

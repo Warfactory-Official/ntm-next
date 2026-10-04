@@ -61,7 +61,6 @@ public class BusAnimationSequence {
 
     public BusAnimationSequence holdUntil(int end) {
         int duration = end - getTotalTime();
-
         return hold(duration);
     }
 

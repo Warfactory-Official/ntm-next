@@ -3,11 +3,11 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.storage.FluidTankContents;
 import com.hbm.client.render.flywheel.FluidTankItemVisual;
 import com.hbm.client.render.flywheel.ItemVisuals;
 import com.hbm.items.ModDataComponents;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.storage.FluidTankContents;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

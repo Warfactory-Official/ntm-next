@@ -23,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
 public class HazardTypeRadiation implements IHazardType {
-
     public static double getNewValue(double radiation) {
         if (radiation < 1_000_000D) return radiation;
         if (radiation < 1_000_000_000D) return radiation * 0.000001D;

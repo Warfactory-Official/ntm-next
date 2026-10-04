@@ -1,0 +1,57 @@
+{
+  "actions": [
+    {
+      "type": "potion_sickness",
+      "seconds": 5
+    },
+    {
+      "type": "counter",
+      "counter": "asbestos",
+      "operation": "set"
+    },
+    {
+      "type": "counter",
+      "counter": "black_lung",
+      "limit_divisor": 5,
+      "operation": "min"
+    },
+    {
+      "type": "counter",
+      "amount": -100.0,
+      "counter": "radiation",
+      "operation": "add"
+    },
+    {
+      "type": "effect",
+      "duration": 200,
+      "effect": "minecraft:nausea"
+    },
+    {
+      "type": "effect",
+      "amplifier": 2,
+      "duration": 12000,
+      "effect": "minecraft:weakness"
+    },
+    {
+      "type": "effect",
+      "amplifier": 2,
+      "duration": 12000,
+      "effect": "minecraft:mining_fatigue"
+    },
+    {
+      "type": "effect",
+      "amplifier": 2,
+      "duration": 100,
+      "effect": "minecraft:poison"
+    },
+    {
+      "type": "effect",
+      "duration": 12000,
+      "effect": "hbm:potionsickness",
+      "incurable": true
+    }
+  ],
+  "block_when_potion_sick": true,
+  "targets": "hbm:pill_herbal",
+  "trigger": "consume"
+}

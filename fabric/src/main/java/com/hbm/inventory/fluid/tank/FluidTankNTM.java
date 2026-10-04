@@ -12,8 +12,8 @@ import com.hbm.items.ModItems;
 import com.hbm.items.machine.*;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncSource;
+import com.hbm.platform.FabricCaps;
 import com.hbm.platform.IFluidHandlerView;
-import com.hbm.platform.Services;
 import io.netty.buffer.ByteBuf;
 import java.util.Random;
 import net.minecraft.core.NonNullList;
@@ -21,7 +21,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
@@ -33,9 +32,7 @@ public class FluidTankNTM implements SyncSource {
     private static final Random LOADER_RANDOM = new Random();
 
     @SyncField private @Nullable Fluid type;
-
     @SyncField private @Nullable Fluid pin;
-
     @SyncField private @Nullable Fluid held;
     @SyncField private int fill;
     @SyncField private int capacity;
@@ -91,17 +88,22 @@ public class FluidTankNTM implements SyncSource {
         return pin != null;
     }
 
+    protected void declaredFluidChanged(@Nullable Fluid previous) {}
+
     public void setTankType(@Nullable Fluid fluid) {
         if (fluid == type) return;
         Fluid kind = kindOf(fluid);
         if (kind == type) return;
+        Fluid previous = getDeclaredFluid();
         type = kind;
         pin = null;
         held = null;
         fill = 0;
+        declaredFluidChanged(previous);
     }
 
     public void setTankTypeByIdentifier(@Nullable Fluid fluid) {
+        Fluid previous = getDeclaredFluid();
         Fluid exact = (fluid == null || fluid == Fluids.EMPTY) ? null : fluid;
         Fluid kind = kindOf(exact);
         if (kind != type || fill > 0 && getFluid() != exact) {
@@ -110,6 +112,7 @@ public class FluidTankNTM implements SyncSource {
         }
         type = kind;
         pin = exact;
+        if (previous != getDeclaredFluid()) declaredFluidChanged(previous);
     }
 
     private static @Nullable Fluid kindOf(@Nullable Fluid fluid) {
@@ -169,11 +172,13 @@ public class FluidTankNTM implements SyncSource {
     }
 
     public void resetTank() {
+        Fluid previous = getDeclaredFluid();
         type = null;
         pin = null;
         held = null;
         fill = 0;
         pressure = 0;
+        if (previous != null) declaredFluidChanged(previous);
     }
 
     public int changeTankSize(int size) {
@@ -194,6 +199,7 @@ public class FluidTankNTM implements SyncSource {
                 type = NTMFluidProperties.kindOf(incoming);
                 held = incoming == type ? null : incoming;
                 fill = toTransfer;
+                declaredFluidChanged(null);
             }
             return toTransfer;
         }
@@ -227,7 +233,6 @@ public class FluidTankNTM implements SyncSource {
         fill = Math.clamp(fill, 0, capacity);
         String heldId = in.getStringOr("held", "");
         held = resolveFluid(heldId);
-
         if (!heldId.isEmpty() && held == null) fill = 0;
         if (fill == 0) held = null;
     }
@@ -260,12 +265,13 @@ public class FluidTankNTM implements SyncSource {
 
     private void serveFillableMods(ItemStack armor, boolean drainMods) {
         if (type == null || !ArmorModHandler.hasMods(armor)) return;
-        for (ItemStack mod : ArmorModHandler.pryMods(armor)) {
-            if (!(mod.getItem() instanceof IFluidContainerItem container)
+        var mods = ArmorModHandler.mods(armor);
+        for (int socket = 0; socket < ArmorModHandler.MOD_SLOTS; socket++) {
+            if (!(mods.item(socket) instanceof IFluidContainerItem container)
                     || !container.machineFillable()) continue;
+            ItemStack mod = mods.copy(socket);
             if (drainMods) fill += container.drain(mod, type, capacity - fill, pressure);
             else fill -= container.fill(mod, type, fill, pressure);
-
             ArmorModHandler.applyMod(armor, mod);
         }
     }
@@ -273,14 +279,12 @@ public class FluidTankNTM implements SyncSource {
     public boolean loadTank(int in, int out, NonNullList<ItemStack> slots) {
         ItemStack stack = slots.get(in);
         if (stack.isEmpty()) return false;
-
         boolean isInfiniteBarrel = stack.getItem() == ModItems.FLUID_BARREL_INFINITE.get();
         if (!isInfiniteBarrel && pressure != 0) return false;
         int prev = fill;
         serveFillableMods(stack, true);
 
         if (stack.getItem() instanceof ItemFluidContainerInfinite item) {
-
             Fluid given = item.fluid() == null ? getFluid() : item.fluid();
             if (type != null
                     && accepts(given)
@@ -289,7 +293,6 @@ public class FluidTankNTM implements SyncSource {
             }
         } else if (stack.getItem() instanceof IFluidContainerItem container
                 && container.machineFillable()) {
-
             if (accepts(type))
                 receive(type, container.drain(stack, type, capacity - fill, pressure));
         } else {
@@ -304,7 +307,6 @@ public class FluidTankNTM implements SyncSource {
         int prev = fill;
 
         if (stack.getItem() instanceof ItemFluidContainerInfinite item) {
-
             if (item.allowPressure(pressure)
                     && (item.fluid() == null || item.fluid() == getFluid())
                     && (item.chance() <= 1 || LOADER_RANDOM.nextInt(item.chance()) == 0)) {
@@ -314,7 +316,6 @@ public class FluidTankNTM implements SyncSource {
             serveFillableMods(stack, false);
             if (stack.getItem() instanceof IFluidContainerItem container
                     && container.machineFillable()) {
-
                 if (type != null) setFill(fill - container.fill(stack, getFluid(), fill, pressure));
             } else {
                 fillContainer(slots, in, out);
@@ -326,7 +327,7 @@ public class FluidTankNTM implements SyncSource {
     public static boolean isFluidContainer(ItemStack stack) {
         if (stack.isEmpty()) return false;
         if (stack.getItem() instanceof ItemFluidContainerInfinite) return true;
-        return Services.CAPS.findFluidHandler(stack) != null;
+        return FabricCaps.findFluidHandler(stack) != null;
     }
 
     public static long containerContent(ItemStack stack, @Nullable Fluid type) {
@@ -335,14 +336,14 @@ public class FluidTankNTM implements SyncSource {
             FluidContainerRows.Row row = FluidContainerRows.full(stack);
             return row != null && row.fluid().get() == type ? row.amount().getAsInt() : 0L;
         }
-        IFluidHandlerView view = Services.CAPS.findFluidHandler(stack);
+        IFluidHandlerView view = FabricCaps.findFluidHandler(stack);
         return view == null ? 0L : view.extractable(type);
     }
 
     public static long containerRoom(ItemStack stack, @Nullable Fluid type) {
         if (type == null || stack.isEmpty() || !convertible(stack)) return 0L;
         if (FluidContainerRows.answers(stack)) return FluidContainerRows.fillAmount(stack, type);
-        IFluidHandlerView view = Services.CAPS.findFluidHandler(stack);
+        IFluidHandlerView view = FabricCaps.findFluidHandler(stack);
         return view == null ? 0L : view.insertable(type);
     }
 
@@ -387,7 +388,7 @@ public class FluidTankNTM implements SyncSource {
         }
         ItemStack probe = held.copyWithCount(1);
         SimpleContainer scratch = new SimpleContainer(probe.copy());
-        IFluidHandlerView view = Services.CAPS.findFluidHandler(scratch, 0);
+        IFluidHandlerView view = FabricCaps.findFluidHandler(scratch, 0);
         if (view == null) return;
 
         Fluid incoming = null;
@@ -409,14 +410,12 @@ public class FluidTankNTM implements SyncSource {
 
         ItemStack result = scratch.getItem(0);
         if (!changed(probe, result)) return;
-
         if (view.extractable(incoming) <= 0) {
             if (!ejectFits(slots, out, result)) return;
             receive(incoming, (int) drawn);
             eject(slots, in, out, result);
             return;
         }
-
         if (held.getCount() != 1) return;
         receive(incoming, (int) drawn);
         slots.set(in, result);
@@ -438,7 +437,7 @@ public class FluidTankNTM implements SyncSource {
         }
         ItemStack probe = held.copyWithCount(1);
         SimpleContainer scratch = new SimpleContainer(probe.copy());
-        IFluidHandlerView view = Services.CAPS.findFluidHandler(scratch, 0);
+        IFluidHandlerView view = FabricCaps.findFluidHandler(scratch, 0);
         if (view == null) return;
 
         long room = view.insertable(content);
@@ -448,7 +447,6 @@ public class FluidTankNTM implements SyncSource {
 
         ItemStack result = scratch.getItem(0);
         if (!changed(probe, result)) return;
-
         if (view.insertable(content) <= 0) {
             if (!ejectFits(slots, out, result)) return;
             setFill(fill - (int) given);

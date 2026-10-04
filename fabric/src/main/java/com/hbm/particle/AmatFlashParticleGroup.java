@@ -26,16 +26,15 @@ public class AmatFlashParticleGroup extends ParticleGroup<ParticleAmatFlash> {
     @Override
     public ParticleGroupRenderState extractRenderState(
             Frustum frustum, Camera camera, float partialTicks) {
-        int count = this.particles.size();
-
-        float[] pos = new float[count * 3];
-
-        float[] par = new float[count * 2];
-        int[] light = new int[count];
+        int capacity = this.particles.size();
+        float[] pos = new float[capacity * 3];
+        float[] par = new float[capacity * 2];
+        int[] light = new int[capacity];
         Vec3 cam = camera.position();
 
         int i = 0;
         for (ParticleAmatFlash fx : this.particles) {
+            if (fx.ownsVisual()) continue;
             pos[i * 3] = (float) (fx.interpX(partialTicks) - cam.x);
             pos[i * 3 + 1] = (float) (fx.interpY(partialTicks) - cam.y);
             pos[i * 3 + 2] = (float) (fx.interpZ(partialTicks) - cam.z);
@@ -45,7 +44,7 @@ public class AmatFlashParticleGroup extends ParticleGroup<ParticleAmatFlash> {
             i++;
         }
 
-        return new State(count, pos, par, light);
+        return new State(i, pos, par, light);
     }
 
     private record State(int count, float[] pos, float[] par, int[] light)
@@ -67,7 +66,6 @@ public class AmatFlashParticleGroup extends ParticleGroup<ParticleAmatFlash> {
                             int core =
                                     Mth.clamp((int) (par[i * 2 + 1] * 255F), 0, 255) << 24
                                             | 0xFFFFFF;
-
                             int edge = 0xFFFFFF;
                             int lit = light[i];
 

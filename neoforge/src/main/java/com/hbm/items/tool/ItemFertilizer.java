@@ -36,7 +36,6 @@ public class ItemFertilizer extends Item {
             BlockPos pos = cursor.immutable();
             if (!FertilizerUtil.fertilize(level, pos, player, stack, pos.equals(centre))) continue;
             any = true;
-
             if (!level.isClientSide()) {
                 level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, pos, 15);
             }

@@ -16,7 +16,6 @@ public class RadarEntry {
     public final int posY;
     public final int posZ;
     public final int entityID;
-
     public boolean redstone;
 
     public RadarEntry() {

@@ -5,20 +5,15 @@ package com.hbm.handler;
 
 import com.hbm.hazard.HazardClass;
 import com.hbm.items.ModDataComponents;
-import com.hbm.items.ModItems;
-import com.hbm.items.armor.IGasMask;
 import com.hbm.items.armor.ModArmorItem;
-import com.hbm.platform.Services;
-import com.hbm.potion.HbmPotion;
+import com.hbm.tags.HbmItemTags;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,6 +24,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.event.EventHooks;
 
 public final class ArmorUtil {
 
@@ -36,81 +33,28 @@ public final class ArmorUtil {
         EquipmentSlot.FEET, EquipmentSlot.LEGS, EquipmentSlot.CHEST, EquipmentSlot.HEAD
     };
 
-    private static final String[] FARADAY_METALS = {
-        "chainmail",
-        "iron",
-        "silver",
-        "gold",
-        "platinum",
-        "tin",
-        "lead",
-        "liquidator",
-        "schrabidium",
-        "euphemium",
-        "steel",
-        "cmb",
-        "titanium",
-        "alloy",
-        "copper",
-        "bronze",
-        "electrum",
-        "t45",
-        "t51",
-        "bj",
-        "starmetal",
-        "hazmat",
-        "rubber",
-        "hev",
-        "ajr",
-        "rpa",
-        "spacesuit"
-    };
-
-    private static final String FILTER_ID = "hfrFilter";
-    private static final String FILTER_DAMAGE = "hfrFilterDamage";
+    private static final String FILTER_ID = "filter_stack";
 
     private ArmorUtil() {}
 
     public static boolean checkForHazmat(LivingEntity entity) {
-        return wears(entity, ModArmorItem.Suit.HAZMAT)
-                || wears(entity, ModArmorItem.Suit.HAZMAT_RED)
-                || wears(entity, ModArmorItem.Suit.HAZMAT_GREY)
-                || wears(entity, ModArmorItem.Suit.SCHRABIDIUM)
-                || checkForHaz2(entity)
-                || entity.hasEffect(HbmPotion.mutation());
+        return SuitProtections.protects(entity, SuitProtection.Kind.HAZMAT);
     }
 
     public static boolean checkForAsbestos(LivingEntity entity) {
-        return wears(entity, ModArmorItem.Suit.ASBESTOS);
+        return SuitProtections.protects(entity, SuitProtection.Kind.ASBESTOS);
     }
 
     public static boolean checkForHaz2(LivingEntity entity) {
-        return wears(entity, ModArmorItem.Suit.HAZMAT_PAA)
-                || wears(entity, ModArmorItem.Suit.LIQUIDATOR)
-                || wears(entity, ModArmorItem.Suit.EUPHEMIUM)
-                || wears(entity, ModArmorItem.Suit.RPA)
-                || wears(entity, ModArmorItem.Suit.DIGAMMA)
-                || wears(entity, ModArmorItem.Suit.DNS);
+        return SuitProtections.protects(entity, SuitProtection.Kind.SEALED);
     }
 
     public static boolean checkForDigamma(LivingEntity entity) {
-        return wears(entity, ModArmorItem.Suit.DIGAMMA)
-                || wears(entity, ModArmorItem.Suit.DNS)
-                || entity.hasEffect(HbmPotion.stability());
+        return SuitProtections.protects(entity, SuitProtection.Kind.DIGAMMA);
     }
 
     public static boolean checkForDigamma2(Player player) {
-        if (!wears(player, ModArmorItem.Suit.ROBES) || !player.hasEffect(HbmPotion.stability()))
-            return false;
-        for (EquipmentSlot slot : ARMOR_SLOTS) {
-            ItemStack armor = player.getItemBySlot(slot);
-            if (ArmorModHandler.hasMods(armor)
-                    && !ArmorModHandler.pryMods(armor)[ArmorModHandler.CLADDING].is(
-                            ModItems.CLADDING_IRON.get())) {
-                return false;
-            }
-        }
-        return player.getMaxHealth() < 3;
+        return SuitProtections.protects(player, SuitProtection.Kind.DIGAMMA2);
     }
 
     public static boolean checkForFaraday(Player player) {
@@ -122,17 +66,7 @@ public final class ArmorUtil {
     }
 
     public static boolean isFaradayArmor(ItemStack item) {
-        String name = BuiltInRegistries.ITEM.getKey(item.getItem()).getPath();
-        for (String metal : FARADAY_METALS) if (name.contains(metal)) return true;
-        return HazmatRegistry.getCladding(item) > 0;
-    }
-
-    private static boolean wears(LivingEntity entity, ModArmorItem.Suit suit) {
-        for (EquipmentSlot slot : ARMOR_SLOTS) {
-            if (!(entity.getItemBySlot(slot).getItem() instanceof ModArmorItem item)
-                    || item.suit() != suit) return false;
-        }
-        return true;
+        return item.is(HbmItemTags.FARADAY_ARMOR) || HazmatRegistry.getCladding(item) > 0;
     }
 
     public static void damageWholeSuit(LivingEntity entity, int amount) {
@@ -166,7 +100,7 @@ public final class ArmorUtil {
 
     public static void damageGasMaskFilter(LivingEntity entity, int damage) {
         ItemStack mask = entity.getItemBySlot(EquipmentSlot.HEAD);
-        if (mask.getItem() instanceof IGasMask) damageGasMaskFilter(mask, damage);
+        if (EquipmentProtections.isMask(mask)) damageGasMaskFilter(mask, damage);
     }
 
     public static void addGasMaskTooltip(
@@ -196,13 +130,19 @@ public final class ArmorUtil {
                         filter.getOrDefault(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT),
                         lore::add,
                         flag);
-        Services.PLATFORM.itemTooltipEvent(filter, context, flag, lore);
+        EventHooks.onItemTooltip(
+                filter,
+                null,
+                lore,
+                flag,
+                context,
+                filter.getOrDefault(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT));
         for (Component line : lore)
             adder.accept(Component.literal("  ").withStyle(ChatFormatting.YELLOW).append(line));
     }
 
-    public static void addGasMaskBlacklist(IGasMask mask, Consumer<Component> adder) {
-        HazardClass[] blacklist = mask.filterBlacklist();
+    public static void addGasMaskBlacklist(ItemStack mask, Consumer<Component> adder) {
+        HazardClass[] blacklist = EquipmentProtections.exclusionOrder(mask);
         if (blacklist.length == 0) return;
         adder.accept(Component.translatable("hazard.neverProtects").withStyle(ChatFormatting.RED));
         for (HazardClass clazz : blacklist) {
@@ -224,21 +164,46 @@ public final class ArmorUtil {
     public static void damageGasMaskFilter(ItemStack mask, int damage) {
         ItemStack filter = getGasMaskFilter(mask);
         if (filter.isEmpty() || filter.getMaxDamage() == 0) return;
-        filter.setDamageValue(filter.getDamageValue() + damage);
-        if (filter.getDamageValue() > filter.getMaxDamage()) removeGasMaskFilter(mask);
-        else installGasMaskFilter(mask, filter);
+        int worn = Math.addExact(filter.getDamageValue(), damage);
+        if (worn > filter.getMaxDamage()) removeGasMaskFilter(mask);
+        else {
+            filter.setDamageValue(worn);
+            installGasMaskFilter(mask, filter);
+        }
+    }
+
+    public static net.minecraft.world.InteractionResult installFilterFromHand(
+            Level level, Player player, net.minecraft.world.InteractionHand hand) {
+        ItemStack filter = player.getItemInHand(hand);
+        ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
+        if (helmet.isEmpty()) return net.minecraft.world.InteractionResult.PASS;
+        boolean socketed = !EquipmentProtections.isMask(helmet);
+        ItemStack target =
+                socketed ? ArmorModHandler.pryMod(helmet, ArmorModHandler.HELMET_ONLY) : helmet;
+        if (!EquipmentProtections.isMask(target)) return net.minecraft.world.InteractionResult.PASS;
+        ItemStack current = getGasMaskFilter(target);
+        installGasMaskFilter(target, filter.copyWithCount(1));
+        if (socketed) ArmorModHandler.applyMod(helmet, target);
+        if (current.isEmpty()) filter.shrink(1);
+        else player.setItemInHand(hand, current);
+        level.playSound(
+                null,
+                player.blockPosition(),
+                com.hbm.sound.ModSounds.GASMASK_SCREW.get(),
+                net.minecraft.sounds.SoundSource.PLAYERS,
+                1F,
+                1F);
+        return net.minecraft.world.InteractionResult.SUCCESS;
     }
 
     public static void installGasMaskFilter(ItemStack mask, ItemStack filter) {
         if (filter.isEmpty()) return;
+        var encoded =
+                ItemStack.CODEC
+                        .encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, filter.copyWithCount(1))
+                        .getOrThrow();
         CustomData.update(
-                ModDataComponents.PERSISTENT_DATA.get(),
-                mask,
-                tag -> {
-                    tag.putString(
-                            FILTER_ID, BuiltInRegistries.ITEM.getKey(filter.getItem()).toString());
-                    tag.putInt(FILTER_DAMAGE, filter.getDamageValue());
-                });
+                ModDataComponents.PERSISTENT_DATA.get(), mask, tag -> tag.put(FILTER_ID, encoded));
     }
 
     public static ItemStack removeGasMaskFilter(ItemStack mask) {
@@ -248,24 +213,17 @@ public final class ArmorUtil {
                 mask,
                 tag -> {
                     tag.remove(FILTER_ID);
-                    tag.remove(FILTER_DAMAGE);
                 });
         return filter;
     }
 
-    public static ItemStack getGasMaskFilter(ItemStack mask) {
+    public static ItemStack getGasMaskFilter(net.minecraft.world.item.ItemInstance mask) {
         CustomData data =
                 mask.getOrDefault(ModDataComponents.PERSISTENT_DATA.get(), CustomData.EMPTY);
         CompoundTag tag = data.copyTag();
         if (!tag.contains(FILTER_ID)) return ItemStack.EMPTY;
-        return BuiltInRegistries.ITEM
-                .getOptional(Identifier.parse(tag.getStringOr(FILTER_ID, "")))
-                .map(
-                        item -> {
-                            ItemStack filter = new ItemStack(item);
-                            filter.setDamageValue(tag.getIntOr(FILTER_DAMAGE, 0));
-                            return filter;
-                        })
-                .orElse(ItemStack.EMPTY);
+        return ItemStack.CODEC
+                .parse(net.minecraft.nbt.NbtOps.INSTANCE, tag.getCompoundOrEmpty(FILTER_ID))
+                .getOrThrow();
     }
 }

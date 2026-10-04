@@ -32,7 +32,6 @@ public record PipeModel(Kind kind) implements BlockModel<PipeModel.Mesh> {
     public static final String FRAME_SLOT = "frame";
     public static final String MESH_SLOT = "mesh";
     private static final Identifier FRAME_OBJ = Library.id("models/blocks/pipe_frame.obj");
-
     private static final float OFFSET_Y = 0.5F;
     private static final String[] TOP = {"Top"};
     private static final String[] SIDE = {"Side"};

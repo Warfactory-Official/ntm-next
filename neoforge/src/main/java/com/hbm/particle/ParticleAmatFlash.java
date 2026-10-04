@@ -3,6 +3,11 @@
 
 package com.hbm.particle;
 
+import com.hbm.client.particle.AmatFlashVisual;
+import com.hbm.client.particle.VisualParticle;
+import dev.engine_room.flywheel.api.visual.EffectVisual;
+import dev.engine_room.flywheel.api.visualization.VisualizationContext;
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import java.util.Random;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -10,8 +15,9 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.jspecify.annotations.Nullable;
 
-public class ParticleAmatFlash extends Particle {
+public class ParticleAmatFlash extends Particle implements VisualParticle {
 
     public static final ParticleRenderType AMAT_FLASH_GROUP =
             new ParticleRenderType("hbm:amat_flash", "HAF");
@@ -21,6 +27,7 @@ public class ParticleAmatFlash extends Particle {
     public static final float[] RIM = buildRim();
 
     private final float scale;
+    private @Nullable VisualizationManager visualManager;
 
     public ParticleAmatFlash(ClientLevel level, double x, double y, double z, float scale) {
         super(level, x, y, z);
@@ -39,7 +46,6 @@ public class ParticleAmatFlash extends Particle {
         float[] rim = new float[SPIKES * 3 * 3];
 
         for (int i = 0; i < SPIKES; i++) {
-
             pose.rotateX(rand.nextFloat() * 360F * Mth.DEG_TO_RAD)
                     .rotateY(rand.nextFloat() * 360F * Mth.DEG_TO_RAD)
                     .rotateZ(rand.nextFloat() * 360F * Mth.DEG_TO_RAD)
@@ -86,6 +92,26 @@ public class ParticleAmatFlash extends Particle {
 
     public double interpZ(float pt) {
         return this.zo + (this.z - this.zo) * pt;
+    }
+
+    @Override
+    public ClientLevel level() {
+        return level;
+    }
+
+    @Override
+    public @Nullable VisualizationManager visualManager() {
+        return visualManager;
+    }
+
+    @Override
+    public void visualManager(@Nullable VisualizationManager manager) {
+        visualManager = manager;
+    }
+
+    @Override
+    public EffectVisual<?> visualize(VisualizationContext context, float partialTick) {
+        return new AmatFlashVisual(context, this, partialTick);
     }
 
     @Override

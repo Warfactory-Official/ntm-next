@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityStirling;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.RefreshesNeighborState;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -10,10 +11,8 @@ import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.items.EnumGearType;
-import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntityStirling;
 import com.hbm.util.BobMathUtil;
 import java.util.Locale;
 import net.minecraft.core.BlockPos;
@@ -139,7 +138,6 @@ public class MachineStirling extends BlockMultiblockCore
     public enum Tier {
         NORMAL(EnumGearType.LARGE.ordinal(), 300, false),
         STEEL(EnumGearType.LARGE_STEEL.ordinal(), 1500, false),
-
         CREATIVE(2, 1500, true);
 
         public final int gear;

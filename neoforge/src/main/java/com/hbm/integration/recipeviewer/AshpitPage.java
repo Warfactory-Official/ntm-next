@@ -65,7 +65,6 @@ public final class AshpitPage extends RecipePage<AshpitPage.Recipe> {
                                 new ItemStack(ModItems.DUST),
                                 new ItemStack(ModItems.ROCKET_FUEL)),
                         EnumAshType.MISC));
-
         for (Fluid smoke :
                 List.of(NTMFluids.SMOKE, NTMFluids.SMOKE_LEADED, NTMFluids.SMOKE_POISON)) {
             String key = PageIds.segment(BuiltInRegistries.FLUID.getKey(smoke));

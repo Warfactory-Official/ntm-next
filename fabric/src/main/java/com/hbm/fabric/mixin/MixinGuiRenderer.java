@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(GuiRenderer.class)
 public abstract class MixinGuiRenderer {
-
     @ModifyVariable(method = "<init>", at = @At("HEAD"), argsOnly = true)
     private static List<PictureInPictureRenderer<?>> hbm$printerRenderer(
             List<PictureInPictureRenderer<?>> original) {

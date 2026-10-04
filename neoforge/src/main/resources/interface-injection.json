@@ -1,4 +1,7 @@
 {
+  "net/minecraft/world/SimpleContainer": ["com/hbm/interfaces/injected/FuseContainerOwner"],
+  "net/minecraft/world/inventory/AbstractContainerMenu": ["com/hbm/interfaces/injected/FuseContainerOwner"],
+  "net/minecraft/server/MinecraftServer": ["com/hbm/interfaces/injected/UnstableFuseSchedule"],
   "net/minecraft/client/multiplayer/ClientLevel": ["com/hbm/interfaces/injected/IClientLevelExtension"],
   "net/minecraft/server/level/ServerLevel": ["com/hbm/interfaces/injected/IServerLevelExtension"],
   "net/minecraft/world/level/chunk/ChunkAccess": ["com/hbm/interfaces/injected/IChunkExtension"],

@@ -3,11 +3,11 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGraph.GraphUnit;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGraph;
 import com.hbm.blocks.machine.rbmk.RBMKMiniPanelBase;
 import com.hbm.client.render.RenderRBMKGraph;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKGraph.GraphUnit;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKGraph;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;

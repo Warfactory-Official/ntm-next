@@ -14,9 +14,7 @@ import org.jspecify.annotations.Nullable;
 
 public final class DoorFrame {
     private final ArrayList<Part> parts = new ArrayList<>();
-
     public boolean cull;
-
     public boolean blended;
     private int size;
 
@@ -48,25 +46,17 @@ public final class DoorFrame {
     }
 
     public static final class Part {
-
         public final Matrix4f pose = new Matrix4f();
-
         public final Vector3f slide = new Vector3f();
-
         public final Vector4f plane = new Vector4f();
         private final Matrix4f drawPose = new Matrix4f();
-
         private final float[][] both = {new float[4], new float[4]};
         private final float[][] one = {both[0]};
-
         public @Nullable HFRWavefrontObject model;
-
         public int group = -1;
-
         public AnimatedModel.@Nullable Mesh mesh;
         public @Nullable Identifier texture;
         public Clip clip = Clip.NONE;
-
         public boolean hidden;
 
         private static void set(float[] p, float x, float y, float z, float d) {

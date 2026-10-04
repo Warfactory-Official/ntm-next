@@ -41,13 +41,11 @@ public interface MessagePassingQueue<E> {
 
     @FunctionalInterface
     interface Supplier<E> {
-
         E get();
     }
 
     @FunctionalInterface
     interface Consumer<E> {
-
         void accept(E value);
     }
 

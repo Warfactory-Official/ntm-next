@@ -114,7 +114,6 @@ public class EntityBuilding extends Entity {
             }
 
             for (int i = 0; i < 250; i++) {
-
                 double pitch = this.random.nextFloat() * Math.PI / 2;
                 double yaw = this.random.nextFloat() * Math.PI * 2;
 

@@ -12,8 +12,8 @@ import com.hbm.items.IAnimatedItem;
 import com.hbm.items.ModItems;
 import com.hbm.items.special.Autogen;
 import com.hbm.lib.ModDamageTypes;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.HbmAnimationPayload;
-import com.hbm.platform.Services;
 import com.hbm.render.anim.AnimationEnums;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationSequence;
@@ -83,7 +83,6 @@ public class ItemBoltgun extends Item implements IToolable.Tool, IAnimatedItem {
                             1.0F,
                             1.0F);
                     player.getInventory().removeItem(i, 1);
-
                     EntityDamageUtil.attackEntityFromIgnoreIFrame(
                             entity, boltDamage(level, player), MELEE_DAMAGE);
 
@@ -116,8 +115,13 @@ public class ItemBoltgun extends Item implements IToolable.Tool, IAnimatedItem {
 
     private static void playSwing(@Nullable Player player) {
         if (player instanceof ServerPlayer sp) {
-            Services.NETWORK.sendTo(
-                    new HbmAnimationPayload(AnimationEnums.ToolAnimation.SWING.ordinal(), 0, 0),
+            PacketWire.sendTo(
+                    new HbmAnimationPayload(
+                            sp,
+                            sp.getMainHandItem(),
+                            AnimationEnums.ToolAnimation.SWING.ordinal(),
+                            0,
+                            0),
                     sp);
         }
     }
@@ -162,7 +166,6 @@ public class ItemBoltgun extends Item implements IToolable.Tool, IAnimatedItem {
 
         if (!level.isClientSide()) {
             level.playSound(null, pos, ModSounds.BOLTGUN.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
-
             Direction side = ctx.getClickedFace();
             double off = 0.25D;
             Vec3 hit = ctx.getClickLocation();

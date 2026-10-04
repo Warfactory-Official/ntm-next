@@ -85,7 +85,6 @@ public final class SectionGeometryLayout {
     }
 
     private static int section(float coordinate, int placement) {
-
         return (int) Math.floor(((double) coordinate + placement) / 16);
     }
 

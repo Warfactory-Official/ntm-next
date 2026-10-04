@@ -3,7 +3,7 @@
 
 package com.hbm.compat.computercraft.albion;
 
-import com.hbm.tileentity.machine.albion.BlockEntityPADetector;
+import com.hbm.blockentity.machine.albion.BlockEntityPADetector;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class PADetectorPeripheral extends CooledPeripheral<BlockEntityPADetector> {

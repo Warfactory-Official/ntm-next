@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "L": "#c:gems/lignite",
     "S": "#c:rods/wooden"

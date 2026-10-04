@@ -15,6 +15,6 @@ public record ActionSetTile(int x, int y, int z, BlockEntity tile) implements IJ
 
     @Override
     public void act(WorldInAJar world, JarScene scene) {
-        world.setTileEntity(x, y, z, tile);
+        world.setBlockEntity(x, y, z, tile);
     }
 }

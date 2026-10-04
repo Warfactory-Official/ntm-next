@@ -5,23 +5,18 @@
 package com.hbm.inventory.material;
 
 import com.hbm.inventory.OreDictManager.DictFrame;
-import com.hbm.util.I18nUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import io.netty.buffer.ByteBuf;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import mov.movblock.tenon.strip.api.DropSafe;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
 public class NTMMaterial {
-
     public static final Codec<NTMMaterial> CODEC =
             Codec.STRING.comapFlatMap(
                     name -> {
@@ -69,11 +64,11 @@ public class NTMMaterial {
     public NTMMaterial(int id, DictFrame dict) {
         this.id = id;
         this.dict = dict;
-        this.tagPath = dict.mat();
+        tagPath = dict.mat();
 
-        this.smeltsInto = this;
-        this.convIn = 1;
-        this.convOut = 1;
+        smeltsInto = this;
+        convIn = 1;
+        convOut = 1;
 
         Mats.matByName.put(dict.mat(), this);
         Mats.orderedList.add(this);
@@ -86,24 +81,24 @@ public class NTMMaterial {
         return "hbmmat." + tagPath;
     }
 
-    public String getLocalizedName() {
-        return I18nUtil.resolveKey(getUnlocalizedName());
+    public Component getLocalizedName() {
+        return Component.translatable(getUnlocalizedName());
     }
 
     public NTMMaterial setConversion(NTMMaterial mat, int in, int out) {
-        this.smeltsInto = mat;
-        this.convIn = in;
-        this.convOut = out;
+        smeltsInto = mat;
+        convIn = in;
+        convOut = out;
         return this;
     }
 
     public NTMMaterial setAutogen(MaterialShapes... shapes) {
-        Collections.addAll(this.autogen, shapes);
+        Collections.addAll(autogen, shapes);
         return this;
     }
 
     public NTMMaterial setTagOnly(MaterialShapes... shapes) {
-        Collections.addAll(this.tagOnly, shapes);
+        Collections.addAll(tagOnly, shapes);
         return this;
     }
 
@@ -143,12 +138,12 @@ public class NTMMaterial {
     }
 
     public NTMMaterial m() {
-        this.traits.add(MatTraits.METAL);
+        traits.add(MatTraits.METAL);
         return this;
     }
 
     public NTMMaterial n() {
-        this.traits.add(MatTraits.NONMETAL);
+        traits.add(MatTraits.NONMETAL);
         return this;
     }
 
@@ -178,18 +173,18 @@ public class NTMMaterial {
     }
 
     public NTMMaterial smeltable(SmeltingBehavior behavior) {
-        this.smeltable = behavior;
+        smeltable = behavior;
         return this;
     }
 
     public NTMMaterial setSolidColor(int colorLight, int colorDark) {
-        this.solidColorLight = colorLight;
-        this.solidColorDark = colorDark;
+        solidColorLight = colorLight;
+        solidColorDark = colorDark;
         return this;
     }
 
     public NTMMaterial setMoltenColor(int color) {
-        this.moltenColor = color;
+        moltenColor = color;
         return this;
     }
 

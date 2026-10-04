@@ -8,9 +8,11 @@ import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.capability.MachineCaps;
 import com.hbm.capability.NtmCapabilities;
+import com.hbm.config.FabricHbmConfig;
 import com.hbm.platform.BlockLookupCache;
+import com.hbm.platform.FabricCaps;
+import com.hbm.platform.FabricServerEvents;
 import com.hbm.platform.IEnergyHandlerView;
-import com.hbm.platform.Services;
 import com.hbm.uninos.graph.*;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import java.util.ArrayList;
@@ -36,11 +38,9 @@ public final class PowerNetwork {
             new MapMaker().weakKeys().makeMap();
 
     private static final LevelNodeGraph.FaceProbe<CableData> FACE_PROBE =
-            (level, g, cellPos, ef, d) -> faceHasEndpoint(level, g, cellPos, ef, d);
-
+            PowerNetwork::faceHasEndpoint;
     private static final Route ROUTE = new Route();
     private static final PoolPort POOL_PORT = new PoolPort();
-
     private static final DirectGather DIRECT = new DirectGather();
 
     private PowerNetwork() {}
@@ -60,7 +60,7 @@ public final class PowerNetwork {
 
     public static void init() {
         EnergyCaps.register();
-        Services.SERVER.onServerTickPost(PowerNetwork::onServerTick);
+        FabricServerEvents.onServerTickPost(PowerNetwork::onServerTick);
     }
 
     private static void onServerTick(MinecraftServer server) {
@@ -178,7 +178,6 @@ public final class PowerNetwork {
                             if (seenProviders == null) seenProviders = scratch.seenProviders;
                             if (seenProviders.add(p)) {
                                 if (p.bufferedEndpoint()) {
-
                                     int pr = bufferTier(p);
                                     scratch.bufferProviders[pr].add(
                                             new Distribution.Share<>(p, src));
@@ -208,7 +207,6 @@ public final class PowerNetwork {
                             if (seenReceivers == null) seenReceivers = scratch.seenReceivers;
                             if (seenReceivers.add(r)) {
                                 int pr = r.getPriority().ordinal();
-
                                 if (r.bufferedEndpoint()) {
                                     scratch.bufferReceivers[pr].add(
                                             new Distribution.Share<>(r, rec));
@@ -275,7 +273,7 @@ public final class PowerNetwork {
                         ForeignEnergyEndpoint.fileForeignDemand(
                                 foreignDemand,
                                 totalSupply,
-                                Services.CONFIG.runtime().foreignExportReserve(),
+                                FabricHbmConfig.runtime().foreignExportReserve(),
                                 nativeDemand,
                                 receivers,
                                 demand);
@@ -297,7 +295,6 @@ public final class PowerNetwork {
             }
 
             if (totalSupply <= 0) {
-
                 settle(bridge, providers, powerAvailable, scratch, pulled, provCursorArr);
                 return;
             }
@@ -350,7 +347,6 @@ public final class PowerNetwork {
                 };
         long fromReal = Math.min(owed, powerAvailable);
         if (fromReal > 0) Distribution.debit(providers, fromReal, powerAvailable, cursor, 0, apply);
-
         long remaining = owed - charged[0];
         for (int t = 0; t < PRIO && remaining > 0; t++) {
             long tierSupply = scratch.bufferSupply[t];
@@ -506,19 +502,22 @@ public final class PowerNetwork {
             ServerLevel level,
             LevelNodeGraph<CableData> graph,
             long cellPos,
+            LevelChunk cellChunk,
             @Nullable EdgeFaces ef,
             int faceIndex) {
-
         boolean self = faceIndex == EdgeFaces.SELF;
         long posKey = self ? cellPos : LevelNodeGraph.offset(cellPos, DIRS[faceIndex]);
         Direction side = self ? null : DIRS[faceIndex].getOpposite();
         FaceCache fc = ef == null ? null : (FaceCache) ef.attachments[faceIndex];
         if (fc != null) fc.disarm();
-        if (!self && !LevelNodeGraph.resident(level, posKey)) {
+        int faceX = BlockPos.getX(posKey);
+        int faceZ = BlockPos.getZ(posKey);
+        LevelChunk faceChunk =
+                self ? null : BlockMultiblockCore.readableChunk(level, faceX, faceZ, cellChunk);
+        if (!self && faceChunk == null) {
             graph.probeBlocker = LevelNodeGraph.chunkOf(posKey);
             return LevelNodeGraph.Probe.UNKNOWN;
         }
-
         if (!self && graph.containsCell(posKey)) return LevelNodeGraph.Probe.ABSENT;
 
         int bit = 1 << faceIndex;
@@ -529,27 +528,32 @@ public final class PowerNetwork {
         BlockEntity owner =
                 level.hbm$endpoints()
                         .resolve(level, posKey, side, MachineCaps.POWER_IN | MachineCaps.POWER_OUT);
-
         int declaredBits = MachineCaps.declaredDomains(owner);
         if ((declaredBits & (MachineCaps.POWER_IN | MachineCaps.POWER_OUT)) != 0) {
             p = (declaredBits & MachineCaps.POWER_OUT) != 0;
             r = (declaredBits & MachineCaps.POWER_IN) != 0;
-            Services.CAPS.unwatchForeignCaps(level, npos);
         } else {
             EndpointRegistry.Endpoint declared = level.hbm$endpoints().declared(posKey);
             owner = null;
             if (declared != null) {
-                Services.CAPS.unwatchForeignCaps(level, npos);
                 p = false;
                 r = false;
                 if ((declared.domains() & MachineCaps.FE) == 0
-                        || Services.CAPS.findEnergyHandler(level, npos, side) == null) {
+                        || FabricCaps.findEnergyHandler(level, npos, side) == null) {
                     if (ef != null) ef.attachments[faceIndex] = null;
                     return LevelNodeGraph.Probe.ABSENT;
                 }
             } else {
                 LevelChunk nchunk =
-                        BlockMultiblockCore.readableChunk(level, npos.getX(), npos.getZ());
+                        self
+                                ? cellChunk.getFullStatus().isOrAfter(FullChunkStatus.FULL)
+                                        ? cellChunk
+                                        : null
+                                : faceChunk;
+                if (!self && !nchunk.getFullStatus().isOrAfter(FullChunkStatus.FULL)) {
+                    graph.probeBlocker = LevelNodeGraph.chunkOf(posKey);
+                    return LevelNodeGraph.Probe.UNKNOWN;
+                }
                 BlockState nstate = nchunk == null ? null : nchunk.getBlockState(npos);
                 if (nstate != null && MultiblockSurface.isSurface(nstate)) {
                     p =
@@ -571,20 +575,22 @@ public final class PowerNetwork {
                                             NtmCapabilities.CapRole.POWER_IN)
                                     != null;
                     if (p || r) owner = MultiblockSurface.resolveOwner(level, npos, nstate, side);
-                    Services.CAPS.unwatchForeignCaps(level, npos);
                 } else {
-                    p = Services.CAPS.find(EnergyCaps.PROVIDER, level, npos, side) != null;
-                    r = Services.CAPS.find(EnergyCaps.RECEIVER, level, npos, side) != null;
-
-                    assert self || !(p || r);
-                    if (nstate != null && nstate.hasBlockEntity()) {
-                        Services.CAPS.watchForeignCaps(level, npos);
-                    } else {
-                        Services.CAPS.unwatchForeignCaps(level, npos);
-                    }
+                    p = FabricCaps.find(EnergyCaps.PROVIDER, level, npos, side) != null;
+                    r = FabricCaps.find(EnergyCaps.RECEIVER, level, npos, side) != null;
+                    assert self || !(p || r)
+                            : "Undeclared power endpoint at "
+                                    + npos
+                                    + " state="
+                                    + nstate
+                                    + " side="
+                                    + side
+                                    + " provider="
+                                    + p
+                                    + " receiver="
+                                    + r;
                 }
-
-                if (!p && !r && Services.CAPS.findEnergyHandler(level, npos, side) == null) {
+                if (!p && !r && FabricCaps.findEnergyHandler(level, npos, side) == null) {
                     long blocker = MultiblockSurface.coreBlockingChunk(level, npos);
                     if (blocker != LevelNodeGraph.NO_BLOCKER) {
                         graph.probeBlocker = blocker;
@@ -627,16 +633,15 @@ public final class PowerNetwork {
         @Nullable ForeignEnergyEndpoint endpoint;
         @Nullable IEnergyHandlerMK2 memoProvider;
         @Nullable IEnergyHandlerMK2 memoReceiver;
-
         private @Nullable BlockEntity anchor;
         private @Nullable LevelChunk anchorChunk;
 
         private FaceCache(ServerLevel level, long posKey, @Nullable Direction side) {
             this.posKey = posKey;
             this.side = side;
-            this.npos = BlockPos.of(posKey);
-            this.provider = Services.CAPS.createCache(EnergyCaps.PROVIDER, level, npos, side);
-            this.receiver = Services.CAPS.createCache(EnergyCaps.RECEIVER, level, npos, side);
+            npos = BlockPos.of(posKey);
+            provider = FabricCaps.createCache(EnergyCaps.PROVIDER, level, npos, side);
+            receiver = FabricCaps.createCache(EnergyCaps.RECEIVER, level, npos, side);
         }
 
         static FaceCache face(ServerLevel level, long nodeKey, Direction dir) {
@@ -648,8 +653,7 @@ public final class PowerNetwork {
         }
 
         @Nullable IEnergyHandlerView foreignView(ServerLevel level) {
-            if (foreign == null)
-                foreign = Services.CAPS.createEnergyHandlerCache(level, npos, side);
+            if (foreign == null) foreign = FabricCaps.createEnergyHandlerCache(level, npos, side);
             return foreign.find();
         }
 
@@ -762,7 +766,6 @@ public final class PowerNetwork {
         final ReferenceOpenHashSet<IEnergyHandlerMK2> seenProviders = new ReferenceOpenHashSet<>();
         final ReferenceOpenHashSet<IEnergyHandlerMK2> seenReceivers = new ReferenceOpenHashSet<>();
         final BufferPool<IEnergyHandlerMK2> pool = new BufferPool<>();
-
         boolean inUse;
 
         EnergyGather() {

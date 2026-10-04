@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityGeiger;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntityGeiger;
 import com.hbm.util.ContaminationUtil;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;

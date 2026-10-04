@@ -3,7 +3,6 @@
 
 package com.hbm.entity.projectile;
 
-import com.hbm.config.BombConfig;
 import com.hbm.data.ExplosionData;
 import com.hbm.entity.effect.EntityMist;
 import com.hbm.entity.logic.EntityNukeExplosionMK5;
@@ -11,8 +10,8 @@ import com.hbm.explosion.vanillant.ExplosionVNT;
 import com.hbm.explosion.vanillant.standard.*;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.MukePayload;
-import com.hbm.platform.Services;
 import com.hbm.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -67,7 +66,6 @@ public class EntityBombletZeta extends Entity {
 
     @Override
     public void tick() {
-
         renderPitchO = renderPitch;
         yRotO = getYRot();
         xo = getX();
@@ -118,7 +116,6 @@ public class EntityBombletZeta extends Entity {
                     getZ() - getDeltaMovement().z);
             level().addFreshEntity(mist);
         }
-
         if (type == 4) {
             level().addFreshEntity(
                             EntityNukeExplosionMK5.statFac(
@@ -128,7 +125,7 @@ public class EntityBombletZeta extends Entity {
                                     getY(),
                                     getZ()));
             if (level() instanceof ServerLevel server) {
-                Services.NETWORK.sendToAllAround(
+                PacketWire.sendToAllAround(
                         new MukePayload(
                                 getX(), getY() + 0.5D, getZ(), false, random.nextInt(100) == 0),
                         new TargetPoint(server, getX(), getY(), getZ(), 250));

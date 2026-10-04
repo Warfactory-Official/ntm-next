@@ -3,12 +3,12 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.storage.BlockEntityBarrel;
 import com.hbm.inventory.fluid.EnumSymbol;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.lib.Library;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.storage.BlockEntityBarrel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -29,7 +29,6 @@ public class RenderBarrel
                 ConcurrentRenderStateExtraction {
 
     private static final Identifier TEXTURE = Library.id("textures/models/misc/danger_diamond.png");
-
     static final RenderType RENDER_TYPE = FlatCutout.culled(TEXTURE);
 
     private static final float P = 1F / 256F;

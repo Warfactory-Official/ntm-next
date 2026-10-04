@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "F": "#hbm:billets/neptunium_237",
     "I": "hbm:plate_polymer"

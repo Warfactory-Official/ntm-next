@@ -47,7 +47,6 @@ public class SlotRecipeOutput extends Slot {
     protected void checkTakeAchievements(ItemStack stack) {
         stack.onCraftedBy(player, removeCount);
         removeCount = 0;
-
         if (player instanceof ServerPlayer serverPlayer)
             HbmCriteria.itemCrafted(serverPlayer, stack);
     }

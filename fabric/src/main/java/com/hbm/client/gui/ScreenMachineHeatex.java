@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityHeaterHeatex;
 import com.hbm.inventory.container.MenuMachineHeatex;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityHeaterHeatex;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
@@ -66,7 +66,7 @@ public class ScreenMachineHeatex extends ScreenInfoContainer<MenuMachineHeatex> 
         BlockPos pos = menu.blockEntity().getBlockPos();
         CompoundTag data = new CompoundTag();
         data.putInt(key, value);
-        Services.NETWORK.sendToServer(new NbtControlPayload(pos, data));
+        PacketWire.sendToServer(new NbtControlPayload(pos, data));
     }
 
     @Override

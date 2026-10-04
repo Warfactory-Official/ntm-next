@@ -11,7 +11,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 
 public class ItemCatalyst extends Item {
-
     private final int color;
 
     public ItemCatalyst(int color, Properties props) {

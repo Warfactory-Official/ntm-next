@@ -8,7 +8,6 @@ import com.hbm.render.anim.HbmAnimations;
 import org.jspecify.annotations.Nullable;
 
 public interface DoorRenderer {
-
     double[] IDENTITY = {0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 2};
 
     static double[] getRelevantTransformation(

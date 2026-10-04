@@ -3,6 +3,10 @@
 
 package com.hbm.client.model;
 
+import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.machine.LaunchpadSoyuz;
+import com.hbm.blocks.machine.LaunchpadSoyuzAnchorCell;
+import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
@@ -33,7 +37,9 @@ public final class SectionGeometryIndex {
     private final LongOpenHashSet appearanceNeighbors = new LongOpenHashSet();
     private final LongOpenHashSet lightColumns = new LongOpenHashSet();
     private long[] positions = new long[16];
+    private long[] geometryPositions = new long[16];
     private BlockState[] states = new BlockState[16];
+    private BlockState[] renderStates = new BlockState[16];
     private SectionedModel[] models = new SectionedModel[16];
     private SectionGeometryLayout[] layouts = new SectionGeometryLayout[16];
     private SectionGeometry.Prepared[] prepared = new SectionGeometry.Prepared[16];
@@ -56,7 +62,6 @@ public final class SectionGeometryIndex {
         var renderSection = view.getRenderSectionAt(new BlockPos(x * 16, y * 16, z * 16));
         if (renderSection == null) return;
         var mesh = renderSection.getSectionMesh();
-
         if (mesh != CompiledSectionMesh.UNCOMPILED && mesh != CompiledSectionMesh.EMPTY)
             renderSection.reset();
     }
@@ -76,7 +81,19 @@ public final class SectionGeometryIndex {
         assert Minecraft.getInstance().isSameThread();
         long key = pos.asLong();
         int previous = owners.get(key);
-        var model = SectionedModel.forState(state);
+        BlockPos geometryPos = pos;
+        BlockState renderState = state;
+        if (state.getBlock() instanceof LaunchpadSoyuzAnchorCell) {
+            geometryPos = LaunchpadSoyuzAnchorCell.core(pos, state);
+            renderState =
+                    ModBlocks.LAUNCHPAD_SOYUZ
+                            .get()
+                            .defaultBlockState()
+                            .setValue(
+                                    BlockMultiblockCore.FACING,
+                                    state.getValue(BlockMultiblockCore.FACING));
+        }
+        var model = SectionedModel.forState(renderState);
         if (previous != -1 && states[previous] == state && models[previous] == model) return;
         if (previous != -1) remove(level, previous);
         if (model == null) return;
@@ -84,7 +101,9 @@ public final class SectionGeometryIndex {
         if (id == positions.length) {
             int capacity = positions.length * 2;
             positions = Arrays.copyOf(positions, capacity);
+            geometryPositions = Arrays.copyOf(geometryPositions, capacity);
             states = Arrays.copyOf(states, capacity);
+            renderStates = Arrays.copyOf(renderStates, capacity);
             models = Arrays.copyOf(models, capacity);
             layouts = Arrays.copyOf(layouts, capacity);
             prepared = Arrays.copyOf(prepared, capacity);
@@ -93,11 +112,13 @@ public final class SectionGeometryIndex {
         }
         owners.put(key, id);
         positions[id] = key;
+        geometryPositions[id] = geometryPos.asLong();
         states[id] = state;
+        renderStates[id] = renderState;
         models[id] = model;
         if (model.contextual) contextualOwners++;
-        prepared[id] = model.prepare(level, pos, state);
-        layouts[id] = model.acquire(pos, prepared[id].mesh());
+        prepared[id] = model.prepare(level, geometryPos, renderState);
+        layouts[id] = model.acquire(geometryPos, prepared[id].mesh());
         var chunkRow =
                 chunkOwners.computeIfAbsent(
                         ChunkPos.pack(pos.getX() >> 4, pos.getZ() >> 4), k -> new IntArrayList());
@@ -107,7 +128,7 @@ public final class SectionGeometryIndex {
     }
 
     private void addParts(ClientLevel level, int id) {
-        BlockPos pos = BlockPos.of(positions[id]);
+        BlockPos pos = BlockPos.of(geometryPositions[id]);
         var layout = layouts[id];
         int[] slots = new int[layout.sections.length];
         Arrays.fill(slots, -1);
@@ -116,6 +137,7 @@ public final class SectionGeometryIndex {
             long section = worldSection(pos, layout.sections[part]);
             if (SectionPos.y(section) < level.getMinSectionY()
                     || SectionPos.y(section) > level.getMaxSectionY()) continue;
+            if (!ownsSection(id, section)) continue;
             long[] row = sections.get(section);
             if (row == null) {
                 row = new long[6];
@@ -123,7 +145,6 @@ public final class SectionGeometryIndex {
             }
             int size = (int) row[0];
             if (size + 2 == row.length) {
-
                 if (row[1] * 2 <= size) {
                     compactContributions(row);
                     size = (int) row[0];
@@ -141,7 +162,7 @@ public final class SectionGeometryIndex {
     }
 
     private void removeParts(ClientLevel level, int id) {
-        BlockPos pos = BlockPos.of(positions[id]);
+        BlockPos pos = BlockPos.of(geometryPositions[id]);
         long[] local = layouts[id].sections;
         for (int part = 0; part < local.length; part++) {
             int at = contributionSlots[id][part];
@@ -157,6 +178,21 @@ public final class SectionGeometryIndex {
             }
             dirty(level, section);
         }
+    }
+
+    private boolean ownsSection(int id, long section) {
+        BlockState state = states[id];
+        int segment;
+        if (state.getBlock() instanceof LaunchpadSoyuz) segment = 0;
+        else if (state.getBlock() instanceof LaunchpadSoyuzAnchorCell)
+            segment = state.getValue(LaunchpadSoyuzAnchorCell.SEGMENT);
+        else return true;
+        return LaunchpadSoyuz.sectionOwner(
+                        BlockPos.of(geometryPositions[id]),
+                        renderStates[id].getValue(BlockMultiblockCore.FACING),
+                        SectionPos.x(section),
+                        SectionPos.z(section))
+                == segment;
     }
 
     private void compactContributions(long[] row) {
@@ -187,6 +223,7 @@ public final class SectionGeometryIndex {
         }
         if (row.isEmpty()) chunkOwners.remove(chunk);
         states[id] = null;
+        renderStates[id] = null;
         if (models[id].contextual) contextualOwners--;
         models[id] = null;
         SectionedModel.release(layouts[id]);
@@ -221,8 +258,8 @@ public final class SectionGeometryIndex {
         }
         appearanceNeighbors.clear();
         for (int id : appearanceChanges) {
-            BlockPos pos = BlockPos.of(positions[id]);
-            var changed = models[id].prepare(level, pos, states[id]);
+            BlockPos pos = BlockPos.of(geometryPositions[id]);
+            var changed = models[id].prepare(level, pos, renderStates[id], prepared[id]);
             if (changed == prepared[id]) continue;
             var layout = models[id].acquire(pos, changed.mesh());
             if (layout != layouts[id]) {
@@ -267,13 +304,19 @@ public final class SectionGeometryIndex {
         var storage = chunk.getSections();
         for (int section = 0; section < storage.length; section++) {
             var cells = storage[section];
-            if (!cells.maybeHas(state -> SectionedModel.forState(state) != null)) continue;
+            if (!cells.maybeHas(
+                    state ->
+                            SectionedModel.forState(state) != null
+                                    || state.getBlock() instanceof LaunchpadSoyuzAnchorCell))
+                continue;
             int bottom = chunk.getSectionYFromSectionIndex(section) << 4;
             for (int y = 0; y < 16; y++) {
                 for (int z = 0; z < 16; z++) {
                     for (int x = 0; x < 16; x++) {
                         BlockState state = cells.getBlockState(x, y, z);
-                        if (SectionedModel.forState(state) == null) continue;
+                        if (SectionedModel.forState(state) == null
+                                && !(state.getBlock() instanceof LaunchpadSoyuzAnchorCell))
+                            continue;
                         pos.set(
                                 chunk.getPos().getMinBlockX() + x,
                                 bottom + y,
@@ -316,6 +359,7 @@ public final class SectionGeometryIndex {
         appearanceChunks.clear();
         appearanceNeighbors.clear();
         Arrays.fill(states, null);
+        Arrays.fill(renderStates, null);
         Arrays.fill(models, null);
         Arrays.fill(layouts, null);
         Arrays.fill(prepared, null);
@@ -334,12 +378,12 @@ public final class SectionGeometryIndex {
         for (int i = 2; i < count + 2; i++) {
             long contribution = row[i];
             int id = (int) (contribution >>> 32);
-            BlockPos pos = BlockPos.of(positions[id]);
+            BlockPos pos = BlockPos.of(geometryPositions[id]);
             parts.add(
                     new SectionGeometry.Part(
                             models[id],
-                            states[id],
-                            positions[id],
+                            renderStates[id],
+                            geometryPositions[id],
                             layouts[id],
                             (int) contribution,
                             pos.getX() - (SectionPos.x(section) << 4),

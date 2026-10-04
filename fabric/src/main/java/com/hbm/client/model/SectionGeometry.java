@@ -19,7 +19,6 @@ import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadView;
 import net.fabricmc.fabric.api.client.renderer.v1.sprite.FabricTextureAtlas;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.builders.UVPair;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.BlockModelLighter;
@@ -85,14 +84,20 @@ public final class SectionGeometry {
 
     static Mesh mesh(
             BlockStateModel model, BlockState state, @Nullable List<TextureAtlasSprite> sprites) {
+        List<BlockStateModelPart> parts = new ArrayList<>();
+        model.collectParts(RandomSource.create(0), parts);
+        return mesh(parts, state, sprites);
+    }
+
+    static Mesh mesh(
+            List<BlockStateModelPart> parts,
+            BlockState state,
+            @Nullable List<TextureAtlasSprite> sprites) {
         var vertices = new FloatArrayList();
         var normals = new FloatArrayList();
         var layers = new ByteArrayList();
         var surface = new ByteArrayList();
         boolean[] ownBlock = {true};
-        List<BlockStateModelPart> parts = new ArrayList<>();
-        model.collectParts(RandomSource.create(0), parts);
-
         var finder =
                 sprites == null
                         ? null
@@ -125,7 +130,6 @@ public final class SectionGeometry {
                                     if (sprites != null) sprites.add(finder.find(quad));
                                 });
         for (var part : parts) part.emitQuads(emitter, face -> false);
-
         float[] data = vertices.toFloatArray();
         boolean contained = true;
         for (int i = 0; i < data.length; i += 5) {
@@ -265,7 +269,12 @@ public final class SectionGeometry {
         var light = new IntArrayList();
         long seed = state.getSeed(pos);
         BlockModelLighter.clearCache();
-
+        Object key = model.complete.createGeometryKey(view, pos, state, RandomSource.create(seed));
+        Cells cells = model.cells(key);
+        if (cells == null) {
+            cells = Cells.of(model.complete, view, pos, state, seed);
+            if (key != null) model.cells(key, cells);
+        }
         var renderer =
                 Renderer.get()
                         .altModelBlockRenderer(
@@ -277,7 +286,6 @@ public final class SectionGeometry {
                         .quadEmitter(
                                 quad -> {
                                     boolean sampled = quad.tag() == QuadLighting.OWN_BLOCK;
-
                                     surface.add(sampled ? (byte) (quad.emissive() ? 15 : 0) : -1);
                                     appendNormals(normals, quad);
                                     for (int v = 0; v < 4; v++) {
@@ -291,33 +299,19 @@ public final class SectionGeometry {
                                     }
                                     layers.add((byte) quad.chunkLayer().ordinal());
                                 });
-        Object key = model.complete.createGeometryKey(view, pos, state, RandomSource.create(seed));
-        Cells cells = key == null ? null : model.cells.get(key);
-        if (cells == null) {
-            cells = Cells.of(model.complete, view, pos, state, seed);
-            if (key != null) model.cells.put(key, cells);
+        for (int i = 0; i < cells.offsets().length; i++) {
+            int cell = cells.offsets()[i];
+            renderer.tesselateBlock(
+                    emitter,
+                    QuadLighting.dx(cell),
+                    QuadLighting.dy(cell),
+                    QuadLighting.dz(cell),
+                    view,
+                    pos.offset(QuadLighting.dx(cell), QuadLighting.dy(cell), QuadLighting.dz(cell)),
+                    state,
+                    cells.models()[i],
+                    seed);
         }
-        if (cells == Cells.NONE) {
-            renderer.tesselateBlock(emitter, 0, 0, 0, view, pos, state, model.complete, seed);
-        } else {
-            for (int i = 0; i < cells.offsets().length; i++) {
-                int cell = cells.offsets()[i];
-                renderer.tesselateBlock(
-                        emitter,
-                        QuadLighting.dx(cell),
-                        QuadLighting.dy(cell),
-                        QuadLighting.dz(cell),
-                        view,
-                        pos.offset(
-                                QuadLighting.dx(cell),
-                                QuadLighting.dy(cell),
-                                QuadLighting.dz(cell)),
-                        state,
-                        cells.models()[i],
-                        seed);
-            }
-        }
-
         return new Prepared(
                 new Mesh(
                         vertices.toFloatArray(),
@@ -330,8 +324,6 @@ public final class SectionGeometry {
     }
 
     record Cells(int[] offsets, BlockStateModel[] models) {
-        static final Cells NONE = new Cells(new int[0], new BlockStateModel[0]);
-
         static Cells of(
                 BlockStateModel complete,
                 BlockAndTintGetter view,
@@ -341,6 +333,12 @@ public final class SectionGeometry {
             var all = Renderer.get().mutableMesh();
             complete.emitQuads(
                     all.emitter(), view, pos, state, RandomSource.create(seed), face -> false);
+            boolean[] offset = {false};
+            all.forEach(quad -> offset[0] |= QuadLighting.isOffset(quad.tag()));
+            if (!offset[0])
+                return new Cells(
+                        new int[] {0},
+                        new BlockStateModel[] {new CellModel(all.immutableCopy(), complete)});
             var meshes = new Int2ObjectLinkedOpenHashMap<MutableMesh>();
             all.forEach(
                     quad -> {
@@ -359,7 +357,6 @@ public final class SectionGeometry {
                         }
                         emitted.emit();
                     });
-            if (!meshes.keySet().intStream().anyMatch(cell -> cell != 0)) return NONE;
             int[] offsets = meshes.keySet().toIntArray();
             BlockStateModel[] models = new BlockStateModel[offsets.length];
             for (int i = 0; i < offsets.length; i++)
@@ -458,9 +455,7 @@ public final class SectionGeometry {
         int[] colors = new int[model.mesh.layers.length * 4];
         int[] next = {0};
         var view = new ColorView(state, lighting);
-
         BlockModelLighter.clearCache();
-
         var renderer =
                 Renderer.get()
                         .altModelBlockRenderer(
@@ -472,7 +467,6 @@ public final class SectionGeometry {
                                     for (int v = 0; v < 4; v++) colors[next[0]++] = quad.color(v);
                                 });
         renderer.tesselateBlock(emitter, 0, 0, 0, view, BlockPos.ZERO, state, model.complete, 0);
-
         if (next[0] != colors.length)
             throw new IllegalStateException(
                     state + " changed its static quad count while lighting");

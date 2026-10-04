@@ -175,7 +175,6 @@ public final class GunRestVisual extends HbmItemVisual {
             return (base, light) -> {
                 Matrix4f at = visual.place(base, pose);
                 for (int layer = 0; layer < layers.length; layer++) {
-
                     Matrix4f uv =
                             WeaponRenderTypes.balefireGlintMatrix(
                                     layer, WeaponRenderTypes.FATMAN_GLINT_SPEED);

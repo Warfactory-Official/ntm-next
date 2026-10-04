@@ -138,7 +138,6 @@ public class NTMHouse2Piece extends NtmComponentPiece {
                 out.block(9, 4, 2, slab);
                 out.box(9, 4, 4, 9, 4, 7, slab, air);
                 out.selectorBox(9, 0, 3, 9, 1, 9, sandstone);
-
                 out.selectorBox(9, 0, 2, 9, 0, 2, sandstone);
                 out.selectorBox(9, 2, 3, 9, 2, 3, sandstone);
                 out.block(9, 2, 4, fence);
@@ -151,7 +150,6 @@ public class NTMHouse2Piece extends NtmComponentPiece {
                 out.selectorBox(15, 0, 1, 15, 0, 8, sandstone);
                 out.selectorBox(15, 1, 3, 15, 1, 3, sandstone);
                 out.box(15, 1, 4, 15, 1, 5, slab, air);
-
                 out.block(15, 1, 8, slab);
 
                 out.box(10, 0, 1, 14, 0, 8, sandstoneState, air);
@@ -174,7 +172,6 @@ public class NTMHouse2Piece extends NtmComponentPiece {
                 out.block(1, 5, 1, pillarY("deco_pipe_rim_rusted"));
                 out.block(2, 1, 3, hbmState("crate"));
                 out.block(1, 1, 5, hbmState("crate_can"));
-
                 out.container(
                         1,
                         1,
@@ -197,7 +194,6 @@ public class NTMHouse2Piece extends NtmComponentPiece {
                                 .defaultBlockState()
                                 .setValue(ChestBlock.FACING, Direction.SOUTH),
                         ComponentLoot.ANTENNA_10_UNSCALED);
-
                 out.bobble(10, 1, 4);
                 out.maybeBox(11, 1, 1, 14, 1, 8, 0.25F, sand, air);
             };

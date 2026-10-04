@@ -3,7 +3,7 @@
 
 package com.hbm.inventory.container;
 
-import com.hbm.tileentity.machine.storage.BlockEntityMachineFluidTank;
+import com.hbm.blockentity.machine.storage.BlockEntityMachineFluidTank;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -46,7 +46,6 @@ public class MenuMachineFluidTank extends BlockEntityMenu<BlockEntityMachineFlui
                     int invEnd = slots.size();
 
                     if (index < machineEnd) return moveItemStackTo(stack, machineEnd, invEnd, true);
-
                     return moveItemStackTo(stack, 0, machineEnd - 1, false);
                 });
     }

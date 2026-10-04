@@ -111,13 +111,11 @@ public record OreHeightProfile(Shape shape, int minY, int maxY, int plateau, Lis
         int outer = max - min - inner + 1;
         if (outer <= 0) return uniform(min, min);
         if (!very) {
-
             double[] p = new double[max - min];
             for (int limit = 0; limit < outer; limit++)
                 spread(p, 0, limit + inner - 1, 1.0 / outer);
             return table(min, p);
         }
-
         double[] lower = new double[max - min];
         for (int upper = min + inner; upper <= max; upper++)
             spread(lower, 0, upper - 1 - min, 1.0 / outer);
@@ -179,7 +177,6 @@ public record OreHeightProfile(Shape shape, int minY, int maxY, int plateau, Lis
         if (shape == Shape.TABLE) return table.get(y - minY);
         long range = (long) maxY - minY;
         if (shape == Shape.UNIFORM || plateau >= range) return 1.0 / (range + 1);
-
         long a = (range - plateau) / 2;
         long b = range - a;
         long k = (long) y - minY;

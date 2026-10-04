@@ -8,6 +8,9 @@ import com.hbm.uninos.graph.EndpointRegistry;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.world.NtmWorldgenFields;
 import java.util.List;
+import java.util.Set;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 public interface IServerLevelExtension {
 
@@ -18,4 +21,10 @@ public interface IServerLevelExtension {
     ResolvedCapCache hbm$resolvedCaps();
 
     NtmWorldgenFields hbm$worldgenFields();
+
+    Set<Entity> hbm$radarTargets();
+
+    Set<LivingEntity> hbm$livingTargets();
+
+    Set<Entity> hbm$storageEntities();
 }

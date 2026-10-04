@@ -59,5 +59,9 @@ void main() {
     color *= lightMapColor;
 #endif
 
+#ifdef DISCARD_ZERO_ALPHA
+    if (color.a <= 0.0) discard;
+#endif
+
     fragColor = color;
 }

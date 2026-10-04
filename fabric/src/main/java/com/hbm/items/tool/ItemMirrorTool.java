@@ -3,12 +3,12 @@
 
 package com.hbm.items.tool;
 
+import com.hbm.blockentity.machine.BlockEntitySolarMirror;
 import com.hbm.blocks.machine.MachineSolarBoiler;
 import com.hbm.blocks.machine.SolarMirror;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.items.ModDataComponents;
-import com.hbm.tileentity.machine.BlockEntitySolarMirror;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -45,7 +45,6 @@ public class ItemMirrorTool extends Item {
         if (boilerCore != null
                 && level.getBlockState(boilerCore).getBlock() instanceof MachineSolarBoiler) {
             if (!level.isClientSide()) {
-
                 stack.set(ModDataComponents.MIRROR_TOOL_TARGET.get(), boilerCore.above().asLong());
                 message(player, "item.hbm.mirror_tool.linked", ChatFormatting.YELLOW);
             }
@@ -63,7 +62,6 @@ public class ItemMirrorTool extends Item {
                 int dz = pos.getZ() - t.getZ();
 
                 boolean withinReach = Math.sqrt(dx * dx + dy * dy + dz * dz) <= 100;
-
                 boolean withinAngle = dx * dx + dz * dz <= dy * dy;
 
                 if (!withinReach) message(player, "item.hbm.mirror_tool.reach", ChatFormatting.RED);
@@ -84,8 +82,10 @@ public class ItemMirrorTool extends Item {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-        for (String line : I18nUtil.loreLines(this.getDescriptionId() + ".desc")) {
-            adder.accept(Component.literal(line).withStyle(ChatFormatting.YELLOW));
+        for (Component line :
+                TooltipStyle.lines(
+                        Component.translatableWithFallback(getDescriptionId() + ".desc", ""))) {
+            adder.accept(line.copy().withStyle(ChatFormatting.YELLOW));
         }
     }
 }

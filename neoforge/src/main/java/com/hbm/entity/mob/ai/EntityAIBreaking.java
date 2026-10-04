@@ -3,7 +3,7 @@
 
 package com.hbm.entity.mob.ai;
 
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgePlatform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -102,7 +102,7 @@ public class EntityAIBreaking extends Goal {
         if (progress >= 1F) {
             digTick = 0;
             if (level instanceof ServerLevel server
-                    && Services.PLATFORM.canEntityDestroyBlock(server, marked, state, digger)) {
+                    && NeoForgePlatform.canEntityDestroyBlock(server, marked, state, digger)) {
                 level.destroyBlock(marked, false);
             }
             marked = null;
@@ -112,7 +112,6 @@ public class EntityAIBreaking extends Goal {
             }
         } else if (digTick % 5 == 0) {
             SoundType sound = state.getSoundType();
-
             level.playSound(
                     null,
                     digger.getX(),

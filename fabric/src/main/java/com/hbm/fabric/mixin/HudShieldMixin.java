@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(Hud.class)
 abstract class HudShieldMixin {
-
     @ModifyVariable(method = "extractArmor", at = @At("HEAD"), argsOnly = true, ordinal = 0)
     private static int hbm$insertShield(
             int yLineBase,

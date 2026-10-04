@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.machine;
 
+import com.hbm.blockentity.machine.pile.BlockEntityPileControl;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.pile.BlockEntityPileControl;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class PileControlPeripheral extends SnapshotPeripheral<BlockEntityPileControl> {

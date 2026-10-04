@@ -83,7 +83,6 @@ public final class WeaponRenderTypes {
                             BlendFactor.ONE_MINUS_SRC_ALPHA,
                             BlendFactor.ONE,
                             BlendFactor.ZERO));
-
     public static final RenderPipeline CHEMICAL_CLOUD_PIPELINE =
             WorldRenderPipeline.of(
                     RenderPipeline.builder(RenderPipelines.MATRICES_FOG_LIGHT_DIR_SNIPPET)
@@ -104,7 +103,6 @@ public final class WeaponRenderTypes {
                             .withDepthStencilState(
                                     new DepthStencilState(
                                             DepthStencilState.DEFAULT.depthTest(), false)));
-
     public static final RenderPipeline ROCKET_FLAME_PIPELINE =
             WorldRenderPipeline.of(
                     RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
@@ -144,7 +142,6 @@ public final class WeaponRenderTypes {
                             .withPrimitiveTopology(PrimitiveTopology.QUADS)
                             .withDepthStencilState(new DepthStencilState(CompareOp.EQUAL, false))
                             .withCull(false));
-
     public static final RenderType UNTEXTURED = RenderTypes.entityCutout(RenderTextures.WHITE);
     public static final RenderType TRACER =
             RenderType.create(
@@ -175,11 +172,8 @@ public final class WeaponRenderTypes {
     private static final Map<Identifier, RenderType> CHEMICAL_CLOUD_CACHE =
             new ConcurrentHashMap<>();
     private static final Map<GlintKey, RenderType> BALEFIRE_GLINT = new ConcurrentHashMap<>();
-
     private static final Map<ItemGlintKey, RenderType> ITEM_GLINT = new ConcurrentHashMap<>();
-
     public static final float FATMAN_GLINT_SPEED = -6F;
-
     public static final int BALEFIRE_GLINT_TINT =
             0xFF000000
                     | ((int) (0F * 0.76F * 255F) << 16)

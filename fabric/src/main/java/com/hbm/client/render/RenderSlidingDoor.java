@@ -3,8 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.BlockEntityDoorGeneric;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.BlockEntityDoorGeneric;
 import net.minecraft.util.Mth;
 
 public final class RenderSlidingDoor implements DoorRenderer {

@@ -6,7 +6,6 @@ package com.hbm.client.render;
 import com.hbm.blocks.generic.BlockLoot;
 import com.hbm.client.render.flywheel.HbmBlockEntityVisual;
 import com.hbm.client.render.flywheel.WorldItem;
-import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
 import com.hbm.items.armor.ModArmorItem;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
@@ -33,7 +32,6 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -46,10 +44,10 @@ import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 
-public class RenderLoot implements BlockEntityRenderer<BlockLoot.TileEntityLoot, RenderLoot.State> {
+public class RenderLoot
+        implements BlockEntityRenderer<BlockLoot.BlockEntityLoot, RenderLoot.State> {
     private static final AABB SPRITE_BOUNDS = new AABB(.25, 0, .25, .75, .03125, .75);
     private final ItemModelResolver itemModelResolver;
-
     private final Map<ItemStack, AABB> extents = new WeakHashMap<>();
     private final ItemSprites sprites;
     private final Part[] nuke;
@@ -105,7 +103,6 @@ public class RenderLoot implements BlockEntityRenderer<BlockLoot.TileEntityLoot,
     }
 
     public static void fixedView(PoseStack pose, AABB model) {
-
         pose.translate(.5, .5 * model.maxZ, .5);
         pose.mulPose(Axis.XP.rotationDegrees(90));
         pose.scale(.5F, .5F, .5F);
@@ -209,13 +206,12 @@ public class RenderLoot implements BlockEntityRenderer<BlockLoot.TileEntityLoot,
 
     @Override
     public boolean shouldRenderOffScreen() {
-
         return true;
     }
 
     @Override
     public void extractRenderState(
-            BlockLoot.TileEntityLoot be,
+            BlockLoot.BlockEntityLoot be,
             State state,
             float partialTicks,
             Vec3 cameraPosition,
@@ -224,7 +220,7 @@ public class RenderLoot implements BlockEntityRenderer<BlockLoot.TileEntityLoot,
                 be, state, partialTicks, cameraPosition, breakProgress);
         state.visualized = HbmBlockEntityVisual.hasVisual(be);
         state.items.clear();
-        for (BlockLoot.TileEntityLoot.Entry entry : be.items) {
+        for (BlockLoot.BlockEntityLoot.Entry entry : be.items) {
             Part[] parts = parts(entry.stack());
             if (parts != null) {
                 state.items.add(

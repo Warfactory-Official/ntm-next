@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.BlockEntityLantern;
 import com.hbm.client.render.RenderLantern;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.TileEntityLantern;
 import com.hbm.util.GameTime;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
@@ -22,7 +22,7 @@ import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 
-public final class LanternVisual extends HbmDynamicBlockEntityVisual<TileEntityLantern> {
+public final class LanternVisual extends HbmDynamicBlockEntityVisual<BlockEntityLantern> {
     private static final HFRWavefrontObject MODEL = ResourceManager.lantern;
     private static final MeshPart LIGHT_PART =
             MeshPart.obj(
@@ -44,7 +44,7 @@ public final class LanternVisual extends HbmDynamicBlockEntityVisual<TileEntityL
     private boolean initialized;
 
     public LanternVisual(
-            VisualizationContext context, TileEntityLantern blockEntity, float partialTick) {
+            VisualizationContext context, BlockEntityLantern blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         var basePose = new Matrix4f().translation(.5F, 0F, .5F);
         rawBodyBounds = new AABB(pos).minmax(LightBounds.of(MODEL, "Lantern", basePose, pos));

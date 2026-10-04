@@ -17,10 +17,11 @@ import com.hbm.handler.threading.TargetPoint;
 import com.hbm.items.weapon.sedna.BulletConfig;
 import com.hbm.items.weapon.sedna.factory.Lego;
 import com.hbm.items.weapon.sedna.factory.XFactoryCatapult;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.HazePayload;
 import com.hbm.packet.toclient.MukePayload;
 import com.hbm.packet.toclient.PlasmaBlastPayload;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricPlatform;
 import com.hbm.saveddata.satellites.SatelliteDetector;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.DamageClass;
@@ -50,7 +51,6 @@ public class ItemGrenadeFilling extends Item {
     public ItemGrenadeFilling(Item.Properties properties, EnumGrenadeFilling type) {
         super(properties);
         this.type = type;
-
         if (fragmentation != null) return;
         fragmentation =
                 new BulletConfig()
@@ -190,7 +190,7 @@ public class ItemGrenadeFilling extends Item {
         igniteAround(grenade, 3);
         if (!(level instanceof ServerLevel server)) return;
         for (int i = 0; i < 3; i++) {
-            Services.NETWORK.sendToAllAround(
+            PacketWire.sendToAllAround(
                     new HazePayload(
                             grenade.getX() + server.getRandom().nextGaussian() * 4D,
                             grenade.getY(),
@@ -210,7 +210,7 @@ public class ItemGrenadeFilling extends Item {
                     if (!server.getBlockState(pos).isAir()) continue;
                     for (Direction direction : Direction.VALUES) {
                         BlockPos neighbor = pos.relative(direction);
-                        if (Services.PLATFORM.isFlammable(
+                        if (FabricPlatform.isFlammable(
                                 server,
                                 neighbor,
                                 server.getBlockState(neighbor),
@@ -293,7 +293,6 @@ public class ItemGrenadeFilling extends Item {
         EntityNukeExplosionMK3 ex =
                 EntityNukeExplosionMK3.statFacFleija(
                         level, grenade.getX(), grenade.getY(), grenade.getZ(), 20);
-
         if (!ex.isRemoved()) {
             level.playSound(
                     null,
@@ -331,8 +330,7 @@ public class ItemGrenadeFilling extends Item {
                         15.0F,
                         1.0F);
         if (!(grenade.level() instanceof ServerLevel server)) return;
-
-        Services.NETWORK.sendToAllAround(
+        PacketWire.sendToAllAround(
                 new MukePayload(
                         grenade.getX(),
                         grenade.getY() + 0.5D,
@@ -373,7 +371,6 @@ public class ItemGrenadeFilling extends Item {
                         SoundSource.BLOCKS,
                         5F,
                         0.9F + grenade.level().getRandom().nextFloat() * 0.2F);
-
         grenade.level()
                 .playSound(
                         null,
@@ -388,7 +385,7 @@ public class ItemGrenadeFilling extends Item {
         if (!(grenade.level() instanceof ServerLevel server)) return;
         float yaw = server.getRandom().nextFloat() * 180F;
         for (int i = 0; i < 3; i++) {
-            Services.NETWORK.sendToAllAround(
+            PacketWire.sendToAllAround(
                     new PlasmaBlastPayload(
                             grenade.getX(),
                             grenade.getY() + 0.125D,

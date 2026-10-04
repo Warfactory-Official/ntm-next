@@ -7,7 +7,6 @@ import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.client.MultiblockBreakSnapshot;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;

@@ -7,7 +7,6 @@ import com.hbm.client.render.RenderBeam;
 import com.hbm.client.render.RenderBulletMK4;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.BulletConfig;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.item.weapon.sedna.ItemRenderAberrator;
 import com.hbm.render.item.weapon.sedna.ItemRenderAm180;
@@ -151,7 +150,6 @@ public class GunFactoryClient {
         ItemRenderWeaponBase.register(ModItems.GUN_FLAREGUN::get, new ItemRenderFlaregun());
         ItemRenderWeaponBase.register(ModItems.GUN_CONGOLAKE::get, new ItemRenderCongoLake());
         ItemRenderWeaponBase.register(ModItems.GUN_MK108::get, new ItemRenderMK108());
-
         ItemRenderWeaponBase.register(ModItems.GUN_FATMAN::get, new ItemRenderFatMan());
         ItemRenderWeaponBase.register(
                 ModItems.GUN_FLAMER::get, new ItemRenderFlamer(ResourceManager.flamethrower_tex));
@@ -173,12 +171,9 @@ public class GunFactoryClient {
                 ModItems.GUN_LASER_PISTOL_MORNING_GLORY::get,
                 new ItemRenderLaserPistol(ResourceManager.laser_pistol_morning_glory_tex));
         ItemRenderWeaponBase.register(ModItems.GUN_LASRIFLE::get, new ItemRenderLasrifle());
-
         ItemRenderWeaponBase.register(
                 ModItems.GUN_CHARGE_THROWER::get, new ItemRenderChargeThrower());
-
         ItemRenderWeaponBase.register(ModItems.GUN_DRILL::get, new ItemRenderDrill());
-
         ItemRenderWeaponBase.register(ModItems.GUN_PA_MELEE::get, new ItemRenderPAMelee());
         ItemRenderWeaponBase.register(ModItems.GUN_FOLLY::get, new ItemRenderFolly());
         ItemRenderWeaponBase.register(ModItems.GUN_ABERRATOR::get, new ItemRenderAberrator());
@@ -462,7 +457,6 @@ public class GunFactoryClient {
                 .getConfig(null, 0)
                 .hud(LegoClient.HUD_COMPONENT_AMMO_MIRROR);
         ModItems.GUN_ABERRATOR_EOTT.get().getConfig(null, 1).hud(LegoClient.HUD_COMPONENT_AMMO);
-
         ModItems.GUN_DOUBLE_BARREL
                 .get()
                 .getConfig(null, 0)
@@ -499,7 +493,6 @@ public class GunFactoryClient {
         RenderBulletMK4.setRenderer(XFactoryCatapult.cluster_submunition, LegoClient.RENDER_BOMB);
         RenderBulletMK4.setRenderer(
                 XFactoryCatapult.nuke_balefire, LegoClient.RENDER_NUKE_BALEFIRE);
-
         RenderBulletMK4.setRenderer(XFactoryTurret.shell_normal, LegoClient.RENDER_GRENADE);
         RenderBulletMK4.setRenderer(XFactoryTurret.shell_explosive, LegoClient.RENDER_GRENADE);
         RenderBulletMK4.setRenderer(XFactoryTurret.shell_ap, LegoClient.RENDER_GRENADE);
@@ -628,7 +621,6 @@ public class GunFactoryClient {
         RenderBeam.setRenderer(
                 XFactoryEnergy.energy_emerald_overcharge, LegoClient.RENDER_LASER_EMERALD);
         RenderBeam.setRenderer(XFactoryEnergy.energy_emerald_ir, LegoClient.RENDER_LASER_EMERALD);
-
         RenderBeam.setRenderer(XFactory762mm.energy_lacunae, LegoClient.RENDER_LASER_PURPLE);
         RenderBeam.setRenderer(
                 XFactory762mm.energy_lacunae_overcharge, LegoClient.RENDER_LASER_PURPLE);

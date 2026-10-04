@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "S": "hbm:ammo_arty",
     "T": "hbm:ball_tnt"

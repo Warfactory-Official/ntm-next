@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityChlorineSeal;
 import com.hbm.blocks.ITickingBlock;
-import com.hbm.tileentity.BlockEntityChlorineSeal;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;

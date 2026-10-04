@@ -33,6 +33,7 @@ public class ExSmokeParticleGroup extends ParticleGroup<ParticleExSmoke> {
         Vec3 cam = camera.position();
 
         for (ParticleExSmoke smoke : this.particles) {
+            if (smoke.ownsVisual()) continue;
             out.add(
                     new Instance(
                             smoke.interpX(partialTicks) - cam.x,

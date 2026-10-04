@@ -27,7 +27,6 @@ import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
 
 public class ItemRTGPellet extends Item {
-
     public static final List<ItemRTGPellet> pelletList = new ArrayList<>();
     private static final String[] FACTS =
             new String[] {

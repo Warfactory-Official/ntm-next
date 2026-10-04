@@ -26,7 +26,6 @@ public final class FluidColorTintSource implements ItemTintSource {
     @Override
     public int calculate(
             ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity owner) {
-
         FluidStackNTM content =
                 stack.getItem() instanceof IFluidContainerItem container
                         ? container.getContent(stack)

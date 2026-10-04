@@ -12,12 +12,10 @@ import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 
 public final class GroupObject {
-
     public static final int STRIDE = 8;
     public static final int QUAD = 4 * STRIDE;
 
     private static final int WHOLLY_IN = 0;
-
     private static final int WHOLLY_OUT = 1;
     private static final int CUT = 2;
 
@@ -30,7 +28,6 @@ public final class GroupObject {
     private final Vector3f normal = new Vector3f();
     private float[] flatQuads;
     private float[] flatShadedQuads;
-
     private float[] clipIn;
     private float[] clipOut;
     private float[] clipPos;
@@ -292,7 +289,6 @@ public final class GroupObject {
         Vector3f n = normal;
         for (int i = 0; i < d.length; i += STRIDE) {
             matrix.transformPosition(d[i], d[i + 1], d[i + 2], p);
-
             pose.transformNormal(d[i + 5], d[i + 6], d[i + 7], n);
             buffer.addVertex(
                     p.x,
@@ -337,7 +333,6 @@ public final class GroupObject {
             boolean smoothing,
             float[][] planes) {
         float[] src = quads(smoothing);
-
         int cap = 4 + planes.length + 4;
         if (clipIn == null || clipIn.length < cap * STRIDE) {
             clipIn = new float[cap * STRIDE];

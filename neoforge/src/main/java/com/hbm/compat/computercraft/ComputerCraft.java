@@ -3,15 +3,15 @@
 
 package com.hbm.compat.computercraft;
 
-import com.hbm.platform.Services;
 import com.hbm.registration.RegistryHandle;
 import java.util.List;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.fml.ModList;
 
 public final class ComputerCraft {
 
     public static final String MOD_ID = "computercraft";
-    public static final boolean LOADED = Services.PLATFORM.isModLoaded(MOD_ID);
+    public static final boolean LOADED = ModList.get().isLoaded(MOD_ID);
 
     private ComputerCraft() {}
 

@@ -16,8 +16,8 @@ import com.hbm.explosion.vanillant.standard.PlayerProcessorStandard;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.main.Polaroid;
 import com.hbm.main.ResourceManager;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.MukePayload;
-import com.hbm.platform.Services;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.MobUtil;
 import java.util.List;
@@ -216,7 +216,7 @@ public class EntityGlyphidNuclear extends EntityGlyphid {
                         1.0F);
 
                 boolean balefire = Polaroid.isBalefireDay() || random.nextInt(100) == 0;
-                Services.NETWORK.sendToAllAround(
+                PacketWire.sendToAllAround(
                         new MukePayload(getX(), getY() + 0.5D, getZ(), false, balefire),
                         new TargetPoint(server, getX(), getY(), getZ(), 250));
             }

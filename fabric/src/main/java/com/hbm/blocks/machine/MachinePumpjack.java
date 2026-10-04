@@ -3,13 +3,13 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.oil.BlockEntityMachinePumpjack;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.oil.BlockEntityMachinePumpjack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -19,7 +19,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachinePumpjack extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         3, 0, 0, 0, 0, 6, 0, 0, 0,
         0, 0, -1, 1, -2, 4, 0, 0, 0,
@@ -34,7 +33,6 @@ public class MachinePumpjack extends BlockMultiblockCore
     }
 
     private static final int[] DIMENSIONS = {3, 0, 0, 0, 0, 6};
-
     private static final int[] RAIL_NEAR = {0, 0, -1, 1, 1, 1};
     private static final int[] RAIL_FAR = {0, 0, 1, -1, 2, 2};
 

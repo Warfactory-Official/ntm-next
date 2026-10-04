@@ -3,8 +3,7 @@
 
 package com.hbm.blocks.machine;
 
-import com.hbm.blocks.ModBlockEntities;
-import com.hbm.tileentity.machine.BlockEntityMachineTapeDrive;
+import com.hbm.blockentity.machine.BlockEntityMachineTapeDrive;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;

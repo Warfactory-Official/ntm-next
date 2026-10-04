@@ -6,7 +6,7 @@ package com.hbm.saveddata.satellites;
 import com.hbm.advancement.HbmCriteria;
 import com.hbm.api.redstoneoverradio.IRORInteractive;
 import com.hbm.api.redstoneoverradio.RORFunctionException;
-import com.hbm.tileentity.network.RTTYSystem;
+import com.hbm.blockentity.network.RTTYSystem;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -37,7 +37,6 @@ public class SatelliteRelay extends Satellite {
     @Override
     protected void onCommandImpl(ServerLevel level, String... command) {
         if (command.length <= 3 || !command[0].equals("relay")) return;
-
         Identifier id = command[1].contains(":") ? Identifier.tryParse(command[1]) : null;
         if (id == null) throw new RORFunctionException(IRORInteractive.EX_FORMAT);
         ResourceKey<Level> key = ResourceKey.create(Registries.DIMENSION, id);

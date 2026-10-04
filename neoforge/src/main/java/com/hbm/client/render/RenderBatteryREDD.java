@@ -3,12 +3,12 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.storage.BlockEntityBatteryREDD;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.util.BeamPronter;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.storage.BlockEntityBatteryREDD;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
@@ -103,14 +103,12 @@ public class RenderBatteryREDD
         state.rot = Mth.lerp(partialTicks, be.prevRotation, be.rotation);
         state.speed = be.getSpeed();
         state.timeMs = GameTime.now();
-
         state.nearSparkle =
                 cameraPosition.distanceToSqr(
                                 be.getBlockPos().getX() + 0.5,
                                 be.getBlockPos().getY() + 2.5,
                                 be.getBlockPos().getZ() + 0.5)
                         < SPARKLE_RANGE * SPARKLE_RANGE;
-
         state.zapSeed = be.getLevel() == null ? 0L : be.getLevel().getGameTime() / 5L;
     }
 

@@ -6,8 +6,8 @@ package com.hbm.items.armor;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.items.ISatChip;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.MarkerPayload;
-import com.hbm.platform.Services;
 import com.hbm.saveddata.SatelliteSavedData;
 import com.hbm.saveddata.satellites.SatelliteScanner;
 import java.util.LinkedHashMap;
@@ -61,16 +61,20 @@ public class ItemModLens extends ItemArmorMod implements ISatChip {
     }
 
     @Override
+    public boolean ticksServer() {
+        return true;
+    }
+
+    @Override
     public void modUpdate(LivingEntity entity, ItemStack armor) {
         if (!(entity instanceof ServerPlayer player)) return;
         ServerLevel level = player.level();
-        ItemStack lens = ArmorModHandler.pryMod(armor, ArmorModHandler.EXTRA);
+        var lens = ArmorModHandler.mods(armor).template(ArmorModHandler.EXTRA);
         if (!(SatelliteSavedData.get(level).getSatFromFreq(getFreq(lens))
                 instanceof SatelliteScanner)) return;
 
         int cX = SectionPos.blockToSectionCoord(Mth.floor(player.getX()));
         int cZ = SectionPos.blockToSectionCoord(Mth.floor(player.getZ()));
-
         int bottom = level.getMinY();
         int top = Math.min(Math.max(Mth.floor(player.getY()) + 10, 64), level.getMaxY());
         int seg = bottom + (int) (level.getGameTime() % (top - bottom));
@@ -81,7 +85,6 @@ public class ItemModLens extends ItemArmorMod implements ISatChip {
         scan:
         for (int chunkX = cX - RANGE; chunkX <= cX + RANGE; chunkX++) {
             for (int chunkZ = cZ - RANGE; chunkZ <= cZ + RANGE; chunkZ++) {
-
                 LevelChunk chunk = level.getChunkSource().getChunkNow(chunkX, chunkZ);
                 if (chunk == null) continue;
                 LevelChunkSection section = chunk.getSection(chunk.getSectionIndex(seg));
@@ -105,7 +108,7 @@ public class ItemModLens extends ItemArmorMod implements ISatChip {
         }
         byColor.forEach(
                 (color, markers) ->
-                        Services.NETWORK.sendTo(
+                        PacketWire.sendTo(
                                 new MarkerPayload(color, EXPIRES_MILLIS, MAX_DIST, markers),
                                 player));
     }

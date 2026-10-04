@@ -4,7 +4,6 @@
 
 package com.hbm.items.weapon.sedna.impl;
 
-import com.hbm.config.GunVisualConfig;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.projectile.EntityChemical;
 import com.hbm.inventory.fluid.FluidStackNTM;

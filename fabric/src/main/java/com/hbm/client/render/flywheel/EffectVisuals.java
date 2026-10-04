@@ -23,12 +23,23 @@ import dev.engine_room.flywheel.lib.visualization.SimpleEntityVisualizer;
 import net.minecraft.resources.Identifier;
 
 public final class EffectVisuals {
-
     public static final FogShader FADE = new SimpleFogShader(Library.id("fog/fade.glsl"));
 
     private EffectVisuals() {}
 
     public static void register() {
+        SimpleEntityVisualizer.builder(ModEntities.FALLING_BLOCK_BATCH.get())
+                .factory(FallingBlockBatchVisual::new)
+                .skipVanillaRender(batch -> false)
+                .apply();
+        SimpleEntityVisualizer.builder(ModEntities.FALLING_BLOCK_NT.get())
+                .factory(FallingBlockNTVisual::new)
+                .skipVanillaRender(FallingBlockNTVisual::visualized)
+                .apply();
+        SimpleEntityVisualizer.builder(ModEntities.FALLOUT_RAIN.get())
+                .factory(FalloutRainVisual::new)
+                .skipVanillaRender(FalloutRainVisuals::ready)
+                .apply();
         SimpleEntityVisualizer.builder(ModEntities.ORBITAL_LASER.get())
                 .factory(OrbitalLaserVisual::new)
                 .apply();

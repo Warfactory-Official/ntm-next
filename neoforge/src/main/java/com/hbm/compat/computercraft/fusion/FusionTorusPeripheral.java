@@ -3,9 +3,9 @@
 
 package com.hbm.compat.computercraft.fusion;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorus;
 import com.hbm.compat.computercraft.albion.CooledPeripheral;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionTorus;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.Locale;
 

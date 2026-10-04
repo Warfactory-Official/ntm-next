@@ -34,7 +34,6 @@ public final class RadiationHudRenderer {
         LocalPlayer player = mc.player;
         if (mc.level == null || player == null) return;
         if (!player.getInventory().contains(s -> s.is(ModItems.GEIGER_COUNTER.get()))) return;
-
         if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ModArmorItem plate
                 && ArmorSuitEffects.hasFullSet(player, plate.suit())) {
             ArmorFullSetBonus bonus = ArmorFullSetBonus.get(plate.suit());
@@ -109,7 +108,6 @@ public final class RadiationHudRenderer {
         }
 
         Font font = mc.font;
-
         if (rate > 1000F) {
             g.text(font, ">1000 RAD/s", posX, posY - 8, CommonColors.RED, false);
         } else if (rate >= 1F) {

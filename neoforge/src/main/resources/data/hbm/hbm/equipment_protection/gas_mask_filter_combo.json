@@ -1,0 +1,12 @@
+{
+  "filter": true,
+  "hazards": [
+    "particle_coarse",
+    "particle_fine",
+    "gas_lung",
+    "gas_blistering",
+    "bacteria",
+    "gas_monoxide"
+  ],
+  "targets": "hbm:gas_mask_filter_combo"
+}

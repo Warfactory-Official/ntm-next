@@ -4,12 +4,12 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.BlockEntityMachinePUREX;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.inventory.slot.SlotUpgrade;
 import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.items.machine.upgrade.ItemMachineUpgrade;
-import com.hbm.tileentity.machine.BlockEntityMachinePUREX;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -47,7 +47,6 @@ public class MenuMachinePUREX extends BlockEntityMenu<BlockEntityMachinePUREX> {
                         152,
                         81,
                         IBatteryItem::isBattery));
-
         addSlot(
                 new SlotFiltered(
                         container,

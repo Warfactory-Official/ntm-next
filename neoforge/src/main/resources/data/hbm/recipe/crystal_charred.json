@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
     "#c:dusts/strontium",
     "#c:dusts/cobalt",
@@ -11,6 +11,11 @@
     "#c:storage_blocks/aluminum",
     "minecraft:water_bucket"
   ],
+  "input_state": {
+    "8": {
+      "preserve": "remainder"
+    }
+  },
   "result": {
     "id": "hbm:crystal_charred"
   }

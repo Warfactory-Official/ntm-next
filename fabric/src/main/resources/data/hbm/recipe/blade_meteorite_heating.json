@@ -2,7 +2,10 @@
   "type": "minecraft:smelting",
   "cookingtime": 200,
   "experience": 0.0,
-  "ingredient": "hbm:blade_meteorite",
+  "ingredient": {
+    "fabric:type": "hbm:recipe_input",
+    "base": "hbm:blade_meteorite"
+  },
   "result": {
     "components": {
       "hbm:hot_item_heat": 200

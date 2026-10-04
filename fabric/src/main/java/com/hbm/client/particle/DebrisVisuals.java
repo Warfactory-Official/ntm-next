@@ -9,6 +9,7 @@ import dev.engine_room.flywheel.lib.visualization.VisualizationHelper;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.Level;
 
 public final class DebrisVisuals {
@@ -27,13 +28,29 @@ public final class DebrisVisuals {
 
     public static void tick() {
         if (ACTIVE.isEmpty()) return;
+        Level current = Minecraft.getInstance().level;
         Iterator<DebrisEffect> it = ACTIVE.iterator();
         while (it.hasNext()) {
             DebrisEffect e = it.next();
+            if (e.level() != current) {
+                e.particle.remove();
+                it.remove();
+                continue;
+            }
             if (e.expired()) {
                 VisualizationHelper.queueRemove(e);
                 it.remove();
             }
         }
+    }
+
+    public static void clear() {
+        if (ACTIVE.isEmpty()) return;
+        Level current = Minecraft.getInstance().level;
+        for (DebrisEffect effect : ACTIVE) {
+            effect.particle.remove();
+            if (effect.level() == current) VisualizationHelper.queueRemove(effect);
+        }
+        ACTIVE.clear();
     }
 }

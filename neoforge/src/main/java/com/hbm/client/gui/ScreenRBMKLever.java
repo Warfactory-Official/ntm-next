@@ -3,10 +3,10 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKLever;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKLever;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
@@ -227,7 +227,7 @@ public final class ScreenRBMKLever extends Screen {
             data.putString("cmdOn" + i, cmdOn[i].getValue());
             data.putString("cmdOff" + i, cmdOff[i].getValue());
         }
-        Services.NETWORK.sendToServer(new NbtControlPayload(lever.getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(lever.getBlockPos(), data));
     }
 
     @Override

@@ -3,11 +3,16 @@
 
 package com.hbm.particle;
 
+import com.hbm.client.particle.ExSmokeVisual;
+import com.hbm.client.particle.VisualParticle;
+import dev.engine_room.flywheel.api.visual.EffectVisual;
+import dev.engine_room.flywheel.api.visualization.VisualizationContext;
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
+import org.jspecify.annotations.Nullable;
 
-public class ParticleExSmoke extends Particle {
+public class ParticleExSmoke extends LegacyMoveParticle implements VisualParticle {
 
     public static final ParticleRenderType EX_SMOKE_GROUP =
             new ParticleRenderType("hbm:ex_smoke", "HXS");
@@ -15,6 +20,7 @@ public class ParticleExSmoke extends Particle {
     private static int seedSeq;
 
     public final int seed;
+    private @Nullable VisualizationManager visualManager;
 
     public ParticleExSmoke(ClientLevel level, double x, double y, double z) {
         super(level, x, y, z);
@@ -60,6 +66,26 @@ public class ParticleExSmoke extends Particle {
 
     public double interpZ(float pt) {
         return this.zo + (this.z - this.zo) * pt;
+    }
+
+    @Override
+    public ClientLevel level() {
+        return level;
+    }
+
+    @Override
+    public @Nullable VisualizationManager visualManager() {
+        return visualManager;
+    }
+
+    @Override
+    public void visualManager(@Nullable VisualizationManager manager) {
+        visualManager = manager;
+    }
+
+    @Override
+    public EffectVisual<?> visualize(VisualizationContext context, float partialTick) {
+        return new ExSmokeVisual(context, this, partialTick);
     }
 
     @Override

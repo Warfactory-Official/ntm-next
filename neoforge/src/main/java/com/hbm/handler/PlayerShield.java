@@ -4,8 +4,8 @@
 package com.hbm.handler;
 
 import com.hbm.extprop.HbmPlayerProps;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.PlayerPropsPayload;
-import com.hbm.platform.Services;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
@@ -21,7 +21,7 @@ public final class PlayerShield {
             props.shield += Math.min(maximum - props.shield, 0.005F * sinceDelay);
         }
         if (props.shield > maximum) props.shield = maximum;
-        Services.NETWORK.sendTo(new PlayerPropsPayload(props), player);
+        PacketWire.sendTo(new PlayerPropsPayload(props), player);
     }
 
     public static float absorb(Player player, float amount) {

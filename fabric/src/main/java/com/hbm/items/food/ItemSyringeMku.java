@@ -4,9 +4,9 @@
 package com.hbm.items.food;
 
 import com.hbm.NuclearTech;
+import com.hbm.config.FabricHbmConfig;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.handler.EntityEffectHandler;
-import com.hbm.platform.Services;
 import com.hbm.sound.ModSounds;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -39,7 +39,7 @@ public class ItemSyringeMku extends Item {
                 1.0F,
                 1.0F);
         stack.shrink(1);
-        if (Services.CONFIG.runtime().extendedLogging()) {
+        if (FabricHbmConfig.runtime().extendedLogging()) {
             NuclearTech.LOGGER.info(
                     "[MKU] {} used an MKU syringe!", attacker.getName().getString());
         }

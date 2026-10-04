@@ -110,7 +110,6 @@ public final class LoreBooks {
         slots.add(null);
         slots.add(null);
         Collections.shuffle(slots, new Random(worldSeed));
-
         List<Item> fixed = Collections.unmodifiableList(slots);
         layout = new Layout(worldSeed, fixed);
         return fixed;

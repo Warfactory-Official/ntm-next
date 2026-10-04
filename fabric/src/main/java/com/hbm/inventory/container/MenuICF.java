@@ -3,9 +3,9 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityICF;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.BlockEntityICF;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -54,7 +54,6 @@ public class MenuICF extends BlockEntityMenu<BlockEntityICF> {
                                 BlockEntityICF.SLOT_FLUID_ID,
                                 BlockEntityICF.SLOT_FLUID_ID + 1,
                                 false);
-
                     return moveItemStackTo(
                                     stack,
                                     BlockEntityICF.SLOT_LOADED,

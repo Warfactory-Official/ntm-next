@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.blockentity.network.BlockEntityPipePaintable;
 import com.hbm.interfaces.IToolable;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.network.BlockEntityPipePaintable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -67,7 +67,6 @@ public class FluidDuctPaintableBlock extends FluidDuctBlockBase
             Player player,
             InteractionHand hand,
             BlockHitResult hit) {
-
         if (stack.getItem() instanceof FluidIdentifierItem) return InteractionResult.PASS;
         if (stack.getItem() instanceof BlockItem blockItem
                 && !state.getValue(PAINTED)

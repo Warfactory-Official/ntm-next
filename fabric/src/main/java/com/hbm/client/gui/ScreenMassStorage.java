@@ -3,11 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.storage.BlockEntityMassStorage;
+import com.hbm.client.Keybinds;
 import com.hbm.inventory.container.MenuMassStorage;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.storage.BlockEntityMassStorage;
 import java.util.List;
 import java.util.Locale;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -97,7 +98,9 @@ public class ScreenMassStorage extends ScreenInfoContainer<MenuMassStorage> {
                 BUTTON_SIZE,
                 List.of(
                         Component.translatable("desc.gui.massStorage.clickProvideOne"),
-                        Component.translatable("desc.gui.massStorage.shiftClickProvideStack")));
+                        Component.translatable(
+                                "tooltip.hbm.mass_storage.provide_stack",
+                                Keybinds.BATCH.getTranslatedKeyMessage())));
         drawCustomInfoStat(
                 graphics,
                 mouseX,
@@ -117,7 +120,7 @@ public class ScreenMassStorage extends ScreenInfoContainer<MenuMassStorage> {
             int mx = (int) event.x(), my = (int) event.y();
             if (checkClick(mx, my, PROVIDE_X, BUTTON_Y, BUTTON_SIZE, BUTTON_SIZE)) {
                 CompoundTag data = new CompoundTag();
-                data.putBoolean("provide", event.hasShiftDown());
+                data.putBoolean("provide", Keybinds.BATCH.isDown());
                 sendControl(data);
                 return true;
             }
@@ -132,8 +135,7 @@ public class ScreenMassStorage extends ScreenInfoContainer<MenuMassStorage> {
     }
 
     private void sendControl(CompoundTag data) {
-        Services.NETWORK.sendToServer(
-                new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
         playClick();
     }
 }

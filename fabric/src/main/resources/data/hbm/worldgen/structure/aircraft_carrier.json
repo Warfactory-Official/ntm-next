@@ -1,5 +1,6 @@
 {
   "type": "hbm:single_piece",
+  "aquatic": true,
   "biomes": "#c:is_ocean",
   "height_offset": -6,
   "max_height": 42,

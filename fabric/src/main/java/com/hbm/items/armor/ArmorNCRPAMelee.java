@@ -94,7 +94,6 @@ public class ArmorNCRPAMelee extends ArmorPAMeleeBase {
     @Override
     public void renderFirstPerson(
             ItemStack stack, PoseStack pose, SubmitNodeCollector collector, int light) {
-
         renderArms(pose, collector, light, Types.ARM, flatArms(), Parts.LEFT, Parts.RIGHT);
     }
 

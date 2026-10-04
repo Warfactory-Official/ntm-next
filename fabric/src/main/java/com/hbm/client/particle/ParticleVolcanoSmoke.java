@@ -25,7 +25,6 @@ public class ParticleVolcanoSmoke extends BaseAshSmokeParticle implements Visual
         super(
                 level, x, y, z, 0.1F, 0.1F, 0.1F, 0.0D, 0.0D, 0.0D, 1.0F, sprites, 0.3F, 8, -0.1F,
                 true);
-
         this.quadSize = 10.0F;
         this.lifetime = 200 + this.random.nextInt(50);
         this.hasPhysics = false;

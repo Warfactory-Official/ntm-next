@@ -6,12 +6,14 @@ package com.hbm.packet;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.packet.threading.ThreadedPayload;
 import com.hbm.packet.toclient.UnitPayload;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricServerEvents;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import java.util.*;
 import java.util.concurrent.RejectedExecutionException;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -36,9 +38,11 @@ public final class PacketWire {
     private static volatile byte[] ccpPacketIdBytes;
 
     private static final class Transport {
-        static final boolean EXTENDED_CHUNK_CACHE = Services.PLATFORM.isModLoaded("neb-fabric");
+        static final boolean EXTENDED_CHUNK_CACHE =
+                FabricLoader.getInstance().isModLoaded("neb-fabric");
         static final boolean MANAGED =
-                Services.PLATFORM.isModLoaded("bandwidthoptimizer") || EXTENDED_CHUNK_CACHE;
+                FabricLoader.getInstance().isModLoaded("bandwidthoptimizer")
+                        || EXTENDED_CHUNK_CACHE;
     }
 
     public static boolean managedTransport() {
@@ -92,7 +96,7 @@ public final class PacketWire {
     }
 
     public static void sendToAll(ThreadedPayload payload) {
-        MinecraftServer server = Services.SERVER.getCurrentServer();
+        MinecraftServer server = FabricServerEvents.getCurrentServer();
         if (server == null) {
             payload.release();
             return;
@@ -122,7 +126,7 @@ public final class PacketWire {
             payload.release();
             return;
         }
-        sendToPlayers(payload, Services.NETWORK.playersWatchingEntity(entity));
+        sendToPlayers(payload, PlayerLookup.tracking(entity));
     }
 
     public static boolean hasPlayersTracking(ServerLevel level, BlockPos pos) {
@@ -130,7 +134,6 @@ public final class PacketWire {
         int chunkX = SectionPos.blockToSectionCoord(pos.getX());
         int chunkZ = SectionPos.blockToSectionCoord(pos.getZ());
         boolean tracked = ChunkTrackerIndex.isTracked(level, chunkX, chunkZ);
-
         assert extendedChunkCache() || !tracked || anyViewContains(level, chunkX, chunkZ)
                 : "chunk tracker index counts "
                         + chunkX
@@ -178,9 +181,7 @@ public final class PacketWire {
         try {
             if (recipients.isEmpty()) return;
             assert onServerThread();
-
             ByteBuf wire = payload.getCompiledBuffer();
-
             if (!payload.compiledIncludesWirePrefix()) return;
             for (ServerPlayer p : recipients) {
                 OutboundBatch batch = OutboundBatch.take(p);
@@ -305,7 +306,7 @@ public final class PacketWire {
     }
 
     private static boolean onServerThread() {
-        MinecraftServer server = Services.SERVER.getCurrentServer();
+        MinecraftServer server = FabricServerEvents.getCurrentServer();
         return server == null || server.isSameThread();
     }
 }

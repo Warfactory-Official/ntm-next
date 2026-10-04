@@ -1,0 +1,13 @@
+{
+  "armor": {
+    "chest": "hbm:fau_plate",
+    "feet": "hbm:fau_boots",
+    "head": "hbm:fau_helmet",
+    "legs": "hbm:fau_legs"
+  },
+  "protections": [
+    "hazmat",
+    "sealed",
+    "digamma"
+  ]
+}

@@ -9,9 +9,7 @@ import com.hbm.entity.mob.ai.EntityAIMaskmanCasualApproach;
 import com.hbm.entity.mob.ai.EntityAIMaskmanLasergun;
 import com.hbm.entity.mob.ai.EntityAIMaskmanMinigun;
 import com.hbm.handler.ArmorUtil;
-import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.items.ModItems;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -36,7 +34,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-public class EntityMaskMan extends Monster implements IRadiationImmune {
+public class EntityMaskMan extends Monster {
 
     private final ServerBossEvent bossEvent =
             new ServerBossEvent(

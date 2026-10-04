@@ -16,4 +16,8 @@ public interface IHazardTransformer {
     default boolean readsLiveStorage() {
         return false;
     }
+
+    default boolean readsLiveStorage(ItemStack stack) {
+        return readsLiveStorage();
+    }
 }

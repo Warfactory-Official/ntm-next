@@ -3,10 +3,10 @@
 
 package com.hbm.inventory.fluid.trait;
 
-import com.hbm.util.I18nUtil;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,8 +32,14 @@ public class FT_Poison extends FluidTrait {
     }
 
     @Override
-    public void addInfoHidden(List<String> info) {
-        info.add(ChatFormatting.GREEN + "[" + I18nUtil.resolveKey("trait.toxicfumes") + "]");
+    public void addInfoHidden(List<Component> info) {
+        info.add(
+                Component.empty()
+                        .append(Component.literal("[").withStyle(ChatFormatting.GREEN))
+                        .append(
+                                Component.translatable("trait.toxicfumes")
+                                        .withStyle(ChatFormatting.GREEN))
+                        .append(Component.literal("]").withStyle(ChatFormatting.GREEN)));
     }
 
     public void affect(LivingEntity living, double intensity) {

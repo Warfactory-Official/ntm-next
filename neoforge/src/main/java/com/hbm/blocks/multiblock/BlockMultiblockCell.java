@@ -7,7 +7,6 @@ import com.hbm.interfaces.ICopiable;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.interfaces.IToolable;
 import com.hbm.interfaces.RigidPistonStructure;
-import com.hbm.platform.Services;
 import java.util.List;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
@@ -86,8 +85,7 @@ public class BlockMultiblockCell extends Block
     }
 
     public BlockMultiblockCell(Properties properties) {
-        super(properties);
-
+        super(properties.isValidSpawn((state, level, pos, type) -> false));
         BlockState any = stateDefinition.any();
         if (any.hasProperty(SOUND)) any = any.setValue(SOUND, SOUND_STONE);
         if (any.hasProperty(SEALED)) any = any.setValue(SEALED, Boolean.FALSE);
@@ -109,7 +107,6 @@ public class BlockMultiblockCell extends Block
             BlockState state, Player player, BlockGetter level, BlockPos pos) {
         BlockPos core = level instanceof Level l ? MultiblockSurface.coreOfAny(l, pos) : null;
         if (core != null) {
-
             return level.getBlockState(core).getDestroyProgress(player, level, core);
         }
         return super.getDestroyProgress(state, player, level, pos);
@@ -117,7 +114,6 @@ public class BlockMultiblockCell extends Block
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-
         return RenderShape.INVISIBLE;
     }
 
@@ -224,7 +220,7 @@ public class BlockMultiblockCell extends Block
             Level level, BlockPos pos, BlockState state, Player player) {
         if (level instanceof ServerLevel server
                 && !player.preventsBlockDrops()
-                && Services.PLATFORM.canHarvestBlock(level, pos, state, player)) {
+                && state.canHarvestBlock((BlockGetter) level, pos, player)) {
             BlockMultiblockCore.FoldedOwner owner = BlockMultiblockCore.ownerOf(server, pos);
             if (owner != null) {
                 Block.dropResources(
@@ -270,8 +266,7 @@ public class BlockMultiblockCell extends Block
             BlockState oldState,
             boolean movedByPiston) {
         super.onPlace(state, level, pos, oldState, movedByPiston);
-
-        Services.CAPS.invalidateCaps(level, pos);
+        level.invalidateCapabilities(pos);
     }
 
     @Override

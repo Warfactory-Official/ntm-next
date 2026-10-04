@@ -8,8 +8,8 @@ import com.hbm.handler.radiation.RadVisGeometry.FocusFilter;
 import com.hbm.handler.radiation.RadVisGeometry.Mode;
 import com.hbm.handler.radiation.RadVisGeometry.Piece;
 import com.hbm.handler.radiation.RadVisGeometry.Probe;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.RadVisWatchPayload;
-import com.hbm.platform.Services;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import java.util.ArrayList;
@@ -33,7 +33,6 @@ public final class RadVisOverlay {
     public static final Config CONFIG = new Config();
 
     private static final double PROBE_RANGE = 64.0;
-
     public static final int STALE_TICKS = 100;
     private static final int RAMP_WIDTH = 100;
 
@@ -45,7 +44,6 @@ public final class RadVisOverlay {
     private static int silentTicks;
     private static List<ErrorRecord> errors = List.of();
     private static @Nullable Probe probe;
-
     private static long nextVerifyTick;
     private static volatile @Nullable Frame frame;
 
@@ -97,8 +95,7 @@ public final class RadVisOverlay {
                         ? Mth.clamp(CONFIG.radiusChunks, 0, RadVisServer.MAX_RADIUS)
                         : -1;
         if (want != watchedRadius) {
-            if (mc.getConnection() != null)
-                Services.NETWORK.sendToServer(new RadVisWatchPayload(want));
+            if (mc.getConnection() != null) PacketWire.sendToServer(new RadVisWatchPayload(want));
             watchedRadius = want;
             snapshot = null;
             errors = List.of();

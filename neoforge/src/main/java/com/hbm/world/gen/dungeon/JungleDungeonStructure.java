@@ -51,7 +51,6 @@ public class JungleDungeonStructure extends Structure {
         List<List<PoolElementStructurePiece>> floors = new ArrayList<>();
 
         for (int floorY : FLOOR_Y) {
-
             BlockPos anchor = new BlockPos(x, floorY + 1, z);
             Optional<Structure.GenerationStub> stub =
                     JigsawPlacement.addPieces(
@@ -92,7 +91,6 @@ public class JungleDungeonStructure extends Structure {
             List<PoolElementStructurePiece> lowerFloor) {
         for (PoolElementStructurePiece piece : upperFloor) {
             if (!isPlainVariant(piece)) continue;
-
             if (random.nextInt(4) != 0) continue;
 
             BoundingBox upperBox = piece.getBoundingBox();

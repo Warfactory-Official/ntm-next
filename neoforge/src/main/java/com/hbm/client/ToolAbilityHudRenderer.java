@@ -4,12 +4,10 @@
 package com.hbm.client;
 
 import com.hbm.client.gui.ScreenToolAbility;
-import com.hbm.config.ConfigSchema;
 import com.hbm.config.HudConfig;
 import com.hbm.handler.ability.ToolAreaAbility;
 import com.hbm.handler.ability.ToolPreset;
 import com.hbm.items.tool.ItemToolAbility;
-import com.hbm.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;

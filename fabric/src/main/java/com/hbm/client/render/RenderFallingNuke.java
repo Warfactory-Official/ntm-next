@@ -42,7 +42,6 @@ public class RenderFallingNuke extends EntityRenderer<EntityFallingNuke, RenderF
     public void extractRenderState(EntityFallingNuke entity, State state, float partialTicks) {
         super.extractRenderState(entity, state, partialTicks);
         float pitch = Mth.lerp(partialTicks, entity.xRotO, entity.getXRot());
-
         state.pitch = pitch < -80F ? 0F : pitch;
     }
 

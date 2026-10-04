@@ -3,13 +3,13 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineExcavator;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.BlockEntityMachineExcavator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -23,7 +23,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineExcavator extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         3, 0, 3, 3, 3, 3, 0, 0, 0,
         -1, 3, 3, -2, 3, -2, 0, 0, 0,
@@ -37,7 +36,6 @@ public class MachineExcavator extends BlockMultiblockCore
     }
 
     private static final int[] DIMENSIONS = {3, 0, 3, 3, 3, 3};
-
     private static final int[] LEG_SPACE_A = {-1, 3, 3, -2, 3, -2};
     private static final int[] LEG_SPACE_B = {-1, 3, 3, -2, -2, 3};
     private static final int[] LEG_SPACE_C = {-1, 3, -2, 3, 3, 3};

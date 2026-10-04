@@ -20,21 +20,13 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public final class XFactoryNPC {
-
     public static final float MASKMAN_ORB_DAMAGE = 100F;
-
     public static final float MASKMAN_BOLT_DAMAGE = 17.5F;
-
     public static final float MASKMAN_TRACER_DAMAGE = 17.5F;
-
     public static final float MASKMAN_ROCKET_DAMAGE = 17.5F;
-
     public static final float MASKMAN_METEOR_DAMAGE = 25F;
-
     public static final float WORM_BOLT_DAMAGE = 20F;
-
     public static final float WORM_LASER_DAMAGE = 47.5F;
-
     public static final float UFO_ROCKET_DAMAGE = 12.5F;
 
     public static BulletConfig maskman_orb;
@@ -49,7 +41,6 @@ public final class XFactoryNPC {
     private XFactoryNPC() {}
 
     public static void init() {
-
         maskman_bolt =
                 new BulletConfig()
                         .setVel(0.5F)

@@ -3,13 +3,13 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.oil.BlockEntityMachineSolidifier;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineSolidifier;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -33,9 +33,7 @@ public class RenderSolidifier
     private static final int GLASS = ResourceManager.solidifier.partId("Glass");
 
     private final HFRWavefrontObject model;
-
     private final RenderType fluidType = FlatCutout.of(ResourceManager.white_tex);
-
     private final RenderType glassType = FlatTranslucent.of(ResourceManager.white_tex);
 
     public RenderSolidifier() {

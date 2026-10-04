@@ -13,9 +13,7 @@ public class EntityItemWaste extends ItemEntity {
 
     public EntityItemWaste(EntityType<? extends EntityItemWaste> type, Level level) {
         super(type, level);
-
         setInvulnerable(true);
-
         setUnlimitedLifetime();
     }
 

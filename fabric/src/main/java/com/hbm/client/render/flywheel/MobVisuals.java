@@ -56,7 +56,6 @@ import net.minecraft.world.entity.Mob;
 import org.jspecify.annotations.Nullable;
 
 public final class MobVisuals {
-
     private MobVisuals() {}
 
     private static <T extends Entity> Predicate<T> always() {
@@ -524,7 +523,6 @@ public final class MobVisuals {
                                 () -> ResourceManager.bot_prime_body,
                                 () -> ResourceManager.mark_zero_body_tex),
                 always());
-
         obj(
                 SimpleEntityVisualizer.builder(ModEntities.UFO.get()),
                 MobVisuals::ufo,

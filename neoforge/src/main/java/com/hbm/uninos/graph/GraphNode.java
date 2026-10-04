@@ -10,16 +10,12 @@ import org.jspecify.annotations.Nullable;
 public final class GraphNode<D> {
 
     public final long posKey;
-
     public final GraphSegment<D> @Nullable [] segments = newSegments();
     public D data;
-
     public int openConnections;
-
     public @Nullable LongOpenHashSet remoteLinks;
-
     public boolean selfEndpoint;
-
+    public boolean machineOwned;
     public int degree;
 
     public boolean device;

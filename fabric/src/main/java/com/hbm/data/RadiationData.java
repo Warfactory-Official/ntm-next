@@ -19,7 +19,6 @@ public final class RadiationData {
 
     private static final DataGroups.Group RADIATION = DataGroups.group(GROUPS, "radiation");
     public static final DataGroups.Param<Double> FOG_RAD = RADIATION.real("fog_rad", 100D);
-
     public static final DataGroups.Param<Double> FOG_CHANCE =
             RADIATION.atLeast("fog_chance", 20D, 1D);
     public static final DataGroups.Param<Boolean> WORLD_RAD_EFFECTS =

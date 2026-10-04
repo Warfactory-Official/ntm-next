@@ -17,8 +17,7 @@ import com.hbm.items.weapon.sedna.mods.XWeaponModManager;
 import com.hbm.main.ResourceManager;
 import com.hbm.particle.SpentCasing.CasingType;
 import com.hbm.particle.SpentCasing;
-import com.hbm.platform.Services;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -405,7 +404,7 @@ public class XFactory22lr {
                 return null;
             };
 
-    public static void init(IRegistrar r) {
+    public static void init() {
         SpentCasing casing22 =
                 new SpentCasing(CasingType.STRAIGHT)
                         .setColor(SpentCasing.COLOR_CASE_BRASS)
@@ -450,7 +449,7 @@ public class XFactory22lr {
                                         .register("p22ap"));
 
         ModItems.GUN_AM180 =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_am180",
                         props ->
                                 new ItemGunBaseNT(
@@ -502,7 +501,7 @@ public class XFactory22lr {
                         Item.Properties::new);
 
         ModItems.GUN_STAR_F =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_star_f",
                         props ->
                                 new ItemGunBaseNT(
@@ -553,7 +552,7 @@ public class XFactory22lr {
                         Item.Properties::new);
 
         ModItems.GUN_STAR_F_AKIMBO =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_star_f_akimbo",
                         props ->
                                 new ItemGunBaseNT(

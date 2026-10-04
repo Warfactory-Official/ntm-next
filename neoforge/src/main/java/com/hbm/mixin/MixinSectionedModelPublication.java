@@ -17,7 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ModelManager.class)
 public class MixinSectionedModelPublication {
-
     @ModifyArg(
             method = "apply",
             at =
@@ -28,8 +27,7 @@ public class MixinSectionedModelPublication {
             index = 0)
     private Map<BlockState, BlockStateModel> hbm$sectionModels(
             Map<BlockState, BlockStateModel> models) {
-        OccluderMasks.derive(models);
-        return SectionedModel.wrap(models);
+        return SectionedModel.wrap(models, OccluderMasks.derive(models));
     }
 
     @Inject(method = "apply", at = @At("RETURN"))

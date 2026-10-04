@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachinePWRController;
 import com.hbm.inventory.container.MenuPWR;
 import com.hbm.items.ModItems;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachinePWRController;
 import java.util.List;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
@@ -237,7 +237,7 @@ public class ScreenPWR extends ScreenInfoContainer<MenuPWR> {
         rodField.setValue(String.valueOf(withdrawal));
         CompoundTag data = new CompoundTag();
         data.putInt("control", 100 - withdrawal);
-        Services.NETWORK.sendToServer(new NbtControlPayload(core, data));
+        PacketWire.sendToServer(new NbtControlPayload(core, data));
     }
 
     private BlockPos corePos() {

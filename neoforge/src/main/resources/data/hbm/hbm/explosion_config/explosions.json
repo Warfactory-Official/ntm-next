@@ -1,10 +1,6 @@
 {
   "a_schrab_radius": 20,
   "boy_radius": 120,
-  "crater_biome_inner_rad": 25,
-  "crater_biome_outer_rad": 0.5,
-  "crater_biome_rad": 5,
-  "crater_biome_water_mult": 5,
   "crater_biomes": true,
   "disable_nuclear": false,
   "fallout_range": 100,

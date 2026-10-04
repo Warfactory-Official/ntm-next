@@ -33,7 +33,6 @@ public final class SatelliteRayScan extends Satellite {
                 for (Map.Entry<BlockPos, SatelliteRayEvents.RayEvent> entry :
                         SatelliteRayEvents.events(level).entrySet()) {
                     BlockPos pos = entry.getKey();
-
                     long dx = (long) pos.getX() - targetX;
                     long dz = (long) pos.getZ() - targetZ;
                     if (dx * dx + dz * dz <= (long) MAX_SCAN_RANGE * MAX_SCAN_RANGE) {

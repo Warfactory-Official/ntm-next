@@ -3,12 +3,14 @@
 
 package com.hbm.entity.mob.glyphid;
 
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.GlyphidPathPayload;
-import com.hbm.platform.Services;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.pathfinder.Path;
 
 public final class GlyphidPathDebug {
@@ -22,7 +24,7 @@ public final class GlyphidPathDebug {
     public static boolean toggle(ServerPlayer player) {
         UUID id = player.getUUID();
         if (WATCHERS.remove(id)) {
-            Services.NETWORK.sendTo(GlyphidPathPayload.cleared(-1), player);
+            PacketWire.sendTo(GlyphidPathPayload.cleared(-1), player);
             return false;
         }
         WATCHERS.add(id);
@@ -41,8 +43,8 @@ public final class GlyphidPathDebug {
 
         GlyphidPathPayload payload = GlyphidPathPayload.of(glyphid.getId(), path);
 
-        for (ServerPlayer player : Services.NETWORK.playersWatchingEntity(glyphid)) {
-            if (WATCHERS.contains(player.getUUID())) Services.NETWORK.sendTo(payload, player);
+        for (ServerPlayer player : PlayerLookup.tracking((Entity) glyphid)) {
+            if (WATCHERS.contains(player.getUUID())) PacketWire.sendTo(payload, player);
         }
     }
 }

@@ -4,6 +4,13 @@
 
 package com.hbm.wiaj.cannery;
 
+import com.hbm.blockentity.machine.BlockEntityFoundryBasin;
+import com.hbm.blockentity.machine.BlockEntityFoundryCastingBase;
+import com.hbm.blockentity.machine.BlockEntityFoundryChannel;
+import com.hbm.blockentity.machine.BlockEntityFoundryMold;
+import com.hbm.blockentity.machine.BlockEntityFoundryOutlet;
+import com.hbm.blockentity.machine.BlockEntityFoundryTank;
+import com.hbm.blockentity.machine.IRenderFoundry;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.FoundryChannel;
 import com.hbm.blocks.machine.FoundryOutlet;
@@ -18,13 +25,6 @@ import com.hbm.inventory.material.Mats;
 import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemScraps;
-import com.hbm.tileentity.machine.BlockEntityFoundryBasin;
-import com.hbm.tileentity.machine.BlockEntityFoundryCastingBase;
-import com.hbm.tileentity.machine.BlockEntityFoundryChannel;
-import com.hbm.tileentity.machine.BlockEntityFoundryMold;
-import com.hbm.tileentity.machine.BlockEntityFoundryOutlet;
-import com.hbm.tileentity.machine.BlockEntityFoundryTank;
-import com.hbm.tileentity.machine.IRenderFoundry;
 import com.hbm.wiaj.JarRenderContext;
 import com.hbm.wiaj.JarScene;
 import com.hbm.wiaj.JarScript;
@@ -36,9 +36,9 @@ import com.hbm.wiaj.actions.ActionSetTile;
 import com.hbm.wiaj.actions.ActionSetZoom;
 import com.hbm.wiaj.actions.ActionWait;
 import com.hbm.wiaj.actors.ActorBase;
+import com.hbm.wiaj.actors.ActorBlockEntity;
 import com.hbm.wiaj.actors.ActorFancyPanel.Orientation;
 import com.hbm.wiaj.actors.ActorFancyPanel;
-import com.hbm.wiaj.actors.ActorTileEntity;
 import com.hbm.wiaj.actors.ITileActorRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -80,7 +80,6 @@ public class CanneryFoundryChannel extends CanneryBase {
         JarScene scene0 = new JarScene(script);
 
         scene0.add(new ActionSetZoom(3, 0));
-
         scene0.add(new ActionCreateActor(10, new ActorFoundryWorld()));
         for (int x = world.sizeX - 1; x >= 0; x--) {
             for (int z = 0; z < world.sizeZ; z++) {
@@ -109,7 +108,7 @@ public class CanneryFoundryChannel extends CanneryBase {
                                 ItemStack.EMPTY)));
         scene0.add(
                 new ActionCreateActor(
-                        1, new ActorTileEntity(new ActorFoundry(), position(3, 1, 1))));
+                        1, new ActorBlockEntity(new ActorFoundry(), position(3, 1, 1))));
         scene0.add(new ActionSetBlock(3, 1, 1, ModBlocks.FOUNDRY_BASIN.get().defaultBlockState()));
         scene0.add(
                 new ActionSetTile(
@@ -126,7 +125,7 @@ public class CanneryFoundryChannel extends CanneryBase {
                                 ItemStack.EMPTY)));
         scene0.add(
                 new ActionCreateActor(
-                        2, new ActorTileEntity(new ActorFoundry(), position(2, 1, 1))));
+                        2, new ActorBlockEntity(new ActorFoundry(), position(2, 1, 1))));
         scene0.add(new ActionSetBlock(2, 1, 1, ModBlocks.FOUNDRY_MOLD.get().defaultBlockState()));
 
         scene0.add(new ActionWait(5));
@@ -146,7 +145,7 @@ public class CanneryFoundryChannel extends CanneryBase {
                                 ItemStack.EMPTY)));
         scene0.add(
                 new ActionCreateActor(
-                        3, new ActorTileEntity(new ActorFoundry(), position(1, 2, 2))));
+                        3, new ActorBlockEntity(new ActorFoundry(), position(1, 2, 2))));
         scene0.add(new ActionSetBlock(1, 2, 2, ModBlocks.FOUNDRY_MOLD.get().defaultBlockState()));
         scene0.add(new ActionSetTile(2, 2, 2, channel(2, 2, 2, null, 0)));
         scene0.add(new ActionSetBlock(2, 2, 2, channelState(2)));
@@ -420,7 +419,7 @@ public class CanneryFoundryChannel extends CanneryBase {
         public void renderActor(
                 JarRenderContext context, int ticks, float interp, CompoundTag data) {
             int x = data.getIntOr("x", 0), y = data.getIntOr("y", 0), z = data.getIntOr("z", 0);
-            var tile = (BlockEntityFoundryCastingBase) context.world().getTileEntity(x, y, z);
+            var tile = (BlockEntityFoundryCastingBase) context.world().getBlockEntity(x, y, z);
             var foundry = (IRenderFoundry) tile;
             BlockEntityRenderer<?, ?> registered =
                     Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(tile);

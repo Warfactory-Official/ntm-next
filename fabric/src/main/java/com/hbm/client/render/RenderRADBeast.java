@@ -51,7 +51,6 @@ public class RenderRADBeast extends MobRenderer<EntityRADBeast, RenderRADBeast.S
         Entity victim = entity.getUnfortunateSoul();
         if (victim != null && entity.getY() > 0.1D) {
             double targetY = victim.getY() + victim.getBbHeight() * 0.5D;
-
             if (victim == Minecraft.getInstance().player) targetY -= 1.5D;
             Vec3 skeleton =
                     new Vec3(

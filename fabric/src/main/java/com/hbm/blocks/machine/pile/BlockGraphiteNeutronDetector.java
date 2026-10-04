@@ -3,10 +3,10 @@
 
 package com.hbm.blocks.machine.pile;
 
+import com.hbm.blockentity.machine.pile.BlockEntityPileNeutronDetector;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.pile.BlockEntityPileNeutronDetector;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class BlockGraphiteNeutronDetector extends BlockGraphiteDrilledTE {
+public class BlockGraphiteNeutronDetector extends BlockGraphiteDrilledBE {
 
     public BlockGraphiteNeutronDetector(BlockBehaviour.Properties props) {
         super(props);

@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityHeatBoilerIndustrial;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.RefreshesNeighborState;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -15,14 +16,11 @@ import com.hbm.inventory.fluid.trait.FT_Heatable;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.BlockEntityHeatBoilerIndustrial;
-import com.hbm.util.I18nUtil;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -58,7 +56,6 @@ public class MachineHeatBoilerIndustrial extends BlockMultiblockCore
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-
         return RenderShape.MODEL;
     }
 
@@ -124,7 +121,10 @@ public class MachineHeatBoilerIndustrial extends BlockMultiblockCore
     @Override
     public void buildLookOverlay(Level level, BlockPos pos, LookInfo info) {
         if (!(level.getBlockEntity(pos) instanceof BlockEntityHeatBoilerIndustrial be)) return;
-        info.title(I18nUtil.resolveKey(getDescriptionId()), 0xFFFF00, 0x404000);
+        info.title(
+                Component.empty().append(Component.translatable(getDescriptionId())),
+                0xFFFF00,
+                0x404000);
         info.line(String.format(Locale.US, "%,d", be.heat) + "TU");
         info.line(
                 ChatFormatting.GREEN

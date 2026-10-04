@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "C": "#hbm:dusts/any_smokeless",
     "F": "hbm:safety_fuse",

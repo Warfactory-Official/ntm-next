@@ -27,7 +27,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class HEVBattery extends Block {
-
     private static final long CHARGE = 150_000L;
 
     public static final MapCodec<HEVBattery> CODEC = simpleCodec(HEVBattery::new);

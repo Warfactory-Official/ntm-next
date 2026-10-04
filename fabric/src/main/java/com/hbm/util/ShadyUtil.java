@@ -10,7 +10,6 @@ import java.util.Random;
 import java.util.Set;
 
 public final class ShadyUtil {
-
     public static final Set<String> HASHES =
             Set.of(
                     "41de5c372b0589bbdb80571e87efa95ea9e34b0d74c6005b8eab495b7afd9994",

@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.blockentity.network.BlockEntityCablePaintable;
 import com.hbm.interfaces.IToolable;
-import com.hbm.tileentity.network.BlockEntityCablePaintable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;

@@ -4,6 +4,94 @@
 package com.hbm.compat.computercraft;
 
 import com.hbm.api.redstoneoverradio.IRORInteractive;
+import com.hbm.blockentity.bomb.BlockEntityLaunchPad;
+import com.hbm.blockentity.bomb.BlockEntityLaunchPadLarge;
+import com.hbm.blockentity.bomb.BlockEntityLaunchTable;
+import com.hbm.blockentity.machine.BlockEntityChungus;
+import com.hbm.blockentity.machine.BlockEntityCoreEmitter;
+import com.hbm.blockentity.machine.BlockEntityCoreInjector;
+import com.hbm.blockentity.machine.BlockEntityCoreReceiver;
+import com.hbm.blockentity.machine.BlockEntityCoreStabilizer;
+import com.hbm.blockentity.machine.BlockEntityGeiger;
+import com.hbm.blockentity.machine.BlockEntityICF;
+import com.hbm.blockentity.machine.BlockEntityMachineCombustionEngine;
+import com.hbm.blockentity.machine.BlockEntityMachineIndustrialTurbine;
+import com.hbm.blockentity.machine.BlockEntityMachineLargeTurbine;
+import com.hbm.blockentity.machine.BlockEntityMachinePWRController;
+import com.hbm.blockentity.machine.BlockEntityMachineRadar;
+import com.hbm.blockentity.machine.BlockEntityMachineRadarLarge;
+import com.hbm.blockentity.machine.BlockEntityMachineReactorBreeding;
+import com.hbm.blockentity.machine.BlockEntityMachineSatLink;
+import com.hbm.blockentity.machine.BlockEntityMachineTurbine;
+import com.hbm.blockentity.machine.BlockEntityMachineTurbineGas;
+import com.hbm.blockentity.machine.BlockEntityMicrowave;
+import com.hbm.blockentity.machine.BlockEntityReactorControl;
+import com.hbm.blockentity.machine.BlockEntityReactorResearch;
+import com.hbm.blockentity.machine.BlockEntityReactorZirnox;
+import com.hbm.blockentity.machine.BlockEntityWatz;
+import com.hbm.blockentity.machine.albion.BlockEntityPADetector;
+import com.hbm.blockentity.machine.albion.BlockEntityPADipole;
+import com.hbm.blockentity.machine.albion.BlockEntityPAQuadrupole;
+import com.hbm.blockentity.machine.albion.BlockEntityPARFC;
+import com.hbm.blockentity.machine.albion.BlockEntityPASource;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionBoiler;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionBreeder;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionKlystron;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionMHDT;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorus;
+import com.hbm.blockentity.machine.oil.BlockEntityMachineCoker;
+import com.hbm.blockentity.machine.pile.BlockEntityPileControl;
+import com.hbm.blockentity.machine.pile.BlockEntityPileLoader;
+import com.hbm.blockentity.machine.rbmk.BlockEntityCraneConsole;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKBoiler;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKConsole;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlAuto;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlManual;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKCooler;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGauge;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGraph;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKHeater;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKIndicator;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKKeyPad;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKLever;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKNumitron;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKOutgasser;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKRod;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKRodReaSim;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKTerminal;
+import com.hbm.blockentity.machine.storage.BlockEntityBarrel;
+import com.hbm.blockentity.machine.storage.BlockEntityBatteryREDD;
+import com.hbm.blockentity.machine.storage.BlockEntityBatterySocket;
+import com.hbm.blockentity.machine.storage.BlockEntityMachineBattery;
+import com.hbm.blockentity.machine.storage.BlockEntityMachineBigAssTank;
+import com.hbm.blockentity.machine.storage.BlockEntityMachineCapacitor;
+import com.hbm.blockentity.machine.storage.BlockEntityMachineFENSU;
+import com.hbm.blockentity.machine.storage.BlockEntityMachineFluidTank;
+import com.hbm.blockentity.machine.storage.BlockEntityMachineOrbus;
+import com.hbm.blockentity.machine.storage.BlockEntityMassStorage;
+import com.hbm.blockentity.network.BlockEntityCableGauge;
+import com.hbm.blockentity.network.BlockEntityFluidCounterValve;
+import com.hbm.blockentity.network.BlockEntityFluidPump;
+import com.hbm.blockentity.network.BlockEntityPipeGauge;
+import com.hbm.blockentity.network.BlockEntityRadioAUTOCAL;
+import com.hbm.blockentity.network.BlockEntityRadioTelex;
+import com.hbm.blockentity.network.BlockEntityRadioTorchController;
+import com.hbm.blockentity.network.BlockEntityRadioTorchReader;
+import com.hbm.blockentity.network.BlockEntityRadioTorchReceiver;
+import com.hbm.blockentity.network.BlockEntityRadioTorchSender;
+import com.hbm.blockentity.turret.BlockEntityTurretArty;
+import com.hbm.blockentity.turret.BlockEntityTurretChekhov;
+import com.hbm.blockentity.turret.BlockEntityTurretFriendly;
+import com.hbm.blockentity.turret.BlockEntityTurretFritz;
+import com.hbm.blockentity.turret.BlockEntityTurretHIMARS;
+import com.hbm.blockentity.turret.BlockEntityTurretHoward;
+import com.hbm.blockentity.turret.BlockEntityTurretHowardDamaged;
+import com.hbm.blockentity.turret.BlockEntityTurretJeremy;
+import com.hbm.blockentity.turret.BlockEntityTurretMaxwell;
+import com.hbm.blockentity.turret.BlockEntityTurretRichard;
+import com.hbm.blockentity.turret.BlockEntityTurretSentry;
+import com.hbm.blockentity.turret.BlockEntityTurretSentryDamaged;
+import com.hbm.blockentity.turret.BlockEntityTurretTauon;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.rbmk.RBMKBase;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -80,96 +168,9 @@ import com.hbm.compat.computercraft.storage.MassStoragePeripheral;
 import com.hbm.compat.computercraft.turret.ArtyPeripheral;
 import com.hbm.compat.computercraft.turret.HimarsPeripheral;
 import com.hbm.compat.computercraft.turret.TurretPeripheral;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricCaps;
+import com.hbm.platform.FabricServerEvents;
 import com.hbm.registration.RegistryHandle;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPad;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPadLarge;
-import com.hbm.tileentity.bomb.BlockEntityLaunchTable;
-import com.hbm.tileentity.machine.BlockEntityChungus;
-import com.hbm.tileentity.machine.BlockEntityCoreEmitter;
-import com.hbm.tileentity.machine.BlockEntityCoreInjector;
-import com.hbm.tileentity.machine.BlockEntityCoreReceiver;
-import com.hbm.tileentity.machine.BlockEntityCoreStabilizer;
-import com.hbm.tileentity.machine.BlockEntityGeiger;
-import com.hbm.tileentity.machine.BlockEntityICF;
-import com.hbm.tileentity.machine.BlockEntityMachineCombustionEngine;
-import com.hbm.tileentity.machine.BlockEntityMachineIndustrialTurbine;
-import com.hbm.tileentity.machine.BlockEntityMachineLargeTurbine;
-import com.hbm.tileentity.machine.BlockEntityMachinePWRController;
-import com.hbm.tileentity.machine.BlockEntityMachineRadar;
-import com.hbm.tileentity.machine.BlockEntityMachineRadarLarge;
-import com.hbm.tileentity.machine.BlockEntityMachineReactorBreeding;
-import com.hbm.tileentity.machine.BlockEntityMachineSatLink;
-import com.hbm.tileentity.machine.BlockEntityMachineTurbine;
-import com.hbm.tileentity.machine.BlockEntityMachineTurbineGas;
-import com.hbm.tileentity.machine.BlockEntityMicrowave;
-import com.hbm.tileentity.machine.BlockEntityReactorControl;
-import com.hbm.tileentity.machine.BlockEntityReactorResearch;
-import com.hbm.tileentity.machine.BlockEntityReactorZirnox;
-import com.hbm.tileentity.machine.BlockEntityWatz;
-import com.hbm.tileentity.machine.albion.BlockEntityPADetector;
-import com.hbm.tileentity.machine.albion.BlockEntityPADipole;
-import com.hbm.tileentity.machine.albion.BlockEntityPAQuadrupole;
-import com.hbm.tileentity.machine.albion.BlockEntityPARFC;
-import com.hbm.tileentity.machine.albion.BlockEntityPASource;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionBoiler;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionBreeder;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionKlystron;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionMHDT;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionTorus;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineCoker;
-import com.hbm.tileentity.machine.pile.BlockEntityPileControl;
-import com.hbm.tileentity.machine.pile.BlockEntityPileLoader;
-import com.hbm.tileentity.machine.rbmk.BlockEntityCraneConsole;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKBoiler;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKConsole;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControlAuto;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControlManual;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKCooler;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKGauge;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKGraph;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKHeater;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKIndicator;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKKeyPad;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKLever;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKNumitron;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKOutgasser;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKRod;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKRodReaSim;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKTerminal;
-import com.hbm.tileentity.machine.storage.BlockEntityBarrel;
-import com.hbm.tileentity.machine.storage.BlockEntityBatteryREDD;
-import com.hbm.tileentity.machine.storage.BlockEntityBatterySocket;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineBattery;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineBigAssTank;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineCapacitor;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineFENSU;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineFluidTank;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineOrbus;
-import com.hbm.tileentity.machine.storage.BlockEntityMassStorage;
-import com.hbm.tileentity.network.BlockEntityCableGauge;
-import com.hbm.tileentity.network.BlockEntityFluidCounterValve;
-import com.hbm.tileentity.network.BlockEntityFluidPump;
-import com.hbm.tileentity.network.BlockEntityPipeGauge;
-import com.hbm.tileentity.network.BlockEntityRadioAUTOCAL;
-import com.hbm.tileentity.network.BlockEntityRadioTelex;
-import com.hbm.tileentity.network.BlockEntityRadioTorchController;
-import com.hbm.tileentity.network.BlockEntityRadioTorchReader;
-import com.hbm.tileentity.network.BlockEntityRadioTorchReceiver;
-import com.hbm.tileentity.network.BlockEntityRadioTorchSender;
-import com.hbm.tileentity.turret.BlockEntityTurretArty;
-import com.hbm.tileentity.turret.BlockEntityTurretChekhov;
-import com.hbm.tileentity.turret.BlockEntityTurretFriendly;
-import com.hbm.tileentity.turret.BlockEntityTurretFritz;
-import com.hbm.tileentity.turret.BlockEntityTurretHIMARS;
-import com.hbm.tileentity.turret.BlockEntityTurretHoward;
-import com.hbm.tileentity.turret.BlockEntityTurretHowardDamaged;
-import com.hbm.tileentity.turret.BlockEntityTurretJeremy;
-import com.hbm.tileentity.turret.BlockEntityTurretMaxwell;
-import com.hbm.tileentity.turret.BlockEntityTurretRichard;
-import com.hbm.tileentity.turret.BlockEntityTurretSentry;
-import com.hbm.tileentity.turret.BlockEntityTurretSentryDamaged;
-import com.hbm.tileentity.turret.BlockEntityTurretTauon;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.peripheral.PeripheralLookup;
 import java.util.ArrayList;
@@ -178,6 +179,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -204,7 +206,6 @@ final class Peripherals {
             List<RegistryHandle<? extends Block>> blocks) {}
 
     private static final OwnerLookup PROXY_CELLS = MultiblockSurface::proxyCoreOfCell;
-
     private static final OwnerLookup POWER_FLUID_CELLS =
             (level, pos, state) ->
                     MultiblockSurface.proxyCoreOfCell(
@@ -213,14 +214,12 @@ final class Peripherals {
                             state,
                             BlockMultiblockCore.PASSIVE_POWER_IN
                                     | BlockMultiblockCore.PASSIVE_FLUID_IN);
-
     private static final OwnerLookup RBMK_TOP =
             (level, pos, state) ->
                     state.hasProperty(RBMKBase.PART)
                                     && state.getValue(RBMKBase.PART) == RBMKBase.Part.TOP
                             ? MultiblockSurface.coreOfFoldedCell(level, pos, state)
                             : null;
-
     private static final Predicate<Direction> DOWN = side -> side == Direction.DOWN;
 
     static final List<Row<?>> ROWS =
@@ -643,8 +642,8 @@ final class Peripherals {
     }
 
     static void init() {
-        Services.SERVER.onServerTickPost(Peripherals::tick);
-        Services.SERVER.onServerStopping(
+        FabricServerEvents.onServerTickPost(Peripherals::tick);
+        FabricServerEvents.onServerStopping(
                 server -> {
                     BY_MACHINE.clear();
                     LIVE.clear();
@@ -658,17 +657,21 @@ final class Peripherals {
                 throw new IllegalStateException(row.type.getName() + " has two peripheral rows");
             }
             for (RegistryHandle<? extends Block> block : row.blocks) {
-                Services.CAPS.registerBlockProvider(
-                        TOKEN,
-                        block,
-                        (level, pos, state, be, side) -> atBlock(row, level, pos, state, be, side));
+                FabricCaps.pendingBlocks.add(
+                        new FabricCaps.BlockRegistration<>(
+                                TOKEN,
+                                (Supplier<? extends Block>) block,
+                                (level, pos, state, be, side) ->
+                                        atBlock(row, level, pos, state, be, side)));
             }
         }
         for (RegistryHandle<? extends Block> cell : ModBlocks.cellHandles()) {
-            Services.CAPS.registerBlockProvider(
-                    TOKEN,
-                    cell,
-                    (level, pos, state, be, side) -> atCell(byType, level, pos, state, side));
+            FabricCaps.pendingBlocks.add(
+                    new FabricCaps.BlockRegistration<>(
+                            TOKEN,
+                            (Supplier<? extends Block>) cell,
+                            (level, pos, state, be, side) ->
+                                    atCell(byType, level, pos, state, side)));
         }
     }
 
@@ -684,7 +687,6 @@ final class Peripherals {
             @Nullable BlockEntity be,
             @Nullable Direction side) {
         if (level.isClientSide() || !opens(row, side)) return null;
-
         if (MultiblockSurface.isFoldedCell(state)) return proxy(row, level, pos, state);
         return row.type.isInstance(be) ? of(row, be) : null;
     }

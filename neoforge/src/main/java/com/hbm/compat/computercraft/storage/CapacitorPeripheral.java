@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.storage;
 
+import com.hbm.blockentity.machine.storage.BlockEntityMachineCapacitor;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineCapacitor;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class CapacitorPeripheral extends SnapshotPeripheral<BlockEntityMachineCapacitor> {

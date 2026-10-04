@@ -26,20 +26,13 @@ public class DetonationTrigger extends SimpleCriterionTrigger<DetonationTrigger.
 
     public enum Kind implements StringRepresentable {
         NUKE("nuke"),
-
         RBMK("rbmk"),
-
         ZIRNOX("zirnox"),
-
         WATZ("watz"),
-
         REFINERY("refinery"),
         FLUID_TANK("fluid_tank"),
-
         DIGAMMA_SPEAR("digamma_spear"),
-
         NUCLEAR_CREEPER("nuclear_creeper"),
-
         SOYUZ_EXHAUST("soyuz_exhaust");
 
         public static final Codec<Kind> CODEC = StringRepresentable.fromEnum(Kind::values);

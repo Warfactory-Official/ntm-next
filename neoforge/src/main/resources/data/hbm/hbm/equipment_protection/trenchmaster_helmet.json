@@ -1,0 +1,13 @@
+{
+  "hazards": [
+    "particle_coarse",
+    "particle_fine",
+    "gas_lung",
+    "bacteria",
+    "gas_blistering",
+    "gas_monoxide",
+    "light",
+    "sand"
+  ],
+  "targets": "hbm:trenchmaster_helmet"
+}

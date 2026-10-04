@@ -10,15 +10,10 @@ import net.minecraft.core.Direction;
 import org.jspecify.annotations.Nullable;
 
 public final class MultiblockMaskTable {
-
     public static final int NOT_A_CELL = -1;
-
     public final int declaredCaps;
-
     private final byte[] masks;
-
     private final byte[][] passive;
-
     private final byte[] @Nullable [] byRole;
     private final int minX, minY, minZ;
     private final int sizeX, sizeY, sizeZ;
@@ -150,7 +145,6 @@ public final class MultiblockMaskTable {
                 return table;
             }
         }
-
         return new MultiblockMaskTable(
                 masks,
                 passive,
@@ -256,7 +250,6 @@ public final class MultiblockMaskTable {
                             + lz
                             + " is not a 6-bit face set");
         }
-
         if (roles == 0 || (roles & ~BlockMultiblockCore.ROLE_ALL) != 0) {
             throw new IllegalStateException(
                     "multiblock mask table: roles 0b"

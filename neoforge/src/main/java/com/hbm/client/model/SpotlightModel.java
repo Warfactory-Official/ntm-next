@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public record SpotlightModel(BlockSpotlight.LightType type)
         implements BlockModel<SpotlightModel.Mesh> {
-
     static final float OFFSET_X = -0.5F;
     static final float OFFSET_Y = 0.5F;
     static final float OFFSET_Z = 0F;

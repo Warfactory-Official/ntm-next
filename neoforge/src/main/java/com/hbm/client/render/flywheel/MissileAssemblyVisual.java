@@ -3,13 +3,13 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityMachineMissileAssembly;
 import com.hbm.blocks.machine.BlockMachineHorizontal;
 import com.hbm.client.model.Meshes;
 import com.hbm.handler.MissileStruct;
 import com.hbm.items.weapon.ItemCustomMissilePart.PartType;
 import com.hbm.items.weapon.ItemCustomMissilePart;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityMachineMissileAssembly;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
@@ -47,7 +47,6 @@ public final class MissileAssemblyVisual
                             .ambientOcclusion(false)
                             .cardinalLightingMode(CardinalLightingMode.CHUNK)
                             .build());
-
     private final AABB bodyBounds;
     private final Matrix4f rootPose = new Matrix4f();
     private final Matrix4f strutPose = new Matrix4f();

@@ -3,8 +3,7 @@
 
 package com.hbm.packet;
 
-import com.hbm.platform.Services;
-import com.hbm.tileentity.Synced;
+import com.hbm.blockentity.Synced;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import java.util.IdentityHashMap;
@@ -12,17 +11,14 @@ import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.fml.ModList;
 
 public final class SyncWire {
 
     public static final String KEY = "hbmSync";
-
     public static final String FRAME_KEY = "hbmSyncFrame";
-
     public static final String BLOB_KEY = "hbmSyncBlob";
-
     public static final int INITIAL_REPUBLISHES = 1;
-
     public static final int INITIAL_EXTRAS = 2;
     public static final ThreadLocal<ByteBuf> SCRATCH =
             ThreadLocal.withInitial(() -> Unpooled.buffer(256));
@@ -30,7 +26,7 @@ public final class SyncWire {
     private static volatile boolean recipesChanged;
 
     private static final class Replay {
-        static final boolean RECORDER = Services.PLATFORM.isModLoaded("flashback");
+        static final boolean RECORDER = ModList.get().isLoaded("flashback");
     }
 
     public static boolean replayCompat() {

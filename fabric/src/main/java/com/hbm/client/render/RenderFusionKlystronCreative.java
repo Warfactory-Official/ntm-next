@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionKlystronCreative;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionKlystronCreative;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -26,7 +26,6 @@ public class RenderFusionKlystronCreative
                 ConcurrentRenderStateExtraction {
 
     private final HFRWavefrontObject model = ResourceManager.fusion_klystron;
-
     private final RenderType baseType =
             RenderTypes.entityCutoutCull(ResourceManager.fusion_klystron_creative_tex);
 

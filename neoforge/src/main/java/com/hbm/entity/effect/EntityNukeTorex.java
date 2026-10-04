@@ -7,7 +7,6 @@ package com.hbm.entity.effect;
 
 import com.hbm.client.TorexClientFX;
 import com.hbm.entity.ModEntities;
-import com.hbm.platform.Services;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.SharedConstants;
@@ -31,7 +30,7 @@ public class EntityNukeTorex extends Entity {
     public static final int firstCondenseHeight = 130;
     public static final int secondCondenseHeight = 170;
     public static final int maxCloudlets = 20_000;
-
+    private static final int COLUMN_RESERVE = 220 * 6;
     public static final double nr1 = 2.5, ng1 = 1.3, nb1 = 0.4;
     public static final double nr2 = 0.1, ng2 = 0.075, nb2 = 0.05;
     public static final double br1 = 1, bg1 = 2, bb1 = 0.5;
@@ -50,7 +49,6 @@ public class EntityNukeTorex extends Entity {
     public double heat = 1;
     public double lastSpawnY = -1;
     public int maxAge = 1000;
-
     private int simAge;
     public float humidity = -1;
 
@@ -107,7 +105,6 @@ public class EntityNukeTorex extends Entity {
 
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
-
         return false;
     }
 
@@ -144,7 +141,6 @@ public class EntityNukeTorex extends Entity {
             this.simAge = 0;
         }
         int target = age();
-
         for (int spent = 0; simAge < target && spent < CATCHUP_UPDATES; ) {
             simAge++;
             spent += simulateTick(simAge, simAge == target);
@@ -157,8 +153,11 @@ public class EntityNukeTorex extends Entity {
         if (live) TorexClientFX.hudFlash(this);
 
         if (humidity == -1) {
-
-            humidity = Services.PLATFORM.biomeDownfall(level().getBiome(blockPosition()).value());
+            humidity =
+                    level().getBiome(blockPosition())
+                            .value()
+                            .getModifiedClimateSettings()
+                            .downfall();
         }
 
         if (lastSpawnY == -1) lastSpawnY = getY() - 3;
@@ -285,6 +284,7 @@ public class EntityNukeTorex extends Entity {
         int outer = (int) (5 * humidity * count / (double) spreadAngle);
         for (int i = 0; i < outer; i++) {
             for (int j = 1; j < spreadAngle; j++) {
+                if (cloudlets.size() >= maxCloudlets - COLUMN_RESERVE) return;
                 float angle = (float) (Math.PI * 2 * rand.nextDouble());
                 double rotZ =
                         Math.acos((height - getY()) / (double) age)
@@ -377,7 +377,6 @@ public class EntityNukeTorex extends Entity {
         public TorexType type;
         public float startingScale = 3F;
         public float growingScale = 5F;
-
         private double computedMotionX;
         private double computedMotionY;
         private double computedMotionZ;

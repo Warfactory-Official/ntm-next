@@ -18,7 +18,7 @@ import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
 import com.hbm.lib.Library;
 import com.hbm.particle.SpentCasing.CasingType;
 import com.hbm.particle.SpentCasing;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -259,7 +259,7 @@ public class XFactory50 {
                 return null;
             };
 
-    public static void init(IRegistrar r) {
+    public static void init() {
         SpentCasing casing50 =
                 new SpentCasing(CasingType.BOTTLENECK)
                         .setColor(SpentCasing.COLOR_CASE_BRASS)
@@ -362,7 +362,7 @@ public class XFactory50 {
                                         .register("bmg50equestrian"));
 
         ModItems.GUN_AMAT =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_amat",
                         props ->
                                 new ItemGunBaseNT(
@@ -414,7 +414,7 @@ public class XFactory50 {
                                         .setDefaultAmmo(EnumAmmo.BMG50_SP, 7),
                         Item.Properties::new);
         ModItems.GUN_AMAT_SUBTLETY =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_amat_subtlety",
                         props ->
                                 new ItemGunBaseNT(
@@ -467,7 +467,7 @@ public class XFactory50 {
                                         .setDefaultAmmo(EnumAmmo.BMG50_JHP, 7),
                         Item.Properties::new);
         ModItems.GUN_AMAT_PENANCE =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_amat_penance",
                         props ->
                                 new ItemGunBaseNT(
@@ -522,7 +522,7 @@ public class XFactory50 {
                         Item.Properties::new);
 
         ModItems.GUN_M2 =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_m2",
                         props ->
                                 new ItemGunBaseNT(

@@ -4,6 +4,9 @@
 
 package com.hbm.world.gen.component;
 
+import com.hbm.blockentity.bomb.BlockEntityLandmine;
+import com.hbm.blockentity.bomb.BlockEntityLaunchPadRusted;
+import com.hbm.blockentity.network.BlockEntityRadioTorch;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockBarbedWire;
 import com.hbm.blocks.generic.BlockDecoCRT;
@@ -15,9 +18,6 @@ import com.hbm.blocks.network.FluidDuctGaugeBlock;
 import com.hbm.blocks.network.RadioTorchBlock;
 import com.hbm.itempool.ComponentLoot;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.bomb.BlockEntityLandmine;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPadRusted;
-import com.hbm.tileentity.network.BlockEntityRadioTorch;
 import com.hbm.world.gen.WorldgenHeight;
 import com.hbm.world.gen.nbt.GeometryOut;
 import com.hbm.world.gen.nbt.PieceGeometry;
@@ -56,7 +56,6 @@ public class SiloComponentPiece extends NtmComponentPiece {
 
     public static SiloComponentPiece create(Structure.GenerationContext context, BlockPos origin) {
         SiloComponentPiece piece = new SiloComponentPiece(origin, context.random());
-
         BlockPos first = piece.getWorldPos(13, 25, 2);
         BlockPos last = piece.getWorldPos(42, 25, 20);
         int minX = Math.min(first.getX(), last.getX()), maxX = Math.max(first.getX(), last.getX());
@@ -67,7 +66,6 @@ public class SiloComponentPiece extends NtmComponentPiece {
     }
 
     private SiloComponentPiece(BlockPos origin, Direction direction, int freq, int freqHatch) {
-
         super(
                 HbmStructureTypes.NTM_SILO_PIECE.get(),
                 0,
@@ -664,7 +662,6 @@ public class SiloComponentPiece extends NtmComponentPiece {
 
                 out.box(33, 21, 19, 33, 23, 19, decoSteel, decoSteel);
                 out.box(33, 21, 17, 33, 23, 17, decoSteel, decoSteel);
-
                 BlockState tapeRecorderEast =
                         hbmState("tape_recorder")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.EAST);
@@ -719,7 +716,6 @@ public class SiloComponentPiece extends NtmComponentPiece {
                         9,
                         hbmState("deco_computer")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH));
-
                 BlockState groundLever =
                         Blocks.LEVER
                                 .defaultBlockState()
@@ -846,7 +842,6 @@ public class SiloComponentPiece extends NtmComponentPiece {
                         hbmState("filing_cabinet_green")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH),
                         ComponentLoot.FILING_CABINET_5);
-
                 out.lockedContainer(
                         16,
                         21,
@@ -892,7 +887,6 @@ public class SiloComponentPiece extends NtmComponentPiece {
                 out.box(17, 20, 21, 21, 20, 22, concreteSmooth, concreteSmooth);
                 out.box(15, 20, 20, 16, 20, 21, concreteSmooth, concreteSmooth);
                 out.box(14, 20, 19, 14, 20, 20, concreteSmooth, concreteSmooth);
-
                 BlockState steelGrate7 =
                         hbmState("steel_grate").setValue(BlockSteelGrate.HEIGHT, 7);
                 out.box(14, 20, 10, 15, 20, 18, steelGrate7, steelGrate7);
@@ -1082,7 +1076,6 @@ public class SiloComponentPiece extends NtmComponentPiece {
                 out.box(22, 1, 12, 26, 1, 12, concreteGray, concreteGray);
                 out.box(21, 1, 15, 22, 1, 15, concreteGray, concreteGray);
                 out.box(21, 1, 13, 22, 1, 13, concreteGray, concreteGray);
-
                 for (int rep = 0; rep < 2; rep++) {
                     out.box(18, 2, 21, 20, 3, 21, concreteSmooth, concreteSmooth);
                     out.box(21, 2, 17, 21, 3, 21, concreteSmooth, concreteSmooth);
@@ -1149,7 +1142,6 @@ public class SiloComponentPiece extends NtmComponentPiece {
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH),
                         hbmState("ladder_steel")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH));
-
                 out.multiblock(
                         19,
                         1,
@@ -1331,7 +1323,6 @@ public class SiloComponentPiece extends NtmComponentPiece {
                         Blocks.HOPPER
                                 .defaultBlockState()
                                 .setValue(HopperBlock.FACING, Direction.EAST));
-
                 out.block(
                         6,
                         18,
@@ -1436,7 +1427,6 @@ public class SiloComponentPiece extends NtmComponentPiece {
                         hbmState("deco_toaster_iron").setValue(BlockDecoToaster.ROTATION, 1));
 
                 out.container(32, 13, 9, hbmState("crate_steel"), ComponentLoot.SILO_6);
-
                 out.container(
                         33,
                         13,
@@ -1546,7 +1536,6 @@ public class SiloComponentPiece extends NtmComponentPiece {
                     out.box(i, 10, 17, i, 10, 18, pipeQuadRedZ, pipeQuadRedZ);
                     out.box(i, 10, 22, i, 10, 23, pipeQuadRedZ, pipeQuadRedZ);
                     out.box(i, 9, 19, i, 9, 21, decoLead, decoLead);
-
                     Direction capFacing = i == 1 ? Direction.EAST : Direction.WEST;
                     for (int cz = 19; cz <= 21; cz++)
                         out.block(
@@ -1586,7 +1575,6 @@ public class SiloComponentPiece extends NtmComponentPiece {
                 out.airBox(27, 5, 13, 31, 6, 15);
                 out.airBox(27, 7, 14, 31, 7, 14);
                 out.airBox(28, 2, 11, 31, 3, 15);
-
                 BlockState dirt = Blocks.DIRT.defaultBlockState();
                 BlockState podzol = Blocks.PODZOL.defaultBlockState();
                 List<WeightedOption> floor =
@@ -1657,7 +1645,6 @@ public class SiloComponentPiece extends NtmComponentPiece {
                         ComponentLoot.LAUNCH_KEY_1,
                         0.1D);
                 out.container(31, 5, 14, hbmState("crate_steel"), ComponentLoot.NUKE_TRASH_5);
-
                 out.container(
                         31,
                         5,

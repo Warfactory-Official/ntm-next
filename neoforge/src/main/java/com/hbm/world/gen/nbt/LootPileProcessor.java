@@ -4,7 +4,7 @@
 package com.hbm.world.gen.nbt;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.BlockLoot.TileEntityLoot;
+import com.hbm.blocks.generic.BlockLoot.BlockEntityLoot;
 import com.hbm.util.LootGenerator;
 import com.mojang.serialization.MapCodec;
 import java.util.Optional;
@@ -42,7 +42,7 @@ public final class LootPileProcessor implements StructureProcessor {
         CompoundTag rolled = nbt.copy();
         rolled.remove(POOL);
         rolled.merge(
-                TileEntityLoot.tagOf(
+                BlockEntityLoot.tagOf(
                         LootGenerator.roll(
                                 pool.get(),
                                 ProcessorRandom.source(level, pos, ProcessorRandom.LOOT_PILE),

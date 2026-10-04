@@ -6,7 +6,6 @@ package com.hbm.packet.toclient;
 import com.hbm.config.GunVisualConfig;
 import com.hbm.lib.Library;
 import com.hbm.packet.IPayloadHandlerContext;
-import com.hbm.platform.Services;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 

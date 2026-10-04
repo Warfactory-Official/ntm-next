@@ -216,12 +216,10 @@ public final class BlackHoleVisual extends HbmDynamicEntityVisual<EntityBlackHol
 
         if (kind.swirl) {
             ring.set(pose).rotateY(-5F * age * Mth.DEG_TO_RAD);
-
             write(0, ring);
             write(1, ring.scale(3F));
         } else {
             for (int k = 0; k < DISC_STEPS; k++) {
-
                 ring.set(pose)
                         .rotateY(-age * (float) Math.pow(k + 1, 1.25D) * Mth.DEG_TO_RAD)
                         .scale((float) (3D - k * 0.175D));
@@ -286,7 +284,6 @@ public final class BlackHoleVisual extends HbmDynamicEntityVisual<EntityBlackHol
 
     private record Kit(Model[] translucent, Model[] additive) {
         static Kit of(Kind kind) {
-
             Material sorted =
                     SimpleMaterial.builderOf(Materials.TRANSLUCENT_NO_DEPTH_WRITE_NO_CULL)
                             .texture(kind.texture)

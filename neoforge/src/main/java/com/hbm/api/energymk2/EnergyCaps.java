@@ -4,7 +4,6 @@
 package com.hbm.api.energymk2;
 
 import com.hbm.lib.Library;
-import com.hbm.platform.Services;
 import net.minecraft.core.Direction;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 
@@ -17,10 +16,10 @@ public final class EnergyCaps {
 
     public static void register() {
         PROVIDER =
-                Services.CAPS.createToken(
+                BlockCapability.create(
                         Library.id("energy_provider"), IEnergyHandlerMK2.class, Direction.class);
         RECEIVER =
-                Services.CAPS.createToken(
+                BlockCapability.create(
                         Library.id("energy_receiver"), IEnergyHandlerMK2.class, Direction.class);
     }
 }

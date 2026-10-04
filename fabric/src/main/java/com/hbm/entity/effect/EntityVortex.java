@@ -34,7 +34,6 @@ public class EntityVortex extends EntityBlackHole {
 
     @Override
     public void tick() {
-
         if (level() instanceof ServerLevel) {
             setSize(getSize() - shrinkRate);
             if (getSize() <= 0F) {

@@ -67,7 +67,6 @@ public final class PwrSliceRenderer extends PictureInPictureRenderer<PwrSliceRen
                                 () -> "PWR slice readback",
                                 GpuBuffer.USAGE_MAP_READ | GpuBuffer.USAGE_COPY_DST,
                                 (long) width * height * stride);
-
         RenderSystem.getDevice()
                 .createCommandEncoder()
                 .copyTextureToBuffer(
@@ -100,7 +99,6 @@ public final class PwrSliceRenderer extends PictureInPictureRenderer<PwrSliceRen
     protected void renderToTexture(
             PwrSliceRenderState state, PoseStack pose, SubmitNodeCollector collector) {
         var data = state.job().data;
-
         pose.translate((state.x1() / 2 - state.x1() / 2F) / 24F, 0, -400D / (24D * guiScale));
         pose.scale(-1, -1, 0.5F / guiScale);
         pose.mulPose(Axis.XP.rotationDegrees(-30));
@@ -143,7 +141,6 @@ public final class PwrSliceRenderer extends PictureInPictureRenderer<PwrSliceRen
             PoseStack.Pose pose,
             com.mojang.blaze3d.vertex.VertexConsumer vertices,
             BakedQuad face) {
-
         int shade =
                 !face.materialInfo().shade()
                         ? 255

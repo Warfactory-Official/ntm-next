@@ -58,7 +58,6 @@ public final class BatteryEnergyHandler implements EnergyHandler {
         long given = ForeignEnergyItemAccess.extractableHe(held, EnergyConversion.heFromFe(amount));
         long fe = EnergyConversion.feFromHe(given) / quantum * quantum;
         if (fe <= 0) return 0;
-
         if (ForeignEnergyItemAccess.isCreative(held)) return (int) fe;
         long he = EnergyConversion.heFromFe(fe);
         return exchange(ForeignEnergyItemAccess.withCharge(held, -he), transaction) ? (int) fe : 0;

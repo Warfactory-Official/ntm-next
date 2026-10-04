@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntitySoyuzLauncher;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntitySoyuzLauncher;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -24,12 +24,9 @@ import org.jspecify.annotations.Nullable;
 public final class RenderSoyuzLauncher
         implements BlockEntityRenderer<BlockEntitySoyuzLauncher, RenderSoyuzLauncher.State>,
                 ConcurrentRenderStateExtraction {
-
     private static final float OPEN = 45F;
     private static final int SWING_TICKS = 20;
-
     private static final double MESH_DROP = 4D;
-
     private static final double ROCKET_LIFT = 5D;
     private static final double TOWER_PIVOT_Y = 5.5D;
     private static final double TOWER_PIVOT_Z = 5.5D;

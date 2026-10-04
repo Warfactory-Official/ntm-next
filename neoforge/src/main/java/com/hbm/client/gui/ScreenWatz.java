@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityWatz;
 import com.hbm.inventory.container.MenuWatz;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityWatz;
 import java.util.List;
 import java.util.Locale;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -118,11 +118,10 @@ public class ScreenWatz extends ScreenInfoContainer<MenuWatz> {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-
         if (checkClick((int) event.x(), (int) event.y(), 142, 70, 18, 18)) {
             CompoundTag data = new CompoundTag();
             data.putBoolean("lock", true);
-            Services.NETWORK.sendToServer(new NbtControlPayload(be().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(be().getBlockPos(), data));
             playClick();
             return true;
         }

@@ -142,7 +142,6 @@ public class BedroomLPiece extends NtmBranchingPiece {
                 out.block(4, 1, 4, stair(Direction.WEST, true));
                 out.block(4, 1, 5, stair(Direction.NORTH, true));
                 out.block(2, 1, 5, stair(Direction.NORTH, true));
-
                 out.block(
                         4,
                         2,
@@ -177,7 +176,6 @@ public class BedroomLPiece extends NtmBranchingPiece {
                         9,
                         hbmState("deco_computer")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH));
-
                 out.container(
                         3,
                         1,

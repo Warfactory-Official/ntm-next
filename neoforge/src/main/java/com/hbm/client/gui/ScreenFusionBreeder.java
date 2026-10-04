@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionBreeder;
 import com.hbm.inventory.container.MenuFusionBreeder;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionBreeder;
 import com.hbm.util.BobMathUtil;
 import java.util.List;
 import net.minecraft.ChatFormatting;

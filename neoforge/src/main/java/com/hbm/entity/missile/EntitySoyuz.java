@@ -8,6 +8,7 @@ import com.hbm.advancement.HbmCriteria;
 import com.hbm.client.ClientEffects;
 import com.hbm.entity.ModEntities;
 import com.hbm.explosion.ExplosionLarge;
+import com.hbm.handler.UnstableFuses;
 import com.hbm.interfaces.StoredItems;
 import com.hbm.items.ISatChip;
 import com.hbm.items.ModItems;
@@ -36,7 +37,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class EntitySoyuz extends Entity implements StoredItems {
-
     private static final EntityDataAccessor<Integer> SKIN =
             SynchedEntityData.defineId(EntitySoyuz.class, EntityDataSerializers.INT);
 
@@ -45,7 +45,6 @@ public class EntitySoyuz extends Entity implements StoredItems {
     public int targetX;
     public int targetZ;
     boolean memed = false;
-
     private final ItemStack[] payload = new ItemStack[18];
 
     @Override
@@ -67,7 +66,6 @@ public class EntitySoyuz extends Entity implements StoredItems {
 
     @Override
     public void tick() {
-
         Vec3 motion = getDeltaMovement();
         if (motion.y < 2.0D) {
             acceleration += 0.00025D;
@@ -191,6 +189,7 @@ public class EntitySoyuz extends Entity implements StoredItems {
 
     public void setSat(ItemStack stack) {
         this.payload[0] = stack == null ? ItemStack.EMPTY : stack;
+        UnstableFuses.changed(this);
     }
 
     public void setPayload(List<ItemStack> payload) {
@@ -198,6 +197,7 @@ public class EntitySoyuz extends Entity implements StoredItems {
             ItemStack stack = payload.get(i);
             this.payload[i] = stack == null ? ItemStack.EMPTY : stack;
         }
+        UnstableFuses.changed(this);
     }
 
     public void setSkin(int i) {
@@ -210,7 +210,6 @@ public class EntitySoyuz extends Entity implements StoredItems {
 
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
-
         return false;
     }
 

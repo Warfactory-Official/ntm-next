@@ -6,6 +6,5 @@ package com.hbm.world.gen.nbt;
 import java.util.List;
 
 public interface WeightedSelector {
-
     List<WeightedOption> options();
 }

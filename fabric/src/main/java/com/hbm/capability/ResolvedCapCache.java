@@ -4,7 +4,7 @@
 package com.hbm.capability;
 
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricServerEvents;
 import com.hbm.util.ChunkPositionIndex;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongIterator;
@@ -29,7 +29,7 @@ public final class ResolvedCapCache {
     }
 
     public static void init() {
-        Services.SERVER.onChunkUnload(
+        FabricServerEvents.onChunkUnload(
                 (level, chunk) -> of(level).onChunkUnload(chunk.getPos().pack()));
     }
 
@@ -123,7 +123,6 @@ public final class ResolvedCapCache {
     private static final class Entry {
 
         final int slot;
-
         final WeakReference<Object> value;
         final WeakReference<BlockEntity> anchor;
         final WeakReference<LevelChunk> anchorChunk;

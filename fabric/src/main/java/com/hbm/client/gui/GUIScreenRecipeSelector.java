@@ -6,8 +6,8 @@ package com.hbm.client.gui;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -44,7 +44,6 @@ public class GUIScreenRecipeSelector extends Screen {
     private int guiTop;
     private EditBox search;
     private int pageIndex;
-
     private int size;
     private String selection;
 
@@ -58,7 +57,7 @@ public class GUIScreenRecipeSelector extends Screen {
         super(Component.translatable("gui.recipe.selector"));
         this.recipeSet = recipeSet;
         this.tilePos = tilePos;
-        this.selection = currentSelection == null ? NULL_SELECTION : currentSelection;
+        selection = currentSelection == null ? NULL_SELECTION : currentSelection;
         this.index = index;
         this.installedPool = installedPool;
         this.previousScreen = previousScreen;
@@ -92,42 +91,35 @@ public class GUIScreenRecipeSelector extends Screen {
                                 previousScreen));
     }
 
-    private static List<Component> toComponents(List<String> strings) {
-        List<Component> out = new ArrayList<>(strings.size());
-        for (String s : strings) out.add(Component.literal(s));
-        return out;
-    }
-
     @Override
     protected void init() {
-        this.guiLeft = (this.width - this.xSize) / 2;
-        this.guiTop = (this.height - this.ySize) / 2;
+        guiLeft = (width - xSize) / 2;
+        guiTop = (height - ySize) / 2;
 
-        this.search =
-                new EditBox(this.font, guiLeft + 28, guiTop + 111, 102, 12, Component.empty());
-        this.search.setTextColor(CommonColors.WHITE);
-        this.search.setBordered(false);
-        this.search.setMaxLength(32);
-        this.search.setResponder(this::search);
-        addRenderableWidget(this.search);
+        search = new EditBox(font, guiLeft + 28, guiTop + 111, 102, 12, Component.empty());
+        search.setTextColor(CommonColors.WHITE);
+        search.setBordered(false);
+        search.setMaxLength(32);
+        search.setResponder(this::search);
+        addRenderableWidget(search);
     }
 
     private void regenerateRecipes() {
-        this.recipes.clear();
+        recipes.clear();
         for (GenericRecipe recipe : recipeSet.recipes()) {
-            if (admitted(recipe)) this.recipes.add(recipe);
+            if (admitted(recipe)) recipes.add(recipe);
         }
         resetPaging();
     }
 
     private void search(String term) {
-        this.recipes.clear();
+        recipes.clear();
         if (term.isEmpty()) {
             regenerateRecipes();
             return;
         }
         for (GenericRecipe recipe : recipeSet.recipes()) {
-            if (admitted(recipe) && recipe.matchesSearch(term)) this.recipes.add(recipe);
+            if (admitted(recipe) && recipe.matchesSearch(term)) recipes.add(recipe);
         }
         resetPaging();
     }
@@ -137,8 +129,8 @@ public class GUIScreenRecipeSelector extends Screen {
     }
 
     private void resetPaging() {
-        this.pageIndex = 0;
-        this.size = Math.max(0, (int) Math.ceil((this.recipes.size() - 40) / 8D));
+        pageIndex = 0;
+        size = Math.max(0, (int) Math.ceil((recipes.size() - 40) / 8D));
     }
 
     @Override
@@ -157,7 +149,7 @@ public class GUIScreenRecipeSelector extends Screen {
                 256,
                 256);
 
-        if (this.search.isFocused()) {
+        if (search.isFocused()) {
             graphics.blit(
                     RenderPipelines.GUI_TEXTURED,
                     TEXTURE,
@@ -179,7 +171,7 @@ public class GUIScreenRecipeSelector extends Screen {
 
         for (int i = pageIndex * 8; i < pageIndex * 8 + 40 && i < recipes.size(); i++) {
             int ind = i - pageIndex * 8;
-            if (recipes.get(i).getInternalName().equals(this.selection)) {
+            if (recipes.get(i).getInternalName().equals(selection)) {
                 graphics.blit(
                         RenderPipelines.GUI_TEXTURED,
                         TEXTURE,
@@ -234,13 +226,7 @@ public class GUIScreenRecipeSelector extends Screen {
                 int ix = 7 + 18 * (ind % 8), iy = 17 + 18 * (ind / 8);
                 if (isOver(mouseX, mouseY, ix, iy, 18, 18)) {
                     GUIElements.drawHoveringTextRecipe(
-                            graphics,
-                            this.font,
-                            toComponents(recipes.get(i).print()),
-                            mouseX,
-                            mouseY,
-                            this.width,
-                            this.height);
+                            graphics, font, recipes.get(i).print(), mouseX, mouseY, width, height);
                 }
             }
         }
@@ -248,17 +234,11 @@ public class GUIScreenRecipeSelector extends Screen {
         GenericRecipe selected = recipeSet.getRecipe(selection);
         if (selected != null && isOver(mouseX, mouseY, 151, 71, 18, 18)) {
             GUIElements.drawHoveringTextRecipe(
-                    graphics,
-                    this.font,
-                    toComponents(selected.print()),
-                    mouseX,
-                    mouseY,
-                    this.width,
-                    this.height);
+                    graphics, font, selected.print(), mouseX, mouseY, width, height);
         }
         if (isOver(mouseX, mouseY, 152, 90, 16, 16)) {
             graphics.setComponentTooltipForNextFrame(
-                    this.font,
+                    font,
                     List.of(
                             Component.translatable("desc.gui.recipeSelector.close")
                                     .withStyle(ChatFormatting.YELLOW)),
@@ -267,7 +247,7 @@ public class GUIScreenRecipeSelector extends Screen {
         }
         if (isOver(mouseX, mouseY, 134, 108, 16, 16)) {
             graphics.setComponentTooltipForNextFrame(
-                    this.font,
+                    font,
                     List.of(
                             Component.translatable("desc.gui.recipeSelector.clearSearch")
                                     .withStyle(ChatFormatting.YELLOW)),
@@ -291,8 +271,8 @@ public class GUIScreenRecipeSelector extends Screen {
         }
 
         if (isOver(x, y, 134, 108, 16, 16)) {
-            this.search.setValue("");
-            this.search.setFocused(true);
+            search.setValue("");
+            search.setFocused(true);
             return true;
         }
 
@@ -301,13 +281,13 @@ public class GUIScreenRecipeSelector extends Screen {
             int ix = 7 + 18 * (ind % 8), iy = 17 + 18 * (ind / 8);
             if (isOver(x, y, ix, iy, 18, 18)) {
                 String clicked = recipes.get(i).getInternalName();
-                this.selection = clicked.equals(this.selection) ? NULL_SELECTION : clicked;
+                selection = clicked.equals(selection) ? NULL_SELECTION : clicked;
                 return true;
             }
         }
 
-        if (isOver(x, y, 151, 71, 18, 18) && !NULL_SELECTION.equals(this.selection)) {
-            this.selection = NULL_SELECTION;
+        if (isOver(x, y, 151, 71, 18, 18) && !NULL_SELECTION.equals(selection)) {
+            selection = NULL_SELECTION;
             return true;
         }
 
@@ -328,12 +308,12 @@ public class GUIScreenRecipeSelector extends Screen {
     @Override
     public boolean keyPressed(KeyEvent event) {
         if (event.key() == 257 || event.key() == 335) {
-            this.search.setFocused(!this.search.isFocused());
+            search.setFocused(!search.isFocused());
             return true;
         }
-        if (!this.search.isFocused()
-                && this.minecraft != null
-                && this.minecraft.options.keyInventory.matches(event)) {
+        if (!search.isFocused()
+                && minecraft != null
+                && minecraft.options.keyInventory.matches(event)) {
             onClose();
             return true;
         }
@@ -343,10 +323,10 @@ public class GUIScreenRecipeSelector extends Screen {
     @Override
     public void onClose() {
         CompoundTag data = new CompoundTag();
-        data.putString("selection", this.selection);
-        data.putInt("index", this.index);
-        Services.NETWORK.sendToServer(new NbtControlPayload(tilePos, data));
-        if (this.minecraft != null) this.minecraft.gui.setScreen(previousScreen);
+        data.putString("selection", selection);
+        data.putInt("index", index);
+        PacketWire.sendToServer(new NbtControlPayload(tilePos, data));
+        if (minecraft != null) minecraft.gui.setScreen(previousScreen);
         Minecraft.getInstance()
                 .getSoundManager()
                 .play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1F));

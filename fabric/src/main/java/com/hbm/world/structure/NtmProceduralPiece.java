@@ -5,16 +5,23 @@ package com.hbm.world.structure;
 
 import com.hbm.itempool.ComponentLoot;
 import com.hbm.lib.Library;
+import com.hbm.world.LocationIsValidSpawn;
+import com.hbm.world.gen.WorldgenHeight;
 import com.hbm.world.gen.component.NtmComponentPiece;
 import com.hbm.world.gen.nbt.PieceGeometry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 
@@ -36,7 +43,6 @@ public class NtmProceduralPiece extends NtmComponentPiece {
                         origin.getX() + FOOTPRINT,
                         origin.getY() + TOP,
                         origin.getZ() + FOOTPRINT));
-
         this.setOrientation(null);
     }
 
@@ -52,6 +58,35 @@ public class NtmProceduralPiece extends NtmComponentPiece {
     @Override
     protected void addAdditionalSaveData(
             StructurePieceSerializationContext context, CompoundTag tag) {}
+
+    @Override
+    public void postProcess(
+            WorldGenLevel level,
+            StructureManager structureManager,
+            ChunkGenerator generator,
+            RandomSource random,
+            BoundingBox chunkBB,
+            ChunkPos chunkPos,
+            BlockPos referencePos) {
+        int x = boundingBox.minX();
+        int z = boundingBox.minZ();
+        int y = WorldgenHeight.lightBlocking(level, x, z);
+        if (!level.getBlockState(new BlockPos(x + 1, y, z + 1)).isAir()) return;
+        if (!LocationIsValidSpawn.isValidGround(
+                level.getBlockState(new BlockPos(x + 1, y - 1, z + 1)),
+                level.getBlockState(new BlockPos(x + 1, y - 2, z + 1)),
+                NtmProceduralPiece::isGround)) return;
+        this.move(0, y - boundingBox.minY(), 0);
+        super.postProcess(
+                level, structureManager, generator, random, chunkBB, chunkPos, referencePos);
+    }
+
+    private static boolean isGround(BlockState state) {
+        return LocationIsValidSpawn.isGrass(state)
+                || LocationIsValidSpawn.isDirtFamily(state)
+                || LocationIsValidSpawn.isStone(state)
+                || LocationIsValidSpawn.isSandFamily(state);
+    }
 
     private static BlockState facing(BlockState state, Direction dir) {
         return state.setValue(HorizontalDirectionalBlock.FACING, dir);
@@ -77,7 +112,6 @@ public class NtmProceduralPiece extends NtmComponentPiece {
                     out.block(1, dy, 2, poleS);
                 }
                 out.block(2, 1, 2, air);
-
                 out.container(
                         2,
                         0,
@@ -85,7 +119,7 @@ public class NtmProceduralPiece extends NtmComponentPiece {
                         Blocks.CHEST
                                 .defaultBlockState()
                                 .setValue(ChestBlock.FACING, Direction.EAST),
-                        ComponentLoot.ANTENNA_8);
+                        ComponentLoot.ANTENNA_8_UNSCALED);
 
                 out.block(0, 2, 0, air);
                 out.block(1, 2, 0, decoSteel);

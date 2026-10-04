@@ -3,8 +3,8 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.turret.BlockEntityTurretFriendly;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.turret.BlockEntityTurretFriendly;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;

@@ -5,6 +5,7 @@ package com.hbm.api.fluidmk2;
 
 import com.hbm.uninos.graph.IGraphProvider;
 import com.mojang.serialization.Codec;
+import java.util.List;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class FluidPipeGraphProvider implements IGraphProvider<PipeData> {
@@ -24,7 +25,7 @@ public final class FluidPipeGraphProvider implements IGraphProvider<PipeData> {
     }
 
     @Override
-    public Codec<PipeData> dataCodec() {
-        return PipeData.CODEC;
+    public Codec<List<PipeData>> dataTableCodec() {
+        return PipeData.CODEC.listOf();
     }
 }

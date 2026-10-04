@@ -29,7 +29,6 @@ public class FluidPipeBlockItem extends BlockItem {
     public Component getName(ItemStack stack) {
         Fluid fluid = FluidPipeBlock.stampedFluid(stack);
         if (fluid == Fluids.EMPTY) return super.getName(stack);
-
         return Component.translatable("item.hbm.fluid_duct")
                 .append(" ")
                 .append(NTMFluidProperties.getDisplayName(fluid));

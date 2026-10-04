@@ -8,7 +8,6 @@ import com.hbm.items.ModItems;
 import com.hbm.particle.helper.FlameCreator;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.DropHeight;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -75,7 +74,6 @@ public class EntityQuackos extends EntityDuck {
 
     @Override
     public void remove(RemovalReason reason) {
-
         if (level().isClientSide()
                 || (reason != RemovalReason.KILLED && reason != RemovalReason.DISCARDED)) {
             super.remove(reason);

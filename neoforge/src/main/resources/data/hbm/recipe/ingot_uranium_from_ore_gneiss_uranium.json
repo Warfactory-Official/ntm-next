@@ -2,7 +2,10 @@
   "type": "minecraft:smelting",
   "cookingtime": 200,
   "experience": 12.0,
-  "ingredient": "hbm:ore_gneiss_uranium",
+  "ingredient": {
+    "neoforge:ingredient_type": "hbm:recipe_input",
+    "base": "hbm:ore_gneiss_uranium"
+  },
   "result": {
     "id": "hbm:ingot_uranium"
   }

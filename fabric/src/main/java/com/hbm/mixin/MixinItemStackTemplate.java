@@ -15,6 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ItemStackTemplate.class)
 public abstract class MixinItemStackTemplate {
     @Unique public volatile long hbm$unstableDeadline = Long.MIN_VALUE;
+    @Unique public volatile Object[] hbm$interiorReferences;
+    @Unique public volatile boolean hbm$opaqueReferences;
 
     @Inject(method = "fromStack", at = @At("RETURN"), cancellable = true)
     private static void hbm$storeGunCounters(

@@ -5,7 +5,12 @@
       "name": "lbsm_simple_crafting"
     }
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
+  "input_state": {
+    "B": {
+      "preserve": "remainder"
+    }
+  },
   "key": {
     "B": "minecraft:water_bucket",
     "O": "hbm:ore_uranium_scorched"

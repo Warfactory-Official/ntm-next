@@ -3,10 +3,10 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.network.BlockEntityDroneRequester;
 import com.hbm.inventory.container.MenuDroneRequester;
 import com.hbm.lib.Library;
 import com.hbm.module.ModulePatternMatcher;
-import com.hbm.tileentity.network.BlockEntityDroneRequester;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;

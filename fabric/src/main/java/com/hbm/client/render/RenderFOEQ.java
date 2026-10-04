@@ -23,7 +23,6 @@ import net.minecraft.util.Mth;
 
 public class RenderFOEQ extends EntityRenderer<EntityBurningFOEQ, RenderFOEQ.State>
         implements ConcurrentRenderStateExtraction {
-
     private static final RenderType BODY =
             RenderTypes.entityCutoutCull(ResourceManager.sat_foeq_burning_tex);
     private static final int[] FLAME = {
@@ -85,7 +84,6 @@ public class RenderFOEQ extends EntityRenderer<EntityBurningFOEQ, RenderFOEQ.Sta
                         (pose, buffer) ->
                                 ResourceManager.sat_foeq_fire.render(
                                         pose, buffer, LightCoordsUtil.FULL_BRIGHT, color));
-
                 if (shell < FLAME.length - 1) poseStack.translate(0D, 2D, 0D);
             }
             poseStack.translate(0D, -3.8D, 0D);

@@ -3,18 +3,17 @@
 
 package com.hbm.integration.recipeviewer;
 
+import com.hbm.blockentity.machine.BlockEntityMachineExposureChamber;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.recipes.ExposureChamberRecipe;
 import com.hbm.inventory.recipes.ExposureChamberRecipes;
 import com.hbm.inventory.recipes.ingredient.CountIngredient;
-import com.hbm.tileentity.machine.BlockEntityMachineExposureChamber;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 public final class ExposureChamberPage extends TablePage<ExposureChamberRecipe> {
-
     private static final int PARTICLE_X = 30, PARTICLE_Y = 24;
     private static final int INGREDIENT_X = 48, INGREDIENT_Y = 24;
     private static final int OUTPUT_X = 102, OUTPUT_Y = 24;

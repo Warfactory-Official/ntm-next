@@ -33,7 +33,6 @@ public class ItemBlockBlastInfo extends BlockItem {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-
         if (getBlock() instanceof BlockSpeedy speedy) adder.accept(speedy.tooltip());
         super.appendHoverText(stack, context, display, adder, flag);
         adder.accept(line(getBlock()));

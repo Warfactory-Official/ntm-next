@@ -1,0 +1,11 @@
+{
+  "armor": {
+    "chest": "hbm:schrabidium_plate",
+    "feet": "hbm:schrabidium_boots",
+    "head": "hbm:schrabidium_helmet",
+    "legs": "hbm:schrabidium_legs"
+  },
+  "protections": [
+    "hazmat"
+  ]
+}

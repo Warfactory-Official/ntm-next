@@ -9,13 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class ForeignEnergyEndpoint implements IEnergyHandlerMK2 {
-
     static final boolean BIDIRECTIONAL_IS_RECEIVER_ONLY = true;
 
     static final IEnergyHandlerMK2.ConnectionPriority FOREIGN_PRIORITY =
             IEnergyHandlerMK2.ConnectionPriority.LOWEST;
     private final IEnergyHandlerView view;
-
     private final EnergyConversion.Carry carry = new EnergyConversion.Carry();
     private long availableHe;
     private long roomHe;
@@ -23,7 +21,6 @@ final class ForeignEnergyEndpoint implements IEnergyHandlerMK2 {
     private boolean receiver;
 
     private boolean bidirectionalSeen;
-
     private long owedFe;
 
     ForeignEnergyEndpoint(IEnergyHandlerView view) {

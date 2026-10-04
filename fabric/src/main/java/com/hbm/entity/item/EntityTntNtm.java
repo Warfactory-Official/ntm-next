@@ -43,7 +43,6 @@ public class EntityTntNtm extends PrimedTnt {
     public void explode() {
         if (!TntRule.explodes(level())) return;
         if (getBlockState().getBlock() instanceof IFuckingExplode bomb) {
-
             bomb.explodeEntity(level(), getX(), getY(0.5D), getZ(), this);
         }
     }

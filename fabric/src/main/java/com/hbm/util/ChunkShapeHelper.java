@@ -24,7 +24,6 @@ public final class ChunkShapeHelper {
         if (t < 0) {
             return Math.sqrt((px - x1) * (px - x1) + (pz - z1) * (pz - z1));
         } else if (t > 1) {
-
             return Math.sqrt((px - x2) * (px - x2) + (pz - z2) * (pz - z2));
         }
 

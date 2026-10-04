@@ -5,17 +5,16 @@ package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
 import com.hbm.api.item.IDesignatorItem;
+import com.hbm.blockentity.bomb.BlockEntityLaunchPadBase;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemFluidContainerInfinite;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPadBase;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.material.Fluid;
 
 public abstract class MenuLaunchPadBase<T extends BlockEntityLaunchPadBase>

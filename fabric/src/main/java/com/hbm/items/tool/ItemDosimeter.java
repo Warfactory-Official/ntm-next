@@ -34,7 +34,6 @@ public class ItemDosimeter extends Item {
         if (x < 0.5) list.add(0);
         if (x < 1) list.add(1);
         if (x >= 0.5 && x < 2) list.add(2);
-
         if (x >= 2) list.add(3);
         return list.isEmpty() ? 0 : list.get(rand.nextInt(list.size()));
     }

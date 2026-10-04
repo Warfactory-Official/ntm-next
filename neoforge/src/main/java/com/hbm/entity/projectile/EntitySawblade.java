@@ -4,12 +4,10 @@
 package com.hbm.entity.projectile;
 
 import com.hbm.entity.ModEntities;
-import com.hbm.handler.threading.TargetPoint;
 import com.hbm.items.ModItems;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.particle.ParticleGiblet;
 import com.hbm.particle.helper.ParticleCreators;
-import com.hbm.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -39,7 +37,6 @@ public class EntitySawblade extends EntityThrowableInterp {
 
     private static final EntityDataAccessor<Integer> ORIENTATION =
             SynchedEntityData.defineId(EntitySawblade.class, EntityDataSerializers.INT);
-
     private static final EntityDataAccessor<Integer> META =
             SynchedEntityData.defineId(EntitySawblade.class, EntityDataSerializers.INT);
 
@@ -99,7 +96,6 @@ public class EntitySawblade extends EntityThrowableInterp {
         if (mop instanceof EntityHitResult hit && hit.getEntity().isAlive()) {
             Entity e = hit.getEntity();
             if (level() instanceof ServerLevel server) {
-
                 e.hurtServer(server, damageSources().source(ModDamageTypes.RUBBLE), 1000F);
 
                 if (!e.isAlive() && e instanceof LivingEntity living) {
@@ -128,7 +124,6 @@ public class EntitySawblade extends EntityThrowableInterp {
                     orientation += 6;
                     setOrientation(orientation);
                 } else {
-
                     Direction side = hit.getDirection();
                     Vec3 motion = getDeltaMovement();
                     setDeltaMovement(
@@ -145,7 +140,6 @@ public class EntitySawblade extends EntityThrowableInterp {
                                     Level.ExplosionInteraction.NONE);
 
                     BlockPos pos = hit.getBlockPos();
-
                     if (level().getBlockState(pos).getBlock().getExplosionResistance() < 50) {
                         if (level() instanceof ServerLevel server) {
                             server.destroyBlock(pos, false);

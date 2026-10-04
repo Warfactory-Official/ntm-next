@@ -6,8 +6,7 @@ package com.hbm.entity.mob;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.bomb.BlockTaint;
 import com.hbm.data.ItemData;
-import com.hbm.interfaces.IRadiationImmune;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricPlatform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -27,7 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class EntityCreeperTainted extends EntityCreeperBase implements IRadiationImmune {
+public class EntityCreeperTainted extends EntityCreeperBase {
 
     public EntityCreeperTainted(EntityType<? extends EntityCreeperTainted> type, Level level) {
         super(type, level);
@@ -68,7 +67,7 @@ public class EntityCreeperTainted extends EntityCreeperBase implements IRadiatio
     protected void detonate(ServerLevel level) {
         level.explode(this, getX(), getY(), getZ(), 5.0F, Level.ExplosionInteraction.NONE);
 
-        if (!Services.PLATFORM.canEntityGrief(level, this)) return;
+        if (!FabricPlatform.canEntityGrief(level, this)) return;
 
         boolean trails = ItemData.TAINT_TRAILS.get();
 

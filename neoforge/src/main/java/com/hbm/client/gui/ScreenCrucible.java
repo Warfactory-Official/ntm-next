@@ -3,6 +3,7 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityCrucible;
 import com.hbm.client.ModifierKeys;
 import com.hbm.client.render.HbmRenderPipelines;
 import com.hbm.data.MachineData;
@@ -14,7 +15,6 @@ import com.hbm.inventory.recipes.CrucibleRecipe;
 import com.hbm.inventory.recipes.CrucibleRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityCrucible;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -36,8 +36,8 @@ public class ScreenCrucible extends ScreenInfoContainer<MenuCrucible> {
 
     public ScreenCrucible(MenuCrucible menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 176, 214);
-        this.titleLabelY = 6;
-        this.inventoryLabelY = this.imageHeight - 96 + 2;
+        titleLabelY = 6;
+        inventoryLabelY = imageHeight - 96 + 2;
     }
 
     @Override
@@ -122,11 +122,11 @@ public class ScreenCrucible extends ScreenInfoContainer<MenuCrucible> {
         if (checkClick(mouseX, mouseY, 106, 80, 18, 18)) {
             if (recipe != null) {
                 List<Component> lines = new ArrayList<>();
-                for (String s : recipe.print()) lines.add(Component.literal(s));
-                graphics.setComponentTooltipForNextFrame(this.font, lines, mouseX, mouseY);
+                lines.addAll(recipe.print());
+                graphics.setComponentTooltipForNextFrame(font, lines, mouseX, mouseY);
             } else {
                 graphics.setComponentTooltipForNextFrame(
-                        this.font,
+                        font,
                         List.of(
                                 Component.translatable("gui.recipe.setRecipe")
                                         .withStyle(ChatFormatting.YELLOW)),
@@ -193,13 +193,13 @@ public class ScreenCrucible extends ScreenInfoContainer<MenuCrucible> {
         if (stack.isEmpty())
             list.add(Component.translatable("desc.shared.empty").withStyle(ChatFormatting.RED));
 
-        boolean shift = ModifierKeys.leftShiftHeld();
+        boolean shift = ModifierKeys.detailsHeld();
         for (MaterialStack sta : stack) {
             list.add(
-                    Component.literal(
-                                    sta.material.getLocalizedName()
-                                            + ": "
-                                            + Mats.formatAmount(sta.amount, shift))
+                    Component.empty()
+                            .append(sta.material.getLocalizedName())
+                            .append(Component.literal(": "))
+                            .append(Mats.formatAmount(sta.amount, shift))
                             .withStyle(ChatFormatting.YELLOW));
         }
 

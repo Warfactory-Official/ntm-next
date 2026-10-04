@@ -54,7 +54,6 @@ public final class WatzFuelPage extends RecipePage<WatzFuelPage.Recipe> {
 
     @Override
     public void layout(Recipe recipe, PageLayout page) {
-
         page.input(48, 24).background().items(List.of(recipe.input()));
         page.output(102, 24).background().items(List.of(recipe.output()));
         page.catalyst(75, 31).item(ModBlocks.WATZ.get());

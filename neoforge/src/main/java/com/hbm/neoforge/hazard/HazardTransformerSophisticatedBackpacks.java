@@ -31,6 +31,8 @@ public final class HazardTransformerSophisticatedBackpacks implements IHazardTra
         UUID id = stack.get(ModCoreDataComponents.STORAGE_UUID.get());
         float radiation =
                 StorageHazardSum.sum(
+                        id,
+                        true,
                         BackpackStorage.get().getOrCreateBackpackContents(id).inventory().stacks());
         if (radiation > 0F) entries.add(new HazardEntry(HazardRegistry.RADIATION, radiation));
     }

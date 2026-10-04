@@ -16,7 +16,6 @@ public final class Transform {
     boolean hidden;
 
     public Transform(float[] matrix) {
-
         float[] normalized = matrix.clone();
         scale = extractScale(normalized);
         rotation = new Quaternionf().setFromNormalized(matrixFromArray(normalized));

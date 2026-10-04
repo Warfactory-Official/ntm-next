@@ -5,7 +5,6 @@ package com.hbm.inventory.recipes;
 
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
-import com.hbm.util.I18nUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -19,6 +18,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
@@ -128,14 +128,10 @@ public class GasCentrifugeRecipe extends GenericRecipe {
             new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
     public String stage = "";
     public int consumed;
-
     public int produced;
-
     public @Nullable String next;
-
     public boolean requiresUpgrade;
     public @Nullable Fluid feed;
-
     public int deadEndVolume;
     private List<ItemStackTemplate> deadEndTemplate = List.of();
     private volatile ItemStack @Nullable [] deadEndItems;
@@ -144,8 +140,8 @@ public class GasCentrifugeRecipe extends GenericRecipe {
         super(name);
     }
 
-    public static String stageName(@Nullable String stage) {
-        return I18nUtil.resolveKey(
+    public static Component stageName(@Nullable String stage) {
+        return Component.translatable(
                 "hbmpseudofluid." + (stage == null ? "none" : stage.toLowerCase(Locale.US)));
     }
 
@@ -166,7 +162,7 @@ public class GasCentrifugeRecipe extends GenericRecipe {
     }
 
     public GasCentrifugeRecipe setRequiresUpgrade() {
-        this.requiresUpgrade = true;
+        requiresUpgrade = true;
         return this;
     }
 
@@ -176,8 +172,8 @@ public class GasCentrifugeRecipe extends GenericRecipe {
     }
 
     public GasCentrifugeRecipe setDeadEnd(int volume, ItemStackTemplate... items) {
-        this.deadEndVolume = volume;
-        this.deadEndTemplate = List.of(items);
+        deadEndVolume = volume;
+        deadEndTemplate = List.of(items);
         return this;
     }
 
@@ -199,15 +195,25 @@ public class GasCentrifugeRecipe extends GenericRecipe {
     }
 
     @Override
-    public List<String> print() {
-        List<String> list = new ArrayList<>();
-        list.add(ChatFormatting.YELLOW + getLocalizedName());
+    public List<Component> print() {
+        List<Component> list = new ArrayList<>();
+        list.add(getLocalizedName().copy().withStyle(ChatFormatting.YELLOW));
 
         duration(list);
         power(list);
-        list.add(ChatFormatting.LIGHT_PURPLE + stageName(stage) + ": " + consumed + " mB");
+        list.add(
+                stageName(stage)
+                        .copy()
+                        .append(": ")
+                        .append(Component.translatable("unit.millibuckets_spaced", consumed))
+                        .withStyle(ChatFormatting.LIGHT_PURPLE));
         if (next != null) {
-            list.add(ChatFormatting.LIGHT_PURPLE + stageName(next) + ": " + produced + " mB");
+            list.add(
+                    stageName(next)
+                            .copy()
+                            .append(": ")
+                            .append(Component.translatable("unit.millibuckets_spaced", produced))
+                            .withStyle(ChatFormatting.LIGHT_PURPLE));
         }
         output(list);
 

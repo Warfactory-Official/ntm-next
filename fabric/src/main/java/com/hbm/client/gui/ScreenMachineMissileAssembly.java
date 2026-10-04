@@ -3,15 +3,15 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineMissileAssembly;
 import com.hbm.client.render.MeshItemRenderer;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.missile.EntityMissileCustom;
 import com.hbm.handler.MissileStruct;
 import com.hbm.inventory.container.MenuMachineMissileAssembly;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineMissileAssembly;
 import java.util.Optional;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -105,12 +105,12 @@ public class ScreenMachineMissileAssembly extends ScreenInfoContainer<MenuMachin
         if (previewEntity == null) {
             previewEntity =
                     new EntityMissileCustom(ModEntities.MISSILE_CUSTOM.get(), this.minecraft.level);
+            previewEntity.setId(-1);
         }
         previewEntity.setParts(warhead, fuselage, fins, thruster);
 
         MissileStruct parts = previewEntity.getStruct();
         float height = parts.height();
-
         if (height == 0F && parts.fins() == null) return;
 
         float scale = PREVIEW_SIZE / Math.max(height, PREVIEW_MIN_HEIGHT);
@@ -151,7 +151,6 @@ public class ScreenMachineMissileAssembly extends ScreenInfoContainer<MenuMachin
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-
         if (event.button() == 0
                 && checkClick(
                         (int) event.x(),
@@ -162,8 +161,7 @@ public class ScreenMachineMissileAssembly extends ScreenInfoContainer<MenuMachin
                         BUILD_SIZE)) {
             CompoundTag data = new CompoundTag();
             data.putBoolean("build", true);
-            Services.NETWORK.sendToServer(
-                    new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
             playClick();
             return true;
         }

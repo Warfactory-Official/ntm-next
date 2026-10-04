@@ -6,6 +6,7 @@ package com.hbm.client.render.iris;
 import com.hbm.client.render.WorldRenderPipeline;
 import com.mojang.blaze3d.opengl.GlConst;
 import com.mojang.blaze3d.platform.BlendOp;
+import dev.engine_room.flywheel.iris.compile.ContractProgram;
 import java.util.Arrays;
 import java.util.BitSet;
 import net.irisshaders.iris.api.v0.IrisApi;
@@ -21,6 +22,7 @@ import net.irisshaders.iris.shaderpack.loading.ProgramId;
 import net.irisshaders.iris.shaderpack.programs.ProgramSource;
 import net.irisshaders.iris.shadows.ShadowRenderingState;
 import org.jspecify.annotations.Nullable;
+import org.lwjgl.opengl.GL11C;
 
 public final class WorldShaderCompiler {
     private static final BitSet shadowAssigned = new BitSet();
@@ -54,7 +56,10 @@ public final class WorldShaderCompiler {
                 if (pipeline.glint) yield ShaderKey.GLINT;
                 if (phase == 2) yield ShaderKey.HAND_CUTOUT;
                 if (phase == 3) yield ShaderKey.HAND_TRANSLUCENT;
-                if (pipeline.fullbright) yield ShaderKey.ENTITIES_EYES;
+                if (pipeline.fullbright)
+                    yield pipeline.translucent
+                            ? ShaderKey.ENTITIES_EYES_TRANS
+                            : ShaderKey.ENTITIES_EYES;
                 if (phase == 1)
                     yield pipeline.translucent ? ShaderKey.BE_TRANSLUCENT : ShaderKey.BLOCK_ENTITY;
                 yield pipeline.translucent
@@ -91,7 +96,17 @@ public final class WorldShaderCompiler {
     public static void begin(WorldRenderPipeline pipeline, ProgramSource source, boolean shadow) {
         assert active == null;
         active = pipeline;
-
+        if (!shadow
+                && (source.getName().equals(ContractProgram.GBUFFERS_NATIVE_ADDITIVE.sourceName)
+                        || source.getName()
+                                .equals(
+                                        ContractProgram.GBUFFERS_NATIVE_ADDITIVE_COLOR
+                                                .sourceName))) {
+            blend =
+                    new BlendModeOverride(
+                            new BlendMode(GL11C.GL_ONE, GL11C.GL_ONE, GL11C.GL_ZERO, GL11C.GL_ONE));
+            return;
+        }
         blend =
                 source.getDirectives()
                         .getBlendModeOverride()

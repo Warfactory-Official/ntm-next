@@ -10,7 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public interface ICrucibleAcceptor {
-
     boolean canAcceptPartialPour(
             Level level, BlockPos pos, Vec3 hit, Direction side, MaterialStack stack);
 

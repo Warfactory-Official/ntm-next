@@ -6,7 +6,6 @@ package com.hbm.entity.mob;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.projectile.EntityBullet;
 import com.hbm.entity.projectile.EntityChopperMine;
-import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.inventory.material.Mats;
 import com.hbm.items.ModItems;
 import com.hbm.lib.ModDamageTypes;
@@ -17,7 +16,6 @@ import com.hbm.sound.ModSounds;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -49,11 +47,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class EntityHunterChopper extends Mob implements Enemy, IRadiationImmune {
-
+public class EntityHunterChopper extends Mob implements Enemy {
     private static final EntityDataAccessor<Byte> ATTACKING =
             SynchedEntityData.defineId(EntityHunterChopper.class, EntityDataSerializers.BYTE);
-
     private static final EntityDataAccessor<Byte> DYING =
             SynchedEntityData.defineId(EntityHunterChopper.class, EntityDataSerializers.BYTE);
 
@@ -101,7 +97,6 @@ public class EntityHunterChopper extends Mob implements Enemy, IRadiationImmune 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-
         builder.define(ATTACKING, (byte) 0);
         builder.define(DYING, (byte) 0);
     }
@@ -111,7 +106,6 @@ public class EntityHunterChopper extends Mob implements Enemy, IRadiationImmune 
 
     @Override
     public void travel(Vec3 input) {
-
         move(MoverType.SELF, getDeltaMovement());
         setDeltaMovement(getDeltaMovement().scale(0.91D));
     }
@@ -245,7 +239,6 @@ public class EntityHunterChopper extends Mob implements Enemy, IRadiationImmune 
         }
 
         if (this.attackCounter >= 120 && this.attackCounter % 2 == 0) {
-
             Vec3 heading =
                     new Vec3(
                                     target.getX() - startX - 1 + random.nextInt(3),
@@ -372,7 +365,6 @@ public class EntityHunterChopper extends Mob implements Enemy, IRadiationImmune 
         float delta = getYRot() - wanted;
 
         this.yRotO = getYRot();
-
         if (delta >= 10F) setYRot(getYRot() - 10F);
         else if (delta <= -10F) setYRot(getYRot() + 10F);
         this.yRotO = getYRot();

@@ -1,6 +1,10 @@
 {
-  "type": "hbm:container_upgrade",
-  "carrier": "hbm:mass_storage_iron",
+  "type": "hbm:crafting_shaped",
+  "input_state": {
+    "M": {
+      "preserve": "result"
+    }
+  },
   "key": {
     "C": "hbm:circuit_chip",
     "M": "hbm:mass_storage_iron",

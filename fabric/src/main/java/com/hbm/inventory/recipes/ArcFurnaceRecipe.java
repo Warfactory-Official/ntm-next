@@ -28,13 +28,11 @@ public class ArcFurnaceRecipe extends GenericRecipe {
             MaterialStack.CODEC.listOf().optionalFieldOf("output_materials", List.of());
     private static final StreamCodec<ByteBuf, List<MaterialStack>> MATERIALS_STREAM_CODEC =
             MaterialStack.STREAM_CODEC.apply(ByteBufCodecs.list());
-
     private static final StreamCodec<RegistryFriendlyByteBuf, List<MaterialStack>>
             EXTRAS_STREAM_CODEC =
                     StreamCodec.of(
                             (buf, materials) -> MATERIALS_STREAM_CODEC.encode(buf, materials),
                             MATERIALS_STREAM_CODEC::decode);
-
     private static final BiConsumer<ArcFurnaceRecipe, List<MaterialStack>> APPLY_EXTRAS =
             (recipe, materials) ->
                     recipe.fluidOutput =

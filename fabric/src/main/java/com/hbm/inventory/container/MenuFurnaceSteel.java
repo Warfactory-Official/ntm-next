@@ -3,8 +3,8 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityFurnaceSteel;
 import com.hbm.inventory.slot.SlotSmelting;
-import com.hbm.tileentity.machine.BlockEntityFurnaceSteel;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

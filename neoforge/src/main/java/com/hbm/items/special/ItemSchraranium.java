@@ -6,7 +6,6 @@ package com.hbm.items.special;
 import com.hbm.config.BalanceConfig;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.NTMMaterial;
-import com.hbm.platform.Services;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;

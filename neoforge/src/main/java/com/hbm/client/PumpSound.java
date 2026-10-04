@@ -3,8 +3,8 @@
 
 package com.hbm.client;
 
+import com.hbm.blockentity.machine.BlockEntityMachinePumpBase;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntityMachinePumpBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;

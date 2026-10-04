@@ -4,12 +4,12 @@
 package com.hbm.client.gui;
 
 import com.hbm.api.ntl.PneumaticNetwork;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTube;
 import com.hbm.inventory.container.MenuPneumoTube;
 import com.hbm.lib.Library;
 import com.hbm.module.ModulePatternMatcher;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoTube;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -218,8 +218,7 @@ public class ScreenPneumoTube extends ScreenInfoContainer<MenuPneumoTube> {
         if (!checkClick(mouseX, mouseY, left, top, sizeX, sizeY)) return;
         CompoundTag data = new CompoundTag();
         data.putBoolean(key, true);
-        Services.NETWORK.sendToServer(
-                new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
         playClick();
     }
 }

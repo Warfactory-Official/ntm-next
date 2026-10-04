@@ -15,6 +15,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
@@ -110,18 +111,16 @@ public class SolderingRecipe extends GenericRecipe {
     }
 
     @Override
-    protected void input(List<String> list) {
+    protected void input(List<Component> list) {
         super.input(list);
         for (CountIngredient[] group : new CountIngredient[][] {pcb, solder}) {
             for (CountIngredient ingredient : group) {
                 ItemStack display = ingredient.extractForCyclingDisplay(20);
                 if (display.isEmpty()) continue;
                 list.add(
-                        "  "
-                                + ChatFormatting.GRAY
-                                + display.getCount()
-                                + "x "
-                                + display.getHoverName().getString());
+                        Component.literal("  " + display.getCount() + "x ")
+                                .withStyle(ChatFormatting.GRAY)
+                                .append(display.getHoverName()));
             }
         }
     }

@@ -12,8 +12,8 @@ import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.FluidIdentifierItem;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.FluidIdControlPayload;
-import com.hbm.platform.Services;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -116,7 +116,6 @@ public class ScreenFluidIdentifier extends Screen {
                 if (next >= 9) return;
             }
         }
-
         for (Fluid fluid : BuiltInRegistries.FLUID) {
             if (NTMFluids.legacyName(fluid) != null
                     || !fluid.isSource(fluid.defaultFluidState())
@@ -253,12 +252,12 @@ public class ScreenFluidIdentifier extends Screen {
                 if (event.button() == 0) {
                     playClick();
                     this.primary = type;
-                    Services.NETWORK.sendToServer(new FluidIdControlPayload(true, fluidId(type)));
+                    PacketWire.sendToServer(new FluidIdControlPayload(true, fluidId(type)));
                     return true;
                 } else if (event.button() == 1) {
                     playClick();
                     this.secondary = type;
-                    Services.NETWORK.sendToServer(new FluidIdControlPayload(false, fluidId(type)));
+                    PacketWire.sendToServer(new FluidIdControlPayload(false, fluidId(type)));
                     return true;
                 }
             }

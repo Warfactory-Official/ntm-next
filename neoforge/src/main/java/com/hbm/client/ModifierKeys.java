@@ -3,16 +3,13 @@
 
 package com.hbm.client;
 
-import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.client.Minecraft;
-import org.lwjgl.glfw.GLFW;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLLoader;
 
 public final class ModifierKeys {
-
     private ModifierKeys() {}
 
-    public static boolean leftShiftHeld() {
-        return InputConstants.isKeyDown(
-                Minecraft.getInstance().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT);
+    public static boolean detailsHeld() {
+        return (FMLLoader.getCurrent().getDist() == Dist.CLIENT) && Keybinds.DETAILS.isDown();
     }
 }

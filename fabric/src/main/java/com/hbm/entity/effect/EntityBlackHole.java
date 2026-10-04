@@ -129,7 +129,6 @@ public class EntityBlackHole extends Entity {
                         && entity instanceof ItemEntity item
                         && isVortexTerminator(item)) {
                     discard();
-
                     server.explode(
                             null,
                             null,
@@ -163,14 +162,12 @@ public class EntityBlackHole extends Entity {
             int length = (int) Math.ceil(size * 15F);
 
             for (int i = 0; i < length; i++) {
-
                 BlockPos pos =
                         new BlockPos(
                                 (int) (getX() + ray.x * i),
                                 (int) (getY() + ray.y * i),
                                 (int) (getZ() + ray.z * i));
                 BlockState state = level.getBlockState(pos);
-
                 if (state.liquid()) {
                     level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
                     state = level.getBlockState(pos);

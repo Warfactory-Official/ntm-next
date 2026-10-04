@@ -3,7 +3,7 @@
 
 package com.hbm.blocks.machine.pile;
 
-import com.hbm.tileentity.machine.pile.BlockEntityPileSource;
+import com.hbm.blockentity.machine.pile.BlockEntityPileSource;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Item;
@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
-public class BlockGraphiteSource extends BlockGraphiteDrilledTE {
+public class BlockGraphiteSource extends BlockGraphiteDrilledBE {
 
     private final Supplier<Item> rod;
 

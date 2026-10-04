@@ -3,6 +3,7 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.storage.BlockEntityBatterySocket;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.render.FramedItem;
 import com.hbm.client.render.RenderBatterySocket;
@@ -14,7 +15,6 @@ import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
-import com.hbm.tileentity.machine.storage.BlockEntityBatterySocket;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.instance.Instance;

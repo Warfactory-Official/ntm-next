@@ -80,7 +80,6 @@ public class BlockGasMeltdown extends BlockGasBase {
         ContaminationUtil.contaminate(
                 living, HazardType.RADIATION, ContaminationType.CREATIVE, 0.5D);
         living.addEffect(new MobEffectInstance(HbmPotion.radiation(), 60 * 20, 2));
-
         if (ArmorRegistry.hasProtection(living, EquipmentSlot.HEAD, HazardClass.PARTICLE_FINE)) {
             ArmorUtil.damageGasMaskFilter(living, 1);
         } else {

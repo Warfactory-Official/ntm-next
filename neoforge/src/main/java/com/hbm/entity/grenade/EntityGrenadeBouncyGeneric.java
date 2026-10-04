@@ -17,7 +17,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class EntityGrenadeBouncyGeneric extends EntityGrenadeBouncyBase implements IGenericGrenade {
-
     private static final EntityDataAccessor<ItemStack> GRENADE =
             SynchedEntityData.defineId(
                     EntityGrenadeBouncyGeneric.class, EntityDataSerializers.ITEM_STACK);

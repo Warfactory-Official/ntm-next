@@ -3,7 +3,7 @@
 
 package com.hbm.blocks.machine.storage;
 
-import com.hbm.tileentity.machine.storage.CrateType;
+import com.hbm.blockentity.machine.storage.CrateType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;

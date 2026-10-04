@@ -3,11 +3,11 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityMachinePress;
 import com.hbm.handler.FuelHandler;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.items.machine.ItemStamp;
-import com.hbm.tileentity.machine.BlockEntityMachinePress;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -34,7 +34,6 @@ public class MenuMachinePress extends BlockEntityMenu<BlockEntityMachinePress> {
                         80,
                         53,
                         stack -> !(stack.getItem() instanceof ItemStamp)));
-
         addSlot(
                 new SlotRecipeOutput(
                         playerInv.player, be, BlockEntityMachinePress.SLOT_OUTPUT, 140, 35));

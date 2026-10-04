@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityFoundryCastingBase;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.interfaces.IToolable;
@@ -10,11 +11,10 @@ import com.hbm.inventory.material.Mats.MaterialStack;
 import com.hbm.items.machine.ItemMold;
 import com.hbm.items.machine.ItemScraps;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntityFoundryCastingBase;
-import com.hbm.util.I18nUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
@@ -136,17 +136,23 @@ public abstract class FoundryCastingBase extends Block
         BlockEntityFoundryCastingBase cast = cast(level, pos);
         if (cast == null) return;
 
-        info.title(I18nUtil.resolveKey(getDescriptionId()), 0xFF4000, 0x401000);
+        info.title(
+                Component.empty().append(Component.translatable(getDescriptionId())),
+                0xFF4000,
+                0x401000);
 
         if (cast.inventory.get(0).getItem() instanceof ItemMold moldItem) {
             info.line(moldItem.mold.getTitle(), 0x5555FF);
         } else {
-            info.line(I18nUtil.resolveKey("foundry.noCast"), 0xFF5555);
+            info.line(Component.empty().append(Component.translatable("foundry.noCast")), 0xFF5555);
         }
 
         if (cast.type != null && cast.amount > 0) {
             info.line(
-                    cast.type.getLocalizedName() + ": " + cast.amount + " / " + cast.getCapacity(),
+                    cast.type
+                            .getLocalizedName()
+                            .copy()
+                            .append(": " + cast.amount + " / " + cast.getCapacity()),
                     0xFFFF55);
         }
     }

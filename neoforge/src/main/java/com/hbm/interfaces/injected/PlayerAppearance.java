@@ -7,6 +7,7 @@ public interface PlayerAppearance {
 
     byte MANLY = 1;
     byte STEALTH = 2;
+    byte ARMOR_FLIGHT = 4;
 
     byte hbm$appearance();
 

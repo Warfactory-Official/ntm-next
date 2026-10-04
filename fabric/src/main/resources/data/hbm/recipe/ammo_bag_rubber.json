@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "G": "#c:plates/weapon_steel",
     "L": "#hbm:ingots/any_rubber",

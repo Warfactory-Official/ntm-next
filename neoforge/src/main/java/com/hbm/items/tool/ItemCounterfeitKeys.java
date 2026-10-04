@@ -3,8 +3,8 @@
 
 package com.hbm.items.tool;
 
+import com.hbm.blockentity.machine.BlockEntityLockableBase;
 import com.hbm.items.ModItems;
-import com.hbm.tileentity.machine.BlockEntityLockableBase;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

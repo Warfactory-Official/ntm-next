@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.machine.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKTerminal;
 import com.hbm.blocks.ISectionGeometry;
 import com.hbm.blocks.ITickingBlock;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKTerminal;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;

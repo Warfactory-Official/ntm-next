@@ -4,7 +4,6 @@
 package com.hbm.blocks;
 
 public interface ISectionGeometry {
-
     default boolean contextualGeometry() {
         return false;
     }

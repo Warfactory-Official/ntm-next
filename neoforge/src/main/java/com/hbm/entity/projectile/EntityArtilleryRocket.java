@@ -79,7 +79,6 @@ public class EntityArtilleryRocket extends EntityThrowableInterp implements IRad
 
     public EntityArtilleryRocket setTarget(Entity target) {
         this.target = EntityReference.of(target);
-
         setTarget(target.getX(), target.getY() + target.getBbHeight() * 0.5D, target.getZ());
         return this;
     }
@@ -105,7 +104,6 @@ public class EntityArtilleryRocket extends EntityThrowableInterp implements IRad
         if (this.isRemoved()) return;
 
         if (level().isClientSide()) {
-
             Vec3 back = new Vec3(this.xOld - getX(), this.yOld - getY(), this.zOld - getZ());
             double velocity = back.length();
 

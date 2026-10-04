@@ -25,7 +25,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HumanoidArmorLayer.class)
 public abstract class MixinHumanoidArmorLayer {
-
     @ModifyReturnValue(
             method =
                     "shouldRender(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/EquipmentSlot;)Z",
@@ -54,7 +53,6 @@ public abstract class MixinHumanoidArmorLayer {
         HumanoidModel<HumanoidRenderState> model =
                 (HumanoidModel<HumanoidRenderState>)
                         ((RenderLayer<?, ?>) (Object) this).getParentModel();
-
         ArmorSocketRenderer.submit(
                 pose, collector, light, model, state, slot, stack, state.outlineColor);
         if (ArmorHeadRenderer.submit(

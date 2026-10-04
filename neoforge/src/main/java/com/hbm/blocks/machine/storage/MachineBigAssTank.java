@@ -3,6 +3,8 @@
 
 package com.hbm.blocks.machine.storage;
 
+import com.hbm.blockentity.machine.storage.BlockEntityBarrel;
+import com.hbm.blockentity.machine.storage.BlockEntityMachineBigAssTank;
 import com.hbm.blocks.IPersistentInfoProvider;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
@@ -16,14 +18,11 @@ import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.storage.BlockEntityBarrel;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineBigAssTank;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -39,7 +38,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineBigAssTank extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock, IPersistentInfoProvider {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         5, 0, 4, 4, 4, 4, 0, 0, 0,
         4, 0, 5, -4, 2, 2, 0, 0, 0,
@@ -113,15 +111,6 @@ public class MachineBigAssTank extends BlockMultiblockCore
     @Override
     public int coreMask() {
         return MASK_NONE;
-    }
-
-    @Override
-    protected void removedAt(
-            BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-        if (MultiblockSurface.foldedCore(state) != null) {
-            BlockEntityMachineBigAssTank.removeVirtualNodes(level, pos, state.getValue(FACING));
-        }
-        super.removedAt(state, level, pos, movedByPiston);
     }
 
     @Override

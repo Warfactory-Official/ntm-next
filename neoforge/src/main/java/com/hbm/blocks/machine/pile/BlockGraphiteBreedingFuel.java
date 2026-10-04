@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.machine.pile;
 
+import com.hbm.blockentity.machine.pile.BlockEntityPileBreedingFuel;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
-import com.hbm.tileentity.machine.pile.BlockEntityPileBreedingFuel;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class BlockGraphiteBreedingFuel extends BlockGraphiteDrilledTE {
+public class BlockGraphiteBreedingFuel extends BlockGraphiteDrilledBE {
 
     public BlockGraphiteBreedingFuel(BlockBehaviour.Properties props) {
         super(props);
@@ -45,7 +45,6 @@ public class BlockGraphiteBreedingFuel extends BlockGraphiteDrilledTE {
             BlockState state = level.getBlockState(pos);
 
             if (tool == ToolType.SCREWDRIVER && isChannelFace(state, side)) {
-
                 level.setBlock(
                         pos,
                         copyShape(

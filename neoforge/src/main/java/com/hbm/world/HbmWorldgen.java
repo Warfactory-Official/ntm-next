@@ -3,12 +3,12 @@
 
 package com.hbm.world;
 
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgeBiomeInjection;
 import com.hbm.world.HbmFeatureAttachments.Attachment;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
 
 public final class HbmWorldgen {
-
     public static final BiomeTarget DESERT_OIL =
             BiomeTarget.vanilla("desert", "badlands", "eroded_badlands", "wooded_badlands");
 
@@ -32,9 +32,22 @@ public final class HbmWorldgen {
 
     @SuppressWarnings("unchecked")
     public static void register() {
+        Attachment pre = null;
         for (Attachment attachment : HbmFeatureAttachments.ALL) {
-            Services.BIOME_MODIFIER.addFeaturesToBiome(
-                    attachment.biomes(), attachment.step(), attachment.feature());
+            if (!HbmFeatureAttachments.PRE_DECORATION.contains(attachment.feature())) {
+                NeoForgeBiomeInjection.addFeaturesToBiome(
+                        attachment.biomes(), attachment.step(), attachment.feature());
+                continue;
+            }
+            assert pre == null
+                    || pre.biomes().equals(attachment.biomes())
+                            && pre.step() == attachment.step()
+                            && attachment.switches().isEmpty();
+            pre = attachment;
         }
+        NeoForgeBiomeInjection.addFeaturesToBiome(
+                pre.biomes(),
+                pre.step(),
+                HbmFeatureAttachments.PRE_DECORATION.toArray(ResourceKey[]::new));
     }
 }

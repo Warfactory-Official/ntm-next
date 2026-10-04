@@ -3,11 +3,11 @@
 
 package com.hbm.compat.computercraft.machine;
 
+import com.hbm.blockentity.machine.BlockEntityICF;
 import com.hbm.compat.computercraft.OpenComputers;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.machine.ItemICFPellet;
-import com.hbm.tileentity.machine.BlockEntityICF;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.Locale;
 import net.minecraft.world.item.ItemStack;

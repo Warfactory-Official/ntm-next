@@ -24,7 +24,6 @@ import static com.hbm.handler.radiation.RadVisMeshes.*;
 import static com.hbm.handler.radiation.RadiationSystemNT.*;
 
 public final class RadVisGeometry {
-
     public enum Mode {
         HEAT,
         POCKETS,
@@ -80,7 +79,6 @@ public final class RadVisGeometry {
     }
 
     static final double RAD_REF = 1000.0d;
-
     static final double HEAT_LOW = -5.0d, HEAT_HIGH = 3.0d;
     static final float[][] HEAT_STOPS = {
         {0.17f, 0.35f, 1.0f},

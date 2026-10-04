@@ -4,9 +4,9 @@
 package com.hbm.particle.helper;
 
 import com.hbm.handler.threading.TargetPoint;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.EffectNTPayload;
 import com.hbm.particle.HbmEffectNT;
-import com.hbm.platform.Services;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 
@@ -39,7 +39,7 @@ public final class ExplosionCreator {
     private static void send(
             Level level, double x, double y, double z, HbmEffectNT effect, int range, float scale) {
         if (!(level instanceof ServerLevel server)) return;
-        Services.NETWORK.sendToAllAround(
+        PacketWire.sendToAllAround(
                 new EffectNTPayload(effect, x, y, z, scale),
                 new TargetPoint(server, x, y, z, range));
     }

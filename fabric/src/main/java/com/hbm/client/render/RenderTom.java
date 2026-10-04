@@ -20,7 +20,6 @@ import net.minecraft.util.LightCoordsUtil;
 
 public class RenderTom extends EntityRenderer<EntityTom, RenderTom.State>
         implements ConcurrentRenderStateExtraction {
-
     private static final RenderType TYPE = FlatCutout.of(ResourceManager.tom_main_tex);
     private static final RenderType FLAME = TomRenderTypes.flame(ResourceManager.tom_flame_tex);
 
@@ -55,9 +54,7 @@ public class RenderTom extends EntityRenderer<EntityTom, RenderTom.State>
     public void extractRenderState(EntityTom entity, State state, float partialTicks) {
         super.extractRenderState(entity, state, partialTicks);
         long now = GameTime.now();
-
         state.spin = -(now / 10L) % 360L;
-
         state.scroll = (float) ((now % SCROLL_PERIOD) / SCROLL_DIVISOR);
     }
 

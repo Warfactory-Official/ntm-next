@@ -64,7 +64,6 @@ public enum SatelliteType implements StringRepresentable {
 
     public static final Codec<SatelliteType> CODEC =
             StringRepresentable.fromEnum(SatelliteType::values);
-
     public static final Codec<Satellite> DISPATCH_CODEC =
             CODEC.dispatch("type", Satellite::type, SatelliteType::codec);
     public static final Codec<Satellite> PERSISTED_CODEC =

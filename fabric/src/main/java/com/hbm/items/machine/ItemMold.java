@@ -6,7 +6,6 @@ package com.hbm.items.machine;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.lib.Library;
-import com.hbm.util.I18nUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +42,7 @@ public class ItemMold extends Item {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-        adder.accept(Component.literal(mold.getTitle()).withStyle(ChatFormatting.YELLOW));
+        adder.accept(mold.getTitle().copy().withStyle(ChatFormatting.YELLOW));
         if (mold.size == SIZE_SMALL) {
             adder.accept(
                     Component.translatable("block.hbm.foundry_mold")
@@ -70,7 +69,7 @@ public class ItemMold extends Item {
 
         public abstract int getCost();
 
-        public abstract String getTitle();
+        public abstract Component getTitle();
     }
 
     public static class MoldShape extends Mold {
@@ -100,9 +99,9 @@ public class ItemMold extends Item {
                 if (fallback == null) fallback = item;
                 if (!"hbm".equals(id.getNamespace())) continue;
                 if (id.getPath().contains("fragment")) continue;
-                return new ItemStack(item, this.amount);
+                return new ItemStack(item, amount);
             }
-            return new ItemStack(fallback, this.amount);
+            return new ItemStack(fallback, amount);
         }
 
         @Override
@@ -111,8 +110,8 @@ public class ItemMold extends Item {
         }
 
         @Override
-        public String getTitle() {
-            return I18nUtil.resolveKey("shape." + shape.name()) + " x" + amount;
+        public Component getTitle() {
+            return Component.translatable("shape." + shape.name()).append(" x" + amount);
         }
     }
 
@@ -168,8 +167,8 @@ public class ItemMold extends Item {
         }
 
         @Override
-        public String getTitle() {
-            return I18nUtil.resolveKey("shape." + name) + " x1";
+        public Component getTitle() {
+            return Component.translatable("shape." + name).append(" x1");
         }
     }
 }

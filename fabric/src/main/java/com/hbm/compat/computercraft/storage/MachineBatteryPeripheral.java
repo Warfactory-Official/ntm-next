@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.storage;
 
+import com.hbm.blockentity.machine.storage.BlockEntityMachineBattery;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineBattery;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class MachineBatteryPeripheral extends SnapshotPeripheral<BlockEntityMachineBattery> {

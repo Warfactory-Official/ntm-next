@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKBase;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKBase;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public abstract class RBMKColumnPeripheral<BE extends BlockEntityRBMKBase>

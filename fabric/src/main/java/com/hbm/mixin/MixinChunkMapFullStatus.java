@@ -4,8 +4,10 @@
 package com.hbm.mixin;
 
 import com.hbm.api.fluidmk2.FlushIndex;
+import com.hbm.blockentity.PendingCoreInvalidation;
 import com.hbm.blocks.multiblock.AssembledMembers;
-import com.hbm.tileentity.PendingCoreInvalidation;
+import com.hbm.entity.item.EntityFallingBlockBatch;
+import com.hbm.entity.item.PendingFallers;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.FullChunkStatus;
@@ -25,10 +27,13 @@ public abstract class MixinChunkMapFullStatus {
     @Shadow @Final private ServerLevel level;
 
     @Inject(method = "onFullChunkStatusChange", at = @At("TAIL"))
-    private void hbm$onRisingFullStatus(ChunkPos pos, FullChunkStatus status, CallbackInfo ci) {
-        if (status != FullChunkStatus.FULL) return;
+    private void hbm$onReadableChunkStatus(ChunkPos pos, FullChunkStatus status, CallbackInfo ci) {
+        if (status != FullChunkStatus.ENTITY_TICKING)
+            EntityFallingBlockBatch.freezeChunk(level, pos);
+        if (!status.isOrAfter(FullChunkStatus.FULL)) return;
         LevelChunk chunk = level.getChunkSource().getChunkNow(pos.x(), pos.z());
         if (chunk == null) return;
+        if (status == FullChunkStatus.ENTITY_TICKING) PendingFallers.promote(level, chunk);
         AssembledMembers.onChunkFull(level, chunk);
         LevelNodeGraph.onChunkFull(level, chunk);
         FlushIndex.onChunkFull(level, chunk);

@@ -23,7 +23,6 @@ public final class DungeonProcessorLists {
     private DungeonProcessorLists() {}
 
     public static List<StructureProcessor> forTemplate(LevelReader level, Identifier templateId) {
-
         return level.registryAccess()
                 .lookupOrThrow(Registries.PROCESSOR_LIST)
                 .get(ResourceKey.create(Registries.PROCESSOR_LIST, templateId))

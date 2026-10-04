@@ -1,0 +1,20 @@
+{
+  "actions": [
+    {
+      "type": "potion_sickness",
+      "seconds": 5
+    },
+    {
+      "type": "damage",
+      "amount": 1000.0,
+      "repeat": 10,
+      "sources": [
+        "hbm:euthanized_self",
+        "hbm:euthanized_self_2"
+      ]
+    }
+  ],
+  "block_when_potion_sick": true,
+  "targets": "hbm:plan_c",
+  "trigger": "consume"
+}

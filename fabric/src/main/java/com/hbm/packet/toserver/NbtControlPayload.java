@@ -4,11 +4,11 @@
 package com.hbm.packet.toserver;
 
 import com.hbm.api.control.IControlReceiver;
+import com.hbm.blockentity.machine.BlockEntityLaunchpadSoyuz;
+import com.hbm.blockentity.machine.BlockEntityMachineRadar;
 import com.hbm.lib.Library;
 import com.hbm.packet.IPayloadHandlerContext;
 import com.hbm.packet.threading.ThreadedPayload;
-import com.hbm.tileentity.machine.BlockEntityLaunchpadSoyuz;
-import com.hbm.tileentity.machine.BlockEntityMachineRadar;
 import com.hbm.util.ChunkUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
@@ -25,7 +25,6 @@ public final class NbtControlPayload extends ThreadedPayload {
     public static final Type<NbtControlPayload> TYPE = new Type<>(Library.id("nbt_control"));
     public static final StreamCodec<ByteBuf, NbtControlPayload> STREAM_CODEC =
             streamCodec(NbtControlPayload::decode);
-
     private static final double MAX_DIST_SQ = 24.0D * 24.0D;
     private final BlockPos pos;
     private final CompoundTag data;
@@ -47,7 +46,6 @@ public final class NbtControlPayload extends ThreadedPayload {
         if (!(be instanceof IControlReceiver r) || !r.hasPermission(sp)) return;
         boolean remoteRadar =
                 be instanceof BlockEntityMachineRadar radar && radar.isRadarMenuValid(sp);
-
         boolean launchpad = be instanceof BlockEntityLaunchpadSoyuz;
         if (!remoteRadar
                 && !launchpad
@@ -55,7 +53,6 @@ public final class NbtControlPayload extends ThreadedPayload {
             return;
 
         r.receiveControl(sp, payload.data);
-
         be.setChanged();
     }
 

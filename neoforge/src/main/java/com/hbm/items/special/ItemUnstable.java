@@ -54,27 +54,26 @@ public final class ItemUnstable extends Item implements IItemEntityUpdate {
                 1.0F);
     }
 
-    private static void arm(ItemStack stack, ServerLevel level) {
+    private static void arm(ItemStack stack, ServerLevel level, Entity owner) {
         if (stack.isEmpty()) return;
         long now = level.getGameTime();
         Long ends = stack.get(ModDataComponents.UNSTABLE_AT.get());
         if (ends == null) {
-
             ends = now + TIMER - 1;
             stack.set(ModDataComponents.UNSTABLE_AT.get(), ends);
         }
-        UnstableFuses.arm(level, ends);
+        UnstableFuses.arm(owner, ends);
     }
 
     @Override
     public void inventoryTick(
             ItemStack stack, ServerLevel level, Entity entity, EquipmentSlot slot) {
-        arm(stack, level);
+        arm(stack, level, entity);
     }
 
     @Override
     public boolean updateDroppedItem(ItemEntity entity) {
-        if (entity.level() instanceof ServerLevel level) arm(entity.getItem(), level);
+        if (entity.level() instanceof ServerLevel level) arm(entity.getItem(), level, entity);
         return false;
     }
 

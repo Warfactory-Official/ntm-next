@@ -35,7 +35,6 @@ public class RenderCoin extends EntityRenderer<EntityCoin, RenderCoin.State>
                 new HFRWavefrontObject(
                         Minecraft.getInstance().getResourceManager(),
                         Library.id("models/trinkets/chip.obj"));
-
         coin = new GroupObject[mesh.groups.length];
         for (int i = 0; i < coin.length; i++) coin[i] = mesh.groups[i].flatShaded();
     }

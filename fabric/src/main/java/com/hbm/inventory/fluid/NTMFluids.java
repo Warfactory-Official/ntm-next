@@ -3,7 +3,7 @@
 
 package com.hbm.inventory.fluid;
 
-import com.hbm.platform.Services;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.registration.RegistryHandle;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -24,10 +24,8 @@ public final class NTMFluids {
     private static final Map<String, Fluid> BY_NAME = new LinkedHashMap<>();
     private static final Map<Fluid, String> NAME_OF = new IdentityHashMap<>();
     private static final Map<Fluid, Integer> LEGACY_ID = new IdentityHashMap<>();
-
     private static final Map<String, String> LEGACY_NAMES =
             Map.of("BALEFIRE_FUEL", "BALEFIRE", "LIQUID_CONCRETE", "CONCRETE", "WATZ_MUD", "WATZ");
-
     private static final String[] LEGACY_ID_ORDER = {
         "NONE",
         "WATER",
@@ -227,7 +225,6 @@ public final class NTMFluids {
         "PLASMA_XM", "PLASMA_BF", "SMOKE", "SMOKE_LEADED",
         "SMOKE_POISON", "PHEROMONE", "PHEROMONE_M"
     };
-
     public static Fluid WATER;
     public static Fluid LAVA;
     public static Fluid STEAM;
@@ -393,7 +390,7 @@ public final class NTMFluids {
             BY_NAME.put(name, alias.get());
             return;
         }
-        HANDLES.put(name, Services.REGISTRAR.registerFluid(name.toLowerCase(Locale.US)));
+        HANDLES.put(name, FabricRegistrar.registerFluid(name.toLowerCase(Locale.US)));
     }
 
     public static Fluid byName(String name) {

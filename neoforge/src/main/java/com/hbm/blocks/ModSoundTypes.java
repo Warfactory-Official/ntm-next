@@ -9,7 +9,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.SoundType;
 
 public final class ModSoundTypes {
-
     public static final SoundType PIPE = new PipeSoundType();
     public static final SoundType PLATEMETAL = new PlatemetalSoundType();
     public static final SoundType FLESH = new FleshSoundType();
@@ -93,7 +92,6 @@ public final class ModSoundTypes {
     }
 
     private static final class PipeSoundType extends SoundType {
-
         private static final ThreadLocal<Boolean> BREAKING =
                 ThreadLocal.withInitial(() -> Boolean.FALSE);
 

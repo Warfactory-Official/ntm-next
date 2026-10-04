@@ -10,7 +10,6 @@ import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.lib.Library;
-import com.hbm.platform.Services;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,6 +26,8 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.common.crafting.CompoundIngredient;
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 
 public final class CraftingRows {
 
@@ -38,21 +39,20 @@ public final class CraftingRows {
         List<RecipeHolder<CraftingRecipe>> rows = new ArrayList<>();
         FluidPipeBlockItem duct = (FluidPipeBlockItem) ModBlocks.FLUID_PIPE.get().asItem();
         Ingredient plain = Ingredient.of(duct);
-
         Ingredient typed =
-                Services.PLATFORM.anyIngredient(
+                CompoundIngredient.of(
                         NTMFluids.displayOrder().stream()
                                 .filter(fluid -> fluid != NTMFluids.NONE)
-                                .map(fluid -> Services.PLATFORM.exactIngredient(duct.of(fluid)))
-                                .toList());
-
+                                .map(fluid -> DataComponentIngredient.of(true, duct.of(fluid)))
+                                .toList()
+                                .toArray(Ingredient[]::new));
         for (int id = 1; id < NTMFluids.legacyIdCount(); id++) {
             Fluid fluid = NTMFluids.byLegacyId(id);
             ItemStack identifier = new ItemStack(ModItems.FLUID_IDENTIFIER);
             identifier.set(
                     ModDataComponents.FLUID_IDENTIFIER.get(),
                     FluidIdentifierData.EMPTY.withPrimary(fluid));
-            Ingredient stamp = Services.PLATFORM.exactIngredient(identifier);
+            Ingredient stamp = DataComponentIngredient.of(true, identifier);
             String key = PageIds.segment(BuiltInRegistries.FLUID.getKey(fluid));
             rows.add(
                     row(
@@ -83,7 +83,6 @@ public final class CraftingRows {
                             typed,
                             stamp));
         }
-
         rows.add(
                 new RecipeHolder<>(
                         ResourceKey.create(

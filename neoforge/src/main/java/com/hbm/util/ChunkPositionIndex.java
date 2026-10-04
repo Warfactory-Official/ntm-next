@@ -32,6 +32,10 @@ public final class ChunkPositionIndex {
         if (inChunk.isEmpty()) byChunk.remove(chunkKey);
     }
 
+    public @Nullable LongOpenHashSet get(long chunkKey) {
+        return byChunk.get(chunkKey);
+    }
+
     public @Nullable LongOpenHashSet take(long chunkKey) {
         return byChunk.remove(chunkKey);
     }

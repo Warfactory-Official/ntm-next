@@ -6,7 +6,7 @@ package com.hbm.blocks.network;
 import com.hbm.api.energymk2.CableData;
 import com.hbm.api.energymk2.PowerGraph;
 import com.hbm.api.energymk2.PowerGraphProvider;
-import com.hbm.tileentity.network.BlockEntityPylonBase;
+import com.hbm.blockentity.network.BlockEntityPylonBase;
 import com.hbm.uninos.graph.GraphNode;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import net.minecraft.core.BlockPos;
@@ -39,6 +39,12 @@ public abstract class CableConductorBlockBase extends Block {
                 .addNode(pos.asLong(), PowerGraphProvider.INSTANCE.createData(state), mask);
     }
 
+    public static void restoreNode(ServerLevel level, BlockPos pos, BlockState state) {
+        if (state.getBlock() instanceof CableConductorBlockBase conductor) {
+            mintNode(level, pos, state, conductor.nodeMask(state));
+        }
+    }
+
     public static void dropNode(ServerLevel level, BlockPos pos) {
         LevelNodeGraph<CableData> graph = PowerGraph.get(level);
         GraphNode<CableData> node = graph.getNode(pos.asLong());
@@ -47,7 +53,6 @@ public abstract class CableConductorBlockBase extends Block {
                         ? node.remoteLinks.toLongArray()
                         : new long[0];
         graph.removeNode(pos.asLong());
-
         for (long peer : peers) BlockEntityPylonBase.refreshIfLoaded(level, peer);
     }
 

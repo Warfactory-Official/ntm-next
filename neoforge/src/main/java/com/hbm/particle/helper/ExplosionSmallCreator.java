@@ -4,8 +4,8 @@
 package com.hbm.particle.helper;
 
 import com.hbm.handler.threading.TargetPoint;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.ExplosionSmallPayload;
-import com.hbm.platform.Services;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 
@@ -22,7 +22,7 @@ public final class ExplosionSmallCreator {
             float cloudScale,
             float cloudSpeedMult) {
         if (!(level instanceof ServerLevel server)) return;
-        Services.NETWORK.sendToAllAround(
+        PacketWire.sendToAllAround(
                 new ExplosionSmallPayload(x, y, z, cloudCount, cloudScale, cloudSpeedMult, 15),
                 new TargetPoint(server, x, y, z, 200));
     }

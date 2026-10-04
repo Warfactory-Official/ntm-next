@@ -4,13 +4,13 @@
 package com.hbm.entity.item;
 
 import com.hbm.api.block.IDroneContainer;
+import com.hbm.blockentity.network.RequestNetwork.Demand;
 import com.hbm.entity.ModEntities;
+import com.hbm.handler.UnstableFuses;
 import com.hbm.interfaces.StoredItems;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemDrone.EnumDroneType;
-import com.hbm.items.tool.ItemDrone;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.network.RequestNetwork.Demand;
 import com.hbm.util.InventoryUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -36,7 +36,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class EntityRequestDrone extends EntityDroneBase implements StoredItems {
-
     private static final double NODE_REACH = 4;
     private static final int ACTION_DELAY = 5;
 
@@ -123,6 +122,7 @@ public class EntityRequestDrone extends EntityDroneBase implements StoredItems {
             if (stack.isEmpty() || !want.test(stack)) continue;
 
             this.heldItem = stack.copy();
+            UnstableFuses.changed(this);
             setAppearance(1);
             playUnpack(server);
             inventory.setItem(i, ItemStack.EMPTY);
@@ -139,6 +139,7 @@ public class EntityRequestDrone extends EntityDroneBase implements StoredItems {
         this.heldItem =
                 InventoryUtil.tryAddItemToInventory(
                         inventory, 0, inventory.getContainerSize() - 1, this.heldItem);
+        UnstableFuses.changed(this);
 
         if (this.heldItem.isEmpty()) {
             setAppearance(0);
@@ -181,7 +182,6 @@ public class EntityRequestDrone extends EntityDroneBase implements StoredItems {
                 else slot.grow(1);
 
                 inventory.setChanged();
-
                 server.playSound(
                         null,
                         node.getBlockPos(),

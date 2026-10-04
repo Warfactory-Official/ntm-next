@@ -3,13 +3,13 @@
 
 package com.hbm.packet.toserver;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKBase;
 import com.hbm.lib.Library;
 import com.hbm.packet.ChunkTrackerIndex;
 import com.hbm.packet.IPayloadHandlerContext;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.threading.ThreadedPayload;
 import com.hbm.packet.toclient.RBMKDiagPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKBase;
 import com.hbm.util.ChunkUtil;
 import io.netty.buffer.ByteBuf;
 import java.util.Map;
@@ -51,7 +51,7 @@ public final class RBMKDiagRequestPayload extends ThreadedPayload {
         column.writeDiagnostics(diagnostics);
         Sent sent = new Sent(player.level().dimension(), payload.pos, diagnostics);
         if (sent.equals(SENT.put(player, sent))) return;
-        Services.NETWORK.sendTo(new RBMKDiagPayload(payload.pos, diagnostics), player);
+        PacketWire.sendTo(new RBMKDiagPayload(payload.pos, diagnostics), player);
     }
 
     @Override

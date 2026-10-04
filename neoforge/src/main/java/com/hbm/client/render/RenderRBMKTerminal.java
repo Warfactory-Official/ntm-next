@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKTerminal;
 import com.hbm.blocks.machine.rbmk.RBMKMiniPanelBase;
 import com.hbm.client.gui.ScreenRBMKTerminal;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKTerminal;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -115,7 +115,6 @@ public class RenderRBMKTerminal
             poseStack.pushPose();
             poseStack.scale(SCALE, -SCALE, SCALE);
             poseStack.mulPose(Axis.YP.rotationDegrees(90F));
-
             FormattedCharSequence line =
                     Component.literal(clip(state.labels[i], i == 0, state.caret))
                             .getVisualOrderText();

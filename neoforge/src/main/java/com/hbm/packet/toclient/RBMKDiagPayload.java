@@ -3,10 +3,10 @@
 
 package com.hbm.packet.toclient;
 
+import com.hbm.blockentity.machine.rbmk.RBMKDiagnostics;
 import com.hbm.lib.Library;
 import com.hbm.packet.IPayloadHandlerContext;
 import com.hbm.packet.threading.ThreadedPayload;
-import com.hbm.tileentity.machine.rbmk.RBMKDiagnostics;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

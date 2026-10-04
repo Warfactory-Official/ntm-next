@@ -21,7 +21,6 @@ public final class TorexFlash {
         Quaternionf rot = new Quaternionf();
         Vector3f p1 = new Vector3f(), p2 = new Vector3f(), p3 = new Vector3f();
         for (int i = 0; i < CONES; i++) {
-
             rot.rotateX((float) Math.toRadians(rand.nextFloat() * 360F));
             rot.rotateY((float) Math.toRadians(rand.nextFloat() * 360F));
             rot.rotateZ((float) Math.toRadians(rand.nextFloat() * 360F));

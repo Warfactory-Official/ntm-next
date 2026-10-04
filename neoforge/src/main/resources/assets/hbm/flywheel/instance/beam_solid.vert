@@ -9,7 +9,7 @@ void flw_instanceVertex(in FlwInstance i) {
         return;
     }
     int joint = int(flw_vertexPos.y + 0.5);
-    vec3 point = hbm_beamJoint(joint, i.length, i.size, i.count, i.phase, i.wave);
+    vec3 point = hbm_beamJoint(joint, i.beamLength, i.size, i.count, i.phase, i.wave);
     point.xz += flw_vertexPos.xz * i.thickness;
     flw_vertexPos = i.pose * vec4(point, 1.0);
     flw_vertexColor.rgb *= hbm_beamColor(i.outerColor.rgb, i.innerColor.rgb, flw_vertexTexCoord.x);

@@ -3,10 +3,10 @@
 
 package com.hbm.blocks.machine.albion;
 
+import com.hbm.blockentity.machine.albion.BlockEntityPARFC;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.albion.BlockEntityPARFC;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;

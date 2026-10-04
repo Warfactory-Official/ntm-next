@@ -3,9 +3,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKTerminal;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKTerminal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
@@ -72,7 +72,6 @@ public final class ScreenRBMKTerminal extends Screen {
 
     @Override
     public void tick() {
-
         if (terminal.isRemoved()) onClose();
     }
 
@@ -86,7 +85,7 @@ public final class ScreenRBMKTerminal extends Screen {
         if (event.key() == GLFW.GLFW_KEY_ENTER || event.key() == GLFW.GLFW_KEY_KP_ENTER) {
             CompoundTag data = new CompoundTag();
             data.putString("cmd", line.getValue());
-            Services.NETWORK.sendToServer(new NbtControlPayload(terminal.getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(terminal.getBlockPos(), data));
             line.setValue("");
             return true;
         }

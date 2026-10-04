@@ -3,12 +3,12 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityFoundryCastingBase;
+import com.hbm.blockentity.machine.IRenderFoundry;
 import com.hbm.client.render.flywheel.HbmBlockEntityVisual;
 import com.hbm.client.render.flywheel.WorldItem;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.BlockEntityFoundryCastingBase;
-import com.hbm.tileentity.machine.IRenderFoundry;
 import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.ColorTargetState;
@@ -69,7 +69,6 @@ public class RenderFoundry
     private final ItemModelResolver itemModelResolver;
 
     public RenderFoundry(BlockEntityRendererProvider.Context context) {
-
         this.fillType = FlatCutout.of(ResourceManager.foundry_stream_tex);
         this.sheenType =
                 RenderType.create(
@@ -140,7 +139,6 @@ public class RenderFoundry
 
         ItemStack mold = be.inventory.get(0);
         ItemStack out = be.inventory.get(1);
-
         BlockItem block = out.getItem() instanceof BlockItem blockItem ? blockItem : null;
         if (block != null) out = ItemStack.EMPTY;
         state.blockSprite = null;
@@ -185,13 +183,11 @@ public class RenderFoundry
         if (!s.out.isEmpty()) drawItemFlat(s.out, ps, col, s.outHeight, s.lightCoords);
 
         if (s.blockSprite != null) {
-
             final TextureAtlasSprite sprite = s.blockSprite;
             final float minX = (float) s.minX, maxX = (float) s.maxX;
             final float minZ = (float) s.minZ, maxZ = (float) s.maxZ;
             final float h = (float) s.outHeight;
             final int light = s.lightCoords;
-
             col.submitCustomGeometry(
                     ps,
                     RenderTypes.entityCutoutCull(sprite.atlasLocation()),

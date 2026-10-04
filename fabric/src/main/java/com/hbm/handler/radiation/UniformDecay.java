@@ -28,7 +28,6 @@ public interface UniformDecay {
 
     private static UniformDecay choose() {
         VectorBackend backend = VectorApi.backend();
-
         if (backend.arithmetic() && backend.masks()) {
             try {
                 return new UniformDecayVector();

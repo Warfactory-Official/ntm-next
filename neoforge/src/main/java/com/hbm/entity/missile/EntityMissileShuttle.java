@@ -34,7 +34,6 @@ public class EntityMissileShuttle extends EntityMissileBaseNT {
 
     @Override
     public void onMissileImpact(BlockHitResult mop) {
-
         new ExplosionVNT(level(), getX() + 0.5F, getY() + 0.5F, getZ() + 0.5F, 20.0F)
                 .setBlockAllocator(new BlockAllocatorStandard(64))
                 .setBlockProcessor(new BlockProcessorStandard())

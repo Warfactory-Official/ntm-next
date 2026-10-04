@@ -3,12 +3,12 @@
 
 package com.hbm.handler;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorusStruct;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
 import com.hbm.items.ModItems;
 import com.hbm.items.special.Autogen;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionTorusStruct;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,7 +18,6 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 
 public final class ConstructionCatalog {
-
     private static final int SLOT_SPLIT = 256;
 
     private ConstructionCatalog() {}

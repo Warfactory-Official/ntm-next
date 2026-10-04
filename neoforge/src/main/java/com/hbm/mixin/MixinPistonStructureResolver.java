@@ -51,7 +51,6 @@ public abstract class MixinPistonStructureResolver {
             BlockState state = this.level.getBlockState(pos);
             if (state.getBlock() instanceof RigidPistonStructure structure) {
                 BlockPos core = structure.rigidStructureCore(this.level, pos);
-
                 if (core == null) {
                     cir.setReturnValue(false);
                     return;
@@ -75,7 +74,6 @@ public abstract class MixinPistonStructureResolver {
     private boolean hbm$addWholeStructure(RigidPistonStructure structure, BlockPos core) {
         for (BlockPos block : structure.rigidStructureBlocks(this.level, core)) {
             if (this.toPush.contains(block)) continue;
-
             if (!structure.isSameMultiblock(this.level.getBlockState(block).getBlock())) continue;
             if (!this.addBlockLine(block, this.pushDirection)) return false;
             if (!this.toPush.contains(block)) return false;

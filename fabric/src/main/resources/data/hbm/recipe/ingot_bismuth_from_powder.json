@@ -2,7 +2,10 @@
   "type": "minecraft:smelting",
   "cookingtime": 200,
   "experience": 1.0,
-  "ingredient": "hbm:powder_bismuth",
+  "ingredient": {
+    "fabric:type": "hbm:recipe_input",
+    "base": "hbm:powder_bismuth"
+  },
   "result": {
     "id": "hbm:ingot_bismuth"
   }

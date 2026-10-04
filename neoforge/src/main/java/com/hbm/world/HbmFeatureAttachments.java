@@ -15,19 +15,14 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import static net.minecraft.world.level.levelgen.GenerationStep.Decoration.*;
 
 public final class HbmFeatureAttachments {
-
     private static final Group OVERWORLD_ORES =
             new Group(BiomeTarget.tags(BiomeTags.IS_OVERWORLD), List.of(WorldData.OVERWORLD_ORES));
-
     private static final Group NETHER_ORES =
             new Group(BiomeTarget.tags(BiomeTags.IS_NETHER), List.of(WorldData.NETHER_ORES));
-
     private static final Group END_ORES =
             new Group(BiomeTarget.tags(BiomeTags.IS_END), List.of(WorldData.END_ORES));
-
     private static final Group OVERWORLD_FEATURES =
             new Group(BiomeTarget.tags(BiomeTags.IS_OVERWORLD), List.of());
-
     private static final Group NETHER_FEATURES =
             new Group(BiomeTarget.tags(BiomeTags.IS_NETHER), List.of());
     public static final List<Attachment> ALL =
@@ -77,6 +72,11 @@ public final class HbmFeatureAttachments {
                     att(HbmPlacedFeatures.GAS_FLAMMABLE, UNDERGROUND_ORES, OVERWORLD_FEATURES),
                     att(HbmPlacedFeatures.ORE_ALEXANDRITE, UNDERGROUND_ORES, OVERWORLD_FEATURES),
                     att(HbmPlacedFeatures.STRATUM_GNEISS, LOCAL_MODIFICATIONS, OVERWORLD_FEATURES),
+                    att(HbmPlacedFeatures.ORE_CAVE_SULFUR, LOCAL_MODIFICATIONS, OVERWORLD_FEATURES),
+                    att(
+                            HbmPlacedFeatures.ORE_CAVE_ASBESTOS,
+                            LOCAL_MODIFICATIONS,
+                            OVERWORLD_FEATURES),
                     att(
                             HbmPlacedFeatures.STRATUM_HEMATITE,
                             LOCAL_MODIFICATIONS,
@@ -86,25 +86,15 @@ public final class HbmFeatureAttachments {
                             HbmPlacedFeatures.STRATUM_MALACHITE,
                             LOCAL_MODIFICATIONS,
                             OVERWORLD_FEATURES),
-                    att(
-                            HbmPlacedFeatures.ORE_CAVE_SULFUR,
-                            UNDERGROUND_DECORATION,
-                            OVERWORLD_FEATURES),
-                    att(
-                            HbmPlacedFeatures.ORE_CAVE_ASBESTOS,
-                            UNDERGROUND_DECORATION,
-                            OVERWORLD_FEATURES),
-                    att(HbmPlacedFeatures.OIL_BUBBLE, UNDERGROUND_ORES, OVERWORLD_FEATURES),
-                    att(
-                            HbmPlacedFeatures.BEDROCK_OIL_DEPOSIT,
-                            UNDERGROUND_ORES,
-                            OVERWORLD_FEATURES),
+                    att(HbmPlacedFeatures.OIL_BUBBLE, RAW_GENERATION, OVERWORLD_FEATURES),
+                    att(HbmPlacedFeatures.BEDROCK_OIL_DEPOSIT, RAW_GENERATION, OVERWORLD_FEATURES),
                     att(HbmPlacedFeatures.KEYHOLE, UNDERGROUND_DECORATION, OVERWORLD_FEATURES),
                     att(HbmPlacedFeatures.METEORITE, VEGETAL_DECORATION, OVERWORLD_FEATURES),
                     att(HbmPlacedFeatures.GLYPHID_HIVE, VEGETAL_DECORATION, OVERWORLD_FEATURES),
-                    att(HbmPlacedFeatures.DUD, VEGETAL_DECORATION, OVERWORLD_FEATURES),
+                    att(HbmPlacedFeatures.DUD, TOP_LAYER_MODIFICATION, OVERWORLD_FEATURES),
                     att(HbmPlacedFeatures.LOCKED_SAFE, VEGETAL_DECORATION, OVERWORLD_FEATURES),
                     att(HbmPlacedFeatures.LANTERN_BEHEMOTH, VEGETAL_DECORATION, OVERWORLD_FEATURES),
+                    att(HbmPlacedFeatures.BOSNIA_MINE, VEGETAL_DECORATION, OVERWORLD_FEATURES),
                     att(HbmPlacedFeatures.PINK_LOG, TOP_LAYER_MODIFICATION, OVERWORLD_FEATURES),
                     att(HbmPlacedFeatures.LIBRARY_DUNGEON, UNDERGROUND_ORES, OVERWORLD_FEATURES),
                     att(HbmPlacedFeatures.ARCTIC_VAULT, UNDERGROUND_ORES, OVERWORLD_FEATURES),
@@ -156,6 +146,15 @@ public final class HbmFeatureAttachments {
                     att(HbmPlacedFeatures.ORE_NETHER_SMOLDERING, UNDERGROUND_ORES, NETHER_FEATURES),
                     att(HbmPlacedFeatures.GEYSIR_NETHER, UNDERGROUND_ORES, NETHER_FEATURES),
                     att(HbmPlacedFeatures.ORE_END_TIKITE, UNDERGROUND_ORES, END_ORES));
+
+    public static final List<ResourceKey<PlacedFeature>> PRE_DECORATION =
+            List.of(
+                    HbmPlacedFeatures.STRATUM_GNEISS,
+                    HbmPlacedFeatures.ORE_CAVE_SULFUR,
+                    HbmPlacedFeatures.ORE_CAVE_ASBESTOS,
+                    HbmPlacedFeatures.STRATUM_HEMATITE,
+                    HbmPlacedFeatures.STRATUM_BAUXITE,
+                    HbmPlacedFeatures.STRATUM_MALACHITE);
 
     private HbmFeatureAttachments() {}
 

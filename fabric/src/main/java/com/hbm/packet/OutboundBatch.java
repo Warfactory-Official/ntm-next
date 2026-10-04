@@ -6,7 +6,7 @@ package com.hbm.packet;
 import com.hbm.packet.threading.ThreadedPayload;
 import com.hbm.packet.toclient.BlobPayload;
 import com.hbm.packet.toclient.UnitPayload;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricNetwork;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -22,7 +22,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 
 final class OutboundBatch implements Runnable {
-
     private static final Recycler<OutboundBatch> POOL =
             new Recycler<>(256, false) {
                 @Override
@@ -50,16 +49,15 @@ final class OutboundBatch implements Runnable {
     }
 
     static OutboundBatch take(ServerPlayer player) {
-        Channel channel = Services.NETWORK.channelOf(player);
+        Channel channel = player.connection.connection.channel;
         ChannelHandlerContext framing = PacketWire.framingContext(channel);
         ChannelHandlerContext compression = channel.pipeline().context("compress");
         OutboundBatch batch = POOL.get();
         batch.player = player;
         batch.channel = channel;
-
         batch.connection =
                 PacketWire.managedTransport() && !(channel instanceof EmbeddedChannel)
-                        ? Services.NETWORK.connectionOf(player)
+                        ? player.connection.connection
                         : null;
         batch.framing = framing;
         batch.threshold =
@@ -175,7 +173,7 @@ final class OutboundBatch implements Runnable {
             if (payload == null) continue;
             pending = true;
             if (connection != null)
-                Services.NETWORK.validateClientboundPayload(player, payload.managedPacket());
+                FabricNetwork.validateClientboundPayload(player, payload.managedPacket());
         }
         if (!pending) {
             discard();

@@ -4,10 +4,10 @@
 package com.hbm.entity.grenade;
 
 import com.hbm.NuclearTech;
+import com.hbm.config.NeoForgeHbmConfig;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.projectile.EntityThrowableInterp;
 import com.hbm.items.weapon.grenade.*;
-import com.hbm.platform.Services;
 import com.hbm.sound.ModSounds;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -170,7 +170,7 @@ public class EntityGrenadeUniversal extends EntityThrowableInterp {
         discard();
         ItemGrenadeFilling.explode(this);
         ItemGrenadeExtra.onExplode(this);
-        if (!level().isClientSide() && Services.CONFIG.runtime().extendedLogging()) {
+        if (!level().isClientSide() && NeoForgeHbmConfig.runtime().extendedLogging()) {
             NuclearTech.LOGGER.info(
                     "[GREN] Set off grenade at {} / {} / {} by {}!",
                     (int) getX(),

@@ -6,7 +6,6 @@ package com.hbm.packet;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public interface WireReplayServer {
-
     boolean skipsViewerTicks();
 
     void resendWhenCaughtUp(BlockEntity entity);

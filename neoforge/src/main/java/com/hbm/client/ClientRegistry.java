@@ -4,6 +4,16 @@
 package com.hbm.client;
 
 import com.hbm.api.fluidmk2.FluidPipeTintData;
+import com.hbm.blockentity.machine.*;
+import com.hbm.blockentity.machine.fusion.*;
+import com.hbm.blockentity.machine.oil.BlockEntityMachinePyroOven;
+import com.hbm.blockentity.machine.oil.BlockEntityMachineRefinery;
+import com.hbm.blockentity.machine.oil.BlockEntityMachineVacuumDistill;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKAutoloader;
+import com.hbm.blockentity.machine.storage.BlockEntityBatteryREDD;
+import com.hbm.blockentity.machine.storage.CrateType;
+import com.hbm.blockentity.network.BlockEntityRadioTorch;
+import com.hbm.blockentity.network.BlockEntityRadioTorchCounter;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.gas.BlockGasBase;
@@ -65,6 +75,7 @@ import com.hbm.items.tool.ItemSatelliteInterface;
 import com.hbm.items.tool.ItemToolAbility;
 import com.hbm.items.weapon.ItemCrucible;
 import com.hbm.items.weapon.grenade.ItemGrenadeUniversal;
+import com.hbm.items.weapon.sedna.AkimboGhost;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.items.weapon.sedna.factory.GunFactoryClient;
 import com.hbm.items.weapon.sedna.impl.ItemGunStinger;
@@ -81,18 +92,9 @@ import com.hbm.render.item.weapon.sedna.ItemRenderWeaponBase;
 import com.hbm.render.util.RenderScreenOverlay;
 import com.hbm.sound.AudioSystem;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.*;
-import com.hbm.tileentity.machine.fusion.*;
-import com.hbm.tileentity.machine.oil.BlockEntityMachinePyroOven;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineRefinery;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineVacuumDistill;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKAutoloader;
-import com.hbm.tileentity.machine.storage.BlockEntityBatteryREDD;
-import com.hbm.tileentity.machine.storage.CrateType;
-import com.hbm.tileentity.network.BlockEntityRadioTorch;
-import com.hbm.tileentity.network.BlockEntityRadioTorchCounter;
 import com.hbm.wiaj.cannery.Jars;
 import com.mojang.serialization.MapCodec;
+import dev.engine_room.flywheel.impl.compat.EntityFeatureCompat;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -137,6 +139,7 @@ import net.minecraft.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.Block;
@@ -158,14 +161,21 @@ public final class ClientRegistry {
     public static final Identifier SHIELD_BAR_ID = Library.id("shield_bar");
     public static final Identifier TOOL_ABILITY_HUD_ID = Library.id("tool_ability_hud");
     public static final Identifier NUKE_FLASH_ID = Library.id("nuke_flash");
-
     public static final Identifier VISUAL_RESOURCES_ID =
             Identifier.fromNamespaceAndPath("hbm", "visual_resources");
 
     private ClientRegistry() {}
 
     public static void bindClientHooks() {
-
+        EntityFeatureCompat.registerEmfHeldUse(
+                entity ->
+                        entity instanceof Player
+                                && entity.getMainHandItem().getItem() instanceof ItemGunBaseNT);
+        EntityFeatureCompat.registerEmfBowRecognition(
+                entity ->
+                        entity instanceof Player player
+                                && AkimboGhost.isAkimbo(player.getMainHandItem())
+                                && AkimboGhost.isGhost(player.getOffhandItem()));
         BlockGasBase.REVEALED_TO_VIEWER =
                 () -> {
                     LocalPlayer viewer = Minecraft.getInstance().player;
@@ -204,7 +214,6 @@ public final class ClientRegistry {
         BlockEntityMachineCombustionEngine.CLIENT_SOUND = CombustionEngineSound::tick;
         BlockEntityMachineTurbineGas.CLIENT_SOUND = TurbineGasSound::tick;
         BlockEntityMachineTurbofan.CLIENT_SOUND = TurbofanSound::tick;
-
         BlockEntityMachinePumpBase.CLIENT_SOUND = PumpSound::tick;
         BlockEntityMachineBlastFurnace.CLIENT_TOWER = BlastFurnaceTower::tick;
         BlockEntityChimneyBase.CLIENT_TOWER = ChimneyTower::tick;
@@ -222,7 +231,6 @@ public final class ClientRegistry {
         BlockEntityFusionPlasmaForge.PLAY_STRIKER =
                 be -> {
                     if (be.isMuffled()) return;
-
                     BlockPos pos = be.getBlockPos();
                     Minecraft.getInstance()
                             .getSoundManager()
@@ -237,7 +245,6 @@ public final class ClientRegistry {
                                             pos.getY(),
                                             pos.getZ()));
                 };
-
         FluidIdentifierItem.OPEN_SELECTOR =
                 player -> Minecraft.getInstance().gui.setScreen(new ScreenFluidIdentifier(player));
         ItemCrucible.PLAY_SWING =
@@ -269,6 +276,7 @@ public final class ClientRegistry {
                         Minecraft.getInstance().gui.setScreen(new ScreenToolAbility(stack, tool));
                     }
                 };
+        ItemToolAbility.CYCLE_FROM_USE = Keybinds::cycleFromUse;
         ItemDesignatorManual.OPEN_SCREEN =
                 hand -> Minecraft.getInstance().gui.setScreen(new ScreenManualDesignator(hand));
         ItemRTTYPager.OPEN_SCREEN =
@@ -320,13 +328,8 @@ public final class ClientRegistry {
         ClientSyncRecovery.tick();
         SettingsToolInfo.clientTick();
         InfoSystem.clientTick();
-        FluidPipeTintData.flushRequests();
-        CraneKeybindHandler.poll();
-        ToolKeybindHandler.poll();
-        GunKeybindHandler.poll();
-        PlayerKeybindHandler.poll();
-        CalculatorKeybindHandler.poll();
-        AbilityKeybindHandler.poll();
+        FluidPipeTintData.flushRequests(Minecraft.getInstance().level);
+        Keybinds.poll();
         ArmorMovementHandler.clientTick();
         if (Minecraft.getInstance().player != null)
             ArmorModHandler.clientTick(Minecraft.getInstance().player);
@@ -479,7 +482,6 @@ public final class ClientRegistry {
                 ModBlocks.ORE_SELLAFIELD_SCHRABIDIUM.get(),
                 ModBlocks.ORE_SELLAFIELD_URANIUM_SCORCHED.get());
         reg.accept(List.of(SellafieldLevelTintSource.INSTANCE), ModBlocks.SELLAFIELD.get());
-
         reg.accept(
                 Arrays.stream(CraneRouter.FACE_COLOURS)
                         .mapToObj(BlockTintSources::constant)
@@ -540,6 +542,7 @@ public final class ClientRegistry {
         reg.accept(ModEntities.EMP_LOGIC.get(), NoopRenderer::new);
         reg.accept(ModEntities.FALLOUT_RAIN.get(), RenderFallout::new);
         reg.accept(ModEntities.FALLING_BLOCK_NT.get(), RenderFallingBlockNT::new);
+        reg.accept(ModEntities.FALLING_BLOCK_BATCH.get(), RenderFallingBlockBatch::new);
         reg.accept(ModEntities.FALLING_MULTIBLOCK.get(), RenderFallingMultiblock::new);
         reg.accept(ModEntities.NUKE_TOREX.get(), RenderTorex::new);
         reg.accept(
@@ -570,7 +573,6 @@ public final class ClientRegistry {
         reg.accept(ModEntities.C130.get(), RenderC130::new);
         reg.accept(ModEntities.BOMBER.get(), RenderBomber::new);
         reg.accept(ModEntities.GRENADE_UNIVERSAL.get(), RenderGrenadeUniversal::new);
-
         reg.accept(
                 ModEntities.GRENADE_BOUNCY_GENERIC.get(), ctx -> new RenderGenericGrenade<>(ctx));
         reg.accept(ModEntities.DISPERSER_CANISTER.get(), ctx -> new RenderGenericGrenade<>(ctx));
@@ -578,9 +580,7 @@ public final class ClientRegistry {
         reg.accept(ModEntities.ITEM_BUOYANT.get(), ItemEntityRenderer::new);
         reg.accept(ModEntities.MOVING_ITEM.get(), RenderMovingItem::new);
         reg.accept(ModEntities.MOVING_PACKAGE.get(), RenderMovingPackage::new);
-
         reg.accept(ModEntities.TNT_NTM.get(), TntRenderer::new);
-
         reg.accept(ModEntities.CLOUD_FLEIJA.get(), RenderCloudFleija::new);
         reg.accept(ModEntities.CLOUD_SOLINIUM.get(), RenderCloudSolinium::new);
         reg.accept(ModEntities.CLOUD_RAINBOW.get(), RenderCloudRainbow::new);
@@ -880,7 +880,6 @@ public final class ClientRegistry {
         reg.accept(ModEntities.ORBITAL_LASER.get(), RenderOrbitalLaser::new);
         reg.accept(ModEntities.BEAM_BOMB.get(), RenderBeamBomb::new);
         reg.accept(ModEntities.SIEGE_LASER.get(), RenderSiegeLaser::new);
-
         reg.accept(ModEntities.DELIVERY_DRONE.get(), ctx -> new RenderDeliveryDrone<>(ctx));
         reg.accept(ModEntities.REQUEST_DRONE.get(), ctx -> new RenderDeliveryDrone<>(ctx));
 
@@ -904,7 +903,6 @@ public final class ClientRegistry {
 
         reg.accept(ModEntities.CARGO_TRAM.get(), ctx -> new RenderTrainCargoTram<>(ctx));
         reg.accept(ModEntities.CARGO_TRAM_TRAILER.get(), RenderTrainCargoTramTrailer::new);
-
         reg.accept(ModEntities.BOUNDING_DUMMY.get(), NoopRenderer::new);
         reg.accept(ModEntities.SEAT_DUMMY.get(), NoopRenderer::new);
 
@@ -1085,7 +1083,6 @@ public final class ClientRegistry {
         reg.accept(ModMenus.NUKE_N2.get(), ScreenNukeN2::new);
         reg.accept(ModMenus.MACHINE_MISSILE_ASSEMBLY.get(), ScreenMachineMissileAssembly::new);
         reg.accept(ModMenus.LAUNCH_PAD.get(), ScreenLaunchPad::new);
-
         reg.accept(ModMenus.LAUNCH_PAD_LARGE.get(), ScreenLaunchPad::new);
         reg.accept(ModMenus.LAUNCH_PAD_RUSTED.get(), ScreenLaunchPadRusted::new);
         reg.accept(ModMenus.LAUNCH_TABLE.get(), ScreenLaunchTable::new);
@@ -1153,7 +1150,6 @@ public final class ClientRegistry {
     public static void registerBlockEntityRenderers(BlockEntityRendererRegistrar reg) {
         reg.accept(ModBlockEntities.FEL.get(), context -> new RenderFEL(context));
         reg.accept(ModBlockEntities.RAIL.get(), context -> new RenderRail());
-
         reg.accept(ModBlockEntities.PA_BEAMLINE.get(), context -> new RenderPABeamline(context));
         reg.accept(ModBlockEntities.TESLA_COIL.get(), context -> new RenderTesla());
         reg.accept(ModBlockEntities.BATTERY_SOCKET.get(), RenderBatterySocket::new);
@@ -1287,6 +1283,9 @@ public final class ClientRegistry {
         reg.accept(ModBlockEntities.SOYUZ_STRUCT.get(), context -> new RenderSoyuzStructPreview());
         reg.accept(ModBlockEntities.SOYUZ_LAUNCHER.get(), context -> new RenderSoyuzLauncher());
         reg.accept(ModBlockEntities.LAUNCHPAD_SOYUZ.get(), context -> new RenderLaunchpadSoyuz());
+        reg.accept(
+                ModBlockEntities.LAUNCHPAD_SOYUZ_ANCHOR.get(),
+                context -> new RenderLaunchpadSoyuz());
         reg.accept(ModBlockEntities.MISSILE_ASSEMBLY.get(), context -> new RenderMissileAssembly());
         reg.accept(ModBlockEntities.RBMK_ROD.get(), context -> new RenderRBMKFuelRod());
         reg.accept(ModBlockEntities.RBMK_ROD_REASIM.get(), context -> new RenderRBMKFuelRod());
@@ -1419,7 +1418,6 @@ public final class ClientRegistry {
     }
 
     public static void renderGunHud(GuiGraphicsExtractor graphics) {
-
         if (Minecraft.getInstance().gui.hud.isHidden()) return;
         NukeHud.shaken(graphics, () -> renderGunHudComponents(graphics));
     }
@@ -1474,7 +1472,6 @@ public final class ClientRegistry {
     }
 
     public static boolean replacesCrosshair() {
-
         if (Minecraft.getInstance().gui.hud.isHidden()) return false;
         var player = Minecraft.getInstance().player;
         return player != null && player.getMainHandItem().getItem() instanceof ItemGunBaseNT;

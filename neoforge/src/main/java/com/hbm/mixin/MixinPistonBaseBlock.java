@@ -20,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(PistonBaseBlock.class)
 public abstract class MixinPistonBaseBlock {
-
     @ModifyExpressionValue(
             method = "isPushable",
             at =
@@ -45,7 +44,6 @@ public abstract class MixinPistonBaseBlock {
             BlockPos pistonPos,
             Direction direction,
             boolean extending) {
-
         if (level.isClientSide()) return moving;
         if (!(moving instanceof PistonMovingBlockEntity piston) || piston.isSourcePiston())
             return moving;

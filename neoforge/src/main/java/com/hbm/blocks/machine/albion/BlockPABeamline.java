@@ -3,10 +3,10 @@
 
 package com.hbm.blocks.machine.albion;
 
+import com.hbm.blockentity.machine.albion.BlockEntityPABeamline;
 import com.hbm.blocks.multiblock.BlockMultiblockCell;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.interfaces.IToolable;
-import com.hbm.tileentity.machine.albion.BlockEntityPABeamline;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;

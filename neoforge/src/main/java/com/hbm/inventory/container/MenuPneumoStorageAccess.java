@@ -4,11 +4,11 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.ntl.PneumaticNetwork;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageAccess;
 import com.hbm.inventory.slot.SlotFiltered;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.PneumoAccessSyncPayload.Delta;
 import com.hbm.packet.toclient.PneumoAccessSyncPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageAccess;
 import com.hbm.util.InventoryUtil;
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
@@ -32,7 +32,6 @@ public class MenuPneumoStorageAccess extends BlockEntityMenu<BlockEntityPneumoSt
     public static final int GRID_COLUMNS = 8;
     public static final int GRID_ROWS = 6;
     public static final int GRID_SIZE = GRID_ROWS * GRID_COLUMNS;
-
     public static final int DELTAS_PER_MESSAGE = 48;
     public static final int NO_ENTRY = -1;
 
@@ -68,9 +67,7 @@ public class MenuPneumoStorageAccess extends BlockEntityMenu<BlockEntityPneumoSt
     private static final double REACH_SQ = 15.0D * 15.0D;
 
     private final Player player;
-
     private final Int2ObjectLinkedOpenHashMap<Entry> entries = new Int2ObjectLinkedOpenHashMap<>();
-
     private final Object2ObjectOpenCustomHashMap<ItemStack, Entry> byStack =
             new Object2ObjectOpenCustomHashMap<>(PneumaticNetwork.TYPE_AND_COMPONENTS);
     private final List<Delta> outbox = new ArrayList<>();
@@ -185,7 +182,7 @@ public class MenuPneumoStorageAccess extends BlockEntityMenu<BlockEntityPneumoSt
         if (player instanceof ServerPlayer serverPlayer) {
             for (int from = 0; from < outbox.size(); from += DELTAS_PER_MESSAGE) {
                 int to = Math.min(from + DELTAS_PER_MESSAGE, outbox.size());
-                Services.NETWORK.sendTo(
+                PacketWire.sendTo(
                         new PneumoAccessSyncPayload(
                                 containerId, List.copyOf(outbox.subList(from, to))),
                         serverPlayer);
@@ -221,7 +218,6 @@ public class MenuPneumoStorageAccess extends BlockEntityMenu<BlockEntityPneumoSt
 
         if (op == ClickOp.SHIFT_CLICK) {
             if (entry == null) return;
-
             int taken =
                     (int)
                             net.take(
@@ -250,7 +246,6 @@ public class MenuPneumoStorageAccess extends BlockEntityMenu<BlockEntityPneumoSt
         }
 
         if (!carried.isEmpty() && !sameType) {
-
             int toDeposit = op == ClickOp.LEFT_CLICK ? carried.getCount() : 1;
             int deposited = (int) net.give(viewLevel(), viewPos(), carried, toDeposit);
             carried.shrink(deposited);
@@ -344,7 +339,6 @@ public class MenuPneumoStorageAccess extends BlockEntityMenu<BlockEntityPneumoSt
     public static final class Entry {
 
         public final int id;
-
         public final ItemStack display;
         public long amount;
 

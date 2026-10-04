@@ -3,9 +3,9 @@
 
 package com.hbm.items.tool;
 
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.PlayerInformPayload;
-import com.hbm.platform.Services;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import com.hbm.world.NtmWorldgenFields;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -25,7 +25,6 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import org.jspecify.annotations.Nullable;
 
 public class ItemColtanCompass extends Item {
-
     private static final int ID_COMPASS = 2;
     private static final double SPREAD = 1500;
 
@@ -54,7 +53,7 @@ public class ItemColtanCompass extends Item {
         double dx = owner.getX() - target.getX();
         double dz = owner.getZ() - target.getZ();
         int distance = (int) Math.sqrt(dx * dx + dz * dz);
-        Services.NETWORK.sendTo(
+        PacketWire.sendTo(
                 new PlayerInformPayload(
                         Component.translatable("desc.item.coltanTool.distance", distance),
                         ID_COMPASS,
@@ -69,7 +68,8 @@ public class ItemColtanCompass extends Item {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-        for (String line : I18nUtil.loreLines("desc.item.coltanTool"))
-            adder.accept(Component.literal(line));
+        for (Component line :
+                TooltipStyle.lines(Component.translatableWithFallback("desc.item.coltanTool", "")))
+            adder.accept(line);
     }
 }

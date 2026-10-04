@@ -8,7 +8,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 public final class BufferPool<H> {
-
     public interface Port<H> {
         long stock(H handler);
 
@@ -69,7 +68,6 @@ public final class BufferPool<H> {
             long headroom = Math.max(0, port.headroom(m.handler));
             m.stock = stock;
             m.capacity = saturatedAdd(stock, headroom);
-
             m.out = Math.min(stock, Math.max(0, m.outSpeed - Math.max(0, m.gathered - stock)));
             m.in = Math.min(headroom, Math.max(0, m.inSpeed - Math.max(0, stock - m.gathered)));
         }
@@ -126,7 +124,6 @@ public final class BufferPool<H> {
             Member<H> m = members.get(i);
             m.give = m.take = 0;
             if (m.tier != tier) continue;
-
             long target =
                     wide
                             ? wideStock

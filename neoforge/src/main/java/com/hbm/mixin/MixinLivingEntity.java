@@ -5,19 +5,27 @@ package com.hbm.mixin;
 
 import com.hbm.blocks.ClimbBoxes;
 import com.hbm.blocks.multiblock.MultiblockSurface;
+import com.hbm.config.NeoForgeHbmConfig;
+import com.hbm.extprop.HbmLivingProps;
+import com.hbm.handler.ArmorModHandler;
 import com.hbm.handler.ArmorUtil;
 import com.hbm.handler.EntityEffectHandler;
 import com.hbm.hazard.HazardSystem;
 import com.hbm.interfaces.NtmDamageContext;
+import com.hbm.interfaces.injected.ArmorModWearer;
+import com.hbm.inventory.InventoryChanges;
 import com.hbm.items.IAnimatedItem;
 import com.hbm.items.ISwingReceiver;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
+import com.hbm.items.armor.ArmorMods;
 import com.hbm.items.armor.ArmorSuitEffects;
+import com.hbm.items.armor.ItemArmorMod;
+import com.hbm.items.armor.ItemModDefuser;
 import com.hbm.items.armor.ModArmorItem;
+import com.hbm.items.armor.ServoEffects;
 import com.hbm.items.food.FoodAdditives;
 import com.hbm.items.weapon.sedna.AkimboGhost;
-import com.hbm.platform.Services;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -35,6 +43,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -51,7 +60,210 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public class MixinLivingEntity implements NtmDamageContext {
+public class MixinLivingEntity implements NtmDamageContext, ArmorModWearer {
+
+    @Unique private ArmorMods hbm$feetMods = ArmorMods.EMPTY;
+    @Unique private ArmorMods hbm$legsMods = ArmorMods.EMPTY;
+    @Unique private ArmorMods hbm$chestMods = ArmorMods.EMPTY;
+    @Unique private ArmorMods hbm$headMods = ArmorMods.EMPTY;
+    @Unique private int hbm$armorSlots;
+    @Unique private @Nullable ItemStack[] hbm$socketStacks;
+    @Unique private long hbm$installedMods;
+    @Unique private long hbm$serverMods;
+    @Unique private long hbm$clientMods;
+    @Unique private long hbm$hazardMods;
+    @Unique private int hbm$hazardGeneration;
+    @Unique private int hbm$servoSources;
+    @Unique private int hbm$servoPieces;
+    @Unique private long hbm$servoMods;
+
+    @Unique
+    private ArmorMods hbm$mods(int piece) {
+        return switch (piece) {
+            case 0 -> hbm$feetMods;
+            case 1 -> hbm$legsMods;
+            case 2 -> hbm$chestMods;
+            case 3 -> hbm$headMods;
+            default -> throw new AssertionError();
+        };
+    }
+
+    @Override
+    public void hbm$reconcileArmorMods() {
+        LivingEntity self = (LivingEntity) (Object) this;
+        boolean healthChanged = false;
+        boolean changed = false;
+        for (int piece = 0; piece < ArmorUtil.ARMOR_SLOTS.length; piece++) {
+            ItemStack armor = self.getItemBySlot(ArmorUtil.ARMOR_SLOTS[piece]);
+            ArmorMods next = ArmorMods.EMPTY;
+            EquipmentSlot slot = EquipmentSlot.MAINHAND;
+            int shape = 0;
+            if (ArmorModHandler.isArmor(armor)) {
+                next = ArmorModHandler.mods(armor);
+                slot = armor.get(net.minecraft.core.component.DataComponents.EQUIPPABLE).slot();
+                shape = slot.ordinal() + 1;
+            }
+            ArmorMods previous = hbm$mods(piece);
+            int shift = piece * 4;
+            int previousShape = (hbm$armorSlots >>> shift) & 15;
+            if (previous == next && shape == previousShape) continue;
+            changed = true;
+            if (!self.level().isClientSide()
+                    && (shape != previousShape || !next.sameAttributes(previous)))
+                healthChanged |=
+                        ArmorModHandler.reconcileAttributes(self, previous, next, slot, piece);
+            hbm$armorSlots = (hbm$armorSlots & ~(15 << shift)) | shape << shift;
+            switch (piece) {
+                case 0 -> hbm$feetMods = next;
+                case 1 -> hbm$legsMods = next;
+                case 2 -> hbm$chestMods = next;
+                case 3 -> hbm$headMods = next;
+            }
+            int offset = piece * ArmorModHandler.MOD_SLOTS;
+            int source = ServoEffects.source(next, slot);
+            int sourceShift = piece * 8;
+            hbm$servoPieces = (hbm$servoPieces & ~(255 << sourceShift)) | source << sourceShift;
+            long mask = 511L << offset;
+            hbm$installedMods &= ~mask;
+            hbm$serverMods &= ~mask;
+            hbm$clientMods &= ~mask;
+            hbm$hazardMods &= ~mask;
+            hbm$servoMods &= ~mask;
+            if (source != 0) hbm$servoMods |= 1L << (offset + ArmorModHandler.SERVOS);
+            for (int socket = 0; socket < ArmorModHandler.MOD_SLOTS; socket++) {
+                int index = offset + socket;
+                if (!(next.item(socket) instanceof ItemArmorMod mod)) {
+                    if (hbm$socketStacks != null) hbm$socketStacks[index] = null;
+                    continue;
+                }
+                if (hbm$socketStacks == null)
+                    hbm$socketStacks = new ItemStack[4 * ArmorModHandler.MOD_SLOTS];
+                if (hbm$socketStacks[index] == null
+                        || !java.util.Objects.equals(
+                                previous.template(socket), next.template(socket)))
+                    hbm$socketStacks[index] = next.copy(socket);
+                long bit = 1L << index;
+                hbm$installedMods |= bit;
+                if (mod.ticksServer()) hbm$serverMods |= bit;
+                if (mod.ticksClient()) hbm$clientMods |= bit;
+                ItemStack payload = hbm$socketStacks[index];
+                if (!self.level().isClientSide()
+                        && (HazardSystem.readsLiveStorage(payload)
+                                || HazardSystem.isStackHazardous(payload))) hbm$hazardMods |= bit;
+            }
+        }
+        if (healthChanged && self.getHealth() > self.getMaxHealth())
+            self.setHealth(self.getMaxHealth());
+        if (hbm$installedMods == 0) hbm$socketStacks = null;
+        if (changed) {
+            int sources = 0;
+            for (int piece = 0; piece < ArmorUtil.ARMOR_SLOTS.length; piece++) {
+                int source = (hbm$servoPieces >>> (piece * 8)) & 255;
+                sources =
+                        Math.max(sources & 15, source & 15)
+                                | Math.max(sources >>> 4, source >>> 4) << 4;
+            }
+            if (!self.level().isClientSide() && sources != hbm$servoSources)
+                ServoEffects.sourcesChanged(self, hbm$servoSources, sources);
+            hbm$servoSources = sources;
+        }
+    }
+
+    @Unique
+    private void hbm$refreshSocketHazards() {
+        int generation = HazardSystem.generation();
+        if (generation == hbm$hazardGeneration) return;
+        hbm$hazardGeneration = generation;
+        hbm$hazardMods = 0;
+        long mask = hbm$installedMods;
+        while (mask != 0) {
+            int index = Long.numberOfTrailingZeros(mask);
+            long bit = 1L << index;
+            mask &= ~bit;
+            ItemStack payload = hbm$socketStacks[index];
+            if (HazardSystem.readsLiveStorage(payload) || HazardSystem.isStackHazardous(payload))
+                hbm$hazardMods |= bit;
+        }
+    }
+
+    @Override
+    public void hbm$tickArmorMods() {
+        LivingEntity self = (LivingEntity) (Object) this;
+        if (self instanceof Creeper creeper && HbmLivingProps.isDefused(creeper))
+            ItemModDefuser.castrateCreeper(creeper, null, false);
+        hbm$refreshSocketHazards();
+        long mask = hbm$serverMods | hbm$hazardMods | hbm$servoMods;
+        while (mask != 0 && !self.isRemoved()) {
+            int index = Long.numberOfTrailingZeros(mask);
+            long bit = 1L << index;
+            mask &= ~bit;
+            if (((hbm$serverMods | hbm$hazardMods | hbm$servoMods) & bit) == 0) continue;
+            int piece = index / ArmorModHandler.MOD_SLOTS;
+            ItemStack armor = self.getItemBySlot(ArmorUtil.ARMOR_SLOTS[piece]);
+            if ((hbm$servoMods & bit) != 0)
+                ServoEffects.serverTick(self, (hbm$servoPieces >>> (piece * 8)) & 255);
+            if ((hbm$serverMods & bit) != 0)
+                ((ItemArmorMod) hbm$socketStacks[index].getItem()).modUpdate(self, armor);
+            if (ArmorModHandler.mods(self.getItemBySlot(ArmorUtil.ARMOR_SLOTS[piece]))
+                    != hbm$mods(piece)) hbm$reconcileArmorMods();
+            if ((hbm$hazardMods & bit) != 0) {
+                ItemStack payload = hbm$socketStacks[index];
+                HazardSystem.applyHazards(payload, self);
+                hbm$reconcileArmorMods();
+                if ((hbm$hazardMods & bit) != 0 && hbm$socketStacks[index] == payload) {
+                    int socket = index % ArmorModHandler.MOD_SLOTS;
+                    var template = hbm$mods(piece).template(socket);
+                    if (payload.getCount() != template.count()
+                            || !payload.getComponentsPatch().equals(template.components()))
+                        hbm$socketStacks[index] = hbm$mods(piece).copy(socket);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void hbm$tickClientArmorMods() {
+        hbm$reconcileArmorMods();
+        LivingEntity self = (LivingEntity) (Object) this;
+        if (hbm$servoSources != 0) ServoEffects.clientTick(self, hbm$servoSources);
+        long mask = hbm$clientMods;
+        while (mask != 0) {
+            int index = Long.numberOfTrailingZeros(mask);
+            mask &= mask - 1;
+            ItemStack payload = hbm$socketStacks[index];
+            ((ItemArmorMod) payload.getItem())
+                    .modUpdateClient(
+                            self,
+                            self.getItemBySlot(
+                                    ArmorUtil.ARMOR_SLOTS[index / ArmorModHandler.MOD_SLOTS]));
+        }
+    }
+
+    @Inject(method = "collectEquipmentChanges", at = @At("RETURN"))
+    private void hbm$reconcileChangedArmor(
+            Map<EquipmentSlot, ItemStack> previous,
+            CallbackInfoReturnable<Map<EquipmentSlot, ItemStack>> cir) {
+        if (cir.getReturnValue() != null) hbm$reconcileArmorMods();
+    }
+
+    @Inject(
+            method = "tick",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lnet/minecraft/world/entity/LivingEntity;detectEquipmentUpdates()V",
+                            shift = At.Shift.AFTER))
+    private void hbm$tickEquippedArmor(CallbackInfo ci) {
+        hbm$tickArmorMods();
+    }
+
+    @Inject(method = "tickEffects", at = @At("RETURN"))
+    private void hbm$holdClientServoDuration(CallbackInfo ci) {
+        LivingEntity self = (LivingEntity) (Object) this;
+        if (self.level().isClientSide() && hbm$servoSources != 0)
+            ServoEffects.clientTick(self, hbm$servoSources);
+    }
 
     @Unique private float hbm$pierceDT;
     @Unique private float hbm$pierceDR;
@@ -72,6 +284,18 @@ public class MixinLivingEntity implements NtmDamageContext {
         ItemStack current = player.getMainHandItem();
         if (previous.get(EquipmentSlot.MAINHAND).getItem() != current.getItem()
                 && current.getItem() instanceof IAnimatedItem item) item.onEquip(player, current);
+    }
+
+    @Inject(method = "collectEquipmentChanges", at = @At("RETURN"))
+    private void hbm$equipmentFusesChanged(
+            Map<EquipmentSlot, ItemStack> previous,
+            CallbackInfoReturnable<Map<EquipmentSlot, ItemStack>> cir) {
+        if (cir.getReturnValue() != null) {
+            LivingEntity owner = (LivingEntity) (Object) this;
+            cir.getReturnValue()
+                    .forEach(
+                            (slot, stack) -> InventoryChanges.equipmentChanged(owner, slot, stack));
+        }
     }
 
     @Override
@@ -156,7 +380,7 @@ public class MixinLivingEntity implements NtmDamageContext {
                             target =
                                     "Lnet/minecraft/world/damagesource/CombatRules;getDamageAfterAbsorb(Lnet/minecraft/world/entity/LivingEntity;FLnet/minecraft/world/damagesource/DamageSource;FF)F"))
     private float hbm$piercedVanillaArmor(float armor) {
-        return Services.CONFIG.runtime().damageCompatibilityMode()
+        return NeoForgeHbmConfig.runtime().damageCompatibilityMode()
                 ? armor
                 : armor * (1F - hbm$pierceDR);
     }
@@ -171,7 +395,7 @@ public class MixinLivingEntity implements NtmDamageContext {
     private void hbm$armorWearOutsideSedna(
             LivingEntity self, DamageSource source, float damage, Operation<Void> original) {
         if (Double.isNaN(hbm$knockbackMultiplier)
-                || Services.CONFIG.runtime().damageCompatibilityMode()) {
+                || NeoForgeHbmConfig.runtime().damageCompatibilityMode()) {
             original.call(self, source, damage);
         }
     }
@@ -197,9 +421,7 @@ public class MixinLivingEntity implements NtmDamageContext {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void hbm$livingUpdate(CallbackInfo ci) {
-        LivingEntity self = (LivingEntity) (Object) this;
-        HazardSystem.tickMobEquipment(self);
-        EntityEffectHandler.onUpdate(self);
+        EntityEffectHandler.onLivingTick((LivingEntity) (Object) this);
     }
 
     @ModifyReturnValue(method = "onClimbable", at = @At("RETURN"))
@@ -211,7 +433,6 @@ public class MixinLivingEntity implements NtmDamageContext {
             return climbing;
         }
         AABB bb = self.getBoundingBox();
-
         if (bb != hbm$climbProbed || self.tickCount != hbm$climbProbeTick) {
             hbm$climbProbed = bb;
             hbm$climbProbeTick = self.tickCount;

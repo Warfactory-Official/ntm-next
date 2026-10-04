@@ -11,7 +11,6 @@ import java.util.Random;
 import net.minecraft.world.level.Level;
 
 public final class ContrailEffect implements Effect {
-
     private static int seedSeq;
 
     final float[] mod = new float[ParticleContrail.SUBQUADS];

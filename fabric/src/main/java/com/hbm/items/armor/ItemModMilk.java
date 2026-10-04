@@ -38,6 +38,11 @@ public class ItemModMilk extends ItemArmorMod {
     }
 
     @Override
+    public boolean ticksServer() {
+        return true;
+    }
+
+    @Override
     public void modUpdate(LivingEntity entity, ItemStack armor) {
         List<Holder<MobEffect>> harmful = new ArrayList<>();
         for (MobEffectInstance effect : entity.getActiveEffects()) {

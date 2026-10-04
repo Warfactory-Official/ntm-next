@@ -24,7 +24,6 @@ import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 
 public final class NukeCloudVisual<T extends Entity> extends HbmDynamicEntityVisual<T> {
-
     private static final Mesh SPHERE =
             PackedQuadMesh.of(
                     ResourceManager.black_hole, ResourceManager.black_hole.partId("Icosphere"));
@@ -37,7 +36,6 @@ public final class NukeCloudVisual<T extends Entity> extends HbmDynamicEntityVis
             new SingleMeshModel(SPHERE, EffectVisuals.Shared.CLOUD_OPAQUE);
     static final Model SPHERE_ADDITIVE =
             new SingleMeshModel(SPHERE, EffectVisuals.Shared.CLOUD_ADDITIVE);
-
     static final Model SPHERE_TRANSLUCENT =
             new SingleMeshModel(SPHERE, EffectVisuals.Shared.CLOUD_TRANSLUCENT);
     private static final Model SHELL_OPAQUE =
@@ -46,7 +44,6 @@ public final class NukeCloudVisual<T extends Entity> extends HbmDynamicEntityVis
             new SingleMeshModel(SHELL, EffectVisuals.Shared.CLOUD_OPAQUE_UNCULLED);
     private static final Model SHELL_ADDITIVE =
             new SingleMeshModel(SHELL, EffectVisuals.Shared.CLOUD_ADDITIVE);
-
     private static final int FLEIJA_CORE = ARGB.colorFromFloat(1F, 0F, 1F, 1F);
     private static final int FLEIJA_SHELL = ARGB.colorFromFloat(1F, 0F, 0.125F, 0.125F);
     private static final int SOLINIUM = 0x27FFDA;
@@ -62,7 +59,6 @@ public final class NukeCloudVisual<T extends Entity> extends HbmDynamicEntityVis
                     ARGB.redFloat(SOLINIUM),
                     ARGB.greenFloat(SOLINIUM),
                     ARGB.blueFloat(SOLINIUM));
-
     private static final float[] RAINBOW_SHELLS = rainbowShells();
     private final Vector3f interpolatedPosition = new Vector3f();
     private final Kind kind;

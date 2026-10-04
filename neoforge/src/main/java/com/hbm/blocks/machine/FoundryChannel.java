@@ -4,11 +4,11 @@
 package com.hbm.blocks.machine;
 
 import com.hbm.api.foundry.FoundryChannelGraph;
+import com.hbm.blockentity.machine.BlockEntityFoundryChannel;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.material.Mats.MaterialStack;
 import com.hbm.items.machine.ItemScraps;
-import com.hbm.tileentity.machine.BlockEntityFoundryChannel;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.AutoRotate;
 import net.minecraft.core.BlockPos;

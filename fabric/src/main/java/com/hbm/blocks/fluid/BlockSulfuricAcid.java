@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class BlockSulfuricAcid extends BlockFluidClassicBase {
-
     private static final float DAMAGE = 5.0F;
 
     public BlockSulfuricAcid(ClassicFluid fluid, Properties props) {

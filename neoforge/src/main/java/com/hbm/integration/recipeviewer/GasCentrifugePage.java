@@ -21,7 +21,6 @@ import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
 public final class GasCentrifugePage extends RecipePage<GasCentrifugePage.Cascade> {
-
     private static final int MAX_STEPS = 32;
 
     GasCentrifugePage() {
@@ -37,7 +36,6 @@ public final class GasCentrifugePage extends RecipePage<GasCentrifugePage.Cascad
         for (GasCentrifugeRecipe recipe : table.allStages()) {
             if (recipe.feed != null) feeds.add(recipe);
         }
-
         feeds.sort(
                 Comparator.comparingInt((GasCentrifugeRecipe r) -> r.order)
                         .thenComparing((GasCentrifugeRecipe r) -> r.stage));
@@ -84,7 +82,6 @@ public final class GasCentrifugePage extends RecipePage<GasCentrifugePage.Cascad
         long batches = 1;
         for (int k = 0; k < size; k++) batches = lcm(batches, den[k]);
         if (leftover != null) {
-
             long n = num[size - 1] * last.produced;
             long d = den[size - 1] * (long) leftover.deadEndVolume;
             batches = lcm(batches, d / gcd(n, d));
@@ -139,7 +136,6 @@ public final class GasCentrifugePage extends RecipePage<GasCentrifugePage.Cascad
             if (entries.size() == 1) {
                 merge(outputs, entries.get(0), operations);
             } else {
-
                 List<ItemStack> copies = new ArrayList<>(entries.size());
                 for (ItemStack entry : entries) copies.add(entry.copy());
                 alternatives.add(List.copyOf(copies));
@@ -237,7 +233,6 @@ public final class GasCentrifugePage extends RecipePage<GasCentrifugePage.Cascad
         }
 
         page.arrow(27, 15);
-
         page.text(
                 Component.translatable("jei.hbm.gas_centrifuge.cascade", cascade.steps().size()),
                 3,

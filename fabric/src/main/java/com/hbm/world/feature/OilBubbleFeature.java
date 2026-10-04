@@ -23,7 +23,6 @@ public class OilBubbleFeature extends Feature<OilBubbleConfig> {
         BlockPos origin = ctx.origin();
 
         int radius = cfg.minSize() + rand.nextInt(cfg.maxSize() - cfg.minSize());
-
         double radiusSqr = (radius * radius) / 2.0D;
 
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();

@@ -25,7 +25,6 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
 
 final class ReiPageCategory implements DisplayCategory<ReiPageDisplay> {
-
     private static final int PADDING = 4;
     private static final int TEXT_COLOUR = 0xFF000000;
     private static final int LINE_SPACING = 2;

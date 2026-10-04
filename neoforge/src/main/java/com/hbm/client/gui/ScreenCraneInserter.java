@@ -5,8 +5,8 @@ package com.hbm.client.gui;
 
 import com.hbm.inventory.container.MenuCraneInserter;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -93,8 +93,7 @@ public class ScreenCraneInserter extends ScreenInfoContainer<MenuCraneInserter> 
                 (int) event.x(), (int) event.y(), TOGGLE_X, TOGGLE_Y, TOGGLE_SIZE, TOGGLE_SIZE)) {
             CompoundTag data = new CompoundTag();
             data.putBoolean("destroyer", true);
-            Services.NETWORK.sendToServer(
-                    new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
             playClick();
         }
 

@@ -10,8 +10,8 @@ import com.hbm.itempool.ItemPool;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.GrenadeAnimationPayload;
-import com.hbm.platform.Services;
 import com.hbm.sound.ModSounds;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -34,7 +34,6 @@ import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
 
 public class ItemGrenadeUniversal extends Item {
-
     private static int clientSlot = -1;
     private static @Nullable GrenadeData clientData;
 
@@ -48,8 +47,7 @@ public class ItemGrenadeUniversal extends Item {
 
     private static void onEquip(ServerPlayer player, ItemStack stack) {
         HbmPlayerProps.getData(player).grenadeDeployment = 0;
-        Services.NETWORK.sendTo(
-                new GrenadeAnimationPayload(getData(stack).shell().ordinal()), player);
+        PacketWire.sendTo(new GrenadeAnimationPayload(getData(stack).shell().ordinal()), player);
     }
 
     public static void clientHeldTick() {

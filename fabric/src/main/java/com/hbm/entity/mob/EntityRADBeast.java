@@ -6,7 +6,6 @@ package com.hbm.entity.mob;
 import com.hbm.advancement.BossKilledTrigger;
 import com.hbm.advancement.HbmCriteria;
 import com.hbm.handler.radiation.RadiationSystemNT;
-import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
 import com.hbm.items.ModItems;
@@ -52,8 +51,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class EntityRADBeast extends Monster implements IRadiationImmune {
-
+public class EntityRADBeast extends Monster {
     private static final EntityDataAccessor<Integer> VICTIM =
             SynchedEntityData.defineId(EntityRADBeast.class, EntityDataSerializers.INT);
 
@@ -61,7 +59,6 @@ public class EntityRADBeast extends Monster implements IRadiationImmune {
 
     private float heightOffset = 0.5F;
     private int heightOffsetUpdateTime;
-
     private int attackDelay;
 
     public EntityRADBeast(EntityType<? extends EntityRADBeast> type, Level level) {

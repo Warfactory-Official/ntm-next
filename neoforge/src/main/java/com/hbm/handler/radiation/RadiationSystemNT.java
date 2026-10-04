@@ -10,12 +10,11 @@ import com.hbm.data.RadiationData;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.interfaces.ServerThread;
 import com.hbm.lib.Library;
-import com.hbm.lib.internal.natives.RadsimWorld;
 import com.hbm.lib.queues.MpscUnboundedXaddArrayLongQueue;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.EffectNTPayload;
 import com.hbm.particle.HbmEffectNT;
-import com.hbm.platform.Services;
-import com.hbm.registration.RegistryHandle;
+import com.hbm.platform.NeoForgeServerEvents;
 import com.hbm.util.DecodeException;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongIterable;
@@ -32,6 +31,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
 import net.minecraft.SharedConstants;
@@ -68,7 +68,6 @@ public final class RadiationSystemNT {
             FACE_DY = {-1, 1, 0, 0, 0, 0},
             FACE_DZ = {0, 0, -1, 1, 0, 0};
     static final int[] FACE_PLANE = new int[6 * 256];
-
     static final Map<ServerLevel, WorldRadiationData> worldMap = new HashMap<>(4);
     private static final Map<ServerLevel, Double> disabledAmbient = new HashMap<>(4);
     static final int[] BOUNDARY_MASKS = {0, 0, 0xF00, 0xF00, 0xFF0, 0xFF0},
@@ -81,6 +80,8 @@ public final class RadiationSystemNT {
             5 + MAX_SECTIONS_PER_CHUNK * (4 + 1 + 2 + 2 + 512 + MAX_POCKETS * 10);
     static final int SIDECAR_CARRY_HEADER_BYTES = Long.BYTES;
     static final ReferenceOpenHashSet<BlockState> RAD_RESISTANT_STATES =
+            new ReferenceOpenHashSet<>(64);
+    private static final ReferenceOpenHashSet<BlockState> DATAPACK_RESISTANT_STATES =
             new ReferenceOpenHashSet<>(64);
     static final Reference2ObjectOpenHashMap<BlockState, RadSource> RAD_SOURCE_STATES =
             new Reference2ObjectOpenHashMap<>(64);
@@ -126,9 +127,9 @@ public final class RadiationSystemNT {
             ThreadLocal.withInitial(() -> new double[MAX_POCKETS]);
     static final ThreadLocal<double[]> TL_DIFF_RECIPROCALS =
             ThreadLocal.withInitial(() -> new double[MAX_POCKETS]);
-    static final double RAD_EPSILON = 1.0e-5D;
-    static final double RAD_MAX = Double.MAX_VALUE / 2.0D;
-    static final long DESTROY_PROB_U64 = Long.divideUnsigned(-1L, 100L);
+    public static final double RAD_EPSILON = 1.0e-5D;
+    public static final double RAD_MAX = Double.MAX_VALUE / 2.0D;
+    public static final long DESTROY_PROB_U64 = Long.divideUnsigned(-1L, 100L);
     static final CompletableFuture<Void> COMPLETED = CompletableFuture.completedFuture(null);
     static volatile int resistantStateVersion;
     static long ticks;
@@ -176,18 +177,6 @@ public final class RadiationSystemNT {
             throw new IllegalStateException("Radiation HalfLife must be positive and finite");
     }
 
-    public static void applyBackendParams(RadsimWorld world, RadiationSettings.Resolved settings) {
-        world.setParams(
-                settings.diffusionDt(),
-                settings.uuE(),
-                settings.retentionDt(),
-                settings.fogProbU64(),
-                DESTROY_PROB_U64,
-                settings.fogRad(),
-                RAD_EPSILON,
-                RAD_MAX);
-    }
-
     static long probU64(double p) {
         if (!(p > 0.0D) || !Double.isFinite(p)) return 0L;
         if (p >= 1.0D) return -1L;
@@ -201,10 +190,10 @@ public final class RadiationSystemNT {
     }
 
     public static void init() {
-        Services.SERVER.onServerTickPost(RadiationSystemNT::tickSim);
-        Services.SERVER.onChunkLoad(RadiationSystemNT::onChunkLoad);
-        Services.SERVER.onChunkUnload(RadiationSystemNT::onChunkUnload);
-        Services.SERVER.onServerStopping(RadiationSystemNT::onServerStopping);
+        NeoForgeServerEvents.onServerTickPost(RadiationSystemNT::tickSim);
+        NeoForgeServerEvents.onChunkLoad(RadiationSystemNT::onChunkLoad);
+        NeoForgeServerEvents.onChunkUnload(RadiationSystemNT::onChunkUnload);
+        NeoForgeServerEvents.onServerStopping(RadiationSystemNT::onServerStopping);
     }
 
     static void tickSim(MinecraftServer server) {
@@ -214,7 +203,6 @@ public final class RadiationSystemNT {
         if ((ticks + 17) % tickDelay != 0) return;
         awaitSimulation();
         runWorldEffects();
-
         runRebuilds();
         RadVisServer.publish(server);
         radiationFuture = CompletableFuture.runAsync(RadiationSystemNT::runSweeps, RAD_POOL);
@@ -248,11 +236,10 @@ public final class RadiationSystemNT {
 
     @ServerThread
     static void runWorldEffects() {
-        boolean destroy = RadiationData.WORLD_RAD_EFFECTS.get();
         for (WorldRadiationData data : worldMap.values()) {
             if (data.world.getServer() == null) continue;
             try {
-                if (destroy) handleWorldDestruction(data);
+                if (data.worldRadEffects) handleWorldDestruction(data);
                 runFog(data);
             } catch (Throwable t) {
                 NuclearTech.LOGGER.error(
@@ -324,7 +311,7 @@ public final class RadiationSystemNT {
             if (!nearGround) continue;
 
             double fx = x + 0.5D, fy = y + 0.5D, fz = z + 0.5D;
-            Services.NETWORK.sendToAllAround(
+            PacketWire.sendToAllAround(
                     new EffectNTPayload(HbmEffectNT.RadFog, fx, fy, fz),
                     new TargetPoint(world, fx, fy, fz, 100));
             return;
@@ -339,7 +326,6 @@ public final class RadiationSystemNT {
             if (pk != Long.MIN_VALUE) destroyPocket(data, pk);
             return;
         }
-
         for (int i = 0; i < tickDelay; i++) {
             long pk = data.destructionQueue.poll();
             if (pk == MpscUnboundedXaddArrayLongQueue.EMPTY) break;
@@ -480,7 +466,10 @@ public final class RadiationSystemNT {
         try {
             saveDirtySidecar(true);
         } finally {
-            for (WorldRadiationData data : worldMap.values()) data.logLifetimeProfiling();
+            for (WorldRadiationData data : worldMap.values()) {
+                data.logLifetimeProfiling();
+                if (data.backend != null) data.backend.close();
+            }
             try {
                 SIDE_CAR.close();
             } catch (RuntimeException ex) {
@@ -490,6 +479,7 @@ public final class RadiationSystemNT {
             worldMap.clear();
             disabledAmbient.clear();
             RadiationDiffusivity.clear();
+            clearDataPackResistantStates();
         }
         if (simulationFailure != null) throw simulationFailure;
     }
@@ -498,7 +488,7 @@ public final class RadiationSystemNT {
         if (!RadiationData.ENABLE_CHUNK_RADS.get()) return null;
         int cx = pos.x(), cz = pos.z();
         if (((cx ^ (cx << 10) >> 10) | (cz ^ (cz << 10) >> 10)) != 0) return null;
-        MinecraftServer server = Services.SERVER.getCurrentServer();
+        MinecraftServer server = NeoForgeServerEvents.getCurrentServer();
         if (server == null) return null;
         ServerLevel level = server.getLevel(dimension);
         if (level == null) return null;
@@ -590,11 +580,9 @@ public final class RadiationSystemNT {
             else data.backend.addRad(pos, emission);
             return;
         }
-
         int local = Library.blockPosToLocal(posLong);
         if (isSource) data.queueEmit(sck, local, emission, saturation);
         else data.queueAdd(sck, local, emission);
-
         if (data.getKind(ownerId, slot) == KIND_NONE) data.dirtyCk.add(ck, ownerId, slot);
         data.setChunkDirty(ownerId);
     }
@@ -617,7 +605,6 @@ public final class RadiationSystemNT {
             data.backend.setRad(pos, amount);
             return;
         }
-
         int local = Library.blockPosToLocal(posLong);
         data.queueSet(sck, local, amount);
         if (data.getKind(ownerId, slot) == KIND_NONE) data.dirtyCk.add(ck, ownerId, slot);
@@ -830,7 +817,6 @@ public final class RadiationSystemNT {
         data.unloadChunk(cx, cz);
         long ck = ChunkPos.pack(cx, cz);
         data.removeChunkRef(ck);
-
         if (data.backend != null) data.backend.chunkUnloaded(cx, cz);
     }
 
@@ -886,7 +872,6 @@ public final class RadiationSystemNT {
         for (BlockState state : block.getStateDefinition().getPossibleStates()) {
             double e = emission.applyAsDouble(state);
             double s = saturation.applyAsDouble(state);
-
             if (e == 0.0D || !Double.isFinite(e) || !Double.isFinite(s)) continue;
             RAD_SOURCE_STATES.put(state, new RadSource(e, s));
         }
@@ -915,6 +900,37 @@ public final class RadiationSystemNT {
     }
 
     record RadSource(double emission, double saturation) {}
+
+    public static void registerResistantStates(RegistryAccess registries) {
+        clearDataPackResistantStates();
+        int rules = 0;
+        for (RadResistanceRule rule : registries.lookupOrThrow(RadResistanceRule.REGISTRY)) {
+            for (Holder<Block> target : rule.targets()) {
+                for (BlockState state : target.value().getStateDefinition().getPossibleStates()) {
+                    if (rule.matches(state) && RAD_RESISTANT_STATES.add(state)) {
+                        DATAPACK_RESISTANT_STATES.add(state);
+                    }
+                }
+            }
+            rules++;
+        }
+        if (!DATAPACK_RESISTANT_STATES.isEmpty()) resistantStateVersion++;
+        NuclearTech.LOGGER.info(
+                "[RadiationSystemNT] {} resistance rules, {} added states",
+                rules,
+                DATAPACK_RESISTANT_STATES.size());
+    }
+
+    private static void clearDataPackResistantStates() {
+        if (DATAPACK_RESISTANT_STATES.isEmpty()) return;
+        for (BlockState state : DATAPACK_RESISTANT_STATES) RAD_RESISTANT_STATES.remove(state);
+        DATAPACK_RESISTANT_STATES.clear();
+        resistantStateVersion++;
+    }
+
+    public static void forEachResistantState(Consumer<BlockState> consumer) {
+        RAD_RESISTANT_STATES.forEach(consumer);
+    }
 
     public static void markRadResistant(Block block) {
         boolean changed = false;
@@ -945,7 +961,7 @@ public final class RadiationSystemNT {
         return Library.setSectionY(sectionKey, yz);
     }
 
-    static @Nullable SectionMask scanResistantMask(@Nullable LevelChunkSection section) {
+    public static @Nullable SectionMask scanResistantMask(@Nullable LevelChunkSection section) {
         if (section == null || section.hasOnlyAir()) return null;
         return scanResistantMask(section.getStates());
     }
@@ -1004,7 +1020,6 @@ public final class RadiationSystemNT {
                 for (int id = 0; id < idLimit; id++) {
                     localResistant[id] = (local[id >>> 6] & (1L << (id & 63))) != 0L;
                 }
-
                 Arrays.fill(localResistant, idLimit, localResistant.length, false);
                 return scanUnpackedResistantIds(storage, sc.unpacked, localResistant);
             }
@@ -1171,7 +1186,6 @@ public final class RadiationSystemNT {
         int idLimit;
         double[] reciprocalById;
         if (pal instanceof GlobalPalette<?>) {
-
             idLimit = Block.BLOCK_STATE_REGISTRY.size();
             reciprocalById =
                     sc.globalDiffusivityReciprocal(idLimit, RadiationDiffusivity.stateVersion);
@@ -1239,7 +1253,6 @@ public final class RadiationSystemNT {
         }
         float first = RadiationDiffusivity.NEUTRAL;
         for (int p = 0; p < pocketCount; p++) {
-
             float value;
             if (!(recip[p] > 0.0D)) {
                 value = RadiationDiffusivity.NEUTRAL;
@@ -1494,14 +1507,14 @@ public final class RadiationSystemNT {
         }
     }
 
-    static final class SectionMask {
+    public static final class SectionMask {
         static final SectionMask ALL_SET = new SectionMask();
 
         static {
             Arrays.fill(ALL_SET.words, -1L);
         }
 
-        final long[] words = new long[64];
+        public final long[] words = new long[64];
 
         boolean get(int bit) {
             int w = bit >>> 6;

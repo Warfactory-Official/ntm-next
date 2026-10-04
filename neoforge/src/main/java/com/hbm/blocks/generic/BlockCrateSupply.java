@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.machine.storage.BlockEntityCrateSupply;
 import com.hbm.items.ModItems;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.storage.BlockEntityCrateSupply;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;

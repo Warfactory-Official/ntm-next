@@ -3,13 +3,13 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.oil.BlockEntityMachineGasFlare;
 import com.hbm.inventory.container.MenuMachineGasFlare;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.trait.FT_Flammable;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineGasFlare;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -157,7 +157,7 @@ public class ScreenMachineGasFlare extends ScreenInfoContainer<MenuMachineGasFla
             if (key != null) {
                 CompoundTag data = new CompoundTag();
                 data.putBoolean(key, true);
-                Services.NETWORK.sendToServer(
+                PacketWire.sendToServer(
                         new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
                 playClick();
                 return true;

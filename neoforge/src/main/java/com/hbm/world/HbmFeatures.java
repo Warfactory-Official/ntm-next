@@ -4,7 +4,7 @@
 package com.hbm.world;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.RegistryHandle;
 import com.hbm.world.feature.*;
 import com.hbm.world.placement.LightBlockingHeightPlacement;
@@ -32,6 +32,7 @@ public final class HbmFeatures {
     public static RegistryHandle<DudFeature> DUD;
     public static RegistryHandle<LockedSafeFeature> LOCKED_SAFE;
     public static RegistryHandle<LanternBehemothFeature> LANTERN_BEHEMOTH;
+    public static RegistryHandle<BosniaMineFeature> BOSNIA_MINE;
     public static RegistryHandle<PinkLogFeature> PINK_LOG;
     public static RegistryHandle<LibraryDungeonFeature> LIBRARY_DUNGEON;
     public static RegistryHandle<BarrelFeature> BARREL;
@@ -48,61 +49,67 @@ public final class HbmFeatures {
 
     private HbmFeatures() {}
 
-    public static void register(IRegistrar r) {
-        LightBlockingHeightPlacement.register(r);
-        WorldConfigPlacement.register(r);
-        STRATUM = r.registerFeature("stratum", new StratumFeature());
-        STRATUM_3D = r.registerFeature("stratum_3d", new Stratum3DFeature());
-        DEPTH_DEPOSIT = r.registerFeature("depth_deposit", new DepthDepositFeature());
-        WINDOWED_ORE = r.registerFeature("windowed_ore", new WindowedOreFeature());
-        COLTAN_DEPOSIT = r.registerFeature("coltan_deposit", new ColtanDepositFeature());
-        NETHER_SURFACE = r.registerFeature("nether_surface", new NetherSurfaceFeature());
-        BEDROCK_ORE = r.registerFeature("bedrock_ore", new BedrockOreFeature());
-        ORE_CAVE = r.registerFeature("ore_cave", new OreCaveFeature());
-        OIL_BUBBLE = r.registerFeature("oil_bubble", new OilBubbleFeature());
+    public static void register() {
+        LightBlockingHeightPlacement.register();
+        WorldConfigPlacement.register();
+        STRATUM = NeoForgeRegistrar.registerFeature("stratum", new StratumFeature());
+        STRATUM_3D = NeoForgeRegistrar.registerFeature("stratum_3d", new Stratum3DFeature());
+        DEPTH_DEPOSIT =
+                NeoForgeRegistrar.registerFeature("depth_deposit", new DepthDepositFeature());
+        WINDOWED_ORE = NeoForgeRegistrar.registerFeature("windowed_ore", new WindowedOreFeature());
+        COLTAN_DEPOSIT =
+                NeoForgeRegistrar.registerFeature("coltan_deposit", new ColtanDepositFeature());
+        NETHER_SURFACE =
+                NeoForgeRegistrar.registerFeature("nether_surface", new NetherSurfaceFeature());
+        BEDROCK_ORE = NeoForgeRegistrar.registerFeature("bedrock_ore", new BedrockOreFeature());
+        ORE_CAVE = NeoForgeRegistrar.registerFeature("ore_cave", new OreCaveFeature());
+        OIL_BUBBLE = NeoForgeRegistrar.registerFeature("oil_bubble", new OilBubbleFeature());
         BEDROCK_OIL_DEPOSIT =
-                r.registerFeature("bedrock_oil_deposit", new BedrockOilDepositFeature());
-        METEORITE = r.registerFeature("meteorite", new MeteoriteFeature());
-        GEYSER = r.registerFeature("geyser", new GeyserFeature());
-        BIOME_CAVE = r.registerFeature("biome_cave", new BiomeCaveFeature());
-        GLYPHID_HIVE = r.registerFeature("glyphid_hive", new GlyphidHiveFeature());
-        DUD = r.registerFeature("dud", new DudFeature());
-        LOCKED_SAFE = r.registerFeature("locked_safe", new LockedSafeFeature());
-        LANTERN_BEHEMOTH = r.registerFeature("lantern_behemoth", new LanternBehemothFeature());
-        PINK_LOG = r.registerFeature("pink_log", new PinkLogFeature());
-        LIBRARY_DUNGEON = r.registerFeature("library_dungeon", new LibraryDungeonFeature());
-        BARREL = r.registerFeature("barrel", new BarrelFeature());
-        ARCTIC_VAULT = r.registerFeature("arctic_vault", new ArcticVaultFeature());
-
+                NeoForgeRegistrar.registerFeature(
+                        "bedrock_oil_deposit", new BedrockOilDepositFeature());
+        METEORITE = NeoForgeRegistrar.registerFeature("meteorite", new MeteoriteFeature());
+        GEYSER = NeoForgeRegistrar.registerFeature("geyser", new GeyserFeature());
+        BIOME_CAVE = NeoForgeRegistrar.registerFeature("biome_cave", new BiomeCaveFeature());
+        GLYPHID_HIVE = NeoForgeRegistrar.registerFeature("glyphid_hive", new GlyphidHiveFeature());
+        DUD = NeoForgeRegistrar.registerFeature("dud", new DudFeature());
+        LOCKED_SAFE = NeoForgeRegistrar.registerFeature("locked_safe", new LockedSafeFeature());
+        LANTERN_BEHEMOTH =
+                NeoForgeRegistrar.registerFeature("lantern_behemoth", new LanternBehemothFeature());
+        BOSNIA_MINE = NeoForgeRegistrar.registerFeature("bosnia_mine", new BosniaMineFeature());
+        PINK_LOG = NeoForgeRegistrar.registerFeature("pink_log", new PinkLogFeature());
+        LIBRARY_DUNGEON =
+                NeoForgeRegistrar.registerFeature("library_dungeon", new LibraryDungeonFeature());
+        BARREL = NeoForgeRegistrar.registerFeature("barrel", new BarrelFeature());
+        ARCTIC_VAULT = NeoForgeRegistrar.registerFeature("arctic_vault", new ArcticVaultFeature());
         FOXGLOVE =
-                r.registerFeature(
+                NeoForgeRegistrar.registerFeature(
                         "foxglove",
                         new FlowerPatchFeature(() -> ModBlocks.PLANT_FLOWER_FOXGLOVE.get(), 16));
         NIGHTSHADE =
-                r.registerFeature(
+                NeoForgeRegistrar.registerFeature(
                         "nightshade",
                         new FlowerPatchFeature(() -> ModBlocks.PLANT_FLOWER_NIGHTSHADE.get(), 8));
         TOBACCO =
-                r.registerFeature(
+                NeoForgeRegistrar.registerFeature(
                         "tobacco",
                         new FlowerPatchFeature(() -> ModBlocks.PLANT_FLOWER_TOBACCO.get(), 8));
         WEED =
-                r.registerFeature(
+                NeoForgeRegistrar.registerFeature(
                         "weed",
                         new FlowerPatchFeature(() -> ModBlocks.PLANT_FLOWER_WEED.get(), 64));
-
         REEDS_RIVER =
-                r.registerFeature(
+                NeoForgeRegistrar.registerFeature(
                         "reeds_river",
                         new FlowerPatchFeature(() -> ModBlocks.PLANT_REEDS.get(), 4));
         REEDS_BEACH =
-                r.registerFeature(
+                NeoForgeRegistrar.registerFeature(
                         "reeds_beach",
                         new FlowerPatchFeature(() -> ModBlocks.PLANT_REEDS.get(), 8));
         JUNGLE_DUNGEON_MARKER =
-                r.registerFeature("jungle_dungeon_marker", new JungleDungeonMarkerFeature());
-        CAPSULE = r.registerFeature("capsule", new CapsuleFeature());
-        KEYHOLE = r.registerFeature("keyhole", new KeyholeFeature());
+                NeoForgeRegistrar.registerFeature(
+                        "jungle_dungeon_marker", new JungleDungeonMarkerFeature());
+        CAPSULE = NeoForgeRegistrar.registerFeature("capsule", new CapsuleFeature());
+        KEYHOLE = NeoForgeRegistrar.registerFeature("keyhole", new KeyholeFeature());
     }
 
     public static Feature<StratumConfig> stratum() {

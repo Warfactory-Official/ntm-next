@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityCargoElevator;
 import com.hbm.client.model.Meshes;
 import com.hbm.lib.Library;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityCargoElevator;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.Material;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;

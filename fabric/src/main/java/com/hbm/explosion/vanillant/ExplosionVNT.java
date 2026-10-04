@@ -6,7 +6,6 @@ package com.hbm.explosion.vanillant;
 
 import com.hbm.explosion.vanillant.interfaces.*;
 import com.hbm.explosion.vanillant.standard.*;
-import com.hbm.platform.Services;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -29,9 +28,7 @@ public class ExplosionVNT implements Explosion {
     public double posZ;
     public float size;
     public Entity exploder;
-
     public HashSet<BlockPos> affectedBlocks;
-
     public List<BlockPos> allocatedBlocks = List.of();
     private IBlockAllocator blockAllocator;
     private IEntityProcessor entityProcessor;
@@ -124,7 +121,7 @@ public class ExplosionVNT implements Explosion {
     }
 
     public float blockResistance(Level world, BlockPos pos, BlockState state) {
-        float resistance = Services.PLATFORM.explosionResistance(world, pos, state, this);
+        float resistance = state.getBlock().getExplosionResistance();
         return exploder == null
                 ? resistance
                 : exploder.getBlockExplosionResistance(

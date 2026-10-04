@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Stream;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredient;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
+import net.minecraft.advancements.predicates.DataComponentMatchers;
 import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -21,7 +22,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 
 public record HbmNarrowedIngredient(Holder<Item> item, Ingredient within)
-        implements CustomIngredient {
+        implements IngredientState, CustomIngredient {
 
     public static final Identifier ID = Library.id("narrowed");
 
@@ -52,6 +53,16 @@ public record HbmNarrowedIngredient(Holder<Item> item, Ingredient within)
     @Override
     public boolean test(ItemStack stack) {
         return stack.is(item) && within.test(stack);
+    }
+
+    @Override
+    public boolean acceptsState(ItemStack stack) {
+        return RecipeInputState.accepts(within, stack);
+    }
+
+    @Override
+    public boolean acceptsState(ItemStack stack, DataComponentMatchers additional) {
+        return RecipeInputState.accepts(within, stack, additional);
     }
 
     @Override

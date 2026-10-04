@@ -3,9 +3,9 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityFoundryCastingBase;
+import com.hbm.blockentity.machine.IRenderFoundry;
 import com.hbm.client.render.RenderFoundry;
-import com.hbm.tileentity.machine.BlockEntityFoundryCastingBase;
-import com.hbm.tileentity.machine.IRenderFoundry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.Material;

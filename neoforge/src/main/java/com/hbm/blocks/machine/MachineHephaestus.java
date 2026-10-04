@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineHephaestus;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
@@ -13,8 +14,6 @@ import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.BlockEntityMachineHephaestus;
-import com.hbm.util.I18nUtil;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -111,7 +110,10 @@ public class MachineHephaestus extends BlockMultiblockCore
     @Override
     public void buildLookOverlay(Level level, BlockPos pos, LookInfo info) {
         if (!(level.getBlockEntity(pos) instanceof BlockEntityMachineHephaestus be)) return;
-        info.title(I18nUtil.resolveKey(getDescriptionId()), 0xFFFF00, 0x404000);
+        info.title(
+                Component.empty().append(Component.translatable(getDescriptionId())),
+                0xFFFF00,
+                0x404000);
         info.line(String.format(Locale.US, "%,d", be.bufferedHeat) + " TU");
 
         FluidTankNTM[] tanks = {be.input, be.output};
@@ -132,7 +134,6 @@ public class MachineHephaestus extends BlockMultiblockCore
 
     @Override
     public MachineCaps caps() {
-
         return MachineCaps.blockKeyed()
                 .fluidIn()
                 .fluidOut()

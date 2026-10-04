@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityFoundryChannel;
 import com.hbm.blocks.machine.FoundryChannel;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityFoundryChannel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import net.minecraft.client.renderer.SubmitNodeCollector;

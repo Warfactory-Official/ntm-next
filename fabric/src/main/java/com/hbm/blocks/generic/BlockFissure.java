@@ -3,12 +3,12 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityFissure;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.BlockEntityFissure;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -61,7 +61,6 @@ public class BlockFissure extends Block implements ITickingBlock, ICapabilityBlo
 
     @Override
     public MachineCaps caps() {
-
         return MachineCaps.of(ModBlockEntities.FISSURE)
                 .fluidOut()
                 .fluidFaces(BlockEntityFissure.class, (be, face) -> face.side() == Direction.DOWN);

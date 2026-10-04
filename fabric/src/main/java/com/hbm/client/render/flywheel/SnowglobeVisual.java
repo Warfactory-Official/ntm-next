@@ -3,11 +3,11 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.BlockEntitySnowglobe;
 import com.hbm.blocks.generic.BlockSnowglobe.SnowglobeType;
 import com.hbm.blocks.generic.BlockSnowglobe;
 import com.hbm.client.render.RenderSnowglobe;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.BlockEntitySnowglobe;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.Material;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;

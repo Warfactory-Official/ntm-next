@@ -11,18 +11,14 @@ import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.chunk.ChunkAccess;
 
 public final class MultiblockCoreIndex {
-
     public static final long NO_ENTRY = Long.MIN_VALUE;
     private static final ThreadLocal<RemovalBatch> REMOVALS = new ThreadLocal<>();
-
     private static final int Y_INDEX_BITS = 12;
-
     private static final int DX_BITS = 13;
-
     private static final int DY_BITS = Y_INDEX_BITS + 1;
     private static final int DZ_BITS = DX_BITS;
     private static final int DELTA_BITS = DX_BITS + DY_BITS + DZ_BITS;
-
+    public static final int KEY_SHIFT = DELTA_BITS;
     private static final int KEY_MASK = (1 << (8 + Y_INDEX_BITS)) - 1;
     public static final int MAX_INDEXABLE_HEIGHT = 1 << Y_INDEX_BITS;
 
@@ -128,7 +124,7 @@ public final class MultiblockCoreIndex {
                         == SectionPos.blockToSectionCoord(z);
     }
 
-    private static int indexOf(long[] sorted, int length, int key) {
+    public static int indexOf(long[] sorted, int length, int key) {
         int lo = 0;
         int hi = length - 1;
         while (lo <= hi) {
@@ -138,7 +134,7 @@ public final class MultiblockCoreIndex {
             else if (midKey > key) hi = mid - 1;
             else return mid;
         }
-        return -1;
+        return -lo - 1;
     }
 
     public static long lookup(ChunkAccess chunk, LevelHeightAccessor level, int x, int y, int z) {
@@ -194,7 +190,6 @@ public final class MultiblockCoreIndex {
         if (at < 0 || entries[at] < 0) return;
         RemovalBatch batch = REMOVALS.get();
         if (batch != null) {
-
             entries[at] |= Long.MIN_VALUE;
             batch.record(chunk);
             return;

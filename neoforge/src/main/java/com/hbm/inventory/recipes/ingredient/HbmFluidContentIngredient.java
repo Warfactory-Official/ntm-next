@@ -5,10 +5,13 @@ package com.hbm.inventory.recipes.ingredient;
 
 import com.hbm.NuclearTech;
 import com.hbm.inventory.fluid.FluidStackNTM;
+import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.items.ModDataComponents;
+import com.hbm.items.ModItems;
 import com.hbm.items.machine.IFluidContainerItem;
 import com.hbm.lib.Library;
 import com.hbm.platform.IFluidHandlerView;
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgeCaps;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.stream.Stream;
@@ -31,7 +34,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
-public record HbmFluidContentIngredient(Fluid fluid, int amount) implements ICustomIngredient {
+public record HbmFluidContentIngredient(Fluid fluid, int amount)
+        implements IngredientState, ICustomIngredient {
 
     public static final Identifier ID = Library.id("fluid_content");
 
@@ -59,7 +63,8 @@ public record HbmFluidContentIngredient(Fluid fluid, int amount) implements ICus
 
     @Override
     public boolean test(ItemStack stack) {
-        if (stack.isEmpty()) return false;
+        if (stack.isEmpty() || !acceptsState(stack)) return false;
+        if (acceptsBdcl() && stack.is(ModItems.BDCL.get())) return true;
 
         if (stack.getItem() instanceof IFluidContainerItem container) {
             FluidStackNTM content = container.getContent(stack);
@@ -68,8 +73,18 @@ public record HbmFluidContentIngredient(Fluid fluid, int amount) implements ICus
                     && content.amount() == amount;
         }
 
-        IFluidHandlerView view = Services.CAPS.findFluidHandler(stack);
+        IFluidHandlerView view = NeoForgeCaps.findFluidHandler(stack);
         return view != null && view.extractable(fluid) == amount;
+    }
+
+    @Override
+    public boolean acceptsState(ItemStack stack) {
+        if (stack.getComponentsPatch().isEmpty()) return true;
+        if (acceptsBdcl() && stack.is(ModItems.BDCL.get())) return false;
+        if (stack.getItem() instanceof IFluidContainerItem) {
+            return RecipeInputState.only(stack, ModDataComponents.FLUID_CONTENT.get());
+        }
+        return false;
     }
 
     @Override
@@ -87,6 +102,10 @@ public record HbmFluidContentIngredient(Fluid fluid, int amount) implements ICus
                         .toList());
     }
 
+    private boolean acceptsBdcl() {
+        return fluid == NTMFluids.LUBRICANT && amount == 1_000;
+    }
+
     private Stream<ItemStack> paying() {
         Stream<ItemStack> ours =
                 BuiltInRegistries.ITEM.stream()
@@ -100,7 +119,13 @@ public record HbmFluidContentIngredient(Fluid fluid, int amount) implements ICus
                                                 .filledContainer(
                                                         new ItemStack(item),
                                                         new FluidStackNTM(fluid, amount)));
-        return Stream.concat(Stream.of(new ItemStack(fluid.getBucket())), ours).filter(this::test);
+        Stream<ItemStack> listed =
+                acceptsBdcl()
+                        ? Stream.of(
+                                new ItemStack(fluid.getBucket()),
+                                new ItemStack(ModItems.BDCL.get()))
+                        : Stream.of(new ItemStack(fluid.getBucket()));
+        return Stream.concat(listed, ours).filter(this::test);
     }
 
     private static final DeferredRegister<IngredientType<?>> INGREDIENT_TYPES =

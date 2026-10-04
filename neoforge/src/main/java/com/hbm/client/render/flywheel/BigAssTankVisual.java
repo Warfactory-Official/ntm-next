@@ -3,12 +3,12 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.storage.BlockEntityMachineBigAssTank;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.gui.FluidGauge;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineBigAssTank;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;

@@ -50,10 +50,16 @@ public abstract class MixinLevelChunk extends ChunkAccess {
             CallbackInfo ci) {
         byte[] rad = protoChunk.hbm$getRadiation();
         if (rad != null) hbm$setRadiation(rad);
-
         long[] index = protoChunk.hbm$coreIndex();
         if (index != null) {
             hbm$setCoreIndex(index, protoChunk.hbm$coreIndexSize());
+        }
+        long[] pending = protoChunk.hbm$pendingFallerPositions();
+        if (pending != null) {
+            hbm$setPendingFallers(
+                    pending,
+                    protoChunk.hbm$pendingFallerStates(),
+                    protoChunk.hbm$pendingFallerSize());
         }
     }
 

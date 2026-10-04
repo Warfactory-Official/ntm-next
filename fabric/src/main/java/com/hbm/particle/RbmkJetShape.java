@@ -4,7 +4,6 @@
 package com.hbm.particle;
 
 public sealed interface RbmkJetShape {
-
     float uMin(int age);
 
     float uStep();
@@ -20,7 +19,6 @@ public sealed interface RbmkJetShape {
     float y1();
 
     record Flame(float scale, int maxAge) implements RbmkJetShape {
-
         private static final float U_STEP = 1F / 14F;
 
         @Override

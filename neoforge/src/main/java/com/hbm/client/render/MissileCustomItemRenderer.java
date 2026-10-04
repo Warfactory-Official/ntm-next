@@ -32,7 +32,6 @@ import org.jspecify.annotations.Nullable;
 public final class MissileCustomItemRenderer
         implements SpecialModelRenderer<MissileCustomItemRenderer.Argument>,
                 ItemVisuals.Factory<MissileCustomItemRenderer.Argument> {
-
     private static final MeshItemRenderer.Spin CLOCK =
             new MeshItemRenderer.Spin(25L, 360L, 1F, Optional.empty());
 

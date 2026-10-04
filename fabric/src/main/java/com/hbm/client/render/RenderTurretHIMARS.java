@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.turret.BlockEntityTurretHIMARS;
 import com.hbm.items.weapon.ItemAmmoHIMARS.HIMARSRocketType;
 import com.hbm.items.weapon.ItemAmmoHIMARS;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.turret.BlockEntityTurretHIMARS;
 import net.minecraft.util.Mth;
 
 public class RenderTurretHIMARS extends RenderTurretBase<BlockEntityTurretHIMARS> {

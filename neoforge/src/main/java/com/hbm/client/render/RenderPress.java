@@ -35,7 +35,6 @@ import org.jspecify.annotations.Nullable;
 public class RenderPress<T extends BlockEntity>
         implements BlockEntityRenderer<T, RenderPress.State>, ConcurrentRenderStateExtraction {
     private static final float STROKE = 0.875F;
-
     public static final ItemPose PRESS_ITEM =
             (poseStack, yaw) -> {
                 poseStack.translate(0.5, 1.0, -0.5);
@@ -43,7 +42,6 @@ public class RenderPress<T extends BlockEntity>
                 poseStack.mulPose(Axis.XP.rotationDegrees(-90));
                 poseStack.translate(0.0, 1.0F - 0.0625F * 165 / 100, 0.0);
             };
-
     public static final ItemPose EPRESS_ITEM =
             (poseStack, yaw) -> {
                 poseStack.translate(0.5, 1.0, 0.5);
@@ -92,7 +90,6 @@ public class RenderPress<T extends BlockEntity>
     }
 
     public static float facingYaw(Direction facing) {
-
         return Facing.yaw(facing, 0);
     }
 
@@ -132,9 +129,7 @@ public class RenderPress<T extends BlockEntity>
             ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
         BlockEntityRenderer.super.extractRenderState(
                 be, state, partialTicks, cameraPosition, breakProgress);
-
         state.visualized = HbmBlockEntityVisual.hasVisual(be);
-
         state.yaw =
                 turnsWithFacing
                         ? headYaw + facingYaw(BlockMultiblockCore.coreFacing(be.getBlockState()))

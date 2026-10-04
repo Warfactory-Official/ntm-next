@@ -3,10 +3,11 @@
 
 package com.hbm.uninos.graph;
 
+import com.hbm.blocks.CapabilityDependentShape;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgeServerEvents;
 import com.hbm.util.ChunkPositionIndex;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongIterator;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import org.jspecify.annotations.Nullable;
 
 public final class EndpointRegistry {
-
     private static final int NET_DOMAINS =
             MachineCaps.POWER_IN
                     | MachineCaps.POWER_OUT
@@ -30,20 +30,15 @@ public final class EndpointRegistry {
                     | MachineCaps.FE;
     private final Long2ObjectOpenHashMap<Endpoint> byCell = new Long2ObjectOpenHashMap<>();
     private final ChunkPositionIndex byChunk = new ChunkPositionIndex();
+    private int capabilityShapeCount;
 
     public static EndpointRegistry of(ServerLevel level) {
         return level.hbm$endpoints();
     }
 
     public static void init() {
-        Services.SERVER.onChunkUnload(
+        NeoForgeServerEvents.onChunkUnload(
                 (level, chunk) -> of(level).onChunkUnload(chunk.getPos().pack()));
-    }
-
-    public void onChunkUnload(long chunkKey) {
-        LongOpenHashSet cells = byChunk.take(chunkKey);
-        if (cells == null) return;
-        for (LongIterator it = cells.iterator(); it.hasNext(); ) byCell.remove(it.nextLong());
     }
 
     public static void declareSelfIfEndpoint(ServerLevel level, BlockEntity be) {
@@ -54,7 +49,9 @@ public final class EndpointRegistry {
                             be.getBlockPos(),
                             be.getBlockPos(),
                             BlockMultiblockCore.MASK_ALL,
-                            domains);
+                            domains,
+                            be.getBlockState().getBlock()
+                                    instanceof CapabilityDependentShape.Endpoint);
         }
     }
 
@@ -73,19 +70,37 @@ public final class EndpointRegistry {
         return chunk != null && chunk.getFullStatus().isOrAfter(FullChunkStatus.FULL);
     }
 
+    public void onChunkUnload(long chunkKey) {
+        LongOpenHashSet cells = byChunk.take(chunkKey);
+        if (cells == null) return;
+        for (LongIterator it = cells.iterator(); it.hasNext(); ) {
+            Endpoint removed = byCell.remove(it.nextLong());
+            if (removed.capabilityShape) capabilityShapeCount--;
+        }
+    }
+
     public void declare(BlockPos cell, BlockPos owner, int faceMask, int domains) {
+        declare(cell, owner, faceMask, domains, false);
+    }
+
+    private void declare(
+            BlockPos cell, BlockPos owner, int faceMask, int domains, boolean capabilityShape) {
         long cellKey = cell.asLong();
         if (faceMask == 0) {
-            byCell.remove(cellKey);
-            byChunk.remove(cellKey);
+            withdraw(cell);
             return;
         }
-        byCell.put(cellKey, new Endpoint(owner.asLong(), faceMask, domains));
+        Endpoint previous =
+                byCell.put(
+                        cellKey, new Endpoint(owner.asLong(), faceMask, domains, capabilityShape));
+        if (previous != null && previous.capabilityShape) capabilityShapeCount--;
+        if (capabilityShape) capabilityShapeCount++;
         byChunk.add(cellKey);
     }
 
     public void withdraw(BlockPos cell) {
-        byCell.remove(cell.asLong());
+        Endpoint removed = byCell.remove(cell.asLong());
+        if (removed != null && removed.capabilityShape) capabilityShapeCount--;
         byChunk.remove(cell.asLong());
     }
 
@@ -120,6 +135,29 @@ public final class EndpointRegistry {
         return be;
     }
 
+    public @Nullable LongOpenHashSet cellsInChunk(long chunkKey) {
+        return byChunk.get(chunkKey);
+    }
+
+    public boolean hasCapabilityShapes() {
+        return capabilityShapeCount != 0;
+    }
+
+    public boolean hasCapabilityShape(long posKey) {
+        Endpoint endpoint = byCell.get(posKey);
+        return endpoint != null && endpoint.capabilityShape;
+    }
+
+    public int capabilityNeighbours(long posKey) {
+        if (capabilityShapeCount == 0) return 0;
+        int neighbours = 0;
+        for (Direction direction : Direction.VALUES) {
+            if (hasCapabilityShape(LevelNodeGraph.offset(posKey, direction)))
+                neighbours |= 1 << direction.ordinal();
+        }
+        return neighbours;
+    }
+
     public int size() {
         return byCell.size();
     }
@@ -129,15 +167,21 @@ public final class EndpointRegistry {
         private final long owner;
         private final int faceMask;
         private final int domains;
+        private final boolean capabilityShape;
 
         private @Nullable WeakReference<BlockEntity> resolved;
 
         private @Nullable WeakReference<LevelChunk> resolvedChunk;
 
         public Endpoint(long owner, int faceMask, int domains) {
+            this(owner, faceMask, domains, false);
+        }
+
+        private Endpoint(long owner, int faceMask, int domains, boolean capabilityShape) {
             this.owner = owner;
             this.faceMask = faceMask;
             this.domains = domains;
+            this.capabilityShape = capabilityShape;
         }
 
         public long owner() {

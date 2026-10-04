@@ -18,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(NoiseBasedChunkGenerator.class)
 public abstract class MixinNoiseBasedChunkGenerator {
-
     @Inject(method = "applyCarvers", at = @At("TAIL"))
     private void hbm$impactTopBlock(
             WorldGenRegion region,

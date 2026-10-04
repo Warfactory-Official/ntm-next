@@ -135,7 +135,6 @@ public class ParticleCoolingTower extends SingleQuadParticle implements VisualPa
     }
 
     private void updateVisualState(float ageScale) {
-
         this.alpha = this.alphaMod - ageScale * this.alphaMod;
         this.quadSize =
                 this.baseScale + (float) Math.pow(this.maxScale * ageScale - this.baseScale, 2);
@@ -164,7 +163,6 @@ public class ParticleCoolingTower extends SingleQuadParticle implements VisualPa
                 double ya,
                 double za,
                 RandomSource random) {
-
             int setting = Minecraft.getInstance().options.particles().get().ordinal();
             if (!(setting == 0 || (setting == 1 && random.nextBoolean()))) return null;
             return new ParticleCoolingTower(

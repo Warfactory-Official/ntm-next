@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.rail;
 
+import com.hbm.blockentity.BlockEntityRail;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockSurface;
-import com.hbm.tileentity.BlockEntityRail;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -85,7 +85,6 @@ public abstract class BlockRailNTM extends BlockMultiblockCore
         public Direction facing;
         public BlockRailNTM rail;
         private final BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
-
         private final BlockPos.MutableBlockPos core = new BlockPos.MutableBlockPos();
 
         boolean matches(BlockPos pos) {
@@ -98,7 +97,6 @@ public abstract class BlockRailNTM extends BlockMultiblockCore
     }
 
     public static boolean railAt(Level level, BlockPos pos, Owner out) {
-
         if (out.rail != null) {
             BlockPos core = out.core.set(out.coreX, out.coreY, out.coreZ);
             if (out.matches(pos) || MultiblockSurface.coreClaims(level, core, pos)) {

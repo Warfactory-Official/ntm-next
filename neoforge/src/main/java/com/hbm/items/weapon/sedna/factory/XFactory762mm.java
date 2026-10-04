@@ -18,7 +18,7 @@ import com.hbm.items.weapon.sedna.mags.MagazineBelt;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
 import com.hbm.particle.SpentCasing.CasingType;
 import com.hbm.particle.SpentCasing;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -507,7 +507,7 @@ public class XFactory762mm {
                 return null;
             };
 
-    public static void init(IRegistrar r) {
+    public static void init() {
         SpentCasing casing762 =
                 new SpentCasing(CasingType.BOTTLENECK).setColor(SpentCasing.COLOR_CASE_BRASS);
         r762_sp =
@@ -608,7 +608,7 @@ public class XFactory762mm {
                         .setOnBeamImpact(XFactoryEnergy.LAMBDA_IR_HIT);
 
         ModItems.GUN_CARBINE =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_carbine",
                         props ->
                                 new ItemGunBaseNT(
@@ -661,7 +661,7 @@ public class XFactory762mm {
                         Item.Properties::new);
 
         ModItems.GUN_MINIGUN =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_minigun",
                         props ->
                                 new ItemGunBaseNT(
@@ -710,7 +710,7 @@ public class XFactory762mm {
                         Item.Properties::new);
 
         ModItems.GUN_MINIGUN_LACUNAE =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_minigun_lacunae",
                         props ->
                                 new ItemGunBaseNT(
@@ -758,7 +758,7 @@ public class XFactory762mm {
                         Item.Properties::new);
 
         ModItems.GUN_MINIGUN_DUAL =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_minigun_dual",
                         props ->
                                 new ItemGunBaseNT(
@@ -854,7 +854,7 @@ public class XFactory762mm {
                         Item.Properties::new);
 
         ModItems.GUN_MAS36 =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_mas36",
                         props ->
                                 new ItemGunBaseNT(

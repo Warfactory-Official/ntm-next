@@ -33,7 +33,6 @@ public class BlockToxic extends BlockFluidClassicBase {
             Entity entity,
             InsideBlockEffectApplier effectApplier,
             boolean isPrecise) {
-
         entity.makeStuckInBlock(state, new Vec3(0.25D, 0.05D, 0.25D));
 
         if (level.isClientSide()) return;

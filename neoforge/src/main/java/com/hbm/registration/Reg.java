@@ -10,7 +10,6 @@ import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.items.MaterialShapeRoster;
 import com.hbm.items.PersistentInfoBlockItem;
-import com.hbm.platform.Services;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.*;
-import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
@@ -75,7 +73,7 @@ public final class Reg {
         return (BlockEntityTicker<T>) (client ? tables.client() : tables.server()).get(type);
     }
 
-    static void recordItemModel(Identifier item, Identifier model) {
+    public static void recordItemModel(Identifier item, Identifier model) {
         ITEM_MODELS.put(item, model);
     }
 
@@ -102,7 +100,7 @@ public final class Reg {
             String name,
             Function<Item.Properties, ? extends I> factory,
             Supplier<Item.Properties> props) {
-        return new Handle<>(Services.REGISTRAR.registerItem(name, factory, props));
+        return new Handle<>(NeoForgeRegistrar.registerItem(name, factory, props));
     }
 
     public static <I extends Item> Handle<I> item(
@@ -110,7 +108,7 @@ public final class Reg {
             Identifier model,
             Function<Item.Properties, ? extends I> factory,
             Supplier<Item.Properties> props) {
-        return new Handle<>(Services.REGISTRAR.registerItem(name, model, factory, props));
+        return new Handle<>(NeoForgeRegistrar.registerItem(name, model, factory, props));
     }
 
     public static <E extends Enum<E>, I extends Item> ItemFamily<E, I> family(
@@ -176,7 +174,7 @@ public final class Reg {
             String name,
             Function<BlockBehaviour.Properties, ? extends B> factory,
             Supplier<BlockBehaviour.Properties> props) {
-        return new Handle<>(Services.REGISTRAR.registerBlock(name, factory, props));
+        return new Handle<>(NeoForgeRegistrar.registerBlock(name, factory, props));
     }
 
     public static <B extends Block> Handle<B> blockItem(
@@ -197,8 +195,8 @@ public final class Reg {
             Function<BlockBehaviour.Properties, ? extends B> factory,
             Supplier<BlockBehaviour.Properties> props,
             BiFunction<? super B, Item.Properties, ? extends Item> itemFactory) {
-        Handle<B> block = new Handle<>(Services.REGISTRAR.registerBlock(name, factory, props));
-        Services.REGISTRAR.registerItem(
+        Handle<B> block = new Handle<>(NeoForgeRegistrar.registerBlock(name, factory, props));
+        NeoForgeRegistrar.registerItem(
                 name,
                 itemProps -> itemFactory.apply(block.get(), itemProps),
                 () -> new Item.Properties().useBlockDescriptionPrefix());
@@ -206,17 +204,17 @@ public final class Reg {
     }
 
     public static ClassicFluid.Pair classicFluid(String name, ClassicFluid.Spec spec) {
-        return Services.REGISTRAR.registerClassicFluid(name, spec);
+        return NeoForgeRegistrar.registerClassicFluid(name, spec);
     }
 
     public static <T extends BlockEntity> BeHandle<T> be(
             String name, Supplier<BlockEntityType<T>> typeFactory) {
-        return new BeHandle<>(Services.REGISTRAR.registerBlockEntityType(name, typeFactory));
+        return new BeHandle<>(NeoForgeRegistrar.registerBlockEntityType(name, typeFactory));
     }
 
     public static <T extends Entity> EntityHandle<T> entity(
             String name, Supplier<EntityType<T>> typeFactory) {
-        return new EntityHandle<>(Services.REGISTRAR.registerEntityType(name, typeFactory));
+        return new EntityHandle<>(NeoForgeRegistrar.registerEntityType(name, typeFactory));
     }
 
     public static final class BeHandle<E extends BlockEntity>

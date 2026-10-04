@@ -20,7 +20,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class EntityMinecartNTM extends AbstractMinecart implements ICartChassis {
-
     private static final EntityDataAccessor<Integer> BASE =
             SynchedEntityData.defineId(EntityMinecartNTM.class, EntityDataSerializers.INT);
 

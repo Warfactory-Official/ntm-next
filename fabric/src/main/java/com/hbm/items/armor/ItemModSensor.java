@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class ItemModSensor extends ItemArmorMod {
-
     private static final int REACH = 3, HEIGHT = 1, STRIDE = 2;
     private static final int CADENCE = 20;
 
@@ -53,6 +52,11 @@ public class ItemModSensor extends ItemArmorMod {
     public void inventoryTick(
             ItemStack stack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
         if (owner instanceof LivingEntity living) modUpdate(living, ItemStack.EMPTY);
+    }
+
+    @Override
+    public boolean ticksServer() {
+        return true;
     }
 
     @Override

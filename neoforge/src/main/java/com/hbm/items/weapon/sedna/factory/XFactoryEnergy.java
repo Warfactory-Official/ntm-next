@@ -21,9 +21,9 @@ import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
 import com.hbm.items.weapon.sedna.mags.MagazineBelt;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.PlasmaBlastPayload;
-import com.hbm.platform.Services;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -45,6 +45,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -105,7 +106,7 @@ public class XFactoryEnergy {
                 if (beam.level() instanceof ServerLevel server) {
                     float yaw = server.getRandom().nextFloat() * 180F;
                     for (int i = 0; i < 3; i++) {
-                        Services.NETWORK.sendToAllAround(
+                        PacketWire.sendToAllAround(
                                 new PlasmaBlastPayload(
                                         hit.x,
                                         hit.y,
@@ -177,7 +178,7 @@ public class XFactoryEnergy {
                     BlockPos pos = blockHit.getBlockPos();
                     BlockState state = world.getBlockState(pos);
                     Direction dir = blockHit.getDirection();
-                    if (Services.PLATFORM.isFlammable(world, pos, state, dir.getOpposite())) {
+                    if (state.isFlammable((BlockGetter) world, pos, dir.getOpposite())) {
                         BlockPos firePos = pos.relative(dir);
                         if (world.getBlockState(firePos).isAir()) {
                             world.setBlockAndUpdate(firePos, Blocks.FIRE.defaultBlockState());
@@ -445,7 +446,7 @@ public class XFactoryEnergy {
         return new ItemStack(ModItems.ingot(Mats.MAT_POLYMER), count);
     }
 
-    public static void init(IRegistrar r) {
+    public static void init() {
 
         energy_tesla =
                 new BulletConfig()
@@ -532,7 +533,7 @@ public class XFactoryEnergy {
         energy_emerald_ir = energy_las_ir.clone().setArmorPiercing(0.5F).setThresholdNegation(10F);
 
         ModItems.GUN_TESLA_CANNON =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_tesla_cannon",
                         props ->
                                 new ItemGunBaseNT(
@@ -576,7 +577,7 @@ public class XFactoryEnergy {
                         Item.Properties::new);
 
         ModItems.GUN_LASER_PISTOL =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_laser_pistol",
                         props ->
                                 new ItemGunBaseNT(
@@ -624,7 +625,7 @@ public class XFactoryEnergy {
                                         .setDefaultAmmo(EnumAmmo.CAPACITOR, 15),
                         Item.Properties::new);
         ModItems.GUN_LASER_PISTOL_PEW_PEW =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_laser_pistol_pew_pew",
                         props ->
                                 new ItemGunBaseNT(
@@ -673,7 +674,7 @@ public class XFactoryEnergy {
                                         .setDefaultAmmo(EnumAmmo.CAPACITOR_OVERCHARGE, 10),
                         Item.Properties::new);
         ModItems.GUN_LASER_PISTOL_MORNING_GLORY =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_laser_pistol_morning_glory",
                         props ->
                                 new ItemGunBaseNT(
@@ -722,7 +723,7 @@ public class XFactoryEnergy {
                         Item.Properties::new);
 
         ModItems.GUN_LASRIFLE =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_lasrifle",
                         props ->
                                 new ItemGunBaseNT(

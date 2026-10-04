@@ -3,7 +3,7 @@
 
 package com.hbm.blocks.machine.pile;
 
-import com.hbm.tileentity.machine.pile.BlockEntityPileVent;
+import com.hbm.blockentity.machine.pile.BlockEntityPileVent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;

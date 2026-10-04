@@ -14,11 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
 public final class WiringReadout {
-
     public static final int ID_CABLE = 3;
-
     private static final int ID_WRENCH = 13;
-
     public static final int MILLIS = 1_000;
 
     private WiringReadout() {}
@@ -26,7 +23,6 @@ public final class WiringReadout {
     public static void clientTick() {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
-
         for (ItemStack stack : player.getInventory()) {
             if (stack.getItem() instanceof ItemWiring) {
                 push(player, stack, stack.get(ModDataComponents.WIRE_TARGET.get()), ID_CABLE);

@@ -6,11 +6,11 @@ package com.hbm.client.render.flywheel;
 import com.hbm.animloader.AnimatedModel;
 import com.hbm.animloader.Animation;
 import com.hbm.animloader.AnimationWrapper;
+import com.hbm.blockentity.BlockEntityDoorGeneric;
+import com.hbm.blockentity.DoorDecl;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.anim.BusAnimationSequence;
 import com.hbm.render.anim.HbmAnimations;
-import com.hbm.tileentity.BlockEntityDoorGeneric;
-import com.hbm.tileentity.DoorDecl;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
@@ -572,9 +572,7 @@ public final class DoorVisual extends HbmDynamicBlockEntityVisual<BlockEntityDoo
 
         void bindTextures() {
             boolean blend =
-                    declaration == DoorDecl.SILO_HATCH
-                            || declaration == DoorDecl.SILO_HATCH_LARGE
-                            || declaration == DoorDecl.TRANSITION_SEAL;
+                    declaration == DoorDecl.SILO_HATCH || declaration == DoorDecl.SILO_HATCH_LARGE;
             String[] movingNames = declaration.getDynamicParts();
             for (int skin = 0; skin < skinCount; skin++) {
                 for (int i = 0; i < movingMeshes.length; i++) {

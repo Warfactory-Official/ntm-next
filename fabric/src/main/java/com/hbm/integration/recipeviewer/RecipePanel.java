@@ -16,7 +16,6 @@ public final class RecipePanel {
 
     public static final int WIDTH = 166;
     public static final int HEIGHT = 65;
-
     public static final int SIDE = 164;
     public static final int TEXT = 0xFF404040;
 

@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.machine.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKKeyPad;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.interfaces.IToolable;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKKeyPad;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

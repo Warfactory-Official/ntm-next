@@ -26,7 +26,6 @@ public abstract class EntityThrowableInterp extends EntityThrowableNT {
         if (!this.level().isClientSide()) {
             super.tick();
         } else {
-
             this.interpolation.interpolate();
             this.baseTick();
         }

@@ -3,18 +3,18 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntitySteamEngine;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.inventory.fluid.NTMFluidProperties;
-import com.hbm.tileentity.machine.BlockEntitySteamEngine;
-import com.hbm.util.I18nUtil;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -42,7 +42,6 @@ public class MachineSteamEngine extends BlockMultiblockCore
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-
         return RenderShape.MODEL;
     }
 
@@ -103,7 +102,10 @@ public class MachineSteamEngine extends BlockMultiblockCore
                         + " / "
                         + String.format(Locale.US, "%,d", engine.tanks[1].getMaxFill())
                         + "mB");
-        info.title(I18nUtil.resolveKey(getDescriptionId()), 0xffff00, 0x404000);
+        info.title(
+                Component.empty().append(Component.translatable(getDescriptionId())),
+                0xffff00,
+                0x404000);
     }
 
     @Override

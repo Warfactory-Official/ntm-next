@@ -7,7 +7,7 @@ import com.hbm.config.ConfigEntry.Domain;
 import com.hbm.config.ConfigEntry;
 import com.hbm.config.ConfigSchema;
 import com.hbm.config.ConfigStore;
-import com.hbm.platform.Services;
+import com.hbm.config.NeoForgeHbmConfig;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
@@ -39,13 +39,12 @@ public final class ConfigCommand {
     private ConfigCommand() {}
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-
         dispatcher.register(
                 tree(
                         "ntmserver",
                         Domain.RUNTIME,
                         "commands.hbm.config.serverVariables",
-                        () -> Services.CONFIG.runtime().store(),
+                        () -> NeoForgeHbmConfig.runtime().store(),
                         Commands.hasPermission(Commands.LEVEL_ADMINS),
                         CommandSourceStack::sendSuccess));
     }
@@ -56,7 +55,7 @@ public final class ConfigCommand {
                         "ntmclient",
                         Domain.CLIENT,
                         "commands.hbm.config.clientVariables",
-                        Services.CONFIG::clientStore,
+                        () -> NeoForgeHbmConfig.STORE,
                         source -> true,
                         feedback));
     }
@@ -70,7 +69,6 @@ public final class ConfigCommand {
             Feedback<S> feedback) {
         LiteralArgumentBuilder<S> get = LiteralArgumentBuilder.literal("get");
         LiteralArgumentBuilder<S> set = LiteralArgumentBuilder.literal("set");
-
         Map<String, LiteralArgumentBuilder<S>> gets = new LinkedHashMap<>();
         Map<String, LiteralArgumentBuilder<S>> sets = new LinkedHashMap<>();
         for (ConfigEntry<?> entry : ConfigSchema.of(domain)) {
@@ -157,7 +155,7 @@ public final class ConfigCommand {
     @SuppressWarnings("unchecked")
     private static <S> int apply(
             CommandContext<S> ctx, ConfigEntry<?> entry, Object value, Feedback<S> feedback) {
-        Services.CONFIG.set((ConfigEntry<Object>) entry, value);
+        NeoForgeHbmConfig.set((ConfigEntry<Object>) entry, value);
         feedback.send(
                 ctx.getSource(),
                 () ->
@@ -185,7 +183,7 @@ public final class ConfigCommand {
     }
 
     private static <S> int reload(S source, Feedback<S> feedback) {
-        Services.CONFIG.reload();
+        NeoForgeHbmConfig.reload();
         feedback.send(
                 source,
                 () ->

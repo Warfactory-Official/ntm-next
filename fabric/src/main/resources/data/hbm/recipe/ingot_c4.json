@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
     {
       "fabric:type": "hbm:fluid_content",
@@ -9,6 +9,11 @@
     "#c:dusts/saltpeter",
     "#hbm:tools/chemistry_set"
   ],
+  "input_state": {
+    "2": {
+      "preserve": "remainder"
+    }
+  },
   "result": {
     "count": 4,
     "id": "hbm:ingot_c4"

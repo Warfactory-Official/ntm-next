@@ -6,7 +6,6 @@ package com.hbm.interfaces.injected;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 public interface IBufferBuilderExtension {
-
     void hbm$ribbon(
             float hx,
             float hy,

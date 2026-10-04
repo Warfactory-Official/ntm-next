@@ -3,11 +3,13 @@
 
 package com.hbm.lib.internal;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import jdk.internal.misc.Unsafe;
 
 public final class UnsafeHolder {
     public static final Unsafe U = UnsafeBootstrap.U;
+    public static final MethodHandles.Lookup IMPL_LOOKUP = UnsafeBootstrap.IMPL_LOOKUP;
 
     public static final long IA_BASE = U.arrayBaseOffset(int[].class);
     public static final int IA_SHIFT = arrayShift(int[].class);

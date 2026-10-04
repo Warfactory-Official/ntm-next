@@ -6,11 +6,11 @@ package com.hbm.client.render;
 import com.hbm.animloader.AnimatedModel;
 import com.hbm.animloader.Animation;
 import com.hbm.animloader.AnimationWrapper;
+import com.hbm.blockentity.BlockEntityDoorGeneric;
+import com.hbm.blockentity.DoorDecl;
 import com.hbm.render.anim.HbmAnimations;
 import com.hbm.render.loader.GroupObject;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.BlockEntityDoorGeneric;
-import com.hbm.tileentity.DoorDecl;
 import com.hbm.util.Facing;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
@@ -39,9 +39,7 @@ public final class DoorState implements AnimatedModel.NodeVisitor {
     public byte doorState;
     public long animStartTime;
     public HbmAnimations.@Nullable Animation animation;
-
     public long animMillis;
-
     private @Nullable AnimationWrapper wrapper;
     private @Nullable Identifier nodeTexture;
 
@@ -64,7 +62,6 @@ public final class DoorState implements AnimatedModel.NodeVisitor {
                 accumulate(probe.emit(), box);
             }
         }
-
         for (byte resting : RESTING) {
             probe.doorState = resting;
             probe.animation = null;
@@ -127,9 +124,7 @@ public final class DoorState implements AnimatedModel.NodeVisitor {
         animation = door.currentAnimation;
         animStartTime = door.animStartTime;
         facing = door.facing();
-
         animMillis = door.getLevel().getGameTime() * 50L + (long) (partialTicks * 50F);
-
         openTicks =
                 switch (door.state) {
                     case BlockEntityDoorGeneric.STATE_OPENING ->

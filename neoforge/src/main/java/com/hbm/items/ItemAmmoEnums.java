@@ -4,7 +4,6 @@
 package com.hbm.items;
 
 public class ItemAmmoEnums {
-
     public enum Ammo240Shell {
         STOCK,
         EXPLOSIVE,

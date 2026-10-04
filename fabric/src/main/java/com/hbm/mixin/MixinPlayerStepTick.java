@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Player.class)
 public abstract class MixinPlayerStepTick {
-
     @Inject(method = "tick", at = @At("HEAD"))
     private void hbm$stepTick(CallbackInfo ci) {
         Player player = (Player) (Object) this;

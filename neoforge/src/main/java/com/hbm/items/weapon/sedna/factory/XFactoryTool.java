@@ -22,7 +22,7 @@ import com.hbm.items.weapon.sedna.impl.ItemGunChargeThrower;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
 import com.hbm.lib.Library;
 import com.hbm.particle.helper.ExplosionCreator;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.Reg;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
@@ -66,7 +66,6 @@ public class XFactoryTool {
 
     private static boolean extinguishCore(Level world, BlockPos pos, EnumExtinguishType type) {
         if (!(world instanceof ServerLevel server)) return false;
-
         BlockState state = server.getBlockState(pos);
         if (!(MultiblockSurface.resolveOwner(server, pos, state, null)
                 instanceof IRepairable repairable)) {
@@ -149,7 +148,6 @@ public class XFactoryTool {
                                     fizz = true;
                                 }
                             }
-
                     if (extinguishCore(world, hitPos, EnumExtinguishType.FOAM)) return;
                     BlockPos target = hitPos;
                     if (world.getRandom().nextBoolean()) {
@@ -162,7 +160,6 @@ public class XFactoryTool {
                             world.setBlockAndUpdate(target, layer);
                         } else {
                             int layers = state.getValue(SnowLayerBlock.LAYERS);
-
                             if (layers < 7)
                                 world.setBlockAndUpdate(
                                         target, state.setValue(SnowLayerBlock.LAYERS, layers + 1));
@@ -205,7 +202,6 @@ public class XFactoryTool {
                 if (!bullet.level().isClientSide() && mop instanceof BlockHitResult blockHit) {
                     Level world = bullet.level();
                     BlockPos target = blockHit.getBlockPos();
-
                     if (extinguishCore(world, target, EnumExtinguishType.SAND)) return;
                     if (world.getRandom().nextBoolean()) {
                         target = target.relative(blockHit.getDirection());
@@ -313,7 +309,6 @@ public class XFactoryTool {
                         new ExplosionVNT(
                                 bullet.level(), hit.x, hit.y, hit.z, 15, bullet.getThrower());
                 vnt.setBlockAllocator(new BlockAllocatorStandard());
-
                 vnt.setBlockProcessor(
                         new BlockProcessorStandard()
                                 .setNoDrop()
@@ -399,7 +394,7 @@ public class XFactoryTool {
                 return null;
             };
 
-    public static void init(IRegistrar r) {
+    public static void init() {
 
         ModItems.AMMO_FIREEXT =
                 Reg.family(
@@ -530,7 +525,7 @@ public class XFactoryTool {
                         Item.Properties::new);
 
         ModItems.GUN_CHARGE_THROWER =
-                r.registerItem(
+                NeoForgeRegistrar.registerItem(
                         "gun_charge_thrower",
                         props ->
                                 (ItemGunChargeThrower)

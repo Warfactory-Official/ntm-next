@@ -3,10 +3,10 @@
 
 package com.hbm.entity.projectile;
 
+import com.hbm.blockentity.machine.rbmk.RBMKConfig;
 import com.hbm.entity.ModEntities;
 import com.hbm.items.ModItems;
 import com.hbm.potion.HbmPotion;
-import com.hbm.tileentity.machine.rbmk.RBMKConfig;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;

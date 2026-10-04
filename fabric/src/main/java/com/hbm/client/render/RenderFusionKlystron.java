@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionKlystron;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionKlystron;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -27,7 +27,6 @@ public class RenderFusionKlystron
     private static final int ROTOR = ResourceManager.fusion_klystron.partId("Rotor");
 
     private final HFRWavefrontObject model = ResourceManager.fusion_klystron;
-
     private final RenderType baseType =
             RenderTypes.entityCutoutCull(ResourceManager.fusion_klystron_tex);
 
@@ -42,7 +41,6 @@ public class RenderFusionKlystron
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
         ps.mulPose(Axis.YP.rotationDegrees(yaw));
-
         ps.translate(-1.0, 0.0, 0.0);
 
         ps.translate(0.0, 2.5, 0.0);

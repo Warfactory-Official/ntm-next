@@ -4,20 +4,18 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.BlockEntityMachineChemicalPlant;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.inventory.slot.SlotUpgrade;
-import com.hbm.items.machine.IFluidContainerItem;
+import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBlueprints;
-import com.hbm.items.machine.ItemFluidContainerInfinite;
 import com.hbm.items.machine.upgrade.ItemMachineUpgrade;
-import com.hbm.tileentity.machine.BlockEntityMachineChemicalPlant;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 public class MenuMachineChemicalPlant extends BlockEntityMenu<BlockEntityMachineChemicalPlant> {
 
@@ -51,8 +49,9 @@ public class MenuMachineChemicalPlant extends BlockEntityMenu<BlockEntityMachine
                         BlockEntityMachineChemicalPlant.SLOT_BATTERY,
                         152,
                         81,
-                        IBatteryItem::isBattery));
-
+                        stack ->
+                                IBatteryItem.isBattery(stack)
+                                        || stack.is(ModItems.METEORITE_SWORD_MACHINED.get())));
         addSlot(
                 new SlotFiltered(
                         container,
@@ -77,6 +76,8 @@ public class MenuMachineChemicalPlant extends BlockEntityMenu<BlockEntityMachine
                             BlockEntityMachineChemicalPlant.SLOT_ITEM_IN_START + i,
                             8 + i * 18,
                             99));
+        }
+        for (int i = 0; i < BlockEntityMachineChemicalPlant.TANK_COUNT; i++) {
             addSlot(
                     new SlotRecipeOutput(
                             playerInv.player,

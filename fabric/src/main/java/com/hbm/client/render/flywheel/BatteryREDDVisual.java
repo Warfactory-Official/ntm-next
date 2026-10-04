@@ -3,11 +3,11 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.storage.BlockEntityBatteryREDD;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
-import com.hbm.tileentity.machine.storage.BlockEntityBatteryREDD;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
@@ -132,7 +132,6 @@ public final class BatteryREDDVisual extends HbmDynamicBlockEntityVisual<BlockEn
             double z = corner < 2 ? 3.75D : -3.75D;
             zapSkeletons[corner] = new Vec3(-x / 3.125D * 1.375D, -2.625D, z);
         }
-
         bodyBounds = LightBounds.of(MODEL, "Base", basePose, pos);
         wheel =
                 instancerProvider()

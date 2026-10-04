@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityGeysir;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.tileentity.BlockEntityGeysir;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.jspecify.annotations.Nullable;
 
 public class BlockGeysir extends Block implements ITickingBlock {
-
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     public static final MapCodec<BlockGeysir> CODEC = simpleCodec(BlockGeysir::new);
@@ -46,7 +45,6 @@ public class BlockGeysir extends Block implements ITickingBlock {
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
-
         if (this != ModBlocks.GEYSIR_NETHER.get()) return;
         level.addParticle(
                 ParticleTypes.FLAME,

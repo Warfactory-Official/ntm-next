@@ -22,7 +22,6 @@ public class BlockTaintBarrel extends BlockBarrelExplosive {
     private static final int SPREAD = 4;
 
     public BlockTaintBarrel(BlockBehaviour.Properties props) {
-
         super(props, 100, false);
     }
 
@@ -36,13 +35,11 @@ public class BlockTaintBarrel extends BlockBarrelExplosive {
         RandomSource rand = server.getRandom();
         BlockState taint = ModBlocks.TAINT.get().defaultBlockState();
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
-
         for (int i = 0; i < SPLASHES; i++) {
             cursor.set(
                     centre.getX() + rand.nextInt(9) - SPREAD,
                     centre.getY() + rand.nextInt(9) - SPREAD,
                     centre.getZ() + rand.nextInt(9) - SPREAD);
-
             if (!server.getBlockState(cursor).isSolidRender()) continue;
             server.setBlock(
                     cursor,

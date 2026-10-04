@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityCoreEmitter;
 import com.hbm.inventory.container.MenuCoreEmitter;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityCoreEmitter;
 import com.hbm.util.BobMathUtil;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
@@ -62,7 +62,7 @@ public class ScreenCoreEmitter extends ScreenInfoContainer<MenuCoreEmitter> {
                 data.putBoolean("toggle", true);
             }
             if (!data.isEmpty()) {
-                Services.NETWORK.sendToServer(
+                PacketWire.sendToServer(
                         new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
                 playClick();
                 return true;

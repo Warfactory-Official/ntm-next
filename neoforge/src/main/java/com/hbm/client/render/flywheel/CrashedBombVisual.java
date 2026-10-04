@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.bomb.BlockEntityCrashedBomb;
 import com.hbm.blocks.bomb.BlockCrashedBomb;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.bomb.TileEntityCrashedBomb;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
@@ -19,7 +19,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 
-public final class CrashedBombVisual extends HbmBlockEntityVisual<TileEntityCrashedBomb>
+public final class CrashedBombVisual extends HbmBlockEntityVisual<BlockEntityCrashedBomb>
         implements ShaderLightVisual {
     private static final MeshPart[][] DUD_PARTS = {
         parts(ResourceManager.dud_balefire, ResourceManager.dud_balefire_tex),
@@ -30,7 +30,7 @@ public final class CrashedBombVisual extends HbmBlockEntityVisual<TileEntityCras
     private final TransformedInstance[] parts;
 
     public CrashedBombVisual(
-            VisualizationContext context, TileEntityCrashedBomb blockEntity, float partialTick) {
+            VisualizationContext context, BlockEntityCrashedBomb blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         var type = ((BlockCrashedBomb) blockState.getBlock()).type;
         var random = new Random((pos.getY() + pos.getZ() * 27644437) * 27644437 + pos.getX());

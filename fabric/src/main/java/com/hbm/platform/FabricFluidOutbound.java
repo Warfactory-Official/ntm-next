@@ -31,15 +31,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
-final class FabricFluidOutbound {
+public final class FabricFluidOutbound {
 
     private static final long DROPLETS_PER_MB = 81L;
 
     private FabricFluidOutbound() {}
 
-    static void register(FabricCapabilityService caps, List<Supplier<? extends Block>> blocks) {
+    public static void register(List<Supplier<? extends Block>> blocks) {
         if (blocks.isEmpty()) return;
-        caps.registerForBlocks(
+        FabricCaps.registerForBlocks(
                 FluidStorage.SIDED,
                 (level, pos, state, be, side) -> faceAt(level, pos, side),
                 blocks.stream().map(Supplier::get).toArray(Block[]::new));
@@ -50,9 +50,7 @@ final class FabricFluidOutbound {
         if (side == null) return null;
         IFluidHandlerMK2 machine = resolve(FluidCaps.RECEIVER, level, pos, side, null);
         if (machine == null) machine = resolve(FluidCaps.PROVIDER, level, pos, side, null);
-
         if (!(machine instanceof BlockEntity owner)) return null;
-
         if (ForeignFluidStaging.tanksOf(machine).length == 0) return null;
         return Staging.of(owner, machine).face(pos, side);
     }
@@ -63,7 +61,7 @@ final class FabricFluidOutbound {
             BlockPos pos,
             Direction side,
             @Nullable Fluid fluid) {
-        return Services.CAPS.find(token, level, pos, FluidFace.of(side, fluid));
+        return FabricCaps.find(token, level, pos, FluidFace.of(side, fluid));
     }
 
     private static final class Staging extends SnapshotParticipant<ForeignFluidStaging.Saved> {
@@ -82,7 +80,6 @@ final class FabricFluidOutbound {
         }
 
         static synchronized Staging of(BlockEntity be, IFluidHandlerMK2 machine) {
-
             WeakReference<Staging> ref = ALL.get(be);
             Staging staging = ref == null ? null : ref.get();
             if (staging == null || staging.staging.tanks() != machine.getAllTanks().length) {
@@ -95,7 +92,6 @@ final class FabricFluidOutbound {
         }
 
         Face face(BlockPos pos, Direction side) {
-
             return faces.computeIfAbsent(side, s -> new Face(this, pos.immutable(), s));
         }
 

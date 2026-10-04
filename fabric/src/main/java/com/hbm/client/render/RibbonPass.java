@@ -3,11 +3,12 @@
 
 package com.hbm.client.render;
 
-import com.hbm.platform.Services;
+import net.fabricmc.loader.api.FabricLoader;
+import net.irisshaders.iris.api.v0.IrisApi;
 import net.irisshaders.iris.shadows.ShadowRenderingState;
 
 public final class RibbonPass {
-    private static final boolean IRIS = Services.PLATFORM.isModLoaded("iris");
+    private static final boolean IRIS = FabricLoader.getInstance().isModLoaded("iris");
 
     private RibbonPass() {}
 
@@ -15,9 +16,17 @@ public final class RibbonPass {
         return IRIS && IrisShadow.active();
     }
 
+    public static boolean hasShaderPack() {
+        return IRIS && IrisShadow.hasShaderPack();
+    }
+
     private static final class IrisShadow {
         private static boolean active() {
             return ShadowRenderingState.areShadowsCurrentlyBeingRendered();
+        }
+
+        private static boolean hasShaderPack() {
+            return IrisApi.getInstance().isShaderPackInUse();
         }
     }
 }

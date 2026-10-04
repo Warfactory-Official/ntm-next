@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.blockentity.network.BlockEntitySubstation;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.tileentity.network.BlockEntitySubstation;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

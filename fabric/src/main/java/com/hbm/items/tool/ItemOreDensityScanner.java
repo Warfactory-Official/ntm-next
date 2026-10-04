@@ -6,8 +6,8 @@ package com.hbm.items.tool;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.items.special.ItemBedrockOreNew.BedrockOreType;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.OreDensityPayload;
-import com.hbm.platform.Services;
 import com.hbm.world.NtmWorldgenFields;
 import com.hbm.world.feature.BedrockOreFeature;
 import com.hbm.world.feature.BedrockOreField;
@@ -24,7 +24,6 @@ import net.minecraft.world.level.material.Fluids;
 import org.jspecify.annotations.Nullable;
 
 public class ItemOreDensityScanner extends Item {
-
     private static final int FIRST_ID = 777;
     private static final int LIFETIME = 4000;
     private static final int CADENCE = 5;
@@ -47,7 +46,6 @@ public class ItemOreDensityScanner extends Item {
         if (density <= 0.1D) return ChatFormatting.DARK_RED;
         if (density <= 0.35D) return ChatFormatting.RED;
         if (density <= 0.75D) return ChatFormatting.GOLD;
-
         if (density > 2D) return ChatFormatting.LIGHT_PURPLE;
         if (density >= 1.9D) return ChatFormatting.AQUA;
         if (density >= 1.65D) return ChatFormatting.BLUE;
@@ -91,7 +89,7 @@ public class ItemOreDensityScanner extends Item {
             summary.append(Component.literal(" - " + acid.amount() + "mB "))
                     .append(NTMFluidProperties.getDisplayName(acid.type()));
         }
-        Services.NETWORK.sendTo(
+        PacketWire.sendTo(
                 new OreDensityPayload(
                         row(BedrockOreType.LIGHT_METAL, lightMetal),
                         row(BedrockOreType.HEAVY_METAL, heavyMetal),

@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineSolderingStation;
 import com.hbm.inventory.container.MenuMachineSolderingStation;
 import com.hbm.items.machine.upgrade.UpgradeType;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineSolderingStation;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -194,7 +194,7 @@ public class ScreenMachineSolderingStation
             if (pos != null) {
                 CompoundTag data = new CompoundTag();
                 data.putBoolean("collision", true);
-                Services.NETWORK.sendToServer(new NbtControlPayload(pos, data));
+                PacketWire.sendToServer(new NbtControlPayload(pos, data));
                 playClick();
                 return true;
             }

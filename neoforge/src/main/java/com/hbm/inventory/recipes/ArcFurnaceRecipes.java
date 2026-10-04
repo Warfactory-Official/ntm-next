@@ -12,19 +12,13 @@ import com.hbm.inventory.material.NTMMaterial.SmeltingBehavior;
 import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.inventory.recipes.ingredient.CountIngredient;
 import com.hbm.inventory.recipes.ingredient.HbmNarrowedIngredient;
+import com.hbm.inventory.recipes.ingredient.RecipeInputState;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.inventory.recipes.loader.RecipeSource;
+import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.ItemScraps;
 import com.hbm.lib.Library;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentPatch;
@@ -37,13 +31,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.item.crafting.*;
 import org.jspecify.annotations.Nullable;
 
 public class ArcFurnaceRecipes extends GenericRecipes<ArcFurnaceRecipe, ArcFurnaceRecipes.Derived> {
@@ -130,6 +118,11 @@ public class ArcFurnaceRecipes extends GenericRecipes<ArcFurnaceRecipe, ArcFurna
         return false;
     }
 
+    public static Derived derive(
+            List<ArcFurnaceRecipe> authored, Collection<RecipeHolder<?>> loaded) {
+        return new Builder(authored).build(loaded);
+    }
+
     @Override
     protected String registryName() {
         return "arc_furnace";
@@ -146,16 +139,12 @@ public class ArcFurnaceRecipes extends GenericRecipes<ArcFurnaceRecipe, ArcFurna
         return derive(rows, RecipeSource.recipes());
     }
 
-    public static Derived derive(
-            List<ArcFurnaceRecipe> authored, Collection<RecipeHolder<?>> loaded) {
-        return new Builder(authored).build(loaded);
-    }
-
     public @Nullable ArcFurnaceRecipe getOutput(ItemStack stack, boolean liquid) {
         if (stack.isEmpty()) return null;
 
         MaterialStack scrap = ItemScraps.getMats(stack);
         if (scrap != null && liquid) {
+            if (!RecipeInputState.only(stack, ModDataComponents.SCRAP.get())) return null;
             if (scrap.material.smeltable != SmeltingBehavior.SMELTABLE) return null;
             return new ArcFurnaceRecipe("arc.scraps").outputMaterials(scrap);
         }
@@ -173,21 +162,16 @@ public class ArcFurnaceRecipes extends GenericRecipes<ArcFurnaceRecipe, ArcFurna
     }
 
     private static final class Occupied {
-
-        private final Set<Item> anyComponents = new HashSet<>();
         private final Map<Item, Set<DataComponentPatch>> patches = new HashMap<>();
 
-        boolean overlaps(ItemStack stack, boolean any) {
-            if (anyComponents.contains(stack.getItem())) return true;
+        boolean overlaps(ItemStack stack) {
             Set<DataComponentPatch> held = patches.get(stack.getItem());
-            return held != null && (any || held.contains(stack.getComponentsPatch()));
+            return held != null && held.contains(stack.getComponentsPatch());
         }
 
-        void add(ItemStack stack, boolean any) {
-            if (any) anyComponents.add(stack.getItem());
-            else
-                patches.computeIfAbsent(stack.getItem(), k -> new HashSet<>())
-                        .add(stack.getComponentsPatch());
+        void add(ItemStack stack) {
+            patches.computeIfAbsent(stack.getItem(), k -> new HashSet<>())
+                    .add(stack.getComponentsPatch());
         }
     }
 
@@ -222,15 +206,10 @@ public class ArcFurnaceRecipes extends GenericRecipes<ArcFurnaceRecipe, ArcFurna
             return id.getNamespace() + "/" + id.getPath();
         }
 
-        private static boolean anyComponents(ArcFurnaceRecipe recipe) {
-            return recipe.inputItem[0].ingredient().getCustomIngredient() == null;
-        }
-
         private void occupy(ArcFurnaceRecipe recipe, List<ItemStack> stacks) {
-            boolean any = anyComponents(recipe);
             for (ItemStack stack : stacks) {
-                if (recipe.solidOutput() != null) occupiedSolid.add(stack, any);
-                if (recipe.fluidOutput() != null) occupiedLiquid.add(stack, any);
+                if (recipe.solidOutput() != null) occupiedSolid.add(stack);
+                if (recipe.fluidOutput() != null) occupiedLiquid.add(stack);
             }
         }
 
@@ -238,10 +217,9 @@ public class ArcFurnaceRecipes extends GenericRecipes<ArcFurnaceRecipe, ArcFurna
             List<Holder<Item>> items = recipe.inputItem[0].ingredient().items().toList();
             if (items.isEmpty()) return;
             List<ItemStack> stacks = recipe.inputItem[0].displayStacks();
-            boolean any = anyComponents(recipe);
             for (ItemStack stack : stacks) {
-                if (recipe.solidOutput() != null && occupiedSolid.overlaps(stack, any)) return;
-                if (recipe.fluidOutput() != null && occupiedLiquid.overlaps(stack, any)) return;
+                if (recipe.solidOutput() != null && occupiedSolid.overlaps(stack)) return;
+                if (recipe.fluidOutput() != null && occupiedLiquid.overlaps(stack)) return;
             }
             occupy(recipe, stacks);
             rows.add(recipe);
@@ -327,7 +305,6 @@ public class ArcFurnaceRecipes extends GenericRecipes<ArcFurnaceRecipe, ArcFurna
                                     + "/"
                                     + segment(BuiltInRegistries.ITEM.getKey(input.value()));
                     ArcFurnaceRecipe recipe = new ArcFurnaceRecipe("arc." + path.replace('/', '.'));
-
                     Ingredient narrowed =
                             cooking.input().getCustomIngredient() == null
                                     ? Ingredient.of(input.value())

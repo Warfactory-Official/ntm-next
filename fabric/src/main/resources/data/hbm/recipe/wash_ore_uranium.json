@@ -5,11 +5,16 @@
       "name": "lbsm_simple_crafting"
     }
   ],
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
     "hbm:ore_uranium_scorched",
     "minecraft:water_bucket"
   ],
+  "input_state": {
+    "1": {
+      "preserve": "remainder"
+    }
+  },
   "result": {
     "id": "hbm:ore_uranium"
   }

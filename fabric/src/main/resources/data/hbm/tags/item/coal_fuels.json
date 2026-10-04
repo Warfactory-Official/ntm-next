@@ -1,0 +1,17 @@
+{
+  "values": [
+    {
+      "id": "#minecraft:coals",
+      "required": false
+    },
+    "#c:gems/coal",
+    "#c:dusts/coal",
+    {
+      "id": "#c:storage_blocks/coal",
+      "required": false
+    },
+    "hbm:coal_infernal",
+    "hbm:coal_eternal",
+    "hbm:crystal_coal"
+  ]
+}

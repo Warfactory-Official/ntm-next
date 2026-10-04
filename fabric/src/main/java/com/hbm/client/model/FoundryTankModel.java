@@ -24,7 +24,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Vector3f;
 
@@ -41,11 +40,10 @@ public class FoundryTankModel implements BlockStateModel {
     private final TextureSlots slots;
     private final Material.Baked particle;
     private final BlockStateModelPart fallback;
-
     private final Int2ObjectMap<BlockStateModelPart> cache = new Int2ObjectOpenHashMap<>();
 
     public FoundryTankModel(ModelBaker baker, ResolvedModel base) {
-        this.baker = baker;
+        this.baker = RuntimeBaker.capture(baker, base);
         this.base = base;
         this.slots = base.getTopTextureSlots();
         this.particle = base.resolveParticleMaterial(slots, baker);

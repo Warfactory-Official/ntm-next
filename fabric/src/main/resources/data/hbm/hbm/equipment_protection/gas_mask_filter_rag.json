@@ -1,0 +1,7 @@
+{
+  "filter": true,
+  "hazards": [
+    "particle_coarse"
+  ],
+  "targets": "hbm:gas_mask_filter_rag"
+}

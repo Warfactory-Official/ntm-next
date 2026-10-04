@@ -37,7 +37,6 @@ public class LargeOfficeCornerPiece extends NtmComponentPiece {
     }
 
     private LargeOfficeCornerPiece(BlockPos origin, Direction direction) {
-
         super(
                 HbmStructureTypes.NTM_LARGE_OFFICE_CORNER_PIECE.get(),
                 0,
@@ -109,7 +108,6 @@ public class LargeOfficeCornerPiece extends NtmComponentPiece {
     @Override
     protected void buildAfterTemplate(
             WorldGenLevel level, BoundingBox chunkBB, RandomSource random) {
-
         if (!chunkBB.isInside(this.getWorldPos(1, 9, 13))) return;
         if (random.nextInt(2) == 0) {
             this.generateLoreBook(level, chunkBB, 1, 9, 13, 7, LoreBooks.office(random));
@@ -322,7 +320,6 @@ public class LargeOfficeCornerPiece extends NtmComponentPiece {
                 out.block(9, 1, 8, darkOakStair(Direction.EAST, true));
                 out.block(9, 1, 5, oakStair(Direction.EAST, false));
                 out.block(9, 1, 4, flowerPot);
-
                 out.block(8, 2, 7, Blocks.POTTED_DEAD_BUSH.defaultBlockState());
 
                 out.block(6, 1, 12, oakStair(Direction.WEST, false));
@@ -414,7 +411,6 @@ public class LargeOfficeCornerPiece extends NtmComponentPiece {
                         10,
                         hbmState("deco_computer")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.SOUTH));
-
                 out.block(
                         6,
                         9,
@@ -457,10 +453,8 @@ public class LargeOfficeCornerPiece extends NtmComponentPiece {
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH),
                         ComponentLoot.OFFICE_TRASH_10,
                         1.0D);
-
                 out.container(2, 9, 13, cabinetNorth, ComponentLoot.FILING_CABINET_4);
                 out.container(3, 9, 13, cabinetNorth, ComponentLoot.FILING_CABINET_4);
-
                 out.lockedContainer(3, 10, 13, cabinetNorth, ComponentLoot.EXPENSIVE_8, 0.1D);
 
                 out.lootPile(6, 13, 11, LootGenerator.LOOT_CAPSTASH);

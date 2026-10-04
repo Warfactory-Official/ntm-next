@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineExposureChamber;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -10,7 +11,6 @@ import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.blocks.multiblock.MultiblockMaskTable;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.BlockEntityMachineExposureChamber;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -20,7 +20,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineExposureChamber extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         4, 0, 2, 2, 2, 2, 0, 0, 0,
         3, 0, 0, 0, -3, 8, 0, 0, 0,
@@ -36,7 +35,6 @@ public class MachineExposureChamber extends BlockMultiblockCore
     }
 
     private static final int[] DIMENSIONS = {4, 0, 2, 2, 2, 2};
-
     private static final int[] LINE = {3, 0, 0, 0, -3, 8};
     private static final int[] RAIL_NORTH = {0, 0, 1, -1, -3, 6};
     private static final int[] RAIL_SOUTH = {0, 0, -1, 1, -3, 6};

@@ -3,11 +3,11 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControl;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlAuto;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlManual;
+import com.hbm.blockentity.machine.rbmk.RBMKConfig;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControl;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControlAuto;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKControlManual;
-import com.hbm.tileentity.machine.rbmk.RBMKConfig;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
@@ -39,7 +39,6 @@ public final class RBMKControlRodVisual extends HbmDynamicBlockEntityVisual<Bloc
         super(context, blockEntity, partialTick);
         int segments = RBMKConfig.getColumnHeightRuleValue(blockEntity.getLevel());
         columnHeight = RBMKConfig.getColumnHeight(blockEntity.getLevel());
-
         bodyBounds = new AABB(pos).expandTowards(0, segments + .125D, 0).inflate(1);
         updateMovingParts(partialTick);
     }

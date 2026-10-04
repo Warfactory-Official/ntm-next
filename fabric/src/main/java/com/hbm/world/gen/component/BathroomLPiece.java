@@ -9,12 +9,10 @@ import com.hbm.world.gen.nbt.PieceGeometry;
 import com.hbm.world.gen.nbt.WeightedOption;
 import com.hbm.world.structure.HbmStructureTypes;
 import java.util.List;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.*;
@@ -84,7 +82,6 @@ public class BathroomLPiece extends NtmBranchingPiece {
                 BlockState steelWallNorth =
                         hbmState("steel_wall")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH);
-
                 BlockState concreteSmoothSlabTop =
                         hbmState("concrete_smooth_slab").setValue(SlabBlock.TYPE, SlabType.TOP);
 
@@ -144,7 +141,6 @@ public class BathroomLPiece extends NtmBranchingPiece {
                         9,
                         hbmState("steel_beam")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.SOUTH));
-
                 BlockState dryerFan = hbmState("fan").setValue(MachineFan.FACING, Direction.NORTH);
                 out.block(4, 2, 9, dryerFan);
                 out.block(
@@ -163,7 +159,6 @@ public class BathroomLPiece extends NtmBranchingPiece {
                         9,
                         hbmState("steel_beam")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.SOUTH));
-
                 out.block(6, 2, 9, dryerFan);
                 out.block(
                         7,
@@ -180,7 +175,6 @@ public class BathroomLPiece extends NtmBranchingPiece {
                     out.randomDoor(5, 1, i, hbmState("door_metal"), Direction.EAST, false);
                     out.box(5, 1, i + 1, 5, 2, i + 1, steelCornerNorth, steelCornerNorth);
                     out.box(6, 1, i + 1, 7, 2, i + 1, steelWallNorth, steelWallNorth);
-
                     out.block(
                             7,
                             1,

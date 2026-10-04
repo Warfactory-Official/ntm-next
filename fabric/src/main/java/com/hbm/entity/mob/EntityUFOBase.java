@@ -23,7 +23,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public abstract class EntityUFOBase extends Mob implements Enemy {
-
     private static final EntityDataAccessor<Integer> WAYPOINT_X =
             SynchedEntityData.defineId(EntityUFOBase.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> WAYPOINT_Y =

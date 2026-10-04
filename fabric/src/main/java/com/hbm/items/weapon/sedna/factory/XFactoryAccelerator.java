@@ -16,7 +16,7 @@ import com.hbm.items.weapon.sedna.impl.ItemGunNI4NI;
 import com.hbm.items.weapon.sedna.mags.MagazineBelt;
 import com.hbm.items.weapon.sedna.mags.MagazineInfinite;
 import com.hbm.items.weapon.sedna.mags.MagazineSingleReload;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -144,7 +144,6 @@ public class XFactoryAccelerator {
                 if (ItemGunNI4NI.getCoinCount(stack) > 0) {
                     Vec3 vec = player.getLookAngle().scale(0.8D);
                     EntityCoin coin = new EntityCoin(player.level());
-
                     coin.setPos(
                             player.getX(),
                             player.getY() + player.getEyeHeight() - 0.5 - 0.125,
@@ -326,7 +325,6 @@ public class XFactoryAccelerator {
             double dZ = entity.getZ() - vec.z * d;
 
             if (entity.level().isClientSide()) {
-
                 entity.level().addParticle(ParticleTypes.FIREWORK, dX, dY, dZ, 0, 0, 0);
             } else {
                 BlockPos pos = BlockPos.containing(dX, dY, dZ);
@@ -339,7 +337,7 @@ public class XFactoryAccelerator {
         }
     }
 
-    public static void init(IRegistrar r) {
+    public static void init() {
 
         tau_uranium =
                 new BulletConfig()
@@ -398,7 +396,7 @@ public class XFactoryAccelerator {
         tauChargeMag.addConfigs(tau_uranium_charge);
 
         ModItems.GUN_TAU =
-                r.registerItem(
+                FabricRegistrar.registerItem(
                         "gun_tau",
                         props ->
                                 new ItemGunBaseNT(
@@ -440,7 +438,7 @@ public class XFactoryAccelerator {
                         Item.Properties::new);
 
         ModItems.GUN_COILGUN =
-                r.registerItem(
+                FabricRegistrar.registerItem(
                         "gun_coilgun",
                         props ->
                                 new ItemGunBaseNT(
@@ -484,7 +482,7 @@ public class XFactoryAccelerator {
                         Item.Properties::new);
 
         ModItems.GUN_N_I_4_N_I =
-                r.registerItem(
+                FabricRegistrar.registerItem(
                         "gun_n_i_4_n_i",
                         props ->
                                 new ItemGunNI4NI(

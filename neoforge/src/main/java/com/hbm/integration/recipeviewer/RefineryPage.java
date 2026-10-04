@@ -13,7 +13,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 public final class RefineryPage extends TablePage<RefineryRecipe> {
-
     private static final int[][] OUTPUTS = {{111, 6}, {129, 15}, {111, 24}, {129, 33}};
     private static final int[] SOLID = {111, 42};
     private static final int BATCH = 1000;
@@ -45,7 +44,6 @@ public final class RefineryPage extends TablePage<RefineryRecipe> {
 
     @Override
     public void layout(RefineryRecipe recipe, PageLayout page) {
-
         page.input(48, 24).fluid(recipe.inputFluid[0], BATCH);
         for (int i = 0; i < recipe.outputFluid.length && i < OUTPUTS.length; i++) {
             FluidStackNTM output = recipe.outputFluid[i];
@@ -58,7 +56,6 @@ public final class RefineryPage extends TablePage<RefineryRecipe> {
     @Override
     public void draw(RefineryRecipe recipe, GuiGraphicsExtractor graphics) {
         RecipePanel.page(graphics, RecipePanel.REFINERY);
-
         RecipePanel.progress(graphics, RecipePanel.REFINERY, 3, 6, 0, 86, 16, 52, 480, 7);
         RecipePanel.progress(graphics, RecipePanel.REFINERY, 78, 24, 16, 86, 24, 17, 48, 0);
     }

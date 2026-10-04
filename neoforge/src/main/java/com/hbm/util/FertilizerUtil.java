@@ -3,7 +3,7 @@
 
 package com.hbm.util;
 
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgePlatform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.TriState;
@@ -24,7 +24,7 @@ public final class FertilizerUtil {
 
         BlockState state = level.getBlockState(pos);
 
-        TriState event = Services.PLATFORM.bonemealEvent(player, level, pos, state, stack);
+        TriState event = NeoForgePlatform.bonemealEvent(player, level, pos, state, stack);
         if (event != TriState.DEFAULT) return event == TriState.TRUE;
 
         if (!(state.getBlock() instanceof BonemealableBlock growable)) return false;

@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityFurnaceIron;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityFurnaceIron;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -38,7 +38,6 @@ public class RenderFurnaceIron
     public RenderFurnaceIron() {
         this.model = ResourceManager.furnace_iron;
         this.bodyType = RenderTypes.entityCutoutCull(ResourceManager.furnace_iron_tex);
-
         this.hotType = FlatCutout.of(ResourceManager.furnace_iron_tex);
     }
 
@@ -89,7 +88,6 @@ public class RenderFurnaceIron
     @Override
     public void submit(State s, PoseStack ps, SubmitNodeCollector col, CameraRenderState camera) {
         ps.pushPose();
-
         ps.translate(0.5, 0.0, 0.5);
         ps.mulPose(Axis.YP.rotationDegrees(ironYaw(s.facing)));
         ps.translate(-0.5, 0.0, -0.5);

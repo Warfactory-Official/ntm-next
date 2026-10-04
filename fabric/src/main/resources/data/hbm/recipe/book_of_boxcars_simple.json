@@ -5,7 +5,7 @@
       "name": "lbsm_simple_crafting"
     }
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "A": "minecraft:book",
     "B": "hbm:egg_balefire_shard",

@@ -3,12 +3,12 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityICF;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.BlockEntityICF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -21,7 +21,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class MachineICF extends BlockMultiblockCore implements ITickingBlock, ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         5, 0, 1, 1, 8, 8, 0, 0, 0,
         1, 1, -1, 2, 8, 8, 0, 3, 0,
@@ -34,7 +33,6 @@ public class MachineICF extends BlockMultiblockCore implements ITickingBlock, IC
     }
 
     private static final int[] DIMENSIONS = {5, 0, 1, 1, 8, 8};
-
     private static final int[] WING_A = {1, 1, -1, 2, 8, 8};
     private static final int[] WING_B = {1, 1, 2, -1, 8, 8};
 
@@ -74,7 +72,6 @@ public class MachineICF extends BlockMultiblockCore implements ITickingBlock, IC
         Direction rot = facing.getClockWise();
         visitor.cell(chimney(core), MASK_UP);
         for (int alongSign : new int[] {1, -1}) {
-
             int mask = alongSign > 0 ? MASK_SOUTH : MASK_NORTH;
             for (int sideSign : new int[] {1, -1}) {
                 visitor.cell(corner(core, facing, rot, alongSign, sideSign), mask);

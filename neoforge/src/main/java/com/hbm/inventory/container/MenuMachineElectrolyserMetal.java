@@ -4,9 +4,9 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.BlockEntityMachineElectrolyser;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.items.machine.upgrade.ItemMachineUpgrade;
-import com.hbm.tileentity.machine.BlockEntityMachineElectrolyser;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -48,7 +48,6 @@ public class MenuMachineElectrolyserMetal extends BlockEntityMenu<BlockEntityMac
                     if (IBatteryItem.isBattery(stack)) return moveItemStackTo(stack, 0, 1, false);
                     if (ItemMachineUpgrade.isUpgrade(stack))
                         return moveItemStackTo(stack, 1, 3, false);
-
                     return moveItemStackTo(
                             stack, CRYSTAL_CONTAINER_SLOT, CRYSTAL_CONTAINER_SLOT + 1, false);
                 });

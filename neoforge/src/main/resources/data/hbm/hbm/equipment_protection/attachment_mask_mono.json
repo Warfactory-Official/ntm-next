@@ -1,0 +1,9 @@
+{
+  "filter_exclusions": [
+    "gas_lung",
+    "gas_blistering",
+    "bacteria"
+  ],
+  "filter_tooltip_after_item": true,
+  "targets": "hbm:attachment_mask_mono"
+}

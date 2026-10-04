@@ -7,7 +7,6 @@ import com.hbm.advancement.BossKilledTrigger;
 import com.hbm.advancement.HbmCriteria;
 import com.hbm.entity.projectile.EntityBulletBaseMK4;
 import com.hbm.explosion.ExplosionNukeSmall;
-import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.factory.XFactoryNPC;
 import com.hbm.lib.ModDamageTypes;
@@ -18,7 +17,6 @@ import com.hbm.util.ContaminationUtil;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -49,8 +47,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class EntityUFO extends Mob implements Enemy, IRadiationImmune {
-
+public class EntityUFO extends Mob implements Enemy {
     private static final EntityDataAccessor<Boolean> BEAM =
             SynchedEntityData.defineId(EntityUFO.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> WAYPOINT_X =
@@ -80,7 +77,6 @@ public class EntityUFO extends Mob implements Enemy, IRadiationImmune {
         super(type, level);
         setNoGravity(true);
         this.xpReward = 500;
-
         this.deathTime = -30;
     }
 
@@ -300,7 +296,6 @@ public class EntityUFO extends Mob implements Enemy, IRadiationImmune {
                         heading.x,
                         heading.y,
                         heading.z);
-
         bullet.accel = 1F;
         level().addFreshEntity(bullet);
 
@@ -441,7 +436,6 @@ public class EntityUFO extends Mob implements Enemy, IRadiationImmune {
         }
 
         if (this.deathTime == 19 && level() instanceof ServerLevel server) {
-
             server.explode(
                     this, getX(), getY(), getZ(), 10F, true, Level.ExplosionInteraction.BLOCK);
             ExplosionNukeSmall.explode(

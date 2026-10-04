@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 public final class XFactoryWarhead {
-
     public static BulletConfig warhead_turbine;
 
     public static final float TURBINE_BLADE_DAMAGE = 125F;
@@ -17,7 +16,6 @@ public final class XFactoryWarhead {
     private XFactoryWarhead() {}
 
     public static void init() {
-
         warhead_turbine =
                 new BulletConfig()
                         .setVel(1F)
@@ -29,7 +27,6 @@ public final class XFactoryWarhead {
                         .setOnImpact(
                                 (blade, mop) -> {
                                     if (!(mop instanceof BlockHitResult hit)) return;
-
                                     BlockState state =
                                             blade.level().getBlockState(hit.getBlockPos());
                                     if (state.getDestroySpeed(blade.level(), hit.getBlockPos())

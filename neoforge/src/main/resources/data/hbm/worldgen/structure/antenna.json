@@ -33,6 +33,5 @@
     "minecraft:wooded_badlands"
   ],
   "spawn_overrides": {},
-  "step": "strongholds",
-  "terrain_adaptation": "beard_thin"
+  "step": "top_layer_modification"
 }

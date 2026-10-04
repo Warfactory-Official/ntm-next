@@ -3,8 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.turret.BlockEntityTurretArty;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.turret.BlockEntityTurretArty;
 import net.minecraft.util.Mth;
 
 public class RenderTurretArty extends RenderTurretBase<BlockEntityTurretArty> {

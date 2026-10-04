@@ -61,7 +61,6 @@ public class ItemModDefuser extends ItemArmorMod {
                             ? level.damageSources().mobAttack(entity)
                             : level.damageSources().magic();
             creeper.hurtServer(level, source, 1F);
-
             creeper.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 0, 200));
         }
         HbmLivingProps.setDefused(creeper, true);
@@ -82,6 +81,11 @@ public class ItemModDefuser extends ItemArmorMod {
                         .append(stack.getHoverName())
                         .append(" (Defuses creepers)")
                         .withStyle(ChatFormatting.YELLOW));
+    }
+
+    @Override
+    public boolean ticksServer() {
+        return true;
     }
 
     @Override

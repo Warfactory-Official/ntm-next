@@ -7,8 +7,8 @@ import com.hbm.config.InteractionConfig;
 import com.hbm.extprop.HbmPlayerProps;
 import com.hbm.lib.Library;
 import com.hbm.packet.IPayloadHandlerContext;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.threading.ThreadedPayload;
-import com.hbm.platform.Services;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -28,7 +28,7 @@ public final class CrateOpenHeldPayload extends ThreadedPayload {
     }
 
     public static void report() {
-        Services.NETWORK.sendToServer(new CrateOpenHeldPayload(InteractionConfig.crateOpensHeld));
+        PacketWire.sendToServer(new CrateOpenHeldPayload(InteractionConfig.crateOpensHeld));
     }
 
     private static CrateOpenHeldPayload decode(ByteBuf buf) {

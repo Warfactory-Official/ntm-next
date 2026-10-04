@@ -18,7 +18,6 @@ import org.jspecify.annotations.Nullable;
 public final class MultiblockCellShapes {
 
     public static final int PLAIN = -1;
-
     private static final Map<CellBuckets.Geometry, List<VoxelShape[]>> BY_ID = new HashMap<>();
     private static final Map<CellBuckets.Geometry, List<SoundType>> SOUND_BY_ID = new HashMap<>();
     private static final Map<CellBuckets.Geometry, List<@Nullable AABB>> CLIMB_BY_ID =
@@ -36,7 +35,6 @@ public final class MultiblockCellShapes {
     private MultiblockCellShapes() {}
 
     public static void bake(BlockMultiblockCore block) {
-
         CellBuckets.Geometry[] bucket = {null};
         boolean[] shaped = {false};
         Map<Long, Integer> ids = new HashMap<>();
@@ -272,7 +270,6 @@ public final class MultiblockCellShapes {
     }
 
     private static long key(Direction facing, int lx, int ly, int lz) {
-
         return ((long) facing.ordinal() << 48)
                 | ((long) (lx + 512) << 32)
                 | ((long) (ly + 512) << 16)

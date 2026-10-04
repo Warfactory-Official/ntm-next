@@ -3,7 +3,7 @@
 
 package com.hbm.blocks.machine;
 
-import com.hbm.tileentity.machine.BlockEntityFloodlightBeam;
+import com.hbm.blockentity.machine.BlockEntityFloodlightBeam;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

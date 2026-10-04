@@ -10,7 +10,7 @@ import com.hbm.inventory.fluid.trait.FT_Corrosive;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Amat;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.IFluidContainerItem;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -137,7 +137,8 @@ public class ItemPipette extends Item implements IFluidContainerItem {
             Consumer<Component> adder,
             TooltipFlag flag) {
         for (String key : variant.notes) {
-            for (String line : I18nUtil.loreLines(key)) adder.accept(Component.literal(line));
+            for (Component line : TooltipStyle.lines(Component.translatableWithFallback(key, "")))
+                adder.accept(line);
         }
         FluidStackNTM held = getContent(stack);
         adder.accept(

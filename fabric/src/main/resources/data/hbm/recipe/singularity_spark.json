@@ -1,5 +1,16 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
+  "input_state": {
+    "A": {
+      "preserve": "remainder"
+    },
+    "B": {
+      "preserve": "remainder"
+    },
+    "C": {
+      "preserve": "remainder"
+    }
+  },
   "key": {
     "A": "hbm:singularity_counter_resonant",
     "B": "hbm:singularity_super_heated",

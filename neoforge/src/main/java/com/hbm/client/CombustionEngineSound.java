@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.machine.BlockEntityMachineCombustionEngine;
+import com.hbm.blockentity.machine.BlockEntityMachineCombustionEngine;
 
 public final class CombustionEngineSound {
 

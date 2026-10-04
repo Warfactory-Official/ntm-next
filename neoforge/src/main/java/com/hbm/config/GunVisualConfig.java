@@ -4,11 +4,9 @@
 package com.hbm.config;
 
 public final class GunVisualConfig {
-
     public static volatile boolean modelFov = false;
     public static volatile boolean visualRecoil = true;
     public static volatile double animationSpeed = 1.0D;
-
     public static volatile boolean legacyAnimations = false;
 
     private GunVisualConfig() {}

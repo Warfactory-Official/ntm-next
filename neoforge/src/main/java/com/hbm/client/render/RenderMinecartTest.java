@@ -22,7 +22,6 @@ import net.minecraft.world.phys.Vec3;
 
 public class RenderMinecartTest extends TntMinecartRenderer
         implements ConcurrentRenderStateExtraction {
-
     public static final RenderType TYPE =
             RenderTypes.entityCutoutCull(ResourceManager.bomb_boy_tex);
 
@@ -40,7 +39,6 @@ public class RenderMinecartTest extends TntMinecartRenderer
             state.yRot += 180F;
             return;
         }
-
         state.frontPos = new Vec3(back.x, front.y, back.z);
         state.backPos = new Vec3(front.x, back.y, front.z);
     }
@@ -52,7 +50,6 @@ public class RenderMinecartTest extends TntMinecartRenderer
             PoseStack poseStack,
             SubmitNodeCollector collector,
             int lightCoords) {
-
         poseStack.mulPose(Axis.YP.rotationDegrees(-90F));
         poseStack.translate(0.5F, 0.5F, -0.5F);
         float fuse = state.fuseRemainingInTicks;
@@ -60,7 +57,6 @@ public class RenderMinecartTest extends TntMinecartRenderer
             float scale = 1F + TntRenderer.getSwellAmount(fuse);
             poseStack.scale(scale, scale, scale);
         }
-
         int overlay =
                 TntRenderer.isLit(fuse)
                         ? OverlayTexture.pack(OverlayTexture.u(1F), 10)

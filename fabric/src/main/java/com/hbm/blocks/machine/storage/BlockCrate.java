@@ -3,11 +3,14 @@
 
 package com.hbm.blocks.machine.storage;
 
+import com.hbm.blockentity.machine.storage.BlockEntityCrate;
+import com.hbm.blockentity.machine.storage.CrateType;
+import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.machine.BlockMachineBase;
+import com.hbm.capability.ICapabilityBlock;
+import com.hbm.capability.MachineCaps;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemLock;
-import com.hbm.tileentity.machine.storage.BlockEntityCrate;
-import com.hbm.tileentity.machine.storage.CrateType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -20,7 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
-public class BlockCrate extends BlockMachineBase {
+public class BlockCrate extends BlockMachineBase implements ICapabilityBlock {
 
     private final CrateType crateType;
 
@@ -31,6 +34,19 @@ public class BlockCrate extends BlockMachineBase {
 
     public CrateType crateType() {
         return crateType;
+    }
+
+    @Override
+    public MachineCaps caps() {
+        return MachineCaps.of(
+                        switch (crateType) {
+                            case IRON -> ModBlockEntities.CRATE_IRON;
+                            case STEEL -> ModBlockEntities.CRATE_STEEL;
+                            case DESH -> ModBlockEntities.CRATE_DESH;
+                            case TUNGSTEN -> ModBlockEntities.CRATE_HOT;
+                            case SAFE -> ModBlockEntities.SAFE;
+                        })
+                .items();
     }
 
     @Override
@@ -60,7 +76,6 @@ public class BlockCrate extends BlockMachineBase {
         if (!level.isClientSide()
                 && level.getBlockEntity(pos) instanceof BlockEntityCrate crate
                 && crate.canAccess(player)) {
-
             player.openMenu(crate);
             crate.releaseSpiders(player);
         }

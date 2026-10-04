@@ -1,5 +1,10 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
+  "input_state": {
+    "S": {
+      "preserve": "remainder"
+    }
+  },
   "key": {
     "B": "#c:ingots/cmbsteel",
     "C": "#c:ingots/schrabidate",

@@ -12,7 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 public final class DroneLinkerReadout {
-
     private static final int ID_DRONE = 4;
     private static final int MILLIS = 1_000;
 

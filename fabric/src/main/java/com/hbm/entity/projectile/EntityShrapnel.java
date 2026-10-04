@@ -30,15 +30,10 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class EntityShrapnel extends ThrowableProjectile {
-
     public static final int TRAIL_FLAME = 1;
-
     public static final int TRAIL_VOLCANO = 2;
-
     public static final int TRAIL_WATZ = 3;
-
     public static final int TRAIL_RAD_VOLCANO = 4;
-
     public static final int GRACE_TICKS = 5;
     private static final EntityDataAccessor<Byte> TRAIL =
             SynchedEntityData.defineId(EntityShrapnel.class, EntityDataSerializers.BYTE);
@@ -85,7 +80,6 @@ public class EntityShrapnel extends ThrowableProjectile {
             result.getEntity()
                     .hurtServer(server, damageSources().source(ModDamageTypes.SHRAPNEL), 15F);
         }
-
         fizz(null);
     }
 
@@ -99,7 +93,6 @@ public class EntityShrapnel extends ThrowableProjectile {
         if (!(level() instanceof ServerLevel server) || tickCount <= GRACE_TICKS) return;
 
         int trail = entityData.get(TRAIL);
-
         if (trail == TRAIL_VOLCANO || trail == TRAIL_RAD_VOLCANO) {
             if (hit != null) erupt(server, hit, trail == TRAIL_RAD_VOLCANO);
         } else if (trail == TRAIL_WATZ) {
@@ -146,7 +139,6 @@ public class EntityShrapnel extends ThrowableProjectile {
         }
 
         if (motionY > 0) {
-
             new ExplosionVNT(server, hit.getX() + 0.5, hit.getY() + 0.5, hit.getZ() + 0.5, 7)
                     .setBlockAllocator(new BlockAllocatorStandard())
                     .setBlockProcessor(

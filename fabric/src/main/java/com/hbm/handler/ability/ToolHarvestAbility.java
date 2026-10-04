@@ -11,7 +11,6 @@ import com.hbm.inventory.recipes.CrystallizerRecipes;
 import com.hbm.inventory.recipes.ShredderRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemToolAbility;
-import com.hbm.platform.Services;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
@@ -178,7 +177,6 @@ public enum ToolHarvestAbility implements BaseAbility, StringRepresentable {
             if (state.is(Blocks.REDSTONE_BLOCK)) mercury = dig.player().getRandom().nextInt(7) + 8;
 
             ItemToolAbility.harvest(dig, pos, mercury > 0);
-
             if (mercury > 0) {
                 ItemToolAbility.dropAtReference(
                         dig, new ItemStack(ModItems.NUGGET_MERCURY.get(), mercury));
@@ -205,17 +203,18 @@ public enum ToolHarvestAbility implements BaseAbility, StringRepresentable {
     private static ItemStack enchanted(
             ToolDig dig, ResourceKey<Enchantment> enchantment, int power) {
         ItemStack tool = dig.held().copy();
+        var holder =
+                dig.level()
+                        .registryAccess()
+                        .lookupOrThrow(Registries.ENCHANTMENT)
+                        .getOrThrow(enchantment);
         tool.update(
                 DataComponents.ENCHANTMENTS,
                 ItemEnchantments.EMPTY,
                 existing -> {
                     ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(existing);
-                    mutable.set(
-                            dig.level()
-                                    .registryAccess()
-                                    .lookupOrThrow(Registries.ENCHANTMENT)
-                                    .getOrThrow(enchantment),
-                            power);
+                    int applied = existing.getLevel(holder);
+                    mutable.set(holder, applied == power ? power + 1 : Math.max(applied, power));
                     return mutable.toImmutable();
                 });
         return tool;

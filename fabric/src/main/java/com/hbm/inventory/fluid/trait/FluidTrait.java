@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 
@@ -53,9 +54,9 @@ public abstract class FluidTrait {
         traitList.add(clazz);
     }
 
-    public void addInfo(List<String> info) {}
+    public void addInfo(List<Component> info) {}
 
-    public void addInfoHidden(List<String> info) {}
+    public void addInfoHidden(List<Component> info) {}
 
     public void onFluidRelease(
             Level level,

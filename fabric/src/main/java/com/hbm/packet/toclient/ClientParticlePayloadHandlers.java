@@ -225,7 +225,6 @@ final class ClientParticlePayloadHandlers {
         if (!(mc.level instanceof ClientLevel level)) return;
         if (!(level.getEntity(payload.entityId) instanceof LivingEntity entity)) return;
         RandomSource rand = level.getRandom();
-
         int count = payload.count / (mc.options.particles().get().ordinal() + 1);
 
         double x = entity.getX(), y = entity.getEyeY(), z = entity.getZ();
@@ -334,7 +333,6 @@ final class ClientParticlePayloadHandlers {
                             bone.part());
             fx.setInitialRotation(bone.yaw(), bone.pitch());
             if (payload.gib) {
-
                 if (skeletal) fx.makeGibKeepingTexture();
                 else fx.makeGib();
                 fx.setParticleSpeed(
@@ -468,7 +466,6 @@ final class ClientParticlePayloadHandlers {
         int count = Math.max(1, payload.count);
 
         if (payload.mode == SmokeShockPayload.MODE_BURST) {
-
             float angle = rand.nextInt(360) * Mth.DEG_TO_RAD;
             float step = Mth.TWO_PI / count;
             for (int i = 0; i < count; i++) {
@@ -497,7 +494,6 @@ final class ClientParticlePayloadHandlers {
             return;
         }
         if (payload.mode == SmokeShockPayload.MODE_FOAM) {
-
             for (int i = 0; i < count; i++) {
                 ParticleFoam fx = new ParticleFoam(level, payload.x, payload.y, payload.z);
                 fx.setLifetime(50);
@@ -507,7 +503,6 @@ final class ClientParticlePayloadHandlers {
             return;
         }
         if (payload.mode == SmokeShockPayload.MODE_SHOCK) {
-
             float angle = rand.nextInt(360) * Mth.DEG_TO_RAD;
             float step = Mth.TWO_PI / count;
             for (int i = 0; i < count; i++) {
@@ -518,7 +513,6 @@ final class ClientParticlePayloadHandlers {
                 angle += step;
             }
         } else {
-
             for (int i = 0; i < count; i++) {
                 ParticleExSmoke fx = new ParticleExSmoke(level, payload.x, payload.y, payload.z);
                 double mY = rand.nextGaussian() * (1 + (count / 100));
@@ -545,7 +539,6 @@ final class ClientParticlePayloadHandlers {
             mc.particleEngine.add(new ParticleMukeWave(level, x, y, z));
             mc.particleEngine.add(new ParticleMukeFlash(level, x, y, z, payload.balefire));
         } else {
-
             mc.particleEngine.add(new ParticleMukeWave(level, x, y, z));
 
             for (double d = 0.0D; d <= 1.6D; d += 0.1) {

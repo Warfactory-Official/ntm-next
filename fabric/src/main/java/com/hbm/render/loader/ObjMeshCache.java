@@ -50,7 +50,6 @@ public final class ObjMeshCache implements PreparableReloadListener {
 
     @Override
     public void prepareSharedState(SharedState currentReload) {
-
         caches = new IdentityHashMap<>();
     }
 

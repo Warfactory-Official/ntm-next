@@ -16,9 +16,9 @@ import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmoSecret;
 import com.hbm.items.weapon.sedna.mags.MagazineSingleReload;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.PlasmaBlastPayload;
-import com.hbm.platform.Services;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -60,7 +60,7 @@ public class XFactoryFolly {
                 if (beam.tickCount < 50) {
                     double spacing = 10;
                     double dist = beam.tickCount * spacing;
-                    Services.NETWORK.sendToAllAround(
+                    PacketWire.sendToAllAround(
                             new PlasmaBlastPayload(
                                     beam.getX() + dir.x * dist,
                                     beam.getY() + dir.y * dist,
@@ -98,7 +98,6 @@ public class XFactoryFolly {
                     for (int ix = x - 1; ix <= x + 1; ix++)
                         for (int iy = y - 1; iy <= y + 1; iy++)
                             for (int iz = z - 1; iz <= z + 1; iz++) {
-
                                 if (iy > server.getMinY() && iy < server.getMaxY())
                                     server.setBlockAndUpdate(
                                             new BlockPos(ix, iy, iz),
@@ -143,7 +142,6 @@ public class XFactoryFolly {
                         .addFreshEntity(
                                 EntityNukeExplosionMK5.statFac(
                                         bullet.level(), 100, hit.x, hit.y, hit.z));
-
                 EntityNukeTorex.statFac(bullet.level(), hit.x, hit.y, hit.z, 100);
             };
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_TOGGLE_AIM =
@@ -240,7 +238,7 @@ public class XFactoryFolly {
                 }
             };
 
-    public static void init(IRegistrar r) {
+    public static void init() {
 
         folly_sm =
                 new BulletConfig()
@@ -264,7 +262,7 @@ public class XFactoryFolly {
                         .setOnImpact(LAMBDA_NUKE_IMPACT);
 
         ModItems.GUN_FOLLY =
-                r.registerItem(
+                FabricRegistrar.registerItem(
                         "gun_folly",
                         props ->
                                 new ItemGunBaseNT(

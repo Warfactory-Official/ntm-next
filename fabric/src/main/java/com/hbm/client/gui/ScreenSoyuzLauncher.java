@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntitySoyuzLauncher;
 import com.hbm.inventory.container.MenuSoyuzLauncher;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntitySoyuzLauncher;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -165,7 +165,7 @@ public class ScreenSoyuzLauncher extends ScreenInfoContainer<MenuSoyuzLauncher> 
         playClick();
         CompoundTag data = new CompoundTag();
         data.putInt(key, value);
-        Services.NETWORK.sendToServer(new NbtControlPayload(launcher().getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(launcher().getBlockPos(), data));
         return true;
     }
 }

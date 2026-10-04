@@ -10,12 +10,10 @@ import com.hbm.handler.ArmorUtil;
 import com.hbm.handler.HazmatRegistry;
 import com.hbm.handler.radiation.RadiationSystemNT;
 import com.hbm.hazard.HazardSystem;
-import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.items.ModDataComponents;
 import com.hbm.potion.HbmPotion;
-import java.util.HashSet;
+import com.hbm.tags.HbmEntityTypeTags;
 import java.util.List;
-import java.util.Set;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -23,13 +21,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.cow.MushroomCow;
-import net.minecraft.world.entity.animal.equine.SkeletonHorse;
-import net.minecraft.world.entity.animal.equine.ZombieHorse;
 import net.minecraft.world.entity.animal.feline.Ocelot;
-import net.minecraft.world.entity.decoration.ArmorStand;
-import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
-import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -40,32 +32,13 @@ import net.minecraft.world.phys.Vec3;
 public final class ContaminationUtil {
 
     public static final float ACTIVATION_FLOOR = 0.0001F;
-
     private static final float DECONTAMINATION_FLOOR = 0.001F;
-
     private static final int ACTIVATION_SLOT_END = Inventory.INVENTORY_SIZE + 4;
-    private static final Set<Class<?>> immuneEntities = new HashSet<>();
-
-    static {
-        immuneEntities.add(MushroomCow.class);
-        immuneEntities.add(Zombie.class);
-
-        immuneEntities.add(AbstractSkeleton.class);
-        immuneEntities.add(Ocelot.class);
-        immuneEntities.add(IRadiationImmune.class);
-        immuneEntities.add(ZombieHorse.class);
-        immuneEntities.add(SkeletonHorse.class);
-        immuneEntities.add(ArmorStand.class);
-    }
 
     private ContaminationUtil() {}
 
     public static boolean isRadImmune(Entity e) {
-        Class<?> cls = e.getClass();
-        for (Class<?> c : immuneEntities) {
-            if (c.isAssignableFrom(cls)) return true;
-        }
-        return false;
+        return e.getType().builtInRegistryHolder().is(HbmEntityTypeTags.RADIATION_IMMUNE);
     }
 
     public static double getRads(Entity e) {
@@ -106,7 +79,6 @@ public final class ContaminationUtil {
         if (rad > 0F && HazardSystem.getRawRadsFromStack(stack) > 0D) return false;
 
         float next = prev * decay + rad / stack.getCount();
-
         float total = next * stack.getCount();
         if (total < ACTIVATION_FLOOR || (rad <= 0F && total < DECONTAMINATION_FLOOR)) {
             if (stored == null) return false;
@@ -121,7 +93,6 @@ public final class ContaminationUtil {
     public static void applyDigammaData(LivingEntity entity, double f) {
         if (entity == null) return;
         if (entity.level().isClientSide()) return;
-
         if (entity instanceof Ocelot || entity instanceof EntityDuck) return;
         if (entity instanceof Player player) {
             if (player.isSpectator() || player.isCreative()) return;
@@ -139,7 +110,6 @@ public final class ContaminationUtil {
 
     public static double getPlayerRads(LivingEntity entity) {
         double rads = HbmLivingProps.getRadBuf(entity);
-
         if (entity instanceof Player) {
             rads += HbmLivingProps.getNeutron(entity) * 20D / RadiationConfig.hazardRate;
         }
@@ -301,7 +271,6 @@ public final class ContaminationUtil {
             if (player.isCreative()
                     && cont != ContaminationType.NONE
                     && cont != ContaminationType.DIGAMMA2) {
-
                 if (hazard == HazardType.NEUTRON) HbmLivingProps.setNeutron(entity, amount);
                 return false;
             }

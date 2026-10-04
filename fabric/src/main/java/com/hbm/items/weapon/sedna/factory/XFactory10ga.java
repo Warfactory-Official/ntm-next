@@ -15,7 +15,7 @@ import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
 import com.hbm.particle.SpentCasing.CasingType;
 import com.hbm.particle.SpentCasing;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
@@ -207,7 +207,7 @@ public class XFactory10ga {
                 return null;
             };
 
-    public static void init(IRegistrar r) {
+    public static void init() {
 
         float buckshotSpread = 0.035F;
         g10 =
@@ -285,7 +285,7 @@ public class XFactory10ga {
                         .setOnImpact(LAMBDA_TINY_EXPLODE);
 
         ModItems.GUN_DOUBLE_BARREL =
-                r.registerItem(
+                FabricRegistrar.registerItem(
                         "gun_double_barrel",
                         props ->
                                 new ItemGunBaseNT(
@@ -336,7 +336,7 @@ public class XFactory10ga {
                         Item.Properties::new);
 
         ModItems.GUN_DOUBLE_BARREL_SACRED_DRAGON =
-                r.registerItem(
+                FabricRegistrar.registerItem(
                         "gun_double_barrel_sacred_dragon",
                         props ->
                                 new ItemGunBaseNT(
@@ -388,7 +388,7 @@ public class XFactory10ga {
                         Item.Properties::new);
 
         ModItems.GUN_AUTOSHOTGUN_HERETIC =
-                r.registerItem(
+                FabricRegistrar.registerItem(
                         "gun_autoshotgun_heretic",
                         props ->
                                 new ItemGunBaseNT(

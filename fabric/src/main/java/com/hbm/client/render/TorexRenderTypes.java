@@ -26,10 +26,13 @@ public final class TorexRenderTypes {
                             .withLocation("pipeline/ntm_torex_flash")
                             .withVertexShader(ParticleRenderTypes.LIGHTNING_NO_FOG)
                             .withFragmentShader(ParticleRenderTypes.LIGHTNING_NO_FOG)
+                            .withShaderDefine("ADDITIVE_EMISSION")
                             .withColorTargetState(new ColorTargetState(BlendFunction.LIGHTNING))
                             .withVertexBinding(0, DefaultVertexFormat.POSITION_COLOR)
                             .withPrimitiveTopology(PrimitiveTopology.QUADS)
-                            .withDepthStencilState(DepthStencilState.DEFAULT));
+                            .withDepthStencilState(
+                                    new DepthStencilState(
+                                            DepthStencilState.DEFAULT.depthTest(), false)));
     public static final RenderType FLASH =
             RenderType.create(
                     "ntm_torex_flash", RenderSetup.builder(FLASH_PIPELINE).createRenderSetup());
@@ -41,7 +44,6 @@ public final class TorexRenderTypes {
                     "ntm_torex_flare",
                     RenderSetup.builder(FLARE_PIPELINE)
                             .withTexture("Sampler0", FLARE_TEX)
-                            .useLightmap()
                             .createRenderSetup());
     private static final BlendFunction CLOUDLET_BLEND =
             new BlendFunction(
@@ -56,24 +58,30 @@ public final class TorexRenderTypes {
                     "ntm_torex_cloudlet",
                     RenderSetup.builder(CLOUDLET_PIPELINE)
                             .withTexture("Sampler0", CLOUDLET_TEX)
-                            .useLightmap()
                             .createRenderSetup());
 
     private TorexRenderTypes() {}
 
     private static RenderPipeline billboard(String location, BlendFunction blend, boolean cull) {
+        var builder = RenderPipeline.builder(ParticleRenderTypes.MATRICES_NO_FOG_SNIPPET);
+        if (blend == BlendFunction.LIGHTNING) builder.withShaderDefine("ADDITIVE_EMISSION");
         return WorldRenderPipeline.of(
-                RenderPipeline.builder(ParticleRenderTypes.MATRICES_NO_FOG_SNIPPET)
-                        .withLocation(location)
+                builder.withLocation(location)
                         .withVertexShader(ParticleRenderTypes.ENTITY_NO_FOG)
                         .withFragmentShader(ParticleRenderTypes.ENTITY_NO_FOG)
                         .withShaderDefine("NO_OVERLAY")
                         .withShaderDefine("NO_CARDINAL_LIGHTING")
-                        .withBindGroupLayout(BindGroupLayouts.SAMPLER0_SAMPLER2)
+                        .withShaderDefine("EMISSIVE")
+                        .withShaderDefine("DISCARD_ZERO_ALPHA")
+                        .withBindGroupLayout(BindGroupLayouts.SAMPLER0)
                         .withColorTargetState(new ColorTargetState(blend))
                         .withVertexBinding(0, DefaultVertexFormat.ENTITY)
                         .withPrimitiveTopology(PrimitiveTopology.QUADS)
-                        .withDepthStencilState(DepthStencilState.DEFAULT)
+                        .withDepthStencilState(
+                                blend == BlendFunction.LIGHTNING
+                                        ? new DepthStencilState(
+                                                DepthStencilState.DEFAULT.depthTest(), false)
+                                        : DepthStencilState.DEFAULT)
                         .withCull(cull));
     }
 }

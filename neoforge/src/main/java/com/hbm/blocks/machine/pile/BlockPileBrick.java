@@ -4,12 +4,12 @@
 
 package com.hbm.blocks.machine.pile;
 
+import com.hbm.blockentity.machine.pile.BlockEntityPileCore.PileOrientation;
+import com.hbm.blockentity.machine.pile.BlockEntityPileCore;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.pile.BlockPile.Role;
 import com.hbm.blocks.multiblock.AssembledMembers;
 import com.hbm.interfaces.IToolable;
-import com.hbm.tileentity.machine.pile.BlockEntityPileCore.PileOrientation;
-import com.hbm.tileentity.machine.pile.BlockEntityPileCore;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -55,7 +55,6 @@ public class BlockPileBrick extends Block implements IToolable {
             if (level.isClientSide()) return true;
 
             Direction dir = side.getOpposite();
-
             Direction dirLeft = dir.getCounterClockWise();
 
             int negHeight = 0;
@@ -98,7 +97,6 @@ public class BlockPileBrick extends Block implements IToolable {
             if (left + right + 1 < MIN_H_SIZE) {
                 PileError report = new PileError();
                 Component message = Component.translatable("marker.hbm.pile.width_low", MIN_H_SIZE);
-
                 report.add(pos.relative(dirLeft, left), message);
                 report.add(pos.relative(dirLeft, -right), message);
                 report.send(player);

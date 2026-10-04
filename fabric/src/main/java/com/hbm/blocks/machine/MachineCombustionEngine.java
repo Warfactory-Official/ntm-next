@@ -3,12 +3,12 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineCombustionEngine;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.BlockEntityMachineCombustionEngine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -17,7 +17,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineCombustionEngine extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
-
     private static final int[] DIMENSIONS = {1, 0, 1, 0, 3, 2};
 
     public MachineCombustionEngine(Properties props) {

@@ -16,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(EntityRenderDispatcher.class)
 public abstract class MixinEntityRenderDispatcher {
-
     @WrapWithCondition(
             method = "submit",
             at =

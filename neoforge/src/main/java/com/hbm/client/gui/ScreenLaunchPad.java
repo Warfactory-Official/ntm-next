@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.bomb.BlockEntityLaunchPadBase;
 import com.hbm.inventory.container.MenuLaunchPadBase;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemMissile;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPadBase;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -155,7 +155,6 @@ public class ScreenLaunchPad extends ScreenInfoContainer<MenuLaunchPadBase<?>> {
                 text = Component.translatable("desc.gui.launchPad.loading");
                 color = 0xFFFF8000;
             }
-
             case BlockEntityLaunchPadBase.STATE_READY -> {
                 scale = 0.8F;
                 text = Component.translatable("desc.gui.launchPad.ready");
@@ -231,6 +230,7 @@ public class ScreenLaunchPad extends ScreenInfoContainer<MenuLaunchPadBase<?>> {
                     item == null
                             ? null
                             : BlockEntityLaunchPadBase.createPreview(item, this.minecraft.level);
+            if (previewEntity != null) previewEntity.setId(-1);
         }
         if (previewEntity == null) return;
 

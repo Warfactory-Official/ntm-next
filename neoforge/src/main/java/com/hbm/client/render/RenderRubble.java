@@ -35,7 +35,6 @@ import org.joml.Vector3f;
 
 public class RenderRubble extends EntityRenderer<EntityRubble, RenderRubble.State>
         implements ConcurrentRenderStateExtraction {
-
     private static final Axis TUMBLE = Axis.of(new Vector3f(1F, 1F, 1F));
 
     private final ModelPart model = ModelRubble.createBodyLayer().bakeRoot();
@@ -43,7 +42,6 @@ public class RenderRubble extends EntityRenderer<EntityRubble, RenderRubble.Stat
 
     public RenderRubble(EntityRendererProvider.Context context) {
         super(context);
-
         this.shadowRadius = 0F;
     }
 

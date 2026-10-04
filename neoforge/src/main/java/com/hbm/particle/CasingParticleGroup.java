@@ -54,7 +54,6 @@ public class CasingParticleGroup extends ParticleGroup<ParticleSpentCasing> {
             in.scaleLift = casing.config.getScaleY() * 0.01F;
 
             if (casing.hasSmoke()) {
-
                 casing.dragSmokeNodes(pX, pY, pZ);
 
                 double timeAlpha = 1D - (double) casing.age() / (double) casing.maxSmokeGen();
@@ -67,12 +66,26 @@ public class CasingParticleGroup extends ParticleGroup<ParticleSpentCasing> {
                     smoke[i * 4 + 2] = (float) node.z;
                     smoke[i * 4 + 3] = (float) (node.alpha * timeAlpha);
                 }
-                in.smoke = smoke;
-
                 float scale = in.config.getScaleX() * 0.5F * ParticleSpentCasing.dScale;
                 Vec3 vec = new Vec3(scale, 0, 0).yRot((float) Math.toRadians(-playerYaw));
                 in.smokeVecX = (float) vec.x;
                 in.smokeVecZ = (float) vec.z;
+                if (casing.ownsVisual()) {
+                    casing.smokeFrame(
+                            new ParticleSpentCasing.SmokeFrame(
+                                    pX,
+                                    pY,
+                                    pZ,
+                                    in.heightQuarter,
+                                    in.smokeVecX,
+                                    in.smokeVecZ,
+                                    in.light,
+                                    smoke));
+                } else {
+                    in.smoke = smoke;
+                }
+            } else if (casing.ownsVisual()) {
+                casing.smokeFrame(null);
             }
 
             out.add(in);
@@ -86,7 +99,6 @@ public class CasingParticleGroup extends ParticleGroup<ParticleSpentCasing> {
         float yaw, pitch;
         SpentCasing config;
         int light;
-
         float[] smoke;
         float smokeVecX, smokeVecZ;
         float heightQuarter;
@@ -111,7 +123,6 @@ public class CasingParticleGroup extends ParticleGroup<ParticleSpentCasing> {
                 pose.scale(in.config.getScaleX(), in.config.getScaleY(), in.config.getScaleZ());
 
                 Instance fin = in;
-
                 collector.submitCustomGeometry(
                         pose,
                         RenderTypes.entityCutoutCull(ResourceManager.casings_tex),

@@ -38,13 +38,11 @@ public final class GroundHeightProcessor extends GravityProcessor {
             StructurePlaceSettings settings) {
         BlockPos pos = processedBlockInfo.pos();
         BoundingBox box = settings.getBoundingBox();
-
         if (box != null
                 && (pos.getX() < box.minX()
                         || pos.getX() > box.maxX()
                         || pos.getZ() < box.minZ()
                         || pos.getZ() > box.maxZ())) return processedBlockInfo;
-
         int y =
                 WorldgenHeight.ground(level, pos.getX(), pos.getZ())
                         + offset

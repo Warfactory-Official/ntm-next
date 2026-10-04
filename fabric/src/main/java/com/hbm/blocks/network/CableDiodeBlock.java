@@ -4,6 +4,8 @@
 package com.hbm.blocks.network;
 
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
+import com.hbm.blockentity.network.BlockEntityCableDiode;
+import com.hbm.blocks.CapabilityDependentShape;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
@@ -11,8 +13,6 @@ import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.interfaces.IToolable;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.network.BlockEntityCableDiode;
-import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.BobMathUtil;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
@@ -27,8 +27,10 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
-import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -42,7 +44,11 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class CableDiodeBlock extends Block
-        implements ITickingBlock, IToolable, ILookOverlay, ICapabilityBlock {
+        implements CapabilityDependentShape.Endpoint,
+                ITickingBlock,
+                IToolable,
+                ILookOverlay,
+                ICapabilityBlock {
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
     public static Consumer<BlockEntityCableDiode> OPEN_SCREEN = diode -> {};
@@ -134,7 +140,6 @@ public class CableDiodeBlock extends Block
             boolean movedByPiston) {
         super.neighborChanged(state, level, pos, block, orientation, movedByPiston);
         if (level instanceof ServerLevel sl) {
-            LevelNodeGraph.watchForeignNeighbours(sl, pos);
             Library.redrawArms(state, sl, pos);
         }
     }

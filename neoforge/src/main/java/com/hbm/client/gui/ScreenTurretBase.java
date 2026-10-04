@@ -3,16 +3,16 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.turret.BlockEntityTurretArty;
+import com.hbm.blockentity.turret.BlockEntityTurretBaseNT;
+import com.hbm.blockentity.turret.BlockEntityTurretFritz;
+import com.hbm.blockentity.turret.BlockEntityTurretHIMARS;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.inventory.container.MenuTurretBase;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.turret.BlockEntityTurretArty;
-import com.hbm.tileentity.turret.BlockEntityTurretBaseNT;
-import com.hbm.tileentity.turret.BlockEntityTurretFritz;
-import com.hbm.tileentity.turret.BlockEntityTurretHIMARS;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +31,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.jspecify.annotations.Nullable;
 
 public class ScreenTurretBase extends ScreenInfoContainer<MenuTurretBase> {
-
     private static final int ON_X = 115, ON_Y = 26;
     private static final int TOGGLE_X = 8, TOGGLE_Y = 30, TOGGLE = 10, TOGGLE_STEP = 14;
     private static final int POWER_X = 152, POWER_Y = 45, POWER_W = 16, POWER_H = 52;
@@ -63,8 +62,8 @@ public class ScreenTurretBase extends ScreenInfoContainer<MenuTurretBase> {
 
     public ScreenTurretBase(MenuTurretBase menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 176, 222);
-        this.inventoryLabelY = this.imageHeight - 96 + 2;
-        this.texture =
+        inventoryLabelY = imageHeight - 96 + 2;
+        texture =
                 Library.id(
                         "textures/gui/weapon/gui_turret_"
                                 + SHEETS.getOrDefault(menu.blockEntity().getType(), "base")
@@ -76,7 +75,7 @@ public class ScreenTurretBase extends ScreenInfoContainer<MenuTurretBase> {
         super.init();
         field =
                 new EditBox(
-                        this.font,
+                        font,
                         leftPos + FIELD_X,
                         topPos + FIELD_Y,
                         FIELD_W,
@@ -187,8 +186,8 @@ public class ScreenTurretBase extends ScreenInfoContainer<MenuTurretBase> {
                 turret.power,
                 turret.getMaxPower());
 
-        String on = ChatFormatting.GREEN + I18nUtil.resolveKey("turret.on");
-        String off = ChatFormatting.RED + I18nUtil.resolveKey("turret.off");
+        Component on = Component.translatable("turret.on").withStyle(ChatFormatting.GREEN);
+        Component off = Component.translatable("turret.off").withStyle(ChatFormatting.RED);
         targetTooltip(graphics, mouseX, mouseY, 0, "turret.players", turret.targetPlayers, on, off);
         targetTooltip(graphics, mouseX, mouseY, 1, "turret.animals", turret.targetAnimals, on, off);
         targetTooltip(graphics, mouseX, mouseY, 2, "turret.mobs", turret.targetMobs, on, off);
@@ -205,7 +204,7 @@ public class ScreenTurretBase extends ScreenInfoContainer<MenuTurretBase> {
                     MODE_Y,
                     BUTTON,
                     BUTTON,
-                    lines(I18nUtil.resolveKeyArray("turret.arty." + mode)));
+                    TooltipStyle.lines(Component.translatable("turret.arty." + mode)));
         }
 
         if (turret instanceof BlockEntityTurretFritz fritz) {
@@ -233,28 +232,27 @@ public class ScreenTurretBase extends ScreenInfoContainer<MenuTurretBase> {
                 i <= BlockEntityTurretBaseNT.SLOT_AMMO_LAST;
                 i++) {
             Slot slot = menu.slots.get(i);
-
             if (isHovering(slot.x, slot.y, 16, 16, mouseX, mouseY) && slot.hasItem()) return;
         }
 
         GUIElements.drawCyclingStackText(
                 graphics,
-                this.font,
+                font,
                 null,
                 menu.blockEntity().getAmmoTypesForDisplay(),
                 mouseX,
                 mouseY,
-                this.width,
-                this.height);
+                width,
+                height);
     }
 
     private void drawListing(GuiGraphicsExtractor graphics, BlockEntityTurretBaseNT turret) {
         List<String> names = turret.getWhitelist();
-        String name = ChatFormatting.ITALIC + I18nUtil.resolveKey("turret.none");
+        Component name = Component.translatable("turret.none").withStyle(ChatFormatting.ITALIC);
 
         while (index >= count()) index--;
         if (index < 0) index = 0;
-        if (names != null) name = names.get(index);
+        if (names != null) name = Component.literal(names.get(index));
 
         String typed = field.getValue();
         if (field.isFocused()) {
@@ -265,8 +263,8 @@ public class ScreenTurretBase extends ScreenInfoContainer<MenuTurretBase> {
 
         graphics.pose().pushMatrix();
         graphics.pose().scale(0.5F, 0.5F);
-        graphics.text(this.font, name, 12 * 2, 51 * 2, TEXT_GREEN, false);
-        graphics.text(this.font, typed, 12 * 2, 69 * 2, TEXT_GREEN, false);
+        graphics.text(font, name, 12 * 2, 51 * 2, TEXT_GREEN, false);
+        graphics.text(font, typed, 12 * 2, 69 * 2, TEXT_GREEN, false);
         graphics.pose().popMatrix();
     }
 
@@ -348,8 +346,7 @@ public class ScreenTurretBase extends ScreenInfoContainer<MenuTurretBase> {
     }
 
     private void send(CompoundTag data) {
-        Services.NETWORK.sendToServer(
-                new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
     }
 
     private void targetTooltip(
@@ -359,8 +356,8 @@ public class ScreenTurretBase extends ScreenInfoContainer<MenuTurretBase> {
             int slot,
             String key,
             boolean state,
-            String on,
-            String off) {
+            Component on,
+            Component off) {
         drawCustomInfoStat(
                 graphics,
                 mouseX,
@@ -369,7 +366,7 @@ public class ScreenTurretBase extends ScreenInfoContainer<MenuTurretBase> {
                 TOGGLE_Y,
                 TOGGLE,
                 TOGGLE,
-                lines(I18nUtil.resolveKeyArray(key, state ? on : off)));
+                TooltipStyle.lines(Component.translatable(key, state ? on : off)));
     }
 
     private static String modeKey(BlockEntityTurretBaseNT turret) {

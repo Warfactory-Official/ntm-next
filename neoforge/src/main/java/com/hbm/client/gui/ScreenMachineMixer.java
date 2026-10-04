@@ -3,15 +3,14 @@
 
 package com.hbm.client.gui;
 
-import com.hbm.interfaces.ILookOverlay;
+import com.hbm.blockentity.machine.BlockEntityMachineMixer;
 import com.hbm.inventory.container.MenuMachineMixer;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.recipes.MixerRecipe;
 import com.hbm.inventory.recipes.MixerRecipes;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineMixer;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -220,7 +219,7 @@ public class ScreenMachineMixer extends ScreenInfoContainer<MenuMachineMixer> {
                         RECIPE_BTN_SIZE)) {
             CompoundTag data = new CompoundTag();
             data.putBoolean("toggle", true);
-            Services.NETWORK.sendToServer(new NbtControlPayload(mixer().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(mixer().getBlockPos(), data));
             playClick();
             return true;
         }

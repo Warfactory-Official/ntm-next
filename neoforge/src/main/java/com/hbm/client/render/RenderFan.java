@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityFan;
 import com.hbm.blocks.machine.MachineFan;
 import com.hbm.client.model.FanModel;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityFan;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -69,7 +69,6 @@ public class RenderFan
             SubmitNodeCollector collector,
             CameraRenderState camera) {
         poseStack.pushPose();
-
         poseStack.translate(0.5D, 0.5D, 0.5D);
         rotate(poseStack, state.facing);
         poseStack.translate(0.0D, -0.5D, 0.0D);

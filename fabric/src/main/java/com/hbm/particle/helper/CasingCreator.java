@@ -4,9 +4,9 @@
 package com.hbm.particle.helper;
 
 import com.hbm.handler.threading.TargetPoint;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.CasingEjectPayload;
 import com.hbm.packet.toclient.GunCasingEjectPayload;
-import com.hbm.platform.Services;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -106,7 +106,7 @@ public class CasingCreator {
         double mY = motion.y + level.getRandom().nextGaussian() * motionVariance;
         double mZ = motion.z + level.getRandom().nextGaussian() * motionVariance;
 
-        Services.NETWORK.sendToAllAround(
+        PacketWire.sendToAllAround(
                 new CasingEjectPayload(
                         x, y, z, mX, mY, mZ, yaw, pitch, mPitch, mYaw, casing, smoking, smokeLife,
                         smokeLift, nodeLife),
@@ -202,7 +202,7 @@ public class CasingCreator {
         if (player instanceof Player p && p.getAbilities().flying) mY -= 0.04D;
 
         if (legacyFrontOffset == frontOffset) {
-            Services.NETWORK.sendToAllAround(
+            PacketWire.sendToAllAround(
                     new CasingEjectPayload(
                             x,
                             y,
@@ -225,7 +225,7 @@ public class CasingCreator {
                     new Vec3(sideOffset, heightOffset, legacyFrontOffset)
                             .xRot(-player.getXRot() / 180F * (float) Math.PI)
                             .yRot(-player.getYRot() / 180F * (float) Math.PI);
-            Services.NETWORK.sendToAllAround(
+            PacketWire.sendToAllAround(
                     new GunCasingEjectPayload(
                             x,
                             y,
@@ -247,7 +247,7 @@ public class CasingCreator {
             double legacyX = player.getX() + legacyOffset.x;
             double legacyY = player.getY() + player.getEyeHeight() + legacyOffset.y;
             double legacyZ = player.getZ() + legacyOffset.z;
-            Services.NETWORK.sendToAllAround(
+            PacketWire.sendToAllAround(
                     new GunCasingEjectPayload(
                             legacyX,
                             legacyY,

@@ -5,8 +5,8 @@ package com.hbm.blocks.machine.rbmk;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.handler.threading.TargetPoint;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.RbmkJetPayload;
-import com.hbm.platform.Services;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -100,7 +100,7 @@ public class RBMKDebrisBurning extends Block {
         double px = pos.getX() + xzMin + rand.nextDouble() * xzWidth;
         double py = pos.getY() + 1.75D;
         double pz = pos.getZ() + xzMin + rand.nextDouble() * xzWidth;
-        Services.NETWORK.sendToAllAround(
+        PacketWire.sendToAllAround(
                 RbmkJetPayload.flame(px, py, pz, FLAME_MAX_AGE),
                 new TargetPoint(level, pos.getX() + 0.5D, py, pos.getZ() + 0.5D, FLAME_RANGE));
     }

@@ -15,14 +15,12 @@ import org.jspecify.annotations.Nullable;
 public class BlockRedBarrel extends BlockBarrelExplosive implements BlockDetonatable {
 
     public BlockRedBarrel(BlockBehaviour.Properties props) {
-
         super(props, 100, true);
     }
 
     @Override
     public void explodeEntity(
             Level level, double x, double y, double z, @Nullable EntityTntNtm entity) {
-
         level.explode(entity, x, y, z, 2.5F, true, Level.ExplosionInteraction.TNT);
     }
 

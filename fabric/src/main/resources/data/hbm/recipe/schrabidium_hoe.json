@@ -5,7 +5,7 @@
       "name": "!lbsm_simple_tools"
     }
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "I": "#c:ingots/schrabidium",
     "S": "#hbm:ingots/any_plastic",

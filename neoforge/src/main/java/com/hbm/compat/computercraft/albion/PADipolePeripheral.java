@@ -3,7 +3,7 @@
 
 package com.hbm.compat.computercraft.albion;
 
-import com.hbm.tileentity.machine.albion.BlockEntityPADipole;
+import com.hbm.blockentity.machine.albion.BlockEntityPADipole;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class PADipolePeripheral extends CooledPeripheral<BlockEntityPADipole> {

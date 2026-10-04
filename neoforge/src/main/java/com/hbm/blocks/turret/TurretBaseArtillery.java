@@ -88,7 +88,6 @@ public abstract class TurretBaseArtillery extends BlockMultiblockCore
             Player player,
             InteractionHand hand,
             BlockHitResult hit) {
-
         if (held.getItem() instanceof ItemDesignatorArtyRange) return InteractionResult.PASS;
         return super.useItemOnAtCore(held, state, level, core, player, hand, hit);
     }

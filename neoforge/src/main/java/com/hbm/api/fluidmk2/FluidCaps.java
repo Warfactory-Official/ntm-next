@@ -4,8 +4,6 @@
 package com.hbm.api.fluidmk2;
 
 import com.hbm.lib.Library;
-import com.hbm.platform.Services;
-import net.minecraft.core.Direction;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 
 public final class FluidCaps {
@@ -17,10 +15,10 @@ public final class FluidCaps {
 
     public static void register() {
         PROVIDER =
-                Services.CAPS.createToken(
+                BlockCapability.create(
                         Library.id("fluid_provider"), IFluidHandlerMK2.class, FluidFace.class);
         RECEIVER =
-                Services.CAPS.createToken(
+                BlockCapability.create(
                         Library.id("fluid_receiver"), IFluidHandlerMK2.class, FluidFace.class);
     }
 }

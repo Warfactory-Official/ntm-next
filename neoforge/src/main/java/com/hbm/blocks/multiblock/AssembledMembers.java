@@ -3,7 +3,7 @@
 
 package com.hbm.blocks.multiblock;
 
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgeServerEvents;
 import com.hbm.uninos.graph.EndpointRegistry;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
@@ -18,24 +18,23 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import org.jspecify.annotations.Nullable;
 
 public final class AssembledMembers {
-
     private static final Map<ServerLevel, Long2ObjectMap<LongOpenHashSet>> WAITING =
             new WeakHashMap<>();
 
     private AssembledMembers() {}
 
     public static void init() {
-        Services.SERVER.onServerStopping(server -> WAITING.clear());
+        NeoForgeServerEvents.onServerStopping(server -> WAITING.clear());
     }
 
     public interface Member {
-
         void verify(ServerLevel level, BlockPos pos, BlockState state, BlockPos owner);
 
         default int endpointDomains(BlockState state) {
@@ -48,7 +47,7 @@ public final class AssembledMembers {
         for (BlockPos member : members) {
             BlockState state = level.getBlockState(member);
             if (!declare(level, member, state, owner)) continue;
-            Services.CAPS.invalidateCaps(level, member);
+            ((Level) level).invalidateCapabilities(member);
             LevelNodeGraph.invalidateEndpointsAround(level, member);
             BlockMultiblockCore.renotifyNeighbours(level, member);
         }
@@ -74,7 +73,7 @@ public final class AssembledMembers {
         EndpointRegistry endpoints = EndpointRegistry.of(level);
         if (endpoints.declared(member.asLong()) == null) return;
         endpoints.withdraw(member);
-        Services.CAPS.invalidateCaps(level, member);
+        ((Level) level).invalidateCapabilities(member);
         LevelNodeGraph.invalidateEndpointsAround(level, member);
     }
 
@@ -111,7 +110,6 @@ public final class AssembledMembers {
             BlockPos pos = BlockPos.of(cell);
             BlockState state = chunk.getBlockState(pos);
             if (!(state.getBlock() instanceof Member)) continue;
-
             declare(
                     level,
                     pos,
@@ -131,7 +129,6 @@ public final class AssembledMembers {
 
     private static void check(ServerLevel level, BlockPos pos) {
         LevelChunk chunk = level.getChunkSource().getChunkNow(pos.getX() >> 4, pos.getZ() >> 4);
-
         if (chunk == null) return;
         BlockState state = chunk.getBlockState(pos);
         if (!(state.getBlock() instanceof Member member)) return;

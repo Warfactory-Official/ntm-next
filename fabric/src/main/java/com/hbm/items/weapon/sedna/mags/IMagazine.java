@@ -24,7 +24,6 @@ public interface IMagazine<T> {
     static void handleAmmoBag(Container inventory, BulletConfig config, int shotsFired) {
         if (config.casingItem == null || config.casingAmount <= 0) return;
         if (!(inventory instanceof Inventory playerInv)) return;
-
         for (int slot = 0; slot < Inventory.INVENTORY_SIZE; slot++) {
             ItemStack stack = playerInv.getItem(slot);
             if (!(stack.getItem() instanceof ItemCasingBag)) continue;
@@ -44,10 +43,10 @@ public interface IMagazine<T> {
     static boolean shouldUseUpTrenchie(Container inv) {
         if (inv instanceof Inventory playerInv
                 && (ArmorSuitEffects.hasFullSet(playerInv.player, ModArmorItem.Suit.TRENCHMASTER)
-                        || ArmorModHandler.pryMod(
+                        || (ArmorModHandler.modItem(
                                         playerInv.player.getItemBySlot(EquipmentSlot.HEAD),
                                         ArmorModHandler.HELMET_ONLY)
-                                .is(ModItems.CARD_AOS.get()))) {
+                                == ModItems.CARD_AOS.get()))) {
             return playerInv.player.getRandom().nextInt(3) < 2;
         }
         return true;

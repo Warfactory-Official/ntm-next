@@ -3,9 +3,9 @@
 
 package com.hbm.compat.computercraft.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGraph.GraphUnit;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGraph;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKGraph.GraphUnit;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKGraph;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -47,7 +47,6 @@ public final class RBMKGraphPeripheral extends SnapshotPeripheral<BlockEntityRBM
         return read(
                 s -> {
                     int b = idx * STRIDE;
-
                     Long[] values = new Long[SAMPLES];
                     for (int i = 0; i < SAMPLES; i++) values[i] = s.longAt(b + VALUES + i);
                     Map<String, Object> map = new LinkedHashMap<>();

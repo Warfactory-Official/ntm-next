@@ -109,7 +109,6 @@ public class ItemChopper extends Item {
             BlockPos pos,
             boolean tryMoveDown,
             boolean movedUp) {
-
         BlockPos spawnPos = pos.above(this.launch);
         Mob mob =
                 type.spawn(

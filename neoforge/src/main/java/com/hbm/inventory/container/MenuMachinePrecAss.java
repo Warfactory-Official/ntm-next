@@ -4,12 +4,12 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.BlockEntityMachinePrecAss;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.inventory.slot.SlotUpgrade;
 import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.items.machine.upgrade.ItemMachineUpgrade;
-import com.hbm.tileentity.machine.BlockEntityMachinePrecAss;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -54,7 +54,6 @@ public class MenuMachinePrecAss extends BlockEntityMenu<BlockEntityMachinePrecAs
                         35,
                         126,
                         stack -> stack.getItem() instanceof ItemBlueprints));
-
         addSlot(new SlotUpgrade(container, BlockEntityMachinePrecAss.SLOT_UPGRADE_START, 152, 108));
         addSlot(new SlotUpgrade(container, BlockEntityMachinePrecAss.SLOT_UPGRADE_END, 152, 126));
 
@@ -126,7 +125,6 @@ public class MenuMachinePrecAss extends BlockEntityMenu<BlockEntityMachinePrecAs
                                 BlockEntityMachinePrecAss.SLOT_UPGRADE_START,
                                 BlockEntityMachinePrecAss.SLOT_UPGRADE_END + 1,
                                 false);
-
                     return moveItemStackTo(
                             stack,
                             BlockEntityMachinePrecAss.SLOT_INPUT_START,

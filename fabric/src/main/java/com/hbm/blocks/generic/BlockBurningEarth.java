@@ -4,7 +4,7 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricPlatform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,7 +22,6 @@ import net.minecraft.world.level.redstone.Orientation;
 import org.jspecify.annotations.Nullable;
 
 public class BlockBurningEarth extends Block {
-
     private static final int SPREAD_CHANCE = 5;
     private static final int WALK_FIRE_SECONDS = 5;
 
@@ -75,7 +74,6 @@ public class BlockBurningEarth extends Block {
     protected void randomTick(
             BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (random.nextInt(SPREAD_CHANCE) == 0) spread(level, pos, random);
-
         level.setBlockAndUpdate(pos, ModBlocks.IMPACT_DIRT.get().defaultBlockState());
     }
 
@@ -100,8 +98,7 @@ public class BlockBurningEarth extends Block {
                     if (here.is(ModBlocks.FROZEN_DIRT.get())) {
                         level.setBlockAndUpdate(at, Blocks.DIRT.defaultBlockState());
                     }
-
-                    if (Services.PLATFORM.isFlammable(level, at.above(), over, Direction.UP)
+                    if (FabricPlatform.isFlammable(level, at.above(), over, Direction.UP)
                             && !over.is(BlockTags.LEAVES)
                             && !(over.getBlock() instanceof VegetationBlock)
                             && level.getBlockState(ownAbove).isAir()) {

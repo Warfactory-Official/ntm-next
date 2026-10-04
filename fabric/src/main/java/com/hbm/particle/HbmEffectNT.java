@@ -5,21 +5,14 @@ package com.hbm.particle;
 
 public enum HbmEffectNT {
     RadFog,
-
     ExplosionSmall,
     ExplosionStandard,
     ExplosionLarge,
-
     RBMKMush,
-
     GasFlame,
-
     GasFlameFlare,
-
     Hadron,
-
     AnnihilatorFlame,
-
     GasFlameVent,
     DeadLeaf
 }

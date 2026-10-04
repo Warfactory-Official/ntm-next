@@ -15,7 +15,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class EntityCloudSolinium extends Entity {
-
     private static final EntityDataAccessor<Integer> MAX_AGE =
             SynchedEntityData.defineId(EntityCloudSolinium.class, EntityDataSerializers.INT);
 

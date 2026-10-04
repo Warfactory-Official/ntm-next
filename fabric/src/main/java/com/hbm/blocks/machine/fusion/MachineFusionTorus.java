@@ -3,12 +3,12 @@
 
 package com.hbm.blocks.machine.fusion;
 
+import com.hbm.blockentity.Tiltable;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorus;
+import com.hbm.blockentity.machine.fusion.FusionPorts;
 import com.hbm.blocks.IBlockHighlight;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.Tiltable;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionTorus;
-import com.hbm.tileentity.machine.fusion.FusionPorts;
 import com.hbm.world.phys.SilhouetteMesh;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -24,7 +24,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineFusionTorus extends BlockFusionMachine
         implements ICapabilityBlock, IBlockHighlight {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         4, 0, 7, 7, 3, 3, 0, 0, 0,
         4, 0, 6, 6, 4, 4, 0, 0, 0,

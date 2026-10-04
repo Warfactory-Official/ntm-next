@@ -3,15 +3,13 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachinePUREX;
 import com.hbm.inventory.container.MenuMachinePUREX;
 import com.hbm.inventory.recipes.PUREXRecipes;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachinePUREX;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -44,13 +42,7 @@ public class ScreenMachinePUREX extends ScreenInfoContainer<MenuMachinePUREX> {
 
     public ScreenMachinePUREX(MenuMachinePUREX menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 176, 256);
-        this.inventoryLabelY = this.imageHeight - 96 + 2;
-    }
-
-    private static List<Component> toComponents(List<String> strings) {
-        List<Component> out = new ArrayList<>(strings.size());
-        for (String s : strings) out.add(Component.literal(s));
-        return out;
+        inventoryLabelY = imageHeight - 96 + 2;
     }
 
     @Override
@@ -243,16 +235,10 @@ public class ScreenMachinePUREX extends ScreenInfoContainer<MenuMachinePUREX> {
         GenericRecipe recipe = purex().module.getRecipe();
         if (recipe != null) {
             GUIElements.drawHoveringTextRecipe(
-                    graphics,
-                    this.font,
-                    toComponents(recipe.print()),
-                    mouseX,
-                    mouseY,
-                    this.width,
-                    this.height);
+                    graphics, font, recipe.print(), mouseX, mouseY, width, height);
         } else {
             graphics.setTooltipForNextFrame(
-                    this.font,
+                    font,
                     Component.translatable("gui.recipe.setRecipe").withStyle(ChatFormatting.YELLOW),
                     mouseX,
                     mouseY);

@@ -35,7 +35,6 @@ public final class ItemMeseGavel extends ItemSwordAbility {
     @Override
     public void hurtEnemy(ItemStack stack, LivingEntity victim, LivingEntity attacker) {
         if (victim.level() instanceof ServerLevel level) {
-
             level.playSound(
                     null,
                     victim.blockPosition(),

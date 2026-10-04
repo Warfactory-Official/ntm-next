@@ -3,15 +3,7 @@
 
 package com.hbm.client.render;
 
-import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.BlockBobble;
-import com.hbm.blocks.machine.rbmk.RBMKBase;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.items.armor.ModArmorItem;
-import com.hbm.items.tool.ItemBoltgun;
-import com.hbm.items.weapon.grenade.ItemGrenadeUniversal;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT;
-import com.hbm.tileentity.BlockEntityPedestal;
+import com.hbm.blockentity.BlockEntityPedestal;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -25,17 +17,12 @@ import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class RenderPedestal
         implements BlockEntityRenderer<BlockEntityPedestal, RenderPedestal.State>,
                 ConcurrentRenderStateExtraction {
-
     private final ItemModelResolver itemModelResolver;
 
     public RenderPedestal(BlockEntityRendererProvider.Context context) {
@@ -103,7 +90,6 @@ public class RenderPedestal
                 FramedItem.resolve(
                         itemModelResolver, state.item, pedestal.item, pedestal.getLevel(), null, 0);
         state.playerAge = Minecraft.getInstance().player.tickCount + partialTicks;
-
         state.playerYaw = Minecraft.getInstance().player.getViewYRot(partialTicks);
     }
 

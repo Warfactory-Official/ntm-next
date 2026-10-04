@@ -4,12 +4,11 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityWatz;
 import com.hbm.inventory.slot.SlotFiltered;
-import com.hbm.tileentity.machine.BlockEntityWatz;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class MenuWatz extends BlockEntityMenu<BlockEntityWatz> {
@@ -28,7 +27,6 @@ public class MenuWatz extends BlockEntityMenu<BlockEntityWatz> {
             for (int i = 0; i < 6; i++) {
                 if (i + j > 1 && i + j < 9 && 5 - i + j > 1 && i + 5 - j > 1) {
                     int slot = index;
-
                     addSlot(
                             new SlotFiltered(
                                     container,

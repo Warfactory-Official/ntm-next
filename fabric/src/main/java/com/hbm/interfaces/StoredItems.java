@@ -10,7 +10,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public interface StoredItems {
     void visitStoredItems(Visitor visitor);
 
-    interface Visitor {
+    interface Visitor
+            extends com.hbm.inventory.ItemContents.Editor,
+                    com.hbm.inventory.InventoryPublications.Notifications {
         boolean visit(ItemStack stack);
 
         boolean visit(Container container);

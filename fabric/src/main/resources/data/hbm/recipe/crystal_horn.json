@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
     "#c:dusts/neptunium_237",
     "#c:dusts/iodine",
@@ -11,6 +11,11 @@
     "hbm:gravel_obsidian",
     "minecraft:water_bucket"
   ],
+  "input_state": {
+    "8": {
+      "preserve": "remainder"
+    }
+  },
   "result": {
     "id": "hbm:crystal_horn"
   }

@@ -6,7 +6,6 @@ package com.hbm.items.tool;
 
 import com.hbm.entity.cart.EntityMinecartCrate;
 import com.hbm.entity.cart.EntityMinecartDestroyer;
-import com.hbm.entity.cart.EntityMinecartNTM;
 import com.hbm.entity.cart.EntityMinecartOre;
 import com.hbm.entity.cart.EntityMinecartPowder;
 import com.hbm.entity.cart.EntityMinecartSemtex;

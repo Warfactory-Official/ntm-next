@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityWatz;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.RefreshesNeighborState;
@@ -10,10 +11,8 @@ import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.BlockEntityWatz;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,7 +20,6 @@ import org.jspecify.annotations.Nullable;
 
 @RefreshesNeighborState(be = BlockEntityWatz.class, calling = "refreshPumpAbove")
 public class Watz extends BlockMultiblockCore implements ITickingBlock, ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         2, 0, 3, 3, 1, 1, 0, 0, 0,
         2, 0, 2, 2, 2, -2, 0, 0, 0,
@@ -36,7 +34,6 @@ public class Watz extends BlockMultiblockCore implements ITickingBlock, ICapabil
     }
 
     private static final int[] DIMENSIONS = {2, 0, 3, 3, 1, 1};
-
     private static final int[] FLANK_WEST = {2, 0, 2, 2, 2, -2};
     private static final int[] FLANK_EAST = {2, 0, 2, 2, -2, 2};
     private static final int[] CORNER_WEST = {2, 0, 1, 1, 3, -3};
@@ -70,7 +67,6 @@ public class Watz extends BlockMultiblockCore implements ITickingBlock, ICapabil
 
     @Override
     protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-
         super.visitCells(core, facing, visitor);
         MultiblockHandlerXR.visitBox(core, FLANK_WEST, facing, visitor);
         MultiblockHandlerXR.visitBox(core, FLANK_EAST, facing, visitor);

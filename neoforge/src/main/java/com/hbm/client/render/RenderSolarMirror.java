@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntitySolarMirror;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntitySolarMirror;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -31,7 +31,6 @@ public class RenderSolarMirror
 
     public RenderSolarMirror() {
         this.model = ResourceManager.solar_mirror;
-
         this.bodyType = RenderTypes.entityCutoutCull(ResourceManager.solar_mirror_tex);
     }
 
@@ -79,7 +78,6 @@ public class RenderSolarMirror
         state.aimed = be.tY > be.getBlockPos().getY();
         if (state.aimed) {
             double dist = Math.sqrt((double) dx * dx + dy * dy + dz * dz);
-
             state.pitch =
                     (float)
                             (Math.toDegrees(

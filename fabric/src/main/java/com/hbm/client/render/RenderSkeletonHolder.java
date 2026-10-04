@@ -3,8 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.BlockEntitySkeletonHolder;
 import com.hbm.blocks.generic.BlockSkeletonHolder;
-import com.hbm.tileentity.BlockEntitySkeletonHolder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -17,7 +17,6 @@ import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
@@ -81,17 +80,14 @@ public class RenderSkeletonHolder
         if (state.item == null) return;
 
         poseStack.pushPose();
-
         poseStack.translate(0.5, 0.0, 0.5);
         poseStack.mulPose(Axis.YP.rotationDegrees(renderAngle(state.facing)));
-
         poseStack.mulPose(Axis.YP.rotationDegrees(90F));
         if (state.mesh) {
             poseStack.scale(1.5F, 1.5F, 1.5F);
             poseStack.translate(0.0, 0.125, 0.0);
             poseStack.translate(0.0, state.meshLift, 0.0);
         } else if (state.item.usesBlockLight()) {
-
             poseStack.translate(0.0, 0.125, 0.0);
             poseStack.translate(0.0, FramedItem.FRAMED_BOB, 0.0);
             poseStack.scale(1.25F, 1.25F, 1.25F);

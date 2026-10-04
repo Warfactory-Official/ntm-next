@@ -4,19 +4,15 @@
 
 package com.hbm.render.item.weapon.sedna;
 
-import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.main.ResourceManager;
-import com.hbm.registration.RegistryHandle;
 import com.hbm.render.anim.HbmAnimations;
 import com.hbm.util.BobMathUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import java.util.List;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.joml.Matrix4f;
 
@@ -188,7 +184,6 @@ public class ItemRenderMK108 extends ItemRenderWeaponBase {
             shells[i][2] = angle - 90;
             double delta = BobMathUtil.interp(ANGLES_UNLOADED[i], ANGLES_LOADED[i], reloadProgress);
             angle += delta;
-
             double rad = Math.toRadians(-delta);
             double nvx = vecX * Math.cos(rad) + vecY * Math.sin(rad);
             double nvy = vecY * Math.cos(rad) - vecX * Math.sin(rad);

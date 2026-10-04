@@ -2,7 +2,10 @@
   "type": "minecraft:smelting",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": "hbm:plant_flower_tobacco",
+  "ingredient": {
+    "neoforge:ingredient_type": "hbm:recipe_input",
+    "base": "hbm:plant_flower_tobacco"
+  },
   "result": {
     "id": "hbm:plant_item_tobacco"
   }

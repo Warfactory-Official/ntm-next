@@ -90,7 +90,6 @@ public class OilBubbleStructure extends Structure {
                         minY + random.nextInt(rangeY),
                         chunkPos.getMinBlockZ() + random.nextInt(16));
         int radius = minSize + random.nextInt(maxSize - minSize);
-
         long scarSeed = random.nextLong();
 
         return Optional.of(

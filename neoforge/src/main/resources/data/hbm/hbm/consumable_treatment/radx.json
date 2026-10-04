@@ -1,0 +1,16 @@
+{
+  "actions": [
+    {
+      "type": "potion_sickness",
+      "seconds": 5
+    },
+    {
+      "type": "effect",
+      "duration": 3600,
+      "effect": "hbm:radx"
+    }
+  ],
+  "block_when_potion_sick": true,
+  "targets": "hbm:radx",
+  "trigger": "consume"
+}

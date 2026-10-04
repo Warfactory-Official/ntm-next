@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.network;
 
+import com.hbm.blockentity.network.BlockEntityRadioAUTOCAL;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.network.BlockEntityRadioAUTOCAL;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class RadioAutocalPeripheral extends SnapshotPeripheral<BlockEntityRadioAUTOCAL> {

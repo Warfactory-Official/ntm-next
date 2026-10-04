@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "B": "#hbm:barrels_light/any_bismoid_bronze",
     "C": "hbm:circuit_bismoid",

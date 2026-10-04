@@ -3,8 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.bomb.BlockEntityCharge;
 import com.hbm.blocks.bomb.BlockChargeBase;
-import com.hbm.tileentity.bomb.BlockEntityCharge;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -57,7 +57,6 @@ public class RenderExplosiveCharge
             SubmitNodeCollector collector,
             CameraRenderState camera) {
         poseStack.pushPose();
-
         poseStack.translate(0.5, 0.5, 0.5);
 
         switch (state.facing) {
@@ -77,7 +76,6 @@ public class RenderExplosiveCharge
             }
             case EAST -> poseStack.mulPose(Axis.ZN.rotationDegrees(90));
         }
-
         poseStack.translate(-0.05, -0.185, 0.15);
         poseStack.scale(0.0125F, -0.0125F, 0.0125F);
         poseStack.mulPose(Axis.YP.rotationDegrees(90));

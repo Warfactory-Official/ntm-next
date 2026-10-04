@@ -1,0 +1,6 @@
+{
+  "effect": "hbm:stability",
+  "protections": [
+    "digamma"
+  ]
+}

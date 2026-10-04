@@ -32,7 +32,6 @@ public class ItemBlockDiesel extends BlockItem {
         super.appendHoverText(stack, context, display, adder, flag);
         adder.accept(ItemPistons.efficiencyHeader());
         List<Double> efficiency = MachineData.DIESEL_EFFICIENCY.get();
-
         for (FuelGrade grade : FuelGrade.VALUES) {
             double eff = efficiency.get(grade.ordinal());
             if (eff > 0) adder.accept(ItemPistons.efficiencyLine(grade, eff));

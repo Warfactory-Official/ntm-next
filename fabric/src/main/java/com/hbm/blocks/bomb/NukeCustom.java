@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.bomb;
 
+import com.hbm.blockentity.bomb.BlockEntityNukeCustom;
 import com.hbm.entity.projectile.EntityFallingNuke;
 import com.hbm.explosion.ExplosionNukeCustom;
-import com.hbm.tileentity.bomb.BlockEntityNukeCustom;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;

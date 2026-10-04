@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityChungus;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
@@ -13,13 +14,12 @@ import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Coolable;
-import com.hbm.tileentity.machine.BlockEntityChungus;
 import com.hbm.util.BobMathUtil;
-import com.hbm.util.I18nUtil;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -31,7 +31,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineChungus extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         3, 0, 0, 3, 2, 2, 0, 0, 0,
         4, -4, 0, 3, 1, 1, 0, 0, 0,
@@ -45,7 +44,6 @@ public class MachineChungus extends BlockMultiblockCore
     }
 
     private static final int[] DIMENSIONS = {3, 0, 0, 3, 2, 2};
-
     private static final int[] ARM_A = {4, -4, 0, 3, 1, 1};
     private static final int[] ARM_B = {3, 0, 6, -1, 1, 1};
     private static final int[] ARM_C = {2, 0, 10, -7, 1, 1};
@@ -141,7 +139,10 @@ public class MachineChungus extends BlockMultiblockCore
             outType = NTMFluidProperties.getTrait(inType, FT_Coolable.class).coolsTo();
         }
 
-        info.title(I18nUtil.resolveKey(getDescriptionId()), 0xFFFF00, 0x404000);
+        info.title(
+                Component.empty().append(Component.translatable(getDescriptionId())),
+                0xFFFF00,
+                0x404000);
         info.line(
                 ChatFormatting.GREEN
                         + "-> "

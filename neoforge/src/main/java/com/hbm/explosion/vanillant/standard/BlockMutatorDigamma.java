@@ -31,7 +31,6 @@ public class BlockMutatorDigamma implements IBlockMutator {
 
     @Override
     public void mutatePre(ExplosionVNT explosion, BlockState blockState, BlockPos pos) {
-
         if (blockState.isSolidRender()) solidCubes.add(pos.asLong());
     }
 
@@ -42,7 +41,6 @@ public class BlockMutatorDigamma implements IBlockMutator {
         RandomSource rand = world.getRandom();
 
         if (circuit) {
-
             int x = pos.getX(), z = pos.getZ();
             boolean onGrid = x % 3 == 0 && z % 3 == 0;
             boolean nearGrid = (x % 3 == 0 || z % 3 == 0) && rand.nextBoolean();

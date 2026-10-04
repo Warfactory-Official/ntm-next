@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "B": "#hbm:barrels_light/saturnite",
     "D": "hbm:weapon_mod_special_scope",

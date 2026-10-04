@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.oil.BlockEntityMachineCoker;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.RefreshesNeighborState;
@@ -10,10 +11,8 @@ import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineCoker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -25,7 +24,6 @@ import org.jspecify.annotations.Nullable;
 
 @RefreshesNeighborState(be = BlockEntityMachineCoker.class, calling = "refreshHeatBelow")
 public class MachineCoker extends BlockMultiblockCore implements ITickingBlock, ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         22, 0, 1, 1, 1, 1, 0, 0, 0,
         5, 0, 2, 2, 2, 2, 0, 1, 0,
@@ -41,7 +39,6 @@ public class MachineCoker extends BlockMultiblockCore implements ITickingBlock, 
     }
 
     private static final int[] DIMENSIONS = {22, 0, 1, 1, 1, 1};
-
     private static final int[] PLATFORM = {5, 0, 2, 2, 2, 2};
     private static final int[] LEG = {0, 1, 0, 0, 0, 0};
 
@@ -63,7 +60,6 @@ public class MachineCoker extends BlockMultiblockCore implements ITickingBlock, 
     public boolean checkRequirement(Level level, BlockPos placed, Direction dir, int o) {
         if (!super.checkRequirement(level, placed, dir, o)) return false;
         BlockPos core = placed.offset(dir.getStepX() * o, dir.getStepY() * o, dir.getStepZ() * o);
-
         return MultiblockHandlerXR.checkSpace(level, core.above(), PLATFORM, core, Direction.NORTH)
                 && MultiblockHandlerXR.checkSpace(
                         level, core.offset(2, 1, 2), LEG, core, Direction.NORTH)

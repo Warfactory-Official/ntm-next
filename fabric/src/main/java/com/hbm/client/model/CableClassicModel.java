@@ -26,7 +26,6 @@ public record CableClassicModel() implements SimpleBlockModel {
     private static final float CORE_MAX = 10.5F;
 
     private static final CuboidFace.UVs CAP = new CuboidFace.UVs(0F, 0F, 5F, 5F);
-
     private static final CuboidFace.UVs CAP_DOWN = new CuboidFace.UVs(0F, 5F, 5F, 0F);
     private static final CuboidFace.UVs ARM = new CuboidFace.UVs(5F, 0F, 10F, 5F);
 

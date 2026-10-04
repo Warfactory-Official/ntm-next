@@ -3,11 +3,11 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityFoundryTank;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.material.Mats.MaterialStack;
 import com.hbm.items.machine.ItemScraps;
-import com.hbm.tileentity.machine.BlockEntityFoundryTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.ItemTags;
@@ -27,7 +27,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class FoundryTank extends Block implements ITickingBlock {
-
     private static final VoxelShape SUPPORT_SHAPE =
             Shapes.join(
                     Shapes.block(),

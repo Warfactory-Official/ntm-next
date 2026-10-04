@@ -54,11 +54,8 @@ public class XWeaponModManager {
     public static final int ID_ENGINE_AVIATION = 227;
     public static final int ID_ENGINE_ELECTRIC = 228;
     public static final int ID_ENGINE_TURBO = 229;
-
     public static HashBiMap<Integer, IWeaponMod> idToMod = HashBiMap.create();
-
     public static HashMap<Item, WeaponModDefinition> stackToMod = new HashMap<>();
-
     public static HashMap<IWeaponMod, Supplier<ItemStack>> modToStack = new HashMap<>();
     public static Comparator<IWeaponMod> modSorter =
             new Comparator<IWeaponMod>() {
@@ -89,7 +86,6 @@ public class XWeaponModManager {
                 .addDefault(new WeaponModOverride(5, 7.5F, "OVERRIDE"));
         def(ModItems.WEAPON_MOD_TEST, EnumModTest.OVERRIDE_10)
                 .addDefault(new WeaponModOverride(6, 10F, "OVERRIDE"));
-
         def(ModItems.WEAPON_MOD_TEST, EnumModTest.OVERRIDE_12_5)
                 .addDefault(new WeaponModOverride(7, 125F, "OVERRIDE"));
         def(ModItems.WEAPON_MOD_TEST, EnumModTest.OVERRIDE_15)
@@ -517,8 +513,7 @@ public class XWeaponModManager {
 
     public static void install(ServerLevel level, ItemStack stack, int cfg, ItemStack... mods) {
         saveMagState(stack, cfg);
-
-        uninstall(level, stack, cfg);
+        uninstallMods(level, stack, cfg);
 
         List<IWeaponMod> toInstall = new ArrayList<>();
         Item gun = stack.getItem();
@@ -536,7 +531,10 @@ public class XWeaponModManager {
                 }
             }
         }
-        if (toInstall.isEmpty()) return;
+        if (toInstall.isEmpty()) {
+            restoreMagState(stack, cfg);
+            return;
+        }
         toInstall.sort(modSorter);
         int[] modIds = new int[toInstall.size()];
         for (int i = 0; i < modIds.length; i++) {
@@ -554,12 +552,17 @@ public class XWeaponModManager {
     }
 
     public static void uninstall(ServerLevel level, ItemStack stack, int cfg) {
-        if (!stack.isEmpty()) {
-            for (ItemStack mod : getUpgradeItems(stack, cfg)) {
-                XWeaponModManager.onUninstallStack(level, stack, mod, cfg);
-            }
-            ItemGunBaseNT.removeValue(stack, KEY_MOD_LIST + cfg);
+        if (stack.isEmpty()) return;
+        saveMagState(stack, cfg);
+        uninstallMods(level, stack, cfg);
+        restoreMagState(stack, cfg);
+    }
+
+    private static void uninstallMods(ServerLevel level, ItemStack stack, int cfg) {
+        for (ItemStack mod : getUpgradeItems(stack, cfg)) {
+            XWeaponModManager.onUninstallStack(level, stack, mod, cfg);
         }
+        ItemGunBaseNT.removeValue(stack, KEY_MOD_LIST + cfg);
     }
 
     public static void onInstallStack(ItemStack gun, ItemStack mod, int cfg) {
@@ -622,7 +625,6 @@ public class XWeaponModManager {
     }
 
     public static class WeaponModDefinition {
-
         public HashMap<Item, IWeaponMod> modByGun = new HashMap<>();
         public Supplier<ItemStack> stack;
 

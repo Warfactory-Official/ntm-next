@@ -16,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
 public final class ConstructionPage extends RecipePage<ConstructionCatalog.Entry> {
-
     private static final int LABEL_ABOVE = 64;
 
     ConstructionPage() {
@@ -76,7 +75,6 @@ public final class ConstructionPage extends RecipePage<ConstructionCatalog.Entry
 
         int[][] outputs = GenericMachinePage.outputPositions(1);
         page.output(outputs[0][0], outputs[0][1]).background().item(entry.assembled());
-
         page.catalyst(75, 31).item(entry.seed());
     }
 

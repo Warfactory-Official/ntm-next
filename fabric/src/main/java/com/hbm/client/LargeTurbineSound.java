@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.machine.BlockEntityMachineLargeTurbine;
+import com.hbm.blockentity.machine.BlockEntityMachineLargeTurbine;
 
 public final class LargeTurbineSound {
 
@@ -11,7 +11,6 @@ public final class LargeTurbineSound {
 
     public static void tick(BlockEntityMachineLargeTurbine be) {
         float speed = be.fanAcceleration / 15F;
-
         be.audioLoop(
                 be.operational || be.fanAcceleration > 0F, 0.4F * speed, 0.25F + 0.75F * speed);
     }

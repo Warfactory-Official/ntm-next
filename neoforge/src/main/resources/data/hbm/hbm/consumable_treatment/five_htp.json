@@ -1,0 +1,21 @@
+{
+  "actions": [
+    {
+      "type": "potion_sickness",
+      "seconds": 5
+    },
+    {
+      "type": "counter",
+      "counter": "digamma",
+      "operation": "set"
+    },
+    {
+      "type": "effect",
+      "duration": 12000,
+      "effect": "hbm:stability"
+    }
+  ],
+  "block_when_potion_sick": true,
+  "targets": "hbm:five_htp",
+  "trigger": "consume"
+}

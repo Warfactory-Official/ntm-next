@@ -22,7 +22,6 @@ public final class BakedBlockModelDefinition implements CustomBlockModelDefiniti
     private final MapCodec<BakedBlockModelDefinition> codec;
 
     public BakedBlockModelDefinition() {
-
         this.codec = MapCodec.unit(() -> this);
     }
 

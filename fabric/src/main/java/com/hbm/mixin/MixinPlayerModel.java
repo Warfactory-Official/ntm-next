@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerModel.class)
 public abstract class MixinPlayerModel {
-
     @Inject(
             method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;)V",
             at = @At("TAIL"))

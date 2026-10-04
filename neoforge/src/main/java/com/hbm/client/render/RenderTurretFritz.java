@@ -3,8 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.turret.BlockEntityTurretFritz;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.turret.BlockEntityTurretFritz;
 
 public class RenderTurretFritz extends RenderTurretBase<BlockEntityTurretFritz> {
 

@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityDeuteriumExtractor;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
@@ -10,7 +11,6 @@ import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
-import com.hbm.tileentity.machine.BlockEntityDeuteriumExtractor;
 import com.hbm.util.BobMathUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -29,16 +29,16 @@ public class MachineDeuteriumExtractor extends Block
     }
 
     static void buildOverlay(BlockEntityDeuteriumExtractor be, Block block, LookInfo info) {
-
         info.title(
-                Component.translatable(block.getDescriptionId()).getString(), 0xFFFF00, 0x404000);
+                Component.empty().append(Component.translatable(block.getDescriptionId())),
+                0xFFFF00,
+                0x404000);
         boolean starved = be.power < be.getMaxPower() / 20;
         info.line(
                 "Power: " + BobMathUtil.getShortNumber(be.power) + "HE",
                 starved ? 0xFF5555 : 0x55FF55);
         for (int i = 0; i < be.tanks.length; i++) {
             FluidTankNTM tank = be.tanks[i];
-
             String arrow = i < 1 ? ChatFormatting.GREEN + "-> " : ChatFormatting.RED + "<- ";
             info.line(
                     arrow

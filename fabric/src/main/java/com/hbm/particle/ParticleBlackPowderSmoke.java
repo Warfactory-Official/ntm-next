@@ -3,12 +3,18 @@
 
 package com.hbm.particle;
 
+import com.hbm.client.particle.QuadParticleVisual;
+import com.hbm.client.particle.VisualParticle;
+import dev.engine_room.flywheel.api.visual.EffectVisual;
+import dev.engine_room.flywheel.api.visualization.VisualizationContext;
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.util.Mth;
+import org.jspecify.annotations.Nullable;
 
-public class ParticleBlackPowderSmoke extends Particle implements IQuadParticle {
+public class ParticleBlackPowderSmoke extends Particle implements IQuadParticle, VisualParticle {
 
     public static final ParticleRenderType BLACK_POWDER_SMOKE_GROUP =
             new ParticleRenderType("hbm:bp_smoke", "HBS");
@@ -19,6 +25,7 @@ public class ParticleBlackPowderSmoke extends Particle implements IQuadParticle 
     private final float hue;
     private final float scale;
     private float rotationPitch, prevRotationPitch;
+    private @Nullable VisualizationManager visualManager;
 
     public ParticleBlackPowderSmoke(ClientLevel level, double x, double y, double z, float scale) {
         super(level, x, y, z);
@@ -65,7 +72,6 @@ public class ParticleBlackPowderSmoke extends Particle implements IQuadParticle 
         float saturation = Math.max(1F - t * 4F, 0F);
         float brightness = Mth.clamp(1.25F - t * 2F, 0.7F, 1F);
         int rgb = Mth.hsvToRgb(this.hue / 255F, saturation, brightness) & 0xFFFFFF;
-
         float alpha = (float) Math.pow(1F - Math.min(t, 1F), 0.25) * 0.25F;
         return Mth.clamp((int) (alpha * 255F), 0, 255) << 24 | rgb;
     }
@@ -98,6 +104,26 @@ public class ParticleBlackPowderSmoke extends Particle implements IQuadParticle 
     @Override
     public double interpZ(float pt) {
         return this.zo + (this.z - this.zo) * pt;
+    }
+
+    @Override
+    public ClientLevel level() {
+        return level;
+    }
+
+    @Override
+    public @Nullable VisualizationManager visualManager() {
+        return visualManager;
+    }
+
+    @Override
+    public void visualManager(@Nullable VisualizationManager manager) {
+        visualManager = manager;
+    }
+
+    @Override
+    public EffectVisual<?> visualize(VisualizationContext context, float partialTick) {
+        return QuadParticleVisual.particleBase(context, this, partialTick);
     }
 
     @Override

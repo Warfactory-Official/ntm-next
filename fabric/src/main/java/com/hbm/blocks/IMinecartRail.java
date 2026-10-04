@@ -6,7 +6,6 @@ package com.hbm.blocks;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 
 public interface IMinecartRail {
-
     float railMaxSpeed();
 
     default void onMinecartPass(AbstractMinecart cart) {}

@@ -39,7 +39,6 @@ public class RuralHouse1Piece extends NtmComponentPiece {
     }
 
     private RuralHouse1Piece(BlockPos origin, Direction direction) {
-
         super(
                 HbmStructureTypes.NTM_RURAL_HOUSE1_PIECE.get(),
                 0,
@@ -171,7 +170,6 @@ public class RuralHouse1Piece extends NtmComponentPiece {
     @Override
     protected void buildAfterTemplate(
             WorldGenLevel level, BoundingBox chunkBB, RandomSource random) {
-
         BlockPos pile = this.getWorldPos(3, 2, 12);
         if (!chunkBB.isInside(pile)) return;
         BlockLoot.place(level, pile, LootGenerator.lootBookLore(LoreBooks.lab(random), random));
@@ -244,7 +242,6 @@ public class RuralHouse1Piece extends NtmComponentPiece {
                 out.box(1, 3, 5, 1, 3, 12, brick, brick);
                 out.box(2, 1, 9, 3, 3, 9, brick, brick);
                 out.box(5, 1, 9, 7, 3, 9, brick, brick);
-
                 out.box(5, 2, 1, 5, 3, 1, sprucePlanks, sprucePlanks);
                 out.box(8, 2, 1, 8, 3, 1, sprucePlanks, sprucePlanks);
                 out.block(11, 3, 2, sprucePlanks);
@@ -530,7 +527,6 @@ public class RuralHouse1Piece extends NtmComponentPiece {
                 out.maybeBox(5, 3, 3, 9, 3, 8, 0.05F, web, air);
                 out.maybeBox(2, 3, 5, 4, 3, 8, 0.05F, web, air);
                 out.maybeBox(2, 3, 10, 7, 3, 12, 0.05F, web, air);
-
                 BlockState oakDoor = Blocks.OAK_DOOR.defaultBlockState();
                 out.door(11, 1, 2, oakDoor, Direction.SOUTH, false);
                 out.randomDoor(4, 1, 9, oakDoor, Direction.SOUTH, false);
@@ -543,7 +539,6 @@ public class RuralHouse1Piece extends NtmComponentPiece {
                 out.maybeBox(1, 2, 6, 1, 2, 7, 0.5F, glassPane, air);
                 out.maybeBox(4, 6, 4, 5, 6, 4, 0.5F, glassPane, air);
                 out.maybeBox(4, 6, 13, 5, 6, 13, 0.5F, glassPane, air);
-
                 out.block(
                         6,
                         4,
@@ -613,7 +608,6 @@ public class RuralHouse1Piece extends NtmComponentPiece {
                 out.box(7, 3, 8, 9, 3, 8, spruceSlab, spruceSlab);
                 BlockState stoneDouble = doubleSlab(Blocks.SMOOTH_STONE_SLAB.defaultBlockState());
                 out.block(4, 1, 5, stoneDouble);
-
                 out.randomBlock(
                         3,
                         1,
@@ -633,7 +627,6 @@ public class RuralHouse1Piece extends NtmComponentPiece {
                                                         Direction.SOUTH),
                                         1)));
                 out.box(2, 1, 5, 2, 1, 6, stoneDouble, stoneDouble);
-
                 out.block(
                         2,
                         1,
@@ -651,7 +644,6 @@ public class RuralHouse1Piece extends NtmComponentPiece {
                         6,
                         hbmState("steel_wall")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.SOUTH));
-
                 out.block(8, 2, 2, hbmState("radiorec").setValue(RadioRec.FACING, Direction.NORTH));
                 out.block(7, 2, 4, Blocks.FLOWER_POT.defaultBlockState());
 
@@ -744,7 +736,6 @@ public class RuralHouse1Piece extends NtmComponentPiece {
                         hbmState("filing_cabinet_green")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.WEST),
                         ComponentLoot.OFFICE_TRASH_4);
-
                 out.container(
                         7,
                         5,
@@ -753,7 +744,6 @@ public class RuralHouse1Piece extends NtmComponentPiece {
                                 .defaultBlockState()
                                 .setValue(ChestBlock.FACING, Direction.WEST),
                         ComponentLoot.GENERIC_8);
-
                 out.block(3, 2, 12, hbmState("deco_loot"));
                 out.lootPile(5, 6, 5, LootGenerator.LOOT_MAKESHIFT_GUN);
                 out.bobble(5, 5, 12);

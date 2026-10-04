@@ -5,10 +5,10 @@ package com.hbm.inventory.fluid.trait;
 
 import com.hbm.handler.radiation.RadiationSystemNT;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
-import com.hbm.util.I18nUtil;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 
@@ -37,11 +37,13 @@ public class FT_VentRadiation extends FluidTrait {
     }
 
     @Override
-    public void addInfo(List<String> info) {
+    public void addInfo(List<Component> info) {
         info.add(
-                ChatFormatting.YELLOW
-                        + "["
-                        + I18nUtil.resolveKey("hbmfluid.trait.radioactive")
-                        + "]");
+                Component.empty()
+                        .append(Component.literal("[").withStyle(ChatFormatting.YELLOW))
+                        .append(
+                                Component.translatable("hbmfluid.trait.radioactive")
+                                        .withStyle(ChatFormatting.YELLOW))
+                        .append(Component.literal("]").withStyle(ChatFormatting.YELLOW)));
     }
 }

@@ -5,8 +5,7 @@ package com.hbm.mixin;
 
 import com.hbm.advancement.HbmCriteria;
 import com.hbm.blocks.multiblock.MultiblockSurface;
-import com.hbm.handler.UnstableFuses;
-import com.hbm.hazard.HazardSystem;
+import com.hbm.inventory.InventoryChanges;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -14,7 +13,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,8 +30,30 @@ public abstract class MixinServerPlayer {
 
     @Inject(method = "initMenu", at = @At("TAIL"))
     private void hbm$watchMenuForHazards(AbstractContainerMenu container, CallbackInfo ci) {
-        container.addSlotListener(new HazardSystem.MenuWatcher((ServerPlayer) (Object) this));
-        container.addSlotListener(new UnstableFuses.MenuWatcher((ServerPlayer) (Object) this));
+        container.hbm$fuseOwner((ServerPlayer) (Object) this);
+        InventoryChanges.bindMenu(container, (ServerPlayer) (Object) this);
+        container.addSlotListener(new InventoryChanges.MenuWatcher((ServerPlayer) (Object) this));
+    }
+
+    @WrapOperation(
+            method = "doCloseContainer",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lnet/minecraft/world/inventory/AbstractContainerMenu;removed(Lnet/minecraft/world/entity/player/Player;)V"))
+    private void hbm$retireDeclaredMenu(
+            AbstractContainerMenu menu, Player player, Operation<Void> original) {
+        try {
+            original.call(menu, player);
+        } finally {
+            InventoryChanges.unbindMenu(menu);
+        }
+    }
+
+    @Inject(method = "openHorseInventory", at = @At("HEAD"))
+    private void hbm$bindHorseInventory(AbstractHorse horse, Container inventory, CallbackInfo ci) {
+        if (inventory instanceof SimpleContainer simple) simple.hbm$fuseOwner(horse);
     }
 
     @Inject(method = "onItemPickup", at = @At("HEAD"))

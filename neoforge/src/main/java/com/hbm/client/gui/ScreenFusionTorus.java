@@ -3,7 +3,7 @@
 
 package com.hbm.client.gui;
 
-import com.hbm.interfaces.ILookOverlay;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorus;
 import com.hbm.inventory.container.MenuFusionTorus;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluidProperties;
@@ -12,7 +12,6 @@ import com.hbm.inventory.recipes.FusionRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionTorus;
 import com.hbm.util.BobMathUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,14 +41,8 @@ public class ScreenFusionTorus extends ScreenInfoContainer<MenuFusionTorus> {
 
     public ScreenFusionTorus(MenuFusionTorus menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 230, 244);
-        this.inventoryLabelX = 35;
-        this.inventoryLabelY = this.imageHeight - 93;
-    }
-
-    private static List<Component> toComponents(List<String> strings) {
-        List<Component> out = new ArrayList<>(strings.size());
-        for (String s : strings) out.add(Component.literal(s));
-        return out;
+        inventoryLabelX = 35;
+        inventoryLabelY = imageHeight - 93;
     }
 
     @Override
@@ -286,16 +279,10 @@ public class ScreenFusionTorus extends ScreenInfoContainer<MenuFusionTorus> {
                 menu.blockEntity().module.getRecipe() instanceof FusionRecipe f ? f : null;
         if (recipe != null) {
             GUIElements.drawHoveringTextRecipe(
-                    graphics,
-                    this.font,
-                    toComponents(recipe.print()),
-                    mouseX,
-                    mouseY,
-                    this.width,
-                    this.height);
+                    graphics, font, recipe.print(), mouseX, mouseY, width, height);
         } else {
             graphics.setTooltipForNextFrame(
-                    this.font,
+                    font,
                     Component.translatable("gui.recipe.setRecipe").withStyle(ChatFormatting.YELLOW),
                     mouseX,
                     mouseY);

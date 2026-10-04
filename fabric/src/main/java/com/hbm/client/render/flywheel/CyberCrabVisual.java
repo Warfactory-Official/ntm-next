@@ -139,7 +139,6 @@ public final class CyberCrabVisual extends HbmDynamicEntityVisual<EntityCyberCra
                 entity.isPassenger() || !entity.isAlive()
                         ? 0F
                         : entity.walkAnimation.speed(partialTick);
-
         float swing = -(Mth.cos(walkPosition * 0.6662F * 2F) * 0.4F) * walkSpeed * 1.5F;
         if (visible
                 && lastPose.equals(pose)

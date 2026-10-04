@@ -15,7 +15,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 public class BeamPronter {
-
     private static final float LINE_WIDTH = 1F;
 
     public static void prontBeam(

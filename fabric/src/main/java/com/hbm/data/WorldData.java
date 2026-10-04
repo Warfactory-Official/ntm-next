@@ -25,7 +25,6 @@ public final class WorldData {
             METEORS.bool("enable_strikes", true);
     public static final DataGroups.Param<Boolean> ENABLE_METEOR_SHOWERS =
             METEORS.bool("enable_showers", true);
-
     public static final DataGroups.Param<Boolean> ENABLE_METEOR_TAILS =
             METEORS.bool("enable_tails", true);
     public static final DataGroups.Param<Boolean> ENABLE_SPECIAL_METEORS =
@@ -58,7 +57,6 @@ public final class WorldData {
             WORLDGEN.bool("coltan_spawn", false);
     public static final DataGroups.Param<Boolean> NETHER_PLUTONIUM =
             WORLDGEN.bool("nether_plutonium", false);
-
     public static final Codec<DataGroups.Param<Boolean>> WORLDGEN_SWITCH =
             Codec.STRING.comapFlatMap(
                     key ->

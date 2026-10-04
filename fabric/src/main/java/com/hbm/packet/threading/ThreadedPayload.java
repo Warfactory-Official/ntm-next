@@ -17,9 +17,7 @@ import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public abstract class ThreadedPayload implements CustomPacketPayload {
-
     int wirePrefixLen;
-
     private volatile ByteBuf compiledBuffer;
     private volatile ByteBuf compressedBuffer;
     private volatile ByteBuf uncompressedBuffer;

@@ -2,7 +2,10 @@
   "type": "minecraft:smelting",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": "hbm:rag_damp",
+  "ingredient": {
+    "neoforge:ingredient_type": "hbm:recipe_input",
+    "base": "hbm:rag_damp"
+  },
   "result": {
     "id": "hbm:rag"
   }

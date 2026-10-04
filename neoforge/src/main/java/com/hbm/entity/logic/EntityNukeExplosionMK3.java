@@ -9,14 +9,15 @@ import com.hbm.advancement.AwardRegions;
 import com.hbm.advancement.DetonationTrigger;
 import com.hbm.advancement.HbmCriteria;
 import com.hbm.config.BombConfig;
+import com.hbm.config.NeoForgeHbmConfig;
 import com.hbm.entity.ModEntities;
 import com.hbm.explosion.ExplosionFleija;
 import com.hbm.explosion.ExplosionHurtUtil;
 import com.hbm.explosion.ExplosionNukeGeneric;
 import com.hbm.explosion.ExplosionSolinium;
 import com.hbm.handler.threading.TargetPoint;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.PlasmaBlastPayload;
-import com.hbm.platform.Services;
 import com.hbm.saveddata.satellites.SatelliteDetector;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ChunkUtil;
@@ -35,7 +36,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityNukeExplosionMK3 extends EntityExplosionChunkloading {
-
     public static Map<ATEntry, Long> at = new HashMap<>();
     public int age = 0;
     public int destructionRange = 0;
@@ -96,7 +96,7 @@ public class EntityNukeExplosionMK3 extends EntityExplosionChunkloading {
                                 15.0F,
                                 0.7F + world.getRandom().nextFloat() * 0.2F);
 
-                        Services.NETWORK.sendToAllAround(
+                        PacketWire.sendToAllAround(
                                 new PlasmaBlastPayload(ix, iy, iz, 0.0F, 0.75F, 1.0F, 0F, 0F, 7.5F),
                                 new TargetPoint(server, ix, iy, iz, 150));
                     }
@@ -122,7 +122,7 @@ public class EntityNukeExplosionMK3 extends EntityExplosionChunkloading {
                 AwardRegions.inLevel(
                         server, p -> HbmCriteria.detonation(p, DetonationTrigger.Kind.NUKE));
             }
-            if (!level().isClientSide() && Services.CONFIG.runtime().extendedLogging())
+            if (!level().isClientSide() && NeoForgeHbmConfig.runtime().extendedLogging())
                 NuclearTech.LOGGER.info(
                         "[NUKE] Initialized mk3 explosion at {} / {} / {} with strength {}!",
                         getX(),
@@ -146,7 +146,6 @@ public class EntityNukeExplosionMK3 extends EntityExplosionChunkloading {
 
         if (!level().isClientSide())
             for (int i = 0; i < this.speed; i++) {
-
                 if (extType == 0 && expl.update()) {
                     this.discard();
                 }

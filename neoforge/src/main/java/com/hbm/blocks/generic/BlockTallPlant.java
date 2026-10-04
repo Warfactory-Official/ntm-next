@@ -102,7 +102,6 @@ public class BlockTallPlant extends DoublePlantBlock implements BonemealableBloc
             BlockPos above = pos.above();
             BlockState crown = level.getBlockState(above);
             if (crown.is(this) && crown.getValue(HALF) == DoubleBlockHalf.UPPER) {
-
                 level.setBlock(
                         above,
                         Blocks.AIR.defaultBlockState(),
@@ -154,7 +153,6 @@ public class BlockTallPlant extends DoublePlantBlock implements BonemealableBloc
             ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         if (!variant.grows) return;
         BlockPos lower = lower(state, pos);
-
         placeAt(
                 level,
                 variant.next().defaultBlockState(),

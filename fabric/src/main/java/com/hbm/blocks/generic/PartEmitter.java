@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityPartEmitter;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.interfaces.IToolable;
-import com.hbm.tileentity.BlockEntityPartEmitter;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

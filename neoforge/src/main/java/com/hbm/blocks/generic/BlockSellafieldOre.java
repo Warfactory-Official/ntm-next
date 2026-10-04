@@ -9,7 +9,6 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -29,7 +28,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.jspecify.annotations.Nullable;
 
 public class BlockSellafieldOre extends BlockSellafieldSlaked {
-
     public static final MapCodec<BlockSellafieldOre> CODEC =
             simpleCodec(p -> new BlockSellafieldOre(p, null, 0, 0));
 

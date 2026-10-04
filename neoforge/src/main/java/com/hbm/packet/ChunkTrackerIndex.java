@@ -3,8 +3,8 @@
 
 package com.hbm.packet;
 
+import com.hbm.blockentity.Synced;
 import com.hbm.packet.toclient.UnitPayload;
-import com.hbm.tileentity.Synced;
 import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -116,7 +116,6 @@ public final class ChunkTrackerIndex {
             players.add(player);
             if (players.size() == 1) watching(level, chunkKey, true);
         }
-
         BeSyncTable.chunkSent(level, player, chunkKey);
     }
 
@@ -223,7 +222,6 @@ public final class ChunkTrackerIndex {
                 var held = chunks.iterator();
                 while (held.hasNext()) {
                     long key = held.nextLong();
-
                     if (!player.getChunkTrackingView()
                             .contains(ChunkPos.getX(key), ChunkPos.getZ(key))) {
                         held.remove();

@@ -37,7 +37,6 @@ public class LargeOfficePiece extends NtmComponentPiece {
     }
 
     private LargeOfficePiece(BlockPos origin, Direction direction) {
-
         super(
                 HbmStructureTypes.NTM_LARGE_OFFICE_PIECE.get(),
                 0,
@@ -101,7 +100,6 @@ public class LargeOfficePiece extends NtmComponentPiece {
     @Override
     protected void buildAfterTemplate(
             WorldGenLevel level, BoundingBox chunkBB, RandomSource random) {
-
         if (!chunkBB.isInside(this.getWorldPos(6, 1, 1))) return;
         if (random.nextInt(2) == 0) {
             this.generateLoreBook(level, chunkBB, 6, 1, 1, 7, LoreBooks.office(random));
@@ -274,7 +272,6 @@ public class LargeOfficePiece extends NtmComponentPiece {
                         hbmState("filing_cabinet_green")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH),
                         ComponentLoot.OFFICE_TRASH_8);
-
                 out.lockedContainer(
                         6,
                         1,

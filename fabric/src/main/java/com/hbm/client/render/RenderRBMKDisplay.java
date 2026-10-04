@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKDisplay;
+import com.hbm.blockentity.machine.rbmk.RBMKColumn;
 import com.hbm.blocks.machine.rbmk.RBMKMiniPanelBase;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKDisplay;
-import com.hbm.tileentity.machine.rbmk.RBMKColumn;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -21,7 +21,6 @@ import org.jspecify.annotations.Nullable;
 public class RenderRBMKDisplay
         implements BlockEntityRenderer<BlockEntityRBMKDisplay, RenderRBMKDisplay.State>,
                 ConcurrentRenderStateExtraction {
-
     @Override
     public State createRenderState() {
         return new State();

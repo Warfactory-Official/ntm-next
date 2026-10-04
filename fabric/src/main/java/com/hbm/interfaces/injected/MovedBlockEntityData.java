@@ -6,7 +6,6 @@ package com.hbm.interfaces.injected;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public interface MovedBlockEntityData {
-
     void hbm$captureFrom(BlockEntity source);
 
     void hbm$restoreCarried();

@@ -4,6 +4,7 @@
 package com.hbm.mixin;
 
 import com.hbm.interfaces.injected.IChunkExtension;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,5 +42,32 @@ public abstract class MixinChunkAccess implements IChunkExtension {
     public void hbm$setCoreIndex(long @Nullable [] entries, int size) {
         this.hbm$coreIndex = entries;
         this.hbm$coreIndexSize = size;
+    }
+
+    @Unique private long @Nullable [] hbm$pendingFallerPositions;
+    @Unique private BlockState @Nullable [] hbm$pendingFallerStates;
+    @Unique private int hbm$pendingFallerSize;
+
+    @Override
+    public long @Nullable [] hbm$pendingFallerPositions() {
+        return hbm$pendingFallerPositions;
+    }
+
+    @Override
+    public BlockState @Nullable [] hbm$pendingFallerStates() {
+        return hbm$pendingFallerStates;
+    }
+
+    @Override
+    public int hbm$pendingFallerSize() {
+        return hbm$pendingFallerSize;
+    }
+
+    @Override
+    public void hbm$setPendingFallers(
+            long @Nullable [] positions, BlockState @Nullable [] states, int size) {
+        hbm$pendingFallerPositions = positions;
+        hbm$pendingFallerStates = states;
+        hbm$pendingFallerSize = size;
     }
 }

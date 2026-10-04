@@ -25,7 +25,6 @@ public final class RegistryUtil {
     }
 
     public static <T> Identifier keyOrThrow(Registry<T> registry, T value) {
-
         return registry.getResourceKey(value).orElseThrow().identifier();
     }
 

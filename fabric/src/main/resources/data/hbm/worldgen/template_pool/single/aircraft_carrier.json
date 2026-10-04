@@ -2,7 +2,10 @@
   "elements": [
     {
       "element": {
-        "element_type": "minecraft:single_pool_element",
+        "conductors": [
+          4947802447884
+        ],
+        "element_type": "hbm:conductor_template",
         "location": "hbm:aircraft_carrier",
         "processors": "hbm:no_rules",
         "projection": "rigid"

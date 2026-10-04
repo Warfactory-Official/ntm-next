@@ -3,9 +3,9 @@
 
 package com.hbm.compat.computercraft.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineTurbine;
 import com.hbm.compat.computercraft.SteamTypes;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
-import com.hbm.tileentity.machine.BlockEntityMachineTurbine;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class SmallTurbinePeripheral extends TurbinePeripheral<BlockEntityMachineTurbine> {

@@ -3,13 +3,13 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineSuperComputer;
 import com.hbm.inventory.container.MenuMachineSuperComputer;
 import com.hbm.inventory.recipes.SuperComputerRecipes;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachineSuperComputer;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -167,7 +167,7 @@ public class ScreenMachineSuperComputer extends ScreenInfoContainer<MenuMachineS
             return;
         }
         List<Component> lines = new ArrayList<>();
-        for (String line : recipe.print()) lines.add(Component.literal(line));
+        lines.addAll(recipe.print());
         GUIElements.drawHoveringTextRecipe(graphics, font, lines, mouseX, mouseY, width, height);
     }
 }

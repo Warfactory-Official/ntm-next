@@ -3,9 +3,9 @@
 
 package com.hbm.compat.computercraft.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGauge.GaugeUnit;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGauge;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKGauge.GaugeUnit;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKGauge;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.LinkedHashMap;
 import java.util.Map;

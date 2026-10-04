@@ -3,11 +3,11 @@
 
 package com.hbm.client.model;
 
+import com.hbm.blockentity.DoorDecl;
 import com.hbm.blocks.generic.BlockDoorGeneric;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.render.DoorRenderer;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.DoorDecl;
 import com.hbm.util.Facing;
 import com.mojang.math.OctahedralGroup;
 import java.util.List;
@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public record DoorModel() implements SimpleBlockModel {
-
     public static final String SHEET_SLOT = "sheet";
 
     @Override
@@ -36,7 +35,6 @@ public record DoorModel() implements SimpleBlockModel {
 
         public static Root of(BlockState state) {
             BlockDoorGeneric block = (BlockDoorGeneric) state.getBlock();
-
             return new Root(
                     BlockModel.base(block),
                     block.type.getModel(),
@@ -51,17 +49,13 @@ public record DoorModel() implements SimpleBlockModel {
                 ResolvedModel carrier,
                 TextureSlots slots) {
             if (decl.getStaticParts().length == 0) return new QuadCollection.Builder().build();
-
             Material.Baked material =
                     BlockModel.slot(baker, carrier, slots, SHEET_SLOT + textureSlot());
-
             OctahedralGroup facing =
                     Facing.yawRotation(state.getValue(BlockMultiblockCore.FACING), 90);
-
             OctahedralGroup rotation = facing.compose(Facing.ry(decl.getStaticYaw()));
             float[] offset = decl.getStaticOffset();
             DoorRenderer sedna = decl.getSEDNARenderer();
-
             ObjUnbakedGeometry.Overrides overrides =
                     sedna != null && !sedna.culls()
                             ? new ObjUnbakedGeometry.Overrides(

@@ -7,7 +7,6 @@ import com.hbm.main.Polaroid;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemAMSCore extends ItemCustomLore {
-
     private final int multiplier;
     private final boolean foilOnBalefireDay;
 

@@ -4,16 +4,71 @@
 
 package com.hbm.render.anim;
 
+import com.hbm.items.weapon.sedna.ItemGunBaseNT;
+import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import java.util.Arrays;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.Nullable;
 
 public class HbmAnimations {
-
     public static final Animation[][] hotbar = new Animation[9][8];
+
+    private static @Nullable Player gunPlayer;
+    private static @Nullable Item gunItem;
+    private static int gunSlot = -1;
+    private static GunAnimation gunCue = GunAnimation.EQUIP;
+    private static long gunCueTick;
+    private static GunAnimation[] extraGunCues = new GunAnimation[0];
+    private static long[] extraGunCueTicks = new long[0];
+
+    public static void updateHeldGun(@Nullable Player player) {
+        if (player == null) {
+            gunPlayer = null;
+            gunItem = null;
+            gunSlot = -1;
+            return;
+        }
+        Item item = player.getMainHandItem().getItem();
+        int slot = player.getInventory().getSelectedSlot();
+        if (gunPlayer == player && gunItem == item && gunSlot == slot) return;
+        gunPlayer = player;
+        gunItem = item;
+        gunSlot = slot;
+        int extra = item instanceof ItemGunBaseNT gun ? gun.getConfigCount() - 1 : 0;
+        if (extraGunCues.length != extra) {
+            extraGunCues = new GunAnimation[extra];
+            extraGunCueTicks = new long[extra];
+        }
+        gunCue = GunAnimation.EQUIP;
+        gunCueTick = GameTime.ticks();
+        Arrays.fill(extraGunCues, GunAnimation.EQUIP);
+        Arrays.fill(extraGunCueTicks, gunCueTick);
+    }
+
+    public static void startGunAnimation(Player player, GunAnimation type, int index) {
+        updateHeldGun(player);
+        if (index == 0) {
+            gunCue = type;
+            gunCueTick = GameTime.ticks();
+        } else {
+            extraGunCues[index - 1] = type;
+            extraGunCueTicks[index - 1] = GameTime.ticks();
+        }
+    }
+
+    public static GunAnimation getGunAnimation(int index) {
+        return index == 0 ? gunCue : extraGunCues[index - 1];
+    }
+
+    public static int getGunAnimationTimer(int index) {
+        return (int) (GameTime.ticks() - (index == 0 ? gunCueTick : extraGunCueTicks[index - 1]));
+    }
 
     public static void expireFinished() {
         long now = GameTime.millis();
@@ -108,13 +163,9 @@ public class HbmAnimations {
     }
 
     public static class Animation {
-
         public String key;
-
         public long startMillis;
-
         public BusAnimation animation;
-
         public boolean holdLastFrame = false;
 
         public Animation(String key, long startMillis, BusAnimation animation) {

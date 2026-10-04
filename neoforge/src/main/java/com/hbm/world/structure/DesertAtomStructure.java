@@ -36,7 +36,6 @@ public class DesertAtomStructure extends Structure {
         ChunkPos chunkPos = context.chunkPos();
         int x = chunkPos.getBlockX(8);
         int z = chunkPos.getBlockZ(8);
-
         int y =
                 context.chunkGenerator()
                         .getBaseHeight(
@@ -50,9 +49,8 @@ public class DesertAtomStructure extends Structure {
                 context.chunkGenerator()
                         .getBaseColumn(
                                 x + 20, z + 16, context.heightAccessor(), context.randomState());
-        if (!column.getBlock(y).isAir()) return Optional.empty();
-        if (!LocationIsValidSpawn.isValidGround(
-                column.getBlock(y - 1), column.getBlock(y - 2), true)) {
+        if (!column.getBlock(y).isAir()
+                || !LocationIsValidSpawn.isDryGround(column.getBlock(y - 1))) {
             return Optional.empty();
         }
 

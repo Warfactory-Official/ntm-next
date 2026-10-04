@@ -39,7 +39,6 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -84,13 +83,11 @@ public final class ClientEffects {
                 spawnMushroom(level, x, y, z, 30, 6.5F, 2F, 65F, 350F);
                 spawnDebris(level, x, y, z, 25, 16, 50, 1.25F, 3F, -2F);
             }
-
             case RBMKMush -> spawnRBMKMush(level, x, y, z, scale);
             case GasFlame -> spawnGasFlame(level, x, y, z, 0.05D);
             case GasFlameFlare -> spawnGasFlame(level, x, y, z, 0.15D);
             case GasFlameVent -> spawnGasFlame(level, x, y, z, 0D);
             case AnnihilatorFlame -> spawnAnnihilatorFlame(level, x, y, z);
-
             case Hadron ->
                     level.addParticle(HbmParticles.HADRON.get(), true, false, x, y, z, 0D, 0D, 0D);
             case DeadLeaf -> spawnDeadLeaf(level, x, y, z);
@@ -225,10 +222,8 @@ public final class ClientEffects {
         if (bj) {
             ix += -0.3125D * sin;
             iz += -0.3125D * cos;
-
             iy = player.getY() + 1.62D + 0.12D - 0.9375D;
         } else {
-
             iy = player.getY();
         }
 
@@ -378,7 +373,6 @@ public final class ClientEffects {
                     distance <= soundRange * 0.4
                             ? ModSounds.WEAPON_EXPLOSION_LARGE_NEAR
                             : ModSounds.WEAPON_EXPLOSION_LARGE_FAR;
-
             mc.getSoundManager()
                     .playDelayed(
                             new SimpleSoundInstance(
@@ -477,7 +471,6 @@ public final class ClientEffects {
             double mX = horizontal * Mth.cos(yaw);
             double mZ = -horizontal * Mth.sin(yaw);
             DebrisChunk chunk = ParticleDebris.carve(client, centre, size, retry, rand);
-
             Minecraft mc = Minecraft.getInstance();
             CompletableFuture.supplyAsync(() -> DebrisMesh.bake(chunk), Util.backgroundExecutor())
                     .whenComplete(

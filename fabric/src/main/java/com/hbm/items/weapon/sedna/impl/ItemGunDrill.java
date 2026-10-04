@@ -4,7 +4,6 @@
 package com.hbm.items.weapon.sedna.impl;
 
 import com.hbm.api.energymk2.IBatteryItem;
-import com.hbm.config.GunVisualConfig;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.machine.IFluidContainerItem;
@@ -89,9 +88,9 @@ public class ItemGunDrill extends ItemGunBaseNT implements IFluidContainerItem, 
     public int fill(ItemStack stack, Fluid type, int amount, int pressure) {
         if (!acceptsFluid(type, stack)) return 0;
         MagazineLiquidEngine engine = engine(stack);
-        int fill = engine.getAmount(stack, null);
-        int toFill = Math.min(amount, 50);
-        toFill = Math.min(toFill, engine.getCapacity(stack) - fill);
+        int capacity = engine.getCapacity(stack);
+        int fill = Math.clamp(engine.getAmount(stack, null), 0, capacity);
+        int toFill = Math.clamp(amount, 0, Math.min(50, capacity - fill));
         engine.setAmount(stack, fill + toFill);
         return toFill;
     }

@@ -3,13 +3,13 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.bomb.BlockEntityLaunchTable;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.handler.MissileStruct;
 import com.hbm.items.weapon.ItemCustomMissilePart.PartSize;
 import com.hbm.items.weapon.ItemCustomMissilePart;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.bomb.BlockEntityLaunchTable;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -67,7 +67,6 @@ public final class RenderLaunchTable
     @Override
     public AABB getRenderBoundingBox(BlockEntityLaunchTable table) {
         BlockPos pos = table.getBlockPos();
-
         return new AABB(
                 pos.getX() - 5,
                 pos.getY(),
@@ -90,7 +89,6 @@ public final class RenderLaunchTable
         state.padSize = table.padSize;
         state.missileValid = table.missileValid;
         state.parts = table.loadedMissile;
-
         if (state.parts.fuselage() != null) table.height = (int) state.parts.height();
         state.height = table.height;
     }
@@ -141,7 +139,6 @@ public final class RenderLaunchTable
             if (i < split) {
                 draw(poseStack, collector, light, scaffoldType, base);
             } else if (i > split) {
-
                 draw(poseStack, collector, light, scaffoldType, empty);
             } else if (state.missileValid) {
                 draw(poseStack, collector, light, connectorType, connector);

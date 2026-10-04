@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Gui.class)
 public abstract class MixinGui {
-
     @Inject(method = "extractRenderState", at = @At("HEAD"))
     private void hbm$beginManualHover(CallbackInfo ci) {
         QMAWClient.beginFrame();

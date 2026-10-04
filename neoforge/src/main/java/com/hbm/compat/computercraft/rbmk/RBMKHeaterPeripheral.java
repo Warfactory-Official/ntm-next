@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKHeater;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKHeater;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class RBMKHeaterPeripheral extends RBMKColumnPeripheral<BlockEntityRBMKHeater> {

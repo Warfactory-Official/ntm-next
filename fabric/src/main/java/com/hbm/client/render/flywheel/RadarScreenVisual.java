@@ -4,10 +4,10 @@
 package com.hbm.client.render.flywheel;
 
 import com.hbm.api.entity.RadarEntry;
+import com.hbm.blockentity.machine.BlockEntityMachineRadarScreen;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.gui.ScreenMachineRadar;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityMachineRadarScreen;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
 import dev.engine_room.flywheel.api.instance.Instance;
@@ -149,7 +149,6 @@ public final class RadarScreenVisual
     public void updateMovingParts(float partialTick) {
         boolean linked = blockEntity.linked;
         float barOffset = ((level.getGameTime() % BAR_PERIOD) + partialTick) / BAR_SPEED;
-
         int staticV =
                 STATIC_V
                         + Math.floorMod(HashCommon.mix(GameTime.now() ^ pos.asLong()), STATIC_ROWS);

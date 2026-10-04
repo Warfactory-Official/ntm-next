@@ -143,7 +143,6 @@ public final class BulkSectionUpdates implements AutoCloseable {
             while ((work = captures.pollFirst()) != null) finish(work);
             while ((work = completed.pollFirst()) != null) finish(work);
         }
-
         SectionGeneration.release();
     }
 

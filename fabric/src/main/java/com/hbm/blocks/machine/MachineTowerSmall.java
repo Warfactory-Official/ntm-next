@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityTowerSmall;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -11,7 +12,6 @@ import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
-import com.hbm.tileentity.machine.BlockEntityTowerSmall;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,7 +25,6 @@ public class MachineTowerSmall extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
 
     private static final int[] DIMENSIONS = {18, 0, 2, 2, 2, 2};
-
     private static final int PORT_REACH = 2;
 
     public MachineTowerSmall(Properties props) {

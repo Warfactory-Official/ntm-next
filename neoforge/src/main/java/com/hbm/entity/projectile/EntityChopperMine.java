@@ -27,7 +27,6 @@ import net.minecraft.world.phys.Vec3;
 public class EntityChopperMine extends Entity {
 
     public int timer = 0;
-
     public Entity shooter;
 
     public EntityChopperMine(EntityType<? extends EntityChopperMine> type, Level level) {

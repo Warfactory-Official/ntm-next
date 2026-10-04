@@ -11,7 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 public interface IPersistentInfoProvider {
-
     static Component tankLine(FluidStackNTM stack, int capacity) {
         return Component.literal(
                         stack.amount()

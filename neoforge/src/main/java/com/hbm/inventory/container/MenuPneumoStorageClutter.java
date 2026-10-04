@@ -3,11 +3,10 @@
 
 package com.hbm.inventory.container;
 
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageClutter;
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageClutter;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ShulkerBoxSlot;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class MenuPneumoStorageClutter extends BlockEntityMenu<BlockEntityPneumoStorageClutter> {

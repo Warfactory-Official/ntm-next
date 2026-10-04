@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.bomb.BlockEntityNukeBalefire;
 import com.hbm.inventory.container.MenuNukeFstbmb;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.bomb.BlockEntityNukeBalefire;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -27,7 +27,6 @@ public class ScreenNukeFstbmb extends ScreenInfoContainer<MenuNukeFstbmb> {
     private static final int START_X = 142, START_Y = 35, START_SIZE = 18;
     private static final int EGG_X = 19, EGG_Y = 90, EGG_W = 30, EGG_H = 16;
     private static final int BATTERY_X = 88, BATTERY_Y = 93, BATTERY_W = 18, BATTERY_H = 10;
-
     private static final float CLOCK_SCALE = 0.75F;
     private static final int CLOCK_CENTRE = 69, CLOCK_Y = 95;
 
@@ -53,7 +52,6 @@ public class ScreenNukeFstbmb extends ScreenInfoContainer<MenuNukeFstbmb> {
         field.setBordered(false);
         field.setMaxLength(3);
         field.setValue(String.valueOf(menu.blockEntity().timer / 20));
-
         field.setResponder(this::commit);
         addRenderableWidget(field);
     }
@@ -67,8 +65,7 @@ public class ScreenNukeFstbmb extends ScreenInfoContainer<MenuNukeFstbmb> {
                         BlockEntityNukeBalefire.MAX_SECONDS);
         CompoundTag data = new CompoundTag();
         data.putInt("timer", seconds);
-        Services.NETWORK.sendToServer(
-                new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
     }
 
     @Override
@@ -84,8 +81,7 @@ public class ScreenNukeFstbmb extends ScreenInfoContainer<MenuNukeFstbmb> {
                         START_SIZE)) {
             CompoundTag data = new CompoundTag();
             data.putBoolean("start", true);
-            Services.NETWORK.sendToServer(
-                    new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
             playClick();
             return true;
         }

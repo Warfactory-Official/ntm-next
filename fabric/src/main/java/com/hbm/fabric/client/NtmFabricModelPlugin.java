@@ -25,7 +25,6 @@ public final class NtmFabricModelPlugin implements ModelLoadingPlugin {
 
     @Override
     public void initialize(Context ctx) {
-
         PneumoTubeModel.FACTORY = FabricPneumoTubeModel::new;
         FoundryTankModel.FACTORY = FabricFoundryTankModel::new;
         ConveyorChuteModel.FACTORY = FabricConveyorChuteModel::new;

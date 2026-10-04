@@ -3,8 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.turret.BlockEntityTurretJeremy;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.turret.BlockEntityTurretJeremy;
 
 public class RenderTurretJeremy extends RenderTurretBase<BlockEntityTurretJeremy> {
 

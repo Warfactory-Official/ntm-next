@@ -1,0 +1,17 @@
+{
+  "actions": [
+    {
+      "type": "potion_sickness",
+      "seconds": 5
+    },
+    {
+      "type": "counter",
+      "amount": -0.5,
+      "counter": "digamma",
+      "operation": "add"
+    }
+  ],
+  "block_when_potion_sick": true,
+  "targets": "hbm:xanax",
+  "trigger": "consume"
+}

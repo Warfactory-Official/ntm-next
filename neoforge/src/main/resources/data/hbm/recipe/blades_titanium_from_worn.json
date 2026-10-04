@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "I": "hbm:blades_titanium",
     "P": "#c:plates/titanium"

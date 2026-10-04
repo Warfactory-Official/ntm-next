@@ -34,7 +34,6 @@ public class BlockSteelScaffold extends Block implements SimpleWaterloggedBlock 
 
     public static final MapCodec<BlockSteelScaffold> CODEC = simpleCodec(BlockSteelScaffold::new);
     public static final EnumProperty<Orient> ORIENT = EnumProperty.create("orient", Orient.class);
-
     private static final VoxelShape Z_THIN = Shapes.box(0D, 0D, 2 / 16D, 1D, 1D, 14 / 16D);
     private static final VoxelShape Y_THIN = Shapes.box(0D, 2 / 16D, 0D, 1D, 14 / 16D, 1D);
     private static final VoxelShape X_THIN = Shapes.box(2 / 16D, 0D, 0D, 14 / 16D, 1D, 1D);

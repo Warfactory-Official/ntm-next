@@ -3,10 +3,10 @@
 
 package com.hbm.fabric.client;
 
-import com.hbm.platform.FabricNetworkService.DatapackSync;
-import com.hbm.platform.FabricNetworkService.PreJoinSync;
-import com.hbm.platform.FabricNetworkService.Registration;
-import com.hbm.platform.FabricNetworkService;
+import com.hbm.platform.FabricNetwork.DatapackSync;
+import com.hbm.platform.FabricNetwork.PreJoinSync;
+import com.hbm.platform.FabricNetwork.Registration;
+import com.hbm.platform.FabricNetwork;
 import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -15,14 +15,14 @@ final class FabricClientNetworkBinder {
 
     private FabricClientNetworkBinder() {}
 
-    static void bind(FabricNetworkService service) {
-        for (Registration<?> r : service.clientboundRegistrations()) {
+    static void bind() {
+        for (Registration<?> r : FabricNetwork.clientbound) {
             register(r);
         }
-        for (PreJoinSync<?> s : service.preJoinSyncs()) {
+        for (PreJoinSync<?> s : FabricNetwork.preJoin) {
             registerPreJoin(s);
         }
-        for (DatapackSync<?> s : service.datapackSyncs()) {
+        for (DatapackSync<?> s : FabricNetwork.datapackSync) {
             registerDatapackSync(s);
         }
     }
@@ -35,8 +35,7 @@ final class FabricClientNetworkBinder {
     private static <T extends CustomPacketPayload> void register(Registration<T> r) {
         ClientPlayNetworking.registerGlobalReceiver(
                 r.type(),
-                (payload, ctx) ->
-                        r.handler().accept(payload, FabricNetworkService.wrap(ctx.player())));
+                (payload, ctx) -> r.handler().accept(payload, FabricNetwork.wrap(ctx.player())));
     }
 
     private static <T extends CustomPacketPayload> void registerPreJoin(PreJoinSync<T> s) {

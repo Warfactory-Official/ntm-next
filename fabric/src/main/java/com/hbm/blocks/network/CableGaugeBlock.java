@@ -3,11 +3,11 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.blockentity.network.BlockEntityCableGauge;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.registration.RegistryHandle;
-import com.hbm.tileentity.network.BlockEntityCableGauge;
 import com.hbm.util.BobMathUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,7 +41,6 @@ public class CableGaugeBlock extends CableConductorBlockBase
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
-
         return defaultBlockState().setValue(FACING, ctx.getNearestLookingDirection().getOpposite());
     }
 

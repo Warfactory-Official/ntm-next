@@ -4,12 +4,12 @@
 package com.hbm.util;
 
 import com.hbm.integration.lithium.LithiumSectionCompat;
-import com.hbm.platform.Services;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 
 public final class SectionMetadata {
-    private static final boolean LITHIUM = Services.PLATFORM.isModLoaded("lithium");
+    private static final boolean LITHIUM = FabricLoader.getInstance().isModLoaded("lithium");
 
     private SectionMetadata() {}
 

@@ -3,13 +3,13 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineArcFurnace;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.BlockEntityMachineArcFurnace;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.ItemTags;
@@ -45,7 +45,6 @@ public class MachineArcFurnace extends BlockMultiblockCore
     @Override
     protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
         MultiblockHandlerXR.visitBox(core, DIMENSIONS, facing, visitor);
-
         Direction rot = facing.getClockWise();
 
         visitor.cell(core.relative(facing, 2).relative(rot), MASK_SOUTH);

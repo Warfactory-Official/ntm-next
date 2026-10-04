@@ -44,7 +44,6 @@ public class SILEXRecipes extends SimpleGenericRecipes<SILEXRecipe> {
             SILEXRecipe result = getOutput(fullStack);
             if (result != null) {
                 SILEXRecipe tiny = new SILEXRecipe(result.getInternalName() + ".tiny");
-
                 tiny.setup(
                         (result.fluidProduced / 900) * 100,
                         result.fluidConsumed,

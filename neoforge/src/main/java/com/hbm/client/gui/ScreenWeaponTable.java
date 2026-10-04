@@ -101,7 +101,6 @@ public class ScreenWeaponTable extends ScreenInfoContainer<MenuWeaponTable> {
         if (minecraft.level == null) return;
         if (previewEntity == null || previewEntity.level() != minecraft.level) {
             previewEntity = new Display.ItemDisplay(EntityTypes.ITEM_DISPLAY, minecraft.level);
-
             previewEntity.setId(PREVIEW_ID);
             previewEntity.setItemTransform(ItemDisplayContext.NONE);
         }

@@ -3,12 +3,12 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.oil.BlockEntityMachineGasFlare;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineGasFlare;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -28,7 +28,6 @@ public class MachineGasFlare extends BlockMultiblockCore
 
     public MachineGasFlare(Properties props) {
         super(props);
-
         this.bounding.add(new AABB(-1.5D, 0D, -1.5D, 1.5D, 3.875D, 1.5D));
         this.bounding.add(new AABB(-0.75D, 3.875D, -0.75D, 0.75D, 9D, 0.75D));
         this.bounding.add(new AABB(-1.5D, 9D, -1.5D, 1.5D, 9.375D, 1.5D));

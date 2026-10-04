@@ -84,17 +84,23 @@ public final class SectionGeometry {
 
     static Mesh mesh(
             BlockStateModel model, BlockState state, @Nullable List<TextureAtlasSprite> sprites) {
+        List<BlockStateModelPart> parts = new ArrayList<>();
+        model.collectParts(RandomSource.create(0), parts);
+        return mesh(parts, state, sprites);
+    }
+
+    static Mesh mesh(
+            List<BlockStateModelPart> parts,
+            BlockState state,
+            @Nullable List<TextureAtlasSprite> sprites) {
         var vertices = new FloatArrayList();
         var normals = new FloatArrayList();
         var layers = new ByteArrayList();
         var surface = new ByteArrayList();
         boolean[] ownBlock = {true};
-        List<BlockStateModelPart> parts = new ArrayList<>();
-        model.collectParts(RandomSource.create(0), parts);
-
         for (var part : parts) {
-            for (int face = -1; face < Direction.values().length; face++) {
-                for (var quad : part.getQuads(face == -1 ? null : Direction.values()[face])) {
+            for (int face = -1; face < Direction.VALUES.length; face++) {
+                for (var quad : part.getQuads(face == -1 ? null : Direction.VALUES[face])) {
                     ownBlock[0] &=
                             QuadLighting.usesOwnBlock(quad.materialInfo())
                                     && quad.materialInfo().tintIndex() == -1
@@ -115,7 +121,6 @@ public final class SectionGeometry {
                 }
             }
         }
-
         float[] data = vertices.toFloatArray();
         boolean contained = true;
         for (int i = 0; i < data.length; i += 5) {
@@ -251,7 +256,12 @@ public final class SectionGeometry {
         var light = new IntArrayList();
         long seed = state.getSeed(pos);
         BlockModelLighter.clearCache();
-
+        Object key = model.complete.createGeometryKey(view, pos, state, RandomSource.create(seed));
+        Cells cells = model.cells(key);
+        if (cells == null) {
+            cells = Cells.of(model.complete, view, pos, state, seed);
+            if (key != null) model.cells(key, cells);
+        }
         var renderer =
                 new ModelBlockRenderer(
                         Minecraft.getInstance().options.ambientOcclusion().get(),
@@ -279,51 +289,19 @@ public final class SectionGeometry {
                     }
                     layers.add((byte) quad.materialInfo().layer().ordinal());
                 };
-        var parts = new ArrayList<BlockStateModelPart>(2);
-        model.complete.collectParts(view, pos, state, RandomSource.create(seed), parts);
-        boolean offset = false;
-        for (var part : parts) {
-            Cells cells = model.cells.get(part);
-            if (cells == null) model.cells.put(part, cells = Cells.of(part, model.complete));
-            offset |= cells != Cells.NONE;
+        for (int i = 0; i < cells.offsets().length; i++) {
+            int cell = cells.offsets()[i];
+            renderer.tesselateBlock(
+                    output,
+                    QuadLighting.dx(cell),
+                    QuadLighting.dy(cell),
+                    QuadLighting.dz(cell),
+                    view,
+                    pos.offset(QuadLighting.dx(cell), QuadLighting.dy(cell), QuadLighting.dz(cell)),
+                    state,
+                    cells.models()[i],
+                    seed);
         }
-        if (!offset) {
-            renderer.tesselateBlock(output, 0, 0, 0, view, pos, state, model.complete, seed);
-        } else {
-            for (var part : parts) {
-                Cells cells = model.cells.get(part);
-                if (cells == Cells.NONE) {
-                    renderer.tesselateBlock(
-                            output,
-                            0,
-                            0,
-                            0,
-                            view,
-                            pos,
-                            state,
-                            new CellModel(List.of(part), model.complete),
-                            seed);
-                    continue;
-                }
-                for (int i = 0; i < cells.offsets().length; i++) {
-                    int cell = cells.offsets()[i];
-                    renderer.tesselateBlock(
-                            output,
-                            QuadLighting.dx(cell),
-                            QuadLighting.dy(cell),
-                            QuadLighting.dz(cell),
-                            view,
-                            pos.offset(
-                                    QuadLighting.dx(cell),
-                                    QuadLighting.dy(cell),
-                                    QuadLighting.dz(cell)),
-                            state,
-                            cells.models()[i],
-                            seed);
-                }
-            }
-        }
-
         return new Prepared(
                 new Mesh(
                         vertices.toFloatArray(),
@@ -336,12 +314,52 @@ public final class SectionGeometry {
     }
 
     record Cells(int[] offsets, BlockStateModel[] models) {
-        static final Cells NONE = new Cells(new int[0], new BlockStateModel[0]);
+        static Cells of(
+                BlockStateModel complete,
+                BlockAndTintGetter view,
+                BlockPos pos,
+                BlockState state,
+                long seed) {
+            var parts = new ArrayList<BlockStateModelPart>(2);
+            complete.collectParts(view, pos, state, RandomSource.create(seed), parts);
+            boolean offset = false;
+            for (var part : parts) {
+                if (hasOffset(part)) {
+                    offset = true;
+                    break;
+                }
+            }
+            if (!offset)
+                return new Cells(
+                        new int[] {0}, new BlockStateModel[] {new CellModel(parts, complete)});
+            var offsets = new IntArrayList();
+            var models = new ArrayList<BlockStateModel>();
+            for (var part : parts) {
+                Cells cells = of(part, complete);
+                offsets.addElements(offsets.size(), cells.offsets());
+                java.util.Collections.addAll(models, cells.models());
+            }
+            return new Cells(offsets.toIntArray(), models.toArray(BlockStateModel[]::new));
+        }
 
-        static Cells of(BlockStateModelPart part, BlockStateModel complete) {
+        private static boolean hasOffset(BlockStateModelPart part) {
+            for (int face = -1; face < Direction.VALUES.length; face++) {
+                Direction cull = face == -1 ? null : Direction.VALUES[face];
+                for (var quad : part.getQuads(cull)) {
+                    if (QuadLighting.isOffset(quad.materialInfo().hbm$lightOrigin())) return true;
+                }
+            }
+            return false;
+        }
+
+        private static Cells of(BlockStateModelPart part, BlockStateModel complete) {
+            if (!hasOffset(part))
+                return new Cells(
+                        new int[] {0},
+                        new BlockStateModel[] {new CellModel(List.of(part), complete)});
             var builders = new Int2ObjectLinkedOpenHashMap<QuadCollection.Builder>();
-            for (int face = -1; face < Direction.values().length; face++) {
-                Direction cull = face == -1 ? null : Direction.values()[face];
+            for (int face = -1; face < Direction.VALUES.length; face++) {
+                Direction cull = face == -1 ? null : Direction.VALUES[face];
                 for (var quad : part.getQuads(cull)) {
                     int origin = quad.materialInfo().hbm$lightOrigin();
                     int cell = QuadLighting.isOffset(origin) ? origin : 0;
@@ -352,7 +370,6 @@ public final class SectionGeometry {
                     else builder.addCulledFace(cull, moved);
                 }
             }
-            if (!builders.keySet().intStream().anyMatch(cell -> cell != 0)) return NONE;
             int[] offsets = builders.keySet().toIntArray();
             BlockStateModel[] models = new BlockStateModel[offsets.length];
             for (int i = 0; i < offsets.length; i++) {
@@ -463,9 +480,7 @@ public final class SectionGeometry {
         int[] colors = new int[model.mesh.layers.length * 4];
         int[] next = {0};
         var view = new ColorView(state, lighting);
-
         BlockModelLighter.clearCache();
-
         var renderer =
                 new ModelBlockRenderer(false, false, Minecraft.getInstance().getBlockColors());
         renderer.tesselateBlock(
@@ -480,7 +495,6 @@ public final class SectionGeometry {
                 state,
                 model.complete,
                 0);
-
         if (next[0] != colors.length)
             throw new IllegalStateException(
                     state + " changed its static quad count while lighting");

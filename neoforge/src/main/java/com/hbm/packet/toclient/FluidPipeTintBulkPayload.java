@@ -52,8 +52,7 @@ public final class FluidPipeTintBulkPayload extends ThreadedPayload {
         if (player == null) return;
         Level level = player.level();
         Fluid fluid = BuiltInRegistries.FLUID.byId(payload.fluidId);
-        FluidPipeTintData.setAll(
-                level.dimension(), payload.posKeys, fluid == null ? Fluids.EMPTY : fluid);
+        FluidPipeTintData.setAll(level, payload.posKeys, fluid == null ? Fluids.EMPTY : fluid);
         LongOpenHashSet dirtySections = new LongOpenHashSet();
         for (long key : payload.posKeys) {
             BlockPos pos = BlockPos.of(key);

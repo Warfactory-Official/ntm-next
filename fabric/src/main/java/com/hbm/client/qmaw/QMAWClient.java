@@ -3,14 +3,13 @@
 
 package com.hbm.client.qmaw;
 
-import com.hbm.client.ModifierKeys;
-import com.hbm.client.ToolKeybindHandler;
+import com.hbm.client.Keybinds;
 import com.hbm.items.machine.ItemFluidIcon;
+import com.hbm.platform.FabricKeybindPlatform;
 import com.hbm.qmaw.QMAWCatalog;
 import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -20,11 +19,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 public final class QMAWClient {
-    public static final KeyMapping OPEN_MANUAL =
-            new KeyMapping("key.hbm.qmaw", GLFW.GLFW_KEY_F1, ToolKeybindHandler.CATEGORY);
     private static @Nullable Screen hoverScreen;
     private static @Nullable Identifier hovered;
     private static @Nullable QMAWCatalog hoverCatalog;
@@ -56,7 +52,6 @@ public final class QMAWClient {
     }
 
     public static void fluidTooltip(Fluid fluid, Consumer<Component> lines) {
-
         tooltip(ItemFluidIcon.make(fluid), lines);
     }
 
@@ -65,9 +60,8 @@ public final class QMAWClient {
         Identifier page = catalog.forStack(stack);
         if (page != null)
             lines.accept(
-                    Component.translatable("qmaw.tab", OPEN_MANUAL.getTranslatedKeyMessage())
+                    Component.translatable("qmaw.tab", Keybinds.MANUAL.getTranslatedKeyMessage())
                             .withStyle(ChatFormatting.YELLOW));
-
         if (Thread.currentThread() == extracting && hoverScreen != null) {
             hovered = page;
             hoverCatalog = catalog;
@@ -75,18 +69,22 @@ public final class QMAWClient {
     }
 
     public static boolean key(Screen screen, KeyEvent event) {
-        return OPEN_MANUAL.matches(event) && open(screen);
+        return Keybinds.MANUAL.matches(event)
+                && FabricKeybindPlatform.modifierMatches(Keybinds.MANUAL, event.modifiers())
+                && open(screen);
     }
 
     public static boolean mouse(Screen screen, MouseButtonEvent event) {
-        return OPEN_MANUAL.matchesMouse(event) && open(screen);
+        return Keybinds.MANUAL.matchesMouse(event)
+                && FabricKeybindPlatform.modifierMatches(Keybinds.MANUAL, event.modifiers())
+                && open(screen);
     }
 
     private static boolean open(Screen screen) {
         if (screen != hoverScreen
                 || screen instanceof ScreenQMAW
                 || hovered == null
-                || ModifierKeys.leftShiftHeld()) return false;
+                || Keybinds.PRESENTATION.isDown()) return false;
         QMAWCatalog catalog = catalog();
         if (catalog != hoverCatalog) return false;
         Identifier page = hovered;

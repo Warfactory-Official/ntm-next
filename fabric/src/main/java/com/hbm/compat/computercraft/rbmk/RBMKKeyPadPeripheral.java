@@ -3,9 +3,9 @@
 
 package com.hbm.compat.computercraft.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKKeyPad.KeyUnit;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKKeyPad;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKKeyPad.KeyUnit;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKKeyPad;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.LinkedHashMap;
 import java.util.Map;

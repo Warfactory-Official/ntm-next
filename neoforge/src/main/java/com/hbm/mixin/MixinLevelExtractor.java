@@ -9,6 +9,7 @@ import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.client.render.CullableRenderer;
 import com.hbm.client.render.MultiblockCrumbling;
 import com.hbm.client.render.MultiblockOutline;
+import com.hbm.client.render.flywheel.FalloutRainVisuals;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -16,8 +17,10 @@ import com.llamalad7.mixinextras.sugar.Local;
 import java.util.List;
 import java.util.SortedSet;
 import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.extract.LevelExtractor;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.level.BlockBreakingRenderState;
@@ -43,6 +46,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinLevelExtractor {
     @Shadow private ClientLevel level;
     @Shadow @Final private LevelRenderState levelRenderState;
+
+    @Inject(
+            method = "extractVisibleEntities",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target = "Lnet/minecraft/world/entity/Entity;setViewScale(D)V",
+                            shift = At.Shift.AFTER))
+    private void hbm$falloutRainColumns(
+            Camera camera,
+            Frustum frustum,
+            DeltaTracker deltaTracker,
+            LevelRenderState output,
+            CallbackInfo ci) {
+        FalloutRainVisuals.capture(camera, deltaTracker, level);
+    }
 
     private static final String BLOCK_ENTITIES =
             "extractVisibleBlockEntities(Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/state/level/LevelRenderState;Lnet/minecraft/client/renderer/culling/Frustum;)V";

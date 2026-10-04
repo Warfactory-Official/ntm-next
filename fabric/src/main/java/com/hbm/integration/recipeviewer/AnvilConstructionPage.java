@@ -79,7 +79,6 @@ public final class AnvilConstructionPage extends TablePage<AnvilConstructionReci
                     page.output(outOX + 18 * (i % outLine), outOY + 18 * (i / outLine))
                             .item(output.stack());
             if (output.chance() != 1F) {
-
                 slot.tooltip(
                         (shown, lines) ->
                                 lines.accept(
@@ -102,7 +101,6 @@ public final class AnvilConstructionPage extends TablePage<AnvilConstructionReci
 
     @Override
     public void draw(AnvilConstructionRecipe recipe, GuiGraphicsExtractor graphics) {
-
         shapeOf(recipe.input().size(), recipe.outputs().size()).draw(graphics);
     }
 

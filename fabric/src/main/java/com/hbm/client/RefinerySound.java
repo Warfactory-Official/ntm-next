@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.machine.oil.BlockEntityMachineRefinery;
+import com.hbm.blockentity.machine.oil.BlockEntityMachineRefinery;
 
 public final class RefinerySound {
 

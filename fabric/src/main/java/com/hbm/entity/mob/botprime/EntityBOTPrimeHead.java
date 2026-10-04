@@ -9,7 +9,6 @@ import com.hbm.entity.ModEntities;
 import com.hbm.entity.mob.ai.EntityAINearestAttackableTargetNT;
 import com.hbm.items.ModItems;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;

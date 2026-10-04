@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.BlockEntityPlushie;
 import com.hbm.blocks.generic.BlockPlushie.PlushieType;
 import com.hbm.client.render.PlushieItemRenderer;
 import com.hbm.client.render.RenderPlushie;
-import com.hbm.tileentity.BlockEntityPlushie;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;

@@ -20,7 +20,6 @@ public class ItemCraftingDegradation extends StackRemainderItem {
         ItemStack tool = consumed.copyWithCount(1);
         if (tool.isDamageableItem()) {
             int damage = tool.getDamageValue() + 1;
-
             if (damage > tool.getMaxDamage()) return null;
             tool.setDamageValue(damage);
         }

@@ -1,0 +1,6 @@
+{
+  "effect": "hbm:mutation",
+  "protections": [
+    "hazmat"
+  ]
+}

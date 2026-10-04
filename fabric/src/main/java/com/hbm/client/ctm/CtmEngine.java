@@ -3,7 +3,7 @@
 
 package com.hbm.client.ctm;
 
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricPlatform;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
@@ -44,7 +44,7 @@ public enum CtmEngine {
 
         private static CtmEngine select() {
             for (CtmEngine engine : values()) {
-                if (engine != NONE && Services.PLATFORM.isModLoaded(engine.mod)) return engine;
+                if (engine != NONE && FabricPlatform.isModLoaded(engine.mod)) return engine;
             }
             return NONE;
         }

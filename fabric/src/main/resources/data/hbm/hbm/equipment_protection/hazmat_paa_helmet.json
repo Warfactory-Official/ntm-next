@@ -1,0 +1,8 @@
+{
+  "filter_exclusions": [],
+  "hazards": [
+    "light",
+    "sand"
+  ],
+  "targets": "hbm:hazmat_paa_helmet"
+}

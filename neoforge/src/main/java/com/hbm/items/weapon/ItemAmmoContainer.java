@@ -7,7 +7,7 @@ import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.items.weapon.sedna.factory.GunFactory;
 import com.hbm.sound.ModSounds;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +37,6 @@ public class ItemAmmoContainer extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack container = player.getItemInHand(hand);
-
         if (!(level instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
 
         List<ItemGunBaseNT> guns = new ArrayList<>();
@@ -55,7 +54,7 @@ public class ItemAmmoContainer extends Item {
             ItemStack ammo =
                     ModItems.AMMO_STANDARD.stack(
                             (GunFactory.EnumAmmo) gun.defaultAmmoType, gun.defaultAmmoAmount);
-            if (constrained) ammo.setCount((int) Math.ceil(ammo.getCount() / 2D));
+            if (constrained) ammo.setCount((int) Math.ceil(ammo.getCount() / 2.0D));
             player.getInventory().placeItemBackInInventory(ammo);
         }
 
@@ -79,10 +78,12 @@ public class ItemAmmoContainer extends Item {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-        for (String line :
-                I18nUtil.loreLines(
-                        "item.hbm.ammo_container" + (constrained ? ".1" : "") + ".desc")) {
-            adder.accept(Component.literal(line).withStyle(ChatFormatting.YELLOW));
+        for (Component line :
+                TooltipStyle.lines(
+                        Component.translatableWithFallback(
+                                "item.hbm.ammo_container" + (constrained ? ".1" : "") + ".desc",
+                                ""))) {
+            adder.accept(line.copy().withStyle(ChatFormatting.YELLOW));
         }
     }
 }

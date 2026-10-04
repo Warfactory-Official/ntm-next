@@ -4,9 +4,9 @@
 package com.hbm.entity.logic;
 
 import com.hbm.NuclearTech;
+import com.hbm.config.FabricHbmConfig;
 import com.hbm.explosion.ExplosionBalefire;
 import com.hbm.explosion.ExplosionNukeGeneric;
-import com.hbm.platform.Services;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
@@ -29,7 +29,7 @@ public class EntityBalefire extends EntityExplosionChunkloading {
         super.tick();
 
         if (!this.did) {
-            if (!level().isClientSide() && Services.CONFIG.runtime().extendedLogging())
+            if (!level().isClientSide() && FabricHbmConfig.runtime().extendedLogging())
                 NuclearTech.LOGGER.info(
                         "[NUKE] Initialized BF explosion at {} / {} / {} with strength {}!",
                         getX(),

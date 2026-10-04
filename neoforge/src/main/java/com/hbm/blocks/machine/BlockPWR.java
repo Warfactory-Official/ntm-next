@@ -5,15 +5,15 @@ package com.hbm.blocks.machine;
 
 import com.hbm.api.fluidmk2.FluidCaps;
 import com.hbm.api.fluidmk2.IFluidHandlerMK2;
+import com.hbm.blockentity.machine.BlockEntityMachinePWRController;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.multiblock.AssembledMembers;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.capability.NtmContracts.Contract;
 import com.hbm.capability.NtmContracts;
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgeCaps;
 import com.hbm.registration.RegistryHandle;
-import com.hbm.tileentity.machine.BlockEntityMachinePWRController;
 import com.hbm.util.ChunkUtil;
 import java.util.ArrayDeque;
 import java.util.HashSet;
@@ -59,7 +59,6 @@ public class BlockPWR extends Block implements ICapabilityBlock, AssembledMember
         BlockPos owner = AssembledMembers.owner(level, pos);
         AssembledMembers.release(level, pos);
         BlockState original = state.getValue(PART).original();
-
         if (level.getBlockState(pos) == original) return;
         level.setBlock(pos, original, UPDATE_ALL);
         BlockEntityMachinePWRController controller =
@@ -97,7 +96,6 @@ public class BlockPWR extends Block implements ICapabilityBlock, AssembledMember
                     BlockEntityMachinePWRController core = ioController(level, pos, state);
                     return core == null ? null : core.getBlockPos();
                 });
-
         for (Contract<?> ror :
                 List.of(NtmContracts.ROR_VALUE_PROVIDER, NtmContracts.ROR_INTERACTIVE)) {
             NtmContracts.proxy(
@@ -164,14 +162,16 @@ public class BlockPWR extends Block implements ICapabilityBlock, AssembledMember
 
     @Override
     public void declareExtraCaps(RegistryHandle<? extends Block> self) {
-        Services.CAPS.registerBlockProvider(
-                FluidCaps.RECEIVER,
-                self,
-                (level, pos, state, be, face) -> portCap(level, pos, state, face.side()));
-        Services.CAPS.registerBlockProvider(
-                FluidCaps.PROVIDER,
-                self,
-                (level, pos, state, be, face) -> portCap(level, pos, state, face.side()));
+        NeoForgeCaps.pendingBlocks.add(
+                new NeoForgeCaps.BlockRegistration<>(
+                        FluidCaps.RECEIVER,
+                        (Supplier<? extends Block>) self,
+                        (level, pos, state, be, face) -> portCap(level, pos, state, face.side())));
+        NeoForgeCaps.pendingBlocks.add(
+                new NeoForgeCaps.BlockRegistration<>(
+                        FluidCaps.PROVIDER,
+                        (Supplier<? extends Block>) self,
+                        (level, pos, state, be, face) -> portCap(level, pos, state, face.side())));
     }
 
     private static @Nullable IFluidHandlerMK2 portCap(
@@ -191,7 +191,6 @@ public class BlockPWR extends Block implements ICapabilityBlock, AssembledMember
         NEUTRON_SOURCE("neutron_source", () -> ModBlocks.PWR_NEUTRON_SOURCE.get());
 
         private final String name;
-
         private final Supplier<Block> block;
 
         Part(String name, Supplier<Block> block) {

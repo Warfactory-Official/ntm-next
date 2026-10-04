@@ -3,7 +3,7 @@
 
 package com.hbm.blocks.bomb;
 
-import com.hbm.tileentity.bomb.BlockEntityNukeAssembly;
+import com.hbm.blockentity.bomb.BlockEntityNukeAssembly;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;

@@ -122,7 +122,6 @@ public class ExplosionNukeRayBatched implements IExplosionRay {
 
         while (this.gspNum <= this.gspNumMax) {
             Vec3 vec = sphericalToCartesian();
-
             if (Double.isNaN(vec.x) || Double.isNaN(vec.y) || Double.isNaN(vec.z)) {
                 generateGspUp();
                 continue;
@@ -194,7 +193,6 @@ public class ExplosionNukeRayBatched implements IExplosionRay {
 
             int chunkX = ChunkPos.getX(key) << 4;
             int chunkZ = ChunkPos.getZ(key) << 4;
-
             LevelChunk chunk = level.getChunk(ChunkPos.getX(key), ChunkPos.getZ(key));
 
             int removed = 0;
@@ -204,7 +202,6 @@ public class ExplosionNukeRayBatched implements IExplosionRay {
                 int localX = (bit >>> 4) & 0xF;
                 int localZ = bit & 0xF;
                 pos.set(chunkX | localX, y, chunkZ | localZ);
-
                 BlockState outgoing = chunk.getBlockState(pos);
                 level.setBlock(pos, AIR, UPDATE_FLAGS);
                 ChunkUtil.dispatchRemovalHook(server, pos, outgoing, AIR);

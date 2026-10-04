@@ -7,8 +7,8 @@ import com.hbm.api.energymk2.IBatteryItem;
 import com.hbm.inventory.container.MenuBatterySocket;
 import com.hbm.items.machine.ItemBatteryCreative;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
 import com.hbm.util.BobMathUtil;
 import java.util.Arrays;
 import java.util.List;
@@ -188,7 +188,7 @@ public class ScreenBatterySocket extends ScreenInfoContainer<MenuBatterySocket> 
             if (checkClick(mx, my, PRIO_X, PRIO_Y, PRIO_W, PRIO_H))
                 data.putBoolean("priority", true);
             if (!data.isEmpty()) {
-                Services.NETWORK.sendToServer(
+                PacketWire.sendToServer(
                         new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
                 playClick();
                 return true;

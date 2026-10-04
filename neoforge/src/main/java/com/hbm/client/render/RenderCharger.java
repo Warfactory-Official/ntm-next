@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityCharger;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityCharger;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -47,7 +47,6 @@ public class RenderCharger
 
     private final HFRWavefrontObject model = ResourceManager.charger;
     private final RenderType bodyType = RenderTypes.entityCutoutCull(ResourceManager.charger_tex);
-
     private final RenderType litType =
             WorldRenderPipeline.oneSidedCutout(ResourceManager.charger_tex);
     private final RenderType lampType =
@@ -77,7 +76,6 @@ public class RenderCharger
         BlockEntityRenderer.super.extractRenderState(
                 be, state, partialTicks, cameraPosition, breakProgress);
         state.yaw = facingYaw(be.getBlockState().getValue(HorizontalDirectionalBlock.FACING));
-
         double time =
                 Mth.lerp(partialTicks, be.lastUsingTicks, be.usingTicks)
                         / (double) BlockEntityCharger.DELAY;

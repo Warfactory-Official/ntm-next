@@ -14,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public abstract class EntityRailCarElectric extends EntityRailCarRidable {
-
     private static final EntityDataAccessor<Integer> POWER =
             SynchedEntityData.defineId(EntityRailCarElectric.class, EntityDataSerializers.INT);
 

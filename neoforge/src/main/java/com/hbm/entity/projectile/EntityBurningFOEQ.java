@@ -13,7 +13,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityBurningFOEQ extends ThrowableProjectile {
-
     public float renderPitch;
     public float renderPitchO;
 

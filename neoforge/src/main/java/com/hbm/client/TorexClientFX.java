@@ -44,7 +44,6 @@ public final class TorexClientFX {
                             false);
             torex.didPlaySound = true;
         }
-
         if (!torex.didShake && NukeHud.armShake()) {
             torex.didShake = true;
             player.animateHurt(0F);

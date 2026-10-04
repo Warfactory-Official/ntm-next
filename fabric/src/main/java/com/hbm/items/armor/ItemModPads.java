@@ -60,11 +60,15 @@ public class ItemModPads extends ItemArmorMod {
     }
 
     @Override
+    public boolean ticksServer() {
+        return this == com.hbm.items.ModItems.PADS_STATIC.get();
+    }
+
+    @Override
     public void modUpdate(LivingEntity entity, ItemStack armor) {
         if (entity.level().isClientSide()
                 || this != ModItems.PADS_STATIC.get()
                 || !(entity instanceof Player player)) return;
-
         if (!player.walkAnimation.isMoving()) return;
 
         if (!(player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ModArmorItem chest))

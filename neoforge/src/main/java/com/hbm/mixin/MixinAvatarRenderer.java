@@ -5,6 +5,7 @@ package com.hbm.mixin;
 
 import com.hbm.client.render.ManlyPlayerLayer;
 import com.hbm.client.render.PlayerCapes;
+import com.hbm.interfaces.injected.PlayerAppearance;
 import com.hbm.main.Polaroid;
 import com.hbm.packet.toclient.PlayerAppearancePayload;
 import net.minecraft.client.model.player.PlayerModel;
@@ -15,6 +16,7 @@ import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.core.ClientAsset;
 import net.minecraft.world.entity.Avatar;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerSkin;
 import org.spongepowered.asm.mixin.Mixin;
@@ -46,8 +48,16 @@ public abstract class MixinAvatarRenderer
             Avatar avatar, AvatarRenderState state, float partialTicks, CallbackInfo ci) {
         state.hbm$setAppearance(
                 avatar instanceof LocalPlayer local
-                        ? PlayerAppearancePayload.fromEffects(local)
+                        ? PlayerAppearancePayload.fromPlayer(local)
                         : avatar instanceof Player player ? player.hbm$appearance() : (byte) 0);
+        if (!state.isFallFlying && (state.hbm$appearance() & PlayerAppearance.ARMOR_FLIGHT) != 0) {
+            state.isFallFlying = true;
+            state.pose = Pose.FALL_FLYING;
+            state.fallFlyingTimeInTicks = 10F;
+            state.isCrouching = false;
+            state.walkAnimationSpeed = 0F;
+            state.capeLean = 0F;
+        }
         if (avatar instanceof Player player) {
             ClientAsset.ResourceTexture cape =
                     PlayerCapes.forPlayer(

@@ -3,7 +3,6 @@
 
 package com.hbm.items.armor;
 
-import com.hbm.hazard.HazardClass;
 import com.hbm.lib.Library;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
@@ -19,11 +18,6 @@ public final class ItemHazmatMask extends ItemGasMask {
 
     public Variant variant() {
         return variant;
-    }
-
-    @Override
-    public HazardClass[] filterBlacklist() {
-        return new HazardClass[0];
     }
 
     public enum Variant {

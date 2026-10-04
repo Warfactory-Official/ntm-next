@@ -17,7 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FogRenderer.class)
 public class MixinFogRenderer {
-
     @Inject(method = "setupFog", at = @At("RETURN"))
     private void hbm$sootFog(
             Camera camera,

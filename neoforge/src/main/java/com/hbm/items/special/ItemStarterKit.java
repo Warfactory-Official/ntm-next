@@ -33,7 +33,6 @@ import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
 public class ItemStarterKit extends Item {
-
     private enum Haz {
         PLAIN,
         RED,
@@ -270,7 +269,6 @@ public class ItemStarterKit extends Item {
     }
 
     private static List<ItemStack> nukeElectric() {
-
         return List.of(
                 new ItemStack(ModItems.COIL_COPPER, 16),
                 new ItemStack(ModItems.COIL_GOLD, 8),

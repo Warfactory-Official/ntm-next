@@ -27,7 +27,6 @@ public class NtmBunkerStructure extends Structure {
     private static void generatePieces(
             StructurePiecesBuilder builder, Structure.GenerationContext context, BlockPos origin) {
         RandomSource random = context.random();
-
         int sizeLimit = 7 + random.nextInt(6);
         int distanceLimit = 40;
 
@@ -70,7 +69,6 @@ public class NtmBunkerStructure extends Structure {
         ChunkPos chunkPos = context.chunkPos();
         int x = chunkPos.getBlockX(8);
         int z = chunkPos.getBlockZ(8);
-
         BlockPos origin = new BlockPos(x, 64, z);
         return Optional.of(
                 new Structure.GenerationStub(

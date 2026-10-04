@@ -4,7 +4,6 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.config.RadiationConfig;
 import com.hbm.data.RadiationData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -24,11 +23,9 @@ public class WasteEarth extends Block {
     protected void randomTick(
             BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         BlockPos above = pos.above();
-
         if (level.getBlockState(above).getBlock() instanceof MushroomBlock) {
             level.setBlockAndUpdate(above, ModBlocks.MUSH.get().defaultBlockState());
         }
-
         if (RadiationData.CLEANUP_DEAD_DIRT.get()
                 || (level.getMaxLocalRawBrightness(above) < 4
                         && level.getBlockState(above).getLightDampening() > 2)) {

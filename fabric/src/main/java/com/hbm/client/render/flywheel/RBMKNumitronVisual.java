@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKNumitron.DisplayUnit;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKNumitron;
 import com.hbm.blocks.machine.rbmk.RBMKMiniPanelBase;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKNumitron.DisplayUnit;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKNumitron;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;

@@ -31,7 +31,7 @@ public final class MobData {
     public static final DataGroups.Param<Integer> RAID_CHANCE = RAIDS.positive("chance", 3);
     public static final DataGroups.Param<Integer> RAID_AMOUNT = RAIDS.integer("amount", 15);
     public static final DataGroups.Param<Integer> RAID_ATTACK_DELAY =
-            RAIDS.integer("attack_delay", 40);
+            RAIDS.positive("attack_delay", 40);
     public static final DataGroups.Param<Integer> RAID_ATTACK_REACH =
             RAIDS.integer("attack_reach", 2);
     public static final DataGroups.Param<Integer> RAID_ATTACK_DISTANCE =
@@ -53,7 +53,6 @@ public final class MobData {
     private static final DataGroups.Group GEAR = DataGroups.group(GROUPS, "gear");
     public static final DataGroups.Param<Boolean> ENABLE_MOB_GEAR = GEAR.bool("enabled", true);
     public static final DataGroups.Param<Boolean> ENABLE_MOB_WEAPONS = GEAR.bool("weapons", true);
-
     public static final DataGroups.Param<Double> WEAPON_SOOT_REDUCTION =
             GEAR.bounded("weapon_soot_reduction", 0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 
@@ -62,20 +61,27 @@ public final class MobData {
     public static final DataGroups.Param<Integer> HIVE_SPAWN = GLYPHIDS.positive("hive_spawn", 256);
     public static final DataGroups.Param<Double> SCOUT_THRESHOLD =
             GLYPHIDS.real("scout_threshold", 1D);
-    public static final DataGroups.Param<Double> SPAWN_MAX = GLYPHIDS.real("spawn_max", 50D);
+    public static final DataGroups.Param<Integer> MIN_SPAWN_DELAY =
+            GLYPHIDS.positive("min_spawn_delay", 200);
+    public static final DataGroups.Param<Integer> MAX_SPAWN_DELAY =
+            GLYPHIDS.positive("max_spawn_delay", 799);
+    public static final DataGroups.Param<Integer> SPAWN_COUNT = GLYPHIDS.integer("spawn_count", 4);
+    public static final DataGroups.Param<Integer> MAX_NEARBY_ENTITIES =
+            GLYPHIDS.integer("max_nearby_entities", 6);
+    public static final DataGroups.Param<Integer> REQUIRED_PLAYER_RANGE =
+            GLYPHIDS.positive("required_player_range", 16);
+    public static final DataGroups.Param<Integer> SPAWN_RANGE = GLYPHIDS.integer("spawn_range", 4);
+    public static final DataGroups.Param<Integer> FAILED_SPAWN_DELAY =
+            GLYPHIDS.positive("failed_spawn_delay", 20);
+
+    static {
+        GLYPHIDS.randomRange(MIN_SPAWN_DELAY, MAX_SPAWN_DELAY);
+    }
+
     public static final DataGroups.Param<Double> TARGETING_THRESHOLD =
             GLYPHIDS.real("targeting_threshold", 1D);
     public static final DataGroups.Param<Integer> SCOUT_SWARM_SPAWN_CHANCE =
-            GLYPHIDS.positive("scout_swarm_spawn_chance", 3);
-    public static final DataGroups.Param<Integer> LARGE_HIVE_CHANCE =
-            GLYPHIDS.positive("large_hive_chance", 5);
-    public static final DataGroups.Param<Integer> BASE_SWARM_SIZE =
-            GLYPHIDS.integer("base_swarm_size", 5);
-    public static final DataGroups.Param<Double> SWARM_SCALING_MULT =
-            GLYPHIDS.real("swarm_scaling_mult", 1.2D);
-    public static final DataGroups.Param<Integer> SOOT_STEP = GLYPHIDS.positive("soot_step", 50);
-    public static final DataGroups.Param<Integer> SWARM_COOLDOWN =
-            GLYPHIDS.integer("swarm_cooldown", 120);
+            GLYPHIDS.bounded("scout_swarm_spawn_chance", 3, 1, Integer.MAX_VALUE - 1);
     public static final DataGroups.Param<Integer> GLYPHID_CHANCE_BASE =
             GLYPHIDS.signed("glyphid_chance_base", 50);
     public static final DataGroups.Param<Integer> GLYPHID_CHANCE_MOD =
@@ -162,10 +168,6 @@ public final class MobData {
 
     public static boolean rampantGlyphidGuidance() {
         return RAMPANT_MODE.get() || RAMPANT_GLYPHID_GUIDANCE.get();
-    }
-
-    public static int swarmCooldown() {
-        return SWARM_COOLDOWN.get() * 20;
     }
 
     public static int[] glyphidChance() {

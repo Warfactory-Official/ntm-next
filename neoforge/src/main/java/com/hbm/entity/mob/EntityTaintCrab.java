@@ -3,15 +3,15 @@
 
 package com.hbm.entity.mob;
 
+import com.hbm.blockentity.machine.BlockEntityTesla;
 import com.hbm.entity.projectile.EntityBulletBaseMK4;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.factory.XFactory762mm;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.TeslaArcPayload;
-import com.hbm.platform.Services;
 import com.hbm.potion.HbmPotion;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntityTesla;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.Holder;
@@ -37,7 +37,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityTaintCrab extends EntityCyberCrab {
-
     public List<Vec3> targets = new ArrayList<>();
 
     public EntityTaintCrab(EntityType<? extends EntityTaintCrab> type, Level level) {
@@ -65,10 +64,9 @@ public class EntityTaintCrab extends EntityCyberCrab {
         if (level() instanceof ServerLevel server) {
             List<Vec3> zapped =
                     BlockEntityTesla.zap(server, getX(), getY() + 1.25D, getZ(), 10D, this);
-
             if (!zapped.equals(targets)) {
                 targets = zapped;
-                Services.NETWORK.sendToAllAround(
+                PacketWire.sendToAllAround(
                         new TeslaArcPayload(this, targets),
                         new TargetPoint(server, getX(), getY(), getZ(), 64));
             }

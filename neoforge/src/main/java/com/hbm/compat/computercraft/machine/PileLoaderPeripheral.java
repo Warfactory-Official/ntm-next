@@ -3,9 +3,9 @@
 
 package com.hbm.compat.computercraft.machine;
 
+import com.hbm.blockentity.machine.pile.BlockEntityPileLoader;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
 import com.hbm.items.machine.ItemPileRodMK2;
-import com.hbm.tileentity.machine.pile.BlockEntityPileLoader;
 import dan200.computercraft.api.lua.LuaFunction;
 import net.minecraft.world.item.ItemStack;
 
@@ -26,7 +26,6 @@ public final class PileLoaderPeripheral extends SnapshotPeripheral<BlockEntityPi
         ItemStack channel = machine.channelStack;
         ItemStack staged = machine.getItem(0);
         put(TEMP, machine.channelTemp);
-
         put(DEPLETION, ItemPileRodMK2.getDepletion(channel));
         put(LIFETIME, channel.getItem() instanceof ItemPileRodMK2 rod ? rod.type.life : 0D);
         put(TYPE, channel.getItem() instanceof ItemPileRodMK2 rod ? rod.type.ordinal() : -1);

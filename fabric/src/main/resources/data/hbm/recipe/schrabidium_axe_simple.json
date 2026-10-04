@@ -5,7 +5,7 @@
       "name": "lbsm_simple_tools"
     }
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "#": "#c:rods/wooden",
     "X": "#c:ingots/schrabidium"

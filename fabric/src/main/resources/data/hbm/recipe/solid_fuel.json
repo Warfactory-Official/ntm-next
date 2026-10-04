@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
     {
       "fabric:type": "hbm:fluid_content",
@@ -8,6 +8,11 @@
     },
     "#hbm:tools/chemistry_set"
   ],
+  "input_state": {
+    "1": {
+      "preserve": "remainder"
+    }
+  },
   "result": {
     "count": 3,
     "id": "hbm:solid_fuel"

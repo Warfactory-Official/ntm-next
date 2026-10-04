@@ -4,9 +4,9 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.oil.BlockEntityMachineVacuumDistill;
 import com.hbm.inventory.slot.SlotDeprecated;
 import com.hbm.inventory.slot.SlotFiltered;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineVacuumDistill;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

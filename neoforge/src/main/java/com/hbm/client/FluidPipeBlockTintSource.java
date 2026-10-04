@@ -32,7 +32,7 @@ public final class FluidPipeBlockTintSource implements BlockTintSource {
     public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
         if (level instanceof WorldInAJar jar)
             return apply(FluidPipeTintData.colorFor(jar.pipeFluid(pos)));
-        return apply(FluidPipeTintData.colorAt(Minecraft.getInstance().level.dimension(), pos));
+        return apply(FluidPipeTintData.colorAt(Minecraft.getInstance().level, pos));
     }
 
     @Override

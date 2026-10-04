@@ -14,7 +14,6 @@ public interface PieceGeometry {
     void emit(GeometryOut out, Variant variant);
 
     record Variant(String suffix, Map<String, Integer> values) {
-
         public static final Variant SINGLE = new Variant("", Map.of());
 
         public boolean flag(String key) {

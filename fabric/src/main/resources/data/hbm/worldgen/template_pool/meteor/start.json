@@ -2,10 +2,12 @@
   "elements": [
     {
       "element": {
-        "element_type": "minecraft:single_pool_element",
+        "element_type": "hbm:legacy_start",
         "location": "hbm:meteor/meteor-core",
         "processors": "hbm:meteor_bricks",
-        "projection": "rigid"
+        "projection": "rigid",
+        "range_limit": 128,
+        "size_limit": 128
       },
       "weight": 1
     }

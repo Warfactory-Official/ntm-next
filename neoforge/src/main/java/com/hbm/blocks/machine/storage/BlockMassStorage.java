@@ -3,12 +3,12 @@
 
 package com.hbm.blocks.machine.storage;
 
+import com.hbm.blockentity.machine.storage.BlockEntityMassStorage;
 import com.hbm.blocks.IPersistentInfoProvider;
 import com.hbm.blocks.machine.BlockMachineHorizontal;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemLock;
-import com.hbm.tileentity.machine.storage.BlockEntityMassStorage;
 import java.util.Locale;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;

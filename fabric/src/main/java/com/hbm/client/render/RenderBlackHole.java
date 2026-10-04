@@ -24,7 +24,6 @@ import net.minecraft.world.phys.Vec3;
 public class RenderBlackHole<T extends EntityBlackHole>
         extends EntityRenderer<T, RenderBlackHole.State>
         implements ConcurrentRenderStateExtraction {
-
     private static final RenderType HOLE_TYPE = FlatCutout.of(ResourceManager.black_hole_tex);
     private static final int BLACK = ARGB.color(255, 0, 0, 0);
     private static final int GLOW = ARGB.color(191, 255, 255, 255);
@@ -250,7 +249,6 @@ public class RenderBlackHole<T extends EntityBlackHole>
     private void submitDisc(State state, PoseStack poseStack, SubmitNodeCollector collector) {
         for (int k = 0; k < DISC_STEPS; k++) {
             poseStack.pushPose();
-
             poseStack.mulPose(Axis.YP.rotationDegrees(-state.age * (float) Math.pow(k + 1, 1.25D)));
             double scale = 3D - k * 0.175D;
             int near = kind.discColor(k, 255);

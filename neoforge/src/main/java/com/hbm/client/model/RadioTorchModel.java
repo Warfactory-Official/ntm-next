@@ -77,7 +77,6 @@ public record RadioTorchModel() implements BlockModel<HFRWavefrontObject> {
                 TextureSlots slots) {
             Material.Baked material =
                     BlockModel.slot(baker, carrier, slots, ObjUnbakedGeometry.SINGLE_SLOT);
-
             return ObjUnbakedGeometry.bakeGroups(
                     obj,
                     null,

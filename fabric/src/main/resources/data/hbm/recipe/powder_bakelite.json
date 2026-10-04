@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
     {
       "fabric:type": "hbm:fluid_content",
@@ -13,6 +13,11 @@
     },
     "#hbm:tools/chemistry_set"
   ],
+  "input_state": {
+    "2": {
+      "preserve": "remainder"
+    }
+  },
   "result": {
     "count": 2,
     "id": "hbm:powder_bakelite"

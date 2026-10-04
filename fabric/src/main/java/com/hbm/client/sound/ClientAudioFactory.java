@@ -30,7 +30,6 @@ public final class ClientAudioFactory implements AudioSystem.Factory {
         audio.updatePosition(x, y, z);
         audio.updateVolume(volume);
         audio.updateRange(range);
-
         audio.updatePitch(pitch);
         return audio;
     }

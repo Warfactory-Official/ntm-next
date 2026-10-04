@@ -37,10 +37,8 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import org.jspecify.annotations.Nullable;
 
 public final class ExplosionTom {
-
     public static final int LEGACY_TERRAIN = 63;
     private static final int GROUND_REACH = 8;
-
     private static final int SPREAD = 2;
     private static final float WASH_DISTANCE = 500F;
     private static final long COLUMN_SALT = 0x9E3779B97F4A7C15L;
@@ -104,7 +102,6 @@ public final class ExplosionTom {
             for (int dz = -GROUND_REACH; dz <= GROUND_REACH; dz++) {
                 int bx = x + dx;
                 int bz = z + dz;
-
                 heights[i++] =
                         level.getChunk(bx >> 4, bz >> 4)
                                         .getHeight(
@@ -191,7 +188,6 @@ public final class ExplosionTom {
             indexOf.put(ck, order.size());
             order.add(ck);
         }
-
         for (LongIterator it = carved.iterator(); it.hasNext(); ) {
             long ck = it.nextLong();
             int at = indexOf.get(ck);
@@ -242,7 +238,6 @@ public final class ExplosionTom {
             Long2ObjectMap.Entry<CompletableFuture<ChunkResult<LevelChunk>>> entry = it.next();
             if (!entry.getValue().isDone()) continue;
             long ck = entry.getLongKey();
-
             if (ChunkUtil.liveChunkNow(level, ck) == null) {
                 CompletableFuture<ChunkResult<LevelChunk>> current =
                         ChunkUtil.blastChunkFuture(level, ck);
@@ -253,7 +248,6 @@ public final class ExplosionTom {
             if (resubmit.remove(ck)) updates.submit(new CraterWork(ck));
             else if (carved.contains(ck)) loaded.add(ck);
         }
-
         while (nextSubmit < order.size()) {
             long ck = order.getLong(nextSubmit);
             if (!carved.contains(ck)) {
@@ -339,7 +333,6 @@ public final class ExplosionTom {
         private final long ck;
         private final Long2ObjectOpenHashMap<BlockState> oldStates = new Long2ObjectOpenHashMap<>();
         private final Long2ObjectOpenHashMap<BlockState> deferred = new Long2ObjectOpenHashMap<>();
-
         private final IntArrayList washing = new IntArrayList();
 
         CraterWork(long ck) {
@@ -395,10 +388,8 @@ public final class ExplosionTom {
                                             / (float) radius)
                             + (int) ((columnBits(x, z) >>> 1) & 1)
                             - offset;
-
             int bottom = Math.max(shift, level.getMinY());
             int top = topBlock(sections, lx, lz);
-
             int y = Math.max(craterFloor, top);
             if (craterFloor < terrain + 1) y = Math.max(y, terrain + 1);
             y = Math.min(y, level.getMaxY());
@@ -420,7 +411,6 @@ public final class ExplosionTom {
                 if (y <= craterFloor) {
                     writes.put(pos, HashCommon.mix(seed ^ pos) % 200 == 0 ? osmiridium : tektite);
                 } else if (y > terrain + 1) {
-
                     if (distance < WASH_DISTANCE) writes.put(pos, AIR);
                 } else {
                     writes.put(pos, lava);
@@ -490,7 +480,6 @@ public final class ExplosionTom {
 
         @Override
         protected void published(LevelChunk chunk) {
-
             BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
             LongArrayList lightChanges = new LongArrayList();
             long sectionMask = 0;

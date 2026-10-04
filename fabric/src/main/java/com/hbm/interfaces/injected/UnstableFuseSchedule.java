@@ -3,8 +3,8 @@
 
 package com.hbm.interfaces.injected;
 
-public interface UnstableFuseSchedule {
-    long hbm$nextUnstableFuse();
+import com.hbm.handler.UnstableFuseQueue;
 
-    void hbm$nextUnstableFuse(long deadline);
+public interface UnstableFuseSchedule {
+    UnstableFuseQueue hbm$unstableFuses();
 }

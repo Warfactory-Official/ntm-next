@@ -4,6 +4,7 @@
 package com.hbm.blocks.machine;
 
 import com.hbm.api.conveyor.IConveyorBelt;
+import com.hbm.blockentity.machine.BlockEntityConveyorPress;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -13,7 +14,6 @@ import com.hbm.interfaces.ILookOverlay;
 import com.hbm.interfaces.IToolable;
 import com.hbm.items.machine.ItemStamp;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntityConveyorPress;
 import com.hbm.util.BobMathUtil;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -38,7 +38,6 @@ public class MachineConveyorPress extends BlockMultiblockCore
             simpleCodec(MachineConveyorPress::new);
 
     private static final int[] DIMENSIONS = {2, 0, 0, 0, 0, 0};
-
     private static final int RED = 0xFF5555;
 
     public MachineConveyorPress(Properties props) {
@@ -62,7 +61,6 @@ public class MachineConveyorPress extends BlockMultiblockCore
 
     @Override
     public MachineCaps caps() {
-
         return MachineCaps.of(ModBlockEntities.CONVEYOR_PRESS)
                 .powerIn()
                 .fe()

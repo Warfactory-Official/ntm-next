@@ -102,7 +102,6 @@ public class BlockTaint extends Block {
             Entity entity,
             InsideBlockEffectApplier applier,
             boolean isPrecise) {
-
         int amplifier = MAX_AGE - state.getValue(AGE);
 
         entity.setDeltaMovement(entity.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));

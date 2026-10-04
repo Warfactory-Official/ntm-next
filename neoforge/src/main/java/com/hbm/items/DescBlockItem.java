@@ -21,9 +21,7 @@ public class DescBlockItem extends BlockItem {
 
     public enum Desc {
         STANDARD,
-
         YELLOW,
-
         PLAIN
     }
 
@@ -47,19 +45,17 @@ public class DescBlockItem extends BlockItem {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-
         if (descLines > 0) {
-            if (mode != Desc.STANDARD || ModifierKeys.leftShiftHeld()) {
+            if (mode != Desc.STANDARD || ModifierKeys.detailsHeld()) {
                 String key = "desc.hbm." + BuiltInRegistries.BLOCK.getKey(getBlock()).getPath();
                 for (int i = 1; i <= descLines; i++) {
                     MutableComponent line = Component.translatable(key + ".line" + i);
                     adder.accept(mode == Desc.PLAIN ? line : line.withStyle(ChatFormatting.YELLOW));
                 }
             } else {
-                adder.accept(TooltipStyle.holdLshift());
+                adder.accept(TooltipStyle.holdDetails());
             }
         }
-
         super.appendHoverText(stack, context, display, adder, flag);
     }
 }

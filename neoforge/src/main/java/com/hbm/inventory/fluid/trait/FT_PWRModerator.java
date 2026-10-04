@@ -3,9 +3,9 @@
 
 package com.hbm.inventory.fluid.trait;
 
-import com.hbm.util.I18nUtil;
 import java.util.List;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 
 public class FT_PWRModerator extends FluidTrait {
 
@@ -20,23 +20,26 @@ public class FT_PWRModerator extends FluidTrait {
     }
 
     @Override
-    public void addInfo(List<String> info) {
+    public void addInfo(List<Component> info) {
         info.add(
-                ChatFormatting.BLUE
-                        + "["
-                        + I18nUtil.resolveKey("hbmfluid.trait.pwrFluxMultiplier")
-                        + "]");
+                Component.empty()
+                        .append(Component.literal("[").withStyle(ChatFormatting.BLUE))
+                        .append(
+                                Component.translatable("hbmfluid.trait.pwrFluxMultiplier")
+                                        .withStyle(ChatFormatting.BLUE))
+                        .append(Component.literal("]").withStyle(ChatFormatting.BLUE)));
     }
 
     @Override
-    public void addInfoHidden(List<String> info) {
+    public void addInfoHidden(List<Component> info) {
         int mult = (int) (multiplier * 100 - 100);
         info.add(
-                ChatFormatting.BLUE
-                        + I18nUtil.resolveKey("hbmfluid.trait.pwrFluxCore")
-                        + " "
-                        + (mult >= 0 ? "+" : "")
-                        + mult
-                        + "%");
+                Component.empty()
+                        .append(
+                                Component.translatable("hbmfluid.trait.pwrFluxCore")
+                                        .withStyle(ChatFormatting.BLUE))
+                        .append(
+                                Component.literal(" " + (mult >= 0 ? "+" : "") + mult + "%")
+                                        .withStyle(ChatFormatting.BLUE)));
     }
 }

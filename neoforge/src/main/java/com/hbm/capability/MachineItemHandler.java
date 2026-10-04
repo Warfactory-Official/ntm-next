@@ -3,8 +3,8 @@
 
 package com.hbm.capability;
 
+import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.capability.port.ItemPort;
-import com.hbm.tileentity.BlockEntityMachineBase;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -19,18 +19,15 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jspecify.annotations.Nullable;
 
 public final class MachineItemHandler implements ResourceHandler<ItemResource> {
-
     private static final Map<BlockEntityMachineBase, PerMachine> HANDLERS = new WeakHashMap<>();
 
     private static final int NULL_SIDE = 6;
 
     private static final int MAX_PORTS_PER_SIDE = 8;
-
     private final WeakReference<BlockEntityMachineBase> machineRef;
     private final ResourceHandler<ItemResource> core;
     private final @Nullable Direction side;
     private final boolean[] accessible;
-
     private final @Nullable ItemPort access;
 
     public MachineItemHandler(BlockEntityMachineBase machine, @Nullable Direction side) {
@@ -94,7 +91,6 @@ public final class MachineItemHandler implements ResourceHandler<ItemResource> {
         int key = access == null ? 0 : System.identityHashCode(access);
         WeakReference<MachineItemHandler> ref = byAccess.get(key);
         MachineItemHandler handler = ref == null ? null : ref.get();
-
         if (handler != null && handler.access == access) return handler;
         handler =
                 access == null
@@ -141,7 +137,6 @@ public final class MachineItemHandler implements ResourceHandler<ItemResource> {
         BlockEntityMachineBase machine = live();
         if (machine == null || !accessible[index]) return 0;
         ItemStack incoming = resource.toStack(1);
-
         boolean allowed =
                 access != null
                         ? access.canInsert(index, incoming)

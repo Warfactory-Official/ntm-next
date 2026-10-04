@@ -48,7 +48,6 @@ public class ItemCustomMissilePart extends Item {
 
     public enum PartSize {
         ANY,
-
         NONE,
         SIZE_10,
         SIZE_15,
@@ -96,9 +95,7 @@ public class ItemCustomMissilePart extends Item {
         CUSTOM9;
 
         public Consumer<EntityMissileCustom> impactCustom = null;
-
         public Consumer<EntityMissileCustom> updateCustom = null;
-
         public String labelCustom = null;
 
         public Component getDisplay() {
@@ -128,7 +125,6 @@ public class ItemCustomMissilePart extends Item {
                     return key("taint", ChatFormatting.DARK_PURPLE);
                 case CLOUD:
                     return key("cloud", ChatFormatting.LIGHT_PURPLE);
-
                 case TURBINE:
                     return key(
                             "turbine",

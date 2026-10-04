@@ -26,7 +26,8 @@ public final class SpaceAssemblerRecipes extends SimpleGenericRecipes<SpaceAssem
 
     public @Nullable SpaceAssemblerRecipe getRecipeFor(ItemStack stack) {
         for (SpaceAssemblerRecipe recipe : recipes()) {
-            if (recipe.inputItem.length == 1 && recipe.inputItem[0].test(stack)) return recipe;
+            if (recipe.inputItem.length == 1 && recipe.inputItem[0].ingredient().test(stack))
+                return recipe;
         }
         return null;
     }

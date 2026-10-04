@@ -3,10 +3,10 @@
 
 package com.hbm.client;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKAutoloader;
 import com.hbm.particle.CoolingTowerParticleOptions;
 import com.hbm.sound.AudioSystem;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKAutoloader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.BlockPos;
@@ -45,7 +45,6 @@ public final class AutoloaderSound {
         } else if (be.audioLift != null) {
             be.audioLift.stopSound();
             be.audioLift = null;
-
             Minecraft.getInstance()
                     .getSoundManager()
                     .play(

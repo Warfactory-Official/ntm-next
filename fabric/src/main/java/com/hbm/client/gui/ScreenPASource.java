@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.albion.BlockEntityPASource;
 import com.hbm.inventory.container.MenuPASource;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.albion.BlockEntityPASource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -123,8 +123,7 @@ public class ScreenPASource extends ScreenPACooled<MenuPASource> {
         if (event.button() == 0 && checkClick((int) event.x(), (int) event.y(), 105, 28, 10, 10)) {
             CompoundTag data = new CompoundTag();
             data.putBoolean("cancel", true);
-            Services.NETWORK.sendToServer(
-                    new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
             playClick();
             return true;
         }

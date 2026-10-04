@@ -42,7 +42,6 @@ public class AmmoPressRecipe extends GenericRecipe {
     public static final RecipeSerializer<AmmoPressRecipe> SERIALIZER =
             new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
     public int[] cells = EMPTY_CELLS;
-
     private CountIngredient[] grid;
 
     public AmmoPressRecipe(String name) {

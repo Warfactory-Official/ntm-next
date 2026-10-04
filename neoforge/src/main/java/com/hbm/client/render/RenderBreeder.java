@@ -3,8 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineReactorBreeding;
 import com.hbm.render.util.RenderSparks;
-import com.hbm.tileentity.machine.BlockEntityMachineReactorBreeding;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -61,7 +61,6 @@ public class RenderBreeder
         BlockEntityRenderer.super.extractRenderState(
                 be, state, partialTicks, cameraPosition, breaking);
         state.breeding = be.progress > 0F;
-
         state.seed = (int) (GameTime.now() % 10000L / 100L);
     }
 
@@ -74,7 +73,6 @@ public class RenderBreeder
 
         for (int i = 0; i < SPARKS; i++) {
             ps.pushPose();
-
             ps.mulPose(Axis.YP.rotationDegrees((float) (Math.PI * i)));
             final int seed = s.seed + i;
             col.submitCustomGeometry(

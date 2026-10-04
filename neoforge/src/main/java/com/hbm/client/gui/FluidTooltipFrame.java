@@ -14,7 +14,6 @@ import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
 public record FluidTooltipFrame(int top, int bottom) implements TooltipComponent {
-
     private static final int NONE_COLOR = 0x888888;
 
     public static FluidTooltipFrame of(@Nullable Fluid fluid) {
@@ -30,7 +29,6 @@ public record FluidTooltipFrame(int top, int bottom) implements TooltipComponent
     }
 
     public static final class Renderer implements ClientTooltipComponent {
-
         private static final int GAP = 4;
         private final FluidTooltipFrame frame;
 
@@ -51,7 +49,6 @@ public record FluidTooltipFrame(int top, int bottom) implements TooltipComponent
         @Override
         public void extractImage(
                 Font font, int x, int localY, int w, int h, GuiGraphicsExtractor graphics) {
-
             int y = localY - 12;
             graphics.fillGradient(x - 3, y - 2, x - 2, y + h + 2, frame.top, frame.bottom);
             graphics.fillGradient(x + w + 2, y - 2, x + w + 3, y + h + 2, frame.top, frame.bottom);

@@ -3,6 +3,8 @@
 
 package com.hbm.inventory.recipes;
 
+import com.hbm.inventory.recipes.crafting.HbmCustomRecipe;
+import com.hbm.inventory.recipes.ingredient.RecipeInputState;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.ItemRBMKPellet;
 import com.hbm.items.machine.ItemRBMKRod;
@@ -12,11 +14,10 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
-public class RBMKFuelDisassemblyRecipe extends CustomRecipe {
+public class RBMKFuelDisassemblyRecipe extends HbmCustomRecipe {
 
     public static final RBMKFuelDisassemblyRecipe INSTANCE = new RBMKFuelDisassemblyRecipe();
     public static final MapCodec<RBMKFuelDisassemblyRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
@@ -35,12 +36,17 @@ public class RBMKFuelDisassemblyRecipe extends CustomRecipe {
     }
 
     @Override
-    public boolean matches(CraftingInput input, Level level) {
+    protected boolean matchesInput(CraftingInput input, Level level) {
         ItemStack stack = getRod(input);
         return stack.getItem() instanceof ItemRBMKRod rod
                 && rod.pellet != null
                 && ItemRBMKRod.getHullHeat(stack) < 50
                 && ItemRBMKRod.getCoreHeat(stack) < 50;
+    }
+
+    @Override
+    public boolean acceptsInputState(CraftingInput input, int slot, ItemStack output) {
+        return RecipeInputState.only(input.getItem(slot), ModDataComponents.RBMK_FUEL.get());
     }
 
     @Override

@@ -3,10 +3,11 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionBreeder;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.inventory.slot.SlotRecipeOutput;
+import com.hbm.items.ModItems;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionBreeder;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +31,9 @@ public class MenuFusionBreeder extends BlockEntityMenu<BlockEntityFusionBreeder>
                         BlockEntityFusionBreeder.SLOT_INPUT,
                         48,
                         45,
-                        stack -> be.canPlaceItem(BlockEntityFusionBreeder.SLOT_INPUT, stack)));
+                        stack ->
+                                be.canPlaceItem(BlockEntityFusionBreeder.SLOT_INPUT, stack)
+                                        || stack.is(ModItems.METEORITE_SWORD_IRRADIATED.get())));
         addSlot(
                 new SlotRecipeOutput(
                         playerInv.player, be, BlockEntityFusionBreeder.SLOT_OUTPUT, 112, 45));

@@ -57,7 +57,6 @@ public class BlockDetCord extends Block implements IFuckingExplode, IDetConnecti
     public void explode(Level level, BlockPos pos) {
         if (!TntRule.explodes(level)) return;
         level.removeBlock(pos, false);
-
         level.explode(
                 null,
                 pos.getX() + 0.5D,

@@ -3,7 +3,7 @@
 
 package com.hbm.blocks.machine;
 
-import com.hbm.tileentity.machine.BlockEntityFoundrySlagtap;
+import com.hbm.blockentity.machine.BlockEntityFoundrySlagtap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;

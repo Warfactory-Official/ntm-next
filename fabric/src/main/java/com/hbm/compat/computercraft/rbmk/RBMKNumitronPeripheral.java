@@ -3,9 +3,9 @@
 
 package com.hbm.compat.computercraft.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKNumitron.DisplayUnit;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKNumitron;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKNumitron.DisplayUnit;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKNumitron;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.LinkedHashMap;

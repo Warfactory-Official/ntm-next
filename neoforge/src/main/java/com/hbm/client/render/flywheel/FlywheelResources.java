@@ -21,6 +21,7 @@ public final class FlywheelResources {
     public static void reload() {
         assert Minecraft.getInstance().isSameThread();
         VisualTextures.reload();
+        FallingBlockNTVisual.clearCache();
         FluidTankVisual.reloadTextures();
         WorldItem.clear();
         WorldSprite.clear();
@@ -35,6 +36,7 @@ public final class FlywheelResources {
     }
 
     private static void initialize() {
+        BeamInstance.initTypes();
         ParticleResources.initialize();
         AmmoPressVisual.initModels();
         AnnihilatorVisual.initModels();

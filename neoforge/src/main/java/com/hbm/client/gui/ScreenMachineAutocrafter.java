@@ -3,13 +3,13 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.IControlReceiverFilter;
+import com.hbm.blockentity.machine.BlockEntityMachineAutocrafter;
 import com.hbm.inventory.container.MenuMachineAutocrafter;
 import com.hbm.lib.Library;
 import com.hbm.module.ModulePatternMatcher;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.IControlReceiverFilter;
-import com.hbm.tileentity.machine.BlockEntityMachineAutocrafter;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -125,7 +125,6 @@ public class ScreenMachineAutocrafter extends ScreenInfoContainer<MenuMachineAut
         CompoundTag data = new CompoundTag();
         data.putInt("slot", index);
         IControlReceiverFilter.writeStack(data, stack);
-        Services.NETWORK.sendToServer(
-                new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
     }
 }

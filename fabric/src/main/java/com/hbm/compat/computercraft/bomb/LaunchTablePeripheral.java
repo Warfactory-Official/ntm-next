@@ -4,10 +4,10 @@
 package com.hbm.compat.computercraft.bomb;
 
 import com.hbm.api.item.IDesignatorItem;
+import com.hbm.blockentity.bomb.BlockEntityLaunchTable;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.ModDataComponents;
-import com.hbm.tileentity.bomb.BlockEntityLaunchTable;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.Locale;
 import net.minecraft.world.item.ItemStack;

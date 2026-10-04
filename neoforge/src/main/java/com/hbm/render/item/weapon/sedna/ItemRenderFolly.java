@@ -4,11 +4,9 @@
 
 package com.hbm.render.item.weapon.sedna;
 
-import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.items.weapon.sedna.mags.IMagazine;
 import com.hbm.main.ResourceManager;
-import com.hbm.registration.RegistryHandle;
 import com.hbm.render.anim.HbmAnimations;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.EntityDamageUtil;
@@ -28,7 +26,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ARGB;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;

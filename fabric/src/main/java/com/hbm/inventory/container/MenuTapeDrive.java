@@ -3,9 +3,9 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityMachineTapeDrive;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.items.machine.ItemDrive;
-import com.hbm.tileentity.machine.BlockEntityMachineTapeDrive;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

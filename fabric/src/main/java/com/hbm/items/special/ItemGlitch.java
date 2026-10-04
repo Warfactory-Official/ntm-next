@@ -16,6 +16,7 @@ import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.main.Polaroid;
+import com.hbm.util.TooltipStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -35,7 +36,6 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
 public class ItemGlitch extends Item implements IBatteryItem {
-
     private static final int USE_COST = 5;
     private static final int OUTCOMES = 31;
     private static final int BUFF_TICKS = 60 * 20;
@@ -162,8 +162,8 @@ public class ItemGlitch extends Item implements IBatteryItem {
             TooltipFlag flag) {
         adder.accept(Component.translatable("desc.item.glitch"));
         adder.accept(Component.empty());
-        for (String line : Polaroid.loreLines("desc.item.glitch."))
-            adder.accept(Component.literal(line));
+        for (Component line : TooltipStyle.lines(Polaroid.lore("desc.item.glitch.")))
+            adder.accept(line);
     }
 
     @Override

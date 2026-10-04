@@ -20,7 +20,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class EntityDroneBase extends Entity {
-
     private static final EntityDataAccessor<Byte> APPEARANCE =
             SynchedEntityData.defineId(EntityDroneBase.class, EntityDataSerializers.BYTE);
 

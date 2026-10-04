@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Camera.class)
 public class MixinCamera {
-
     @Inject(method = "calculateHudFov", at = @At("RETURN"), cancellable = true)
     private void hbm$gunModelFov(float partialTicks, CallbackInfoReturnable<Float> cir) {
         cir.setReturnValue(ItemRenderWeaponBase.adjustHudFov(cir.getReturnValueF()));

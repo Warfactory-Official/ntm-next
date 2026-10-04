@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.bomb;
 
+import com.hbm.blockentity.bomb.BlockEntityNukeSolinium;
 import com.hbm.entity.effect.EntityCloudSolinium;
 import com.hbm.entity.logic.EntityNukeExplosionMK3;
-import com.hbm.tileentity.bomb.BlockEntityNukeSolinium;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;

@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKRod;
+import com.hbm.blockentity.machine.rbmk.RBMKConfig;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKRod;
-import com.hbm.tileentity.machine.rbmk.RBMKConfig;
 import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.ColorTargetState;
@@ -56,9 +56,7 @@ public class RenderRBMKFuelRod
                             .withTexture("Sampler0", RenderTextures.WHITE)
                             .useLightmap()
                             .createRenderSetup());
-
     private static final int CHERENKOV_COLOR = argb(0.4F, 0.9F, 1.0F, 0.1F);
-
     private final RenderType type = RenderTypes.entityCutoutCull(ResourceManager.rbmk_fuel_tex);
 
     private static int argb(float r, float g, float b, float a) {

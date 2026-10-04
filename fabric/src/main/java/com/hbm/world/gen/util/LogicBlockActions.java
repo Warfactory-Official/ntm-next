@@ -3,6 +3,10 @@
 
 package com.hbm.world.gen.util;
 
+import com.hbm.blockentity.BlockEntityLogicBlock;
+import com.hbm.blockentity.BlockEntitySkeletonHolder;
+import com.hbm.blockentity.bomb.BlockEntityCharge;
+import com.hbm.blockentity.machine.BlockEntityLockableBase;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.bomb.BlockChargeBase;
 import com.hbm.entity.ModEntities;
@@ -13,11 +17,7 @@ import com.hbm.items.EnumSecretType;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.factory.GunFactory;
 import com.hbm.lib.Library;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.BlockEntityLogicBlock;
-import com.hbm.tileentity.BlockEntitySkeletonHolder;
-import com.hbm.tileentity.bomb.BlockEntityCharge;
-import com.hbm.tileentity.machine.BlockEntityLockableBase;
+import com.hbm.platform.FabricPlatform;
 import com.hbm.util.MobUtil;
 import com.hbm.world.NtmWorldgenFields;
 import com.hbm.world.WorldgenHash;
@@ -81,19 +81,21 @@ public final class LogicBlockActions {
             if (tile.phase != 1 || !(tile.getLevel() instanceof ServerLevel level)) return;
 
             BlockPos pos = tile.getBlockPos();
-            level.setBlockAndUpdate(pos, ModBlocks.SKELETON_HOLDER.get().defaultBlockState());
-            Player player =
+            List<Player> players =
                     level.getEntitiesOfClass(
-                                    Player.class,
-                                    new AABB(
-                                                    pos.getX(),
-                                                    pos.getY(),
-                                                    pos.getZ(),
-                                                    pos.getX() + 1,
-                                                    pos.getY() - 2,
-                                                    pos.getZ() + 1)
-                                            .inflate(25.0))
-                            .getFirst();
+                            Player.class,
+                            new AABB(
+                                            pos.getX(),
+                                            pos.getY(),
+                                            pos.getZ(),
+                                            pos.getX() + 1,
+                                            pos.getY() - 2,
+                                            pos.getZ() + 1)
+                                    .inflate(25.0));
+            if (players.isEmpty()) return;
+            Player player = players.getFirst();
+
+            level.setBlockAndUpdate(pos, ModBlocks.SKELETON_HOLDER.get().defaultBlockState());
             if (!(level.getBlockEntity(pos) instanceof BlockEntitySkeletonHolder skeleton)) return;
 
             skeleton.item =
@@ -250,12 +252,11 @@ public final class LogicBlockActions {
                         double sz = pos.getZ() + 0.5D + z;
                         LevelChunk chunk =
                                 level.getChunkSource().getChunkNow((int) sx >> 4, (int) sz >> 4);
-
                         if (chunk == null) break;
                         int sy = WorldgenHeight.lightBlocking(chunk, (int) sx, (int) sz);
                         soldier.snapTo(sx, sy, sz, i * 36F, 0F);
                         if (soldier.canSpawnAtCurrentPosition()) {
-                            Services.PLATFORM.finalizeSpawn(
+                            FabricPlatform.finalizeSpawn(
                                     soldier,
                                     level,
                                     level.getCurrentDifficultyAt(soldier.blockPosition()),
@@ -301,7 +302,6 @@ public final class LogicBlockActions {
 
         BlockPos pos = tile.getBlockPos();
         for (int i = 0; i < 3; i++) {
-
             Skeleton skeleton =
                     EntityTypes.SKELETON.create(
                             level, new EntitySpawnRequest(EntitySpawnReason.EVENT, true));
@@ -310,7 +310,6 @@ public final class LogicBlockActions {
             skeleton.snapTo(pos, 0F, 0F);
 
             if (tier == 1) {
-
                 MobUtil.addFireTask(skeleton);
                 MobUtil.equipGunTier(skeleton, 1, new Random());
                 MobUtil.equipArmorPool(skeleton, MobUtil.SLOT_POOL_MASKS, new Random());
@@ -340,7 +339,6 @@ public final class LogicBlockActions {
         if (tile.phase != 1 || !(tile.getLevel() instanceof ServerLevel level)) return;
 
         BlockPos pos = tile.getBlockPos();
-
         int y = WorldgenHeight.lightBlocking(level, pos.getX(), pos.getZ());
         double x = 5D;
         double z = 0D;
@@ -368,7 +366,6 @@ public final class LogicBlockActions {
 
         BlockPos pos = tile.getBlockPos();
         for (int i = 0; i < 3; i++) {
-
             Zombie zombie =
                     EntityTypes.ZOMBIE.create(
                             level, new EntitySpawnRequest(EntitySpawnReason.EVENT, true));

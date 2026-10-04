@@ -4,7 +4,6 @@
 
 package com.hbm.handler.pollution;
 
-import com.hbm.config.RadiationConfig;
 import com.hbm.data.MobData;
 import com.hbm.data.RadiationData;
 import com.hbm.entity.ModEntities;
@@ -14,8 +13,9 @@ import com.hbm.entity.mob.glyphid.EntityGlyphidScout;
 import com.hbm.handler.pollution.PollutionSavedData.PollutionData;
 import com.hbm.hazard.HazardClass;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.PollutionSyncPayload;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricServerEvents;
 import com.hbm.potion.HbmPotion;
 import com.hbm.util.ArmorRegistry;
 import java.util.HashMap;
@@ -44,11 +44,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class PollutionHandler {
-
     public static final float SOOT_PER_SECOND = 1F / 25F;
-
     public static final float HEAVY_METAL_PER_SECOND = 1F / 50F;
-
     public static final float POISON_PER_SECOND = 1F / 50F;
     protected static final float DESTRUCTION_THRESHOLD = 15F;
     protected static final int DESTRUCTION_COUNT = 5;
@@ -57,14 +54,14 @@ public class PollutionHandler {
     private static final Map<UUID, Float> SOOT_SENT = new HashMap<>();
 
     public static void init() {
-        Services.SERVER.onServerTickPost(PollutionHandler::updateSystem);
-        Services.SERVER.onServerTickPost(PollutionHandler::syncSoot);
-        Services.SERVER.onPlayerJoin(player -> SOOT_SENT.remove(player.getUUID()));
-        Services.SERVER.onPlayerRespawn(player -> SOOT_SENT.remove(player.getUUID()));
-        Services.SERVER.onPlayerChangeLevel(
+        FabricServerEvents.onServerTickPost(PollutionHandler::updateSystem);
+        FabricServerEvents.onServerTickPost(PollutionHandler::syncSoot);
+        FabricServerEvents.onPlayerJoin(player -> SOOT_SENT.remove(player.getUUID()));
+        FabricServerEvents.onPlayerRespawn(player -> SOOT_SENT.remove(player.getUUID()));
+        FabricServerEvents.onPlayerChangeLevel(
                 (player, origin, destination) -> SOOT_SENT.remove(player.getUUID()));
-        Services.SERVER.onPlayerDisconnect(player -> SOOT_SENT.remove(player.getUUID()));
-        Services.SERVER.onServerStopping(server -> SOOT_SENT.clear());
+        FabricServerEvents.onPlayerDisconnect(player -> SOOT_SENT.remove(player.getUUID()));
+        FabricServerEvents.onServerStopping(server -> SOOT_SENT.clear());
     }
 
     private static void syncSoot(MinecraftServer server) {
@@ -72,7 +69,7 @@ public class PollutionHandler {
             float soot = getPollution(player.level(), player.blockPosition(), PollutionType.SOOT);
             Float sent = SOOT_SENT.put(player.getUUID(), soot);
             if (sent == null || sent != soot)
-                Services.NETWORK.sendTo(new PollutionSyncPayload(soot), player);
+                PacketWire.sendTo(new PollutionSyncPayload(soot), player);
         }
     }
 

@@ -30,6 +30,8 @@ public final class HazardTransformerSophisticatedStorage implements IHazardTrans
         UUID id = stack.get(ModCoreDataComponents.STORAGE_UUID.get());
         float radiation =
                 StorageHazardSum.sum(
+                        id,
+                        false,
                         ItemContentsStorage.get().getOrCreateContents(id).inventory().stacks());
         if (radiation > 0F) entries.add(new HazardEntry(HazardRegistry.RADIATION, radiation));
     }

@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.storage.BlockEntityBatteryREDD;
 import com.hbm.inventory.container.MenuBatteryREDD;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.storage.BlockEntityBatteryREDD;
 import java.math.BigInteger;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
@@ -116,7 +116,7 @@ public class ScreenBatteryREDD extends ScreenInfoContainer<MenuBatteryREDD> {
             if (checkClick(mx, my, PRIO_X, PRIO_Y, PRIO_W, PRIO_H))
                 data.putBoolean("priority", true);
             if (!data.isEmpty()) {
-                Services.NETWORK.sendToServer(
+                PacketWire.sendToServer(
                         new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
                 playClick();
                 return true;

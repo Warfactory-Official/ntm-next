@@ -23,7 +23,6 @@ public final class ZirnoxPage extends RecipePage<ZirnoxPage.Recipe> {
 
     @Override
     public List<Recipe> rows() {
-
         List<Recipe> out = new ArrayList<>();
         for (EnumZirnoxType type : EnumZirnoxType.VALUES) {
             ItemZirnoxRod rod = ModItems.zirnoxFuel(type);

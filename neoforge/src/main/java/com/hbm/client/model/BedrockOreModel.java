@@ -3,7 +3,7 @@
 
 package com.hbm.client.model;
 
-import com.hbm.tileentity.BlockEntityBedrockOre;
+import com.hbm.blockentity.BlockEntityBedrockOre;
 import java.util.List;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
@@ -37,7 +37,7 @@ public class BedrockOreModel implements BlockStateModel {
     private final BlockStateModelPart bare;
 
     public BedrockOreModel(ModelBaker baker, ResolvedModel base) {
-        this.baker = baker;
+        this.baker = RuntimeBaker.capture(baker, base);
         this.base = base;
         this.slots = base.getTopTextureSlots();
         this.particle = base.resolveParticleMaterial(slots, baker);

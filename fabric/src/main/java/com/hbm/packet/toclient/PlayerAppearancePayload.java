@@ -4,10 +4,11 @@
 package com.hbm.packet.toclient;
 
 import com.hbm.interfaces.injected.PlayerAppearance;
+import com.hbm.items.armor.ArmorFlight;
 import com.hbm.lib.Library;
 import com.hbm.packet.IPayloadHandlerContext;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.threading.ThreadedPayload;
-import com.hbm.platform.Services;
 import com.hbm.potion.HbmPotion;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -41,20 +42,24 @@ public final class PlayerAppearancePayload extends ThreadedPayload {
 
     public static void update(Player player) {
         if (!(player instanceof ServerPlayer)) return;
-        byte flags = fromEffects(player);
+        byte flags = fromPlayer(player);
         if (player.hbm$appearance() == flags) return;
         player.hbm$setAppearance(flags);
-        Services.NETWORK.sendToAllTracking(
-                new PlayerAppearancePayload(player.getId(), flags), player);
+        PacketWire.sendToAllTracking(new PlayerAppearancePayload(player.getId(), flags), player);
     }
 
     public static void sendInitial(Entity tracked, ServerPlayer observer) {
         if (tracked instanceof Player player) {
-            byte flags = fromEffects(player);
+            byte flags = fromPlayer(player);
             if (flags != 0)
-                Services.NETWORK.sendTo(
-                        new PlayerAppearancePayload(player.getId(), flags), observer);
+                PacketWire.sendTo(new PlayerAppearancePayload(player.getId(), flags), observer);
         }
+    }
+
+    public static byte fromPlayer(Player player) {
+        byte flags = fromEffects(player);
+        if (ArmorFlight.prone(player)) flags |= PlayerAppearance.ARMOR_FLIGHT;
+        return flags;
     }
 
     public static void handle(PlayerAppearancePayload payload, IPayloadHandlerContext context) {

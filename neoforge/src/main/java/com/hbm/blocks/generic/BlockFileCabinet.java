@@ -3,11 +3,11 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.machine.storage.BlockEntityFileCabinet;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.inventory.IGUIProvider;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemLock;
-import com.hbm.tileentity.machine.storage.BlockEntityFileCabinet;
 import com.mojang.serialization.MapCodec;
 import java.util.EnumMap;
 import java.util.Map;
@@ -62,7 +62,6 @@ public class BlockFileCabinet extends HorizontalDirectionalBlock implements ITic
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
-
         return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
     }
 
@@ -86,7 +85,6 @@ public class BlockFileCabinet extends HorizontalDirectionalBlock implements ITic
             Player player,
             InteractionHand hand,
             BlockHitResult hit) {
-
         if (stack.getItem() instanceof ItemLock || stack.is(ModItems.KEY_KIT.get())) {
             return InteractionResult.PASS;
         }

@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.storage.BlockEntityBatterySocket;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.RefreshesNeighborState;
@@ -10,7 +11,6 @@ import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.network.CableConductorBlockBase;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.storage.BlockEntityBatterySocket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -24,7 +24,6 @@ public class MachineBatterySocket extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
 
     private static final int[] DIMENSIONS = {1, 0, 1, 0, 1, 0};
-
     private static final int NODE_MASK =
             (1 << Direction.NORTH.ordinal())
                     | (1 << Direction.SOUTH.ordinal())
@@ -82,7 +81,6 @@ public class MachineBatterySocket extends BlockMultiblockCore
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-
         return RenderShape.MODEL;
     }
 

@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class DataCodecs {
-
     public static final Codec<Integer> INT = exactInteger(BigDecimal::intValueExact, "32-bit");
     public static final Codec<Long> LONG = exactInteger(BigDecimal::longValueExact, "64-bit");
 

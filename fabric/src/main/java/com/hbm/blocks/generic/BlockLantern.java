@@ -3,10 +3,10 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityLantern;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCell;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.tileentity.TileEntityLantern;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,6 +37,6 @@ public class BlockLantern extends BlockMultiblockCore implements ITickingBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileEntityLantern(pos, state);
+        return new BlockEntityLantern(pos, state);
     }
 }

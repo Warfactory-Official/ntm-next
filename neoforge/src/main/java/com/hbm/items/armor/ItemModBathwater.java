@@ -18,7 +18,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemModBathwater extends ItemArmorMod {
-
     private static final int DURATION = 200;
 
     private final Grade grade;

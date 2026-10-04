@@ -56,7 +56,6 @@ public abstract class PlaceTemplateFeature extends Feature<NoneFeatureConfigurat
         if (template.isEmpty()) return false;
 
         StructurePlaceSettings settings = new StructurePlaceSettings();
-
         for (StructureProcessor processor : DungeonProcessorLists.forTemplate(level, templateId)) {
             settings.addProcessor(processor);
         }

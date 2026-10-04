@@ -36,7 +36,6 @@ import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
 
 public class TintedGlintItemModel implements ItemModel {
-
     private static final float GLINT_COLOR = 0.36F;
     private static final int GLINT_LAYERS = 2;
     private static final int TINT_INDEX = 0;
@@ -87,7 +86,6 @@ public class TintedGlintItemModel implements ItemModel {
                             TINT_INDEX,
                             original.shade(),
                             0);
-
             pass.add(
                     new BakedQuad(
                             quad.position0(),
@@ -127,7 +125,6 @@ public class TintedGlintItemModel implements ItemModel {
         output.appendModelIdentityElement(this);
         boolean glinting = glints(displayContext);
         output.ensureCapacity(glinting ? 1 + GLINT_LAYERS : 1);
-
         layer(output, displayContext).prepareQuadList().addAll(quads.getAll());
         if (quads.hasMaterialFlag(BakedQuad.FLAG_ANIMATED)) output.setAnimated();
         if (!glinting) return;

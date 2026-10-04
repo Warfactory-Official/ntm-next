@@ -3,9 +3,9 @@
 
 package com.hbm.compat.computercraft.fusion;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionBreeder;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionBreeder;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.Locale;
 import net.minecraft.world.item.ItemStack;
@@ -49,7 +49,6 @@ public final class FusionBreederPeripheral extends SnapshotPeripheral<BlockEntit
                                 .toLowerCase(Locale.US));
         ItemStack input = machine.getItem(BlockEntityFusionBreeder.SLOT_INPUT);
         ItemStack output = machine.getItem(BlockEntityFusionBreeder.SLOT_OUTPUT);
-
         putRef(INPUT_NAME, input.isEmpty() ? "" : input.getItem().getDescriptionId());
         put(INPUT_SIZE, input.isEmpty() ? 0 : input.getCount());
         putRef(OUTPUT_NAME, output.isEmpty() ? "" : output.getItem().getDescriptionId());

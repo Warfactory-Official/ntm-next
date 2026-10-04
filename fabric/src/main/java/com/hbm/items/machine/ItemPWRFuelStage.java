@@ -30,7 +30,6 @@ public class ItemPWRFuelStage extends Item {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-
         adder.accept(
                 Component.translatable("item.hbm.pwr_fuel_" + fuel.id)
                         .withStyle(ChatFormatting.ITALIC));

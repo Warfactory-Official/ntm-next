@@ -9,8 +9,8 @@ import com.hbm.handler.threading.TargetPoint;
 import com.hbm.items.IAnimatedItem;
 import com.hbm.items.ISwingReceiver;
 import com.hbm.items.tool.ItemSwordAbility;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.BlockDustBurstPayload;
-import com.hbm.platform.Services;
 import com.hbm.render.anim.AnimationEnums.ToolAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationSequence;
@@ -97,7 +97,7 @@ public final class ItemCrucible extends ItemSwordAbility implements IAnimatedIte
         if (victim.level() instanceof ServerLevel level && !victim.isAlive()) {
             int count = Math.min((int) Math.ceil(victim.getMaxHealth() / 3.0D), 250) * 4;
             double y = victim.getY() + victim.getBbHeight() * 0.5D;
-            Services.NETWORK.sendToAllAround(
+            PacketWire.sendToAllAround(
                     new BlockDustBurstPayload(
                             Blocks.REDSTONE_BLOCK.defaultBlockState(),
                             victim.getX(),
@@ -118,7 +118,6 @@ public final class ItemCrucible extends ItemSwordAbility implements IAnimatedIte
         if (wear == 0) return;
         int damage = Math.min(stack.getDamageValue() + wear, CHARGES);
         if (player != null) CriteriaTriggers.ITEM_DURABILITY_CHANGED.trigger(player, stack, damage);
-
         stack.setDamageValue(damage);
     }
 

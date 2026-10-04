@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.machine.BlockEntityMachineTurbofan;
+import com.hbm.blockentity.machine.BlockEntityMachineTurbofan;
 
 public final class TurbofanSound {
 

@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityReactorControl;
 import com.hbm.inventory.container.MenuReactorControl;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityReactorControl;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -129,7 +129,7 @@ public class ScreenReactorControl extends ScreenInfoContainer<MenuReactorControl
             data.putDouble("levelLower", vals[1]);
             data.putDouble("heatUpper", vals[2]);
             data.putDouble("heatLower", vals[3]);
-            Services.NETWORK.sendToServer(new NbtControlPayload(control().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(control().getBlockPos(), data));
             return true;
         }
 
@@ -138,7 +138,7 @@ public class ScreenReactorControl extends ScreenInfoContainer<MenuReactorControl
                 playClick();
                 CompoundTag data = new CompoundTag();
                 data.putInt("function", k);
-                Services.NETWORK.sendToServer(new NbtControlPayload(control().getBlockPos(), data));
+                PacketWire.sendToServer(new NbtControlPayload(control().getBlockPos(), data));
                 return true;
             }
         }

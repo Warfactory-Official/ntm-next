@@ -6,6 +6,7 @@ package com.hbm.blocks.network;
 import com.hbm.api.energymk2.CableData;
 import com.hbm.api.energymk2.PowerGraph;
 import com.hbm.api.energymk2.PowerGraphProvider;
+import com.hbm.blocks.CapabilityDependentShape;
 import com.hbm.lib.Library;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.AutoRotate;
@@ -35,7 +36,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 @AutoRotate
-public class CableBlock extends Block implements SimpleWaterloggedBlock {
+public class CableBlock extends Block implements CapabilityDependentShape, SimpleWaterloggedBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -65,7 +66,6 @@ public class CableBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private static VoxelShape[] buildShapes() {
-
         VoxelShape core = Shapes.box(5 / 16D, 5 / 16D, 5 / 16D, 11 / 16D, 11 / 16D, 11 / 16D);
         VoxelShape[] arm = new VoxelShape[6];
         arm[Direction.DOWN.ordinal()] =

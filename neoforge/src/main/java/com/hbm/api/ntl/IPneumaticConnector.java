@@ -6,7 +6,6 @@ package com.hbm.api.ntl;
 import net.minecraft.core.Direction;
 
 public interface IPneumaticConnector {
-
     default boolean canConnectPneumatic(Direction dir) {
         return true;
     }

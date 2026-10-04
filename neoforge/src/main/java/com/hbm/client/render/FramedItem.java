@@ -21,12 +21,10 @@ import net.minecraft.world.phys.AABB;
 import org.jspecify.annotations.Nullable;
 
 public final class FramedItem {
-
     public enum Arm {
         BLOCK,
         MESH,
         SPRITE,
-
         STILL_MESH;
 
         public boolean mesh() {
@@ -43,19 +41,14 @@ public final class FramedItem {
     }
 
     static final float FRAMED_SPRITE_SCALE = 0.5128205F;
-
     static final float FRAMED_BOB = 0.1F;
-
     static final float GROUND_AUTOLIFT_CANCEL = 0.25F;
     static final float DECO_GROUND_LIFT = GROUND_AUTOLIFT_CANCEL;
-
     private static final float F9 = 0.25F;
-
     private static final float SPRITE_DEPTH = 0.0625F;
     private static final float SPRITE_STEP = SPRITE_DEPTH + 0.021875F;
     private static final float SPRITE_ANCHOR_Y = 0.25F;
     private static final float SPRITE_ANCHOR_Z = -SPRITE_DEPTH / 2.0F;
-
     private static final double FLAT_DEPTH = 1.0D / 16.0D;
     private static final double FLAT_SPAN = 1.0D;
 
@@ -68,14 +61,11 @@ public final class FramedItem {
             @Nullable Level level,
             @Nullable ItemOwner owner,
             int seed) {
-
         if (!stack.is(HbmItemTags.FRAMED_MESH)) {
             resolver.updateForTopItem(out, stack, ItemDisplayContext.NONE, level, owner, seed);
-
             if (stack.getItem() instanceof BlockItem && out.usesBlockLight()) return Arm.BLOCK;
             if (!bespoke(out) && flatIcon(out.getModelBoundingBox())) return Arm.SPRITE;
         }
-
         resolver.updateForTopItem(out, stack, ItemDisplayContext.GROUND, level, owner, seed);
         return stack.is(HbmItemTags.FRAMED_UNBOBBED) ? Arm.STILL_MESH : Arm.MESH;
     }
@@ -111,7 +101,6 @@ public final class FramedItem {
         poseStack.scale(1.25F, 1.25F, 1.25F);
         poseStack.translate(0.0, 0.05F, 0.0);
         poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
-
         poseStack.scale(F9, F9, F9);
     }
 

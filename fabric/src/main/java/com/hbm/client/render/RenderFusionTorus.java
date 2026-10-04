@@ -3,11 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorus;
 import com.hbm.inventory.recipes.FusionRecipe;
-import com.hbm.inventory.recipes.FusionRecipes;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionTorus;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;

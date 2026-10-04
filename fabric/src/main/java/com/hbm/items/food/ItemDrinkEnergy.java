@@ -6,7 +6,7 @@ package com.hbm.items.food;
 import com.hbm.config.VersatileConfig;
 import com.hbm.items.special.ItemCustomLore;
 import com.hbm.lib.Library;
-import com.hbm.platform.Services;
+import net.fabricmc.fabric.api.entity.FakePlayer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,7 +23,6 @@ import org.jspecify.annotations.Nullable;
 public class ItemDrinkEnergy extends ItemCustomLore {
 
     private static final Identifier BOTTLE_OPENER = Library.id("bottle_opener");
-
     private final @Nullable Identifier cap;
     private final boolean requiresOpener;
     private final Effect effect;
@@ -65,7 +64,7 @@ public class ItemDrinkEnergy extends ItemCustomLore {
         if (!(entity instanceof ServerPlayer player))
             return super.finishUsingItem(stack, level, entity);
 
-        if (Services.PLATFORM.isFakePlayer(player)) {
+        if (((Player) player) instanceof FakePlayer) {
             ItemStack result = super.finishUsingItem(stack, level, entity);
             level.explode(
                     player,
@@ -87,7 +86,6 @@ public class ItemDrinkEnergy extends ItemCustomLore {
         effect.apply(player);
 
         if (returns) {
-
             ItemStackTemplate container = getCraftingRemainder();
             if (container != null) {
                 if (result.isEmpty()) return container.create();

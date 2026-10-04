@@ -4,9 +4,9 @@
 package com.hbm.client.render;
 
 import com.hbm.animloader.AnimatedModel;
+import com.hbm.blockentity.BlockEntityDoorGeneric;
+import com.hbm.blockentity.DoorDecl;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.BlockEntityDoorGeneric;
-import com.hbm.tileentity.DoorDecl;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.ColorTargetState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;

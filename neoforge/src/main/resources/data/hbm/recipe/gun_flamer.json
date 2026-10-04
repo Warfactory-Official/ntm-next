@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "B": "#hbm:barrels_heavy/dura_steel",
     "G": "#hbm:grips/dura_steel",

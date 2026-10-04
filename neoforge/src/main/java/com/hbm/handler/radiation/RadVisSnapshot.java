@@ -22,7 +22,6 @@ import org.jspecify.annotations.Nullable;
 import static com.hbm.handler.radiation.RadiationSystemNT.*;
 
 public final class RadVisSnapshot {
-
     private static final Map<WorldRadiationData.SectionRef, Mask> MASKS = new WeakHashMap<>();
     private static int nextRevision = 1;
 
@@ -106,7 +105,7 @@ public final class RadVisSnapshot {
     private static @Nullable Section section(
             WorldRadiationData data, long ck, int id, int slot, int kind) {
         int secIdx = id * data.sectionsPerChunk + slot;
-        RadsimBackend backend = data.backend;
+        RadiationBackend backend = data.backend;
         int nativeId = backend == null ? -1 : backend.sectionId(ck, slot);
         boolean active =
                 backend == null ? data.isSectionActive(id, slot) : backend.sectionActive(nativeId);

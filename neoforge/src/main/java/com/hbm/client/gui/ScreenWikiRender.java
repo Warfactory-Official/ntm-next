@@ -97,7 +97,6 @@ public final class ScreenWikiRender extends Screen {
         int pixelScale = client.getWindow().getGuiScale();
         Path output =
                 client.gameDirectory.toPath().resolve(directory).resolve(prefix + name + ".png");
-
         try {
             Screenshot.takeScreenshot(
                     client.gameRenderer.mainRenderTarget(),

@@ -58,7 +58,6 @@ public final class SolderingStationPage extends TablePage<SolderingRecipe> {
                         + recipe.pcb().length
                         + recipe.solder().length
                         + (recipe.fluid() == null ? 0 : 1);
-
         int[][] positions = GenericMachinePage.universalInputPositions(count);
         int slot = addInputs(page, recipe.toppings(), positions, 0);
         slot = addInputs(page, recipe.pcb(), positions, slot);

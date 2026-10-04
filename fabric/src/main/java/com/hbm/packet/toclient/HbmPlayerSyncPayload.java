@@ -9,7 +9,6 @@ import com.hbm.lib.Library;
 import com.hbm.packet.IPayloadHandlerContext;
 import com.hbm.packet.threading.ThreadedPayload;
 import io.netty.buffer.ByteBuf;
-import java.util.Collections;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +38,6 @@ public final class HbmPlayerSyncPayload extends ThreadedPayload {
         this.contagion = p.contagion;
         this.blacklung = p.blacklung;
         this.oil = p.oil;
-
         this.contamination = p.getCont().toArray(new ContaminationEffect[0]);
     }
 
@@ -91,7 +89,6 @@ public final class HbmPlayerSyncPayload extends ThreadedPayload {
     public static void handle(HbmPlayerSyncPayload payload, IPayloadHandlerContext ctx) {
         Player player = ctx.playerOrNull();
         if (player == null) return;
-
         HbmLivingProps p = HbmLivingProps.getData(player);
         p.radiation = payload.radiation;
         p.digamma = payload.digamma;

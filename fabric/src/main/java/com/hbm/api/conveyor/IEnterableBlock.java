@@ -9,7 +9,6 @@ import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
 
 public interface IEnterableBlock {
-
     boolean canItemEnter(Level level, BlockPos pos, @Nullable Direction dir, IConveyorItem entity);
 
     void onItemEnter(Level level, BlockPos pos, @Nullable Direction dir, IConveyorItem entity);

@@ -3,19 +3,14 @@
 
 package com.hbm.render.item.weapon.sedna;
 
-import com.hbm.items.ModItems;
 import com.hbm.items.armor.IPAMelee;
 import com.hbm.items.armor.IPAWeaponsProvider;
-import com.hbm.registration.RegistryHandle;
 import com.mojang.blaze3d.vertex.PoseStack;
-import java.util.List;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemRenderPAMelee extends ItemRenderWeaponBase {
-
     @Override
     protected float aimZoom(ItemStack stack) {
         return 0F;

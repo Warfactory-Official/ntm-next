@@ -21,7 +21,6 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
 public class ItemBookLore extends Item {
-
     public static final int DEFAULT_COVER = 0x303030;
     public static final int DEFAULT_TITLE = 0xFFFFFF;
 
@@ -87,13 +86,11 @@ public class ItemBookLore extends Item {
             TooltipDisplay display,
             Consumer<Component> lines,
             TooltipFlag flag) {
-
         String stackKey = stack.get(ModDataComponents.LORE_BOOK_KEY.get());
         if (stackKey == null || stackKey.isEmpty()) {
             super.appendHoverText(stack, context, display, lines, flag);
             return;
         }
-
         String key = "book_lore." + stackKey + ".author";
         Component author = Component.translatable(key);
         if (!author.getString().equals(key)) {
@@ -106,7 +103,6 @@ public class ItemBookLore extends Item {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
-
         if (level.isClientSide()) OPEN_SCREEN.accept(player);
         return InteractionResult.SUCCESS;
     }

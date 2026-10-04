@@ -21,27 +21,19 @@ public final class ArmorFullSetBonus {
     private final List<EffectBonus> effects;
     private final boolean geigerSound;
     private final boolean hardLanding;
-
     private final boolean vats;
     private final boolean thermal;
     private final @Nullable RegistryHandle<SoundEvent> step;
     private final @Nullable RegistryHandle<SoundEvent> jump;
     private final @Nullable RegistryHandle<SoundEvent> fall;
-
     private final long drain;
-
     private final boolean noHelmet;
-
     private final boolean rocketBoots;
     private final boolean fastFall;
     private final boolean sprintBoost;
-
     private final boolean moreAmmo;
-
     private final int dashCount;
-
     private final boolean geigerHUD;
-
     private final int stepSize;
 
     private ArmorFullSetBonus(Builder b) {

@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class ItemAppleSchrabidium extends ItemAppleBase {
-
     public static final int FOREVER = Integer.MAX_VALUE;
 
     public ItemAppleSchrabidium(Properties props, Tier tier) {

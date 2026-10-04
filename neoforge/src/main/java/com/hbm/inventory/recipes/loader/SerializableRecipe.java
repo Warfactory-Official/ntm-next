@@ -3,17 +3,15 @@
 
 package com.hbm.inventory.recipes.loader;
 
-import com.hbm.registration.IRegistrar;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeType;
 
 public abstract class SerializableRecipe {
-
     public static final List<SerializableRecipe> recipeHandlers = new ArrayList<>();
 
-    public abstract void registerType(IRegistrar registrar);
+    public abstract void registerType();
 
     public abstract RecipeType<?> datapackType();
 

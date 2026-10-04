@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.network.BlockEntityPylonBase;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.config.RenderConfig;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.network.BlockEntityPylonBase;
 import com.hbm.util.ChunkUtil;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;

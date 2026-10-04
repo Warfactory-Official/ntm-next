@@ -3,7 +3,6 @@
 
 package com.hbm.hazard.type;
 
-import com.hbm.config.RadiationConfig;
 import com.hbm.data.RadiationData;
 import com.hbm.hazard.modifier.IHazardModifier;
 import java.util.List;
@@ -22,7 +21,6 @@ public class HazardTypeExplosive implements IHazardType {
         if (RadiationData.DISABLE_EXPLOSIVE.get()) return;
         if (target.isOnFire() && stack.getCount() > 0) {
             stack.setCount(0);
-
             target.level()
                     .explode(
                             null,
@@ -40,7 +38,6 @@ public class HazardTypeExplosive implements IHazardType {
         if (RadiationData.DISABLE_EXPLOSIVE.get()) return;
         if (item.isOnFire()) {
             item.discard();
-
             item.level()
                     .explode(
                             null,

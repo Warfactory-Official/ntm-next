@@ -4,6 +4,8 @@
 
 package com.hbm.wiaj.cannery;
 
+import com.hbm.blockentity.machine.BlockEntityCrucible;
+import com.hbm.blockentity.machine.BlockEntityFoundryBasin;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.model.Meshes;
@@ -17,8 +19,6 @@ import com.hbm.items.machine.ItemScraps;
 import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityCrucible;
-import com.hbm.tileentity.machine.BlockEntityFoundryBasin;
 import com.hbm.wiaj.JarRenderContext;
 import com.hbm.wiaj.JarScene;
 import com.hbm.wiaj.JarScript;
@@ -31,9 +31,9 @@ import com.hbm.wiaj.actions.ActionSetTile;
 import com.hbm.wiaj.actions.ActionSetZoom;
 import com.hbm.wiaj.actions.ActionUpdateActor;
 import com.hbm.wiaj.actions.ActionWait;
+import com.hbm.wiaj.actors.ActorBlockEntity;
 import com.hbm.wiaj.actors.ActorFancyPanel.Orientation;
 import com.hbm.wiaj.actors.ActorFancyPanel;
-import com.hbm.wiaj.actors.ActorTileEntity;
 import com.hbm.wiaj.actors.ITileActorRenderer;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.rendertype.RenderType;
@@ -87,7 +87,7 @@ public class CanneryCrucible extends CanneryBase {
         scene0.add(new ActionSetTile(2, 2, 2, crucible(0)));
         scene0.add(
                 new ActionCreateActor(
-                        1, new ActorTileEntity(new ActorCrucible(), position(2, 2, 2))));
+                        1, new ActorBlockEntity(new ActorCrucible(), position(2, 2, 2))));
         scene0.add(new ActionWait(10));
         scene0.add(new ActionCreateActor(0, panel(0, 0, -30, Orientation.BOTTOM)));
         scene0.add(new ActionWait(60));
@@ -110,7 +110,7 @@ public class CanneryCrucible extends CanneryBase {
         firebox.putInt("rotation", 5);
         scene0.add(
                 new ActionCreateActor(
-                        2, new ActorTileEntity(new CanneryFirebox.ActorFirebox(), firebox)));
+                        2, new ActorBlockEntity(new CanneryFirebox.ActorFirebox(), firebox)));
         scene0.add(new ActionUpdateActor(2, "open", true));
         scene0.add(new ActionWait(30));
         scene0.add(new ActionUpdateActor(2, "isOn", true));
@@ -184,7 +184,7 @@ public class CanneryCrucible extends CanneryBase {
         scene2.add(
                 new ActionCreateActor(
                         3,
-                        new ActorTileEntity(
+                        new ActorBlockEntity(
                                 new CanneryFoundryChannel.ActorFoundry(), position(0, 1, 2))));
         scene2.add(new ActionSetBlock(0, 1, 2, ModBlocks.FOUNDRY_BASIN.get().defaultBlockState()));
 
@@ -340,7 +340,8 @@ public class CanneryCrucible extends CanneryBase {
         public void renderActor(
                 JarRenderContext context, int ticks, float interp, CompoundTag data) {
             int x = data.getIntOr("x", 0), y = data.getIntOr("y", 0), z = data.getIntOr("z", 0);
-            BlockEntityCrucible tile = (BlockEntityCrucible) context.world().getTileEntity(x, y, z);
+            BlockEntityCrucible tile =
+                    (BlockEntityCrucible) context.world().getBlockEntity(x, y, z);
             var ps = context.pose();
             ps.pushPose();
             ps.translate(x, y, z);

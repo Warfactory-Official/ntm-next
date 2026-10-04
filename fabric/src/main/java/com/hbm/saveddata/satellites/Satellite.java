@@ -4,10 +4,10 @@
 package com.hbm.saveddata.satellites;
 
 import com.hbm.api.redstoneoverradio.IRORInteractive;
+import com.hbm.blockentity.network.RTTYSystem;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.missile.EntitySatellitePod;
 import com.hbm.saveddata.SatelliteSavedData;
-import com.hbm.tileentity.network.RTTYSystem;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;

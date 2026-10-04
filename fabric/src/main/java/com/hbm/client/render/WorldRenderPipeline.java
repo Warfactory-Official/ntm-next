@@ -112,11 +112,12 @@ public final class WorldRenderPipeline extends RenderPipeline {
     public final boolean intensity;
     public final boolean fog;
     public final boolean translucent;
+    public final boolean alphaAdditive;
+    public final boolean emission;
     public final boolean glint;
     public final float alphaCutout;
 
     private WorldRenderPipeline(RenderPipeline source) {
-
         super(
                 source.getLocation(),
                 source.getVertexShader(),
@@ -145,6 +146,12 @@ public final class WorldRenderPipeline extends RenderPipeline {
         intensity = family == Family.TEXT && flags.contains("IS_GRAYSCALE");
         fog = !shader.endsWith("_nofog") && family != Family.BASIC;
         translucent = source.getColorTargetState().blendFunction().isPresent();
+        alphaAdditive =
+                source.getColorTargetState()
+                        .blendFunction()
+                        .filter(BlendFunction.LIGHTNING::equals)
+                        .isPresent();
+        emission = flags.contains("ADDITIVE_EMISSION");
         glint =
                 source.getColorTargetState()
                         .blendFunction()

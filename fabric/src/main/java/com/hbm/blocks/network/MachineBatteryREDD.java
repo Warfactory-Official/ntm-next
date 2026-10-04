@@ -3,6 +3,9 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.api.energymk2.CableData;
+import com.hbm.blockentity.machine.storage.BlockEntityBatteryREDD;
+import com.hbm.blockentity.machine.storage.BlockEntityMachineBattery;
 import com.hbm.blocks.IPersistentInfoProvider;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
@@ -11,8 +14,7 @@ import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.items.ModDataComponents;
-import com.hbm.tileentity.machine.storage.BlockEntityBatteryREDD;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineBattery;
+import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.BobMathUtil;
 import com.mojang.serialization.MapCodec;
 import java.math.BigInteger;
@@ -139,32 +141,16 @@ public class MachineBatteryREDD extends BlockMultiblockCore
         return MachineCaps.of(ModBlockEntities.BATTERY_REDD).powerIn().powerOut().items().fe();
     }
 
-    @Override
-    protected void onPlace(
-            BlockState state,
-            Level level,
-            BlockPos pos,
-            BlockState oldState,
-            boolean movedByPiston) {
-        super.onPlace(state, level, pos, oldState, movedByPiston);
-        if (level instanceof ServerLevel server && !oldState.is(this)) {
-            mintRing(server, pos, state, state.getValue(FACING));
-        }
-    }
-
-    @Override
-    protected void removedAt(
-            BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-        super.removedAt(state, level, pos, movedByPiston);
-        Direction facing = coreFacing(state);
-        visitRing(pos, facing, (cell, mask) -> CableConductorBlockBase.dropNode(level, cell));
-    }
-
-    private void mintRing(ServerLevel server, BlockPos core, BlockState state, Direction facing) {
+    public static void mintRing(LevelNodeGraph<CableData> graph, BlockPos core, Direction facing) {
         visitRing(
                 core,
                 facing,
-                (cell, mask) -> CableConductorBlockBase.mintNode(server, cell, state, mask));
+                (cell, mask) -> graph.addNode(cell.asLong(), CableData.INSTANCE, mask));
+    }
+
+    public static void removeRing(
+            LevelNodeGraph<CableData> graph, BlockPos core, Direction facing) {
+        visitRing(core, facing, (cell, mask) -> graph.removeNode(cell.asLong()));
     }
 
     private static void visitRing(BlockPos core, Direction facing, RingVisitor visitor) {
@@ -182,7 +168,6 @@ public class MachineBatteryREDD extends BlockMultiblockCore
                                             | (1 << facing.getOpposite().ordinal())
                                     : 0));
         }
-
         for (int side : new int[] {2, -2}) {
             for (int forward : new int[] {1, -1}) {
                 visitor.cell(
@@ -190,7 +175,6 @@ public class MachineBatteryREDD extends BlockMultiblockCore
                         (1 << facing.ordinal()) | (1 << facing.getOpposite().ordinal()));
             }
         }
-
         for (int i = 0; i < ports.length; i++) {
             visitor.cell(
                     ports[i], (1 << faces[i].ordinal()) | (1 << faces[i].getOpposite().ordinal()));

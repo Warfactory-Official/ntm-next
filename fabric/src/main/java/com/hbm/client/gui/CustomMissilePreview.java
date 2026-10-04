@@ -28,8 +28,10 @@ final class CustomMissilePreview {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null) return;
 
-        if (entity == null)
+        if (entity == null) {
             entity = new EntityMissileCustom(ModEntities.MISSILE_CUSTOM.get(), minecraft.level);
+            entity.setId(-1);
+        }
         entity.setParts(
                 stack(parts.warhead()),
                 stack(parts.fuselage()),

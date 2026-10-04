@@ -64,7 +64,6 @@ public final class TracerRibbon {
 
         @Override
         public ShaderDefines getShaderDefines() {
-
             return RenderSystem.getDevice().getDeviceInfo().isZZeroToOne()
                     ? zeroToOne
                     : negativeOneToOne;

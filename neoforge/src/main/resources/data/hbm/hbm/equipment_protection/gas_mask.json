@@ -1,0 +1,10 @@
+{
+  "filter_exclusions": [
+    "gas_blistering"
+  ],
+  "hazards": [
+    "sand",
+    "light"
+  ],
+  "targets": "hbm:gas_mask"
+}

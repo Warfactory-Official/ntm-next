@@ -3,10 +3,10 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKKeyPad;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKKeyPad;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
@@ -220,7 +220,6 @@ public final class ScreenRBMKKeyPad extends Screen {
         data.putByte("polling", pollingMask);
 
         for (int i = 0; i < KEYS; i++) {
-
             try {
                 data.putInt("color" + i, Integer.parseInt(color[i].getValue(), 16));
             } catch (Exception ex) {
@@ -229,7 +228,7 @@ public final class ScreenRBMKKeyPad extends Screen {
             data.putString("rtty" + i, rtty[i].getValue());
             data.putString("cmd" + i, cmd[i].getValue());
         }
-        Services.NETWORK.sendToServer(new NbtControlPayload(keypad.getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(keypad.getBlockPos(), data));
     }
 
     @Override

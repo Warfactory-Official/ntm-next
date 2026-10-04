@@ -14,7 +14,9 @@
     "NaturalSpawnerImpactMixin",
     "NaturalSpawnerRampantScoutMixin",
     "ServerLevelCapCacheMixin",
-    "MixinServerPlayer"
+    "MixinServerPlayer",
+    "MixinLootTableBuilder",
+    "MixinFabricLootTableBuilder"
   ],
   "client": [
     "MixinCreativeModeInventoryScreen",

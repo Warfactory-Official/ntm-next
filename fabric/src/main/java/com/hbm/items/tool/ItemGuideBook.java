@@ -3,7 +3,7 @@
 
 package com.hbm.items.tool;
 
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -38,11 +38,16 @@ public final class ItemGuideBook extends Item {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-        adder.accept(Component.literal(String.join(" ", I18nUtil.resolveKeyArray(type.title))));
+        var title = Component.empty();
+        for (Component line : TooltipStyle.lines(Component.translatable(type.title))) {
+            if (!title.getSiblings().isEmpty()) title.append(" ");
+            title.append(line);
+        }
+        adder.accept(title);
     }
 
     public enum BookType {
-        TEST("book.test.cover", 2F),
+        TEST("book.test.cover", 2.0F),
         RBMK("book.rbmk.cover", 1.5F),
         HADRON("book.error.cover", 1.5F),
         STARTER("book.starter.cover", 1.5F);

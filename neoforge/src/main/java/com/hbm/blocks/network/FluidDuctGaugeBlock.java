@@ -3,12 +3,13 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.blockentity.network.BlockEntityPipeGauge;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.interfaces.ILookOverlay;
-import com.hbm.tileentity.network.BlockEntityPipeGauge;
 import java.util.Locale;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -55,6 +56,10 @@ public class FluidDuctGaugeBlock extends FluidDuctBlockBase implements ITickingB
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new BlockEntityPipeGauge(pos, state);
+    }
+
+    public void restoreNode(ServerLevel level, BlockPos pos, BlockState state) {
+        createNodes(level, pos, state);
     }
 
     @Override

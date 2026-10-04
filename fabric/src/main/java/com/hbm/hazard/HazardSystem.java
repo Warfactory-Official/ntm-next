@@ -3,6 +3,7 @@
 
 package com.hbm.hazard;
 
+import com.hbm.config.FabricHbmConfig;
 import com.hbm.config.RadiationConfig;
 import com.hbm.data.RadiationData;
 import com.hbm.extprop.HbmLivingProps;
@@ -10,15 +11,15 @@ import com.hbm.hazard.modifier.IHazardModifier;
 import com.hbm.hazard.transformer.IHazardTransformer;
 import com.hbm.hazard.type.HazardTypeRadiation;
 import com.hbm.hazard.type.IHazardType;
+import com.hbm.inventory.SlotDeltaBuffer;
 import com.hbm.items.ModDataComponents;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricServerEvents;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.TickPhase;
 import java.util.*;
 import java.util.concurrent.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -30,32 +31,31 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Block;
 import org.jspecify.annotations.Nullable;
 
 public final class HazardSystem {
-
     public static volatile Map<TagKey<Item>, HazardData> tagMap = new HashMap<>();
     public static volatile Map<Item, HazardData> itemMap = new HashMap<>();
     public static final HashSet<Item> itemBlacklist = new HashSet<>();
     public static final HashSet<TagKey<Item>> tagBlacklist = new HashSet<>();
-
     private static IHazardTransformer[] transformers = new IHazardTransformer[0];
+    private static volatile int generation;
+
+    public static int generation() {
+        return generation;
+    }
+
     private static boolean liveStorageTransformers;
     private static ExternalEquipmentApplicator[] externalEquipment =
             new ExternalEquipmentApplicator[0];
 
     @FunctionalInterface
     public interface ExternalEquipmentApplicator {
-
         float apply(Player player);
     }
 
@@ -80,9 +80,8 @@ public final class HazardSystem {
 
     private static final ConcurrentHashMap<UUID, PlayerHazardData> playerData =
             new ConcurrentHashMap<>();
-    private static final Queue<InventoryDelta> inventoryDeltas = new ConcurrentLinkedQueue<>();
+    private static final SlotDeltaBuffer inventoryDeltas = new SlotDeltaBuffer();
     private static volatile boolean cachesDirty;
-
     private static Map<Item, HazardData> codeItems = Map.of();
     private static Map<TagKey<Item>, HazardData> codeTags = Map.of();
     private static final Executor EXECUTOR = ForkJoinPool.commonPool();
@@ -92,7 +91,7 @@ public final class HazardSystem {
     private HazardSystem() {}
 
     public static void init() {
-        Services.SERVER.onServerTickPost(HazardSystem::onServerTick);
+        FabricServerEvents.onServerTickPost(HazardSystem::onServerTick);
     }
 
     public static void registerContent() {
@@ -116,7 +115,6 @@ public final class HazardSystem {
                                 HazardAssignment assignment = holder.value();
                                 Identifier id = holder.key().identifier();
                                 HazardData data = assignment.toData();
-
                                 assignment
                                         .targets()
                                         .unwrap()
@@ -135,7 +133,6 @@ public final class HazardSystem {
                                                 });
                             }
                         });
-
         tagMap = tags;
         itemMap = items;
         clearCaches();
@@ -153,6 +150,10 @@ public final class HazardSystem {
         transformers = Arrays.copyOf(transformers, transformers.length + 1);
         transformers[transformers.length - 1] = transformer;
         if (transformer.readsLiveStorage()) liveStorageTransformers = true;
+    }
+
+    public static boolean hasLiveStorageSources() {
+        return liveStorageTransformers;
     }
 
     public static void addExternalEquipmentApplicator(ExternalEquipmentApplicator applicator) {
@@ -282,6 +283,20 @@ public final class HazardSystem {
         return total;
     }
 
+    public static double getContainedRadsFromStack(ItemStack stack) {
+        if (stack.isEmpty()) return 0D;
+        List<HazardEntry> hazards = getHazardsFromStack(stack);
+        double configured = 0D;
+        for (HazardEntry entry : hazards) {
+            if (entry.type == HazardRegistry.RADIATION) {
+                configured +=
+                        IHazardModifier.evalAllModifiers(
+                                stack, null, entry.baseLevel, entry.getMods());
+            }
+        }
+        return configured + activationOf(stack, hazards) / stack.getCount();
+    }
+
     public static void addHazardInfo(
             ItemStack stack, @Nullable Player player, List<Component> list, TooltipFlag flag) {
         for (HazardEntry hazard : getHazardsFromStack(stack)) {
@@ -320,32 +335,34 @@ public final class HazardSystem {
     }
 
     public static void clearCaches() {
-        if (Services.SERVER.getCurrentServer() == null) {
+        if (FabricServerEvents.getCurrentServer() == null) {
             chronologyCache.clear();
+            generation++;
             return;
         }
         cachesDirty = true;
     }
 
     public static void onSlotChanged(ServerPlayer player, Slot slot, ItemStack stack) {
-
         if (slot.container != player.getInventory()) return;
         enqueue(player, slot.getContainerSlot(), stack);
     }
 
-    private static void enqueue(ServerPlayer player, int slot, ItemStack stack) {
+    public static void inventorySlotChanged(ServerPlayer player, int slot) {
+        enqueue(player, slot, null);
+    }
+
+    private static void enqueue(ServerPlayer player, int slot, @Nullable ItemStack stack) {
         if (slot < 0 || slot >= TRACKED_SLOTS) return;
         UUID id = player.getUUID();
-
         PlayerHazardData phd = playerData.get(id);
         if (phd == null) phd = playerData.computeIfAbsent(id, u -> new PlayerHazardData(player));
         phd.player = player;
-        inventoryDeltas.add(new InventoryDelta(id, slot, stack, phd));
+        inventoryDeltas.record(phd, slot, stack);
     }
 
     private static void onServerTick(MinecraftServer server) {
         List<ServerPlayer> players = server.getPlayerList().getPlayers();
-
         if (playerData.size() > players.size()
                 || server.getTickCount() % OFFLINE_SWEEP_PERIOD == 0) {
             forgetOfflinePlayers(server);
@@ -378,7 +395,7 @@ public final class HazardSystem {
     }
 
     public static void tickDroppedItem(ItemEntity entity) {
-        if (!TickPhase.every(entity, Services.CONFIG.runtime().itemHazardDropTickrate())) return;
+        if (!TickPhase.every(entity, FabricHbmConfig.runtime().itemHazardDropTickrate())) return;
         updateDroppedItem(entity);
     }
 
@@ -394,14 +411,17 @@ public final class HazardSystem {
         if (cachesDirty) {
             cachesDirty = false;
             chronologyCache.clear();
+            generation++;
             for (ServerPlayer player : server.getPlayerList().getPlayers())
                 requeueWholeInventory(player);
         }
-        List<InventoryDelta> deltas = new ArrayList<>();
-        InventoryDelta delta;
-        while ((delta = inventoryDeltas.poll()) != null) deltas.add(delta);
-        if (deltas.isEmpty()) return;
-
+        if (inventoryDeltas.isEmpty()) return;
+        SlotDeltaBuffer.Batch deltas = inventoryDeltas.take();
+        for (int i = 0; i < deltas.size(); i++) {
+            if (deltas.stacks()[i] != null) continue;
+            PlayerHazardData owner = (PlayerHazardData) deltas.sources()[i];
+            deltas.stacks()[i] = owner.player.getInventory().getItem(deltas.slots()[i]).copy();
+        }
         scanFuture = CompletableFuture.runAsync(() -> resolve(deltas), EXECUTOR);
     }
 
@@ -410,37 +430,43 @@ public final class HazardSystem {
         if (phd == null) return;
         Inventory inv = player.getInventory();
         for (int i = 0; i <= Inventory.SLOT_OFFHAND; i++) {
-            inventoryDeltas.add(
-                    new InventoryDelta(player.getUUID(), i, inv.getItem(i).copy(), phd));
+            inventoryDeltas.record(phd, i, inv.getItem(i).copy());
         }
     }
 
-    private static void resolve(List<InventoryDelta> deltas) {
-        for (InventoryDelta d : deltas) {
-            PlayerHazardData phd = playerData.get(d.uuid());
-            if (phd == null || phd != d.phd()) continue;
-            ItemStack ns = d.newStack();
+    private static void resolve(SlotDeltaBuffer.Batch deltas) {
+        IdentityHashMap<PlayerHazardData, Applicator[]> updates = new IdentityHashMap<>();
+        for (int i = 0; i < deltas.size(); i++) {
+            PlayerHazardData phd = (PlayerHazardData) deltas.sources()[i];
+            if (playerData.get(phd.uuid) != phd) continue;
+            int slot = deltas.slots()[i];
+            ItemStack ns = deltas.stacks()[i];
             boolean liveStorage = readsLiveStorage(ns);
             List<HazardEntry> h = liveStorage ? Collections.emptyList() : getHazardsFromStack(ns);
             float activation = activationOf(ns, h);
-            if (h.isEmpty() && activation == 0F && !liveStorage) phd.removeApplicator(d.slot());
-            else
-                phd.setApplicator(
-                        d.slot(),
-                        new Applicator(
-                                ns.getItem(), h.toArray(NO_ENTRIES), activation, liveStorage));
+            Applicator app =
+                    h.isEmpty() && activation == 0F && !liveStorage
+                            ? null
+                            : new Applicator(
+                                    ns.getItem(), h.toArray(NO_ENTRIES), activation, liveStorage);
+            Applicator[] next = updates.get(phd);
+            if (next == null) {
+                Applicator[] current = phd.applicators;
+                if (app == null && (slot >= current.length || current[slot] == null)) continue;
+                next = Arrays.copyOf(current, TRACKED_SLOTS);
+                updates.put(phd, next);
+            }
+            next[slot] = app;
         }
+        updates.forEach(PlayerHazardData::publish);
     }
 
-    private static boolean readsLiveStorage(ItemStack stack) {
+    public static boolean readsLiveStorage(ItemStack stack) {
         if (!liveStorageTransformers || stack.isEmpty() || isItemBlacklisted(stack)) return false;
         for (IHazardTransformer transformer : transformers) {
-            if (transformer.readsLiveStorage() && transformer.appliesTo(stack)) return true;
-        }
-        ItemContainerContents contents = stack.get(DataComponents.CONTAINER);
-        if (contents == null) return false;
-        for (ItemStackTemplate template : contents.nonEmptyItems()) {
-            if (readsLiveStorage(template.create())) return true;
+            if (transformer.readsLiveStorage()
+                    && transformer.appliesTo(stack)
+                    && transformer.readsLiveStorage(stack)) return true;
         }
         return false;
     }
@@ -461,43 +487,16 @@ public final class HazardSystem {
     private record Applicator(
             Item item, HazardEntry[] entries, float activation, boolean liveStorage) {}
 
-    private record InventoryDelta(
-            UUID uuid, int slot, ItemStack newStack, @Nullable PlayerHazardData phd) {}
-
-    public record MenuWatcher(ServerPlayer player) implements ContainerListener {
-
-        @Override
-        public void slotChanged(AbstractContainerMenu menu, int slotIndex, ItemStack stack) {
-            onSlotChanged(player, menu.getSlot(slotIndex), stack);
-        }
-
-        @Override
-        public void dataChanged(AbstractContainerMenu menu, int id, int value) {}
-    }
-
     private static final class PlayerHazardData {
+        final UUID uuid;
         Player player;
-
         private volatile @Nullable Applicator[] applicators = EMPTY_MEMO;
         private volatile float carriedActivation;
         private double owedActivation;
 
         PlayerHazardData(Player player) {
+            this.uuid = player.getUUID();
             this.player = player;
-        }
-
-        void setApplicator(int slot, Applicator app) {
-            Applicator[] next = Arrays.copyOf(applicators, TRACKED_SLOTS);
-            next[slot] = app;
-            publish(next);
-        }
-
-        void removeApplicator(int slot) {
-            Applicator[] current = applicators;
-            if (slot >= current.length || current[slot] == null) return;
-            Applicator[] next = Arrays.copyOf(current, TRACKED_SLOTS);
-            next[slot] = null;
-            publish(next);
         }
 
         private void publish(Applicator[] next) {
@@ -509,7 +508,6 @@ public final class HazardSystem {
 
         void applyActiveHazards() {
             if (player.isRemoved()) return;
-            pollWhileForeignMenuOpen();
             Applicator[] memo = applicators;
             Inventory inv = player.getInventory();
             float carried = carriedActivation;
@@ -529,17 +527,6 @@ public final class HazardSystem {
             for (ExternalEquipmentApplicator applicator : externalEquipment)
                 carried += applicator.apply(player);
             applyNeutronActivation(carried);
-        }
-
-        private void pollWhileForeignMenuOpen() {
-            if (!(player instanceof ServerPlayer sp) || sp.containerMenu == sp.inventoryMenu)
-                return;
-            sp.inventoryMenu.suppressRemoteUpdates();
-            try {
-                sp.inventoryMenu.broadcastChanges();
-            } finally {
-                sp.inventoryMenu.resumeRemoteUpdates();
-            }
         }
 
         private void applyNeutronActivation(float carried) {
@@ -565,7 +552,6 @@ public final class HazardSystem {
                     >= RadiationConfig.hazardRate) return;
 
             float owed = (float) owedActivation;
-
             if (owed < ContaminationUtil.ACTIVATION_FLOOR) return;
             owedActivation = 0D;
             ContaminationUtil.neutronActivateInventory(player, owed, 1.0F);

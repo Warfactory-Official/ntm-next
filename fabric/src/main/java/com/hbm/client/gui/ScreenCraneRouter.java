@@ -3,15 +3,15 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.network.BlockEntityCraneRouter;
+import com.hbm.client.Keybinds;
 import com.hbm.inventory.container.MenuCraneRouter;
 import com.hbm.lib.Library;
 import com.hbm.module.ModulePatternMatcher;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.network.BlockEntityCraneRouter;
 import java.util.List;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -123,7 +123,7 @@ public class ScreenCraneRouter extends ScreenInfoContainer<MenuCraneRouter> {
             }
         }
 
-        if (Minecraft.getInstance().hasAltDown()) {
+        if (Keybinds.DIAGNOSTICS.isDown()) {
             for (int i = 0; i < menu.slots.size(); i++) {
                 Slot slot = menu.getSlot(i);
                 graphics.text(
@@ -152,7 +152,7 @@ public class ScreenCraneRouter extends ScreenInfoContainer<MenuCraneRouter> {
 
                 CompoundTag data = new CompoundTag();
                 data.putInt("toggle", column * 3 + row);
-                Services.NETWORK.sendToServer(
+                PacketWire.sendToServer(
                         new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
                 playClick();
             }

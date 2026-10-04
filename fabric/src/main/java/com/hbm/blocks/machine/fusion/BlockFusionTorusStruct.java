@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.machine.fusion;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorusStruct;
 import com.hbm.blocks.ITickingBlock;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionTorusStruct;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;

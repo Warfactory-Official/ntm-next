@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityLanternBehemoth;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCell;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -11,7 +12,6 @@ import com.hbm.extprop.HbmPlayerProps;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.interfaces.IRepairable;
 import com.hbm.interfaces.IToolable;
-import com.hbm.tileentity.BlockEntityLanternBehemoth;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;

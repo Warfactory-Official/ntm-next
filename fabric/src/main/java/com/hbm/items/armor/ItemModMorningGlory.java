@@ -49,6 +49,11 @@ public class ItemModMorningGlory extends ItemArmorMod {
     }
 
     @Override
+    public boolean ticksServer() {
+        return true;
+    }
+
+    @Override
     public void modUpdate(LivingEntity entity, ItemStack armor) {
         if (entity.hasEffect(MobEffects.WITHER)) entity.removeEffect(MobEffects.WITHER);
     }

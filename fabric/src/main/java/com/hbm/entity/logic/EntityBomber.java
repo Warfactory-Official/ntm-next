@@ -3,11 +3,11 @@
 
 package com.hbm.entity.logic;
 
+import com.hbm.config.FabricHbmConfig;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.projectile.EntityBombletZeta;
 import com.hbm.entity.projectile.EntityBoxcar;
 import com.hbm.explosion.ExplosionChaos;
-import com.hbm.platform.Services;
 import com.hbm.sound.AudioSystem;
 import com.hbm.sound.AudioWrapper;
 import com.hbm.sound.ModSounds;
@@ -153,7 +153,6 @@ public class EntityBomber extends EntityPlaneBase {
             fizz(getX(), getY(), getZ());
             ExplosionChaos.spawnPoisonCloud(level(), getX(), getY() - 1F, getZ(), 10, 0.5D, 3);
         } else if (type == 5) {
-
         } else if (type == 6) {
             level().playSound(
                             null,
@@ -195,7 +194,6 @@ public class EntityBomber extends EntityPlaneBase {
                             10F,
                             0.9F + random.nextFloat() * 0.2F);
             EntityBombletZeta zeta = new EntityBombletZeta(ModEntities.BOMBLET_ZETA.get(), level());
-
             zeta.rotation();
             zeta.setType(type);
             zeta.setPos(
@@ -226,7 +224,7 @@ public class EntityBomber extends EntityPlaneBase {
     private void fac(double x, double y, double z) {
         Vec3 vector =
                 new Vec3(random.nextDouble() - 0.5D, 0D, random.nextDouble() - 0.5D).normalize();
-        vector = vector.scale(Services.CONFIG.runtime().enableBomberShortMode() ? 1D : 2D);
+        vector = vector.scale(FabricHbmConfig.runtime().enableBomberShortMode() ? 1D : 2D);
         setPos(x - vector.x * 100D, y + 50D, z - vector.z * 100D);
         setDeltaMovement(vector.x, 0D, vector.z);
         rotation();

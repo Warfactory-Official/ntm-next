@@ -3,10 +3,10 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineCyclotron;
 import com.hbm.inventory.container.MenuMachineCyclotron;
 import com.hbm.items.machine.upgrade.UpgradeType;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachineCyclotron;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -78,7 +78,6 @@ public class ScreenMachineCyclotron extends ScreenInfoContainer<MenuMachineCyclo
                     ARROW_H,
                     256,
                     256);
-
             graphics.blit(
                     RenderPipelines.GUI_TEXTURED, TEXTURE, 172, 4, 190.0F, 63.0F, 9, 12, 256, 256);
         }

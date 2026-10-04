@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineElectrolyser;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -10,7 +11,6 @@ import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.inventory.IGUIProvider;
-import com.hbm.tileentity.machine.BlockEntityMachineElectrolyser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -24,7 +24,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineElectrolyser extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         0, 0, 5, 5, 1, 3, 0, 0, 0,
         2, -1, 5, 5, 1, 1, 0, 0, 0,
@@ -48,7 +47,6 @@ public class MachineElectrolyser extends BlockMultiblockCore
 
     private static final int[] DIMENSIONS = {0, 0, 5, 5, 1, 3};
     private static final int[] TOWER = {0, 0, 0, 0, -1, 2};
-
     private static final int[][] SLABS = {
         {2, -1, 5, 5, 1, 1},
         {3, -3, 5, 5, 0, 0},
@@ -58,7 +56,6 @@ public class MachineElectrolyser extends BlockMultiblockCore
         {3, -1, -2, 2, -3, 3},
         {3, -1, -4, 4, -3, 3},
     };
-
     private static final int[] TOWER_STEPS = {4, 2, 0, -2, -4};
 
     public MachineElectrolyser(Properties props) {
@@ -77,7 +74,6 @@ public class MachineElectrolyser extends BlockMultiblockCore
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-
         return RenderShape.MODEL;
     }
 
@@ -144,7 +140,6 @@ public class MachineElectrolyser extends BlockMultiblockCore
         if (player.isSecondaryUseActive()) return InteractionResult.SUCCESS;
         if (level.isClientSide()) return InteractionResult.SUCCESS;
         if (level.getBlockEntity(core) instanceof BlockEntityMachineElectrolyser be) {
-
             IGUIProvider.openBlockMenu(player, be, core, be.getSelectedGUI());
         }
         return InteractionResult.SUCCESS;

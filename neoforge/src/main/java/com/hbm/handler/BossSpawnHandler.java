@@ -4,6 +4,9 @@
 package com.hbm.handler;
 
 import com.hbm.advancement.AwardRegions;
+import com.hbm.blockentity.BlockEntityPedestal.PedestalEntry;
+import com.hbm.blockentity.BlockEntityPedestal.PedestalEntryType;
+import com.hbm.blockentity.BlockEntityPedestal;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.data.MobData;
 import com.hbm.data.WorldData;
@@ -13,10 +16,8 @@ import com.hbm.entity.projectile.EntityMeteor;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.extprop.HbmPlayerProps;
 import com.hbm.items.ModItems;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.BlockEntityPedestal.PedestalEntry;
-import com.hbm.tileentity.BlockEntityPedestal.PedestalEntryType;
-import com.hbm.tileentity.BlockEntityPedestal;
+import com.hbm.platform.NeoForgePlatform;
+import com.hbm.platform.NeoForgeServerEvents;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.DropHeight;
 import com.hbm.world.gen.WorldgenHeight;
@@ -43,7 +44,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.Vec3;
 
 public final class BossSpawnHandler {
-
     private static final RandomSource meteorRand = RandomSource.create();
 
     public static int meteorShower = 0;
@@ -51,8 +51,9 @@ public final class BossSpawnHandler {
     private BossSpawnHandler() {}
 
     public static void init() {
-        Services.SERVER.onServerTickPre(BossSpawnHandler::onServerTick);
-        Services.SERVER.onPlayerRespawn(player -> HbmPlayerProps.getData(player).maskManTimer = 0);
+        NeoForgeServerEvents.onServerTickPre(BossSpawnHandler::onServerTick);
+        NeoForgeServerEvents.onPlayerRespawn(
+                player -> HbmPlayerProps.getData(player).maskManTimer = 0);
     }
 
     private static void onServerTick(MinecraftServer server) {
@@ -98,7 +99,6 @@ public final class BossSpawnHandler {
     public static void maskManUpdate(ServerLevel level, ServerPlayer player) {
         Item acidizer = ModBlocks.MACHINE_CRYSTALLIZER.get().asItem();
         ServerStatsCounter stats = player.getStats();
-
         boolean acidizerStat =
                 stats.getValue(Stats.ITEM_CRAFTED.get(acidizer)) > 0
                         || stats.getValue(Stats.ITEM_USED.get(acidizer)) > 0;
@@ -226,7 +226,6 @@ public final class BossSpawnHandler {
     }
 
     public static void markFBI(Player player) {
-
         if (!player.level().isClientSide()) {
             HbmPlayerProps.getData(player).fbiMark = player.level().getGameTime() + 20 * 60 * 20;
         }
@@ -234,7 +233,6 @@ public final class BossSpawnHandler {
 
     public static void markRad(ServerLevel level, double x, double y, double z) {
         if (!MobData.ENABLE_ELEMENTALS.get()) return;
-
         AwardRegions.within(
                 level, x, y, z, 100, player -> HbmPlayerProps.getData(player).radMark = true);
     }
@@ -261,7 +259,6 @@ public final class BossSpawnHandler {
             int columnZ,
             Mob mob) {
         LevelChunk chunk = level.getChunkSource().getChunkNow(columnX >> 4, columnZ >> 4);
-
         if (chunk == null) return false;
         mob.snapTo(
                 x,
@@ -269,7 +266,7 @@ public final class BossSpawnHandler {
                 z,
                 level.getRandom().nextFloat() * 360.0F,
                 0.0F);
-        Services.PLATFORM.finalizeSpawn(
+        NeoForgePlatform.finalizeSpawn(
                 mob,
                 level,
                 level.getCurrentDifficultyAt(mob.blockPosition()),
@@ -300,7 +297,6 @@ public final class BossSpawnHandler {
                     for (EquipmentSlot slot : ArmorUtil.ARMOR_SLOTS) {
                         ItemStack armor = p.getItemBySlot(slot);
                         if (!armor.isEmpty() && ArmorModHandler.hasMods(armor)) {
-
                             for (ItemStack mod : ArmorModHandler.pryMods(armor)) {
                                 if (mod.isEmpty()) continue;
                                 if (mod.is(ModItems.PROTECTION_CHARM.get())) repell = true;

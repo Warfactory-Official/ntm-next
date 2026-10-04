@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.bomb.BlockEntityNukeCustom;
 import com.hbm.explosion.ExplosionNukeCustom;
 import com.hbm.inventory.container.MenuNukeCustom;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.bomb.BlockEntityNukeCustom;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -23,7 +23,6 @@ public class ScreenNukeCustom extends ScreenInfoContainer<MenuNukeCustom> {
             Library.id("textures/gui/weapon/gun_bomb_schematic.png");
 
     private static final int PIP_Y = 89, PIP_SIZE = 18;
-
     private static final int[] PIP_X = {16, 34, 52, 70, 88, 106, 142};
     private static final int[] PIP_V = {0, 18, 36, 54, 72, 90, 108};
 
@@ -38,7 +37,7 @@ public class ScreenNukeCustom extends ScreenInfoContainer<MenuNukeCustom> {
 
     private static List<Component> lines(String key) {
         List<Component> out = new ArrayList<>();
-        for (String s : I18nUtil.resolveKeyArray(key)) out.add(Component.literal(s));
+        for (Component s : TooltipStyle.lines(Component.translatable(key))) out.add(s);
         return out;
     }
 
@@ -84,7 +83,6 @@ public class ScreenNukeCustom extends ScreenInfoContainer<MenuNukeCustom> {
                     256,
                     256);
         }
-
         if (bomb.dirty() > 0
                 && bomb.nuke() > 0
                 && bomb.amat() == 0

@@ -34,7 +34,6 @@ import net.minecraft.util.LightCoordsUtil;
 
 public class RenderSpear extends EntityRenderer<EntitySpear, RenderSpear.State>
         implements ConcurrentRenderStateExtraction {
-
     static final RenderPipeline FLASH_PIPELINE =
             WorldRenderPipeline.of(
                     RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
@@ -49,14 +48,12 @@ public class RenderSpear extends EntityRenderer<EntitySpear, RenderSpear.State>
     private static final RenderType FLASH =
             RenderType.create(
                     "ntm_digamma_flash", RenderSetup.builder(FLASH_PIPELINE).createRenderSetup());
-
     static final BlendFunction GHOST_BLEND =
             new BlendFunction(
                     BlendFactor.SRC_ALPHA,
                     BlendFactor.ONE_MINUS_SRC_ALPHA,
                     BlendFactor.ONE,
                     BlendFactor.ZERO);
-
     static final RenderPipeline GHOST_PIPELINE =
             WorldRenderPipeline.of(
                     RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
@@ -166,7 +163,6 @@ public class RenderSpear extends EntityRenderer<EntitySpear, RenderSpear.State>
             Random rnd = new Random(432L);
             final float sc = 25F;
             for (int i = 0; i < 64; i++) {
-
                 poseStack.mulPose(Axis.XP.rotationDegrees(rnd.nextFloat() * 360F));
                 poseStack.mulPose(Axis.YP.rotationDegrees(rnd.nextFloat() * 360F));
                 poseStack.mulPose(Axis.ZP.rotationDegrees(rnd.nextFloat() * 360F));

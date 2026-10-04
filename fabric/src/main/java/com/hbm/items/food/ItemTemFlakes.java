@@ -3,7 +3,7 @@
 
 package com.hbm.items.food;
 
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 
 public class ItemTemFlakes extends Item {
 
-    private static final float HEAL = 2F;
+    private static final float HEAL = 2.0F;
 
     public final Tier tier;
 
@@ -38,8 +38,11 @@ public class ItemTemFlakes extends Item {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
-        for (String line : I18nUtil.loreLines("item.hbm.tem_flakes.desc." + tier.ordinal())) {
-            adder.accept(Component.literal(line));
+        for (Component line :
+                TooltipStyle.lines(
+                        Component.translatableWithFallback(
+                                "item.hbm.tem_flakes.desc." + tier.ordinal(), ""))) {
+            adder.accept(line);
         }
     }
 

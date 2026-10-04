@@ -4,9 +4,9 @@
 package com.hbm.inventory.fluid.trait;
 
 import com.hbm.util.BobMathUtil;
-import com.hbm.util.I18nUtil;
 import java.util.List;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 
 public class FT_Combustible extends FluidTrait {
 
@@ -16,8 +16,8 @@ public class FT_Combustible extends FluidTrait {
     public FT_Combustible() {}
 
     public FT_Combustible(FuelGrade grade, long energy) {
-        this.fuelGrade = grade;
-        this.combustionEnergy = energy;
+        fuelGrade = grade;
+        combustionEnergy = energy;
     }
 
     public long getCombustionEnergy() {
@@ -38,28 +38,38 @@ public class FT_Combustible extends FluidTrait {
     }
 
     @Override
-    public void addInfo(List<String> info) {
+    public void addInfo(List<Component> info) {
         info.add(
-                ChatFormatting.GOLD
-                        + "["
-                        + I18nUtil.resolveKey("hbmfluid.trait.combustible")
-                        + "]");
+                Component.empty()
+                        .append(Component.literal("[").withStyle(ChatFormatting.GOLD))
+                        .append(
+                                Component.translatable("hbmfluid.trait.combustible")
+                                        .withStyle(ChatFormatting.GOLD))
+                        .append(Component.literal("]").withStyle(ChatFormatting.GOLD)));
         if (combustionEnergy > 0) {
             info.add(
-                    ChatFormatting.GOLD
-                            + I18nUtil.resolveKey("hbmfluid.trait.provides")
-                            + " "
-                            + ChatFormatting.RED
-                            + BobMathUtil.getShortNumber(combustionEnergy)
-                            + "HE "
-                            + ChatFormatting.GOLD
-                            + I18nUtil.resolveKey("hbmfluid.trait.perBucket"));
+                    Component.empty()
+                            .append(
+                                    Component.translatable("hbmfluid.trait.provides")
+                                            .withStyle(ChatFormatting.GOLD))
+                            .append(Component.literal(" ").withStyle(ChatFormatting.GOLD))
+                            .append(
+                                    Component.literal(
+                                                    BobMathUtil.getShortNumber(combustionEnergy)
+                                                            + "HE ")
+                                            .withStyle(ChatFormatting.RED))
+                            .append(
+                                    Component.translatable("hbmfluid.trait.perBucket")
+                                            .withStyle(ChatFormatting.GOLD)));
             info.add(
-                    ChatFormatting.GOLD
-                            + I18nUtil.resolveKey("hbmfluid.trait.fuelGrade")
-                            + ": "
-                            + ChatFormatting.RED
-                            + I18nUtil.resolveKey(fuelGrade.getGrade()));
+                    Component.empty()
+                            .append(
+                                    Component.translatable("hbmfluid.trait.fuelGrade")
+                                            .withStyle(ChatFormatting.GOLD))
+                            .append(Component.literal(": ").withStyle(ChatFormatting.GOLD))
+                            .append(
+                                    Component.translatable(fuelGrade.getGrade())
+                                            .withStyle(ChatFormatting.RED)));
         }
     }
 

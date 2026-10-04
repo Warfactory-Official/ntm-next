@@ -14,7 +14,6 @@ import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBlueprints;
-import com.hbm.platform.Services;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.GameTime;
 import java.util.ArrayList;
@@ -150,12 +149,11 @@ public final class GenericMachinePage<T extends GenericRecipe> extends TablePage
                         {102, 6}, {120, 6}, {102, 24}, {120, 24}, {102, 42}, {120, 42}, {138, 24},
                         {138, 42}
                     };
-
             default -> grid(count, 102, 6, 4);
         };
     }
 
-    private static List<ItemStack> outputStacks(WeightedList<ItemStack> output) {
+    static List<ItemStack> outputStacks(WeightedList<ItemStack> output) {
         List<ItemStack> stacks = new ArrayList<>();
         for (Weighted<ItemStack> entry : output.unwrap()) stacks.add(entry.value().copy());
         return stacks;
@@ -202,7 +200,6 @@ public final class GenericMachinePage<T extends GenericRecipe> extends TablePage
                 if (pool.startsWith(GenericRecipes.POOL_PREFIX_SECRET)) return true;
             }
         }
-
         Set<Item> excluded = new HashSet<>();
         for (var member : ModItems.ITEM_SECRET) excluded.add(member.get());
         var ladder = ModItems.METEORITE_SWORDS;
@@ -246,7 +243,6 @@ public final class GenericMachinePage<T extends GenericRecipe> extends TablePage
 
     @Override
     public boolean hidden(T row) {
-
         return secretRows && InteractionConfig.recipeViewerHidesSecrets && isSecret(row);
     }
 
@@ -280,7 +276,6 @@ public final class GenericMachinePage<T extends GenericRecipe> extends TablePage
             List<ItemStack> blueprints = blueprintStacks(recipe.getPools());
             if (!blueprints.isEmpty()) page.catalyst(75 + machineOffset, 10).items(blueprints);
         }
-
         page.catalyst(75 + machineOffset, hasBlueprint ? 38 : 31).item(machine);
     }
 
@@ -497,7 +492,6 @@ public final class GenericMachinePage<T extends GenericRecipe> extends TablePage
             @Override
             void draw(GuiGraphicsExtractor graphics, GenericRecipe recipe) {
                 RecipePanel.rightAligned(graphics, ticks(recipe.duration), 45, RecipePanel.TEXT);
-
                 if (GameTime.now() % 2000 < 1000) {
                     RecipePanel.rightAligned(
                             graphics, consumption(recipe.power), 57, RecipePanel.TEXT);
@@ -521,7 +515,6 @@ public final class GenericMachinePage<T extends GenericRecipe> extends TablePage
             void draw(GuiGraphicsExtractor graphics, GenericRecipe recipe) {
                 float productivity = ((CrystallizerRecipe) recipe).productivity;
                 if (productivity <= 0F) return;
-
                 RecipePanel.leftAligned(
                         graphics,
                         Component.translatable(

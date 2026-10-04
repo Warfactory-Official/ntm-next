@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityBlastDoor;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityBlastDoor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -29,7 +29,6 @@ import org.jspecify.annotations.Nullable;
 public class RenderBlastDoor
         implements BlockEntityRenderer<BlockEntityBlastDoor, RenderBlastDoor.State>,
                 ConcurrentRenderStateExtraction {
-
     private static final float EXTEND = 5.0F;
     private static final int SLIDERS = 4;
 
@@ -84,7 +83,6 @@ public class RenderBlastDoor
         poseStack.pushPose();
         poseStack.translate(0.5, 0.0, 0.5);
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
-
         if (state.facing.getAxis() == Direction.Axis.Z)
             poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
 
@@ -131,7 +129,6 @@ public class RenderBlastDoor
             int light,
             HFRWavefrontObject model,
             Identifier texture) {
-
         RenderType type = types.computeIfAbsent(texture, RenderTypes::entityCutout);
         collector.submitCustomGeometry(
                 poseStack, type, (pose, buffer) -> model.render(pose, buffer, light, -1));

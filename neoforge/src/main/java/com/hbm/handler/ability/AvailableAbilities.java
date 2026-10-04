@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
@@ -86,6 +87,10 @@ public final class AvailableAbilities {
     }
 
     public void appendTooltip(Consumer<Component> adder) {
+        appendTooltip(adder, ability -> true);
+    }
+
+    public void appendTooltip(Consumer<Component> adder, Predicate<BaseAbility> selectable) {
         List<Map.Entry<BaseAbility, Integer>> tools = new ArrayList<>(area());
         tools.addAll(harvest());
         tools.removeIf(
@@ -104,7 +109,10 @@ public final class AvailableAbilities {
                         Component.literal("  ")
                                 .append(
                                         ToolPreset.name(entry.getKey(), entry.getValue())
-                                                .withStyle(ChatFormatting.GOLD)));
+                                                .withStyle(
+                                                        selectable.test(entry.getKey())
+                                                                ? ChatFormatting.GOLD
+                                                                : ChatFormatting.GRAY)));
             }
             adder.accept(Component.translatable("desc.item.toolAbility.rightClickTo"));
             adder.accept(Component.translatable("desc.item.toolAbility.sneakClickTo"));

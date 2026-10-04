@@ -27,9 +27,9 @@ import com.hbm.wiaj.actions.ActionSetPipeFluid;
 import com.hbm.wiaj.actions.ActionSetZoom;
 import com.hbm.wiaj.actions.ActionUpdateActor;
 import com.hbm.wiaj.actions.ActionWait;
+import com.hbm.wiaj.actors.ActorBlockEntity;
 import com.hbm.wiaj.actors.ActorFancyPanel.Orientation;
 import com.hbm.wiaj.actors.ActorFancyPanel;
-import com.hbm.wiaj.actors.ActorTileEntity;
 import com.hbm.wiaj.actors.ITileActorRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -79,7 +79,7 @@ public class CannerySILEX extends CanneryBase {
         fel.putDouble("z", 2D);
         fel.putInt("rotation", 5);
         fel.putInt("length", 11);
-        scene0.add(new ActionCreateActor(0, new ActorTileEntity(new ActorFEL(), fel)));
+        scene0.add(new ActionCreateActor(0, new ActorBlockEntity(new ActorFEL(), fel)));
 
         scene0.add(
                 new ActionCreateActor(
@@ -255,7 +255,7 @@ public class CannerySILEX extends CanneryBase {
         silex0.putDouble("y", 1D);
         silex0.putDouble("z", 2D);
         silex0.putInt("rotation", 2);
-        scene1.add(new ActionCreateActor(1, new ActorTileEntity(new ActorSILEX(), silex0)));
+        scene1.add(new ActionCreateActor(1, new ActorBlockEntity(new ActorSILEX(), silex0)));
 
         scene1.add(new ActionWait(20));
 
@@ -370,7 +370,7 @@ public class CannerySILEX extends CanneryBase {
         silex1.putDouble("y", 1D);
         silex1.putDouble("z", 2D);
         silex1.putInt("rotation", 2);
-        scene1.add(new ActionCreateActor(2, new ActorTileEntity(new ActorSILEX(), silex1)));
+        scene1.add(new ActionCreateActor(2, new ActorBlockEntity(new ActorSILEX(), silex1)));
         scene1.add(new ActionWait(10));
 
         for (int i = 1; i < 5; i++) {

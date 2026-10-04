@@ -36,7 +36,6 @@ import org.joml.Quaternionf;
 import org.jspecify.annotations.Nullable;
 
 public final class CrumblingCollector implements SubmitNodeCollector {
-
     private static final List<RenderType> STAGES =
             ModelBakery.BREAKING_LOCATIONS.stream()
                     .map(

@@ -13,15 +13,11 @@ public final class CoreIndexScratch {
 
     private static final ThreadLocal<CoreIndexScratch> LOCAL =
             ThreadLocal.withInitial(CoreIndexScratch::new);
-
     private static final ThreadLocal<BlockPos.MutableBlockPos> BOX_CURSOR =
             ThreadLocal.withInitial(BlockPos.MutableBlockPos::new);
-
     public final BlockPos.MutableBlockPos walkPos = new BlockPos.MutableBlockPos();
-
     public final BlockPos.MutableBlockPos cellPos = new BlockPos.MutableBlockPos();
     public final BlockPos.MutableBlockPos notifyPos = new BlockPos.MutableBlockPos();
-
     public final CoreIndexCollector collector = new CoreIndexCollector();
     public long[] cells = new long[64];
     public int cellCount;
@@ -57,7 +53,6 @@ public final class CoreIndexScratch {
         if (cellCount == cells.length) cells = grow(cells);
         cells[cellCount++] = pos.asLong();
         long key = ChunkPos.pack(pos);
-
         for (int i = 0; i < chunkCount; i++) {
             if (chunkKeys[i] == key) return;
         }

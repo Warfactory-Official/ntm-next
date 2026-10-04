@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachinePWRController;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
@@ -11,9 +12,8 @@ import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.inventory.IGUIProvider;
 import com.hbm.items.machine.ItemPWRPrinter;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.MarkerPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachinePWRController;
 import java.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -152,7 +152,6 @@ public class MachinePWRController extends Block implements ITickingBlock, ICapab
                 assembly.put(p, s);
                 if (b == ModBlocks.PWR_FUEL.get()) fuelRods.put(p, s);
                 if (b == ModBlocks.PWR_NEUTRON_SOURCE.get()) sources++;
-
                 stack.push(p.north());
                 stack.push(p.south());
                 stack.push(p.below());
@@ -173,7 +172,7 @@ public class MachinePWRController extends Block implements ITickingBlock, ICapab
 
         if (!errors.isEmpty()) {
             if (player instanceof ServerPlayer sp) {
-                Services.NETWORK.sendTo(new MarkerPayload(0xff0000, 5000, 128.0, errors), sp);
+                PacketWire.sendTo(new MarkerPayload(0xff0000, 5000, 128.0, errors), sp);
             }
             return;
         }

@@ -102,7 +102,6 @@ public final class RenderMeteor extends EntityRenderer<EntityMeteor, RenderMeteo
         RenderType type = FlatCutout.of(TEXTURE);
 
         pose.pushPose();
-
         pose.mulPose(Axis.XP.rotationDegrees(180));
         pose.mulPose(new Quaternionf().rotateAxis((float) Math.toRadians(state.spin), 1F, 1F, 1F));
         pose.scale(5F, 5F, 5F);

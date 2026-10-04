@@ -32,7 +32,6 @@ public class EntityMissileAntiBallistic extends EntityThrowableInterp
     public EntityMissileAntiBallistic(
             EntityType<? extends EntityMissileAntiBallistic> type, Level level) {
         super(type, level);
-
         this.setDeltaMovement(0.0D, baseSpeed, 0.0D);
     }
 
@@ -88,7 +87,6 @@ public class EntityMissileAntiBallistic extends EntityThrowableInterp
                 this.discard();
 
         } else {
-
             Vec3 step = this.position().subtract(prePos);
             if (step.lengthSqr() > 1.0e-8) {
                 Vec3 vec = step.normalize();
@@ -111,7 +109,7 @@ public class EntityMissileAntiBallistic extends EntityThrowableInterp
         Entity closest = null;
         double dist = 1_000;
 
-        for (Entity e : server.getAllEntities()) {
+        for (Entity e : server.hbm$radarTargets()) {
             if (!(e instanceof EntityMissileBaseNT)) continue;
             if (e instanceof EntityMissileStealth) continue;
 
@@ -121,6 +119,7 @@ public class EntityMissileAntiBallistic extends EntityThrowableInterp
 
             if (vec.length() < dist) {
                 closest = e;
+                dist = vec.length();
             }
         }
 
@@ -182,7 +181,6 @@ public class EntityMissileAntiBallistic extends EntityThrowableInterp
 
     private void updateFlightRotation() {
         Vec3 motion = this.getDeltaMovement();
-
         float f2 = (float) Math.sqrt(motion.x * motion.x + motion.z * motion.z);
         float yaw = (float) (Math.atan2(motion.x, motion.z) * 180.0D / Math.PI);
         float pitch = (float) (Math.atan2(motion.y, f2) * 180.0D / Math.PI) - 90F;

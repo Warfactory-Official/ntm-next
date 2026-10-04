@@ -3,7 +3,7 @@
 
 package com.hbm.inventory.container;
 
-import com.hbm.tileentity.bomb.BlockEntityLaunchPad;
+import com.hbm.blockentity.bomb.BlockEntityLaunchPad;
 import net.minecraft.world.entity.player.Inventory;
 
 public class MenuLaunchPad extends MenuLaunchPadBase<BlockEntityLaunchPad> {

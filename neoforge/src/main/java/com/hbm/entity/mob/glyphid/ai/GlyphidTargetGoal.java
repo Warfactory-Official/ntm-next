@@ -35,7 +35,6 @@ public class GlyphidTargetGoal extends Goal {
 
     @Override
     public void tick() {
-
         if (glyphid.getTarget() == null && !glyphid.hasHighPriorityWaypoint()) {
             @Nullable Player found = glyphid.findTargetCandidate();
             if (found != null) glyphid.setTarget(found);

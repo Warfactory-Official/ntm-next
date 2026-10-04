@@ -4,7 +4,6 @@
 
 package com.hbm.hazard.type;
 
-import com.hbm.config.RadiationConfig;
 import com.hbm.data.RadiationData;
 import com.hbm.handler.ArmorUtil;
 import com.hbm.hazard.helper.HazardHelper;

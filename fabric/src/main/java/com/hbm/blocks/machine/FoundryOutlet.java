@@ -3,16 +3,16 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityFoundryOutlet;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.RefreshesNeighborState;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.interfaces.IToolable;
 import com.hbm.inventory.material.Mats.MaterialStack;
 import com.hbm.items.machine.ItemScraps;
-import com.hbm.tileentity.machine.BlockEntityFoundryOutlet;
-import com.hbm.util.I18nUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -35,7 +35,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -51,10 +50,14 @@ public class FoundryOutlet extends Block
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-    private static final VoxelShape SHAPE_N = Shapes.box(0.3125D, 0D, 0.625D, 0.6875D, 0.5D, 1D);
-    private static final VoxelShape SHAPE_S = Shapes.box(0.3125D, 0D, 0D, 0.6875D, 0.5D, 0.375D);
-    private static final VoxelShape SHAPE_W = Shapes.box(0.625D, 0D, 0.3125D, 1D, 0.5D, 0.6875D);
-    private static final VoxelShape SHAPE_E = Shapes.box(0D, 0D, 0.3125D, 0.375D, 0.5D, 0.6875D);
+    private static final VoxelShape SHAPE_N =
+            Shapes.box(0.3125D, 0.0D, 0.625D, 0.6875D, 0.5D, 1.0D);
+    private static final VoxelShape SHAPE_S =
+            Shapes.box(0.3125D, 0.0D, 0.0D, 0.6875D, 0.5D, 0.375D);
+    private static final VoxelShape SHAPE_W =
+            Shapes.box(0.625D, 0.0D, 0.3125D, 1.0D, 0.5D, 0.6875D);
+    private static final VoxelShape SHAPE_E =
+            Shapes.box(0.0D, 0.0D, 0.3125D, 0.375D, 0.5D, 0.6875D);
 
     public FoundryOutlet(Properties props) {
         super(props);
@@ -176,17 +179,24 @@ public class FoundryOutlet extends Block
         BlockEntityFoundryOutlet be = outlet(level, pos);
         if (be == null) return;
 
-        info.title(I18nUtil.resolveKey(getDescriptionId()), 0xFF4000, 0x401000);
+        info.title(
+                Component.empty().append(Component.translatable(getDescriptionId())),
+                0xFF4000,
+                0x401000);
 
         if (be.filter != null) {
             info.line(
-                    I18nUtil.resolveKey("foundry.filter", be.filter.getLocalizedName()), 0xFFFF55);
+                    Component.translatable("foundry.filter", be.filter.getLocalizedName()),
+                    0xFFFF55);
         }
         if (be.invertFilter) {
-            info.line(I18nUtil.resolveKey("foundry.invertFilter"), 0xFFFF55);
+            info.line(
+                    Component.empty().append(Component.translatable("foundry.invertFilter")),
+                    0xFFFF55);
         }
         if (be.invertRedstone) {
-            info.line(I18nUtil.resolveKey("foundry.inverted"), 0xAA0000);
+            info.line(
+                    Component.empty().append(Component.translatable("foundry.inverted")), 0xAA0000);
         }
     }
 

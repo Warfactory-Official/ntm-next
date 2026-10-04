@@ -29,14 +29,12 @@ import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
 
 public record CountIngredient(Ingredient ingredient, int count)
         implements StackedContents.IngredientInfo<ItemStack> {
-
     public static final MapCodec<CountIngredient> MAP_CODEC =
             DataCodecs.strict(
                     RecordCodecBuilder.mapCodec(
@@ -68,9 +66,7 @@ public record CountIngredient(Ingredient ingredient, int count)
             new ContextMap.Builder()
                     .withParameter(
                             SlotDisplayContext.REGISTRIES,
-                            HolderLookup.Provider.create(
-                                    Stream.<HolderLookup.RegistryLookup<?>>of(
-                                            BuiltInRegistries.ITEM)))
+                            HolderLookup.Provider.create(Stream.of(BuiltInRegistries.ITEM)))
                     .create(SlotDisplayContext.CONTEXT);
 
     public static CountIngredient of(ItemLike item) {
@@ -119,8 +115,14 @@ public record CountIngredient(Ingredient ingredient, int count)
         return new CountIngredient(new HbmMatchersIngredient(base, matchers).toVanilla(), count);
     }
 
-    public DataComponentMatchers components() {
+    public static List<ItemStack> displayStacks(Ingredient ingredient, int count) {
+        List<ItemStack> stacks =
+                new ArrayList<>(ingredient.display().resolveForStacks(DISPLAY_CONTEXT));
+        stacks.replaceAll(stack -> stack.copyWithCount(count));
+        return stacks;
+    }
 
+    public DataComponentMatchers components() {
         var custom = ingredient.getCustomIngredient();
         return custom instanceof HbmMatchersIngredient matchers
                 ? matchers.matchers()
@@ -137,13 +139,7 @@ public record CountIngredient(Ingredient ingredient, int count)
     }
 
     public boolean matchesItem(ItemStack stack) {
-
-        if (stack.isDamaged()) {
-            Ingredient base = baseIngredient();
-            if (base.getCustomIngredient() == null
-                    && !(base.display() instanceof SlotDisplay.TagSlotDisplay)) return false;
-        }
-        return ingredient.test(stack);
+        return ingredient.test(stack) && RecipeInputState.accepts(ingredient, stack);
     }
 
     @Override
@@ -165,7 +161,6 @@ public record CountIngredient(Ingredient ingredient, int count)
 
     public ItemStack extractForCyclingDisplay(long millis, int cycle) {
         List<ItemStack> stacks = displayStacks();
-
         if (stacks.isEmpty()) return ItemStack.EMPTY;
         long span = cycle * 50L;
         return stacks.get((int) (millis % (span * stacks.size()) / span));
@@ -173,12 +168,5 @@ public record CountIngredient(Ingredient ingredient, int count)
 
     public List<ItemStack> displayStacks() {
         return displayStacks(ingredient, count);
-    }
-
-    public static List<ItemStack> displayStacks(Ingredient ingredient, int count) {
-        List<ItemStack> stacks =
-                new ArrayList<>(ingredient.display().resolveForStacks(DISPLAY_CONTEXT));
-        stacks.replaceAll(stack -> stack.copyWithCount(count));
-        return stacks;
     }
 }

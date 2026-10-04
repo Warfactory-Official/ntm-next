@@ -28,7 +28,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LevelRenderer.class)
 public class MixinLevelRenderer {
-
     @Inject(method = "render", at = @At("HEAD"))
     private void hbm$animateVisualBodies(CallbackInfo ci) {
         VisualTextures.activateSprites();

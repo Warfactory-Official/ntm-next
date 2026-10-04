@@ -6,6 +6,9 @@ license = "LGPL-3.0-only"
 modId = "hbm"
 version = "${file.jarVersion}"
 displayName = "NTM"
+iconFile = "hbm.png"
+iconBlur = true
+bannerFile = "hbm.png"
 description = "Nuclear Tech Mod, ported to Minecraft 26.2 for Fabric and NeoForge."
 authors = "HbmMods (The Bobcat), movblock"
 credits = "HbmMods (The Bobcat): creating the original mod. movblock: porting to 26.2. Raw ore textures: MrNorwood (thorium, cobalt, lithium, schrabidium); Mr. Morgan and NuclearGrandFather (aluminium, beryllium, lead, plutonium, titanium, tungsten, uranium)."
@@ -17,9 +20,6 @@ config = "hbm-common.mixins.json"
 
 [[mixins]]
 config = "hbm-compat.mixins.json"
-
-[[mixins]]
-config = "hbm-storage-compat.mixins.json"
 
 [[mixins]]
 config = "hbm-network-compat.mixins.json"
@@ -43,7 +43,7 @@ side = "BOTH"
 [[dependencies.hbm]]
 modId = "crankshaft"
 type = "required"
-versionRange = "[1.5.3,)"
+versionRange = "[1.5.5+mc26.2,)"
 ordering = "AFTER"
 side = "CLIENT"
 
@@ -53,6 +53,13 @@ type = "optional"
 versionRange = "[26.2.0.1]"
 ordering = "AFTER"
 side = "CLIENT"
+
+[[dependencies.hbm]]
+modId = "ae2"
+type = "optional"
+versionRange = "[26.2.1-alpha]"
+ordering = "AFTER"
+side = "BOTH"
 
 [[dependencies.hbm]]
 modId = "scalablelux"

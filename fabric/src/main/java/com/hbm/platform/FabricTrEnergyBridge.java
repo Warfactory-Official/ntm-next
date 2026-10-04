@@ -17,16 +17,17 @@ import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
-final class FabricTrEnergyBridge {
+public final class FabricTrEnergyBridge {
 
     private FabricTrEnergyBridge() {}
 
-    static @Nullable IEnergyHandlerView find(Level level, BlockPos pos, @Nullable Direction side) {
+    public static @Nullable IEnergyHandlerView find(
+            Level level, BlockPos pos, @Nullable Direction side) {
         EnergyStorage storage = EnergyStorage.SIDED.find(level, pos, side);
         return storage == null ? null : new FabricEnergyHandlerView(storage);
     }
 
-    static BlockLookupCache<IEnergyHandlerView> createCache(
+    public static BlockLookupCache<IEnergyHandlerView> createCache(
             ServerLevel level, BlockPos pos, @Nullable Direction side) {
         BlockApiCache<EnergyStorage, @Nullable Direction> cache =
                 BlockApiCache.create(EnergyStorage.SIDED, level, pos);
@@ -114,7 +115,7 @@ final class FabricTrEnergyBridge {
         }
     }
 
-    static @Nullable IEnergyHandlerView findItem(Container container, int slot) {
+    public static @Nullable IEnergyHandlerView findItem(Container container, int slot) {
         SingleSlotStorage<ItemVariant> backing = ContainerStorage.of(container, null).getSlot(slot);
         EnergyStorage storage = ContainerItemContext.ofSingleSlot(backing).find(EnergyStorage.ITEM);
         return storage == null ? null : new FabricEnergyHandlerView(storage);

@@ -91,7 +91,6 @@ public class BlockGasRadonDense extends BlockGasBase {
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
         super.animateTick(state, level, pos, rand);
-
         level.addParticle(
                 ParticleTypes.MYCELIUM,
                 pos.getX() + rand.nextFloat(),

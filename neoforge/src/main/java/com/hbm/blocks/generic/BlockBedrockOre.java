@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityBedrockOre;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluidProperties;
@@ -10,7 +11,6 @@ import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.items.machine.IFluidContainerItem;
 import com.hbm.items.machine.ItemDrillbit;
-import com.hbm.tileentity.BlockEntityBedrockOre;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -100,15 +100,19 @@ public class BlockBedrockOre extends Block implements EntityBlock, ILookOverlay 
     public void buildLookOverlay(Level level, BlockPos pos, LookInfo info) {
         if (!(level.getBlockEntity(pos) instanceof BlockEntityBedrockOre ore)) return;
         info.title(getName().getString(), 0xFFFF00, 0x404000);
-        if (!ore.resource.isEmpty()) info.line(ore.resource.getHoverName().getString());
-        info.line(Component.translatable("hbm.desc.bedrock_tier", ore.tier).getString());
+        if (!ore.resource.isEmpty())
+            info.line(Component.empty().append(ore.resource.getHoverName()));
+        info.line(
+                Component.empty()
+                        .append(Component.translatable("hbm.desc.bedrock_tier", ore.tier)));
         if (ore.acid != null) {
             info.line(
-                    Component.translatable(
-                                    "hbm.desc.bedrock_requires",
-                                    ore.acid.amount(),
-                                    NTMFluidProperties.clientName(ore.acid.type()))
-                            .getString());
+                    Component.empty()
+                            .append(
+                                    Component.translatable(
+                                            "hbm.desc.bedrock_requires",
+                                            ore.acid.amount(),
+                                            NTMFluidProperties.clientName(ore.acid.type()))));
         }
     }
 }

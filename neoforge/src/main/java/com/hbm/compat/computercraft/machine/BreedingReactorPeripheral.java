@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineReactorBreeding;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.BlockEntityMachineReactorBreeding;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class BreedingReactorPeripheral

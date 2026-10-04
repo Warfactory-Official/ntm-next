@@ -53,7 +53,6 @@ public abstract class BlockSpike extends Block implements SimpleWaterloggedBlock
 
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-
         BlockPos anchor = hanging ? pos.above() : pos.below();
         Direction face = hanging ? Direction.DOWN : Direction.UP;
         return level.getBlockState(anchor).isFaceSturdy(level, anchor, face);
@@ -71,7 +70,6 @@ public abstract class BlockSpike extends Block implements SimpleWaterloggedBlock
             RandomSource random) {
         if (state.getValue(WATERLOGGED))
             ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-
         return state.canSurvive(level, pos)
                 ? super.updateShape(
                         state, level, ticks, pos, direction, neighborPos, neighborState, random)

@@ -3,6 +3,7 @@
 
 package com.hbm.particle;
 
+import com.hbm.client.particle.VisualParticle;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
@@ -30,17 +31,15 @@ public class QuadParticleGroup extends ParticleGroup<Particle> {
     @Override
     public ParticleGroupRenderState extractRenderState(
             Frustum frustum, Camera camera, float partialTicks) {
-        int count = this.particles.size();
-
-        float[] geo = new float[count * 6];
-
-        int[] tint = new int[count * 2];
-
-        float[] uv = new float[count * 4];
+        int capacity = this.particles.size();
+        float[] geo = new float[capacity * 6];
+        int[] tint = new int[capacity * 2];
+        float[] uv = new float[capacity * 4];
         Vec3 cam = camera.position();
 
         int i = 0;
         for (Particle particle : this.particles) {
+            if (particle instanceof VisualParticle visual && visual.ownsVisual()) continue;
             IQuadParticle fx = (IQuadParticle) particle;
             float spin = fx.spin(partialTicks);
             geo[i * 6] = (float) (fx.interpX(partialTicks) - cam.x);
@@ -58,7 +57,7 @@ public class QuadParticleGroup extends ParticleGroup<Particle> {
             i++;
         }
 
-        return new State(renderType, count, geo, tint, uv);
+        return new State(renderType, i, geo, tint, uv);
     }
 
     private record State(RenderType renderType, int count, float[] geo, int[] tint, float[] uv)

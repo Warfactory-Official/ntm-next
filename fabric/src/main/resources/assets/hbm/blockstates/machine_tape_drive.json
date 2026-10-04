@@ -5,11 +5,11 @@
     },
     "facing=north": {
       "model": "hbm:block/machine_tape_drive",
-      "y": 90
+      "y": 270
     },
     "facing=south": {
       "model": "hbm:block/machine_tape_drive",
-      "y": 270
+      "y": 90
     },
     "facing=west": {
       "model": "hbm:block/machine_tape_drive",

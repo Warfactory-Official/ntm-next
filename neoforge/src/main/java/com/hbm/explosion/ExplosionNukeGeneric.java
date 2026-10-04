@@ -14,12 +14,11 @@ import com.hbm.entity.projectile.EntityBulletBaseMK4;
 import com.hbm.items.weapon.sedna.factory.ConfettiUtil;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.platform.IEnergyHandlerView;
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgeCaps;
 import com.hbm.util.EntityDamageUtil;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -43,6 +42,7 @@ import net.minecraft.world.phys.Vec3;
 public final class ExplosionNukeGeneric {
 
     private static Block oreUranium;
+    private static Block oreUraniumDeepslate;
     private static Block oreSchrabidium;
     private static Block oreUraniumScorched;
     private static Block oreNetherUranium;
@@ -58,6 +58,7 @@ public final class ExplosionNukeGeneric {
     private static void resolveBlocks() {
         if (oreUranium != null) return;
         oreUranium = ModBlocks.ORE_URANIUM.get();
+        oreUraniumDeepslate = ModBlocks.ORE_URANIUM_DEEPSLATE.get();
         oreSchrabidium = ModBlocks.ORE_SCHRABIDIUM.get();
         oreUraniumScorched = ModBlocks.ORE_URANIUM_SCORCHED.get();
         oreNetherUranium = ModBlocks.ORE_NETHER_URANIUM.get();
@@ -103,16 +104,14 @@ public final class ExplosionNukeGeneric {
                 world.setBlock(pos, Blocks.EMERALD_ORE.defaultBlockState(), Block.UPDATE_ALL);
             }
         } else if (state.is(BlockTags.LOGS) || state.is(Blocks.MUSHROOM_STEM)) {
-
             world.setBlock(pos, ModBlocks.WASTE_LOG.get().defaultBlockState(), Block.UPDATE_ALL);
         } else if (state.is(Blocks.BROWN_MUSHROOM_BLOCK) || state.is(Blocks.RED_MUSHROOM_BLOCK)) {
             world.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
         } else if (state.is(BlockTags.MINEABLE_WITH_AXE)
                 && state.isSolidRender()
                 && b != ModBlocks.WASTE_LOG.get()) {
-
             world.setBlock(pos, wastePlanks.defaultBlockState(), Block.UPDATE_ALL);
-        } else if (b == oreUranium) {
+        } else if (b == oreUranium || b == oreUraniumDeepslate) {
             transmuteUraniumOre(world, pos, random, oreSchrabidium, oreUraniumScorched);
         } else if (b == oreNetherUranium) {
             transmuteUraniumOre(world, pos, random, oreNetherSchrabidium, oreNetherUraniumScorched);
@@ -193,7 +192,6 @@ public final class ExplosionNukeGeneric {
                 world.setBlock(pos, Blocks.EMERALD_ORE.defaultBlockState(), Block.UPDATE_ALL);
             }
         } else if (state.is(BlockTags.LOGS) || state.is(Blocks.MUSHROOM_STEM)) {
-
             world.setBlock(pos, ModBlocks.WASTE_LOG.get().defaultBlockState(), Block.UPDATE_ALL);
         } else if (state.is(BlockTags.PLANKS)) {
             world.setBlock(pos, wastePlanks.defaultBlockState(), Block.UPDATE_ALL);
@@ -268,7 +266,7 @@ public final class ExplosionNukeGeneric {
     public static boolean drainForeignEnergy(Level world, BlockPos pos) {
         boolean drained = false;
         for (Direction side : Direction.values()) {
-            IEnergyHandlerView view = Services.CAPS.findEnergyHandler(world, pos, side);
+            IEnergyHandlerView view = NeoForgeCaps.findEnergyHandler(world, pos, side);
             if (view == null) continue;
             long stored = view.amount();
             if (stored > 0 && view.extract(stored, 1L, false) > 0) drained = true;
@@ -279,7 +277,7 @@ public final class ExplosionNukeGeneric {
     public static boolean hasDrainableEnergy(Level world, BlockPos pos) {
         if (world.getBlockEntity(pos) instanceof IEnergyHandlerMK2) return true;
         for (Direction side : Direction.values()) {
-            if (Services.CAPS.findEnergyHandler(world, pos, side) != null) return true;
+            if (NeoForgeCaps.findEnergyHandler(world, pos, side) != null) return true;
         }
         return false;
     }
@@ -295,7 +293,6 @@ public final class ExplosionNukeGeneric {
             world.setBlock(pos, Blocks.DIRT.defaultBlockState(), Block.UPDATE_ALL);
             return;
         }
-
         if (state.is(BlockTags.MINEABLE_WITH_AXE)
                 || state.is(BlockTags.LEAVES)
                 || block instanceof VegetationBlock
@@ -324,7 +321,6 @@ public final class ExplosionNukeGeneric {
     public static void dealDamage(
             Level world, double x, double y, double z, double radius, float maxDamage) {
         AABB box = new AABB(x, y, z, x, y, z).inflate(radius);
-
         List<Entity> list = world.getEntities(null, box);
         DamageSource source = world.damageSources().source(ModDamageTypes.NUCLEAR_BLAST);
 
@@ -344,7 +340,6 @@ public final class ExplosionNukeGeneric {
                 doKnockback =
                         EntityDamageUtil.attackEntityFromNT(
                                 living, source, (float) damage, true, true, 0, 100F, 0);
-
                 if (!living.isAlive()) ConfettiUtil.decideConfetti(living, source);
             } else if (world instanceof ServerLevel server) {
                 e.hurtServer(server, source, (float) damage);
@@ -369,7 +364,6 @@ public final class ExplosionNukeGeneric {
     }
 
     private static boolean isExplosionExempt(Entity e) {
-
         if (e instanceof Ocelot
                 || e instanceof EntityB92Beam
                 || e instanceof EntityBulletBaseMK4

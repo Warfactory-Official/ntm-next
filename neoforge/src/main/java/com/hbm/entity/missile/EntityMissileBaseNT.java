@@ -34,10 +34,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class EntityMissileBaseNT extends Projectile implements IRadarDetectableNT {
-
     private static final EntityDataAccessor<Byte> FACING =
             SynchedEntityData.defineId(EntityMissileBaseNT.class, EntityDataSerializers.BYTE);
-
     private final InterpolationHandler interpolation = new InterpolationHandler(this);
     public int startX;
     public int startZ;
@@ -48,7 +46,6 @@ public abstract class EntityMissileBaseNT extends Projectile implements IRadarDe
     public double accelXZ;
     public boolean isCluster = false;
     public int health = 50;
-
     public float renderPitch;
     public float renderPitchO;
     public float renderYaw;
@@ -112,7 +109,6 @@ public abstract class EntityMissileBaseNT extends Projectile implements IRadarDe
 
     @Override
     public void tick() {
-
         Vec3 prePos = position();
         this.interpolation.interpolate();
         super.tick();
@@ -200,7 +196,6 @@ public abstract class EntityMissileBaseNT extends Projectile implements IRadarDe
             Vec3 step, double offsetX, double offsetY, double offsetZ) {
         double len = step.length();
         Vec3 back = step.lengthSqr() < 1.0e-8 ? Vec3.ZERO : step.normalize().scale(-1);
-
         Vec3 thrust = noseAxis();
         int count = (int) Math.max(Math.min(len, 10), 1);
         for (int i = 0; i < count; i++) {
@@ -227,7 +222,6 @@ public abstract class EntityMissileBaseNT extends Projectile implements IRadarDe
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         if (isInvulnerableToBase(source)) return false;
-
         if (health > 0) {
             health -= amount;
             if (health <= 0) killMissile();

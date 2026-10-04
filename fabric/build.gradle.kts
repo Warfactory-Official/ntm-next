@@ -12,14 +12,6 @@ base {
     archivesName = "${property("mod_id")}-fabric"
 }
 
-val sourcesJar = tasks.register<Jar>("sourcesJar") {
-    archiveClassifier.set("sources")
-    isPreserveFileTimestamps = false
-    isReproducibleFileOrder = true
-    includeEmptyDirs = false
-    from(sourceSets.main.get().allJava)
-}
-
 publishing {
     publications {
         create<MavenPublication>("mavenJar") {
@@ -27,7 +19,6 @@ publishing {
             artifactId = "ntm-next-fabric"
             version = rootProject.extra["publishVersion"] as String
             artifact(tasks.named("jar"))
-            artifact(sourcesJar)
         }
     }
     repositories {
@@ -50,56 +41,40 @@ publishing {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
+val javacInternalExports = listOf("api", "code", "comp", "jvm", "main", "model", "parser", "tree", "util")
+    .map { "--add-exports=jdk.compiler/com.sun.tools.javac.$it=ALL-UNNAMED" }
+val javacInternalOpens = listOf("main")
+    .map { "--add-opens=jdk.compiler/com.sun.tools.javac.$it=ALL-UNNAMED" }
+
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
     options.compilerArgs.add("--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED")
     options.compilerArgs.add("--add-modules=jdk.incubator.vector")
+    options.isFork = true
     options.forkOptions.memoryMaximumSize = "2g"
+    options.forkOptions.jvmArgs!!.addAll(javacInternalExports)
+    options.forkOptions.jvmArgs!!.addAll(javacInternalOpens)
 }
 
 sourceSets.main {
     resources.exclude("assets/**/*.obj")
 }
 
-val javacInternalExports = listOf("api", "code", "comp", "main", "model", "parser", "tree", "util")
-    .map { "--add-exports=jdk.compiler/com.sun.tools.javac.$it=ALL-UNNAMED" }
-val javacInternalOpens = listOf("main")
-    .map { "--add-opens=jdk.compiler/com.sun.tools.javac.$it=ALL-UNNAMED" }
-
 tasks.named<JavaCompile>("compileJava") {
     options.compilerArgs.addAll(listOf(
         "-Xplugin:tenon-asm",
         "-Xplugin:tenon-inject packages=com.hbm.interfaces.injected",
         "-Xplugin:tenon-traits templates=" +
-                layout.projectDirectory.dir("src/main/templates/java/com/hbm/tileentity").asFile.absolutePath,
+                layout.projectDirectory.dir("src/main/templates/java/com/hbm/blockentity").asFile.absolutePath,
         "-Xplugin:hbm-compiler syncTo=com/hbm/inventory/container-sync.idx"
     ))
     options.compilerArgs.addAll(javacInternalExports)
-    options.isFork = true
-    options.forkOptions.jvmArgs!!.addAll(javacInternalExports)
-    options.forkOptions.jvmArgs!!.addAll(javacInternalOpens)
 }
-
-val nativeResources = configurations.create("nativeResources") {
-    isCanBeConsumed = false
-    isCanBeResolved = true
-}
-val nativePlatforms = providers.gradleProperty("hbm.native.platforms").getOrElse("host")
-require(nativePlatforms in setOf("host", "all")) { "hbm.native.platforms must be host or all" }
-dependencies.add(
-    nativeResources.name, dependencies.project(
-        mapOf(
-            "path" to ":native",
-            "configuration" to if (nativePlatforms == "all") "ciResources" else "hostResources",
-        )
-    )
-)
 
 tasks.named<Jar>("jar") {
     isPreserveFileTimestamps = false
     isReproducibleFileOrder = true
     manifest.attributes("Implementation-Version" to implementationVersion)
-
     inputs.property("implementationVersion", implementationVersion)
     filesMatching("fabric.mod.json") {
         filter { it.replace("\"version\": \"$version\"", "\"version\": \"$implementationVersion\"") }
@@ -118,7 +93,6 @@ val clientDependencyJar = tasks.register<Jar>("clientDependencyJar") {
 }
 
 tasks.named<ProcessResources>("processResources") {
-    from(nativeResources)
     from(clientDependencyJar) { into("META-INF/jars") }
     filesMatching("fabric.mod.json") { expand("version" to version) }
 }
@@ -156,8 +130,23 @@ repositories {
     }
 }
 
-dependencies {
+val crankshaftVersion = "1.5.5+mc26.2"
 
+val crankshaftJar = configurations.create("crankshaftJar") {
+    isCanBeConsumed = false
+    isTransitive = false
+}
+val crankshaftIris = tasks.register<Sync>("crankshaftIris") {
+    from(crankshaftJar.elements.map { jars -> jars.map { zipTree(it.asFile) } }) {
+        include("META-INF/jars/crankshaft-iris-*.jar")
+        eachFile { path = "crankshaft-iris.jar" }
+    }
+    includeEmptyDirs = false
+    into(layout.buildDirectory.dir("crankshaft-iris"))
+    doLast { check(destinationDir.resolve("crankshaft-iris.jar").isFile) { "no META-INF/jars/crankshaft-iris-*.jar in crankshaft-fabric" } }
+}
+
+dependencies {
     compileOnly("cc.tweaked:cc-tweaked-26.2-fabric-api:1.120.2")
     compileOnly("maven.modrinth:create-fly:26.2-rc-2-6.0.9-1")
     compileOnly("maven.modrinth:techreborn:YsPVZIsK")
@@ -169,14 +158,12 @@ dependencies {
     compileOnly("maven.modrinth:iris:gxZWWnKH")
     compileOnly("maven.modrinth:sodium:xJZxADzI")
     compileOnly("io.github.douira:glsl-transformer:3.0.0-pre3")
-
     compileOnly("org.antlr:antlr4-runtime:4.13.1")
     minecraft("com.mojang:minecraft:${property("minecraft_version")}")
     implementation("net.fabricmc:fabric-loader:${property("fabric_loader_version")}")
     implementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api_version")}")
 
     compileOnly("io.github.llamalad7:mixinextras-common:0.5.5")
-
     compileOnly("org.jspecify:jspecify:1.0.0")
     compileOnly("maven.modrinth:scalablelux:0.3.0-alpha.0.3+26.2")
     compileOnly("maven.modrinth:lithium:mc26.2-0.25.3-fabric")
@@ -187,7 +174,9 @@ dependencies {
     annotationProcessor("mov.movblock.tenon:tenon-traits:${property("tenon_version")}")
     annotationProcessor("mov.movblock.tenon:tenon-inject:${property("tenon_version")}")
 
-    implementation("dev.engine_room:crankshaft-fabric:1.5.3+mc26.2")
+    implementation("dev.engine_room:crankshaft-fabric:${crankshaftVersion}")
+    crankshaftJar("dev.engine_room:crankshaft-fabric:${crankshaftVersion}")
+    compileOnly(files(layout.buildDirectory.file("crankshaft-iris/crankshaft-iris.jar")).builtBy(crankshaftIris))
 
     compileOnly("mezz.jei:jei-26.2-common-api:30.35.0.224")
 

@@ -33,7 +33,6 @@ import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
 
 public final class ArmorWorldRenderer {
-
     private static final int HELMET = 0,
             CHEST = 1,
             LEFT_ARM = 2,
@@ -94,7 +93,6 @@ public final class ArmorWorldRenderer {
                 "LeftBoot",
                 "RightBoot",
                 0F);
-
         register(
                 Suit.AJRO,
                 ResourceManager.armor_ajr,
@@ -111,7 +109,6 @@ public final class ArmorWorldRenderer {
                 "LeftBoot",
                 "RightBoot",
                 0F);
-
         register(
                 Suit.RPA,
                 ResourceManager.armor_remnant,
@@ -130,7 +127,6 @@ public final class ArmorWorldRenderer {
                 0F,
                 extra(CHEST, "Glow", ResourceManager.rpa_chest_tex, true, null),
                 spinning(CHEST, "Fan", ResourceManager.rpa_chest_tex));
-
         register(
                 Suit.NCRPA,
                 ResourceManager.armor_ncr,
@@ -148,7 +144,6 @@ public final class ArmorWorldRenderer {
                 "RightBoot",
                 0F,
                 extra(HELMET, "Eyes", ResourceManager.ncrpa_helmet_tex, true, null));
-
         register(
                 Suit.BISMUTH,
                 ResourceManager.armor_bismuth,
@@ -165,7 +160,6 @@ public final class ArmorWorldRenderer {
                 "LeftFoot",
                 "RightFoot",
                 0F);
-
         register(
                 Suit.BJ,
                 ResourceManager.armor_bj,
@@ -188,7 +182,6 @@ public final class ArmorWorldRenderer {
                         ResourceManager.bj_jetpack_tex,
                         false,
                         ModItems.BJ_PLATE_JETPACK));
-
         register(
                 Suit.ENVSUIT,
                 ResourceManager.armor_envsuit,
@@ -222,7 +215,6 @@ public final class ArmorWorldRenderer {
                 "LeftFoot",
                 "RightFoot",
                 0F);
-
         register(
                 Suit.DIGAMMA,
                 ResourceManager.armor_fau,
@@ -256,7 +248,6 @@ public final class ArmorWorldRenderer {
                 "LeftBoot",
                 "RightBoot",
                 0F);
-
         register(
                 Suit.TRENCHMASTER,
                 ResourceManager.armor_trenchmaster,
@@ -274,7 +265,6 @@ public final class ArmorWorldRenderer {
                 "RightBoot",
                 0F,
                 extra(HELMET, "Light", ResourceManager.trenchmaster_helmet_tex, true, null));
-
         register(
                 Suit.DESH,
                 ResourceManager.armor_steamsuit,
@@ -385,6 +375,7 @@ public final class ArmorWorldRenderer {
         if (set == null) return;
 
         pose.pushPose();
+        model.root().translateAndRotate(pose);
         switch (slot) {
             case HEAD -> {
                 limb(
@@ -636,7 +627,6 @@ public final class ArmorWorldRenderer {
         BODY(new Vector3f(), 8F, 12F, new Vector3f(), true, 24F),
         RIGHT_ARM(new Vector3f(-5F, 2F, 0F), 4F, 12F, new Vector3f(-1F, -2F, 0F), true, 24F),
         LEFT_ARM(new Vector3f(5F, 2F, 0F), 4F, 12F, new Vector3f(1F, -2F, 0F), true, 24F),
-
         RIGHT_LEG(new Vector3f(-1.9F, 12F, 0F), 4F, 12F, new Vector3f(0F, 12F, 0F), false, 24F),
         LEFT_LEG(new Vector3f(1.9F, 12F, 0F), 4F, 12F, new Vector3f(0F, 12F, 0F), false, 24F);
 

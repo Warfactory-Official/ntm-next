@@ -3,17 +3,24 @@
 
 package com.hbm.particle;
 
+import com.hbm.client.particle.MukeFlashVisual;
+import com.hbm.client.particle.VisualParticle;
+import dev.engine_room.flywheel.api.visual.EffectVisual;
+import dev.engine_room.flywheel.api.visualization.VisualizationContext;
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
+import org.jspecify.annotations.Nullable;
 
-public class ParticleMukeFlash extends Particle {
+public class ParticleMukeFlash extends Particle implements VisualParticle {
 
     public static final ParticleRenderType MUKE_FLASH_GROUP =
             new ParticleRenderType("hbm:muke_flash", "HMF");
 
     public final boolean bf;
+    private @Nullable VisualizationManager visualManager;
 
     public ParticleMukeFlash(ClientLevel level, double x, double y, double z, boolean bf) {
         super(level, x, y, z);
@@ -105,6 +112,26 @@ public class ParticleMukeFlash extends Particle {
 
     public double interpZ(float pt) {
         return this.zo + (this.z - this.zo) * pt;
+    }
+
+    @Override
+    public ClientLevel level() {
+        return level;
+    }
+
+    @Override
+    public @Nullable VisualizationManager visualManager() {
+        return visualManager;
+    }
+
+    @Override
+    public void visualManager(@Nullable VisualizationManager manager) {
+        visualManager = manager;
+    }
+
+    @Override
+    public EffectVisual<?> visualize(VisualizationContext context, float partialTick) {
+        return new MukeFlashVisual(context, this, partialTick);
     }
 
     @Override

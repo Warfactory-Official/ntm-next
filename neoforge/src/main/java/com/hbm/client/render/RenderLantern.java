@@ -3,8 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.BlockEntityLantern;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.TileEntityLantern;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -22,12 +22,11 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class RenderLantern
-        implements BlockEntityRenderer<TileEntityLantern, RenderLantern.State>,
+        implements BlockEntityRenderer<BlockEntityLantern, RenderLantern.State>,
                 ConcurrentRenderStateExtraction {
 
     public static final int LANTERN_PART = ResourceManager.lantern.partId("Lantern");
     public static final int LIGHT_PART = ResourceManager.lantern.partId("Light");
-
     private static final RenderType LIGHT_TYPE = FlatCutout.of(ResourceManager.white_tex);
 
     public static int flicker(long millis) {
@@ -41,7 +40,7 @@ public class RenderLantern
     }
 
     @Override
-    public AABB getRenderBoundingBox(TileEntityLantern be) {
+    public AABB getRenderBoundingBox(BlockEntityLantern be) {
         BlockPos pos = be.getBlockPos();
         return new AABB(
                 pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 6, pos.getZ() + 1);
@@ -59,7 +58,7 @@ public class RenderLantern
 
     @Override
     public void extractRenderState(
-            TileEntityLantern be,
+            BlockEntityLantern be,
             State state,
             float partialTicks,
             Vec3 cameraPosition,

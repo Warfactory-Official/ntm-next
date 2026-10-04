@@ -51,7 +51,6 @@ public final class NetworkCompatPlugin implements IMixinConfigPlugin {
                         : mixin.endsWith("NebIndexMixin") ? "hbm$writePrefix" : null;
         if (bridge != null) {
             int exposed = 0;
-
             for (var method : node.methods)
                 if (method.name.equals(bridge)) {
                     method.access =

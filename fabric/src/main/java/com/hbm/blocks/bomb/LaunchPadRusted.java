@@ -3,11 +3,11 @@
 
 package com.hbm.blocks.bomb;
 
+import com.hbm.blockentity.bomb.BlockEntityLaunchPadRusted;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.interfaces.IBomb;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPadRusted;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -23,7 +23,6 @@ public class LaunchPadRusted extends BlockMultiblockCore implements ITickingBloc
 
     public LaunchPadRusted(Properties properties) {
         super(properties);
-
         this.bounding.add(new AABB(-1.5D, 0D, -1.5D, -0.5D, 1D, -0.5D));
         this.bounding.add(new AABB(0.5D, 0D, -1.5D, 1.5D, 1D, -0.5D));
         this.bounding.add(new AABB(-1.5D, 0D, 0.5D, -0.5D, 1D, 1.5D));

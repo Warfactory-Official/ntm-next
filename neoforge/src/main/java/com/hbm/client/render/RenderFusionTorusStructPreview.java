@@ -3,7 +3,7 @@
 
 package com.hbm.client.render;
 
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionTorusStruct;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorusStruct;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import java.util.ArrayList;
@@ -84,7 +84,6 @@ public class RenderFusionTorusStructPreview
             ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
         BlockEntityRenderer.super.extractRenderState(
                 be, state, partialTicks, cameraPosition, breakProgress);
-
         state.ghosts = ghosts();
     }
 

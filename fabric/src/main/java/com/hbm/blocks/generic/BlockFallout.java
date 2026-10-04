@@ -34,6 +34,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
@@ -162,6 +163,8 @@ public class BlockFallout extends Block {
 
     @Override
     protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+        BlockPos pos = BlockPos.containing(params.getParameter(LootContextParams.ORIGIN));
+        if (!state.canSurvive(params.getLevel(), pos)) return List.of();
         return List.of(new ItemStack(ModItems.FALLOUTITEM.get()));
     }
 }

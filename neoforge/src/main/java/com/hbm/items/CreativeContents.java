@@ -78,7 +78,6 @@ public final class CreativeContents {
 
     public static void acceptLegacyVanillaTabs(
             BiConsumer<ResourceKey<CreativeModeTab>, Supplier<ItemStack>> out) {
-
         vanilla(
                 out,
                 CreativeModeTabs.TOOLS_AND_UTILITIES,
@@ -148,7 +147,6 @@ public final class CreativeContents {
                 "matchstick",
                 "balefire_and_steel",
                 "chainsaw");
-
         vanilla(out, CreativeModeTabs.TOOLS_AND_UTILITIES, "record_lc", "record_ss", "record_vc");
         vanilla(
                 out,
@@ -3919,7 +3917,6 @@ public final class CreativeContents {
                         item(fuselage),
                         stability == null ? null : item(stability),
                         item(thruster));
-
         missile.set(DataComponents.CUSTOM_NAME, Component.literal(name).withStyle(color));
         out.accept(missile);
     }

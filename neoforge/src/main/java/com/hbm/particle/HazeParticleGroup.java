@@ -35,6 +35,7 @@ public class HazeParticleGroup extends ParticleGroup<ParticleHaze> {
         Vec3 cam = camera.position();
 
         for (ParticleHaze haze : this.particles) {
+            if (haze.ownsVisual()) continue;
             out.add(
                     new Instance(
                             haze.interpX(partialTicks) - cam.x,

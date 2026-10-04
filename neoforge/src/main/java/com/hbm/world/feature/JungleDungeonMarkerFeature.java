@@ -38,9 +38,7 @@ public final class JungleDungeonMarkerFeature extends Feature<NoneFeatureConfigu
                 level.getChunk(chunkX, chunkZ, ChunkStatus.STRUCTURE_STARTS, false)
                         .getStartForStructure(structure);
         if (start == null || !start.isValid()) return false;
-
         int x = start.getChunkPos().getMiddleBlockX(), z = start.getChunkPos().getMiddleBlockZ();
-
         BlockPos origin = new BlockPos(x, WorldgenHeight.lightBlocking(level, x, z), z);
         var template =
                 level.getLevel()

@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.rail;
 
+import com.hbm.blockentity.BlockEntityRail;
 import com.hbm.items.ModItems;
-import com.hbm.tileentity.BlockEntityRail;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;

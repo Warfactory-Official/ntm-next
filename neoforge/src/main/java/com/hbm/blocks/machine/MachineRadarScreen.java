@@ -3,11 +3,11 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineRadar;
+import com.hbm.blockentity.machine.BlockEntityMachineRadarScreen;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.inventory.IGUIProvider;
-import com.hbm.tileentity.machine.BlockEntityMachineRadar;
-import com.hbm.tileentity.machine.BlockEntityMachineRadarScreen;
 import com.hbm.util.ChunkUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;

@@ -36,7 +36,6 @@ public final class ObjEntityVisual<T extends Entity> extends HbmDynamicEntityVis
     private final List<TransformedInstance> instances = new ArrayList<>();
     private final Matrix4f pose = new Matrix4f();
     private final Matrix4f lastPose = new Matrix4f();
-
     private final NameTagComponent nameTag;
     private final ShadowComponent shadow;
     private int lastLight, lastOverlay;
@@ -168,7 +167,6 @@ public final class ObjEntityVisual<T extends Entity> extends HbmDynamicEntityVis
             Pose<T> pose,
             float shadowRadius,
             float shadowStrength) {
-
         public static <T extends Entity> Spec<T> of(
                 HFRWavefrontObject mesh, Identifier texture, String... parts) {
             return new Spec<>(mesh, texture, List.of(parts), 1F, true, true, defaultPose(), 0F, 1F);

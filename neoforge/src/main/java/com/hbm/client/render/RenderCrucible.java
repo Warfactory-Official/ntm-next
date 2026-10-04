@@ -3,13 +3,13 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityCrucible.PourStream;
+import com.hbm.blockentity.machine.BlockEntityCrucible;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.data.MachineData;
 import com.hbm.inventory.material.Mats.MaterialStack;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.BlockEntityCrucible.PourStream;
-import com.hbm.tileentity.machine.BlockEntityCrucible;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -41,7 +41,6 @@ public class RenderCrucible
     private final RenderType streamType;
 
     public RenderCrucible() {
-
         this.meltType = FlatCutout.of(ResourceManager.foundry_lava_tex);
         this.streamType = FlatCutout.of(ResourceManager.foundry_stream_tex);
     }
@@ -427,11 +426,9 @@ public class RenderCrucible
     @Override
     public void submit(State s, PoseStack ps, SubmitNodeCollector col, CameraRenderState camera) {
         if (s.meltLevel >= 0) {
-
             final double y = 0.5 + s.meltLevel;
             ps.pushPose();
             ps.translate(0.5, 0.0, 0.5);
-
             ps.mulPose(Axis.YP.rotationDegrees(Facing.yaw(s.facing, 90)));
             col.submitCustomGeometry(
                     ps,
@@ -467,7 +464,6 @@ public class RenderCrucible
 
         for (StreamState stream : s.streams) {
             ps.pushPose();
-
             ps.translate(
                     0.5 + stream.dir().getStepX() * 1.875,
                     0.0,

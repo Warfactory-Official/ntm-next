@@ -26,7 +26,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.AABB;
 
 public class RBMKDebrisRadiating extends RBMKDebrisBurning {
-
     public static final IntegerProperty BURN = IntegerProperty.create("burn", 0, 15);
 
     public static final MapCodec<RBMKDebrisRadiating> CODEC = simpleCodec(RBMKDebrisRadiating::new);

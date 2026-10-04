@@ -3,8 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineCyclotron;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.BlockEntityMachineCyclotron;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FontDescription;
@@ -50,7 +49,6 @@ public class RenderCyclotron
     public static final FontDescription ALT_FONT =
             new FontDescription.Resource(Identifier.withDefaultNamespace("alt"));
     public static final int MOTTO_COLOR = 0x600060;
-
     public static final double RING_SPEED = 0.025D;
     public static final double RING_RADIUS = 2.75D;
     public static final float RING_SCALE = 0.1F;
@@ -136,7 +134,6 @@ public class RenderCyclotron
 
             ps.pushPose();
             ps.mulPose(Axis.YP.rotationDegrees(rot));
-
             rot -= font.width(glyph) * 2F;
             ps.translate(RING_RADIUS, 0.0, 0.0);
             ps.mulPose(Axis.YP.rotationDegrees(-90F));

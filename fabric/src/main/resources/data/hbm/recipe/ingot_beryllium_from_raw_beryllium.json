@@ -2,7 +2,10 @@
   "type": "minecraft:smelting",
   "cookingtime": 200,
   "experience": 2.0,
-  "ingredient": "hbm:raw_beryllium",
+  "ingredient": {
+    "fabric:type": "hbm:recipe_input",
+    "base": "hbm:raw_beryllium"
+  },
   "result": {
     "id": "hbm:ingot_beryllium"
   }

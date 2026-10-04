@@ -3,7 +3,7 @@
 
 package com.hbm.inventory.container;
 
-import com.hbm.tileentity.machine.storage.BlockEntitySoyuzCapsule;
+import com.hbm.blockentity.machine.storage.BlockEntitySoyuzCapsule;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;

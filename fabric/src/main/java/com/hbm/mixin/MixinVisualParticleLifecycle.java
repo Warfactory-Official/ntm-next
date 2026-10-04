@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ParticleGroup.class)
 public class MixinVisualParticleLifecycle {
-
     @Inject(method = "add", at = @At("RETURN"))
     private void hbm$admitted(Particle particle, CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValueZ() && particle instanceof VisualParticle visual)

@@ -21,7 +21,6 @@ public interface IBomb {
         ERROR_MISSING_COMPONENT(false, "bomb.missingComponent"),
         ERROR_INCOMPATIBLE(false, "bomb.incompatible"),
         ERROR_NO_BOMB(false, "bomb.nobomb"),
-
         ERROR_TNT_DISABLED(false, "block.minecraft.tnt.disabled");
 
         private final String unloc;

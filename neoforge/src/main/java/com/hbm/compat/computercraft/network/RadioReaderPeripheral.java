@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.network;
 
+import com.hbm.blockentity.network.BlockEntityRadioTorchReader;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.network.BlockEntityRadioTorchReader;
 import dan200.computercraft.api.lua.IArguments;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.lua.LuaFunction;

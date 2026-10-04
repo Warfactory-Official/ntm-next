@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineDrain;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
@@ -12,7 +13,6 @@ import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.BlockEntityMachineDrain;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -69,7 +69,6 @@ public class MachineDrain extends BlockMultiblockCore
             InteractionHand hand,
             BlockHitResult hit) {
         if (player.isShiftKeyDown() || !(stack.getItem() instanceof FluidIdentifierItem)) {
-
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
         if (level.isClientSide()) return InteractionResult.SUCCESS;
@@ -118,7 +117,6 @@ public class MachineDrain extends BlockMultiblockCore
 
     @Override
     public MachineCaps caps() {
-
         return MachineCaps.blockKeyed()
                 .fluidIn()
                 .fluidFaces(

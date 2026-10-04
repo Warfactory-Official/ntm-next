@@ -3,18 +3,16 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityWasteDrum;
 import com.hbm.blocks.RefreshesNeighborState;
-import com.hbm.tileentity.machine.BlockEntityWasteDrum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.redstone.Orientation;
 import org.jspecify.annotations.Nullable;
 
 @RefreshesNeighborState(be = BlockEntityWasteDrum.class, calling = "refreshWaterFaces")
@@ -31,7 +29,6 @@ public class WasteDrum extends BlockMachineBase {
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
-
         for (Direction dir : Direction.VALUES) {
             if (dir == Direction.DOWN || !level.getBlockState(pos.relative(dir)).is(Blocks.WATER))
                 continue;

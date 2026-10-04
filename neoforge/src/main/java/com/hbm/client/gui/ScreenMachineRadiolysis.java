@@ -3,11 +3,10 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineRadiolysis;
 import com.hbm.inventory.container.MenuMachineRadiolysis;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachineRadiolysis;
-import com.hbm.util.I18nUtil;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -30,8 +29,8 @@ public class ScreenMachineRadiolysis extends ScreenInfoContainer<MenuMachineRadi
     public ScreenMachineRadiolysis(
             MenuMachineRadiolysis menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 230, 166);
-        this.titleLabelY = 6;
-        this.inventoryLabelY = this.imageHeight - 96 + 2;
+        titleLabelY = 6;
+        inventoryLabelY = imageHeight - 96 + 2;
     }
 
     @Override
@@ -115,9 +114,7 @@ public class ScreenMachineRadiolysis extends ScreenInfoContainer<MenuMachineRadi
                 INFO_SIZE,
                 INFO_X + 8,
                 INFO_Y + INFO_STEP + INFO_SIZE,
-                List.of(
-                        Component.literal(
-                                I18nUtil.resolveKey("desc.gui.rtg.heat", menu.getHeat()))));
+                List.of(Component.translatable("desc.gui.rtg.heat", menu.getHeat())));
         drawCustomInfoStat(
                 graphics,
                 mouseX,

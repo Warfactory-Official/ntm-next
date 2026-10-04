@@ -90,7 +90,6 @@ public record CableModel() implements BlockModel<HFRWavefrontObject> {
 
         @Override
         public Object visualEqualityGroup(BlockState blockState) {
-
             return parts;
         }
     }

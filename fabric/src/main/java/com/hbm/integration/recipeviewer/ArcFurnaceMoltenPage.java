@@ -36,7 +36,6 @@ public final class ArcFurnaceMoltenPage extends RecipePage<ArcFurnaceMoltenPage.
             for (MaterialStack stack : molten) outputs.add(ItemScraps.create(stack, true));
             rows.add(new Row(recipe.recipeId().identifier(), recipe.inputItem[0], null, outputs));
         }
-
         for (NTMMaterial mat : Mats.orderedList) {
             if (mat.smeltable != NTMMaterial.SmeltingBehavior.SMELTABLE) continue;
             MaterialStack ingot = new MaterialStack(mat, MaterialShapes.INGOT.q(1));

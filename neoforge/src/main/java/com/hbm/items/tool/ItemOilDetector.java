@@ -4,8 +4,8 @@
 package com.hbm.items.tool;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.PlayerInformPayload;
-import com.hbm.platform.Services;
 import com.hbm.sound.ModSounds;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -66,7 +66,7 @@ public class ItemOilDetector extends Item {
                                             .withStyle(ChatFormatting.GOLD)
                                     : Component.translatable("item.hbm.oil_detector.noOil")
                                             .withStyle(ChatFormatting.RED);
-            Services.NETWORK.sendTo(
+            PacketWire.sendTo(
                     new PlayerInformPayload(
                             result,
                             PlayerInformPayload.ID_DETONATOR,

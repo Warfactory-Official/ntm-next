@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineWoodBurner;
 import com.hbm.inventory.container.MenuMachineWoodBurner;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineWoodBurner;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -189,7 +189,7 @@ public class ScreenMachineWoodBurner extends ScreenInfoContainer<MenuMachineWood
         if (pos == null) return false;
         CompoundTag data = new CompoundTag();
         data.putBoolean(key, true);
-        Services.NETWORK.sendToServer(new NbtControlPayload(pos, data));
+        PacketWire.sendToServer(new NbtControlPayload(pos, data));
         playClick();
         return true;
     }

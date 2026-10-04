@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.blockentity.network.BlockEntityRadioTelex;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.tileentity.network.BlockEntityRadioTelex;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;

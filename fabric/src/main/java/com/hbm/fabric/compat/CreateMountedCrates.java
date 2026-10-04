@@ -3,9 +3,9 @@
 
 package com.hbm.fabric.compat;
 
+import com.hbm.blockentity.machine.BlockEntityLockableBase;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityLockableBase;
 import com.mojang.serialization.MapCodec;
 import com.zurrtum.create.api.contraption.storage.item.MountedItemStorageType;
 import com.zurrtum.create.api.contraption.storage.item.simple.SimpleMountedStorage;

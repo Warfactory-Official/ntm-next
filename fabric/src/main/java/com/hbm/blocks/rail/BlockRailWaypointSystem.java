@@ -101,7 +101,6 @@ public abstract class BlockRailWaypointSystem extends BlockRailNTM {
         int closestLink = -1;
         double startX = 0, startY = 0, startZ = 0;
         double dist = Double.MAX_VALUE;
-
         boolean d = true;
 
         for (int di = 0; di < defs.length; di++) {
@@ -205,7 +204,6 @@ public abstract class BlockRailWaypointSystem extends BlockRailNTM {
                     info.yaw = (float) newYaw;
                 else info.yaw = (float) moveAngle;
                 double unit = len < 1.0E-4D ? 0 : distRemaining / len;
-
                 info.at(
                         currentX + deltaX * unit,
                         currentY + deltaY * unit,

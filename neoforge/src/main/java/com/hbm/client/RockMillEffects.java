@@ -3,8 +3,8 @@
 
 package com.hbm.client;
 
+import com.hbm.blockentity.machine.BlockEntityMachineRockMill;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
-import com.hbm.tileentity.machine.BlockEntityMachineRockMill;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.SingleQuadParticle;

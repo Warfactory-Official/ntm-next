@@ -16,7 +16,6 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderTrainCargoTramTrailer extends RenderTrainCargoTram<TrainCargoTramTrailer> {
-
     private static final double[][][] PILES = {
         {{0.0, 0.375, 0.0}},
         {{0.1, 0.375, 0.25}, {-0.1, 0.375, -0.25}},

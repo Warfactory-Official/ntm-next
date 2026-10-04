@@ -2,7 +2,11 @@
   "elements": [
     {
       "element": {
-        "element_type": "minecraft:single_pool_element",
+        "conductors": [
+          4947802386458,
+          4947802390554
+        ],
+        "element_type": "hbm:conductor_template",
         "location": "hbm:dish",
         "processors": "hbm:no_rules",
         "projection": "rigid"

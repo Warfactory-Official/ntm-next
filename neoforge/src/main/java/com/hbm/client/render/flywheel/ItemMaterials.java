@@ -116,7 +116,6 @@ public final class ItemMaterials {
                             .useOverlay(false)
                             .fog(EffectVisuals.FADE)
                             .build();
-
             case FLASH_DEPTH ->
                     builder.transparency(Transparency.LIGHTNING)
                             .writeMask(WriteMask.COLOR_DEPTH)

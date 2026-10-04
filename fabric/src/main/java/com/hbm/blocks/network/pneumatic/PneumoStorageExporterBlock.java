@@ -3,17 +3,14 @@
 
 package com.hbm.blocks.network.pneumatic;
 
+import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoStorageExporter;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.RefreshesNeighborState;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.network.pneumatic.BlockEntityPneumoStorageExporter;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.redstone.Orientation;
 import org.jspecify.annotations.Nullable;
 
 @RefreshesNeighborState(be = BlockEntityPneumoStorageExporter.class, calling = "refreshRedstone")

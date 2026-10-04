@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineIndustrialTurbine;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
-import com.hbm.tileentity.machine.BlockEntityMachineIndustrialTurbine;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class IndustrialTurbinePeripheral

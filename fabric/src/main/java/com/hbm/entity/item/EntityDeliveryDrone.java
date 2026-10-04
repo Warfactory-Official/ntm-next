@@ -7,7 +7,6 @@ import com.hbm.entity.ModEntities;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemDrone.EnumDroneType;
-import com.hbm.items.tool.ItemDrone;
 import com.hbm.util.ChunkShapeHelper;
 import com.hbm.util.ChunkUtil;
 import it.unimi.dsi.fastutil.longs.LongIterator;
@@ -32,7 +31,6 @@ import org.jspecify.annotations.Nullable;
 public class EntityDeliveryDrone extends EntityDroneBase implements Container {
 
     public static final int SLOT_COUNT = 18;
-
     private static final EntityDataAccessor<Boolean> EXPRESS =
             SynchedEntityData.defineId(EntityDeliveryDrone.class, EntityDataSerializers.BOOLEAN);
 

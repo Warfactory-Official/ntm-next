@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "#": "hbm:circuit_analog",
     "C": "hbm:crt_display",

@@ -3,11 +3,10 @@
 
 package com.hbm.blocks.bomb;
 
-import com.hbm.config.BombConfig;
+import com.hbm.blockentity.bomb.BlockEntityNukeMike;
 import com.hbm.data.ExplosionData;
 import com.hbm.entity.effect.EntityNukeTorex;
 import com.hbm.entity.logic.EntityNukeExplosionMK5;
-import com.hbm.tileentity.bomb.BlockEntityNukeMike;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;

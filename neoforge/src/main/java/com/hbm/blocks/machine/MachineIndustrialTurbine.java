@@ -3,6 +3,8 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineIndustrialTurbine;
+import com.hbm.blockentity.machine.BlockEntityTurbineBase;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
@@ -13,10 +15,7 @@ import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Coolable;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntityMachineIndustrialTurbine;
-import com.hbm.tileentity.machine.BlockEntityTurbineBase;
 import com.hbm.util.BobMathUtil;
-import com.hbm.util.I18nUtil;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -36,7 +35,6 @@ public class MachineIndustrialTurbine extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
 
     private static final int[] DIMENSIONS = {2, 0, 3, 3, 1, 1};
-
     private static final String[] SPINNER = {"\u2596 ", "\u2598 ", " \u2598", " \u2596"};
 
     public MachineIndustrialTurbine(Properties props) {
@@ -138,7 +136,10 @@ public class MachineIndustrialTurbine extends BlockMultiblockCore
         int color = ((int) (0xFF - 0xFF * turbine.spin)) << 16 | ((int) (0xFF * turbine.spin)) << 8;
         int frame = (int) ((level.getGameTime() / 4) % 4);
 
-        info.title(I18nUtil.resolveKey(getDescriptionId()), 0xFFFF00, 0x404000);
+        info.title(
+                Component.empty().append(Component.translatable(getDescriptionId())),
+                0xFFFF00,
+                0x404000);
         info.line(
                 ChatFormatting.GREEN
                         + "-> "

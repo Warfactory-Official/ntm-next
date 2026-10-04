@@ -5,8 +5,7 @@ package com.hbm.client.gui;
 
 import com.hbm.inventory.container.MenuMachineKeyForge;
 import com.hbm.lib.Library;
-import com.hbm.util.I18nUtil;
-import java.util.Arrays;
+import com.hbm.util.TooltipStyle;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -20,7 +19,7 @@ public class ScreenMachineKeyForge extends ScreenInfoContainer<MenuMachineKeyFor
 
     public ScreenMachineKeyForge(MenuMachineKeyForge menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 176, 186);
-        this.inventoryLabelY = this.imageHeight - 96 + 2;
+        inventoryLabelY = imageHeight - 96 + 2;
     }
 
     @Override
@@ -53,9 +52,7 @@ public class ScreenMachineKeyForge extends ScreenInfoContainer<MenuMachineKeyFor
                 16,
                 20,
                 44,
-                Arrays.stream(I18nUtil.resolveKeyArray("desc.gui.keyforge.key"))
-                        .<Component>map(Component::literal)
-                        .toList());
+                TooltipStyle.lines(Component.translatable("desc.gui.keyforge.key")));
         drawCustomInfoStat(
                 graphics,
                 mouseX,
@@ -66,9 +63,7 @@ public class ScreenMachineKeyForge extends ScreenInfoContainer<MenuMachineKeyFor
                 16,
                 20,
                 60,
-                Arrays.stream(I18nUtil.resolveKeyArray("desc.gui.keyforge.random"))
-                        .<Component>map(Component::literal)
-                        .toList());
+                TooltipStyle.lines(Component.translatable("desc.gui.keyforge.random")));
         super.extractLabels(graphics, mouseX, mouseY);
     }
 }

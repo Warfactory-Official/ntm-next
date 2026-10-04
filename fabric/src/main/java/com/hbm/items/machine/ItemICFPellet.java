@@ -10,7 +10,6 @@ import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.items.ModDataComponents;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.EnumUtil;
-import com.hbm.util.I18nUtil;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -146,8 +145,8 @@ public class ItemICFPellet extends Item {
         adder.accept(
                 Component.translatable(
                                 "desc.item.icfPellet.fuel",
-                                I18nUtil.resolveKey(getType(stack, true).translationKey()),
-                                I18nUtil.resolveKey(getType(stack, false).translationKey()))
+                                Component.translatable(getType(stack, true).translationKey()),
+                                Component.translatable(getType(stack, false).translationKey()))
                         .withStyle(ChatFormatting.YELLOW));
         adder.accept(
                 Component.translatable(
@@ -182,7 +181,6 @@ public class ItemICFPellet extends Item {
         CARBON(0x454545, 2.00D, 1.00D, 5.00D),
         OXYGEN(0xB4E2FF, 1.25D, 1.50D, 7.50D),
         SODIUM(0xDFE4E7, 3.00D, 0.75D, 8.75D),
-
         CHLORINE(0xDAE598, 2.50D, 1.00D, 9.25D),
         CALCIUM(0xD2C7A9, 3.00D, 1.00D, 9.75D),
         ;
@@ -196,9 +194,9 @@ public class ItemICFPellet extends Item {
 
         EnumICFFuel(int color, double react, double depl, double laser) {
             this.color = color;
-            this.reactionMult = react;
-            this.depletionSpeed = depl;
-            this.fusingDifficulty = laser;
+            reactionMult = react;
+            depletionSpeed = depl;
+            fusingDifficulty = laser;
         }
 
         public String translationKey() {

@@ -178,13 +178,13 @@ public record FalloutConfigJSON(List<FalloutEntry> rules) {
                 List<WeightedState> blocks, RandomSource random) {
             if (blocks.isEmpty()) return null;
             int weight = 0;
-            for (WeightedState choice : blocks) weight += choice.weight();
+            for (WeightedState choice : blocks) weight = Math.addExact(weight, choice.weight());
             int r = random.nextInt(weight);
             for (WeightedState choice : blocks) {
                 r -= choice.weight();
-                if (r <= 0) return choice;
+                if (r < 0) return choice;
             }
-            return blocks.getFirst();
+            throw new IllegalStateException();
         }
     }
 }

@@ -37,7 +37,6 @@ public record ChainModel() implements SimpleBlockModel {
         public QuadCollection quads(
                 BlockState state, ModelBaker baker, ResolvedModel carrier, TextureSlots slots) {
             Material.Baked material = BlockModel.slot(baker, carrier, slots, end ? "end" : "chain");
-
             var info = BakedQuad.MaterialInfo.of(material, Transparency.TRANSPARENT, -1, false, 0);
             List<ObjUnbakedGeometry.BoxQuad> output =
                     new ArrayList<>(facing == Direction.DOWN ? 4 : 2);
@@ -95,7 +94,6 @@ public record ChainModel() implements SimpleBlockModel {
                         ObjUnbakedGeometry.WHITE,
                         null,
                         QuadLighting.OWN_BLOCK));
-
         output.add(
                 new ObjUnbakedGeometry.BoxQuad(
                         mirrorBack

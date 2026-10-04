@@ -12,7 +12,6 @@ public enum UpgradeType {
     OVERDRIVE(3),
     NULLIFIER(1),
     SCREAM(1),
-
     EJECTOR(3),
     STACK(3),
     SPECIAL(Integer.MAX_VALUE);

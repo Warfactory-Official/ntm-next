@@ -3,10 +3,10 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKNumitron;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKNumitron;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
@@ -265,7 +265,7 @@ public final class ScreenRBMKNumitron extends Screen {
             data.putString("label" + i, label[i].getValue());
             data.putString("rtty" + i, rtty[i].getValue());
         }
-        Services.NETWORK.sendToServer(new NbtControlPayload(numitron.getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(numitron.getBlockPos(), data));
     }
 
     @Override

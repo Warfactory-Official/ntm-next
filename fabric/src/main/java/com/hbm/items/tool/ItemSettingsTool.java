@@ -7,6 +7,7 @@ import com.hbm.extprop.HbmPlayerProps;
 import com.hbm.handler.EnumToolKey;
 import com.hbm.interfaces.ICopiable;
 import com.hbm.items.ModDataComponents;
+import com.hbm.util.KeyHints;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -162,8 +163,17 @@ public class ItemSettingsTool extends Item {
             Consumer<Component> adder,
             TooltipFlag flag) {
         adder.accept(Component.translatable("desc.item.settingsTool.canCopyTheSettings"));
-        adder.accept(Component.translatable("desc.item.settingsTool.shiftRightClickTo"));
-        adder.accept(Component.translatable("desc.item.settingsTool.ctrlClickOnPipes"));
+        adder.accept(
+                Component.translatable(
+                        "tooltip.hbm.settings.copy_paste",
+                        KeyHints.key("key.sneak", "key.keyboard.left.shift"),
+                        KeyHints.key("key.use", "key.mouse.right"),
+                        KeyHints.key("key.use", "key.mouse.right")));
+        adder.accept(
+                Component.translatable(
+                        "tooltip.hbm.settings.bulk_paste",
+                        KeyHints.key("key.hbm.copyToolCtrl", "key.keyboard.left.control"),
+                        KeyHints.key("key.use", "key.mouse.right")));
 
         CompoundTag data = getData(stack);
         if (data == null) return;

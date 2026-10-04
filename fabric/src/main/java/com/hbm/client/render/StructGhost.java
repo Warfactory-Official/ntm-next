@@ -35,27 +35,22 @@ public record StructGhost(float x, float y, float z, TextureAtlasSprite sprite) 
         v(pose, buf, light, x + lo, y + hi, z + hi, u0, v0);
         v(pose, buf, light, x + lo, y + lo, z + hi, u0, v1);
         v(pose, buf, light, x + hi, y + lo, z + hi, u1, v1);
-
         v(pose, buf, light, x + hi, y + hi, z + lo, u1, v0);
         v(pose, buf, light, x + hi, y + hi, z + hi, u0, v0);
         v(pose, buf, light, x + hi, y + lo, z + hi, u0, v1);
         v(pose, buf, light, x + hi, y + lo, z + lo, u1, v1);
-
         v(pose, buf, light, x + lo, y + hi, z + lo, u1, v0);
         v(pose, buf, light, x + hi, y + hi, z + lo, u0, v0);
         v(pose, buf, light, x + hi, y + lo, z + lo, u0, v1);
         v(pose, buf, light, x + lo, y + lo, z + lo, u1, v1);
-
         v(pose, buf, light, x + lo, y + hi, z + hi, u1, v0);
         v(pose, buf, light, x + lo, y + hi, z + lo, u0, v0);
         v(pose, buf, light, x + lo, y + lo, z + lo, u0, v1);
         v(pose, buf, light, x + lo, y + lo, z + hi, u1, v1);
-
         v(pose, buf, light, x + hi, y + hi, z + lo, u1, v0);
         v(pose, buf, light, x + lo, y + hi, z + lo, u0, v0);
         v(pose, buf, light, x + lo, y + hi, z + hi, u0, v1);
         v(pose, buf, light, x + hi, y + hi, z + hi, u1, v1);
-
         v(pose, buf, light, x + lo, y + lo, z + lo, u1, v0);
         v(pose, buf, light, x + hi, y + lo, z + lo, u0, v0);
         v(pose, buf, light, x + hi, y + lo, z + hi, u0, v1);

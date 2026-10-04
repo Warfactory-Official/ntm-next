@@ -12,8 +12,7 @@ import com.hbm.explosion.ExplosionLarge;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.items.ModItems;
 import com.hbm.lib.ModDamageTypes;
-import com.hbm.platform.Services;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.registration.RegistryHandle;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ContaminationUtil;
@@ -32,20 +31,16 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class HbmPotion {
-
     public static RegistryHandle<MobEffect> potionsickness;
     public static RegistryHandle<MobEffect> radiation;
     public static RegistryHandle<MobEffect> radaway;
-
     public static RegistryHandle<MobEffect> death;
     public static RegistryHandle<MobEffect> radx;
     public static RegistryHandle<MobEffect> stability;
     public static RegistryHandle<MobEffect> lead;
     public static RegistryHandle<MobEffect> taint;
-
     public static RegistryHandle<MobEffect> mutation;
     public static RegistryHandle<MobEffect> phosphorus;
-
     public static RegistryHandle<MobEffect> bang;
 
     private static Holder<MobEffect> potionsicknessHolder;
@@ -62,30 +57,30 @@ public final class HbmPotion {
 
     private HbmPotion() {}
 
-    public static void register(IRegistrar r) {
+    public static void register() {
         potionsickness =
-                r.registerMobEffect(
+                FabricRegistrar.registerMobEffect(
                         "potionsickness",
                         () -> new HbmMobEffect(MobEffectCategory.NEUTRAL, 0xff8080));
-        radiation = r.registerMobEffect("radiation", RadiationEffect::new);
-        radaway = r.registerMobEffect("radaway", RadawayEffect::new);
+        radiation = FabricRegistrar.registerMobEffect("radiation", RadiationEffect::new);
+        radaway = FabricRegistrar.registerMobEffect("radaway", RadawayEffect::new);
         death =
-                r.registerMobEffect(
+                FabricRegistrar.registerMobEffect(
                         "death", () -> new HbmMobEffect(MobEffectCategory.NEUTRAL, 0x111111));
         radx =
-                r.registerMobEffect(
+                FabricRegistrar.registerMobEffect(
                         "radx", () -> new HbmMobEffect(MobEffectCategory.BENEFICIAL, 0xBB4B00));
         stability =
-                r.registerMobEffect(
+                FabricRegistrar.registerMobEffect(
                         "stability",
                         () -> new HbmMobEffect(MobEffectCategory.BENEFICIAL, 0xD0D0D0));
-        lead = r.registerMobEffect("lead", LeadEffect::new);
-        taint = r.registerMobEffect("taint", TaintEffect::new);
+        lead = FabricRegistrar.registerMobEffect("lead", LeadEffect::new);
+        taint = FabricRegistrar.registerMobEffect("taint", TaintEffect::new);
         mutation =
-                r.registerMobEffect(
+                FabricRegistrar.registerMobEffect(
                         "mutation", () -> new HbmMobEffect(MobEffectCategory.NEUTRAL, 0x800080));
-        phosphorus = r.registerMobEffect("phosphorus", PhosphorusEffect::new);
-        bang = r.registerMobEffect("bang", BangEffect::new);
+        phosphorus = FabricRegistrar.registerMobEffect("phosphorus", PhosphorusEffect::new);
+        bang = FabricRegistrar.registerMobEffect("bang", BangEffect::new);
     }
 
     public static Holder<MobEffect> potionsickness() {
@@ -266,7 +261,6 @@ public final class HbmPotion {
 
         @Override
         public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
-
             if (!(entity instanceof EntityCreeperTainted)
                     && !(entity instanceof EntityTaintCrab)
                     && level.getRandom().nextInt(40) == 0) {
@@ -280,7 +274,6 @@ public final class HbmPotion {
                 BlockPos below = entity.blockPosition().below();
                 BlockState state = level.getBlockState(below);
                 if (below.getY() > level.getMinY() && state.isSolidRender() && !state.isAir()) {
-
                     level.setBlock(
                             below,
                             ModBlocks.TAINT.get().defaultBlockState().setValue(BlockTaint.AGE, 14),

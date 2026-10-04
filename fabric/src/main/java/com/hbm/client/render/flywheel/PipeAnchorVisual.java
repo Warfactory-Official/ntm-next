@@ -4,10 +4,10 @@
 package com.hbm.client.render.flywheel;
 
 import com.hbm.api.fluidmk2.FluidPipeTintData;
+import com.hbm.blockentity.network.BlockEntityPipeAnchor;
 import com.hbm.blocks.network.FluidPipeAnchorBlock;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.network.BlockEntityPipeAnchor;
 import com.hbm.util.ChunkUtil;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;

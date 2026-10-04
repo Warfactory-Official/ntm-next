@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityFluidInteraction.class)
 abstract class EntityFluidInteractionMixin {
-
     @Inject(
             method =
                     "getTrackerFor(Lnet/neoforged/neoforge/fluids/FluidType;)Lnet/minecraft/world/entity/EntityFluidInteraction$Tracker;",

@@ -3,15 +3,15 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityDoorGeneric;
+import com.hbm.blockentity.DoorDecl;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.blocks.multiblock.MultiblockMaskTable;
+import com.hbm.config.FabricHbmConfig;
 import com.hbm.interfaces.IBomb;
 import com.hbm.interfaces.IToolable;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.BlockEntityDoorGeneric;
-import com.hbm.tileentity.DoorDecl;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -36,7 +36,6 @@ import org.jspecify.annotations.Nullable;
 
 public class BlockDoorGeneric extends BlockMultiblockCore
         implements ITickingBlock, IBomb, IToolable {
-
     public static final IntegerProperty SKIN = IntegerProperty.create("skin", 0, 6);
 
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
@@ -146,13 +145,11 @@ public class BlockDoorGeneric extends BlockMultiblockCore
     @Override
     public @Nullable VoxelShape cellShape(
             int lx, int ly, int lz, Direction facing, boolean open, boolean forCollision) {
-
         int dx = MultiblockMaskTable.worldX(lx, ly, lz, facing);
         int dz = MultiblockMaskTable.worldZ(lx, ly, lz, facing);
         BlockPos local = toDoorLocal(dx, ly, dz, facing);
         AABB box = type.getBlockBound(local.getX(), local.getY(), local.getZ(), open, forCollision);
         AABB world = toWorldFrame(box, facing);
-
         if (world.getXsize() == 0 && world.getYsize() == 0 && world.getZsize() == 0)
             return Shapes.empty();
         if (isFullCube(world)) return null;
@@ -185,7 +182,7 @@ public class BlockDoorGeneric extends BlockMultiblockCore
             BlockState coreState, Level level, BlockPos core, Player player, BlockHitResult hit) {
         if (player.isShiftKeyDown()) return InteractionResult.PASS;
         if (level.isClientSide()) return InteractionResult.SUCCESS;
-        if (Services.CONFIG.runtime().ultraLarpMode() && type != DoorDecl.WATER_DOOR)
+        if (FabricHbmConfig.runtime().ultraLarpMode() && type != DoorDecl.WATER_DOOR)
             return InteractionResult.SUCCESS;
         return level.getBlockEntity(core) instanceof BlockEntityDoorGeneric door
                         && door.tryToggle(player)

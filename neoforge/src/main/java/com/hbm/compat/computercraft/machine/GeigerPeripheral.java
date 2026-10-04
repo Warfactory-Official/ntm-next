@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.machine;
 
+import com.hbm.blockentity.machine.BlockEntityGeiger;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.BlockEntityGeiger;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class GeigerPeripheral extends SnapshotPeripheral<BlockEntityGeiger> {

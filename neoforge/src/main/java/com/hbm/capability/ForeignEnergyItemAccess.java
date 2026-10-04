@@ -45,7 +45,6 @@ public final class ForeignEnergyItemAccess {
     public static long extractableHe(ItemStack stack, long maxHe) {
         if (maxHe <= 0) return 0L;
         if (!(stack.getItem() instanceof IBatteryItem battery)) return 0L;
-
         if (isCreative(stack)) return maxHe;
         return Math.max(
                 0L,

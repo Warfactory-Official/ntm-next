@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.machine.oil.BlockEntityMachinePyroOven;
+import com.hbm.blockentity.machine.oil.BlockEntityMachinePyroOven;
 
 public final class PyroOvenSound {
 

@@ -8,6 +8,7 @@ import com.hbm.blocks.generic.BlockSteelScaffold;
 import com.hbm.blocks.machine.MachineFan;
 import com.hbm.blocks.network.CableDiodeBlock;
 import com.hbm.blocks.network.FluidDuctGaugeBlock;
+import com.hbm.blocks.network.GeneratedConductors;
 import com.hbm.itempool.ComponentLoot;
 import com.hbm.lib.Library;
 import com.hbm.world.gen.nbt.GeometryOut;
@@ -36,6 +37,12 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 public class PowerRoomPiece extends NtmBranchingPiece {
 
     private static final int WIDTH = 12, HEIGHT = 6, DEPTH = 12;
+    private static final BlockPos SWITCH_POSITION = new BlockPos(1, 2, 5);
+    private static final BlockPos DETECTOR_POSITION = new BlockPos(6, 2, 1);
+    private static final long[] SWITCH = {SWITCH_POSITION.asLong()};
+    private static final long[] SWITCH_AND_DETECTOR = {
+        SWITCH_POSITION.asLong(), DETECTOR_POSITION.asLong()
+    };
     private final int powerType;
     private boolean path;
 
@@ -120,6 +127,17 @@ public class PowerRoomPiece extends NtmBranchingPiece {
         return Library.id(TEMPLATE_ID.getPath() + suffix(this.powerType, this.path));
     }
 
+    @Override
+    protected void buildAfterTemplate(
+            WorldGenLevel level, BoundingBox chunkBB, RandomSource random) {
+        GeneratedConductors.record(
+                level,
+                getWorldPos(0, 0, 0),
+                legacyRotation(getOrientation()),
+                chunkBB,
+                powerType == 1 ? SWITCH_AND_DETECTOR : SWITCH);
+    }
+
     public static final PieceGeometry GEOMETRY =
             (out, variant) -> {
                 List<WeightedOption> bricks = concreteBricksTable();
@@ -199,16 +217,18 @@ public class PowerRoomPiece extends NtmBranchingPiece {
                         hbmStair(Direction.WEST, false),
                         hbmStair(Direction.WEST, false));
                 out.block(1, 2, 1, hbmState("machine_transformer"));
-
                 out.block(
                         1,
                         2,
                         2,
                         hbmState("cable_diode").setValue(CableDiodeBlock.FACING, Direction.SOUTH));
-
                 out.block(1, 2, 3, hbmState("capacitor_copper"));
                 out.block(1, 2, 4, decoRedCopper);
-                out.block(1, 2, 5, hbmState("cable_switch"));
+                out.block(
+                        SWITCH_POSITION.getX(),
+                        SWITCH_POSITION.getY(),
+                        SWITCH_POSITION.getZ(),
+                        hbmState("cable_switch"));
 
                 for (int i = 1; i <= 5; i += 4) {
                     out.block(i, 1, 10, hbmState("deco_beryllium"));
@@ -218,7 +238,6 @@ public class PowerRoomPiece extends NtmBranchingPiece {
                 out.block(2, 1, 10, scaffoldOrient("ns_upright"));
                 out.block(3, 1, 10, decoTungsten);
                 out.block(4, 1, 10, scaffoldOrient("ns_upright"));
-
                 BlockState tapeRecorderNorth2 =
                         hbmState("tape_recorder")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH);
@@ -266,7 +285,6 @@ public class PowerRoomPiece extends NtmBranchingPiece {
                                 .defaultBlockState()
                                 .setValue(ChestBlock.FACING, Direction.EAST),
                         ComponentLoot.MACHINE_PARTS_6);
-
                 out.container(
                         7,
                         1,
@@ -278,7 +296,6 @@ public class PowerRoomPiece extends NtmBranchingPiece {
                 BlockState bunkerDoor = hbmState("door_bunker");
                 out.randomDoor(3, 1, 0, bunkerDoor, Direction.SOUTH, true);
                 out.randomDoor(4, 1, 0, bunkerDoor, Direction.SOUTH, false);
-
                 out.door(5, 1, 3, bunkerDoor, Direction.EAST, false);
 
                 if (variant.flag("path")) out.airBox(11, 1, 7, 11, 2, 8);
@@ -307,7 +324,6 @@ public class PowerRoomPiece extends NtmBranchingPiece {
                 hbmState("deco_pipe_framed_rusted"),
                 hbmState("deco_pipe_framed_rusted"));
         for (int i = 7; i <= 9; i += 2) {
-
             out.block(
                     i,
                     1,
@@ -351,7 +367,6 @@ public class PowerRoomPiece extends NtmBranchingPiece {
                 5,
                 hbmState("fluid_duct_gauge").setValue(FluidDuctGaugeBlock.FACING, Direction.WEST));
         out.block(6, 1, 5, hbmState("barrel_plastic"));
-
         out.container(
                 7,
                 1,
@@ -372,9 +387,12 @@ public class PowerRoomPiece extends NtmBranchingPiece {
             BlockState decoRedCopper,
             BlockState concreteExtHazard) {
         out.block(6, 1, 1, concreteExtHazard);
-        out.block(6, 2, 1, hbmState("cable_detector"));
+        out.block(
+                DETECTOR_POSITION.getX(),
+                DETECTOR_POSITION.getY(),
+                DETECTOR_POSITION.getZ(),
+                hbmState("cable_detector"));
         out.block(6, 3, 1, concreteExtHazard);
-
         out.block(
                 6,
                 2,
@@ -393,7 +411,6 @@ public class PowerRoomPiece extends NtmBranchingPiece {
                     hbmState("machine_diesel")
                             .setValue(HorizontalDirectionalBlock.FACING, Direction.EAST));
         }
-
         out.block(8, 2, 1, pillar("deco_pipe_rim_rusted", Direction.Axis.X));
         out.box(
                 7,
@@ -414,7 +431,6 @@ public class PowerRoomPiece extends NtmBranchingPiece {
                 2,
                 hbmState("deco_computer")
                         .setValue(HorizontalDirectionalBlock.FACING, Direction.WEST));
-
         BlockState tapeRecorderWest3 =
                 hbmState("tape_recorder")
                         .setValue(HorizontalDirectionalBlock.FACING, Direction.WEST);
@@ -455,7 +471,6 @@ public class PowerRoomPiece extends NtmBranchingPiece {
                 1,
                 hbmState("deco_computer")
                         .setValue(HorizontalDirectionalBlock.FACING, Direction.SOUTH));
-
         out.block(
                 10,
                 3,
@@ -477,7 +492,6 @@ public class PowerRoomPiece extends NtmBranchingPiece {
                 3,
                 1,
                 hbmState("fluid_duct_gauge").setValue(FluidDuctGaugeBlock.FACING, Direction.SOUTH));
-
         out.container(
                 6,
                 1,

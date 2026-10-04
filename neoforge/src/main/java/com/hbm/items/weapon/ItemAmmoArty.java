@@ -5,7 +5,6 @@ package com.hbm.items.weapon;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockSlag;
-import com.hbm.config.BombConfig;
 import com.hbm.data.ExplosionData;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.effect.EntityMist;
@@ -133,7 +132,6 @@ public class ItemAmmoArty extends Item {
             @Override
             public void onImpact(EntityArtilleryShell shell, HitResult mop) {
                 standardExplosion(shell, mop, 10F, 3F, false);
-
                 ExplosionCreator.composeEffectSmall(
                         shell.level(),
                         mop.getLocation().x,

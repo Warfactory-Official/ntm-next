@@ -4,8 +4,8 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityBobble;
 import com.hbm.items.special.ScrapType;
-import com.hbm.tileentity.BlockEntityBobble;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
@@ -33,11 +33,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class BlockBobble extends Block implements EntityBlock {
-
     public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
-
     private static final VoxelShape SHAPE = Block.box(5.5, 0, 5.5, 10.5, 10, 10.5);
-
     public static Consumer<BlockEntityBobble> OPEN_GUI = be -> {};
 
     public BlockBobble(Properties props) {
@@ -84,7 +81,6 @@ public class BlockBobble extends Block implements EntityBlock {
         if (level.getBlockEntity(pos) instanceof BlockEntityBobble bobble) {
             bobble.type = BlockEntityBobble.typeOf(stack);
             bobble.setChanged();
-
             level.sendBlockUpdated(pos, state, state, Block.UPDATE_CLIENTS);
         }
     }
@@ -121,7 +117,6 @@ public class BlockBobble extends Block implements EntityBlock {
                             pos.getY(),
                             pos.getZ() + 0.5,
                             BlockEntityBobble.stackOf(bobble.type));
-
             item.setDeltaMovement(0, 0, 0);
             level.addFreshEntity(item);
         }

@@ -22,12 +22,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
 
 public final class CustomMachinePage extends TablePage<CustomMachineRecipe> {
-
     private static final int IN_X = 12, OUT_X = 102, STRIDE = 18;
     private static final int FLUID_Y = 6, ITEM_Y = 24, ITEM_Y2 = 42;
     private static final int MACHINE_X = 75, MACHINE_Y = 42;
     private static final int ROW = 3;
-
     private static final int SIDE = 160, RADIATION_Y = 63, POLLUTION_Y = 75, CENTRE_X = 83;
     private static final int HEAT_Y = 8, FLUX_Y = 16;
 
@@ -129,7 +127,6 @@ public final class CustomMachinePage extends TablePage<CustomMachineRecipe> {
             int[] at = slotAt(OUT_X, i);
             PageSlot slot = page.output(at[0], at[1]).background().items(stacks(outputs[i]));
             float chance = chance(outputs[i]);
-
             if (chance < 1F) {
                 slot.tooltip(
                         (shown, lines) ->

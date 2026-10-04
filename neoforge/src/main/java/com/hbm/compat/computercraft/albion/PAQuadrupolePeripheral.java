@@ -3,7 +3,7 @@
 
 package com.hbm.compat.computercraft.albion;
 
-import com.hbm.tileentity.machine.albion.BlockEntityPAQuadrupole;
+import com.hbm.blockentity.machine.albion.BlockEntityPAQuadrupole;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class PAQuadrupolePeripheral extends CooledPeripheral<BlockEntityPAQuadrupole> {

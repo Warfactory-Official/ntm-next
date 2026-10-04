@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.bomb.BlockEntityLaunchPadRusted;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.bomb.BlockEntityLaunchPadRusted;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -78,7 +78,6 @@ public final class RenderLaunchPadRusted
         if (!state.missileLoaded) return;
         poseStack.pushPose();
         poseStack.translate(.5D, 1D, .5D);
-
         poseStack.mulPose(Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
         collector.submitCustomGeometry(
                 poseStack,

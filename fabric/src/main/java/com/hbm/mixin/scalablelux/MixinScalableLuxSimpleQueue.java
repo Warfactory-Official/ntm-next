@@ -22,7 +22,6 @@ public abstract class MixinScalableLuxSimpleQueue implements ScalableLuxBatchQue
 
     @Override
     public synchronized ChunkTasks hbm$enqueueLightBatch(ScalableLuxBatch batch) {
-
         ChunkTasks task = chunkTasks.computeIfAbsent(batch.chunkKey, ChunkTasks::new);
         batch.accept(task);
         queueDirty = true;

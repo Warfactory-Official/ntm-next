@@ -31,7 +31,6 @@ public class ItemGenericGrenade extends ItemGrenade implements ProjectileItem {
         ItemStack stack = player.getItemInHand(hand);
 
         if (!level.isClientSide()) {
-
             level.playSound(
                     null,
                     player.getX(),

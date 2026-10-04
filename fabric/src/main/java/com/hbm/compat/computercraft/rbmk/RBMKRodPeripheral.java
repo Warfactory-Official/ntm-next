@@ -3,10 +3,10 @@
 
 package com.hbm.compat.computercraft.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKRod;
 import com.hbm.blocks.machine.rbmk.RBMKRod;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
 import com.hbm.items.machine.ItemRBMKRod;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKRod;
 import dan200.computercraft.api.lua.LuaFunction;
 import net.minecraft.world.item.ItemStack;
 
@@ -42,7 +42,6 @@ public final class RBMKRodPeripheral extends RBMKColumnPeripheral<BlockEntityRBM
             put(POISON, ItemRBMKRod.getPoison(stack));
             put(CORE_HEAT, ItemRBMKRod.getCoreHeat(stack));
             put(HULL_HEAT, ItemRBMKRod.getHullHeat(stack));
-
             putRef(ROD_TYPE, stack.getItem().getDescriptionId());
         }
     }

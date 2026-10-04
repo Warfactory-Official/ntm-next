@@ -160,7 +160,6 @@ public final class BombForkJoinPool {
             }
         }
         if (toStop != null && !toStop.isShutdown()) {
-
             toStop.shutdown();
         }
     }

@@ -4,8 +4,8 @@
 package com.hbm.compat.computercraft.machine;
 
 import com.hbm.api.redstoneoverradio.IRORInfo;
+import com.hbm.blockentity.machine.BlockEntityMachineSatLink;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.BlockEntityMachineSatLink;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class SatLinkPeripheral extends SnapshotPeripheral<BlockEntityMachineSatLink> {

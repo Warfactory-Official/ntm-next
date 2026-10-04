@@ -4,9 +4,9 @@
 
 package com.hbm.inventory.fluid.trait;
 
-import com.hbm.util.I18nUtil;
 import java.util.List;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 
 public class FT_Pheromone extends FluidTrait {
 
@@ -23,19 +23,23 @@ public class FT_Pheromone extends FluidTrait {
     }
 
     @Override
-    public void addInfo(List<String> info) {
+    public void addInfo(List<Component> info) {
         if (type == 1) {
             info.add(
-                    ChatFormatting.AQUA
-                            + "["
-                            + I18nUtil.resolveKey("hbmfluid.trait.glyphidPheromones")
-                            + "]");
+                    Component.empty()
+                            .append(Component.literal("[").withStyle(ChatFormatting.AQUA))
+                            .append(
+                                    Component.translatable("hbmfluid.trait.glyphidPheromones")
+                                            .withStyle(ChatFormatting.AQUA))
+                            .append(Component.literal("]").withStyle(ChatFormatting.AQUA)));
         } else {
             info.add(
-                    ChatFormatting.BLUE
-                            + "["
-                            + I18nUtil.resolveKey("hbmfluid.trait.modifiedPheromones")
-                            + "]");
+                    Component.empty()
+                            .append(Component.literal("[").withStyle(ChatFormatting.BLUE))
+                            .append(
+                                    Component.translatable("hbmfluid.trait.modifiedPheromones")
+                                            .withStyle(ChatFormatting.BLUE))
+                            .append(Component.literal("]").withStyle(ChatFormatting.BLUE)));
         }
     }
 }

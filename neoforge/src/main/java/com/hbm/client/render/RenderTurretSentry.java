@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.turret.BlockEntityTurretSentry;
+import com.hbm.blockentity.turret.BlockEntityTurretSentryDamaged;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.turret.BlockEntityTurretSentry;
-import com.hbm.tileentity.turret.BlockEntityTurretSentryDamaged;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 

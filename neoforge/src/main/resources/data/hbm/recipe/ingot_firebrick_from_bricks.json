@@ -5,7 +5,7 @@
       "name": "lbsm_simple_crafting"
     }
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "B": "minecraft:brick",
     "N": "minecraft:nether_brick"

@@ -28,7 +28,6 @@ public class ItemTurretBiometry extends Item {
 
     public static String @Nullable [] getNames(ItemStack stack) {
         List<String> names = stack.get(ModDataComponents.TURRET_WHITELIST.get());
-
         if (names == null || names.isEmpty()) return null;
         return names.toArray(new String[0]);
     }

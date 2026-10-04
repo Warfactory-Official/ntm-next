@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.machine.BlockEntityMachineDiesel;
+import com.hbm.blockentity.machine.BlockEntityMachineDiesel;
 
 public final class DieselSound {
 

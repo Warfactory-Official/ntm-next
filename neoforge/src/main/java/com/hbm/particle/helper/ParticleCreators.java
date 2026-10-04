@@ -4,6 +4,7 @@
 package com.hbm.particle.helper;
 
 import com.hbm.handler.threading.TargetPoint;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.threading.ThreadedPayload;
 import com.hbm.packet.toclient.AshesPayload;
 import com.hbm.packet.toclient.BlackPowderPayload;
@@ -13,7 +14,6 @@ import com.hbm.packet.toclient.SkeletonPayload;
 import com.hbm.packet.toclient.SparkBurstPayload;
 import com.hbm.packet.toclient.SweatPayload;
 import com.hbm.packet.toclient.VomitPayload;
-import com.hbm.platform.Services;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -172,6 +172,6 @@ public final class ParticleCreators {
     private static void send(
             Level level, double x, double y, double z, int range, ThreadedPayload payload) {
         if (!(level instanceof ServerLevel server)) return;
-        Services.NETWORK.sendToAllAround(payload, new TargetPoint(server, x, y, z, range));
+        PacketWire.sendToAllAround(payload, new TargetPoint(server, x, y, z, range));
     }
 }

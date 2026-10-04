@@ -17,9 +17,7 @@ public record ToolTier(
     public static final ToolTier TITANIUM = diamond(1_000, 9.0F, 15);
     public static final ToolTier CMB = diamond(8_500, 40.0F, 100);
     public static final ToolTier ELEC = diamond(0, 30.0F, 2);
-
     public static final ToolTier CHAINSAW = diamond(0, 50.0F, 0);
-
     public static final ToolTier ALLOY = diamond(2_000, 15.0F, 5);
     public static final ToolTier DESH = iron(0, 7.5F, 10);
     public static final ToolTier COBALT = diamond(750, 9.0F, 60);
@@ -32,11 +30,9 @@ public record ToolTier(
     public static final ToolTier DWARVEN = iron(0, 4.0F, 10);
     public static final ToolTier METEORITE = beyond(0, 50.0F, 200);
     public static final ToolTier MESE_GAVEL = beyond(0, 50.0F, 200);
-
     public static final ToolTier SCHRABIDIUM_HAMMER = diamond(0, 50.0F, 200);
     public static final ToolTier SHIMMER =
             new ToolTier(BlockTags.INCORRECT_FOR_STONE_TOOL, 0, 25.0F, 200);
-
     public static final ToolTier PIPE_LEAD =
             new ToolTier(BlockTags.INCORRECT_FOR_STONE_TOOL, 250, 1.5F, 25);
     public static final ToolTier BOTTLE_OPENER =

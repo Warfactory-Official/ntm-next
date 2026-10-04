@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityCustomMachine;
 import com.hbm.inventory.container.MenuMachineCustom;
 import com.hbm.inventory.machine.CustomMachineDefinition;
 import com.hbm.inventory.slot.SlotPattern;
 import com.hbm.lib.Library;
 import com.hbm.module.ModulePatternMatcher;
-import com.hbm.tileentity.machine.BlockEntityCustomMachine;
 import java.util.List;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;

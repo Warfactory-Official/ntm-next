@@ -45,7 +45,6 @@ public final class VortexRenderTypes {
                             .withPrimitiveTopology(PrimitiveTopology.QUADS)
                             .withDepthStencilState(DepthStencilState.DEFAULT)
                             .withCull(false));
-
     private static final Function<Identifier, RenderType> TRANSLUCENT =
             Util.memoize(
                     texture ->

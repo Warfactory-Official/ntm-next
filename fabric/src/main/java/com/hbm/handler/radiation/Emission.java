@@ -22,7 +22,6 @@ final class Emission {
 
     static double relax(double c, double weightSum, double numerator) {
         if (weightSum <= 0.0D) return c;
-
         if (weightSum > 1.0D) return numerator / weightSum;
         return c + (numerator - c * weightSum);
     }

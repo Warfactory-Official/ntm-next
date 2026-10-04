@@ -20,7 +20,6 @@ import net.minecraft.util.RandomSource;
 public class RenderCloudRainbow
         extends EntityRenderer<EntityCloudFleijaRainbow, RenderCloudRainbow.State>
         implements ConcurrentRenderStateExtraction {
-
     private final RandomSource random = RandomSource.create();
 
     public RenderCloudRainbow(EntityRendererProvider.Context context) {
@@ -71,7 +70,6 @@ public class RenderCloudRainbow
     }
 
     private void submitSphere(PoseStack poseStack, SubmitNodeCollector collector, RenderType type) {
-
         int color =
                 ARGB.color(
                         255, random.nextInt(0x100), random.nextInt(0x100), random.nextInt(0x100));

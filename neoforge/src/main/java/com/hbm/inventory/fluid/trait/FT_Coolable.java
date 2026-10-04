@@ -4,12 +4,12 @@
 
 package com.hbm.inventory.fluid.trait;
 
-import com.hbm.util.I18nUtil;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.material.Fluid;
 
 public class FT_Coolable extends FluidTrait {
@@ -37,35 +37,43 @@ public class FT_Coolable extends FluidTrait {
     }
 
     public double getEfficiency(CoolingType type) {
-        Double eff = this.efficiency.get(type);
+        Double eff = efficiency.get(type);
         return eff != null ? eff : 0.0D;
     }
 
     @Override
-    public void addInfoHidden(List<String> info) {
+    public void addInfoHidden(List<Component> info) {
         info.add(
-                ChatFormatting.RED
-                        + I18nUtil.resolveKey("hbmfluid.trait.thermalCapacity")
-                        + ": "
-                        + heatEnergy
-                        + " "
-                        + I18nUtil.resolveKey("hbmfluid.trait.perTU")
-                        + " "
-                        + amountReq
-                        + "mB");
+                Component.empty()
+                        .append(
+                                Component.translatable("hbmfluid.trait.thermalCapacity")
+                                        .withStyle(ChatFormatting.RED))
+                        .append(
+                                Component.literal(": " + heatEnergy + " ")
+                                        .withStyle(ChatFormatting.RED))
+                        .append(
+                                Component.translatable("hbmfluid.trait.perTU")
+                                        .withStyle(ChatFormatting.RED))
+                        .append(
+                                Component.literal(" " + amountReq + "mB")
+                                        .withStyle(ChatFormatting.RED)));
         for (CoolingType type : CoolingType.values()) {
             double eff = getEfficiency(type);
             if (eff > 0) {
                 info.add(
-                        ChatFormatting.YELLOW
-                                + "["
-                                + type.getLocalizedName()
-                                + "] "
-                                + ChatFormatting.AQUA
-                                + I18nUtil.resolveKey("hbmfluid.trait.efficiency")
-                                + ": "
-                                + ((int) (eff * 100D))
-                                + "%");
+                        Component.empty()
+                                .append(Component.literal("[").withStyle(ChatFormatting.YELLOW))
+                                .append(
+                                        type.getLocalizedName()
+                                                .copy()
+                                                .withStyle(ChatFormatting.YELLOW))
+                                .append(Component.literal("] ").withStyle(ChatFormatting.YELLOW))
+                                .append(
+                                        Component.translatable("hbmfluid.trait.efficiency")
+                                                .withStyle(ChatFormatting.AQUA))
+                                .append(
+                                        Component.literal(": " + ((int) (eff * 100.0D)) + "%")
+                                                .withStyle(ChatFormatting.AQUA)));
             }
         }
     }
@@ -80,8 +88,8 @@ public class FT_Coolable extends FluidTrait {
             this.keySuffix = keySuffix;
         }
 
-        public String getLocalizedName() {
-            return I18nUtil.resolveKey("hbmfluid.trait." + keySuffix);
+        public Component getLocalizedName() {
+            return Component.translatable("hbmfluid.trait." + keySuffix);
         }
     }
 }

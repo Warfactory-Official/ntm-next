@@ -106,7 +106,7 @@ public class ItemBlueprints extends Item {
 
         for (String name : poolRecipes) {
             GenericRecipe recipe = GenericRecipes.pooled(name);
-            if (recipe != null) adder.accept(Component.literal(recipe.getLocalizedName()));
+            if (recipe != null) adder.accept(Component.empty().append(recipe.getLocalizedName()));
         }
     }
 }

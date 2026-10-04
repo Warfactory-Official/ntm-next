@@ -11,7 +11,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
@@ -28,7 +27,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class EntitySiegeLaser extends EntityThrowableNT {
-
     private static final EntityDataAccessor<Integer> COLOR =
             SynchedEntityData.defineId(EntitySiegeLaser.class, EntityDataSerializers.INT);
 
@@ -140,7 +138,6 @@ public class EntitySiegeLaser extends EntityThrowableNT {
                         Level.ExplosionInteraction.NONE);
 
             } else if (this.incendiary) {
-
                 BlockPos target = pos.relative(blockHit.getDirection());
 
                 if (server.getBlockState(target).canBeReplaced()) {

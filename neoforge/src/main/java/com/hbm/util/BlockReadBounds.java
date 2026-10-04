@@ -3,13 +3,14 @@
 
 package com.hbm.util;
 
-import com.hbm.platform.Services;
 import net.minecraft.client.renderer.chunk.RenderSectionRegion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLLoader;
 
 public final class BlockReadBounds {
-    private static final boolean CLIENT = Services.PLATFORM.isPhysicalClient();
+    private static final boolean CLIENT = FMLLoader.getCurrent().getDist() == Dist.CLIENT;
 
     private BlockReadBounds() {}
 

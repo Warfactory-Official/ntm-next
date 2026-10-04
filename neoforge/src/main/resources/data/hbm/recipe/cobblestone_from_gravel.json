@@ -2,7 +2,10 @@
   "type": "minecraft:smelting",
   "cookingtime": 200,
   "experience": 0.0,
-  "ingredient": "minecraft:gravel",
+  "ingredient": {
+    "neoforge:ingredient_type": "hbm:recipe_input",
+    "base": "minecraft:gravel"
+  },
   "result": {
     "id": "minecraft:cobblestone"
   }

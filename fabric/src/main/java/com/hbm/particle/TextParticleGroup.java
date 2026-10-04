@@ -37,7 +37,6 @@ public class TextParticleGroup extends ParticleGroup<Particle> {
         Vec3 cam = camera.position();
         Minecraft mc = Minecraft.getInstance();
         Font font = mc.font;
-
         float yaw = mc.player == null ? 0F : mc.player.getYRot();
         float pitch = mc.player == null ? 0F : mc.player.getXRot();
 

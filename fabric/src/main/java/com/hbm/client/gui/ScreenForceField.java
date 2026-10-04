@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityForceField;
 import com.hbm.data.MachineData;
 import com.hbm.inventory.container.MenuForceField;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityForceField;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -23,7 +23,6 @@ public class ScreenForceField extends ScreenInfoContainer<MenuForceField> {
     private static final Identifier TEXTURE = Library.id("textures/gui/gui_field.png");
 
     private static final int BAR_H = 52;
-
     private static final int BAR_BOTTOM = 69;
     private static final int POWER_X = 8, HEALTH_X = 62, BAR_W = 16;
     private static final int TOGGLE_X = 142, TOGGLE_Y = 34, TOGGLE_W = 18, TOGGLE_H = 18;
@@ -122,7 +121,7 @@ public class ScreenForceField extends ScreenInfoContainer<MenuForceField> {
                         (int) event.x(), (int) event.y(), TOGGLE_X, TOGGLE_Y, TOGGLE_W, TOGGLE_H)) {
             CompoundTag data = new CompoundTag();
             data.putBoolean("toggle", true);
-            Services.NETWORK.sendToServer(new NbtControlPayload(field().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(field().getBlockPos(), data));
             playClick();
             return true;
         }

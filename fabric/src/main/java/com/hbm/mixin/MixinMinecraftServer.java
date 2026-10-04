@@ -3,6 +3,7 @@
 
 package com.hbm.mixin;
 
+import com.hbm.handler.UnstableFuseQueue;
 import com.hbm.handler.radiation.RadiationSystemNT;
 import com.hbm.interfaces.injected.UnstableFuseSchedule;
 import net.minecraft.server.MinecraftServer;
@@ -15,16 +16,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(MinecraftServer.class)
 public abstract class MixinMinecraftServer implements UnstableFuseSchedule {
 
-    @Unique private long hbm$nextUnstableFuse = Long.MAX_VALUE;
+    @Unique private final UnstableFuseQueue hbm$unstableFuses = new UnstableFuseQueue();
 
     @Override
-    public long hbm$nextUnstableFuse() {
-        return hbm$nextUnstableFuse;
-    }
-
-    @Override
-    public void hbm$nextUnstableFuse(long deadline) {
-        hbm$nextUnstableFuse = deadline;
+    public UnstableFuseQueue hbm$unstableFuses() {
+        return hbm$unstableFuses;
     }
 
     @Inject(method = "saveEverything", at = @At("RETURN"))

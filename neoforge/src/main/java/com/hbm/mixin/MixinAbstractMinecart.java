@@ -17,7 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractMinecart.class)
 public class MixinAbstractMinecart {
-
     @ModifyReturnValue(method = "getMaxSpeed", at = @At("RETURN"))
     private double hbm$railMaxSpeed(double original) {
         IMinecartRail rail = hbm$railUnder();

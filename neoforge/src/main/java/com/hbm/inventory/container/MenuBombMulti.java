@@ -3,8 +3,8 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.bomb.BlockEntityBombMulti;
 import com.hbm.inventory.slot.SlotFiltered;
-import com.hbm.tileentity.bomb.BlockEntityBombMulti;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -24,7 +24,6 @@ public class MenuBombMulti extends BlockEntityMenu<BlockEntityBombMulti> {
                 int index = col + row * 3;
                 int x = COLUMNS[col];
                 int y = 26 + row * 18;
-
                 addSlot(
                         col == 2
                                 ? new SlotFiltered(

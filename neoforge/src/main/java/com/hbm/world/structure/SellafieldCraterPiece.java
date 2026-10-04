@@ -37,7 +37,6 @@ public class SellafieldCraterPiece extends StructurePiece {
                         origin.getX() + radius + 3,
                         maxY,
                         origin.getZ() + radius + 3));
-
         this.setOrientation(null);
         this.originX = origin.getX();
         this.originZ = origin.getZ();
@@ -121,7 +120,6 @@ public class SellafieldCraterPiece extends StructurePiece {
 
                 int floorY = surfaceY - dep;
                 int fillLayers = Math.max(0, Math.min(3, floorY - minBuild - 1));
-
                 random.nextInt(3);
                 for (int i = 0; i < fillLayers; i++) {
                     this.placeBlock(level, fill, x, floorY - i, z, chunkBB);

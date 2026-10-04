@@ -3,9 +3,9 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.storage.BlockEntityBatteryREDD;
+import com.hbm.blockentity.machine.storage.BlockEntityMachineBattery;
 import com.hbm.inventory.slot.SlotFiltered;
-import com.hbm.tileentity.machine.storage.BlockEntityBatteryREDD;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineBattery;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -64,7 +64,6 @@ public class MenuBatteryREDD extends BlockEntityMenu<BlockEntityBatteryREDD> {
                     int machineEnd = BlockEntityMachineBattery.SLOT_COUNT;
                     if (index < machineEnd)
                         return moveItemStackTo(stack, machineEnd, slots.size(), true);
-
                     return moveItemStackTo(stack, 0, machineEnd, false);
                 });
     }

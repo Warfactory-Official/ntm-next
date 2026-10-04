@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "N": "minecraft:nether_wart",
     "S": "hbm:syringe_metal_empty"

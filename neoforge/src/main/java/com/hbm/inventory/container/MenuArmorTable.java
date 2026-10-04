@@ -4,13 +4,11 @@
 package com.hbm.inventory.container;
 
 import com.hbm.handler.ArmorModHandler;
-import com.hbm.items.armor.ItemArmorMod;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
@@ -113,8 +111,7 @@ public class MenuArmorTable extends NtmContainerMenu {
             ItemStack mod = upgrades.getItem(i);
             if (mod.isEmpty()) {
                 ArmorModHandler.removeMod(target, i);
-            } else if (mod.getItem() instanceof ItemArmorMod armorMod
-                    && armorMod.type == i
+            } else if (ArmorModHandler.modSlot(mod) == i
                     && ArmorModHandler.isApplicable(target, mod)) {
                 ArmorModHandler.applyMod(target, mod);
             }
@@ -140,9 +137,9 @@ public class MenuArmorTable extends NtmContainerMenu {
                     if (ArmorModHandler.isArmor(stack))
                         return moveItemStackTo(
                                 stack, ARMOR_STACK_SLOT, ARMOR_STACK_SLOT + 1, false);
-                    if (stack.getItem() instanceof ItemArmorMod armorMod
-                            && slots.get(armorMod.type).mayPlace(stack))
-                        return moveItemStackTo(stack, armorMod.type, armorMod.type + 1, false);
+                    int modSlot = ArmorModHandler.modSlot(stack);
+                    if (modSlot >= 0 && slots.get(modSlot).mayPlace(stack))
+                        return moveItemStackTo(stack, modSlot, modSlot + 1, false);
                     return false;
                 });
     }
@@ -169,8 +166,7 @@ public class MenuArmorTable extends NtmContainerMenu {
         @Override
         public boolean mayPlace(ItemStack stack) {
             return !armor.getItem(0).isEmpty()
-                    && stack.getItem() instanceof ItemArmorMod armorMod
-                    && armorMod.type == getContainerSlot()
+                    && ArmorModHandler.modSlot(stack) == getContainerSlot()
                     && ArmorModHandler.isApplicable(armor.getItem(0), stack);
         }
     }

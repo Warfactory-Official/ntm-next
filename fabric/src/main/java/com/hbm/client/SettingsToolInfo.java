@@ -14,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 public final class SettingsToolInfo {
-
     private static final int FIRST_ID = 897;
     private static final int MILLIS = 4_000;
 

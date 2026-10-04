@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityHeaterOven;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityHeaterOven;
 import com.hbm.util.Facing;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -40,7 +40,6 @@ public class RenderHeaterOven
     public RenderHeaterOven() {
         this.model = ResourceManager.heater_oven;
         this.bodyType = RenderTypes.entityCutoutCull(ResourceManager.heater_oven_tex);
-
         this.hotType = FlatCutout.of(ResourceManager.heater_oven_tex);
     }
 
@@ -94,11 +93,9 @@ public class RenderHeaterOven
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-
         ps.mulPose(Axis.YP.rotationDegrees(ovenYaw(s.facing) - 90F));
 
         ps.pushPose();
-
         ps.translate(0.0, 0.0, s.doorAngle * 0.75 / 135.0);
         part(col, ps, bodyType, light, DOOR);
         ps.popPose();

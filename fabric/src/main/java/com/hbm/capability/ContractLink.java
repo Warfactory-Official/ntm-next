@@ -29,7 +29,6 @@ public final class ContractLink<T> {
     }
 
     public void refresh(Level level, BlockPos pos) {
-
         if (!level.isLoaded(pos)) {
             resolved = null;
             residency = null;
@@ -52,13 +51,11 @@ public final class ContractLink<T> {
         }
         resolved = found;
         connected = found != null;
-
         known = !level.isClientSide() || found != null;
     }
 
     public @Nullable T get(Level level, BlockPos pos) {
         if (known && resident()) return resolved;
-
         if (!known && !connected && !level.isClientSide()) return null;
         refresh(level, pos);
         return resolved;

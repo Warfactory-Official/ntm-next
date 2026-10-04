@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineRadarLarge;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityMachineRadarLarge;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
@@ -25,7 +25,6 @@ public class RenderRadarLarge
     private static final int DISH = ResourceManager.radar_large.partId("Dish");
 
     private final HFRWavefrontObject model = ResourceManager.radar_large;
-
     private final RenderType dishType =
             WorldRenderPipeline.oneSidedCutout(ResourceManager.radar_large_tex);
 
@@ -63,7 +62,6 @@ public class RenderRadarLarge
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
         ps.mulPose(Axis.YP.rotationDegrees(RenderRadar.BASE_YAW));
-
         ps.mulPose(Axis.YP.rotationDegrees(-s.spin));
 
         col.submitCustomGeometry(

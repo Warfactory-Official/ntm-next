@@ -3,9 +3,9 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.blockentity.network.BlockEntityRadioTorch;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.capability.NtmContracts;
-import com.hbm.tileentity.network.BlockEntityRadioTorch;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -89,7 +89,6 @@ public final class RadioTorchBlock extends Block implements ITickingBlock {
             boolean moving) {
         super.neighborChanged(state, level, pos, source, orientation, moving);
         Direction facing = state.getValue(FACING);
-
         if (!canAttach(level, pos.relative(facing.getOpposite()), facing)) {
             if (!level.isClientSide()) level.destroyBlock(pos, true);
         } else if (level.getBlockEntity(pos) instanceof BlockEntityRadioTorch torch)
@@ -178,7 +177,6 @@ public final class RadioTorchBlock extends Block implements ITickingBlock {
         super.onPlace(state, level, pos, oldState, movedByPiston);
         if (!(level.getBlockEntity(pos) instanceof BlockEntityRadioTorch torch)) return;
         torch.refreshAttached();
-
         if ((kind == Kind.RECEIVER || kind == Kind.LOGIC) && !oldState.is(this)) {
             torch.lastUpdate = level.getGameTime();
         }

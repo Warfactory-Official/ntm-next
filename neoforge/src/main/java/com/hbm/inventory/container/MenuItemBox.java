@@ -4,8 +4,9 @@
 package com.hbm.inventory.container;
 
 import com.hbm.items.ModItems;
-import com.hbm.platform.Services;
+import com.hbm.platform.SophisticatedCoreNesting;
 import com.hbm.registration.ItemStates;
+import com.hbm.tags.HbmItemTags;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
@@ -15,6 +16,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 
 public class MenuItemBox extends NtmContainerMenu {
 
@@ -132,13 +136,20 @@ public class MenuItemBox extends NtmContainerMenu {
     private boolean accepts(ItemStack stack) {
         MenuType<?> type = getType();
         if (type == ModMenus.CASING_BAG.get()) return false;
-        if (!Services.PLATFORM.canFitInsideContainerItems(stack)) return false;
+        if (!(stack.canFitInsideContainerItems()
+                && !stack.is(HbmItemTags.NO_CONTAINER_NESTING)
+                && !stack.has(DataComponents.CONTAINER)
+                && !stack.has(DataComponents.BUNDLE_CONTENTS)
+                && (stack.isEmpty()
+                        || stack.getCapability(Capabilities.Item.ITEM, ItemAccess.forStack(stack))
+                                == null)
+                && (!ModList.get().isLoaded("sophisticatedcore")
+                        || !SophisticatedCoreNesting.hasStorage(stack)))) return false;
         if (type == ModMenus.AMMO_BAG.get()) {
             return (ModItems.AMMO_STANDARD.typeOf(stack) != null
                             || ModItems.AMMO_SECRET.typeOf(stack) != null)
                     && stack.getComponentsPatch().isEmpty();
         }
-
         if (type == ModMenus.PLASTIC_BAG.get()
                 || type == ModMenus.TOOLBOX.get()
                 || type == ModMenus.CONTAINMENT_BOX.get()) return true;

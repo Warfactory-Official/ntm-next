@@ -3,12 +3,12 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityZirnoxDestroyed;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.handler.threading.TargetPoint;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.RbmkJetPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityZirnoxDestroyed;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -65,7 +65,7 @@ public class ZirnoxDestroyed extends BlockMultiblockCore implements ITickingBloc
         double px = pos.getX() + 0.25D + rand.nextDouble() * 0.5D;
         double py = pos.getY() + 1.75D;
         double pz = pos.getZ() + 0.25D + rand.nextDouble() * 0.5D;
-        Services.NETWORK.sendToAllAround(
+        PacketWire.sendToAllAround(
                 RbmkJetPayload.flame(px, py, pz, FLAME_MAX_AGE),
                 new TargetPoint(level, pos.getX() + 0.5D, py, pos.getZ() + 0.5D, FLAME_RANGE));
     }

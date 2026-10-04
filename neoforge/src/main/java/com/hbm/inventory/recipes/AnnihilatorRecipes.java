@@ -6,8 +6,8 @@ package com.hbm.inventory.recipes;
 import com.hbm.inventory.recipes.AnnihilatorRecipe.Milestone;
 import com.hbm.inventory.recipes.loader.RecipeSource;
 import com.hbm.inventory.recipes.loader.SerializableRecipe;
-import com.hbm.registration.IRegistrar;
 import com.hbm.registration.ItemSubtype;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.Reg;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -36,9 +36,9 @@ public final class AnnihilatorRecipes extends SerializableRecipe
     private AnnihilatorRecipes() {}
 
     @Override
-    public void registerType(IRegistrar registrar) {
-        this.typeId = registrar.registerRecipeType(REGISTRY_NAME, this).id();
-        registrar.registerRecipeSerializer(REGISTRY_NAME, AnnihilatorRecipe.SERIALIZER);
+    public void registerType() {
+        this.typeId = NeoForgeRegistrar.registerRecipeType(REGISTRY_NAME, this).id();
+        NeoForgeRegistrar.registerRecipeSerializer(REGISTRY_NAME, AnnihilatorRecipe.SERIALIZER);
     }
 
     @Override
@@ -135,7 +135,6 @@ public final class AnnihilatorRecipes extends SerializableRecipe
                     rows.add(new RecipeHolder<>(holder.id(), row));
             }
             rows.sort(Comparator.comparing(holder -> holder.id().identifier()));
-
             Map<Object, RecipeHolder<AnnihilatorRecipe>> byKey = new LinkedHashMap<>();
             for (RecipeHolder<AnnihilatorRecipe> row : rows)
                 byKey.put(row.value().key().poolKey(), row);

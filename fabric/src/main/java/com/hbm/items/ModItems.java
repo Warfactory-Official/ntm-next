@@ -3,6 +3,7 @@
 
 package com.hbm.items;
 
+import com.hbm.blockentity.machine.rbmk.IRBMKFluxReceiver.NType;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.rbmk.RBMKBase;
 import com.hbm.entity.ModEntities;
@@ -12,15 +13,12 @@ import com.hbm.entity.effect.EntityVortex;
 import com.hbm.entity.mob.EntityUFO;
 import com.hbm.explosion.ExplosionLarge;
 import com.hbm.extprop.HbmLivingProps;
-import com.hbm.handler.HazmatRegistry;
 import com.hbm.handler.ability.AvailableAbilities;
 import com.hbm.handler.ability.ToolAreaAbility;
 import com.hbm.handler.ability.ToolHarvestAbility;
 import com.hbm.handler.ability.WeaponAbility;
-import com.hbm.hazard.HazardClass;
 import com.hbm.interfaces.HalfLifeType;
 import com.hbm.interfaces.IToolable;
-import com.hbm.inventory.OreDictManager;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
@@ -29,6 +27,7 @@ import com.hbm.items.armor.*;
 import com.hbm.items.armor.ModArmorItem.Suit;
 import com.hbm.items.bomb.ItemBombPart;
 import com.hbm.items.food.*;
+import com.hbm.items.food.ConsumableTreatments;
 import com.hbm.items.machine.*;
 import com.hbm.items.machine.ItemMold.MoldMulti;
 import com.hbm.items.machine.ItemMold.MoldShape;
@@ -85,16 +84,12 @@ import com.hbm.items.weapon.sedna.impl.ItemGunChemthrower;
 import com.hbm.items.weapon.sedna.impl.ItemGunDrill;
 import com.hbm.items.weapon.sedna.impl.ItemGunNI4NI;
 import com.hbm.lib.Library;
-import com.hbm.platform.Services;
-import com.hbm.potion.HbmPotion;
 import com.hbm.registration.ItemFamily;
 import com.hbm.registration.ItemSubtype;
 import com.hbm.registration.Reg;
 import com.hbm.registration.RegistryHandle;
 import com.hbm.saveddata.satellites.Satellite;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.rbmk.IRBMKFluxReceiver.NType;
-import com.hbm.util.ArmorRegistry;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.ContaminationUtil;
@@ -102,12 +97,10 @@ import com.hbm.util.DamageResistanceHandler;
 import com.hbm.util.RTGUtil;
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
-import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -126,7 +119,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.DyeColor;
@@ -155,7 +147,6 @@ import static com.hbm.inventory.OreDictManager.*;
 public final class ModItems {
 
     public static final List<RegistryHandle<? extends ItemBattery>> BATTERIES = new ArrayList<>();
-
     public static RegistryHandle<ItemBatteryPack> BATTERY_PACK_QUANTUM;
 
     @SuppressWarnings("unchecked")
@@ -240,7 +231,6 @@ public final class ModItems {
                     Component.translatable("desc.item.allowsForTotalIsotopic"),
                     Component.translatable("desc.item.alsoYourCentrifugeGoes")
                             .withStyle(ChatFormatting.YELLOW));
-
     public static final RegistryHandle<ItemMachineUpgrade> UPGRADE_SMELTER =
             special(
                     "upgrade_smelter",
@@ -286,7 +276,6 @@ public final class ModItems {
                     Component.translatable("desc.item.itSLikeIn"),
                     Component.translatable("desc.item.actuallyToadsButHere"),
                     Component.translatable("desc.item.andTheyScreamA"));
-
     public static final RegistryHandle<ItemMachineUpgrade> UPGRADE_5G = special("upgrade_5g", 1);
     public static final RegistryHandle<ItemMachineUpgrade> UPGRADE_STACK_1 =
             upgrade("upgrade_stack_1", UpgradeType.STACK, 1);
@@ -344,7 +333,6 @@ public final class ModItems {
             stampDamageable("stamp_obsidian_wire", 512, StampType.WIRE);
     public static final RegistryHandle<ItemStamp> STAMP_OBSIDIAN_CIRCUIT =
             stampDamageable("stamp_obsidian_circuit", 512, StampType.CIRCUIT);
-
     public static final RegistryHandle<ItemStamp> STAMP_DESH_FLAT =
             stampIndestructible("stamp_desh_flat", StampType.FLAT);
     public static final RegistryHandle<ItemStamp> STAMP_DESH_PLATE =
@@ -375,13 +363,11 @@ public final class ModItems {
                             ItemFluidBucket::new,
                             () -> new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET))
                     .subtypes(ItemSubtype.FLUID_CONTENT);
-
     public static final RegistryHandle<BucketItem> BUCKET_ACID =
             Reg.item(
                     "bucket_acid",
                     props -> new BucketItem(ModBlocks.ACID_FLUID.source().get(), props),
                     () -> new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1));
-
     public static final RegistryHandle<BucketItem> BUCKET_TOXIC =
             Reg.item(
                     "bucket_toxic",
@@ -391,17 +377,14 @@ public final class ModItems {
             fluidTank("fluid_tank", 1000, ItemFluidTank.Family.TANK);
     public static final RegistryHandle<ItemFluidTank> FLUID_BARREL =
             fluidTank("fluid_barrel", 16000, ItemFluidTank.Family.BARREL);
-
     public static final RegistryHandle<ItemFluidTank> FLUID_TANK_LEAD =
             fluidTank("fluid_tank_lead", 1000, ItemFluidTank.Family.LEAD);
     public static final RegistryHandle<ItemFluidTank> CANISTER =
             fluidTank("canister", 1000, ItemFluidTank.Family.CANISTER);
     public static final RegistryHandle<ItemFluidTank> GAS_TANK =
             fluidTank("gas_tank", 1000, ItemFluidTank.Family.GAS);
-
     public static final RegistryHandle<ItemFluidTank> FLUID_PACK =
             fluidTank("fluid_pack", 32_000, ItemFluidTank.Family.PACK);
-
     public static final RegistryHandle<ItemFluidContainerInfinite> FLUID_BARREL_INFINITE =
             Reg.item(
                     "fluid_barrel_infinite",
@@ -422,7 +405,6 @@ public final class ModItems {
                     "chlorine_pinwheel",
                     p -> new ItemFluidContainerInfinite(p, () -> NTMFluids.CHLORINE, 1, 2),
                     Item.Properties::new);
-
     public static final RegistryHandle<Item> FRAGMENT_NEODYMIUM =
             oreFragment("fragment_neodymium")
                     .materialShape(Mats.MAT_NEODYMIUM, MaterialShapes.NUGGET);
@@ -459,7 +441,6 @@ public final class ModItems {
             rawMaterial("schrabidium", "schrabidium", "Schrabidium");
     public static final RegistryHandle<Item> RAW_LITHIUM =
             rawMaterial("lithium", "lithium", "Lithium");
-
     public static final RegistryHandle<ItemHotDusted> INGOT_STEEL_DUSTED =
             Reg.item(
                             "ingot_steel_dusted",
@@ -530,7 +511,6 @@ public final class ModItems {
     public static final List<RegistryHandle<? extends Item>> RESIDUAL_ALL = new ArrayList<>();
     public static final List<RegistryHandle<? extends Item>> COLLECTIBLE_ALL = new ArrayList<>();
     public static final List<RegistryHandle<ItemRBMKRod>> RBMK_FUELS = new ArrayList<>();
-
     public static final List<RegistryHandle<ItemRBMKRod>> CRAFTABLE_RODS = new ArrayList<>();
     public static final List<RegistryHandle<ItemRBMKPellet>> PELLETS = new ArrayList<>();
     public static final List<RegistryHandle<ItemPWRFuel>> PWR_FUELS = new ArrayList<>();
@@ -553,7 +533,6 @@ public final class ModItems {
 
     public static final RegistryHandle<ItemUnstable> INGOT_U238M2 =
             Reg.item("ingot_u238m2", ItemUnstable::new, Item.Properties::new);
-
     public static final RegistryHandle<Item> HS_ELEMENTS = hs("hs_elements", "item/hs-elements", 1);
     public static final RegistryHandle<Item> HS_ARSENIC = hs("hs_arsenic", "item/hs-arsenic", 2);
     public static final RegistryHandle<Item> HS_VAULT = hs("hs_vault", "item/hs-vault", 3);
@@ -595,7 +574,6 @@ public final class ModItems {
             residualLore("ingot_phosphorus").addTo(RESIDUAL_ALL);
     public static final RegistryHandle<ItemCustomLore> LITHIUM =
             residualLore("lithium").addTo(RESIDUAL_ALL);
-
     public static final RegistryHandle<ItemCustomLore> INGOT_SEMTEX =
             Reg.item(
                             "ingot_semtex",
@@ -626,14 +604,12 @@ public final class ModItems {
                     EnumTarType.class,
                     (props, type) -> new DyeItem(props.component(DataComponents.DYE, type.dye)),
                     Item.Properties::new);
-
     public static final RegistryHandle<Item> LIGNITE =
             Reg.item("lignite", Item::new, Item.Properties::new).addTo(COMPONENT_ALL);
     public static final RegistryHandle<Item> COAL_INFERNAL =
             Reg.item("coal_infernal", Item::new, Item.Properties::new).addTo(COMPONENT_ALL);
     public static final RegistryHandle<ItemEternalCoal> COAL_ETERNAL =
             Reg.item("coal_eternal", ItemEternalCoal::new, () -> new Item.Properties().stacksTo(1));
-
     public static final RegistryHandle<Item> SOLID_FUEL =
             Reg.item("solid_fuel", Item::new, Item.Properties::new);
     public static final RegistryHandle<Item> SOLID_FUEL_PRESTO =
@@ -747,7 +723,6 @@ public final class ModItems {
                                             props.component(DataComponents.DYE, DyeColor.WHITE)),
                             Item.Properties::new)
                     .addTo(COMPONENT_ALL);
-
     public static final RegistryHandle<MaterialShapeItem> POWDER_COAL_TINY =
             Reg.item(
                             "powder_coal_tiny",
@@ -826,7 +801,6 @@ public final class ModItems {
                     .addTo(RESIDUAL_ALL);
     public static final RegistryHandle<ItemCustomLore> POWDER_ASTATINE =
             residualLore("powder_astatine").addTo(RESIDUAL_ALL);
-
     public static final RegistryHandle<ItemCustomLore> POWDER_CAESIUM =
             Reg.item(
                             "powder_caesium",
@@ -912,7 +886,6 @@ public final class ModItems {
                     Item.Properties::new);
     public static final RegistryHandle<Item> POWDER_LIMESTONE =
             Reg.item("powder_limestone", Item::new, Item.Properties::new).addTo(COMPONENT_ALL);
-
     public static final RegistryHandle<Item> POWDER_CEMENT =
             Reg.item(
                             "powder_cement",
@@ -964,7 +937,6 @@ public final class ModItems {
                                                     ModDataComponents.BEDROCK_ORE.get(),
                                                     ItemBedrockOreNew.Ore.BASE))
                     .state(ModDataComponents.BEDROCK_ORE);
-
     public static final RegistryHandle<Item> CRYSTAL_COAL =
             Reg.item("crystal_coal", Item::new, Item.Properties::new);
     public static final RegistryHandle<ItemCustomLore> CRYSTAL_IRON =
@@ -1112,7 +1084,6 @@ public final class ModItems {
             residualLore("nugget_australium_lesser").addTo(RESIDUAL_ALL);
     public static final RegistryHandle<ItemCustomLore> NUGGET_AUSTRALIUM_GREATER =
             residualLore("nugget_australium_greater").addTo(RESIDUAL_ALL);
-
     public static final RegistryHandle<ItemCustomLore> NUGGET_EUPHEMIUM =
             residualLore("nugget_euphemium").addTo(RESIDUAL_ALL);
     public static final RegistryHandle<Item> NEUTRON_REFLECTOR =
@@ -1284,7 +1255,6 @@ public final class ModItems {
             Reg.item("rtg_unit", Item::new, Item.Properties::new).addTo(COMPONENT_ALL);
     public static final RegistryHandle<Item> PIPES_STEEL =
             Reg.item("pipes_steel", Item::new, Item.Properties::new).addTo(COMPONENT_ALL);
-
     public static final RegistryHandle<Item> CIRCUIT_SILICON =
             Reg.item("circuit_silicon", Item::new, Item.Properties::new).addTo(COMPONENT_ALL);
     public static final RegistryHandle<Item> CIRCUIT_CAPACITOR =
@@ -1306,7 +1276,6 @@ public final class ModItems {
             Reg.item("circuit_analog", Item::new, Item.Properties::new).addTo(COMPONENT_ALL);
     public static final RegistryHandle<Item> CIRCUIT_CHIP_BISMOID =
             Reg.item("circuit_chip_bismoid", Item::new, Item.Properties::new).addTo(COMPONENT_ALL);
-
     public static final RegistryHandle<Item> CIRCUIT_CHIP_QUANTUM =
             Reg.item("circuit_chip_quantum", Item::new, Item.Properties::new).addTo(COMPONENT_ALL);
     public static final RegistryHandle<Item> CIRCUIT_QUANTUM =
@@ -1315,7 +1284,6 @@ public final class ModItems {
             Reg.item("circuit_crystal", Item::new, Item.Properties::new).addTo(COMPONENT_ALL);
     public static final RegistryHandle<Item> CIRCUIT_BISMOID =
             Reg.item("circuit_bismoid", Item::new, Item.Properties::new).addTo(COMPONENT_ALL);
-
     public static final RegistryHandle<Item> CIRCUIT_CAPACITOR_BOARD =
             Reg.item("circuit_capacitor_board", Item::new, Item.Properties::new)
                     .addTo(COMPONENT_ALL);
@@ -1378,7 +1346,6 @@ public final class ModItems {
                     EnumPlantType.class,
                     (props, type) -> new Item(props),
                     Item.Properties::new);
-
     public static final RegistryHandle<Item> INGOT_CFT =
             Reg.item("ingot_cft", Item::new, Item.Properties::new);
     public static final ItemFamily<EnumExpensiveType, ItemExpensive> ITEM_EXPENSIVE =
@@ -1399,7 +1366,6 @@ public final class ModItems {
                     type -> type == EnumGearType.LARGE ? "gear_large" : "gear_large_steel",
                     (props, type) -> new Item(props),
                     Item.Properties::new);
-
     public static final RegistryHandle<Item> SAWBLADE =
             Reg.item("sawblade", Item::new, Item.Properties::new).addTo(WEAPON_ALL);
     public static final RegistryHandle<ItemCustomLore> ENTANGLEMENT_KIT =
@@ -1637,7 +1603,6 @@ public final class ModItems {
                     ItemDrillbit.EnumDrillType.class,
                     ItemDrillbit::new,
                     () -> new Item.Properties().stacksTo(1));
-
     public static final RegistryHandle<ItemFluidCell> CELL_EMPTY =
             Reg.item("cell_empty", ItemFluidCell::new, Item.Properties::new).addTo(MISC_ALL);
     public static final RegistryHandle<ItemFluidCell> CELL_UF6 =
@@ -1687,7 +1652,6 @@ public final class ModItems {
                             ItemAntiSchrabidiumCell::new,
                             () -> new Item.Properties().craftRemainder(CELL_EMPTY.get()))
                     .addTo(MISC_ALL);
-
     public static final RegistryHandle<Item> CELL_BALEFIRE =
             Reg.item(
                             "cell_balefire",
@@ -1704,7 +1668,6 @@ public final class ModItems {
                     ItemPACoil.EnumCoilType.class,
                     ItemPACoil::new,
                     () -> new Item.Properties().stacksTo(1));
-
     public static final RegistryHandle<ItemFluidCell> PARTICLE_EMPTY =
             Reg.item("particle_empty", ItemFluidCell::new, Item.Properties::new).addTo(MISC_ALL);
     public static final RegistryHandle<ItemFluidCell> PARTICLE_HYDROGEN =
@@ -1772,14 +1735,12 @@ public final class ModItems {
     public static final RegistryHandle<Item> BATTERY_TRIXITE =
             Reg.item("battery_trixite", Item::new, () -> new Item.Properties().stacksTo(1))
                     .addTo(WEAPON_ALL);
-
     public static final RegistryHandle<ItemFusionCore> SUIT_BATTERY =
             Reg.item(
                             "suit_battery",
                             props -> new ItemFusionCore(props, 150_000L),
                             () -> new Item.Properties().stacksTo(4))
                     .addTo(MISC_ALL);
-
     public static final RegistryHandle<ItemFusionCore> FUSION_CORE =
             Reg.item(
                             "fusion_core",
@@ -1803,13 +1764,10 @@ public final class ModItems {
                     .creative(ItemBlueprintFolder.Kind.ALT, ItemBlueprintFolder.Kind.DISCOVER);
     public static final RegistryHandle<ItemCatalog> BOBMAZON =
             Reg.item("bobmazon", ItemCatalog::new, () -> new Item.Properties().stacksTo(1));
-
     public static final RegistryHandle<ItemCatalog> BOBMAZON_HIDDEN =
             Reg.item("bobmazon_hidden", ItemCatalog::new, () -> new Item.Properties().stacksTo(1));
-
     public static final RegistryHandle<ItemKitCustom> KIT_CUSTOM =
             Reg.item("kit_custom", ItemKitCustom::new, () -> new Item.Properties().stacksTo(1));
-
     public static final ItemFamily<ItemStamp.StampType, ItemStamp> STAMP_BOOK =
             Reg.family(
                     new ItemStamp.StampType[] {
@@ -1857,7 +1815,6 @@ public final class ModItems {
                     "hand_drill",
                     props -> new ItemTooling(props, IToolable.ToolType.HAND_DRILL),
                     () -> new Item.Properties().durability(100));
-
     public static final RegistryHandle<ItemCraftingDegradation> CHEMISTRY_SET =
             Reg.item(
                     "chemistry_set",
@@ -1915,10 +1872,8 @@ public final class ModItems {
                                     .component(
                                             DataComponents.WEAPON,
                                             new net.minecraft.world.item.component.Weapon(0)));
-
     public static final RegistryHandle<ItemBoltgun> BOLTGUN =
             Reg.item("boltgun", ItemBoltgun::new, () -> new Item.Properties().stacksTo(1));
-
     public static final ItemFamily<ItemArcElectrode.EnumElectrodeType, ItemArcElectrode>
             ARC_ELECTRODE =
                     Reg.family(
@@ -1945,7 +1900,6 @@ public final class ModItems {
             Reg.item("part_copper", Item::new, Item.Properties::new).addTo(MISC_ALL);
     public static final RegistryHandle<Item> PART_PLUTONIUM =
             Reg.item("part_plutonium", Item::new, Item.Properties::new).addTo(MISC_ALL);
-
     public static final RegistryHandle<ItemFELCrystal> LASER_CRYSTAL_CO2 =
             Reg.item(
                             "laser_crystal_co2",
@@ -2033,7 +1987,6 @@ public final class ModItems {
                     "blades_titanium",
                     ItemBlades::new,
                     () -> new Item.Properties().durability(500));
-
     public static final RegistryHandle<ItemBlades> BLADES_DESH =
             Reg.item("blades_desh", ItemBlades::new, () -> new Item.Properties().stacksTo(1));
     public static final RegistryHandle<FluidIdentifierItem> FLUID_IDENTIFIER =
@@ -2042,7 +1995,6 @@ public final class ModItems {
                             FluidIdentifierItem::new,
                             () -> new Item.Properties().stacksTo(1))
                     .subtypes(ItemSubtype.FLUID_IDENTIFIER);
-
     public static final ItemFamily<ItemCassette.TrackType, ItemCassette> SIREN_TRACK =
             Reg.family(
                     Arrays.copyOfRange(
@@ -2055,7 +2007,6 @@ public final class ModItems {
     public static final RegistryHandle<Item> CATALYTIC_CONVERTER =
             Reg.item("catalytic_converter", Item::new, () -> new Item.Properties().stacksTo(1))
                     .addTo(MISC_ALL);
-
     public static final RegistryHandle<ItemLens> AMS_LENS =
             Reg.item("ams_lens", ItemLens::new, () -> new Item.Properties().durability(432_000_000))
                     .addTo(MISC_ALL);
@@ -2065,7 +2016,6 @@ public final class ModItems {
             amsCore("wormhole", 650, Rarity.UNCOMMON, false);
     public static final RegistryHandle<ItemAMSCore> AMS_CORE_EYEOFHARMONY =
             amsCore("eyeofharmony", 800, Rarity.UNCOMMON, false);
-
     public static final RegistryHandle<ItemAMSCore> AMS_CORE_THINGY =
             amsCore("thingy", 2500, Rarity.EPIC, true);
     public static final RegistryHandle<Item> ROD_EMPTY =
@@ -2288,7 +2238,6 @@ public final class ModItems {
                                     .setFunction(EnumBurnFunc.SQUARE_ROOT)
                                     .setMeltingPoint(2865)
                                     .setTint(0x868D82));
-
     public static final RegistryHandle<ItemRBMKRod> RBMK_FUEL_UZH =
             rbmkFuel(
                     "rbmk_fuel_uzh",
@@ -2638,7 +2587,6 @@ public final class ModItems {
             WATZ_PELLET_DEPLETED = watzPellet("watz_pellet_depleted", true);
     public static final RegistryHandle<Item> ICF_PELLET_EMPTY =
             Reg.item("icf_pellet_empty", Item::new, Item.Properties::new).addTo(MISC_ALL);
-
     public static final RegistryHandle<ItemICFPellet> ICF_PELLET =
             Reg.item("icf_pellet", ItemICFPellet::new, () -> new Item.Properties().stacksTo(1))
                     .subtypes(ItemSubtype.ICF_FUEL);
@@ -2703,7 +2651,6 @@ public final class ModItems {
                     NUCLEAR_WASTE_SHORT_TINY,
                     NUCLEAR_WASTE_SHORT_DEPLETED,
                     NUCLEAR_WASTE_SHORT_DEPLETED_TINY);
-
     public static final RegistryHandle<ItemNuclearWaste> NUCLEAR_WASTE =
             waste("nuclear_waste").addTo(RESIDUAL_ALL);
     public static final RegistryHandle<ItemNuclearWaste> NUCLEAR_WASTE_TINY =
@@ -2712,7 +2659,6 @@ public final class ModItems {
             waste("nuclear_waste_vitrified").addTo(RESIDUAL_ALL);
     public static final RegistryHandle<ItemNuclearWaste> NUCLEAR_WASTE_VITRIFIED_TINY =
             waste("nuclear_waste_vitrified_tiny").addTo(RESIDUAL_ALL);
-
     public static final List<RegistryHandle<ItemSpawnEgg>> SPAWN_EGGS =
             List.of(
                     spawnEgg(
@@ -2816,7 +2762,6 @@ public final class ModItems {
                             () -> ModEntities.UNDEAD_SOLDIER,
                             0x749F30,
                             0x6C5B44));
-
     public static final RegistryHandle<ItemChopper> SPAWN_CHOPPER =
             Reg.item(
                     "chopper",
@@ -2900,7 +2845,6 @@ public final class ModItems {
             Reg.item("settings_tool", ItemSettingsTool::new, Item.Properties::new);
     public static final RegistryHandle<ItemRTTYPager> RTTY_PAGER =
             Reg.item("rtty_pager", ItemRTTYPager::new, () -> new Item.Properties().stacksTo(1));
-
     public static final RegistryHandle<ItemTurretChip> TURRET_CHIP =
             Reg.item("turret_chip", ItemTurretChip::new, () -> new Item.Properties().stacksTo(1))
                     .addTo(WEAPON_ALL);
@@ -2986,7 +2930,6 @@ public final class ModItems {
     public static final RegistryHandle<Item> LAUNCH_KEY =
             Reg.item("launch_key", Item::new, () -> new Item.Properties().stacksTo(1))
                     .addTo(MISSILE_ALL);
-
     public static final RegistryHandle<ItemMissile> MISSILE_TEST =
             Reg.item(
                     "missile_test",
@@ -3002,7 +2945,6 @@ public final class ModItems {
             missile("missile_schrabidium", MissileFormFactor.MICRO, MissileTier.TIER0);
     public static final RegistryHandle<ItemMissile> MISSILE_EMP =
             missile("missile_emp", MissileFormFactor.MICRO, MissileTier.TIER0);
-
     public static final RegistryHandle<ItemMissile> MISSILE_GENERIC =
             missile("missile_generic", MissileFormFactor.V2, MissileTier.TIER1);
     public static final RegistryHandle<ItemMissile> MISSILE_DECOY =
@@ -3013,10 +2955,8 @@ public final class ModItems {
             missile("missile_cluster", MissileFormFactor.V2, MissileTier.TIER1);
     public static final RegistryHandle<ItemMissile> MISSILE_BUSTER =
             missile("missile_buster", MissileFormFactor.V2, MissileTier.TIER1);
-
     public static final RegistryHandle<ItemMissile> MISSILE_STEALTH =
             missile("missile_stealth", MissileFormFactor.STRONG, MissileTier.TIER1);
-
     public static final RegistryHandle<ItemMissile> MISSILE_ANTI_BALLISTIC =
             missile("missile_anti_ballistic", MissileFormFactor.ABM, MissileTier.TIER1);
     public static final RegistryHandle<ItemMissile> MISSILE_STRONG =
@@ -3037,7 +2977,6 @@ public final class ModItems {
             missile("missile_rain", MissileFormFactor.HUGE, MissileTier.TIER3);
     public static final RegistryHandle<ItemMissile> MISSILE_DRILL =
             missile("missile_drill", MissileFormFactor.HUGE, MissileTier.TIER3);
-
     public static final RegistryHandle<ItemMissile> MISSILE_SHUTTLE =
             missile("missile_shuttle", MissileFormFactor.OTHER, MissileTier.TIER3);
     public static final RegistryHandle<ItemMissile> MISSILE_NUCLEAR =
@@ -3046,7 +2985,6 @@ public final class ModItems {
             missile("missile_nuclear_cluster", MissileFormFactor.ATLAS, MissileTier.TIER4);
     public static final RegistryHandle<ItemMissile> MISSILE_VOLCANO =
             missile("missile_volcano", MissileFormFactor.ATLAS, MissileTier.TIER4);
-
     public static final RegistryHandle<ItemMissile> MISSILE_DOOMSDAY =
             missile("missile_doomsday", MissileFormFactor.ATLAS, MissileTier.TIER4);
     public static final RegistryHandle<ItemMissile> MISSILE_DOOMSDAY_RUSTED =
@@ -3061,7 +2999,6 @@ public final class ModItems {
                                             false),
                             () -> new Item.Properties().stacksTo(1))
                     .addTo(MISSILE_ALL);
-
     public static final RegistryHandle<ItemSoyuz> MISSILE_SOYUZ_0 =
             soyuz(0, "original", Rarity.UNCOMMON);
     public static final RegistryHandle<ItemSoyuz> MISSILE_SOYUZ_1 =
@@ -3082,7 +3019,6 @@ public final class ModItems {
             singularity("black_hole", EntityBlackHole::new, 1.5F);
     public static final RegistryHandle<ItemSingularity> SINGULARITY =
             singularity("singularity", EntityVortex::new, 1.5F);
-
     public static final RegistryHandle<ItemSingularity> SINGULARITY_COUNTER_RESONANT =
             singularity("singularity_counter_resonant", EntityVortex::new, 2.5F);
     public static final RegistryHandle<ItemSingularity> SINGULARITY_SUPER_HEATED =
@@ -3416,7 +3352,6 @@ public final class ModItems {
                                     .setHealth(15F)
                                     .setRarity(ItemCustomMissilePart.Rarity.COMMON)
                                     .setWittyText("Союз!"));
-
     public static final RegistryHandle<ItemCustomMissilePart> MP_STABILITY_20_FLAT =
             missilePart(
                     "mp_s_20",
@@ -5021,7 +4956,6 @@ public final class ModItems {
                             ItemSatelliteInterface::new,
                             () -> new Item.Properties().stacksTo(1))
                     .addTo(MISSILE_ALL);
-
     public static final RegistryHandle<ItemSatelliteDesignator> SAT_DESIGNATOR =
             Reg.item(
                             "sat_designator",
@@ -5036,13 +4970,11 @@ public final class ModItems {
                     "ammo_container",
                     props -> new ItemAmmoContainer(props, false),
                     Item.Properties::new);
-
     public static final RegistryHandle<ItemAmmoContainer> AMMO_CONTAINER_ALT =
             Reg.item(
                     "ammo_container_alt",
                     props -> new ItemAmmoContainer(props, true),
                     Item.Properties::new);
-
     public static final RegistryHandle<ItemGrenadeDynamite> STICK_DYNAMITE =
             Reg.item(
                             "stick_dynamite",
@@ -5097,7 +5029,6 @@ public final class ModItems {
                     .addTo(WEAPON_ALL);
     public static final RegistryHandle<Item> DISPERSER_CANISTER_EMPTY =
             Reg.item("disperser_canister_empty", Item::new, Item.Properties::new).addTo(WEAPON_ALL);
-
     public static final RegistryHandle<ItemDisperser> DISPERSER_CANISTER =
             Reg.item(
                             "disperser_canister",
@@ -5128,7 +5059,6 @@ public final class ModItems {
                                             Library.id("fluid_identifier_overlay")),
                             () -> new Item.Properties().craftRemainder(GLYPHID_GLAND_EMPTY.get()))
                     .subtypes(ItemSubtype.FLUID_CONTENT);
-
     public static final RegistryHandle<ItemWeaponSpecial> ULLAPOOL_CABER =
             Reg.item(
                     "ullapool_caber",
@@ -5168,7 +5098,6 @@ public final class ModItems {
                                                     .nutrition(3)
                                                     .saturationModifier(0.5F)
                                                     .build()));
-
     public static final RegistryHandle<ItemWaffle> BOMB_WAFFLE =
             Reg.item(
                     "bomb_waffle",
@@ -5180,7 +5109,6 @@ public final class ModItems {
                                                     .nutrition(20)
                                                     .saturationModifier(0.6F)
                                                     .build()));
-
     public static final RegistryHandle<Item> GLOWING_STEW = stew("glowing_stew");
     public static final RegistryHandle<Item> BALEFIRE_SCRAMBLED = stew("balefire_scrambled");
     public static final RegistryHandle<Item> BALEFIRE_AND_HAM = stew("balefire_and_ham");
@@ -5276,10 +5204,8 @@ public final class ModItems {
                                     25.0F,
                                     0,
                                     MaterialShapes.INGOT.tagFor("starmetal")));
-
     private static final float[] TTP_HIGH = {0.125F, 0.625F, 0};
     private static final float[] TTP_LOW = {0, 0.75F, 0};
-
     private static final float[] TTP_METEORITE = {0.2F, 0.55F, 0};
     private static final float[] SFP_SWORD = {1.36F, 1.36F, 0.68F};
     private static final float[] SFP_DEFAULT = {1, 1, 1};
@@ -6018,7 +5944,6 @@ public final class ModItems {
                                             -0.1,
                                             MaterialShapes.INGOT.tagFor("copper"))
                                     .durability(250));
-
     public static final RegistryHandle<ItemChainsaw> CHAINSAW =
             Reg.item(
                     "chainsaw",
@@ -6050,7 +5975,6 @@ public final class ModItems {
                     () ->
                             ItemToolAbility.toolProperties(
                                     ToolTier.CHAINSAW, ToolType.AXE, 25.0F, -0.05, null));
-
     public static final RegistryHandle<ItemSwordAbilityPower> ELEC_SWORD =
             Reg.item(
                     "elec_sword",
@@ -6291,7 +6215,6 @@ public final class ModItems {
                                     ItemToolAbility.hoeSpeed(ToolTier.STARMETAL),
                                     properties),
                     () -> new Item.Properties());
-
     public static final RegistryHandle<ItemSwordMeteorite> METEORITE_SWORD =
             Reg.item(
                     "meteorite_sword",
@@ -6412,7 +6335,6 @@ public final class ModItems {
                                     75.0F,
                                     0,
                                     ItemToolAbility.repairTag("plate_paa")));
-
     public static final List<RegistryHandle<ItemSwordMeteorite>> METEORITE_SWORDS =
             List.of(
                     METEORITE_SWORD,
@@ -6427,7 +6349,6 @@ public final class ModItems {
                     METEORITE_SWORD_IRRADIATED,
                     METEORITE_SWORD_FUSED,
                     METEORITE_SWORD_BALEFUL);
-
     public static final RegistryHandle<ItemRedstoneSword> REDSTONE_SWORD =
             Reg.item(
                     "redstone_sword",
@@ -6448,7 +6369,6 @@ public final class ModItems {
                                     7.0F,
                                     0,
                                     ItemTags.DIAMOND_TOOL_MATERIALS));
-
     public static final RegistryHandle<Item> BISMUTH_TOOL =
             Reg.item("bismuth_tool", Item::new, () -> new Item.Properties().stacksTo(1));
     public static final RegistryHandle<ItemWeaponSpecial> SCHRABIDIUM_HAMMER =
@@ -6496,7 +6416,6 @@ public final class ModItems {
                     () ->
                             ItemSwordAbility.swordProperties(
                                     ToolTier.STEEL, 6.0F, 0, MaterialShapes.INGOT.tagFor("steel")));
-
     public static final RegistryHandle<ModSword> WEAPON_PIPE_LEAD =
             Reg.item(
                     "weapon_pipe_lead",
@@ -6508,7 +6427,6 @@ public final class ModItems {
             Reg.item("wiring_red_copper", ItemWiring::new, Item.Properties::new);
     public static final RegistryHandle<ItemWrench> WRENCH =
             Reg.item("wrench", ItemWrench::new, ItemWrench::properties);
-
     public static final RegistryHandle<ItemTooling> WRENCH_ARCHINEER =
             Reg.item(
                     "wrench_archineer",
@@ -6659,7 +6577,6 @@ public final class ModItems {
                                             SYRINGE_METAL_EMPTY),
                             Item.Properties::new)
                     .addTo(MISC_ALL);
-
     public static final RegistryHandle<MedicalIVItem> IV_EMPTY =
             Reg.item(
                             "iv_empty",
@@ -6692,50 +6609,31 @@ public final class ModItems {
                             props -> new MedicalIVItem(props, MedicalIVItem.Type.XP, IV_XP_EMPTY),
                             Item.Properties::new)
                     .addTo(MISC_ALL);
-    public static final RegistryHandle<MedicalFluidItem> RADAWAY =
-            Reg.item(
-                            "radaway",
-                            props -> new MedicalFluidItem(props, IV_EMPTY, 140),
-                            Item.Properties::new)
-                    .addTo(MISC_ALL);
-    public static final RegistryHandle<MedicalFluidItem> RADAWAY_STRONG =
-            Reg.item(
-                            "radaway_strong",
-                            props -> new MedicalFluidItem(props, IV_EMPTY, 350),
-                            Item.Properties::new)
-                    .addTo(MISC_ALL);
-    public static final RegistryHandle<MedicalFluidItem> RADAWAY_FLUSH =
-            Reg.item(
-                            "radaway_flush",
-                            props -> new MedicalFluidItem(props, IV_EMPTY, 500),
-                            Item.Properties::new)
-                    .addTo(MISC_ALL);
-    public static final RegistryHandle<ItemPill> RADX = pill("radx", ItemPill.Type.RADX, "radx");
-    public static final RegistryHandle<ItemPill> SIOX = pill("siox", ItemPill.Type.SIOX, "siox");
-    public static final RegistryHandle<ItemPill> PILL_HERBAL =
-            pill("pill_herbal", ItemPill.Type.HERBAL, "pill_herbal");
-    public static final RegistryHandle<ItemPill> PILL_IODINE =
-            pill("pill_iodine", ItemPill.Type.IODINE, "pill_iodine");
-    public static final RegistryHandle<ItemPill> XANAX =
-            pill("xanax", ItemPill.Type.XANAX, "xanax");
-    public static final RegistryHandle<ItemPill> FMN = pill("fmn", ItemPill.Type.FMN, "tablet");
-    public static final RegistryHandle<ItemPill> FIVE_HTP =
-            pill("five_htp", ItemPill.Type.FIVE_HTP, "5htp");
-    public static final RegistryHandle<ItemPill> PLAN_C =
-            pill("plan_c", ItemPill.Type.PLAN_C, "plan_c");
-    public static final RegistryHandle<ItemPill> PILL_RED =
-            pill("pill_red", ItemPill.Type.RED, "pill_red");
+    public static final RegistryHandle<ItemCustomLore> RADAWAY =
+            Reg.item("radaway", ItemCustomLore::new, Item.Properties::new).addTo(MISC_ALL);
+    public static final RegistryHandle<ItemCustomLore> RADAWAY_STRONG =
+            Reg.item("radaway_strong", ItemCustomLore::new, Item.Properties::new).addTo(MISC_ALL);
+    public static final RegistryHandle<ItemCustomLore> RADAWAY_FLUSH =
+            Reg.item("radaway_flush", ItemCustomLore::new, Item.Properties::new).addTo(MISC_ALL);
+    public static final RegistryHandle<ItemCustomLore> RADX = pill("radx", "radx");
+    public static final RegistryHandle<ItemCustomLore> SIOX = pill("siox", "siox");
+    public static final RegistryHandle<ItemCustomLore> PILL_HERBAL =
+            pill("pill_herbal", "pill_herbal");
+    public static final RegistryHandle<ItemCustomLore> PILL_IODINE =
+            pill("pill_iodine", "pill_iodine");
+    public static final RegistryHandle<ItemCustomLore> XANAX = pill("xanax", "xanax");
+    public static final RegistryHandle<ItemCustomLore> FMN = pill("fmn", "tablet");
+    public static final RegistryHandle<ItemCustomLore> FIVE_HTP = pill("five_htp", "5htp");
+    public static final RegistryHandle<ItemCustomLore> PLAN_C = pill("plan_c", "plan_c");
+    public static final RegistryHandle<ItemCustomLore> PILL_RED = pill("pill_red", "pill_red");
     public static final RegistryHandle<ItemStealthBoy> STEALTH_BOY =
             Reg.item("stealth_boy", ItemStealthBoy::new, Item.Properties::new).addTo(MISC_ALL);
-    public static final RegistryHandle<ItemGasFilter> GAS_MASK_FILTER = filter("gas_mask_filter");
-    public static final RegistryHandle<ItemGasFilter> GAS_MASK_FILTER_MONO =
-            filter("gas_mask_filter_mono");
-    public static final RegistryHandle<ItemGasFilter> GAS_MASK_FILTER_COMBO =
+    public static final RegistryHandle<Item> GAS_MASK_FILTER = filter("gas_mask_filter");
+    public static final RegistryHandle<Item> GAS_MASK_FILTER_MONO = filter("gas_mask_filter_mono");
+    public static final RegistryHandle<Item> GAS_MASK_FILTER_COMBO =
             filter("gas_mask_filter_combo");
-    public static final RegistryHandle<ItemGasFilter> GAS_MASK_FILTER_RAG =
-            filter("gas_mask_filter_rag");
-    public static final RegistryHandle<ItemGasFilter> GAS_MASK_FILTER_PISS =
-            filter("gas_mask_filter_piss");
+    public static final RegistryHandle<Item> GAS_MASK_FILTER_RAG = filter("gas_mask_filter_rag");
+    public static final RegistryHandle<Item> GAS_MASK_FILTER_PISS = filter("gas_mask_filter_piss");
     private static final ArmorMaterial STEEL_MAT =
             material("steel", 30, 3, 8, 6, 3, 5, Mats.MAT_STEEL.dict.ingot());
     public static final RegistryHandle<ItemPipette> PIPETTE =
@@ -6753,7 +6651,6 @@ public final class ModItems {
                     "pipette_laboratory",
                     props -> new ItemPipette(props, ItemPipette.Variant.LABORATORY),
                     () -> new Item.Properties().stacksTo(1));
-
     public static final RegistryHandle<ItemPolaroid> POLAROID =
             Reg.item("polaroid", ItemPolaroid::new, () -> new Item.Properties().stacksTo(1));
     public static final RegistryHandle<ItemGlitch> GLITCH =
@@ -6768,7 +6665,6 @@ public final class ModItems {
                     "anchor_remote",
                     ItemAnchorRemote::new,
                     () -> new Item.Properties().stacksTo(1));
-
     public static final RegistryHandle<ItemColtanCompass> COLTAN_TOOL =
             Reg.item(
                     "coltan_tool", ItemColtanCompass::new, () -> new Item.Properties().stacksTo(1));
@@ -6787,7 +6683,6 @@ public final class ModItems {
     public static final RegistryHandle<ItemJetpackTank> JETPACK_TANK =
             Reg.item("jetpack_tank", ItemJetpackTank::new, () -> new Item.Properties().stacksTo(16))
                     .addTo(MISC_ALL);
-
     public static final RegistryHandle<MedicalSyringeItem> CBT_DEVICE =
             Reg.item(
                     "cbt_device",
@@ -6807,13 +6702,11 @@ public final class ModItems {
                             props -> new ItemRepairKit(props, () -> ModSounds.ITEM_REPAIR.get()),
                             () -> new Item.Properties().stacksTo(1).durability(99))
                     .addTo(MISC_ALL);
-
     public static final RegistryHandle<ItemSchnitzelVegan> SCHNITZEL_VEGAN =
             Reg.item("schnitzel_vegan", ItemSchnitzelVegan::new, () -> food(0, 0F)).addTo(MISC_ALL);
     public static final RegistryHandle<ItemCottonCandy> COTTON_CANDY =
             Reg.item("cotton_candy", ItemCottonCandy::new, () -> alwaysEdible(5, 0.6F))
                     .addTo(MISC_ALL);
-
     public static final ItemFamily<ItemAppleBase.Tier, ItemAppleLead> APPLE_LEAD =
             Reg.family(
                     "apple_lead",
@@ -6826,7 +6719,6 @@ public final class ModItems {
                     ItemAppleBase.Tier.class,
                     ItemAppleSchrabidium::new,
                     () -> alwaysEdible(20, 100F));
-
     public static final RegistryHandle<ItemAppleEuphemium> APPLE_EUPHEMIUM =
             Reg.item(
                     "apple_euphemium",
@@ -6836,14 +6728,12 @@ public final class ModItems {
                                     .stacksTo(1)
                                     .rarity(Rarity.EPIC)
                                     .component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true));
-
     public static final ItemFamily<ItemTemFlakes.Tier, ItemTemFlakes> TEM_FLAKES =
             Reg.family(
                     "tem_flakes",
                     ItemTemFlakes.Tier.class,
                     ItemTemFlakes::new,
                     () -> alwaysEdible(0, 0F));
-
     public static final RegistryHandle<ItemCustomLore> LEMON =
             Reg.item("lemon", ItemCustomLore::new, () -> food(3, 0.5F)).addTo(MISC_ALL);
     public static final RegistryHandle<Item> DEFINITELY_FOOD =
@@ -6918,10 +6808,8 @@ public final class ModItems {
                     .addTo(MISC_ALL);
     public static final RegistryHandle<Item> CHEESE =
             Reg.item("cheese", Item::new, () -> food(5, 0.75F)).addTo(MISC_ALL);
-
     public static final RegistryHandle<ItemCustomLore> CHEESE_QUESADILLA =
             Reg.item("cheese_quesadilla", ItemCustomLore::new, () -> food(8, 1F)).addTo(MISC_ALL);
-
     public static final RegistryHandle<ItemEmetic> MED_IPECAC =
             Reg.item("med_ipecac", ItemEmetic::new, () -> alwaysEdible(0, 0F)).addTo(MISC_ALL);
     public static final RegistryHandle<ItemEmetic> MED_PTSD =
@@ -6939,7 +6827,6 @@ public final class ModItems {
                                                     DataComponents.CONSUMABLE,
                                                     ItemCanteen.CONSUMABLE))
                     .addTo(MISC_ALL);
-
     public static final RegistryHandle<ItemMuchoMango> MUCHO_MANGO =
             Reg.item(
                             "mucho_mango",
@@ -6956,11 +6843,9 @@ public final class ModItems {
                                                                                             .TICKS_PER_SECOND)
                                                             .build()))
                     .addTo(MISC_ALL);
-    public static final RegistryHandle<ItemPill> CHOCOLATE =
-            pill("chocolate", ItemPill.Type.CHOCOLATE, "chocolate");
+    public static final RegistryHandle<ItemCustomLore> CHOCOLATE = pill("chocolate", "chocolate");
     public static final RegistryHandle<Item> CAN_EMPTY =
             Reg.item("can_empty", Item::new, Item.Properties::new).addTo(COLLECTIBLE_ALL);
-
     public static RegistryHandle<ItemDrinkEnergy> CAN_CREATURE;
     public static RegistryHandle<ItemDrinkEnergy> CAN_SMART;
     public static RegistryHandle<ItemDrinkEnergy> CAN_REDBOMB;
@@ -6980,7 +6865,6 @@ public final class ModItems {
 
     static {
         Identifier ringPull = Library.id("ring_pull");
-
         MISC_ALL.add(
                 CAN_SMART =
                         Reg.item(
@@ -7057,7 +6941,6 @@ public final class ModItems {
                                                         DataComponents.CONSUMABLE,
                                                         Consumables.DEFAULT_DRINK)
                                                 .craftRemainder(CAN_EMPTY.get())));
-
         MISC_ALL.add(
                 CAN_REDBOMB =
                         Reg.item(
@@ -7248,7 +7131,6 @@ public final class ModItems {
                                                         DataComponents.CONSUMABLE,
                                                         Consumables.DEFAULT_DRINK)
                                                 .craftRemainder(CAN_EMPTY.get())));
-
         MISC_ALL.add(
                 CAN_BREEN =
                         Reg.item(
@@ -7690,7 +7572,6 @@ public final class ModItems {
                             new Item.Properties()
                                     .component(
                                             DataComponents.CONSUMABLE, Consumables.DEFAULT_FOOD));
-
     public static final RegistryHandle<ItemDrinkEnergy> CHOCOLATE_MILK =
             Reg.item(
                             "chocolate_milk",
@@ -7762,7 +7643,6 @@ public final class ModItems {
                             ItemCustomLore::new,
                             () -> new Item.Properties().rarity(Rarity.UNCOMMON))
                     .addTo(COLLECTIBLE_ALL);
-
     public static final RegistryHandle<ItemCustomLore> COIN_TOKEN =
             Reg.item("coin_token", ItemCustomLore::new, Item.Properties::new)
                     .addTo(COLLECTIBLE_ALL);
@@ -7779,7 +7659,6 @@ public final class ModItems {
             Reg.item("meteor_charm", ItemModCharm::new, Item.Properties::new).addTo(ARMOR_MOD_ALL);
     public static final RegistryHandle<ItemModLens> NEUTRINO_LENS =
             Reg.item("neutrino_lens", ItemModLens::new, Item.Properties::new).addTo(ARMOR_MOD_ALL);
-
     public static final RegistryHandle<ItemToolBox> TOOLBOX =
             Reg.item("toolbox", ItemToolBox::new, () -> new Item.Properties().stacksTo(1));
     public static final RegistryHandle<ItemAmmoBag> AMMO_BAG =
@@ -7849,16 +7728,11 @@ public final class ModItems {
     public static final RegistryHandle<ItemModPads> PADS_RUBBER = pads("pads_rubber", 0.5F);
     public static final RegistryHandle<ItemModPads> PADS_SLIME = pads("pads_slime", 0.25F);
     public static final RegistryHandle<ItemModPads> PADS_STATIC = pads("pads_static", 0.75F);
-    public static final RegistryHandle<ItemModCladding> CLADDING_PAINT =
-            cladding("cladding_paint", 0.025D);
-    public static final RegistryHandle<ItemModCladding> CLADDING_RUBBER =
-            cladding("cladding_rubber", 0.005D);
-    public static final RegistryHandle<ItemModCladding> CLADDING_LEAD =
-            cladding("cladding_lead", 0.1D);
-    public static final RegistryHandle<ItemModCladding> CLADDING_DESH =
-            cladding("cladding_desh", 0.2D);
-    public static final RegistryHandle<ItemModCladding> CLADDING_GHIORSIUM =
-            cladding("cladding_ghiorsium", 0.5D);
+    public static final RegistryHandle<Item> CLADDING_PAINT = cladding("cladding_paint");
+    public static final RegistryHandle<Item> CLADDING_RUBBER = cladding("cladding_rubber");
+    public static final RegistryHandle<Item> CLADDING_LEAD = cladding("cladding_lead");
+    public static final RegistryHandle<Item> CLADDING_DESH = cladding("cladding_desh");
+    public static final RegistryHandle<Item> CLADDING_GHIORSIUM = cladding("cladding_ghiorsium");
     public static final RegistryHandle<ItemModIron> CLADDING_IRON =
             Reg.item("cladding_iron", ItemModIron::new, Item.Properties::new).addTo(ARMOR_MOD_ALL);
     public static final RegistryHandle<ItemModObsidian> CLADDING_OBSIDIAN =
@@ -8044,7 +7918,6 @@ public final class ModItems {
                     () ->
                             new Item.Properties()
                                     .component(DataComponents.CONSUMABLE, ItemFlask.CONSUMABLE));
-
     public static final RegistryHandle<ItemModWD40> WD40 =
             Reg.item("wd40", ItemModWD40::new, Item.Properties::new).addTo(ARMOR_MOD_ALL);
     public static final RegistryHandle<ItemModRevive> SCRUMPY =
@@ -8079,7 +7952,6 @@ public final class ModItems {
                             p -> new ItemGasMask(p, ItemGasMask.Type.GAS_MASK),
                             ModItems::bespokeHeadArmor)
                     .addTo(ARMOR_ALL);
-
     private static final ArmorMaterial RAG_DAMP_MAT =
             material("rag_damp", 150, 1, 1, 1, 1, 0, armorRepair("rags"));
     private static final ArmorMaterial RAG_PISS_MAT =
@@ -8124,7 +7996,6 @@ public final class ModItems {
                             p -> new ModArmorItem(p, Suit.NONE),
                             () -> undamageableArmor(STEEL_MAT, ArmorType.HELMET, Suit.NONE))
                     .addTo(ARMOR_ALL);
-
     public static final RegistryHandle<ItemBetaFeatures> BETA =
             Reg.item("beta", ItemBetaFeatures::new, () -> new Item.Properties().stacksTo(1));
     public static final RegistryHandle<ItemCustomLore> CUSTOM_TNT =
@@ -8202,7 +8073,6 @@ public final class ModItems {
                             ItemBombCaller.EnumCallerType.POISON_GAS,
                             ItemBombCaller.EnumCallerType.AGENT_ORANGE,
                             ItemBombCaller.EnumCallerType.ATOMIC_BOMB);
-
     public static final RegistryHandle<ItemDefuser> DEFUSER =
             Reg.item(
                     "defuser",
@@ -8216,12 +8086,10 @@ public final class ModItems {
                     .addTo(MISC_ALL);
     private static final ArmorMaterial HAZMAT_MAT =
             material("hazmat", 60, 2, 5, 4, 1, 5, armorRepair("hazmat"));
-
     private static final ArmorMaterial HAZMAT_RED_MAT =
             material("hazmat_red", 60, 2, 5, 4, 1, 5, armorRepair("hazmat_red"));
     private static final ArmorMaterial PAA_MAT =
             material("paa", 75, 3, 8, 6, 3, 25, armorRepair("paa"));
-
     private static final ArmorMaterial HAZMAT_PAA_MAT =
             material("hazmat_paa", 75, 3, 8, 6, 3, 25, armorRepair("paa"));
     private static final ArmorMaterial HAZMAT_GREY_MAT =
@@ -8239,13 +8107,11 @@ public final class ModItems {
                     .addTo(COLLECTIBLE_ALL);
     public static final RegistryHandle<ItemRebarPlacer> REBAR_PLACER =
             Reg.item("rebar_placer", ItemRebarPlacer::new, () -> new Item.Properties().stacksTo(1));
-
     public static final RegistryHandle<ItemCMStructure> STRUCTURE_CUSTOMMACHINE =
             Reg.item(
                     "structure_custommachine",
                     ItemCMStructure::new,
                     () -> new Item.Properties().stacksTo(1));
-
     public static final RegistryHandle<ItemRodOfDiscord> ROD_OF_DISCORD =
             Reg.item(
                     "rod_of_discord",
@@ -8377,12 +8243,10 @@ public final class ModItems {
     public static final RegistryHandle<Item> RECORD_LC = record(ModJukeboxSongs.Song.LC);
     public static final RegistryHandle<Item> RECORD_SS = record(ModJukeboxSongs.Song.SS);
     public static final RegistryHandle<Item> RECORD_VC = record(ModJukeboxSongs.Song.VC);
-
     public static final RegistryHandle<Item> RECORD_GLASS = record(ModJukeboxSongs.Song.GLASS);
 
     public static final RegistryHandle<ItemBookLore> BOOK_LORE =
             Reg.item("book_lore", ItemBookLore::new, () -> new Item.Properties().stacksTo(1));
-
     public static final ItemFamily<ItemHolotapeImage.EnumHoloImage, ItemHolotapeImage>
             HOLOTAPE_IMAGE =
                     Reg.family(
@@ -8390,7 +8254,6 @@ public final class ModItems {
                             ItemHolotapeImage.EnumHoloImage.class,
                             ItemHolotapeImage::new,
                             () -> new Item.Properties().stacksTo(1));
-
     public static final RegistryHandle<Item> HOLOTAPE_DAMAGED =
             Reg.item("holotape_damaged", Item::new, Item.Properties::new).addTo(MISC_ALL);
     public static final RegistryHandle<ItemClayTablet> CLAY_TABLET =
@@ -8398,7 +8261,6 @@ public final class ModItems {
                     "clay_tablet",
                     props -> new ItemClayTablet(props, 0),
                     () -> new Item.Properties().stacksTo(1));
-
     public static final RegistryHandle<ItemClayTablet> CLAY_TABLET_1 =
             Reg.item(
                     "clay_tablet_1",
@@ -8418,7 +8280,6 @@ public final class ModItems {
     public static final RegistryHandle<Item> TEMPLATE_FOLDER =
             Reg.item("template_folder", Item::new, () -> new Item.Properties().stacksTo(1))
                     .addTo(COLLECTIBLE_ALL);
-
     public static final RegistryHandle<BrokenItem> BROKEN_ITEM =
             Reg.item("broken_item", BrokenItem::new, Item.Properties::new);
     private static final Set<NTMMaterial> AUTOGEN_RAW =
@@ -8431,14 +8292,12 @@ public final class ModItems {
                     Mats.MAT_SLAG);
     private static final Set<NTMMaterial> VANILLA =
             Set.of(Mats.MAT_IRON, Mats.MAT_GOLD, Mats.MAT_COPPER);
-
     private static final Set<NTMMaterial> DUPLICATE_INGOT =
             Set.of(Mats.MAT_CARBON, Mats.MAT_LITHIUM, Mats.MAT_MALACHITE, Mats.MAT_RAREEARTH);
     private static final Set<NTMMaterial> EXCLUDED =
             union(union(AUTOGEN_RAW, VANILLA), DUPLICATE_INGOT);
     public static final NTMMaterial[] INGOT_MATERIALS =
             MaterialShapeRoster.roster(MaterialShapes.INGOT, EXCLUDED).toArray(new NTMMaterial[0]);
-
     private static final Set<NTMMaterial> MP_EXCLUDED =
             Set.of(Mats.MAT_FLUORITE, Mats.MAT_STAR, Mats.MAT_FLUX);
     public static final NTMMaterial[] DUST_MATERIALS =
@@ -8474,7 +8333,6 @@ public final class ModItems {
             trimmableArmor("alloy_legs", ALLOY_MAT, ArmorType.LEGGINGS, Suit.ALLOY);
     public static final RegistryHandle<ModArmorItem> ALLOY_BOOTS =
             trimmableArmor("alloy_boots", ALLOY_MAT, ArmorType.BOOTS, Suit.ALLOY);
-
     private static final ArmorMaterial DESH_MAT =
             material("steamsuit", 150, 3, 8, 6, 3, 0, Mats.MAT_DESH.dict.ingot());
     public static final int STEAMSUIT_MAX_FUEL = 64_000;
@@ -8520,7 +8378,6 @@ public final class ModItems {
                     STEAMSUIT_MAX_FUEL,
                     STEAMSUIT_FILL_RATE,
                     STEAMSUIT_CONSUMPTION);
-
     private static final ArmorMaterial DIESEL_MAT =
             material("bnuuy", 150, 3, 8, 6, 3, 0, Mats.MAT_COPPER.dict.plate());
     public static final int DIESELSUIT_MAX_FUEL = 64_000;
@@ -8568,7 +8425,6 @@ public final class ModItems {
                     DIESELSUIT_CONSUMPTION);
     private static final ArmorMaterial T51_MAT =
             material("t51", 150, 3, 8, 6, 3, 0, armorRepair("t51"));
-
     public static final RegistryHandle<ModArmorItemPowered> T51_HELMET =
             poweredArmor(
                     "t51_helmet",
@@ -9028,7 +8884,6 @@ public final class ModItems {
             armor("hazmat_legs_grey", HAZMAT_GREY_MAT, ArmorType.LEGGINGS, Suit.HAZMAT_GREY);
     public static final RegistryHandle<ModArmorItem> HAZMAT_BOOTS_GREY =
             armor("hazmat_boots_grey", HAZMAT_GREY_MAT, ArmorType.BOOTS, Suit.HAZMAT_GREY);
-
     public static final RegistryHandle<ItemHazmatMask> HAZMAT_PAA_HELMET =
             hazmatMask(
                     "hazmat_paa_helmet",
@@ -9119,7 +8974,6 @@ public final class ModItems {
             armor("dnt_legs", DNT_MAT, ArmorType.LEGGINGS, Suit.DNT);
     public static final RegistryHandle<ModArmorItem> DNT_BOOTS =
             armor("dnt_boots", DNT_MAT, ArmorType.BOOTS, Suit.DNT);
-
     private static final ArmorMaterial SCHRABIDIUM_MAT =
             material("schrabidium", 100, 3, 8, 6, 3, 50, Mats.MAT_SCHRABIDIUM.dict.ingot());
     public static final RegistryHandle<ModArmorItem> SCHRABIDIUM_HELMET =
@@ -9135,7 +8989,6 @@ public final class ModItems {
             trimmableArmor("schrabidium_boots", SCHRABIDIUM_MAT, ArmorType.BOOTS, Suit.SCHRABIDIUM);
     private static final ArmorMaterial BISMUTH_MAT =
             material("bismuth", 100, 3, 8, 6, 3, 100, armorRepair("bismuth"));
-
     public static final RegistryHandle<ModArmorItem> BISMUTH_HELMET =
             armor("bismuth_helmet", BISMUTH_MAT, ArmorType.HELMET, Suit.BISMUTH);
     public static final RegistryHandle<ModArmorItem> BISMUTH_PLATE =
@@ -9169,7 +9022,6 @@ public final class ModItems {
     private static final ArmorMaterial INFAMY_MAT = vanilla(ArmorMaterials.IRON, "mask_of_infamy");
     public static final RegistryHandle<ModArmorItem> MASK_OF_INFAMY =
             armor("mask_of_infamy", INFAMY_MAT, ArmorType.HELMET, Suit.NONE);
-
     private static final ArmorMaterial JACKT_MAT =
             material("jackt", 30, 3, 8, 6, 3, 5, Mats.MAT_STEEL.dict.ingot());
     private static final ArmorMaterial JACKT2_MAT =
@@ -9186,7 +9038,6 @@ public final class ModItems {
     public static RegistryHandle<ItemBatteryCreative> BATTERY_CREATIVE;
     public static RegistryHandle<ItemBattery> CUBE_POWER;
     public static RegistryHandle<ItemPotatos> BATTERY_POTATOS;
-
     public static RegistryHandle<ItemBattery> MEMORY;
     public static RegistryHandle<Item> AMMO_DEBUG;
     public static ItemFamily<GunFactory.EnumAmmo, Item> AMMO_STANDARD;
@@ -9305,7 +9156,6 @@ public final class ModItems {
                         1_000_000_000_000_000_000L,
                         1_000_000_000_000_000L,
                         1_000_000_000_000_000L);
-
         BATTERY_POTATOS =
                 Reg.<ItemPotatos>item(
                                 "battery_potatos",
@@ -9347,7 +9197,7 @@ public final class ModItems {
     }
 
     static {
-        GunFactory.init(Services.REGISTRAR);
+        GunFactory.init();
     }
 
     static {
@@ -9444,7 +9294,6 @@ public final class ModItems {
 
     static {
         dep(EnumZirnoxType.NATURAL_URANIUM_FUEL, 172.5F, 0F);
-
         dep(EnumZirnoxType.URANIUM_FUEL, 150F, 0F);
         dep(EnumZirnoxType.THORIUM_FUEL, 112.5F, 0F);
         dep(EnumZirnoxType.MOX_FUEL, 150F, 0F);
@@ -9786,11 +9635,15 @@ public final class ModItems {
                                 .usingConvertsTo(Items.BOWL));
     }
 
-    private static Reg.Handle<ItemPill> pill(String name, ItemPill.Type type, String texture) {
+    private static Reg.Handle<ItemCustomLore> pill(String name, String texture) {
         return Reg.item(
                         name,
-                        props -> new ItemPill(props, type),
-                        () -> new Item.Properties().food(ItemPill.FOOD, ItemPill.CONSUMABLE))
+                        ItemCustomLore::new,
+                        () ->
+                                new Item.Properties()
+                                        .food(
+                                                ConsumableTreatments.MEDICINE_FOOD,
+                                                ConsumableTreatments.MEDICINE_CONSUMABLE))
                 .addTo(MISC_ALL);
     }
 
@@ -9835,7 +9688,6 @@ public final class ModItems {
     private static Reg.Handle<ItemCustomMissilePart> missilePart(
             String name, String icon, UnaryOperator<ItemCustomMissilePart> build) {
         Reg.Handle<ItemCustomMissilePart> h = registerPart(name, build);
-
         return h;
     }
 
@@ -9848,7 +9700,6 @@ public final class ModItems {
             float guiHeight,
             UnaryOperator<ItemCustomMissilePart> build) {
         Reg.Handle<ItemCustomMissilePart> h = registerPart(name, mesh, skin, height, build);
-
         return h;
     }
 
@@ -9861,7 +9712,6 @@ public final class ModItems {
             float guiHeight,
             UnaryOperator<ItemCustomMissilePart> build) {
         Reg.Handle<ItemCustomMissilePart> h = registerPart(name, mesh, skin, height, build);
-
         return h;
     }
 
@@ -9938,77 +9788,6 @@ public final class ModItems {
     }
 
     public static void initHazards() {
-        hazmat(HAZMAT_HELMET, 0.12);
-        hazmat(HAZMAT_PLATE, 0.24);
-        hazmat(HAZMAT_LEGS, 0.18);
-        hazmat(HAZMAT_BOOTS, 0.06);
-        hazmat(HAZMAT_HELMET_RED, 0.2);
-        hazmat(HAZMAT_PLATE_RED, 0.4);
-        hazmat(HAZMAT_LEGS_RED, 0.3);
-        hazmat(HAZMAT_BOOTS_RED, 0.1);
-        hazmat(HAZMAT_HELMET_GREY, 0.4);
-        hazmat(HAZMAT_PLATE_GREY, 0.8);
-        hazmat(HAZMAT_LEGS_GREY, 0.6);
-        hazmat(HAZMAT_BOOTS_GREY, 0.2);
-        hazmat(LIQUIDATOR_HELMET, 0.48);
-        hazmat(LIQUIDATOR_PLATE, 0.96);
-        hazmat(LIQUIDATOR_LEGS, 0.72);
-        hazmat(LIQUIDATOR_BOOTS, 0.24);
-        hazmat(SECURITY_HELMET, .165);
-        hazmat(SECURITY_PLATE, .33);
-        hazmat(SECURITY_LEGS, .2475);
-        hazmat(SECURITY_BOOTS, .0825);
-        hazmat(STARMETAL_HELMET, .2);
-        hazmat(STARMETAL_PLATE, .4);
-        hazmat(STARMETAL_LEGS, .3);
-        hazmat(STARMETAL_BOOTS, .1);
-        for (RegistryHandle<ModArmorItem> h : List.of(STEEL_HELMET, TITANIUM_HELMET))
-            hazmat(h, .009);
-        for (RegistryHandle<ModArmorItem> h : List.of(STEEL_PLATE, TITANIUM_PLATE)) hazmat(h, .018);
-        for (RegistryHandle<ModArmorItem> h : List.of(STEEL_LEGS, TITANIUM_LEGS)) hazmat(h, .0135);
-        for (RegistryHandle<ModArmorItem> h : List.of(STEEL_BOOTS, TITANIUM_BOOTS))
-            hazmat(h, .0045);
-        hazmat(COBALT_HELMET, .025);
-        hazmat(COBALT_PLATE, .05);
-        hazmat(COBALT_LEGS, .0375);
-        hazmat(COBALT_BOOTS, .0125);
-        hazmat(T51_HELMET, .2);
-        hazmat(T51_PLATE, .4);
-        hazmat(T51_LEGS, .3);
-        hazmat(T51_BOOTS, .1);
-
-        hazmat(CMB_HELMET, .26);
-        hazmat(CMB_PLATE, .52);
-        hazmat(CMB_LEGS, .39);
-        hazmat(CMB_BOOTS, .13);
-
-        ArmorRegistry.registerHazard(SCHRABIDIUM_HELMET, fullPackage());
-        ArmorRegistry.registerHazard(EUPHEMIUM_HELMET, fullPackage());
-        hazmat(SCHRABIDIUM_HELMET, .6);
-        hazmat(SCHRABIDIUM_PLATE, 1.2);
-        hazmat(SCHRABIDIUM_LEGS, .9);
-        hazmat(SCHRABIDIUM_BOOTS, .3);
-        hazmat(EUPHEMIUM_HELMET, 2);
-        hazmat(EUPHEMIUM_PLATE, 4);
-        hazmat(EUPHEMIUM_LEGS, 3);
-        hazmat(EUPHEMIUM_BOOTS, 1);
-
-        hazmat(PAA_PLATE, .68);
-        hazmat(HAZMAT_PAA_HELMET, .34);
-        hazmat(HAZMAT_PAA_PLATE, .68);
-        hazmat(HAZMAT_PAA_LEGS, .51);
-        hazmat(HAZMAT_PAA_BOOTS, .17);
-        hazmat(PAA_LEGS, .51);
-        hazmat(PAA_BOOTS, .17);
-        hazmat(Items.IRON_HELMET, .0045);
-        hazmat(Items.IRON_CHESTPLATE, .009);
-        hazmat(Items.IRON_LEGGINGS, .00675);
-        hazmat(Items.IRON_BOOTS, .00225);
-        hazmat(Items.GOLDEN_HELMET, .0045);
-        hazmat(Items.GOLDEN_CHESTPLATE, .009);
-        hazmat(Items.GOLDEN_LEGGINGS, .00675);
-        hazmat(Items.GOLDEN_BOOTS, .00225);
-
         ArmorFullSetBonus.register(
                 Suit.T51,
                 ArmorFullSetBonus.builder()
@@ -10033,10 +9812,6 @@ public final class ModItems {
                         .addCategory(DamageResistanceHandler.CATEGORY_EXPLOSION, 5.0F, 0.25F)
                         .addExact(DamageResistanceHandler.EXACT_FALL, 0.0F, 1.0F)
                         .setOther(0.0F, 0.10F));
-        hazmat(TAURUN_HELMET, .025);
-        hazmat(TAURUN_PLATE, .05);
-        hazmat(TAURUN_LEGS, .0375);
-        hazmat(TAURUN_BOOTS, .0125);
         ArmorFullSetBonus.register(
                 Suit.TAURUN,
                 ArmorFullSetBonus.builder().effect(MobEffects.STRENGTH, 0).stepSize(1).build());
@@ -10051,50 +9826,6 @@ public final class ModItems {
                         .addCategory(DamageResistanceHandler.CATEGORY_EXPLOSION, 0F, 0.25F)
                         .addExact(DamageResistanceHandler.EXACT_FALL, 4F, 0.5F)
                         .setOther(2F, 0.1F));
-        hazmat(ALLOY_HELMET, .014);
-        hazmat(ALLOY_PLATE, .028);
-        hazmat(ALLOY_LEGS, .021);
-        hazmat(ALLOY_BOOTS, .007);
-        hazmat(JACKT, .1);
-        hazmat(JACKT2, .1);
-        hazmat(GAS_MASK, 0.07);
-        hazmat(GAS_MASK_M65, .095);
-        ArmorRegistry.registerHazard(
-                GAS_MASK_FILTER,
-                HazardClass.PARTICLE_COARSE,
-                HazardClass.PARTICLE_FINE,
-                HazardClass.GAS_LUNG,
-                HazardClass.GAS_BLISTERING,
-                HazardClass.BACTERIA);
-        ArmorRegistry.registerHazard(
-                GAS_MASK_FILTER_MONO, HazardClass.PARTICLE_COARSE, HazardClass.GAS_MONOXIDE);
-        ArmorRegistry.registerHazard(
-                GAS_MASK_FILTER_COMBO,
-                HazardClass.PARTICLE_COARSE,
-                HazardClass.PARTICLE_FINE,
-                HazardClass.GAS_LUNG,
-                HazardClass.GAS_BLISTERING,
-                HazardClass.BACTERIA,
-                HazardClass.GAS_MONOXIDE);
-        ArmorRegistry.registerHazard(GAS_MASK_FILTER_RAG, HazardClass.PARTICLE_COARSE);
-        ArmorRegistry.registerHazard(
-                GAS_MASK_FILTER_PISS, HazardClass.PARTICLE_COARSE, HazardClass.GAS_LUNG);
-        ArmorRegistry.registerHazard(GAS_MASK, HazardClass.SAND, HazardClass.LIGHT);
-        ArmorRegistry.registerHazard(GAS_MASK_M65, HazardClass.SAND);
-        ArmorRegistry.registerHazard(MASK_RAG, HazardClass.PARTICLE_COARSE);
-        ArmorRegistry.registerHazard(MASK_PISS, HazardClass.PARTICLE_COARSE, HazardClass.GAS_LUNG);
-        ArmorRegistry.registerHazard(ATTACHMENT_MASK, HazardClass.SAND);
-        ArmorRegistry.registerHazard(GOGGLES, HazardClass.LIGHT, HazardClass.SAND);
-        ArmorRegistry.registerHazard(ASHGLASSES, HazardClass.LIGHT, HazardClass.SAND);
-        ArmorRegistry.registerHazard(ASBESTOS_HELMET, HazardClass.LIGHT, HazardClass.SAND);
-        ArmorRegistry.registerHazard(HAZMAT_HELMET, HazardClass.SAND);
-        ArmorRegistry.registerHazard(HAZMAT_HELMET_RED, HazardClass.SAND);
-        ArmorRegistry.registerHazard(HAZMAT_HELMET_GREY, HazardClass.SAND);
-        ArmorRegistry.registerHazard(HAZMAT_PAA_HELMET, HazardClass.LIGHT, HazardClass.SAND);
-        ArmorRegistry.registerHazard(LIQUIDATOR_HELMET, HazardClass.LIGHT, HazardClass.SAND);
-
-        ArmorRegistry.registerHazard(T51_HELMET, fullNoLight());
-        ArmorRegistry.registerHazard(TAURUN_HELMET, fullPackage());
 
         DamageResistanceHandler.registerItem(
                 JACKT.get(),
@@ -10250,16 +9981,6 @@ public final class ModItems {
                         .dashCount(3)
                         .build());
 
-        ArmorRegistry.registerHazard(AJR_HELMET, fullPackage());
-        ArmorRegistry.registerHazard(AJRO_HELMET, fullPackage());
-        hazmat(AJR_HELMET, .26);
-        hazmat(AJR_PLATE, .52);
-        hazmat(AJR_LEGS, .39);
-        hazmat(AJR_BOOTS, .13);
-        hazmat(AJRO_HELMET, .26);
-        hazmat(AJRO_PLATE, .52);
-        hazmat(AJRO_LEGS, .39);
-        hazmat(AJRO_BOOTS, .13);
         ArmorFullSetBonus ajrBonus =
                 ArmorFullSetBonus.builder()
                         .effect(MobEffects.JUMP_BOOST, 0)
@@ -10287,16 +10008,6 @@ public final class ModItems {
         DamageResistanceHandler.registerSet(
                 AJRO_HELMET.get(), AJRO_PLATE.get(), AJRO_LEGS.get(), AJRO_BOOTS.get(), ajrResist);
 
-        ArmorRegistry.registerHazard(RPA_HELMET, fullPackage());
-        ArmorRegistry.registerHazard(NCRPA_HELMET, fullPackage());
-        hazmat(RPA_HELMET, .4);
-        hazmat(RPA_PLATE, .8);
-        hazmat(RPA_LEGS, .6);
-        hazmat(RPA_BOOTS, .2);
-        hazmat(NCRPA_HELMET, .34);
-        hazmat(NCRPA_PLATE, .68);
-        hazmat(NCRPA_LEGS, .51);
-        hazmat(NCRPA_BOOTS, .17);
         ArmorFullSetBonus.register(
                 Suit.RPA,
                 ArmorFullSetBonus.builder()
@@ -10351,11 +10062,6 @@ public final class ModItems {
                         .addExact(DamageResistanceHandler.EXACT_FALL, 0F, 1F)
                         .setOther(15F, 0.25F));
 
-        hazmat(BJ_HELMET, .2);
-        hazmat(BJ_PLATE, .4);
-        hazmat(BJ_PLATE_JETPACK, .4);
-        hazmat(BJ_LEGS, .3);
-        hazmat(BJ_BOOTS, .1);
         ArmorFullSetBonus.register(
                 Suit.BJ,
                 ArmorFullSetBonus.builder()
@@ -10383,11 +10089,6 @@ public final class ModItems {
         DamageResistanceHandler.registerSet(
                 BJ_HELMET.get(), BJ_PLATE_JETPACK.get(), BJ_LEGS.get(), BJ_BOOTS.get(), bjResist);
 
-        ArmorRegistry.registerHazard(ENVSUIT_HELMET, fullPackage());
-        hazmat(ENVSUIT_HELMET, .2);
-        hazmat(ENVSUIT_PLATE, .4);
-        hazmat(ENVSUIT_LEGS, .3);
-        hazmat(ENVSUIT_BOOTS, .1);
         ArmorFullSetBonus.register(
                 Suit.ENVSUIT,
                 ArmorFullSetBonus.builder()
@@ -10405,11 +10106,6 @@ public final class ModItems {
                         .addExact(DamageResistanceHandler.EXACT_FALL, 5F, 0.75F)
                         .setOther(0F, 0.1F));
 
-        ArmorRegistry.registerHazard(HEV_HELMET, fullPackage());
-        hazmat(HEV_HELMET, .46);
-        hazmat(HEV_PLATE, .92);
-        hazmat(HEV_LEGS, .69);
-        hazmat(HEV_BOOTS, .23);
         ArmorFullSetBonus.register(
                 Suit.HEV,
                 ArmorFullSetBonus.builder()
@@ -10431,11 +10127,6 @@ public final class ModItems {
                         .addExact(DamageResistanceHandler.EXACT_FALL, 10F, 0F)
                         .setOther(2F, 0.25F));
 
-        ArmorRegistry.registerHazard(FAU_HELMET, fullPackage());
-        hazmat(FAU_HELMET, .8);
-        hazmat(FAU_PLATE, 1.6);
-        hazmat(FAU_LEGS, 1.2);
-        hazmat(FAU_BOOTS, .4);
         ArmorFullSetBonus.register(
                 Suit.DIGAMMA,
                 ArmorFullSetBonus.builder()
@@ -10461,11 +10152,6 @@ public final class ModItems {
                         .addExact(DamageResistanceHandler.EXACT_FALL, 0F, 1F)
                         .setOther(100F, 0.99F));
 
-        ArmorRegistry.registerHazard(DNS_HELMET, fullPackage());
-        hazmat(DNS_HELMET, 1.0);
-        hazmat(DNS_PLATE, 2.0);
-        hazmat(DNS_LEGS, 1.5);
-        hazmat(DNS_BOOTS, .5);
         ArmorFullSetBonus.register(
                 Suit.DNS,
                 ArmorFullSetBonus.builder()
@@ -10496,11 +10182,6 @@ public final class ModItems {
                         .addCategory(DamageResistanceHandler.CATEGORY_FIRE, 0F, 1F)
                         .setOther(1000F, 1F));
 
-        ArmorRegistry.registerHazard(TRENCHMASTER_HELMET, fullPackage());
-        hazmat(TRENCHMASTER_HELMET, .2);
-        hazmat(TRENCHMASTER_PLATE, .4);
-        hazmat(TRENCHMASTER_LEGS, .3);
-        hazmat(TRENCHMASTER_BOOTS, .1);
         ArmorFullSetBonus.register(
                 Suit.TRENCHMASTER,
                 ArmorFullSetBonus.builder()
@@ -10525,11 +10206,6 @@ public final class ModItems {
                         .addExact(DamageResistanceHandler.EXACT_FALL, 10F, 0.5F)
                         .setOther(5F, 0.25F));
 
-        ArmorRegistry.registerHazard(STEAMSUIT_HELMET, fullPackage());
-        hazmat(STEAMSUIT_HELMET, .26);
-        hazmat(STEAMSUIT_PLATE, .52);
-        hazmat(STEAMSUIT_LEGS, .39);
-        hazmat(STEAMSUIT_BOOTS, .13);
         ArmorFullSetBonus.register(
                 Suit.DESH,
                 ArmorFullSetBonus.builder()
@@ -10567,35 +10243,6 @@ public final class ModItems {
                         .addCategory(DamageResistanceHandler.CATEGORY_FIRE, 0.5F, 0.5F)
                         .addCategory(DamageResistanceHandler.CATEGORY_EXPLOSION, 2F, 0.15F)
                         .setOther(0F, 0.1F));
-    }
-
-    private static HazardClass[] fullNoLight() {
-        return new HazardClass[] {
-            HazardClass.PARTICLE_COARSE,
-            HazardClass.PARTICLE_FINE,
-            HazardClass.GAS_LUNG,
-            HazardClass.BACTERIA,
-            HazardClass.GAS_BLISTERING,
-            HazardClass.GAS_MONOXIDE,
-            HazardClass.SAND
-        };
-    }
-
-    private static HazardClass[] fullPackage() {
-        return new HazardClass[] {
-            HazardClass.PARTICLE_COARSE,
-            HazardClass.PARTICLE_FINE,
-            HazardClass.GAS_LUNG,
-            HazardClass.BACTERIA,
-            HazardClass.GAS_BLISTERING,
-            HazardClass.GAS_MONOXIDE,
-            HazardClass.LIGHT,
-            HazardClass.SAND
-        };
-    }
-
-    private static void hazmat(ItemLike item, double value) {
-        HazmatRegistry.register(item, value);
     }
 
     private static RegistryHandle<ItemHazmatMask> hazmatMask(
@@ -10740,8 +10387,8 @@ public final class ModItems {
                 .addTo(MISC_ALL);
     }
 
-    private static RegistryHandle<ItemGasFilter> filter(String name) {
-        return Reg.item(name, ItemGasFilter::new, () -> new Item.Properties().durability(20_000))
+    private static RegistryHandle<Item> filter(String name) {
+        return Reg.item(name, Item::new, () -> new Item.Properties().durability(20_000))
                 .addTo(ARMOR_ALL);
     }
 
@@ -10761,8 +10408,8 @@ public final class ModItems {
                 .addTo(ARMOR_MOD_ALL);
     }
 
-    private static RegistryHandle<ItemModCladding> cladding(String name, double rad) {
-        return Reg.item(name, props -> new ItemModCladding(props, rad), Item.Properties::new)
+    private static RegistryHandle<Item> cladding(String name) {
+        return Reg.item(name, Item::new, () -> new Item.Properties().stacksTo(1))
                 .addTo(ARMOR_MOD_ALL);
     }
 

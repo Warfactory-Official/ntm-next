@@ -7,7 +7,6 @@ import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.machine.IFluidContainerItem;
 import com.hbm.items.special.ItemCustomLore;
-import com.hbm.platform.Services;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ExperienceUtil;
 import com.hbm.util.InventoryUtil;
@@ -22,6 +21,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.common.util.FakePlayer;
 
 public final class MedicalIVItem extends ItemCustomLore implements IFluidContainerItem {
 
@@ -39,8 +39,7 @@ public final class MedicalIVItem extends ItemCustomLore implements IFluidContain
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (!(level instanceof ServerLevel server)) return InteractionResult.SUCCESS;
 
-        if ((type == Type.EMPTY || type == Type.XP_EMPTY)
-                && Services.PLATFORM.isFakePlayer(player)) {
+        if ((type == Type.EMPTY || type == Type.XP_EMPTY) && (player instanceof FakePlayer)) {
             return InteractionResult.PASS;
         }
 

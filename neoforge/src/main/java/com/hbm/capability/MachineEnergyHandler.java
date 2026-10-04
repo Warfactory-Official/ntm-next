@@ -76,7 +76,6 @@ public final class MachineEnergyHandler implements EnergyHandler {
         if (be.isRemoved() || receiver == null) return 0;
         long room = receiver.getMaxPower() - receiver.getPower();
         long offered = Math.min(room, receiver.getReceiverSpeed());
-
         long acceptableFe = EnergyConversion.feFromHe(offered);
         long quantum = EnergyConversion.feQuantum();
         long fits = Math.min(amount, acceptableFe) / quantum * quantum;

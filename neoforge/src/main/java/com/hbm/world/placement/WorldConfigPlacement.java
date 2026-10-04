@@ -5,7 +5,7 @@ package com.hbm.world.placement;
 
 import com.hbm.data.DataGroups;
 import com.hbm.data.WorldData;
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.RegistryHandle;
 import com.mojang.serialization.MapCodec;
 import java.util.List;
@@ -29,8 +29,8 @@ public final class WorldConfigPlacement extends PlacementFilter {
         this.switches = List.copyOf(switches);
     }
 
-    public static void register(IRegistrar registrar) {
-        type = registrar.registerPlacementModifierType("world_config", CODEC);
+    public static void register() {
+        type = NeoForgeRegistrar.registerPlacementModifierType("world_config", CODEC);
     }
 
     public boolean open() {

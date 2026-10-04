@@ -4,12 +4,12 @@
 package com.hbm.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
+import com.hbm.blockentity.machine.BlockEntityMachineArcWelder;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.inventory.slot.SlotUpgrade;
 import com.hbm.items.machine.FluidIdentifierItem;
 import com.hbm.items.machine.upgrade.ItemMachineUpgrade;
-import com.hbm.tileentity.machine.BlockEntityMachineArcWelder;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -120,7 +120,6 @@ public class MenuMachineArcWelder extends BlockEntityMenu<BlockEntityMachineArcW
                                 BlockEntityMachineArcWelder.SLOT_UPGRADE_START,
                                 BlockEntityMachineArcWelder.SLOT_UPGRADE_END + 1,
                                 false);
-
                     return moveItemStackTo(stack, 0, 3, false);
                 });
     }

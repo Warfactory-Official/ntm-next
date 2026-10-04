@@ -3,8 +3,8 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.turret.BlockEntityTurretRichard;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.turret.BlockEntityTurretRichard;
 import org.joml.Matrix4f;
 
 public class RenderTurretRichard extends RenderTurretBase<BlockEntityTurretRichard> {

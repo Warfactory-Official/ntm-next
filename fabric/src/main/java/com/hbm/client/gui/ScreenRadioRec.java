@@ -3,10 +3,10 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityRadioRec;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityRadioRec;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -62,7 +62,6 @@ public class ScreenRadioRec extends Screen {
     }
 
     private boolean inZone(int zoneX, double mouseX, double mouseY) {
-
         return guiLeft + zoneX <= mouseX
                 && guiLeft + zoneX + BUTTON_SIZE > mouseX
                 && guiTop + BUTTON_Y < mouseY
@@ -131,7 +130,7 @@ public class ScreenRadioRec extends Screen {
             playButtonSound();
             CompoundTag data = new CompoundTag();
             data.putString("channel", frequency.getValue());
-            Services.NETWORK.sendToServer(new NbtControlPayload(radio.getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(radio.getBlockPos(), data));
             return true;
         }
 
@@ -139,7 +138,7 @@ public class ScreenRadioRec extends Screen {
             playButtonSound();
             CompoundTag data = new CompoundTag();
             data.putBoolean("isOn", !radio.isOn);
-            Services.NETWORK.sendToServer(new NbtControlPayload(radio.getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(radio.getBlockPos(), data));
             return true;
         }
 

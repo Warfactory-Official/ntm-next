@@ -1,0 +1,13 @@
+{
+  "cladding": {
+    "resistance": 0.0,
+    "show_tooltip": false,
+    "slots": [
+      "head",
+      "chest",
+      "legs",
+      "feet"
+    ]
+  },
+  "targets": "hbm:cladding_obsidian"
+}

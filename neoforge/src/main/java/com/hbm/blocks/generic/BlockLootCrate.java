@@ -205,7 +205,6 @@ public class BlockLootCrate extends FallingBlock {
         if (!held.is(ModItems.CROWBAR.get())) return InteractionResult.PASS;
         if (level instanceof ServerLevel server) {
             dropItems(server, pos);
-
             level.removeBlock(pos, false);
             level.playSound(null, pos, ModSounds.CRATE_BREAK.get(), SoundSource.BLOCKS, 0.5F, 1.0F);
         }
@@ -230,7 +229,6 @@ public class BlockLootCrate extends FallingBlock {
             List<ItemStack> pool = poolOf(this);
             int count;
             if (this == ModBlocks.CRATE_WEAPON.get()) {
-
                 count = rand.nextInt(2) + 1;
                 if (rand.nextInt(100) == 34) count = 25;
             } else {

@@ -3,12 +3,12 @@
 
 package com.hbm.blocks.machine.fusion;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionKlystron;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionKlystronCreative;
+import com.hbm.blockentity.machine.fusion.FusionPorts;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionKlystron;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionKlystronCreative;
-import com.hbm.tileentity.machine.fusion.FusionPorts;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class MachineFusionKlystronCreative extends BlockFusionMachine implements ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         3, 0, 4, 3, 2, 2, 0, 0, 0,
         4, -3, 4, 3, 1, 1, 0, 0, 0,

@@ -10,12 +10,10 @@ import com.hbm.world.gen.nbt.PieceGeometry;
 import com.hbm.world.gen.nbt.WeightedOption;
 import com.hbm.world.structure.HbmStructureTypes;
 import java.util.List;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
@@ -137,7 +135,6 @@ public class LaboratoryPiece extends NtmBranchingPiece {
                         6,
                         hbmState("deco_computer")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.EAST));
-
                 BlockState tapeRecorderEast =
                         hbmState("tape_recorder")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.EAST);
@@ -204,7 +201,6 @@ public class LaboratoryPiece extends NtmBranchingPiece {
                 out.block(7, 1, 3, hbmStair(Direction.EAST, true));
                 out.block(7, 2, 3, decoRedCopper);
                 out.block(7, 3, 3, hbmStair(Direction.EAST, false));
-
                 BlockState lever =
                         Blocks.LEVER
                                 .defaultBlockState()
@@ -225,7 +221,6 @@ public class LaboratoryPiece extends NtmBranchingPiece {
                 out.box(7, 1, 4, 7, 2, 4, steelPolesWest, steelPolesWest);
                 out.block(7, 3, 4, decoSteel);
                 out.block(7, 1, 5, decoTungsten);
-
                 BlockState tapeRecorderWest =
                         hbmState("tape_recorder")
                                 .setValue(HorizontalDirectionalBlock.FACING, Direction.WEST);
@@ -244,7 +239,6 @@ public class LaboratoryPiece extends NtmBranchingPiece {
 
                 out.block(7, 1, 9, Blocks.OAK_FENCE.defaultBlockState());
                 out.block(7, 2, 9, Blocks.OAK_PRESSURE_PLATE.defaultBlockState());
-
                 out.container(
                         7,
                         1,

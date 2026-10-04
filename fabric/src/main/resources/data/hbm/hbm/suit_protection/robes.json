@@ -1,0 +1,14 @@
+{
+  "armor": {
+    "chest": "hbm:robes_plate",
+    "feet": "hbm:robes_boots",
+    "head": "hbm:robes_helmet",
+    "legs": "hbm:robes_legs"
+  },
+  "cladding_if_modified": "hbm:cladding_iron",
+  "effect": "hbm:stability",
+  "max_health": 3.0,
+  "protections": [
+    "digamma2"
+  ]
+}

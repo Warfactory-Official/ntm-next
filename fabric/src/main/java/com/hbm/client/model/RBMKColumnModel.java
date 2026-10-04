@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
 
 public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWavefrontObject> {
@@ -44,7 +45,6 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
             boolean topCell,
             Kind kind,
             @Nullable HFRWavefrontObject obj) {
-
         List<ObjUnbakedGeometry.Group> groups = new ArrayList<>();
         List<ObjUnbakedGeometry.BoxQuad> boxes = new ArrayList<>();
 
@@ -58,62 +58,55 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
                     groups.add(ObjUnbakedGeometry.Group.raw(obj, INNER, inner, CENTRED));
                     groups.add(ObjUnbakedGeometry.Group.raw(obj, CAP, top, CENTRED));
                 }
+                CuboidFace.UVs[] unit =
+                        (new CuboidFace.UVs[] {
+                            new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F),
+                            new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F),
+                            new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F),
+                            new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F),
+                            new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F),
+                            new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F)
+                        });
                 boxFace(
                         boxes,
                         baker,
                         Direction.NORTH,
-                        0F,
-                        0F,
-                        0F,
-                        1F,
-                        1F,
-                        1F,
+                        Boxes.UNIT_FROM,
+                        Boxes.UNIT_TO,
+                        unit,
                         side,
                         true,
-                        QuadLighting.VANILLA,
-                        RBMKColumnUv.W0);
+                        QuadLighting.VANILLA);
                 boxFace(
                         boxes,
                         baker,
                         Direction.SOUTH,
-                        0F,
-                        0F,
-                        0F,
-                        1F,
-                        1F,
-                        1F,
+                        Boxes.UNIT_FROM,
+                        Boxes.UNIT_TO,
+                        unit,
                         side,
                         true,
-                        QuadLighting.VANILLA,
-                        RBMKColumnUv.W0);
+                        QuadLighting.VANILLA);
                 boxFace(
                         boxes,
                         baker,
                         Direction.WEST,
-                        0F,
-                        0F,
-                        0F,
-                        1F,
-                        1F,
-                        1F,
+                        Boxes.UNIT_FROM,
+                        Boxes.UNIT_TO,
+                        unit,
                         side,
                         true,
-                        QuadLighting.VANILLA,
-                        RBMKColumnUv.W0);
+                        QuadLighting.VANILLA);
                 boxFace(
                         boxes,
                         baker,
                         Direction.EAST,
-                        0F,
-                        0F,
-                        0F,
-                        1F,
-                        1F,
-                        1F,
+                        Boxes.UNIT_FROM,
+                        Boxes.UNIT_TO,
+                        unit,
                         side,
                         true,
-                        QuadLighting.VANILLA,
-                        RBMKColumnUv.W0);
+                        QuadLighting.VANILLA);
                 addLid(boxes, slots, baker, base, lid, topCell);
             }
             case CONTROL -> {
@@ -146,26 +139,29 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
             RBMKBase.Lid lid,
             boolean topCell) {
         if (!topCell || !lid.present()) return;
-
         String prefix = lid == RBMKBase.Lid.GLASS ? "glass" : "cover";
         Material.Baked lidTop = BlockModel.slot(baker, base, slots, prefix + "_top");
         Material.Baked lidSide = BlockModel.slot(baker, base, slots, prefix + "_side");
-
-        addBox(
+        final Vector3f from = new Vector3f(0F * 16F, 1F * 16F, 0F * 16F);
+        final Vector3f to = new Vector3f(1F * 16F, 1.25F * 16F, 1F * 16F);
+        faces(
                 into,
                 baker,
-                0F,
-                1F,
-                0F,
-                1F,
-                1.25F,
-                1F,
+                from,
+                to,
+                new CuboidFace.UVs[] {
+                    new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F),
+                    new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F),
+                    new CuboidFace.UVs(0.0F, 12.0F, 16.0F, 16.0F),
+                    new CuboidFace.UVs(0.0F, 12.0F, 16.0F, 16.0F),
+                    new CuboidFace.UVs(0.0F, 12.0F, 16.0F, 16.0F),
+                    new CuboidFace.UVs(0.0F, 12.0F, 16.0F, 16.0F)
+                },
                 lidTop,
                 lidSide,
                 lidTop,
                 false,
-                ABOVE,
-                RBMKColumnUv.W1);
+                ABOVE);
     }
 
     private static void addPipes(
@@ -175,66 +171,86 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
             ResolvedModel base) {
         Material.Baked pipeTop = BlockModel.slot(baker, base, slots, "pipe_top");
         Material.Baked pipeSide = BlockModel.slot(baker, base, slots, "pipe_side");
-        addBox(
+        final Vector3f from = new Vector3f(0.0625F * 16F, 1F * 16F, 0.0625F * 16F);
+        final Vector3f to = new Vector3f(0.4375F * 16F, 1.125F * 16F, 0.4375F * 16F);
+        faces(
                 into,
                 baker,
-                0.0625F,
-                1F,
-                0.0625F,
-                0.4375F,
-                1.125F,
-                0.4375F,
+                from,
+                to,
+                new CuboidFace.UVs[] {
+                    new CuboidFace.UVs(1.0F, 9.0F, 7.0F, 15.0F),
+                    new CuboidFace.UVs(1.0F, 1.0F, 7.0F, 7.0F),
+                    new CuboidFace.UVs(9.0F, 14.0F, 15.0F, 16.0F),
+                    new CuboidFace.UVs(1.0F, 14.0F, 7.0F, 16.0F),
+                    new CuboidFace.UVs(1.0F, 14.0F, 7.0F, 16.0F),
+                    new CuboidFace.UVs(9.0F, 14.0F, 15.0F, 16.0F)
+                },
                 pipeTop,
                 pipeSide,
                 pipeTop,
                 false,
-                ABOVE,
-                RBMKColumnUv.W2);
-        addBox(
+                ABOVE);
+        final Vector3f from2 = new Vector3f(0.0625F * 16F, 1F * 16F, 0.5625F * 16F);
+        final Vector3f to2 = new Vector3f(0.4375F * 16F, 1.125F * 16F, 0.9375F * 16F);
+        faces(
                 into,
                 baker,
-                0.0625F,
-                1F,
-                0.5625F,
-                0.4375F,
-                1.125F,
-                0.9375F,
+                from2,
+                to2,
+                new CuboidFace.UVs[] {
+                    new CuboidFace.UVs(1.0F, 1.0F, 7.0F, 7.0F),
+                    new CuboidFace.UVs(1.0F, 9.0F, 7.0F, 15.0F),
+                    new CuboidFace.UVs(9.0F, 14.0F, 15.0F, 16.0F),
+                    new CuboidFace.UVs(1.0F, 14.0F, 7.0F, 16.0F),
+                    new CuboidFace.UVs(9.0F, 14.0F, 15.0F, 16.0F),
+                    new CuboidFace.UVs(1.0F, 14.0F, 7.0F, 16.0F)
+                },
                 pipeTop,
                 pipeSide,
                 pipeTop,
                 false,
-                ABOVE,
-                RBMKColumnUv.W3);
-        addBox(
+                ABOVE);
+        final Vector3f from3 = new Vector3f(0.5625F * 16F, 1F * 16F, 0.5625F * 16F);
+        final Vector3f to3 = new Vector3f(0.9375F * 16F, 1.125F * 16F, 0.9375F * 16F);
+        faces(
                 into,
                 baker,
-                0.5625F,
-                1F,
-                0.5625F,
-                0.9375F,
-                1.125F,
-                0.9375F,
+                from3,
+                to3,
+                new CuboidFace.UVs[] {
+                    new CuboidFace.UVs(9.0F, 1.0F, 15.0F, 7.0F),
+                    new CuboidFace.UVs(9.0F, 9.0F, 15.0F, 15.0F),
+                    new CuboidFace.UVs(1.0F, 14.0F, 7.0F, 16.0F),
+                    new CuboidFace.UVs(9.0F, 14.0F, 15.0F, 16.0F),
+                    new CuboidFace.UVs(9.0F, 14.0F, 15.0F, 16.0F),
+                    new CuboidFace.UVs(1.0F, 14.0F, 7.0F, 16.0F)
+                },
                 pipeTop,
                 pipeSide,
                 pipeTop,
                 false,
-                ABOVE,
-                RBMKColumnUv.W4);
-        addBox(
+                ABOVE);
+        final Vector3f from4 = new Vector3f(0.5625F * 16F, 1F * 16F, 0.0625F * 16F);
+        final Vector3f to4 = new Vector3f(0.9375F * 16F, 1.125F * 16F, 0.4375F * 16F);
+        faces(
                 into,
                 baker,
-                0.5625F,
-                1F,
-                0.0625F,
-                0.9375F,
-                1.125F,
-                0.4375F,
+                from4,
+                to4,
+                new CuboidFace.UVs[] {
+                    new CuboidFace.UVs(9.0F, 9.0F, 15.0F, 15.0F),
+                    new CuboidFace.UVs(9.0F, 1.0F, 15.0F, 7.0F),
+                    new CuboidFace.UVs(1.0F, 14.0F, 7.0F, 16.0F),
+                    new CuboidFace.UVs(9.0F, 14.0F, 15.0F, 16.0F),
+                    new CuboidFace.UVs(1.0F, 14.0F, 7.0F, 16.0F),
+                    new CuboidFace.UVs(9.0F, 14.0F, 15.0F, 16.0F)
+                },
                 pipeTop,
                 pipeSide,
                 pipeTop,
                 false,
-                ABOVE,
-                RBMKColumnUv.W5);
+                ABOVE);
     }
 
     private static void addCube(
@@ -243,101 +259,57 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
             Material.Baked top,
             Material.Baked side,
             Material.Baked bottom) {
-        addBox(
+        final Vector3f from = new Vector3f(0F * 16F, 0F * 16F, 0F * 16F);
+        final Vector3f to = new Vector3f(1F * 16F, 1F * 16F, 1F * 16F);
+        faces(
                 into,
                 baker,
-                0F,
-                0F,
-                0F,
-                1F,
-                1F,
-                1F,
+                from,
+                to,
+                new CuboidFace.UVs[] {
+                    new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F),
+                    new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F),
+                    new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F),
+                    new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F),
+                    new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F),
+                    new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F)
+                },
                 top,
                 side,
                 bottom,
                 true,
-                QuadLighting.VANILLA,
-                RBMKColumnUv.W0);
+                QuadLighting.VANILLA);
     }
 
-    private static void addBox(
+    private static void faces(
             List<ObjUnbakedGeometry.BoxQuad> into,
             ModelBaker baker,
-            float x0,
-            float y0,
-            float z0,
-            float x1,
-            float y1,
-            float z1,
+            Vector3fc from,
+            Vector3fc to,
+            CuboidFace.UVs[] uvs,
             Material.Baked top,
             Material.Baked side,
             Material.Baked bottom,
             boolean culled,
-            int origin,
-            CuboidFace.UVs[] windows) {
-        boxFace(into, baker, Direction.UP, x0, y0, z0, x1, y1, z1, top, culled, origin, windows);
-        boxFace(
-                into,
-                baker,
-                Direction.DOWN,
-                x0,
-                y0,
-                z0,
-                x1,
-                y1,
-                z1,
-                bottom,
-                culled,
-                origin,
-                windows);
-        boxFace(
-                into,
-                baker,
-                Direction.NORTH,
-                x0,
-                y0,
-                z0,
-                x1,
-                y1,
-                z1,
-                side,
-                culled,
-                origin,
-                windows);
-        boxFace(
-                into,
-                baker,
-                Direction.SOUTH,
-                x0,
-                y0,
-                z0,
-                x1,
-                y1,
-                z1,
-                side,
-                culled,
-                origin,
-                windows);
-        boxFace(into, baker, Direction.WEST, x0, y0, z0, x1, y1, z1, side, culled, origin, windows);
-        boxFace(into, baker, Direction.EAST, x0, y0, z0, x1, y1, z1, side, culled, origin, windows);
+            int origin) {
+        boxFace(into, baker, Direction.UP, from, to, uvs, top, culled, origin);
+        boxFace(into, baker, Direction.DOWN, from, to, uvs, bottom, culled, origin);
+        boxFace(into, baker, Direction.NORTH, from, to, uvs, side, culled, origin);
+        boxFace(into, baker, Direction.SOUTH, from, to, uvs, side, culled, origin);
+        boxFace(into, baker, Direction.WEST, from, to, uvs, side, culled, origin);
+        boxFace(into, baker, Direction.EAST, from, to, uvs, side, culled, origin);
     }
 
     private static void boxFace(
             List<ObjUnbakedGeometry.BoxQuad> into,
             ModelBaker baker,
             Direction dir,
-            float x0,
-            float y0,
-            float z0,
-            float x1,
-            float y1,
-            float z1,
+            Vector3fc from,
+            Vector3fc to,
+            CuboidFace.UVs[] uvs,
             Material.Baked material,
             boolean culled,
-            int origin,
-            CuboidFace.UVs[] windows) {
-        Vector3f from = new Vector3f(x0 * 16F, y0 * 16F, z0 * 16F);
-        Vector3f to = new Vector3f(x1 * 16F, y1 * 16F, z1 * 16F);
+            int origin) {
         BakedQuad quad =
                 Boxes.face(
                         baker,
@@ -345,7 +317,7 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
                         to,
                         dir,
                         material,
-                        windows[dir.ordinal()],
+                        uvs[dir.ordinal()],
                         Quadrant.R0,
                         CuboidFace.NO_TINT,
                         Boxes.IDENTITY);
@@ -396,7 +368,6 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
 
         @Override
         public Object visualEqualityGroup(BlockState state) {
-
             return RBMKBase.lidOf(state).ordinal() | (state.getValue(RBMKBase.PART).ordinal() << 2);
         }
     }

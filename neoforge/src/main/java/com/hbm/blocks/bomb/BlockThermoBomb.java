@@ -15,7 +15,6 @@ import net.minecraft.world.level.redstone.Orientation;
 import org.jspecify.annotations.Nullable;
 
 public abstract class BlockThermoBomb extends Block implements IBomb {
-
     protected static final int FIELD_RADIUS = 15;
     protected static final int ENTITY_RADIUS = 20;
     private static final float BLAST = 5.0F;
@@ -43,7 +42,6 @@ public abstract class BlockThermoBomb extends Block implements IBomb {
     public BombReturnCode explode(Level level, BlockPos pos, @Nullable Entity detonator) {
         level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
         field(level, pos);
-
         level.explode(
                 null, pos.getX(), pos.getY(), pos.getZ(), BLAST, Level.ExplosionInteraction.BLOCK);
         return BombReturnCode.DETONATED;

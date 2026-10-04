@@ -6,6 +6,8 @@ package com.hbm.blocks.machine;
 import com.hbm.advancement.AwardRegions;
 import com.hbm.advancement.DetonationTrigger;
 import com.hbm.advancement.HbmCriteria;
+import com.hbm.blockentity.machine.oil.BlockEntityMachineRefinery;
+import com.hbm.blockentity.machine.oil.RefineryContents;
 import com.hbm.blocks.IPersistentInfoProvider;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
@@ -18,8 +20,6 @@ import com.hbm.interfaces.ILookOverlay;
 import com.hbm.interfaces.IRepairable;
 import com.hbm.interfaces.IToolable;
 import com.hbm.items.ModDataComponents;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineRefinery;
-import com.hbm.tileentity.machine.oil.RefineryContents;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
@@ -104,7 +104,6 @@ public class MachineRefinery extends BlockMultiblockCore
             BlockState coreState, Level level, BlockPos core, Player player, BlockHitResult hit) {
         if (player.isSecondaryUseActive()) return InteractionResult.SUCCESS;
         if (level.isClientSide()) return InteractionResult.SUCCESS;
-
         if (coreState.getValue(EXPLODED)) return InteractionResult.SUCCESS;
         if (level.getBlockEntity(core) instanceof MenuProvider menu) {
             openCoreMenu(player, core, menu);
@@ -124,7 +123,6 @@ public class MachineRefinery extends BlockMultiblockCore
             be.lastExplosion = explosion;
             if (!be.hasExploded()) {
                 be.explode(level, core);
-
                 if (explosion.getDirectSourceEntity() instanceof EntityBombletZeta) {
                     AwardRegions.within(
                             level,
@@ -171,7 +169,6 @@ public class MachineRefinery extends BlockMultiblockCore
 
     @Override
     public MachineCaps caps() {
-
         return MachineCaps.of(ModBlockEntities.REFINERY)
                 .powerIn()
                 .fluidIn()

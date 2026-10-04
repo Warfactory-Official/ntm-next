@@ -48,7 +48,6 @@ public class GeyserFeature extends Feature<NoneFeatureConfiguration> {
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
         WorldGenLevel level = ctx.level();
         BlockPos origin = ctx.origin();
-
         BlockPos.MutableBlockPos pos =
                 new BlockPos.MutableBlockPos(origin.getX(), origin.getY() - 1, origin.getZ());
         if (!level.getBlockState(pos).is(Blocks.GRASS_BLOCK)) return false;

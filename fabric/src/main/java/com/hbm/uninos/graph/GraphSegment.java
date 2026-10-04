@@ -10,33 +10,24 @@ public final class GraphSegment<D> {
 
     private static final long[] EMPTY_CELLS = new long[0];
     private static final long[] EMPTY_BITS = new long[0];
-
     private static final int INDEX_THRESHOLD = 64;
     public final D data;
     public GraphNode<D> endA;
     public GraphNode<D> endB;
-
     public int dirA;
     public int dirB;
     public @Nullable NodeNetwork<D> net;
-
     long[] backing;
     int from;
     int to;
-
     int ownedFrom;
     int ownedTo;
-
     long[] probedBits;
-
     int unprobedSideFaces;
-
     @Nullable GraphSegment<D> pendingPeel;
     @Nullable GraphSegment<D> peelOrigin;
     @Nullable GraphSegment<D> peelNext;
-
     @Nullable GraphSegment<D> forwardTo;
-
     int structMod;
     int floodStamp;
     int floodOwner;

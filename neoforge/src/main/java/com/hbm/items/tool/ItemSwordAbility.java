@@ -42,7 +42,6 @@ public class ItemSwordAbility extends Item {
             double movement,
             @Nullable TagKey<Item> repairItems) {
         var blocks = BuiltInRegistries.acquireBootstrapRegistrationLookup(BuiltInRegistries.BLOCK);
-
         Properties properties = new Properties().stacksTo(1);
         if (tier.enchantmentValue() > 0) properties.enchantable(tier.enchantmentValue());
         if (tier.durability() > 0) properties.durability(tier.durability());

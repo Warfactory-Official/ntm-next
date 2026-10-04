@@ -9,8 +9,8 @@ import com.hbm.explosion.vanillant.standard.*;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.items.weapon.sedna.factory.XFactoryCatapult;
 import com.hbm.main.Polaroid;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.MukePayload;
-import com.hbm.platform.Services;
 import com.hbm.saveddata.satellites.SatelliteDetector;
 import com.hbm.sound.ModSounds;
 import net.minecraft.core.BlockPos;
@@ -56,8 +56,7 @@ public class BlockLandmineFat extends BlockLandmine {
                     SatelliteDetector.BurstIntensity.LOW,
                     x,
                     z);
-
-            Services.NETWORK.sendToAllAround(
+            PacketWire.sendToAllAround(
                     new MukePayload(
                             x,
                             y,

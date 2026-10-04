@@ -23,7 +23,6 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(BufferBuilder.class)
 @SuppressWarnings("UnreachableCode")
 public abstract class MixinBufferBuilder implements IBufferBuilderExtension {
-
     @Unique private static final int hbm$COLOR_ONLY = 1 << 1;
 
     @Shadow @Final private @Nullable VertexFormatElement[] elements;
@@ -137,7 +136,6 @@ public abstract class MixinBufferBuilder implements IBufferBuilderExtension {
         if ((long) count * size > Integer.MAX_VALUE) return false;
 
         this.ensureBuilding();
-
         this.endLastVertex();
         if (this.vertices + count > 16777215) {
             throw new IllegalStateException(
@@ -221,7 +219,6 @@ public abstract class MixinBufferBuilder implements IBufferBuilderExtension {
 
     @Override
     public void hbm$endBlock() {
-
         assert this.hbm$blockLeft == 0
                 : "Block underrun: " + this.hbm$blockLeft + " vertices reserved but unwritten";
         this.vertexPointer = this.hbm$blockPtr - this.vertexSize;
@@ -255,7 +252,6 @@ public abstract class MixinBufferBuilder implements IBufferBuilderExtension {
         if ((long) count * size > Integer.MAX_VALUE) return false;
 
         this.ensureBuilding();
-
         this.endLastVertex();
         if (this.vertices + count > 16777215) {
             throw new IllegalStateException(

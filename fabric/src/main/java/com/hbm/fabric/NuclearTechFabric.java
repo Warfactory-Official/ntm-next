@@ -18,19 +18,18 @@ import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.hazard.HazardSystem;
 import com.hbm.inventory.fluid.FluidPropertyReloadListener;
 import com.hbm.inventory.fluid.NTMFluidProperties;
-import com.hbm.inventory.recipes.ingredient.HbmFluidContentIngredient;
-import com.hbm.inventory.recipes.ingredient.HbmMatchersIngredient;
-import com.hbm.inventory.recipes.ingredient.HbmNarrowedIngredient;
+import com.hbm.inventory.recipes.ingredient.*;
 import com.hbm.items.armor.ItemModTwoKick;
 import com.hbm.items.tool.ItemBoltgun;
 import com.hbm.items.tool.ItemSettingsTool;
 import com.hbm.lib.Library;
 import com.hbm.packet.PacketDispatcher;
-import com.hbm.platform.FabricCapabilityService;
-import com.hbm.platform.FabricNetworkService;
-import com.hbm.platform.Services;
+import com.hbm.platform.FabricCaps;
+import com.hbm.platform.FabricNetwork;
+import com.hbm.platform.FabricServerEvents;
 import com.hbm.qmaw.QMAWLoader;
 import com.hbm.util.ContagionUtil;
+import com.hbm.world.ore.OreGeneration;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.FakePlayer;
@@ -61,16 +60,17 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 public final class NuclearTechFabric implements ModInitializer {
     @Override
     public void onInitialize() {
+        FabricServerEvents.install();
         NuclearTech.init();
-        ((FabricHbmConfig) Services.CONFIG).load();
+        FabricHbmConfig.load();
         NtmCapabilities.declareAll();
-        ((FabricCapabilityService) Services.CAPS).flush();
+        FabricCaps.flush();
         NuclearTech.commonSetup();
         NuclearTech.registerFlammability();
         ArmorModChestLootFabric.init();
 
         PacketDispatcher.register();
-        ((FabricNetworkService) Services.NETWORK).flush();
+        FabricNetwork.flush();
 
         AttackEntityCallback.EVENT.register(
                 (player, level, hand, entity, hit) -> {
@@ -118,7 +118,6 @@ public final class NuclearTechFabric implements ModInitializer {
             }
         }
         if (FabricLoader.getInstance().isModLoaded("create")) CreateMountedCrates.register();
-
         CommonLifecycleEvents.TAGS_LOADED.register(
                 (registries, client) -> {
                     HazardSystem.clearCaches();
@@ -150,11 +149,12 @@ public final class NuclearTechFabric implements ModInitializer {
         CustomIngredientSerializer.register(HbmMatchersIngredient.SERIALIZER);
         CustomIngredientSerializer.register(HbmFluidContentIngredient.SERIALIZER);
         CustomIngredientSerializer.register(HbmNarrowedIngredient.SERIALIZER);
+        CustomIngredientSerializer.register(HbmRecipeIngredient.SERIALIZER);
+        CustomIngredientSerializer.register(HbmAnyIngredient.SERIALIZER);
 
         ServerLifecycleEvents.SERVER_STARTING.register(NuclearTech::serverAboutToStart);
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> NuclearTech.serverStopped());
-        ServerLifecycleEvents.SERVER_STARTED.register(
-                com.hbm.world.ore.OreGeneration::serverStarted);
+        ServerLifecycleEvents.SERVER_STARTED.register(OreGeneration::serverStarted);
 
         EntitySleepEvents.ALLOW_SLEEPING.register(
                 (player, pos) -> {

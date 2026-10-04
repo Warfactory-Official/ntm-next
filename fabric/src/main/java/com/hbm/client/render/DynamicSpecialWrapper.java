@@ -113,7 +113,6 @@ public class DynamicSpecialWrapper<T> implements ItemModel {
 
         layer.setExtents(extents);
         T arg = argument.extract(item, displayContext, owner);
-
         Matrix4f pose = poses.get(displayContext);
         Matrix4fc local =
                 arg != null && argumentPose != null
@@ -122,7 +121,6 @@ public class DynamicSpecialWrapper<T> implements ItemModel {
         if (local != null) layer.setLocalTransform(local);
         layer.setupSpecialModel(renderer, arg);
         if (animated) output.setAnimated();
-
         if (arg != null) output.appendModelIdentityElement(arg);
         properties.of(item).applyToLayer(layer, displayContext);
     }

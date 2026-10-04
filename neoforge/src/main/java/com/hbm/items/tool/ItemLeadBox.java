@@ -16,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class ItemLeadBox extends Item {
-
     public static final MenuItemBox.Layout LAYOUT =
             new MenuItemBox.Layout(
                     4,

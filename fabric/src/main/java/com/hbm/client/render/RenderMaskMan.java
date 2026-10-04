@@ -68,7 +68,6 @@ public class RenderMaskMan extends EntityRenderer<EntityMaskMan, RenderMaskMan.S
         int light = state.lightCoords;
 
         poseStack.pushPose();
-
         poseStack.mulPose(Axis.YP.rotationDegrees(270F - state.bodyYaw));
         poseStack.mulPose(Axis.XP.rotationDegrees(state.swing * -0.1F));
 

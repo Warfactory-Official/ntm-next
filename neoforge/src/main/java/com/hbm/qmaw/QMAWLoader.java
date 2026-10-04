@@ -22,7 +22,6 @@ public final class QMAWLoader extends SimplePreparableReloadListener<QMAWCatalog
 
     @Override
     protected QMAWCatalog prepare(ResourceManager manager, ProfilerFiller profiler) {
-
         return read(manager, getRegistryLookup());
     }
 

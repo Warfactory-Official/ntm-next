@@ -4,6 +4,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityReactorZirnox;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -11,7 +12,6 @@ import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.handler.BossSpawnHandler;
-import com.hbm.tileentity.machine.BlockEntityReactorZirnox;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -24,7 +24,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class ReactorZirnox extends BlockMultiblockCore implements ITickingBlock, ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         1, 0, 2, 2, 2, 2, 0, 0, 0,
         4, -2, 1, 1, 1, 1, 0, 0, 0,
@@ -38,11 +37,9 @@ public class ReactorZirnox extends BlockMultiblockCore implements ITickingBlock,
     }
 
     private static final int[] DIMENSIONS = {1, 0, 2, 2, 2, 2};
-
     private static final int[] CHIMNEY = {4, -2, 1, 1, 1, 1};
     private static final int[] TOWER_CW = {4, -2, 0, 0, 2, -2};
     private static final int[] TOWER_CCW = {4, -2, 0, 0, -2, 2};
-
     private static final int PORT_DOMAINS = PASSIVE_FLUID_IN | PASSIVE_ITEMS;
 
     public ReactorZirnox(Properties props) {
@@ -76,7 +73,6 @@ public class ReactorZirnox extends BlockMultiblockCore implements ITickingBlock,
     @Override
     protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
         super.visitCells(core, facing, visitor);
-
         MultiblockHandlerXR.visitBox(core, CHIMNEY, facing, visitor);
         MultiblockHandlerXR.visitBox(core, TOWER_CW, facing, visitor);
         MultiblockHandlerXR.visitBox(core, TOWER_CCW, facing, visitor);

@@ -3,14 +3,14 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.blockentity.network.BlockEntityDroneDock;
+import com.hbm.blockentity.network.BlockEntityDroneProvider;
+import com.hbm.blockentity.network.BlockEntityDroneRequester;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.inventory.IGUIProvider;
-import com.hbm.tileentity.network.BlockEntityDroneDock;
-import com.hbm.tileentity.network.BlockEntityDroneProvider;
-import com.hbm.tileentity.network.BlockEntityDroneRequester;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;

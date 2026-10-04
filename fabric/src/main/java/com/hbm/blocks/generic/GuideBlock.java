@@ -4,9 +4,9 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.interfaces.ILookOverlay;
-import com.hbm.util.I18nUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -37,7 +37,6 @@ public final class GuideBlock extends Block implements ILookOverlay {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-
         return defaultBlockState()
                 .setValue(FACING, context.getHorizontalDirection().getClockWise());
     }
@@ -62,6 +61,10 @@ public final class GuideBlock extends Block implements ILookOverlay {
 
     @Override
     public void buildLookOverlay(Level level, BlockPos pos, LookInfo info) {
-        info.titleOnly(I18nUtil.resolveKey("desc.block.guide.openWiki"), 0x00FF00, 0x006000, -20);
+        info.titleOnly(
+                Component.empty().append(Component.translatable("desc.block.guide.openWiki")),
+                0x00FF00,
+                0x006000,
+                -20);
     }
 }

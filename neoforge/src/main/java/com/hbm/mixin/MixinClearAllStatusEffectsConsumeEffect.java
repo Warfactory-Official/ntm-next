@@ -18,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ClearAllStatusEffectsConsumeEffect.class)
 public abstract class MixinClearAllStatusEffectsConsumeEffect {
-
     @Inject(method = "apply", at = @At("HEAD"), cancellable = true)
     private void hbm$preserveUncurableEffects(
             Level level,

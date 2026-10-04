@@ -3,11 +3,11 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKConsole;
+import com.hbm.blockentity.machine.rbmk.RBMKColumn;
+import com.hbm.blockentity.machine.rbmk.RBMKColumnType;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.render.RenderRBMKConsole;
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKConsole;
-import com.hbm.tileentity.machine.rbmk.RBMKColumn;
-import com.hbm.tileentity.machine.rbmk.RBMKColumnType;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
@@ -32,7 +32,6 @@ public final class RBMKConsoleVisual extends HbmDynamicBlockEntityVisual<BlockEn
     private static final int SCREENS = 6;
     private final TransformedInstance[] columns = new TransformedInstance[COLUMNS];
     private final TransformedInstance[] dots = new TransformedInstance[COLUMNS];
-
     private final @Nullable RBMKColumn[] shownColumns = new RBMKColumn[COLUMNS];
     private final Matrix4f basePose = new Matrix4f();
     private final Matrix4f instancePose = new Matrix4f();

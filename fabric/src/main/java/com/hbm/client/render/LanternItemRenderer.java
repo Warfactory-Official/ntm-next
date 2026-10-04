@@ -30,7 +30,6 @@ import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
 
 public class LanternItemRenderer implements SpecialModelRenderer<Void>, ItemVisuals.Factory<Void> {
-
     private static final Identifier BODY_TEXTURE = ResourceManager.lantern_tex;
     private static final Identifier LIGHT_TEXTURE = ResourceManager.white_tex;
     private static final RenderType BODY = RenderTypes.entityCutoutCull(BODY_TEXTURE);

@@ -10,7 +10,6 @@ import com.hbm.blocks.generic.BlockDecoCRT;
 import com.hbm.entity.projectile.EntityBulletBaseMK4;
 import com.hbm.entity.projectile.EntityBulletBeamBase;
 import com.hbm.items.EnumCasingType;
-import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.factory.ConfettiUtil;
 import com.hbm.items.weapon.sedna.factory.GunFactory;
@@ -51,7 +50,6 @@ public class BulletConfig implements Cloneable {
 
                     BlockPos pos = blockHit.getBlockPos();
                     BlockState state = bullet.level().getBlockState(pos);
-
                     if (state.instrument() == NoteBlockInstrument.HAT
                             || state.is(Blocks.GLOWSTONE)) {
                         bullet.level().destroyBlock(pos, false);

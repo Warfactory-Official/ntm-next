@@ -3,8 +3,8 @@
 
 package com.hbm.client;
 
+import com.hbm.blockentity.machine.BlockEntityChimneyBase;
 import com.hbm.particle.CoolingTowerParticleOptions;
-import com.hbm.tileentity.machine.BlockEntityChimneyBase;
 import net.minecraft.core.BlockPos;
 
 public final class ChimneyTower {
@@ -21,7 +21,6 @@ public final class ChimneyTower {
                         .setLife(250 + be.getLevel().getRandom().nextInt(50))
                         .setColor(0x404040)
                         .build();
-
         be.getLevel()
                 .addParticle(
                         opts,

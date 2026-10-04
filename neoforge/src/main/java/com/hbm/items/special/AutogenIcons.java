@@ -10,7 +10,6 @@ import java.util.Map;
 import org.jspecify.annotations.Nullable;
 
 public final class AutogenIcons {
-
     private static final Map<MaterialShapes, Map<NTMMaterial, String>> AUTHORED =
             Map.of(
                     MaterialShapes.FRAGMENT,

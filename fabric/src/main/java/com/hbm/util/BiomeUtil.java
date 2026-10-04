@@ -53,6 +53,7 @@ public final class BiomeUtil {
                     double bx = QuartPos.toBlock(qx) + 2.0D;
                     double bz = QuartPos.toBlock(qz) + 2.0D;
                     double dist = Math.hypot(bx - centerX, bz - centerZ);
+                    if (dist > scale) return existing;
                     double percent = scale <= 0 ? 100.0D : dist * 100.0D / scale;
 
                     int targetTier;

@@ -5,9 +5,10 @@ package com.hbm.platform;
 
 import net.fabricmc.loader.api.FabricLoader;
 
-final class FabricTrEnergy {
+public final class FabricTrEnergy {
 
-    static final boolean AVAILABLE = FabricLoader.getInstance().isModLoaded("team_reborn_energy");
+    public static final boolean AVAILABLE =
+            FabricLoader.getInstance().isModLoaded("team_reborn_energy");
 
     private FabricTrEnergy() {}
 }

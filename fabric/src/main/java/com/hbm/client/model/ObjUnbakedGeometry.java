@@ -42,9 +42,7 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
     public static final String OVERLAY_SLOT = "overlay";
     public static final float RAW_OFFSET_Y = 0.5F;
     private static final int FULL_BRIGHT = 15;
-
     private static final float UV_EPS = 1.0e-4F;
-
     private static final int MAX_TILES = 64;
     private static final int CLIP_MAX = 12;
     private final @Nullable Identifier meshId;
@@ -61,7 +59,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
     private final String[] hidden;
     private final Overrides overrides;
     private final boolean smooth;
-
     private final Map<String, float[]> uvScales;
 
     public ObjUnbakedGeometry(
@@ -244,13 +241,11 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
 
     private static BakedQuad.MaterialInfo meshInfo(
             Material.Baked material, Transparency transparency, int tintIndex, int lightEmission) {
-
         return QuadLighting.ownBlock(
                 BakedQuad.MaterialInfo.of(material, transparency, tintIndex, true, lightEmission));
     }
 
     private static BakedQuad.MaterialInfo fullBright(BakedQuad.MaterialInfo info) {
-
         var result =
                 new BakedQuad.MaterialInfo(
                         info.sprite(),
@@ -259,7 +254,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                         info.tintIndex(),
                         info.shade(),
                         FULL_BRIGHT);
-
         result.hbm$setLightOrigin(info.hbm$lightOrigin());
         return result;
     }
@@ -291,10 +285,8 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
             float offsetY,
             float offsetZ,
             Overrides overrides) {
-
         MutableMesh mesh = Renderer.get().mutableMesh();
         QuadEmitter emitter = mesh.emitter();
-
         QuadScratch scratch = new QuadScratch();
         for (Group g : groups) {
             Matrix4fc matrix = g.state().transformation().getMatrix();
@@ -315,7 +307,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                         float[] src = cut == null ? q : cut[f];
                         int at = cut == null ? base : 0;
                         float[] back = twoSided ? reversed(src, at) : null;
-
                         emitQuad(
                                 emitter,
                                 scratch,
@@ -352,17 +343,14 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
             }
         }
         for (BoxQuad box : boxQuads) {
-
             emitter.fromBakedQuad(box.quad());
             if (box.color() != WHITE)
                 emitter.color(box.color(), box.color(), box.color(), box.color());
             emitter.cullFace(box.cull());
             emitter.tag(box.origin());
-
             if (!box.ambientOcclusion()) emitter.ambientOcclusion(TriState.FALSE);
             emitter.emit();
         }
-
         return new MeshQuadCollection(mesh.immutableCopy());
     }
 
@@ -450,7 +438,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
 
         MutableMesh mesh = Renderer.get().mutableMesh();
         QuadEmitter emitter = mesh.emitter();
-
         QuadScratch scratch = new QuadScratch();
         for (GroupObject group : model.groups) {
             if (parts != null && !contains(parts, group.name)) continue;
@@ -468,7 +455,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                     float[] src = cut == null ? q : cut[f];
                     int at = cut == null ? base : 0;
                     float[] back = twoSided ? reversed(src, at) : null;
-
                     emitQuad(
                             emitter,
                             scratch,
@@ -500,9 +486,7 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                                 uv[0],
                                 uv[1],
                                 groupColor);
-
                     if (overlaySprite != null) {
-
                         emitQuad(
                                 emitter,
                                 scratch,
@@ -522,7 +506,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                 }
             }
         }
-
         return new MeshQuadCollection(mesh.immutableCopy());
     }
 
@@ -660,7 +643,6 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
             int v = base + i * GroupObject.STRIDE;
             Vector3f transformed =
                     normalMatrix.transform(normals[i].set(q[v + 5], q[v + 6], q[v + 7]));
-
             if (transformed.lengthSquared() < 1e-12F) {
                 normalMatrix.transform(transformed.set(direction.getUnitVec3f()));
             }

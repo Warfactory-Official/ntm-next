@@ -3,14 +3,13 @@
 
 package com.hbm.blocks.machine.albion;
 
+import com.hbm.blockentity.machine.albion.BlockEntityPADipole;
 import com.hbm.blocks.RefreshesNeighborState;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.albion.BlockEntityPADipole;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;

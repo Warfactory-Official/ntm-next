@@ -1,0 +1,14 @@
+{
+  "actions": [
+    {
+      "type": "effect",
+      "duration": 500,
+      "effect": "hbm:radaway",
+      "extend": true
+    }
+  ],
+  "remainder": "hbm:iv_empty",
+  "sound": "hbm:item.radaway",
+  "targets": "hbm:radaway_flush",
+  "trigger": "use"
+}

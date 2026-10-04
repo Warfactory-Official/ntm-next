@@ -11,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class ItemMuchoMango extends ItemCustomLore {
-
     public static final int DRINK_TICKS = 200;
 
     public ItemMuchoMango(Properties props) {

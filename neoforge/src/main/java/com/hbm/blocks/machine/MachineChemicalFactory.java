@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineChemicalFactory;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
@@ -10,7 +11,6 @@ import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
-import com.hbm.tileentity.machine.BlockEntityMachineChemicalFactory;
 import com.hbm.util.BobMathUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,7 +22,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineChemicalFactory extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
     private static final int[] DIMENSIONS = {2, 0, 2, 2, 2, 2};
 
     public MachineChemicalFactory(Properties props) {
@@ -55,7 +54,6 @@ public class MachineChemicalFactory extends BlockMultiblockCore
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-
         return RenderShape.MODEL;
     }
 
@@ -75,7 +73,6 @@ public class MachineChemicalFactory extends BlockMultiblockCore
                         ringMask(f, l));
             }
         }
-
         for (int f = -2; f <= 2; f++) {
             visitor.cell(
                     core.offset(
@@ -147,7 +144,8 @@ public class MachineChemicalFactory extends BlockMultiblockCore
         for (int i = 0; i < BlockEntityMachineChemicalFactory.MODULES; i++) {
             if (be.module[i].getRecipeName().isEmpty()) continue;
             GenericRecipe rec = be.module[i].getRecipe();
-            String name = rec != null ? rec.getLocalizedName() : be.module[i].getRecipeName();
+            String name =
+                    rec != null ? rec.getLocalizedName().getString() : be.module[i].getRecipeName();
             info.line(
                     "Module "
                             + (i + 1)

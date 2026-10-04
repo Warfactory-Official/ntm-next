@@ -3,11 +3,11 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityReactorZirnox;
 import com.hbm.inventory.container.MenuReactorZirnox;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityReactorZirnox;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -227,7 +227,7 @@ public class ScreenReactorZirnox extends ScreenInfoContainer<MenuReactorZirnox> 
         if (core == null) return;
         CompoundTag data = new CompoundTag();
         data.putBoolean(key, true);
-        Services.NETWORK.sendToServer(new NbtControlPayload(core, data));
+        PacketWire.sendToServer(new NbtControlPayload(core, data));
     }
 
     private BlockPos corePos() {

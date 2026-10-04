@@ -6,13 +6,13 @@ package com.hbm.inventory.fluid.trait;
 import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.handler.pollution.PollutionType;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
-import com.hbm.util.I18nUtil;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 
 public class FT_Polluting extends FluidTrait {
@@ -39,40 +39,68 @@ public class FT_Polluting extends FluidTrait {
     }
 
     @Override
-    public void addInfo(List<String> info) {
-        info.add(ChatFormatting.GOLD + "[" + I18nUtil.resolveKey("hbmfluid.trait.polluting") + "]");
+    public void addInfo(List<Component> info) {
+        info.add(
+                Component.empty()
+                        .append(Component.literal("[").withStyle(ChatFormatting.GOLD))
+                        .append(
+                                Component.translatable("hbmfluid.trait.polluting")
+                                        .withStyle(ChatFormatting.GOLD))
+                        .append(Component.literal("]").withStyle(ChatFormatting.GOLD)));
     }
 
     @Override
-    public void addInfoHidden(List<String> info) {
+    public void addInfoHidden(List<Component> info) {
         if (!releaseMap.isEmpty()) {
-            info.add(ChatFormatting.GREEN + I18nUtil.resolveKey("hbmfluid.trait.spilled") + ":");
+            info.add(
+                    Component.empty()
+                            .append(
+                                    Component.translatable("hbmfluid.trait.spilled")
+                                            .withStyle(ChatFormatting.GREEN))
+                            .append(Component.literal(":").withStyle(ChatFormatting.GREEN)));
             for (Map.Entry<PollutionType, Float> entry : releaseMap.entrySet()) {
                 info.add(
-                        ChatFormatting.GREEN
-                                + " - "
-                                + entry.getValue()
-                                + " "
-                                + I18nUtil.resolveKey(
-                                        "pollution.trait."
-                                                + entry.getKey().name().toLowerCase(Locale.US))
-                                + " "
-                                + I18nUtil.resolveKey("hbmfluid.trait.perMB"));
+                        Component.empty()
+                                .append(
+                                        Component.literal(" - " + entry.getValue() + " ")
+                                                .withStyle(ChatFormatting.GREEN))
+                                .append(
+                                        Component.translatable(
+                                                        "pollution.trait."
+                                                                + entry.getKey()
+                                                                        .name()
+                                                                        .toLowerCase(Locale.US))
+                                                .withStyle(ChatFormatting.GREEN))
+                                .append(Component.literal(" ").withStyle(ChatFormatting.GREEN))
+                                .append(
+                                        Component.translatable("hbmfluid.trait.perMB")
+                                                .withStyle(ChatFormatting.GREEN)));
             }
         }
         if (!burnMap.isEmpty()) {
-            info.add(ChatFormatting.RED + I18nUtil.resolveKey("hbmfluid.trait.burned") + ":");
+            info.add(
+                    Component.empty()
+                            .append(
+                                    Component.translatable("hbmfluid.trait.burned")
+                                            .withStyle(ChatFormatting.RED))
+                            .append(Component.literal(":").withStyle(ChatFormatting.RED)));
             for (Map.Entry<PollutionType, Float> entry : burnMap.entrySet()) {
                 info.add(
-                        ChatFormatting.RED
-                                + " - "
-                                + entry.getValue()
-                                + " "
-                                + I18nUtil.resolveKey(
-                                        "pollution.trait."
-                                                + entry.getKey().name().toLowerCase(Locale.US))
-                                + " "
-                                + I18nUtil.resolveKey("hbmfluid.trait.perMB"));
+                        Component.empty()
+                                .append(
+                                        Component.literal(" - " + entry.getValue() + " ")
+                                                .withStyle(ChatFormatting.RED))
+                                .append(
+                                        Component.translatable(
+                                                        "pollution.trait."
+                                                                + entry.getKey()
+                                                                        .name()
+                                                                        .toLowerCase(Locale.US))
+                                                .withStyle(ChatFormatting.RED))
+                                .append(Component.literal(" ").withStyle(ChatFormatting.RED))
+                                .append(
+                                        Component.translatable("hbmfluid.trait.perMB")
+                                                .withStyle(ChatFormatting.RED)));
             }
         }
     }

@@ -3,9 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityReactorResearch;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.Vertices;
-import com.hbm.tileentity.machine.BlockEntityReactorResearch;
 import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.ColorTargetState;
@@ -24,7 +24,6 @@ import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.ARGB;
@@ -36,13 +35,10 @@ import org.jspecify.annotations.Nullable;
 public class RenderSmallReactor
         implements BlockEntityRenderer<BlockEntityReactorResearch, RenderSmallReactor.State>,
                 ConcurrentRenderStateExtraction {
-
     private static final float BODY_YAW = 180F;
-
     private static final double GLOW_MIN = 0.285D, GLOW_MAX = 0.7D, GLOW_STEP = 0.025D;
     private static final double GLOW_TOP = 1.375D, GLOW_BOTTOM = 1.375D;
     private static final int GLOW_COLOR = 0x66E5FF;
-
     public static final int GLOW_FLUX = 10;
 
     static final RenderPipeline GLOW_PIPELINE =
@@ -149,7 +145,6 @@ public class RenderSmallReactor
                     GLOW,
                     (pose, buf) -> {
                         for (double d = GLOW_MIN; d < GLOW_MAX; d += GLOW_STEP) {
-
                             float alpha =
                                     0.025F
                                             + (float) (Math.random() * 0.015D)

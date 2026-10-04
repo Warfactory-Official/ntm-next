@@ -15,7 +15,6 @@ import org.jspecify.annotations.Nullable;
 public class RailStandardRamp extends BlockRailNTM {
 
     private static final int[] DIMENSIONS = {0, 0, 2, 2, 1, 0};
-
     private static final double[] STEP_HEIGHTS = {0.9D, 0.7D, 0.5D, 0.3D, 0.1D};
 
     public RailStandardRamp(Properties props) {

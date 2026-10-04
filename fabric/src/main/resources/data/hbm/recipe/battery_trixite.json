@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "D": "#hbm:plates_cast/saturnite",
     "S": "hbm:powder_power",

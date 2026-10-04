@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.machine.oil.BlockEntityMachineVacuumDistill;
+import com.hbm.blockentity.machine.oil.BlockEntityMachineVacuumDistill;
 
 public final class VacuumDistillSound {
 

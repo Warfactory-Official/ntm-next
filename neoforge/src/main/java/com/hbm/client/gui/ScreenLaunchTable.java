@@ -3,13 +3,13 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.bomb.BlockEntityLaunchTable;
 import com.hbm.inventory.container.MenuLaunchTable;
 import com.hbm.items.weapon.ItemCustomMissile;
 import com.hbm.items.weapon.ItemCustomMissilePart.PartSize;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.bomb.BlockEntityLaunchTable;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -52,7 +52,6 @@ public class ScreenLaunchTable extends ScreenInfoContainer<MenuLaunchTable> {
     @Override
     protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         BlockEntityLaunchTable table = table();
-
         ItemStack missile = menu.getSlot(BlockEntityLaunchTable.SLOT_MISSILE).getItem();
         ItemStack designator = menu.getSlot(BlockEntityLaunchTable.SLOT_DESIGNATOR).getItem();
 
@@ -258,7 +257,6 @@ public class ScreenLaunchTable extends ScreenInfoContainer<MenuLaunchTable> {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-
         boolean handled = super.mouseClicked(event, doubleClick);
         if (press(event, BUTTON_10_X, PartSize.SIZE_10)) return true;
         if (press(event, BUTTON_15_X, PartSize.SIZE_15)) return true;
@@ -274,7 +272,7 @@ public class ScreenLaunchTable extends ScreenInfoContainer<MenuLaunchTable> {
         playClick();
         CompoundTag data = new CompoundTag();
         data.putInt("padSize", size.ordinal());
-        Services.NETWORK.sendToServer(new NbtControlPayload(table().getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(table().getBlockPos(), data));
         return true;
     }
 }

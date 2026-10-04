@@ -63,7 +63,6 @@ public final class RenderMultiCloud<T extends Entity>
             float y = (float) ((spread.nextGaussian() - 1D) * 0.15D);
             float z = (float) ((spread.nextGaussian() - 1D) * 0.15D);
             float scale = (float) ((spread.nextDouble() * 0.5D + 0.25D) * 3.75D);
-
             float bias = scale * 0.25F;
             quad(
                     buffer,

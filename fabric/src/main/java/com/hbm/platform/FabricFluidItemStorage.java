@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
-final class FabricFluidItemStorage extends SingleVariantItemStorage<FluidVariant> {
+public final class FabricFluidItemStorage extends SingleVariantItemStorage<FluidVariant> {
 
     private static final long DROPLETS_PER_MB = FluidConstants.BUCKET / 1000;
 
@@ -28,7 +28,7 @@ final class FabricFluidItemStorage extends SingleVariantItemStorage<FluidVariant
         this.context = context;
     }
 
-    static void register() {
+    public static void register() {
         List<Item> items = ForeignFluidItemAccess.containerItems();
         if (items.isEmpty()) return;
         FluidStorage.ITEM.registerForItems(
@@ -59,7 +59,6 @@ final class FabricFluidItemStorage extends SingleVariantItemStorage<FluidVariant
     @Override
     protected long getCapacity(FluidVariant variant) {
         ItemStack stack = context.getItemVariant().toStack();
-
         Fluid fluid =
                 variant.isBlank() ? ForeignFluidItemAccess.heldFluid(stack) : variant.getFluid();
         return ForeignFluidItemAccess.capacityMb(stack, fluid) * DROPLETS_PER_MB;

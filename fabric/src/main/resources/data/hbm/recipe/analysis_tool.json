@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "G": "#c:glass_panes",
     "S": "#c:ingots/steel"

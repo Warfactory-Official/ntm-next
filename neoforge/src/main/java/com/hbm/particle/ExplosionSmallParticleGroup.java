@@ -33,6 +33,7 @@ public class ExplosionSmallParticleGroup extends ParticleGroup<ParticleExplosion
         Vec3 cam = camera.position();
 
         for (ParticleExplosionSmall cloud : this.particles) {
+            if (cloud.ownsVisual()) continue;
             out.add(
                     new Instance(
                             cloud.interpX(partialTicks) - cam.x,

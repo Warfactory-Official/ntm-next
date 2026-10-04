@@ -4,6 +4,7 @@
 package com.hbm.uninos.graph;
 
 import com.mojang.serialization.Codec;
+import java.util.List;
 import net.minecraft.world.level.block.state.BlockState;
 
 public interface IGraphProvider<D> {
@@ -12,7 +13,7 @@ public interface IGraphProvider<D> {
 
     boolean dataCompatible(D a, D b);
 
-    Codec<D> dataCodec();
+    Codec<List<D>> dataTableCodec();
 
     default boolean hasTieredRates() {
         return false;

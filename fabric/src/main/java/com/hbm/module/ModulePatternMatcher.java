@@ -44,7 +44,6 @@ public final class ModulePatternMatcher implements SyncSource {
     public static final String MODE_EXACT = "exact";
     public static final String MODE_WILDCARD = "wildcard";
     public static final String MODE_BEDROCK = "bedrock";
-
     private static final String[] SMART_SHAPE_PATHS = {
         MaterialShapes.INGOT.name() + "/",
         MaterialShapes.BLOCK.name() + "/",
@@ -158,7 +157,6 @@ public final class ModulePatternMatcher implements SyncSource {
     public static boolean matches(String mode, ItemStack filter, ItemStack input) {
         return switch (mode) {
             case MODE_EXACT -> sameItemAndState(input, filter);
-
             case MODE_WILDCARD ->
                     input.is(filter.getItem())
                             || ItemFamily.of(filter.getItem()) != null

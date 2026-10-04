@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(LivingEntity.class)
 abstract class LivingEntityEarlyDamageMixin {
-
     @ModifyExpressionValue(
             method = "hurtServer",
             at =

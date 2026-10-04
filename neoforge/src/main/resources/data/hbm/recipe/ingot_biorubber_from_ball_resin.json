@@ -2,7 +2,10 @@
   "type": "minecraft:smelting",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": "hbm:ball_resin",
+  "ingredient": {
+    "neoforge:ingredient_type": "hbm:recipe_input",
+    "base": "hbm:ball_resin"
+  },
   "result": {
     "id": "hbm:ingot_biorubber"
   }

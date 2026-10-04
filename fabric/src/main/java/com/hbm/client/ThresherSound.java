@@ -3,7 +3,7 @@
 
 package com.hbm.client;
 
-import com.hbm.tileentity.machine.BlockEntityThresher;
+import com.hbm.blockentity.machine.BlockEntityThresher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 

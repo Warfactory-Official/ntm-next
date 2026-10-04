@@ -7,7 +7,7 @@ import com.hbm.inventory.container.MenuPneumoStorageAccess;
 import com.hbm.lib.Library;
 import com.hbm.packet.IPayloadHandlerContext;
 import com.hbm.packet.threading.ThreadedPayload;
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgeServerEvents;
 import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,6 @@ public final class PneumoAccessSyncPayload extends ThreadedPayload {
     }
 
     private static PneumoAccessSyncPayload decode(ByteBuf buf) {
-
         RegistryFriendlyByteBuf reg = (RegistryFriendlyByteBuf) buf;
         int containerId = reg.readVarInt();
         int size = reg.readVarInt();
@@ -57,10 +56,9 @@ public final class PneumoAccessSyncPayload extends ThreadedPayload {
 
     @Override
     public void toBytes(ByteBuf buf) {
-
         RegistryFriendlyByteBuf reg =
                 new RegistryFriendlyByteBuf(
-                        buf, Services.SERVER.getCurrentServer().registryAccess());
+                        buf, NeoForgeServerEvents.getCurrentServer().registryAccess());
         reg.writeVarInt(containerId);
         reg.writeVarInt(deltas.size());
         for (Delta delta : deltas) {

@@ -47,7 +47,6 @@ public class GunConfig {
     public static final String O_HUDCOMPONENTS = "O_HUDCOMPONENTS";
     public List<SmokeNode> smokeNodes = new ArrayList<>();
     public int index;
-
     protected Receiver[] receivers_DNA;
     protected float durability_DNA;
     protected int drawDuration_DNA = 0;
@@ -59,9 +58,7 @@ public class GunConfig {
     protected boolean reloadRequiresTypeChange_DNA = false;
     protected boolean reloadAnimationsSequential_DNA;
     protected Identifier scopeTexture_DNA;
-
     protected BiConsumer<ItemStack, LambdaContext> smokeHandler_DNA;
-
     protected BiConsumer<ItemStack, LambdaContext> orchestra_DNA;
     protected BiConsumer<ItemStack, LambdaContext> onPressPrimary_DNA;
     protected BiConsumer<ItemStack, LambdaContext> onPressSecondary_DNA;
@@ -71,9 +68,7 @@ public class GunConfig {
     protected BiConsumer<ItemStack, LambdaContext> onReleaseSecondary_DNA;
     protected BiConsumer<ItemStack, LambdaContext> onReleaseTertiary_DNA;
     protected BiConsumer<ItemStack, LambdaContext> onReleaseReload_DNA;
-
     protected BiConsumer<ItemStack, LambdaContext> decider_DNA;
-
     protected BiFunction<ItemStack, GunAnimation, BusAnimation> animations_DNA;
     protected IHUDComponent[] hudComponents_DNA;
 

@@ -99,11 +99,9 @@ public class BlockGraphiteDrilled extends BlockGraphiteDrilledBase {
             return InteractionResult.SUCCESS;
 
         if (!state.getValue(SHROUDED)) {
-
             if (checkInteraction(
                     level, pos, stack, aluminiumShell(), state.setValue(SHROUDED, true)))
                 return InteractionResult.SUCCESS;
-
             if (checkInteraction(
                     level,
                     pos,

@@ -20,16 +20,13 @@ public final class DashBarRenderer {
     private static final int WIDTH = 30;
     private static final int HEIGHT = 10;
     private static final int PER_ROW = 3;
-
     private static final float V_RED = 18F;
     private static final float V_NORMAL = 28F;
     private static final float V_PARTIAL = 38F;
     private static final float V_EMPTY = 48F;
     private static final float V_FLASH = 58F;
     private static final float U_BAR = 76F;
-
     private static final float FADE_STEP = 0.04F;
-
     private static final int FLASH_AT = ArmorDash.PER_DASH - 3;
 
     private static float fade;
@@ -85,7 +82,6 @@ public final class DashBarRenderer {
             if (filled < bar) {
                 v = V_EMPTY;
             } else if (filled == bar) {
-
                 v = bar == 0 ? V_RED : V_PARTIAL;
                 fill = (int) (partial * (WIDTH / (float) ArmorDash.PER_DASH));
             }

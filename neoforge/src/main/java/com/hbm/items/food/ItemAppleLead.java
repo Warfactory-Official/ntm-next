@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class ItemAppleLead extends ItemAppleBase {
-
     private static final float LETHAL = 500F;
 
     public ItemAppleLead(Properties props, Tier tier) {

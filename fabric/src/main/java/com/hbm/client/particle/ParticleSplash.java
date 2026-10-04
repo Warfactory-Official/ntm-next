@@ -23,7 +23,6 @@ import net.minecraft.util.RandomSource;
 import org.jspecify.annotations.Nullable;
 
 public class ParticleSplash extends SingleQuadParticle implements VisualParticle {
-
     private static final VarHandle NEXT_PARTICLE_ID;
     private static long nextParticleId;
 
@@ -165,7 +164,6 @@ public class ParticleSplash extends SingleQuadParticle implements VisualParticle
                 double ya,
                 double za,
                 RandomSource random) {
-
             int setting = Minecraft.getInstance().options.particles().get().ordinal();
             if (!(setting == 0 || (setting == 1 && random.nextBoolean()))) return null;
             return new ParticleSplash(level, x, y, z, options, this.sprites.get(random));

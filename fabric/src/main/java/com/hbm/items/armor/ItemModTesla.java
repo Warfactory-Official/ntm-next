@@ -3,9 +3,9 @@
 
 package com.hbm.items.armor;
 
+import com.hbm.blockentity.machine.BlockEntityTesla;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.handler.ArmorUtil;
-import com.hbm.tileentity.machine.BlockEntityTesla;
 import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -16,7 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemModTesla extends ItemArmorMod {
-
     private static final double EYE_OFFSET = 1.25D;
     private static final double RANGE = 5D;
 
@@ -33,10 +32,14 @@ public class ItemModTesla extends ItemArmorMod {
 
     @Override
     public void addDescription(List<Component> tooltip, ItemStack stack, ItemStack armor) {
-
         tooltip.add(
                 Component.translatable("desc.item.armorMod.tesla.installed", stack.getHoverName())
                         .withStyle(ChatFormatting.YELLOW));
+    }
+
+    @Override
+    public boolean ticksServer() {
+        return true;
     }
 
     @Override

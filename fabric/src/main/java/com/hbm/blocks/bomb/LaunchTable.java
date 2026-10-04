@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.bomb;
 
+import com.hbm.blockentity.bomb.BlockEntityLaunchTable;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.RefreshesNeighborState;
@@ -10,7 +11,6 @@ import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.IBomb;
-import com.hbm.tileentity.bomb.BlockEntityLaunchTable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -30,10 +30,8 @@ public class LaunchTable extends BlockMultiblockCore
 
     private static final int[] DIMENSIONS = {0, 0, 4, 4, 4, 4};
     private static final int RADIUS = 4;
-
     private static final int SCAFFOLD_OFFSET = 3;
     private static final int SCAFFOLD_HEIGHT = 12;
-
     private static final VoxelShape TRENCH_GRATING = Shapes.box(0, 1 - 1.0E-4, 0, 1, 1, 1);
 
     public LaunchTable(Properties props) {
@@ -52,7 +50,6 @@ public class LaunchTable extends BlockMultiblockCore
 
     @Override
     protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-
         super.visitCells(core, facing, visitor);
 
         for (int i = -RADIUS; i <= RADIUS; i++) {
@@ -89,7 +86,6 @@ public class LaunchTable extends BlockMultiblockCore
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-
         return RenderShape.MODEL;
     }
 

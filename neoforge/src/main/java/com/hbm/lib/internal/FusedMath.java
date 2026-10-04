@@ -3,7 +3,6 @@
 
 package com.hbm.lib.internal;
 
-import com.hbm.lib.internal.natives.NativeLibrary;
 import com.sun.management.HotSpotDiagnosticMXBean;
 import java.lang.management.ManagementFactory;
 import org.slf4j.LoggerFactory;
@@ -16,11 +15,11 @@ public final class FusedMath {
 
     private static boolean detect() {
         boolean fma = readUseFma();
-        if (!fma && !NativeLibrary.AVAILABLE) {
+        if (!fma) {
             LoggerFactory.getLogger("NTM")
                     .warn(
-                            "No hardware FMA and no native kernel bound; Math.fma takes its "
-                                    + "BigDecimal fallback and the Java fused kernels run slow");
+                            "No hardware FMA; Math.fma takes its BigDecimal fallback and the "
+                                    + "Java fused kernels run slow");
         }
         return fma;
     }
@@ -31,7 +30,6 @@ public final class FusedMath {
                     ManagementFactory.getPlatformMXBean(HotSpotDiagnosticMXBean.class);
             return Boolean.parseBoolean(bean.getVMOption("UseFMA").getValue());
         } catch (IllegalArgumentException e) {
-
             return false;
         } catch (RuntimeException | LinkageError e) {
             return false;

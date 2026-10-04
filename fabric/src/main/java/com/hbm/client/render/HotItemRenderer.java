@@ -103,7 +103,6 @@ public class HotItemRenderer implements ItemModel {
     private static BakedQuad blended(BakedQuad quad) {
         BakedQuad.MaterialInfo info = quad.materialInfo();
         Material.Baked material = new Material.Baked(info.sprite(), true);
-
         BakedQuad.MaterialInfo translucent =
                 BakedQuad.MaterialInfo.of(
                         material,

@@ -43,7 +43,6 @@ public final class FluidIdControlPayload extends ThreadedPayload {
     public static void handleServer(FluidIdControlPayload payload, IPayloadHandlerContext ctx) {
         if (!(ctx.player() instanceof ServerPlayer sp)) return;
         Fluid fluid = BuiltInRegistries.FLUID.getValue(Identifier.parse(payload.fluidId));
-
         ItemStack stack = sp.getMainHandItem();
         if (stack.getItem() instanceof FluidIdentifierItem) {
             FluidIdentifierData data =

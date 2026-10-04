@@ -39,6 +39,7 @@ public class MukeFlashParticleGroup extends ParticleGroup<ParticleMukeFlash> {
         Vec3 cam = camera.position();
 
         for (ParticleMukeFlash flash : this.particles) {
+            if (flash.ownsVisual()) continue;
             out.add(
                     new Instance(
                             flash.interpX(partialTicks) - cam.x,

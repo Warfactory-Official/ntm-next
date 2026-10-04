@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineStrandCaster;
 import com.hbm.client.ModifierKeys;
 import com.hbm.client.render.HbmRenderPipelines;
 import com.hbm.inventory.container.MenuMachineStrandCaster;
 import com.hbm.inventory.material.Mats;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachineStrandCaster;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -26,8 +26,8 @@ public class ScreenMachineStrandCaster extends ScreenInfoContainer<MenuMachineSt
     public ScreenMachineStrandCaster(
             MenuMachineStrandCaster menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 176, 214);
-        this.titleLabelY = 4;
-        this.inventoryLabelY = this.imageHeight - 96 + 2;
+        titleLabelY = 4;
+        inventoryLabelY = imageHeight - 96 + 2;
     }
 
     @Override
@@ -104,12 +104,12 @@ public class ScreenMachineStrandCaster extends ScreenInfoContainer<MenuMachineSt
         } else {
             list =
                     List.of(
-                            Component.literal(
-                                            be.type.getLocalizedName()
-                                                    + ": "
-                                                    + Mats.formatAmount(
-                                                            be.amount,
-                                                            ModifierKeys.leftShiftHeld()))
+                            Component.empty()
+                                    .append(be.type.getLocalizedName())
+                                    .append(Component.literal(": "))
+                                    .append(
+                                            Mats.formatAmount(
+                                                    be.amount, ModifierKeys.detailsHeld()))
                                     .withStyle(ChatFormatting.YELLOW));
         }
 

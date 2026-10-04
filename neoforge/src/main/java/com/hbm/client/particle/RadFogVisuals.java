@@ -27,16 +27,18 @@ public final class RadFogVisuals {
 
     public static void tick() {
         if (ACTIVE.isEmpty()) return;
-        Level current = Minecraft.getInstance().level;
+        Minecraft mc = Minecraft.getInstance();
+        Level current = mc.level;
+        boolean advance =
+                current != null && !mc.isPaused() && current.tickRateManager().runsNormally();
         Iterator<RadiationFogEffect> it = ACTIVE.iterator();
         while (it.hasNext()) {
             RadiationFogEffect e = it.next();
-
             if (e.level() != current) {
                 it.remove();
                 continue;
             }
-            e.age++;
+            if (advance) e.age++;
             if (e.expired()) {
                 VisualizationHelper.queueRemove(e);
                 it.remove();

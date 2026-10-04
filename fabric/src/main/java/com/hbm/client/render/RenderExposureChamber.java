@@ -3,13 +3,13 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMachineExposureChamber;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.util.BeamPronter.EnumBeamType;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
 import com.hbm.render.util.BeamPronter;
-import com.hbm.tileentity.machine.BlockEntityMachineExposureChamber;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -22,7 +22,6 @@ import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
-import net.minecraft.core.Direction;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -40,7 +39,6 @@ public class RenderExposureChamber
     private static final int FLICKER_CHANCE = 2;
     private static final int FLICKER_TINT = 0x80d0ff;
     private static final int FLICKER_PLAIN = 0xFFFFFF;
-
     private static final Vec3 INJECTOR = new Vec3(0, 0, 5);
     private static final Vec3 COLUMN = new Vec3(0, 1.5, 0);
     private static final Vec3 RING = new Vec3(0, 0, -1);
@@ -52,7 +50,6 @@ public class RenderExposureChamber
     public RenderExposureChamber() {
         this.model = ResourceManager.exposure_chamber;
         this.baseType = WorldRenderPipeline.oneSidedCutout(ResourceManager.exposure_chamber_tex);
-
         this.coreType = FlatCutout.of(ResourceManager.exposure_chamber_tex);
     }
 
@@ -85,7 +82,6 @@ public class RenderExposureChamber
         state.isOn = be.isOn;
 
         long time = be.getLevel().getGameTime();
-
         state.bob = Math.sin((time % (Math.PI * 16D) + partialTicks) * 0.125D) * 0.0625D;
         state.flickerSeed = time / FLICKER_PERIOD;
         state.tinted = time % FLICKER_PERIOD >= FLICKER_PERIOD / 2;
@@ -148,7 +144,6 @@ public class RenderExposureChamber
                 0.125F,
                 1,
                 0);
-
         BeamPronter.prontBeam(
                 ps,
                 col,

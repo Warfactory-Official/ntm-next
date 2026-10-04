@@ -27,7 +27,6 @@ public final class OrdnanceVisuals {
     }
 
     public static void register() {
-
         ObjEntityVisual.register(
                 ModEntities.ARTILLERY_SHELL.get(),
                 () ->

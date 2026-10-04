@@ -9,7 +9,7 @@ import com.hbm.inventory.material.Mats.MaterialStack;
 import com.hbm.inventory.material.Mats;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
-import com.hbm.util.I18nUtil;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.ArrayList;
@@ -19,6 +19,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
@@ -62,7 +63,15 @@ public class CrucibleRecipe extends GenericRecipe {
             recipe -> new Extras(nullSafe(recipe.input), nullSafe(recipe.output), recipe.frequency);
     public static final MapCodec<CrucibleRecipe> MAP_CODEC =
             GenericRecipe.mapCodec(
-                    CrucibleRecipe::new, EXTRAS_MAP_CODEC, APPLY_EXTRAS, EXTRACT_EXTRAS);
+                            CrucibleRecipe::new, EXTRAS_MAP_CODEC, APPLY_EXTRAS, EXTRACT_EXTRAS)
+                    .validate(
+                            row ->
+                                    row.input.length == 0
+                                                    || Arrays.stream(row.input)
+                                                            .anyMatch(m -> m.amount <= 0)
+                                            ? DataResult.error(
+                                                    () -> "crucible needs positive input materials")
+                                            : DataResult.success(row));
     public static final StreamCodec<RegistryFriendlyByteBuf, CrucibleRecipe> STREAM_CODEC =
             GenericRecipe.streamCodec(
                     CrucibleRecipe::new, EXTRAS_STREAM_CODEC, APPLY_EXTRAS, EXTRACT_EXTRAS);
@@ -82,7 +91,7 @@ public class CrucibleRecipe extends GenericRecipe {
 
     public CrucibleRecipe setup(int frequency, ItemStackTemplate icon) {
         this.frequency = frequency;
-        this.setIcon(icon);
+        setIcon(icon);
         return this;
     }
 
@@ -103,8 +112,8 @@ public class CrucibleRecipe extends GenericRecipe {
     }
 
     @Override
-    public List<String> print() {
-        List<String> list = new ArrayList<>();
+    public List<Component> print() {
+        List<Component> list = new ArrayList<>();
         header(list);
         input(list);
         output(list);
@@ -112,26 +121,36 @@ public class CrucibleRecipe extends GenericRecipe {
     }
 
     @Override
-    protected void input(List<String> list) {
-        list.add(ChatFormatting.BOLD + I18nUtil.resolveKey("gui.recipe.input") + ":");
-        boolean shift = ModifierKeys.leftShiftHeld();
+    protected void input(List<Component> list) {
+        list.add(
+                Component.translatable("gui.recipe.input")
+                        .append(":")
+                        .withStyle(ChatFormatting.BOLD));
+        boolean shift = ModifierKeys.detailsHeld();
         for (MaterialStack stack : input) {
             list.add(
-                    stack.material.getLocalizedName()
-                            + ": "
-                            + Mats.formatAmount(stack.amount, shift));
+                    stack.material
+                            .getLocalizedName()
+                            .copy()
+                            .append(": ")
+                            .append(Mats.formatAmount(stack.amount, shift)));
         }
     }
 
     @Override
-    protected void output(List<String> list) {
-        list.add(ChatFormatting.BOLD + I18nUtil.resolveKey("gui.recipe.output") + ":");
-        boolean shift = ModifierKeys.leftShiftHeld();
+    protected void output(List<Component> list) {
+        list.add(
+                Component.translatable("gui.recipe.output")
+                        .append(":")
+                        .withStyle(ChatFormatting.BOLD));
+        boolean shift = ModifierKeys.detailsHeld();
         for (MaterialStack stack : output) {
             list.add(
-                    stack.material.getLocalizedName()
-                            + ": "
-                            + Mats.formatAmount(stack.amount, shift));
+                    stack.material
+                            .getLocalizedName()
+                            .copy()
+                            .append(": ")
+                            .append(Mats.formatAmount(stack.amount, shift)));
         }
     }
 

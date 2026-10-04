@@ -1,5 +1,6 @@
 {
   "type": "hbm:single_piece",
+  "aquatic": true,
   "biomes": [
     "minecraft:cold_ocean",
     "minecraft:frozen_ocean",

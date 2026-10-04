@@ -49,7 +49,6 @@ public final class OilSurfaceScarring {
             int absX = xCoord + offX;
             int absZ = zCoord + offZ;
             boolean inner = (offX * offX + offZ * offZ) < INNER_RADIUS_SQ;
-
             boolean seedPlant = rand.nextInt(20) == 0;
             BlockState deadPlant = randomDeadPlant(rand);
             if (clip != null
@@ -79,7 +78,6 @@ public final class OilSurfaceScarring {
                                         .get()
                                         .defaultBlockState(),
                                 2);
-
                         if (!inner && oy == 0 && seedPlant) {
                             level.setBlock(above.set(absX, y + 1, absZ), deadPlant, 2);
                         }
@@ -90,7 +88,7 @@ public final class OilSurfaceScarring {
                     } else if (b == Blocks.SAND || b == ModBlocks.ORE_OIL_SAND.get()) {
                         level.setBlock(sub, ModBlocks.SAND_DIRTY.get().defaultBlockState(), 2);
                         break;
-                    } else if (b == Blocks.STONE) {
+                    } else if (LocationIsValidSpawn.isStone(subState)) {
                         level.setBlock(sub, ModBlocks.STONE_CRACKED.get().defaultBlockState(), 2);
                         break;
                     }
@@ -190,7 +188,9 @@ public final class OilSurfaceScarring {
                     } else if (ground instanceof DoublePlantBlock) {
                         level.setBlock(
                                 pos, ModBlocks.PLANT_DEAD_BIGFLOWER.get().defaultBlockState(), 2);
-                    } else if (ground instanceof VegetationBlock) {
+                    } else if (ground instanceof VegetationBlock
+                            || ground == Blocks.SUGAR_CANE
+                            || ground == Blocks.CACTUS) {
                         level.setBlock(pos, ModBlocks.PLANT_DEAD.get().defaultBlockState(), 2);
                     }
                 }
@@ -209,12 +209,13 @@ public final class OilSurfaceScarring {
                 } else if (ground == Blocks.SAND || ground == ModBlocks.ORE_OIL_SAND.get()) {
                     level.setBlock(pos, ModBlocks.SAND_DIRTY.get().defaultBlockState(), 2);
                     break;
-                } else if (ground == Blocks.STONE) {
+                } else if (LocationIsValidSpawn.isStone(groundState)) {
                     level.setBlock(pos, ModBlocks.STONE_CRACKED.get().defaultBlockState(), 2);
                     break;
                 } else if (ground instanceof LeavesBlock
-                        && !groundState.getValue(LeavesBlock.PERSISTENT)) {
-
+                        && !groundState.getValue(LeavesBlock.PERSISTENT)
+                        && groundState.getValue(LeavesBlock.DISTANCE)
+                                == LeavesBlock.DECAY_DISTANCE) {
                     level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
                     break;
                 }
@@ -261,7 +262,6 @@ public final class OilSurfaceScarring {
                                         .get()
                                         .defaultBlockState(),
                                 2);
-
                         if (oy == 0 && rand.nextInt(50) == 0) {
                             level.setBlock(
                                     above.set(rx, y + 1, rz),
@@ -278,7 +278,7 @@ public final class OilSurfaceScarring {
                     } else if (b == Blocks.SAND || b == ModBlocks.ORE_OIL_SAND.get()) {
                         level.setBlock(sub, ModBlocks.SAND_DIRTY.get().defaultBlockState(), 2);
                         break;
-                    } else if (b == Blocks.STONE) {
+                    } else if (LocationIsValidSpawn.isStone(subState)) {
                         level.setBlock(sub, ModBlocks.STONE_CRACKED.get().defaultBlockState(), 2);
                         break;
                     }

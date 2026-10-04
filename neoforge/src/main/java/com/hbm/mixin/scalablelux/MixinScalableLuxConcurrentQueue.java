@@ -23,7 +23,6 @@ public abstract class MixinScalableLuxConcurrentQueue implements ScalableLuxBatc
 
     @Override
     public synchronized ChunkTasks hbm$enqueueLightBatch(ScalableLuxBatch batch) {
-
         return enqueueImpl(batch.chunkKey, batch);
     }
 }

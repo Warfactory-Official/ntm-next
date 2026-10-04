@@ -3,24 +3,20 @@
 
 package com.hbm.stats;
 
-import com.hbm.registration.IRegistrar;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.registration.RegistryHandle;
 import net.minecraft.resources.Identifier;
 
 public final class ModStats {
-
     public static RegistryHandle<Identifier> LEGENDARY;
-
     public static RegistryHandle<Identifier> MINES;
-
     public static RegistryHandle<Identifier> BULLETS;
 
     private ModStats() {}
 
-    public static void register(IRegistrar registrar) {
-
-        LEGENDARY = registrar.registerCustomStat("legendary");
-        MINES = registrar.registerCustomStat("mines");
-        BULLETS = registrar.registerCustomStat("bullets");
+    public static void register() {
+        LEGENDARY = FabricRegistrar.registerCustomStat("legendary");
+        MINES = FabricRegistrar.registerCustomStat("mines");
+        BULLETS = FabricRegistrar.registerCustomStat("bullets");
     }
 }

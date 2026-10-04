@@ -4,8 +4,7 @@ HBM's Nuclear Tech Mod for Minecraft 26.2, with Fabric and NeoForge builds.
 
 ## Build
 
-Requires JDK 25, CMake 3.25+, Ninja, and a C++26 compiler. On Windows, MinGW can be selected with
-`-Phbm.mingw.home=C:/Utils/mingw64`.
+Requires JDK 25.
 
 ```sh
 ./gradlew build

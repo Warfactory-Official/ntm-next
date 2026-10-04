@@ -4,8 +4,8 @@
 package com.hbm.compat.computercraft.storage;
 
 import com.hbm.api.energymk2.IEnergyHandlerMK2.ConnectionPriority;
+import com.hbm.blockentity.machine.storage.BlockEntityMachineBattery;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineBattery;
 import dan200.computercraft.api.lua.LuaFunction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -54,7 +54,6 @@ public abstract class EnergyStoragePeripheral<BE extends BlockEntity>
         }
         BE machine = machine();
         applyRedLow(machine, newMode);
-        machine.setChanged();
         return new Object[] {};
     }
 
@@ -67,7 +66,6 @@ public abstract class EnergyStoragePeripheral<BE extends BlockEntity>
         }
         BE machine = machine();
         applyRedHigh(machine, newMode);
-        machine.setChanged();
         return new Object[] {};
     }
 

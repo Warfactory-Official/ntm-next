@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.network;
 
+import com.hbm.blockentity.network.BlockEntityCableGauge;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.network.BlockEntityCableGauge;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class CableGaugePeripheral extends SnapshotPeripheral<BlockEntityCableGauge> {

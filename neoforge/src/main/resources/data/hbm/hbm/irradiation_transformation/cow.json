@@ -1,0 +1,5 @@
+{
+  "minimum_dose": 50.0,
+  "result": "minecraft:mooshroom",
+  "targets": "minecraft:cow"
+}

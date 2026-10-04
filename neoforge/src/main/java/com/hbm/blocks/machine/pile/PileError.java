@@ -3,8 +3,8 @@
 
 package com.hbm.blocks.machine.pile;
 
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.MarkerPayload;
-import com.hbm.platform.Services;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
@@ -29,7 +29,7 @@ public final class PileError {
     public boolean send(Player player) {
         if (markers.isEmpty()) return false;
         if (player instanceof ServerPlayer sp) {
-            Services.NETWORK.sendTo(new MarkerPayload(0xff0000, 5000, 128.0, markers), sp);
+            PacketWire.sendTo(new MarkerPayload(0xff0000, 5000, 128.0, markers), sp);
         }
         return true;
     }

@@ -8,8 +8,7 @@ import com.hbm.config.RadiationConfig;
 import com.hbm.interfaces.ServerThread;
 import com.hbm.lib.Library;
 import com.hbm.lib.TLPool;
-import com.hbm.lib.internal.natives.NativeLibrary;
-import com.hbm.lib.internal.natives.RadsimKeys;
+import com.hbm.lib.internal.Accelerator;
 import com.hbm.lib.queues.MpscUnboundedXaddArrayLongQueue;
 import com.hbm.util.DecodeException;
 import com.hbm.util.ObjectPool;
@@ -127,10 +126,7 @@ final class WorldRadiationData {
     double profTotalMs, profMaxMs, executionTimeAccumulator;
     DoubleArrayList profSamplesMs;
 
-    static final boolean ROUTE_TO_BACKEND =
-            !"false".equalsIgnoreCase(System.getProperty("hbm.radsim.route", "true"));
-
-    final @Nullable RadsimBackend backend;
+    final @Nullable RadiationBackend backend;
 
     private long[] diffKeyScratch = new long[0];
     private int[] diffCountScratch = new int[0];
@@ -202,25 +198,8 @@ final class WorldRadiationData {
         Arrays.fill(radiationDirtyIndex, -1);
         for (int b = 0; b < 4; b++) Arrays.fill(parityBucketIds[b], -1);
 
-        RadsimBackend opened = null;
-        if (NativeLibrary.AVAILABLE && ROUTE_TO_BACKEND) {
-            try {
-                opened =
-                        new RadsimBackend(
-                                world,
-                                Integer.getInteger("hbm.radsim.threads", defaultRadsimThreads()));
-            } catch (RuntimeException ex) {
-                NuclearTech.LOGGER.warn(
-                        "Radiation backend unavailable for dimension {}; using the Java sweep",
-                        world.dimension().identifier(),
-                        ex);
-            }
-        }
-        backend = opened;
-    }
-
-    static int defaultRadsimThreads() {
-        return Math.max(1, Math.min(16, Runtime.getRuntime().availableProcessors() / 2));
+        Accelerator accelerator = Accelerator.INSTALLED;
+        backend = accelerator == null ? null : accelerator.radiation(world);
     }
 
     static double mulClamp(double a, int b) {
@@ -1242,7 +1221,6 @@ final class WorldRadiationData {
     @SuppressWarnings("unchecked")
     void saveRadiationDirty(boolean flush) {
         rebuildLoadedSections();
-
         if (flush) applyAndClearQueuedWrites();
         collectMarkedRadiationDirty();
         CompletableFuture<SidecarPayload>[] futures =
@@ -1269,7 +1247,6 @@ final class WorldRadiationData {
         long ck = ChunkPos.pack(chunk.getPos().x(), chunk.getPos().z());
         int id = getId(ck);
         if (id < 0 || id >= nextId || cks[id] != ck) return;
-
         applyAndClearQueuedWrites(id);
         if (isChunkDirty(id)) {
             clearChunkDirty(id);
@@ -1414,10 +1391,12 @@ final class WorldRadiationData {
         applyAndClearQueuedWrites();
         nextWorkEpoch();
         if (backend != null) {
-
-            backend.step(workEpochSalt, workEpoch, fogQueue::offer, destructionQueue::offer);
+            backend.step(
+                    workEpochSalt,
+                    workEpoch,
+                    fogQueue::offer,
+                    tickDelay == 1 ? pk -> pocketToDestroy = pk : destructionQueue::offer);
         } else {
-
             runDecayEmissionAndEffects();
             runExactExchangeSweeps();
         }
@@ -1542,7 +1521,6 @@ final class WorldRadiationData {
                         batch,
                         getTaskThreshold(batch, 8))
                 .invoke();
-
         if (backend != null) {
             for (int i = 0; i < batch; i++) {
                 pushSourcesToBackend(dirtyChunkIdsScratch[i]);
@@ -1572,7 +1550,8 @@ final class WorldRadiationData {
         int at = 0;
         for (int slot = 0; slot < sectionsPerChunk; slot++) {
             sourceKeyScratch[slot] =
-                    RadsimKeys.sectionKey(ChunkPos.getX(cks[id]), slot, ChunkPos.getZ(cks[id]));
+                    RadiationBackend.sectionKey(
+                            ChunkPos.getX(cks[id]), slot, ChunkPos.getZ(cks[id]));
             RadiationSystemNT.SectionSources s = sectionSources[id * sectionsPerChunk + slot];
             int n = s == null ? 0 : s.size;
             sourceCountScratch[slot] = n;
@@ -1610,7 +1589,7 @@ final class WorldRadiationData {
         int cx = ChunkPos.getX(cks[id]);
         int cz = ChunkPos.getZ(cks[id]);
         for (int slot = 0; slot < sectionsPerChunk; slot++) {
-            diffKeyScratch[slot] = RadsimKeys.sectionKey(cx, slot, cz);
+            diffKeyScratch[slot] = RadiationBackend.sectionKey(cx, slot, cz);
             int secIdx = id * sectionsPerChunk + slot;
             int n = pocketCountOf(id, slot);
             diffCountScratch[slot] = n;
@@ -1807,7 +1786,6 @@ final class WorldRadiationData {
             int id = elements[i];
             EditTable t = editsById[id];
             if (t == null) continue;
-
             editsById[id] = null;
             if (!t.isEmpty()) applyChunkQueuedWrites(id, t);
             clearTouchedSections(id);
@@ -1842,7 +1820,6 @@ final class WorldRadiationData {
                 m &= (m - 1);
                 if (slot >= sectionsPerChunk) continue;
                 int kind = getKind(id, slot);
-
                 if (kind == KIND_NONE) continue;
 
                 int secIdx = id * sectionsPerChunk + slot;
@@ -1878,7 +1855,6 @@ final class WorldRadiationData {
                         active |= d != 0.0D;
                     }
                 }
-
                 if (active) markActive(id, slot);
                 setChunkDirty(id);
             }
@@ -1977,7 +1953,6 @@ final class WorldRadiationData {
         }
         backend.loadChunk(ck, rows, entrySypi, entryDensity);
         if (rows != 0) {
-
             int metadataBase = wordBase(id);
             for (int word = 0; word < wordsPerChunk; word++) {
                 if (chunkSourceMask[metadataBase + word] != 0L) {

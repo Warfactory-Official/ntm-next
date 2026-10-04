@@ -3,7 +3,7 @@
 
 package com.hbm.inventory.container;
 
-import com.hbm.tileentity.machine.BlockEntityReactorResearch;
+import com.hbm.blockentity.machine.BlockEntityReactorResearch;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -11,7 +11,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class MenuReactorResearch extends BlockEntityMenu<BlockEntityReactorResearch> {
-
     private static final int[][] SLOT_POSITIONS = {
         {95, 22}, {131, 22}, {77, 40}, {113, 40}, {149, 40}, {95, 58}, {131, 58}, {77, 76},
         {113, 76}, {149, 76}, {95, 94}, {131, 94}

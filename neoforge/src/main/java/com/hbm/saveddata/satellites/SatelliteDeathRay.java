@@ -74,7 +74,6 @@ public final class SatelliteDeathRay extends Satellite {
     @Override
     public void onCoordAction(ServerLevel level, Player player, int x, int y, int z) {
         setTarget(x, z);
-
         SatelliteSavedData.get(level).setDirty();
         strike(level, x, z);
     }

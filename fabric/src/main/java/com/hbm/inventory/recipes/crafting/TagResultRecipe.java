@@ -3,6 +3,7 @@
 
 package com.hbm.inventory.recipes.crafting;
 
+import com.hbm.inventory.recipes.ingredient.CountIngredient;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -19,23 +20,18 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.NormalCraftingRecipe;
-import net.minecraft.world.item.crafting.PlacementInfo;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 
-public final class TagResultRecipe extends NormalCraftingRecipe {
+public final class TagResultRecipe extends HbmNormalCraftingRecipe {
 
     public static final MapCodec<TagResultRecipe> MAP_CODEC =
             RecordCodecBuilder.mapCodec(
@@ -67,6 +63,7 @@ public final class TagResultRecipe extends NormalCraftingRecipe {
 
     private final Result result;
     private final List<Ingredient> ingredients;
+    private final List<CountIngredient> matchingInputs;
 
     public TagResultRecipe(
             Recipe.CommonInfo commonInfo,
@@ -76,6 +73,8 @@ public final class TagResultRecipe extends NormalCraftingRecipe {
         super(commonInfo, bookInfo);
         this.result = result;
         this.ingredients = ingredients;
+        matchingInputs =
+                ingredients.stream().map(ingredient -> new CountIngredient(ingredient, 1)).toList();
     }
 
     public Result result() {
@@ -89,12 +88,11 @@ public final class TagResultRecipe extends NormalCraftingRecipe {
     }
 
     @Override
-    public boolean matches(CraftingInput input, Level level) {
+    protected boolean matchesInput(CraftingInput input, Level level) {
         if (input.ingredientCount() != ingredients.size() || resolve().isEmpty()) return false;
-
-        return input.size() == 1 && ingredients.size() == 1
-                ? ingredients.getFirst().test(input.getItem(0))
-                : input.stackedContents().canCraft(this, null);
+        StackedContents<ItemStack> contents = new StackedContents<>();
+        for (ItemStack stack : input.items()) if (!stack.isEmpty()) contents.account(stack, 1);
+        return contents.tryPick(matchingInputs, 1, null);
     }
 
     @Override

@@ -25,16 +25,13 @@ public class EntityBulletBaseMK4 extends EntityThrowableInterp {
 
     private static final EntityDataAccessor<Integer> CONFIG_ID =
             SynchedEntityData.defineId(EntityBulletBaseMK4.class, EntityDataSerializers.INT);
-
     public BulletConfig config;
-
     public double velocity;
     public double prevVelocity;
     public double accel;
     public float damage;
     public int ricochets = 0;
     public Entity lockonTarget = null;
-
     public boolean ignoreFrustum;
 
     public EntityBulletBaseMK4(EntityType<? extends EntityBulletBaseMK4> type, Level level) {

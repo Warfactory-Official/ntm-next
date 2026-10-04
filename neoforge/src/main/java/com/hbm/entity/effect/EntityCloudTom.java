@@ -18,7 +18,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class EntityCloudTom extends Entity {
-
     private static final EntityDataAccessor<Integer> MAX_AGE =
             SynchedEntityData.defineId(EntityCloudTom.class, EntityDataSerializers.INT);
 
@@ -55,7 +54,6 @@ public class EntityCloudTom extends Entity {
     @Override
     public void tick() {
         this.age++;
-
         level().setSkyFlashTime(2);
 
         if (!level().isClientSide() && this.age >= this.getMaxAge()) {

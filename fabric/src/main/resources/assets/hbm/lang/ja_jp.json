@@ -4614,6 +4614,7 @@
   "trait.hydro": "アルカリ性",
   "trait.radResistance": "放射線耐性 %s",
   "trait.radioactive": "放射性",
+  "trait.radshield": "放射線遮蔽",
   "trait.rbmk.coreTemp": "核温度 %s",
   "trait.rbmk.depletion": "%s 枯渇",
   "trait.rbmk.diffusion": "表面への熱伝導率 %s",

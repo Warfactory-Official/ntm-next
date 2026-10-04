@@ -4,9 +4,9 @@
 
 package com.hbm.inventory.fluid.trait;
 
-import com.hbm.util.I18nUtil;
 import java.util.List;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 
 public class FT_Corrosive extends FluidTrait {
 
@@ -27,19 +27,23 @@ public class FT_Corrosive extends FluidTrait {
     }
 
     @Override
-    public void addInfo(List<String> info) {
+    public void addInfo(List<Component> info) {
         if (isHighlyCorrosive()) {
             info.add(
-                    ChatFormatting.GOLD
-                            + "["
-                            + I18nUtil.resolveKey("hbmfluid.trait.corrosiveStrong")
-                            + "]");
+                    Component.empty()
+                            .append(Component.literal("[").withStyle(ChatFormatting.GOLD))
+                            .append(
+                                    Component.translatable("hbmfluid.trait.corrosiveStrong")
+                                            .withStyle(ChatFormatting.GOLD))
+                            .append(Component.literal("]").withStyle(ChatFormatting.GOLD)));
         } else {
             info.add(
-                    ChatFormatting.YELLOW
-                            + "["
-                            + I18nUtil.resolveKey("hbmfluid.trait.corrosive")
-                            + "]");
+                    Component.empty()
+                            .append(Component.literal("[").withStyle(ChatFormatting.YELLOW))
+                            .append(
+                                    Component.translatable("hbmfluid.trait.corrosive")
+                                            .withStyle(ChatFormatting.YELLOW))
+                            .append(Component.literal("]").withStyle(ChatFormatting.YELLOW)));
         }
     }
 }

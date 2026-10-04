@@ -70,7 +70,6 @@ public class ItemFusionCore extends Item {
             TooltipDisplay display,
             Consumer<Component> lines,
             TooltipFlag flag) {
-
         lines.accept(
                 Component.translatable(
                                 "desc.item.fusionCore.charges", BobMathUtil.getShortNumber(charge))

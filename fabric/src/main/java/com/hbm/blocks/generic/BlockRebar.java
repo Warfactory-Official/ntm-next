@@ -3,10 +3,10 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.blockentity.BlockEntityRebar;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.BlockEntityRebar;
 import com.hbm.uninos.networkproviders.RebarGraph;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

@@ -61,7 +61,6 @@ public class BlockGasCoal extends BlockGasBase {
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
         super.animateTick(state, level, pos, rand);
-
         level.addParticle(
                 ParticleTypes.SMOKE,
                 pos.getX() + rand.nextFloat(),

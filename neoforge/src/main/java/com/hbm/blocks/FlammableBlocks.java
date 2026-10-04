@@ -3,15 +3,15 @@
 
 package com.hbm.blocks;
 
-import com.hbm.platform.Services;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FireBlock;
 
 public final class FlammableBlocks {
 
     private FlammableBlocks() {}
 
     public static void register() {
-
         set(ModBlocks.BLOCK_GRAPHITE.get(), 30, 5);
 
         set(ModBlocks.BLOCK_GRAPHITE_DRILLED.get(), 30, 5);
@@ -22,7 +22,6 @@ public final class FlammableBlocks {
         set(ModBlocks.BLOCK_GRAPHITE_LITHIUM.get(), 30, 5);
         set(ModBlocks.BLOCK_GRAPHITE_TRITIUM.get(), 30, 5);
         set(ModBlocks.BLOCK_GRAPHITE_DETECTOR.get(), 30, 5);
-
         set(ModBlocks.PILE_BRICK.get(), 30, 5);
 
         set(ModBlocks.BLOCK_COKE_COAL.get(), 10, 5);
@@ -53,6 +52,6 @@ public final class FlammableBlocks {
     }
 
     private static void set(Block block, int encouragement, int flammability) {
-        Services.PLATFORM.setFlammable(block, encouragement, flammability);
+        ((FireBlock) Blocks.FIRE).setFlammable(block, encouragement, flammability);
     }
 }

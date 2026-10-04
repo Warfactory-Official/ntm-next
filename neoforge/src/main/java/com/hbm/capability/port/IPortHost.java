@@ -8,7 +8,6 @@ import net.minecraft.core.Direction;
 import org.jspecify.annotations.Nullable;
 
 public interface IPortHost {
-
     default @Nullable ItemPort itemAccess(BlockPos cell, Direction side) {
         return null;
     }

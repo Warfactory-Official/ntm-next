@@ -10,7 +10,6 @@ import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
 public class ItemFluidContainerInfinite extends Item {
-
     private final @Nullable Supplier<Fluid> fluid;
     private final int amount;
     private final int chance;

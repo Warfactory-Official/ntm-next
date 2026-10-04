@@ -6,7 +6,6 @@ package com.hbm.entity.projectile;
 import com.hbm.entity.mob.glyphid.EntityGlyphid;
 import com.hbm.lib.Library;
 import com.hbm.lib.ModDamageTypes;
-import com.hbm.registration.IRegistrar;
 import com.hbm.registration.Reg;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -30,7 +29,7 @@ public class EntityAcidBomb extends EntityThrowableInterp {
 
     public static Reg.@Nullable EntityHandle<EntityAcidBomb> TYPE;
 
-    public static void register(IRegistrar r) {
+    public static void register() {
         TYPE =
                 Reg.entity(
                         "entity_acid_bomb",

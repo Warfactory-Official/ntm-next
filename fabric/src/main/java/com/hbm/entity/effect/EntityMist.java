@@ -49,7 +49,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 
 public class EntityMist extends Entity {
-
     private static final EntityDataAccessor<Integer> TYPE =
             SynchedEntityData.defineId(EntityMist.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> WIDTH =
@@ -121,7 +120,6 @@ public class EntityMist extends Entity {
 
     @Override
     public void tick() {
-
         float height = height();
 
         if (level() instanceof ServerLevel server) {
@@ -137,7 +135,6 @@ public class EntityMist extends Entity {
 
             if (prop.hasTrait(FT_VentRadiation.class)) {
                 FT_VentRadiation trait = prop.getTrait(FT_VentRadiation.class);
-
                 RadiationSystemNT.incrementRad(
                         server,
                         new BlockPos(Mth.floor(getX()), Mth.floor(getY()), Mth.floor(getZ())),
@@ -148,7 +145,6 @@ public class EntityMist extends Entity {
             double intensity = 1D - (double) this.tickCount / (double) maxAge;
 
             if (prop.hasTrait(FT_Flammable.class) && this.isOnFire()) {
-
                 server.explode(
                         this,
                         getX(),
@@ -187,7 +183,6 @@ public class EntityMist extends Entity {
         }
 
         if (temperature < -20) {
-
             if (living != null) {
                 EntityDamageUtil.attackEntityFromIgnoreIFrame(
                         e, source(server, ModDamageTypes.ICE), 0.2F + (temperature + 20) * -0.05F);

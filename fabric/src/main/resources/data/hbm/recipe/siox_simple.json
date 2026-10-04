@@ -5,7 +5,7 @@
       "name": "lbsm_simple_medicine"
     }
   ],
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
     "#c:dusts/coal",
     "#c:dusts/asbestos",

@@ -57,7 +57,6 @@ public final class ForeignFluidItemAccess {
         IFluidContainerItem item = itemOf(stack);
         if (item == null || fluid == Fluids.EMPTY) return 0L;
         Fluid held = heldFluid(stack);
-
         if (held != Fluids.EMPTY && held != fluid) return 0L;
         FluidStackNTM content = content(stack);
         if (held == Fluids.EMPTY && content != null && content.amount() > 0) return 0L;

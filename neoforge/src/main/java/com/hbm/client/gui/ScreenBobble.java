@@ -4,9 +4,9 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.BlockEntityBobble;
 import com.hbm.blocks.generic.BlockBobble.BobbleType;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.BlockEntityBobble;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -16,7 +16,6 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 
 public class ScreenBobble extends Screen {
-
     private static final int SIZE_X = 300;
     private static final int SIZE_Y = 150;
     private static final int SLAB_COLOR = 0xCC003300;

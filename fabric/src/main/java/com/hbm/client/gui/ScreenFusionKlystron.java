@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionKlystron;
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorus;
 import com.hbm.inventory.container.MenuFusionKlystron;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionKlystron;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionTorus;
 import com.hbm.util.BobMathUtil;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -83,8 +83,7 @@ public class ScreenFusionKlystron extends ScreenInfoContainer<MenuFusionKlystron
         }
         CompoundTag data = new CompoundTag();
         data.putLong("amount", amount);
-        Services.NETWORK.sendToServer(
-                new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
     }
 
     @Override

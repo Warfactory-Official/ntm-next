@@ -1,0 +1,13 @@
+{
+  "armor": {
+    "chest": "hbm:dns_plate",
+    "feet": "hbm:dns_boots",
+    "head": "hbm:dns_helmet",
+    "legs": "hbm:dns_legs"
+  },
+  "protections": [
+    "hazmat",
+    "sealed",
+    "digamma"
+  ]
+}

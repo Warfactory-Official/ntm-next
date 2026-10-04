@@ -86,7 +86,6 @@ public class TemplateStructurePiece extends StructurePiece {
                 new BlockPos(
                         this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.minZ());
         StructurePlaceSettings settings = new StructurePlaceSettings().setBoundingBox(chunkBB);
-
         for (StructureProcessor processor : DungeonProcessorLists.forTemplate(level, templateId)) {
             settings.addProcessor(processor);
         }

@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachineStrandCaster;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -16,10 +17,9 @@ import com.hbm.inventory.material.Mats;
 import com.hbm.items.machine.ItemMold;
 import com.hbm.items.machine.ItemScraps;
 import com.hbm.sound.ModSounds;
-import com.hbm.tileentity.machine.BlockEntityMachineStrandCaster;
-import com.hbm.util.I18nUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
@@ -36,7 +36,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineStrandCaster extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock, ILookOverlay, IToolable {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         0, 0, 6, 0, 1, 0, 0, 0, 0,
         2, 0, 1, 0, 1, 0, 0, 0, 0,
@@ -48,7 +47,6 @@ public class MachineStrandCaster extends BlockMultiblockCore
     }
 
     private static final int[] DIMENSIONS = {0, 0, 6, 0, 1, 0};
-
     private static final int[] HEAD = {2, 0, 1, 0, 1, 0};
 
     private static final int PORT_DOMAINS = PASSIVE_FLUID_IN | PASSIVE_ITEMS;
@@ -156,7 +154,6 @@ public class MachineStrandCaster extends BlockMultiblockCore
     @Override
     protected InteractionResult useAtCore(
             BlockState coreState, Level level, BlockPos core, Player player, BlockHitResult hit) {
-
         if (player.isSecondaryUseActive()) return InteractionResult.SUCCESS;
         if (level.isClientSide()) return InteractionResult.SUCCESS;
         if (level.getBlockEntity(core) instanceof MenuProvider menu) {
@@ -195,18 +192,25 @@ public class MachineStrandCaster extends BlockMultiblockCore
         BlockEntityMachineStrandCaster caster = caster(level, pos);
         if (caster == null) return;
 
-        info.title(I18nUtil.resolveKey(getDescriptionId()), 0xFF4000, 0x401000);
+        info.title(
+                Component.empty().append(Component.translatable(getDescriptionId())),
+                0xFF4000,
+                0x401000);
 
         if (caster.inventory.get(BlockEntityMachineStrandCaster.SLOT_MOLD).getItem()
                 instanceof ItemMold mold) {
             info.line(mold.mold.getTitle(), 0x5555FF);
         } else {
-            info.line(I18nUtil.resolveKey("foundry.noCast"), 0xFF5555);
+            info.line(Component.empty().append(Component.translatable("foundry.noCast")), 0xFF5555);
         }
 
         if (caster.type != null && caster.amount > 0) {
             info.line(
-                    caster.type.getLocalizedName() + ": " + Mats.formatAmount(caster.amount, false),
+                    caster.type
+                            .getLocalizedName()
+                            .copy()
+                            .append(": ")
+                            .append(Mats.formatAmount(caster.amount, false)),
                     0xFFFF55);
         }
     }

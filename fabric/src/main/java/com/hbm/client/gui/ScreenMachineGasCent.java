@@ -3,13 +3,13 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.machine.BlockEntityMachineGasCent.StageTank;
+import com.hbm.blockentity.machine.BlockEntityMachineGasCent;
 import com.hbm.inventory.container.MenuMachineGasCent;
 import com.hbm.inventory.recipes.GasCentrifugeRecipe;
 import com.hbm.inventory.recipes.GasCentrifugeRecipes;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.machine.BlockEntityMachineGasCent.StageTank;
-import com.hbm.tileentity.machine.BlockEntityMachineGasCent;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -34,12 +34,12 @@ public class ScreenMachineGasCent extends ScreenInfoContainer<MenuMachineGasCent
 
     public ScreenMachineGasCent(MenuMachineGasCent menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 206, 204);
-        this.inventoryLabelY = this.imageHeight - 96 + 2;
+        inventoryLabelY = imageHeight - 96 + 2;
     }
 
     private static List<Component> lines(String key) {
         List<Component> out = new ArrayList<>();
-        for (String s : I18nUtil.resolveKeyArray(key)) out.add(Component.literal(s));
+        for (Component s : TooltipStyle.lines(Component.translatable(key))) out.add(s);
         return out;
     }
 
@@ -150,18 +150,18 @@ public class ScreenMachineGasCent extends ScreenInfoContainer<MenuMachineGasCent
 
     private List<Component> stageInfo(StageTank tank, boolean input) {
         GasCentrifugeRecipe recipe = GasCentrifugeRecipes.INSTANCE.byStage(tank.getStage());
-        String name = GasCentrifugeRecipe.stageName(tank.getStage());
+        Component name = GasCentrifugeRecipe.stageName(tank.getStage());
 
         if (recipe != null && recipe.requiresUpgrade) {
             ChatFormatting colour =
                     !input || be().hasSpeedUpgrade()
                             ? ChatFormatting.GOLD
                             : ChatFormatting.DARK_RED;
-            name = colour + name;
+            name = name.copy().withStyle(colour);
         }
 
         List<Component> out = new ArrayList<>(2);
-        out.add(Component.literal(name));
+        out.add(name);
         out.add(Component.literal(tank.getFill() + " / " + tank.getMaxFill() + " mB"));
         return out;
     }

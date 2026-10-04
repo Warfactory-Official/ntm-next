@@ -3,11 +3,11 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityHeatBoiler;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityHeatBoiler;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -99,7 +99,6 @@ public class RenderHeatBoiler
         final HFRWavefrontObject burst = this.burstModel;
         if (!s.exploded) {
             if (s.breathing) {
-
                 double sine = Math.sin(GameTime.now() / 50D % (Math.PI * 2)) * 0.01D;
                 ps.scale((float) (1 - sine), (float) (1 + sine), (float) (1 - sine));
             }

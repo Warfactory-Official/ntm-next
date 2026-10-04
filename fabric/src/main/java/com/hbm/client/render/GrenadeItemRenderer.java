@@ -108,7 +108,6 @@ public final class GrenadeItemRenderer
             drawFirstPerson(visitor, pose, data, hand);
         } else {
             transformShell(pose, data.shell(), arm);
-
             drawShell(visitor, pose, data, arm != Arm.PROJECTILE);
         }
         pose.popPose();
@@ -344,7 +343,6 @@ public final class GrenadeItemRenderer
 
     @Override
     public @Nullable Argument extractArgument(ItemStack stack) {
-
         return new Argument(ItemGrenadeUniversal.getData(stack), ItemDisplayContext.NONE, false);
     }
 
@@ -358,7 +356,6 @@ public final class GrenadeItemRenderer
             boolean foil,
             int outline) {
         if (argument == null) return;
-
         visit(
                 pose,
                 argument.data(),

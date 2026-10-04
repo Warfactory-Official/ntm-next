@@ -59,7 +59,6 @@ public final class RTGPage extends RecipePage<RTGPage.Recipe> {
     public void layout(Recipe recipe, PageLayout page) {
         page.input(48, 24).background().item(recipe.pellet());
         page.output(102, 24).background().item(recipe.depleted());
-
         page.catalyst(75, 31).item(ModBlocks.MACHINE_RTG.get());
     }
 

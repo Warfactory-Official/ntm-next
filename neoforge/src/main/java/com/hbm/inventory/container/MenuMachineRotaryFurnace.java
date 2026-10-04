@@ -3,10 +3,10 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityMachineRotaryFurnace;
 import com.hbm.handler.FuelHandler;
 import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.BlockEntityMachineRotaryFurnace;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +31,6 @@ public class MenuMachineRotaryFurnace extends BlockEntityMenu<BlockEntityMachine
         addSlot(new Slot(container, 0, 8, 18));
         addSlot(new Slot(container, 1, 26, 18));
         addSlot(new Slot(container, 2, 44, 18));
-
         addSlot(
                 new SlotFiltered(
                         container,
@@ -39,7 +38,6 @@ public class MenuMachineRotaryFurnace extends BlockEntityMenu<BlockEntityMachine
                         8,
                         54,
                         stack -> stack.getItem() instanceof FluidIdentifierItem));
-
         addSlot(new Slot(container, 4, 44, 54));
 
         addStandardInventorySlots(playerInv, 8, 104);

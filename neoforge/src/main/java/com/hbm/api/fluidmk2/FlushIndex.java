@@ -3,7 +3,7 @@
 
 package com.hbm.api.fluidmk2;
 
-import com.hbm.platform.Services;
+import com.hbm.platform.NeoForgeServerEvents;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
@@ -15,7 +15,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import org.jspecify.annotations.Nullable;
 
 public final class FlushIndex {
-
     private static final Map<ServerLevel, FlushIndex> BY_LEVEL = new WeakHashMap<>();
 
     private final Long2ObjectMap<ReferenceOpenHashSet<FlushRegister>> byChunk =
@@ -24,8 +23,8 @@ public final class FlushIndex {
     private FlushIndex() {}
 
     public static void init() {
-        Services.SERVER.onServerStopping(server -> BY_LEVEL.clear());
-        Services.SERVER.onChunkUnload(
+        NeoForgeServerEvents.onServerStopping(server -> BY_LEVEL.clear());
+        NeoForgeServerEvents.onChunkUnload(
                 (level, chunk) -> {
                     FlushIndex index = BY_LEVEL.get(level);
                     if (index != null) index.evict(chunk.getPos().pack());
@@ -40,6 +39,12 @@ public final class FlushIndex {
         ReferenceOpenHashSet<FlushRegister> bucket = bucket(level, LevelNodeGraph.chunkOf(posKey));
         if (bucket == null) return;
         for (FlushRegister register : bucket) register.invalidateAt(posKey);
+    }
+
+    public static void invalidateChunk(ServerLevel level, long chunkKey) {
+        ReferenceOpenHashSet<FlushRegister> bucket = bucket(level, chunkKey);
+        if (bucket == null) return;
+        for (FlushRegister register : bucket) register.invalidateChunk(chunkKey);
     }
 
     public static void onChunkFull(ServerLevel level, LevelChunk chunk) {

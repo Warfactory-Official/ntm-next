@@ -3,7 +3,7 @@
 
 package com.hbm.compat.computercraft.rbmk;
 
-import com.hbm.tileentity.machine.rbmk.BlockEntityRBMKCooler;
+import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKCooler;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class RBMKCoolerPeripheral extends RBMKColumnPeripheral<BlockEntityRBMKCooler> {

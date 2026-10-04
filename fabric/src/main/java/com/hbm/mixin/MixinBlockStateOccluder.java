@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(value = BlockBehaviour.BlockStateBase.class, priority = 900)
 public abstract class MixinBlockStateOccluder {
-
     @ModifyReturnValue(method = "getShadeBrightness", at = @At("RETURN"))
     private float hbm$renderedOccluder(float original, BlockGetter level, BlockPos pos) {
         float derived = OccluderMasks.shade((BlockState) (Object) this, level, pos);

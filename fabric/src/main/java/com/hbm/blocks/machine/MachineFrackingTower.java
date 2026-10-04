@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.oil.BlockEntityMachineFrackingTower;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -10,7 +11,6 @@ import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.blocks.multiblock.MultiblockMaskTable;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.tileentity.machine.oil.BlockEntityMachineFrackingTower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -20,7 +20,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineFrackingTower extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         3, 0, 0, 0, 0, 0, 0, 0, 0,
         1, 0, 3, 3, 3, 3, 0, 2, 0,
@@ -89,7 +88,6 @@ public class MachineFrackingTower extends BlockMultiblockCore
         MultiblockHandlerXR.visitBox(core.offset(3, 2, 3), LEG, Direction.NORTH, visitor);
         MultiblockHandlerXR.visitBox(core, SHAFT, facing, visitor);
         MultiblockHandlerXR.visitBox(core, MAST, facing, visitor);
-
         MultiblockHandlerXR.visitBox(core.above(15), PLATFORM, Direction.WEST, visitor);
     }
 
@@ -99,12 +97,10 @@ public class MachineFrackingTower extends BlockMultiblockCore
         if (answer != MultiblockMaskTable.NOT_A_CELL) return answer;
         int wx = MultiblockMaskTable.worldX(lx, ly, lz, facing);
         int wz = MultiblockMaskTable.worldZ(lx, ly, lz, facing);
-
         if (ly >= 0
                 && ly <= 1
                 && ((wx >= -3 && wx <= -2) || (wx >= 2 && wx <= 3))
                 && ((wz >= -3 && wz <= -2) || (wz >= 2 && wz <= 3))) return MASK_NONE;
-
         if (ly >= 15 && ly <= 16 && wx >= -1 && wx <= 1 && wz >= 2 && wz <= 3) return MASK_NONE;
         return MultiblockMaskTable.NOT_A_CELL;
     }

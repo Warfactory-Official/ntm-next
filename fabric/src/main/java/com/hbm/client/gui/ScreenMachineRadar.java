@@ -4,13 +4,12 @@
 package com.hbm.client.gui;
 
 import com.hbm.api.entity.RadarEntry;
+import com.hbm.blockentity.machine.BlockEntityMachineRadar;
 import com.hbm.data.MachineData;
 import com.hbm.inventory.container.MenuMachineRadar;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineRadar;
-import com.hbm.util.I18nUtil;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.KeyEvent;
@@ -35,7 +34,6 @@ public class ScreenMachineRadar extends ScreenInfoContainer<MenuMachineRadar> {
         "radar.detectMissiles", "radar.detectShells", "radar.detectPlayers", "radar.smartMode",
         "radar.redMode", "radar.showMap", "radar.toggleGui", "radar.clearMap"
     };
-
     private static final int LAMP_COUNT = 6;
 
     private static final double SCOPE_SPAN = 200D - 8D;
@@ -58,8 +56,8 @@ public class ScreenMachineRadar extends ScreenInfoContainer<MenuMachineRadar> {
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        this.lastMouseX = mouseX;
-        this.lastMouseY = mouseY;
+        lastMouseX = mouseX;
+        lastMouseY = mouseY;
 
         BlockEntityMachineRadar be = be();
         drawBackground(graphics, be);
@@ -94,8 +92,7 @@ public class ScreenMachineRadar extends ScreenInfoContainer<MenuMachineRadar> {
             be.scanMissiles, be.scanShells, be.scanPlayers, be.smartMode, be.redMode, be.showMap
         };
         for (int i = 0; i < LAMP_COUNT; i++) {
-
-            if (!(lamps[i] ^ (be.jammed && random.nextBoolean()))) continue;
+            if (lamps[i] == (be.jammed && random.nextBoolean())) continue;
             graphics.blit(
                     RenderPipelines.GUI_TEXTURED,
                     TEXTURE,
@@ -112,7 +109,6 @@ public class ScreenMachineRadar extends ScreenInfoContainer<MenuMachineRadar> {
         if (be.power < MachineData.RADAR_CONSUMPTION.get()) return;
 
         if (be.jammed) {
-
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 5; j++) {
                     graphics.blit(
@@ -192,9 +188,9 @@ public class ScreenMachineRadar extends ScreenInfoContainer<MenuMachineRadar> {
 
             if (mouseX + 5 > x && mouseX - 4 <= x && mouseY + 5 > z && mouseY - 4 <= z) {
                 graphics.setComponentTooltipForNextFrame(
-                        this.font,
+                        font,
                         List.of(
-                                Component.literal(I18nUtil.resolveKey(m.radarName)),
+                                Component.translatable(m.radarName),
                                 Component.literal(m.posX + " / " + m.posZ),
                                 Component.translatable("desc.gui.machineRadar.alt", m.posY)),
                         x,
@@ -205,7 +201,7 @@ public class ScreenMachineRadar extends ScreenInfoContainer<MenuMachineRadar> {
 
         if (checkClick(mouseX, mouseY, 8, 17, 200, 200)) {
             graphics.setComponentTooltipForNextFrame(
-                    this.font,
+                    font,
                     List.of(Component.literal(targetX(be) + " / " + targetZ(be))),
                     mouseX,
                     mouseY);
@@ -237,7 +233,7 @@ public class ScreenMachineRadar extends ScreenInfoContainer<MenuMachineRadar> {
                 playClick();
                 CompoundTag data = new CompoundTag();
                 data.putBoolean(BUTTON_COMMAND[i], true);
-                Services.NETWORK.sendToServer(new NbtControlPayload(be().getBlockPos(), data));
+                PacketWire.sendToServer(new NbtControlPayload(be().getBlockPos(), data));
                 return true;
             }
         }
@@ -273,14 +269,14 @@ public class ScreenMachineRadar extends ScreenInfoContainer<MenuMachineRadar> {
                     && lastMouseY + 5 > z
                     && lastMouseY - 4 <= z) {
                 data.putInt("launchEntity", m.entityID);
-                Services.NETWORK.sendToServer(new NbtControlPayload(be.getBlockPos(), data));
+                PacketWire.sendToServer(new NbtControlPayload(be.getBlockPos(), data));
                 return true;
             }
         }
 
         data.putInt("launchPosX", targetX(be));
         data.putInt("launchPosZ", targetZ(be));
-        Services.NETWORK.sendToServer(new NbtControlPayload(be.getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(be.getBlockPos(), data));
         return true;
     }
 }

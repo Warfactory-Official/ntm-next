@@ -4,7 +4,6 @@
 package com.hbm.platform;
 
 public interface IEnergyHandlerView {
-
     Object handlerIdentity();
 
     long amount();

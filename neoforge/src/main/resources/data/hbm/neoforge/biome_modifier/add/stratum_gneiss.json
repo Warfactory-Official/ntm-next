@@ -1,6 +1,13 @@
 {
   "type": "neoforge:add_features",
   "biomes": "#minecraft:is_overworld",
-  "features": "hbm:stratum_gneiss",
+  "features": [
+    "hbm:stratum_gneiss",
+    "hbm:ore_cave_sulfur",
+    "hbm:ore_cave_asbestos",
+    "hbm:stratum_hematite",
+    "hbm:stratum_bauxite",
+    "hbm:stratum_malachite"
+  ],
   "step": "local_modifications"
 }

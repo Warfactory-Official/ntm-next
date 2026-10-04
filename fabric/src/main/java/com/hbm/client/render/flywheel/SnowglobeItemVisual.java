@@ -3,9 +3,9 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.BlockEntitySnowglobe;
 import com.hbm.blocks.generic.BlockSnowglobe.SnowglobeType;
 import com.hbm.client.render.RenderSnowglobe;
-import com.hbm.tileentity.BlockEntitySnowglobe;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import java.util.ArrayList;

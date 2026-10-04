@@ -5,7 +5,7 @@
       "modid": "mekanismgenerators"
     }
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "A": "#mekanism:alloys/infused",
     "B": "mekanism:energy_tablet",

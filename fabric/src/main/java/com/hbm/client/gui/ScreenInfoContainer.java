@@ -4,15 +4,15 @@
 package com.hbm.client.gui;
 
 import com.hbm.api.energymk2.IEnergyHandlerMK2.ConnectionPriority;
+import com.hbm.blockentity.IUpgradeInfoProvider;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FluidTraitTooltip;
 import com.hbm.items.machine.ItemRTGPellet;
 import com.hbm.items.machine.upgrade.UpgradeType;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.IUpgradeInfoProvider;
 import com.hbm.util.BobMathUtil;
-import com.hbm.util.I18nUtil;
+import com.hbm.util.TooltipStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,28 +57,24 @@ public abstract class ScreenInfoContainer<T extends AbstractContainerMenu>
 
     protected static List<Component> resolveLines(String... keys) {
         List<Component> lines = new ArrayList<>(keys.length);
-        for (String key : keys) lines.add(Component.literal(I18nUtil.resolveKey(key)));
+        for (String key : keys) lines.add(Component.translatable(key));
         return lines;
     }
 
     protected static List<Component> lineArray(String key) {
-        String[] parts = I18nUtil.resolveKeyArray(key);
-        List<Component> lines = new ArrayList<>(parts.length);
-        for (String part : parts) lines.add(Component.literal(part));
-        return lines;
+        return TooltipStyle.lines(Component.translatable(key));
     }
 
     protected static List<Component> pelletLines(String key, int perHeat) {
         List<ItemRTGPellet> pellets = ItemRTGPellet.pelletList;
         List<Component> lines = new ArrayList<>(pellets.size() + 1);
-        lines.add(Component.literal(I18nUtil.resolveKey("desc.gui.rtg.pellets")));
+        lines.add(Component.translatable("desc.gui.rtg.pellets"));
         for (ItemRTGPellet pellet : pellets) {
             lines.add(
-                    Component.literal(
-                            I18nUtil.resolveKey(
-                                    key,
-                                    I18nUtil.resolveKey(pellet.getDescriptionId()),
-                                    pellet.getHeat() * perHeat)));
+                    Component.translatable(
+                            key,
+                            Component.translatable(pellet.getDescriptionId()),
+                            pellet.getHeat() * perHeat));
         }
         return lines;
     }
@@ -116,21 +112,16 @@ public abstract class ScreenInfoContainer<T extends AbstractContainerMenu>
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        if (this.drawTitle()) {
-            int tx = this.titleCenterX() - this.font.width(this.title) / 2;
-            graphics.text(this.font, this.title, tx, this.titleLabelY, this.titleColor(), false);
+        if (drawTitle()) {
+            int tx = titleCenterX() - font.width(title) / 2;
+            graphics.text(font, title, tx, titleLabelY, titleColor(), false);
         }
         graphics.text(
-                this.font,
-                this.playerInventoryTitle,
-                this.inventoryLabelX,
-                this.inventoryLabelY,
-                -12566464,
-                false);
+                font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, -12566464, false);
     }
 
     protected int titleCenterX() {
-        return this.imageWidth / 2;
+        return imageWidth / 2;
     }
 
     protected int titleColor() {
@@ -204,21 +195,20 @@ public abstract class ScreenInfoContainer<T extends AbstractContainerMenu>
             int tPosY,
             List<Component> lines) {
         if (checkClick(mouseX, mouseY, x, y, width, height)) {
-            graphics.setComponentTooltipForNextFrame(
-                    this.font, lines, leftPos + tPosX, topPos + tPosY);
+            graphics.setComponentTooltipForNextFrame(font, lines, leftPos + tPosX, topPos + tPosY);
         }
     }
 
     protected List<Component> upgradeInfo(IUpgradeInfoProvider provider, UpgradeType... shown) {
         List<Component> lines = new ArrayList<>();
-        lines.add(Component.literal(I18nUtil.resolveKey("upgrade.gui.title")));
+        lines.add(Component.translatable("upgrade.gui.title"));
         int[] caps = provider.getValidUpgrades();
         for (UpgradeType type : shown) {
             String key = upgradeGuiKey(type);
             if (key == null) continue;
             int level = caps[type.ordinal()];
             if (level <= 0) continue;
-            lines.add(Component.literal(I18nUtil.resolveKey(key, level)));
+            lines.add(Component.translatable(key, level));
         }
         return lines;
     }
@@ -300,7 +290,7 @@ public abstract class ScreenInfoContainer<T extends AbstractContainerMenu>
             GuiGraphicsExtractor graphics, int mouseX, int mouseY, String... text) {
         Component[] lines = new Component[text.length];
         for (int i = 0; i < text.length; i++) lines[i] = Component.literal(text[i]);
-        graphics.setComponentTooltipForNextFrame(this.font, List.of(lines), mouseX, mouseY);
+        graphics.setComponentTooltipForNextFrame(font, List.of(lines), mouseX, mouseY);
     }
 
     protected void drawElectricityInfo(
@@ -372,10 +362,8 @@ public abstract class ScreenInfoContainer<T extends AbstractContainerMenu>
         if (!checkClick(mouseX, mouseY, x, y, width, height)) return;
         Fluid type = tank.getTankType();
         List<Component> lines = new ArrayList<>();
-
         lines.add(NTMFluidProperties.getDisplayName(tank.getFluid()));
         lines.add(Component.literal(tank.getFill() + "/" + tank.getMaxFill() + "mB"));
-
         if (tank.getPressure() != 0) {
             lines.add(
                     Component.translatable("desc.gui.infoContainer.pressure", tank.getPressure())
@@ -389,7 +377,7 @@ public abstract class ScreenInfoContainer<T extends AbstractContainerMenu>
         }
         FluidTraitTooltip.addInfo(type, lines::add);
         graphics.setTooltipForNextFrame(
-                this.font,
+                font,
                 lines.stream().map(Component::getVisualOrderText).toList(),
                 Optional.of(FluidTooltipFrame.of(type)),
                 DefaultTooltipPositioner.INSTANCE,

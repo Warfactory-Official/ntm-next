@@ -3,12 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.network.BlockEntityCraneGrabber;
 import com.hbm.inventory.container.MenuCraneGrabber;
 import com.hbm.lib.Library;
 import com.hbm.module.ModulePatternMatcher;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.network.BlockEntityCraneGrabber;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -89,8 +89,7 @@ public class ScreenCraneGrabber extends ScreenInfoContainer<MenuCraneGrabber> {
         if (checkClick((int) event.x(), (int) event.y(), LEVER_X, LEVER_Y, LEVER_W, LEVER_H)) {
             CompoundTag data = new CompoundTag();
             data.putBoolean("whitelist", true);
-            Services.NETWORK.sendToServer(
-                    new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+            PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
             playClick();
         }
 

@@ -1392,5 +1392,6 @@
   "matshape.nuggets": "Samorodki %sa",
   "matshape.quanta": "Kwanty %sa",
   "matshape.quantum": "Kwant %sa",
-  "trait.asbestos": "Azbestos"
+  "trait.asbestos": "Azbestos",
+  "trait.radshield": "Osłona przed promieniowaniem"
 }

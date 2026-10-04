@@ -33,15 +33,14 @@ public class RbmkJetParticleGroup extends ParticleGroup<ParticleRBMKJet> {
     @Override
     public ParticleGroupRenderState extractRenderState(
             Frustum frustum, Camera camera, float partialTicks) {
-        int count = this.particles.size();
-
-        float[] pos = new float[count * 3];
-
-        float[] par = new float[count * 7];
+        int capacity = this.particles.size();
+        float[] pos = new float[capacity * 3];
+        float[] par = new float[capacity * 7];
         Vec3 cam = camera.position();
 
         int i = 0;
         for (ParticleRBMKJet fx : this.particles) {
+            if (fx.ownsVisual()) continue;
             RbmkJetShape shape = fx.shape();
             int age = fx.clampedAge();
             pos[i * 3] = (float) (fx.interpX(partialTicks) - cam.x);
@@ -57,7 +56,7 @@ public class RbmkJetParticleGroup extends ParticleGroup<ParticleRBMKJet> {
             i++;
         }
 
-        return new State(this.texture, count, pos, par);
+        return new State(this.texture, i, pos, par);
     }
 
     private record State(Identifier texture, int count, float[] pos, float[] par)

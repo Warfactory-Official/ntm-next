@@ -4,7 +4,6 @@
 package com.hbm.items.weapon.sedna.impl;
 
 import com.hbm.client.ClientPlayerAccess;
-import com.hbm.config.GunVisualConfig;
 import com.hbm.entity.projectile.EntityBulletBaseMK4;
 import com.hbm.extprop.HbmPlayerProps;
 import com.hbm.handler.HbmKeybinds.EnumKeybind;
@@ -45,11 +44,9 @@ public class ItemGunChargeThrower extends ItemGunBaseNT {
         HbmPlayerProps props = HbmPlayerProps.getData(player);
 
         if (props.getKeyPressed(EnumKeybind.GUN_PRIMARY)) {
-
             Vec3 pull = vec.normalize().scale(0.1);
             player.setDeltaMovement(player.getDeltaMovement().add(pull.x, pull.y + 0.04, pull.z));
         } else if (!props.getKeyPressed(EnumKeybind.GUN_SECONDARY)) {
-
             Vec3 motion = player.getDeltaMovement();
             Vec3 nextPos =
                     new Vec3(
@@ -66,7 +63,6 @@ public class ItemGunChargeThrower extends ItemGunBaseNT {
                 }
             }
         } else {
-
             player.setDeltaMovement(player.getDeltaMovement().scale(0.5));
         }
 
@@ -110,7 +106,6 @@ public class ItemGunChargeThrower extends ItemGunBaseNT {
         if (slot == EquipmentSlot.MAINHAND && entity instanceof Player player) {
             Entity e = anchoredHook(level, stack);
             if (e != null) {
-
                 double line =
                         e.position()
                                 .subtract(

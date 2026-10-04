@@ -3,12 +3,12 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.BlockEntityRail;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.rail.RailStandardSwitch;
 import com.hbm.blocks.rail.RailStandardSwitchFlipped;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.BlockEntityRail;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;

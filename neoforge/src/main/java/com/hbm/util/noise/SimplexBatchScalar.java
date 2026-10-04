@@ -3,7 +3,7 @@
 
 package com.hbm.util.noise;
 
-final class SimplexBatchScalar implements SimplexBatch {
+public final class SimplexBatchScalar implements SimplexBatch {
 
     @Override
     public void accumulate(

@@ -16,27 +16,19 @@ import net.minecraft.world.item.Item;
 import org.jspecify.annotations.Nullable;
 
 public final class OreDictManager {
-
     public static final TagKey<Item> KEY_ANYGLASS =
             TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "glass_blocks"));
-
     public static final TagKey<Item> KEY_CLEARGLASS =
             TagKey.create(
                     Registries.ITEM,
                     Identifier.fromNamespaceAndPath("c", "glass_blocks/colorless"));
-
     public static final TagKey<Item> KEY_ANYPANE =
             TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "glass_panes"));
-
     public static final TagKey<Item> KEY_CONCRETE =
             TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "concretes"));
-
     public static final TagKey<Item> KEY_SAND = ItemTags.SAND;
-
     public static final TagKey<Item> KEY_COBBLESTONE = common("cobblestones");
-
     public static final TagKey<Item> KEY_DYE = common("dyes");
-
     public static final TagKey<Item> KEY_STICK = common("rods/wooden");
     public static final TagKey<Item> KEY_TOOL_SCREWDRIVER =
             TagKey.create(Registries.ITEM, Library.id("tools/screwdriver"));
@@ -188,7 +180,6 @@ public final class OreDictManager {
     public static final DictGroup ANY_BISMOIDBRONZE =
             new DictGroup("any_bismoid_bronze", BBRONZE, ABRONZE);
     public static final DictGroup ANY_BISMOID = new DictGroup("any_bismoid", BI, AS);
-
     public static final TagKey<Item> KEY_ANY_TAR =
             TagKey.create(Registries.ITEM, Library.id("any_tar"));
 

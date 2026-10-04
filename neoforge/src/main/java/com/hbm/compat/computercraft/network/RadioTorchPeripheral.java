@@ -3,8 +3,8 @@
 
 package com.hbm.compat.computercraft.network;
 
+import com.hbm.blockentity.network.BlockEntityRadioTorch;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.tileentity.network.BlockEntityRadioTorch;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.Map;
 
@@ -81,7 +81,6 @@ public final class RadioTorchPeripheral extends SnapshotPeripheral<BlockEntityRa
     public final Object[] setCustomMapValues(Map<?, ?> values) {
         BlockEntityRadioTorch machine = machine();
         for (int i = 1; i <= 16; i++) {
-
             if (values.get((double) i) instanceof String signal) machine.mapping[i - 1] = signal;
         }
         machine.setChanged();

@@ -3,7 +3,7 @@
 
 package com.hbm.client.gui;
 
-import com.hbm.client.ModifierKeys;
+import com.hbm.client.Keybinds;
 import com.hbm.inventory.container.MenuAnvil;
 import com.hbm.inventory.recipes.anvil.AnvilConstructionRecipe.AnvilOutput;
 import com.hbm.inventory.recipes.anvil.AnvilConstructionRecipe.OverlayType;
@@ -11,9 +11,8 @@ import com.hbm.inventory.recipes.anvil.AnvilConstructionRecipe;
 import com.hbm.inventory.recipes.anvil.AnvilConstructionRecipes;
 import com.hbm.inventory.recipes.ingredient.CountIngredient;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.AnvilCraftPayload;
-import com.hbm.platform.Services;
-import com.hbm.util.I18nUtil;
 import com.hbm.util.InventoryUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +46,7 @@ public class ScreenAnvil extends ScreenInfoContainer<MenuAnvil> {
 
     public ScreenAnvil(MenuAnvil menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title, 176, 222);
-        this.tier = menu.tier;
+        tier = menu.tier;
 
         for (AnvilConstructionRecipe recipe : AnvilConstructionRecipes.INSTANCE.recipes()) {
             if (recipe.isTierValid(tier)) originList.add(recipe);
@@ -59,7 +58,7 @@ public class ScreenAnvil extends ScreenInfoContainer<MenuAnvil> {
     protected void init() {
         super.init();
 
-        this.search = new EditBox(font, leftPos + 10, topPos + 111, 84, 12, Component.empty());
+        search = new EditBox(font, leftPos + 10, topPos + 111, 84, 12, Component.empty());
         search.setTextColor(CommonColors.WHITE);
         search.setBordered(false);
         search.setMaxLength(25);
@@ -118,8 +117,8 @@ public class ScreenAnvil extends ScreenInfoContainer<MenuAnvil> {
         if (checkClick(x, y, 52, 53, 18, 18)) {
             if (selection >= 0) {
                 playClick();
-                int mode = ModifierKeys.leftShiftHeld() ? 1 : 0;
-                Services.NETWORK.sendToServer(
+                int mode = Keybinds.BATCH.isDown() ? 1 : 0;
+                PacketWire.sendToServer(
                         new AnvilCraftPayload(recipes.get(selection).getInternalName(), mode));
             }
             return true;
@@ -188,10 +187,10 @@ public class ScreenAnvil extends ScreenInfoContainer<MenuAnvil> {
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        List<String> selectedLines =
+        List<Component> selectedLines =
                 selection >= 0 ? recipeToList(recipes.get(selection)) : List.of();
         int longest = 0;
-        for (String s : selectedLines) longest = Math.max(longest, font.width(s));
+        for (Component s : selectedLines) longest = Math.max(longest, font.width(s));
         lastSize = selection >= 0 ? (int) (longest * 0.5F) : 0;
 
         int slide = recipePanelSlide();
@@ -296,7 +295,7 @@ public class ScreenAnvil extends ScreenInfoContainer<MenuAnvil> {
             graphics.pose().pushMatrix();
             graphics.pose().scale(0.5F, 0.5F);
             int offset = 0;
-            for (String s : selectedLines) {
+            for (Component s : selectedLines) {
                 graphics.text(font, s, 260, 50 + offset, CommonColors.WHITE, false);
                 offset += 9;
             }
@@ -305,7 +304,6 @@ public class ScreenAnvil extends ScreenInfoContainer<MenuAnvil> {
     }
 
     public Rect2i recipePanelArea() {
-
         return new Rect2i(leftPos + 125, topPos + 17, 54 + recipePanelSlide(), 108);
     }
 
@@ -313,26 +311,30 @@ public class ScreenAnvil extends ScreenInfoContainer<MenuAnvil> {
         return Mth.clamp(lastSize - 42, 0, 1000);
     }
 
-    private List<String> recipeToList(AnvilConstructionRecipe recipe) {
-        List<String> list = new ArrayList<>();
+    private List<Component> recipeToList(AnvilConstructionRecipe recipe) {
+        List<Component> list = new ArrayList<>();
 
-        list.add(ChatFormatting.YELLOW + I18nUtil.resolveKey("info.template_in_p"));
+        list.add(Component.translatable("info.template_in_p").withStyle(ChatFormatting.YELLOW));
         for (CountIngredient ci : recipe.input()) {
             ItemStack display = AnvilConstructionRecipe.representativeStack(ci);
             boolean has =
                     minecraft != null
                             && minecraft.player != null
                             && InventoryUtil.hasIngredients(minecraft.player, List.of(ci));
-            String line = ">" + ci.count() + "x " + display.getHoverName().getString();
-            list.add(has ? line : ChatFormatting.RED + line);
+            var line = Component.literal(">" + ci.count() + "x ").append(display.getHoverName());
+            list.add(has ? line : line.withStyle(ChatFormatting.RED));
         }
 
-        list.add("");
-        list.add(ChatFormatting.YELLOW + I18nUtil.resolveKey("info.template_out_p"));
+        list.add(Component.empty());
+        list.add(Component.translatable("info.template_out_p").withStyle(ChatFormatting.YELLOW));
         for (AnvilOutput out : recipe.outputs()) {
-            String line =
-                    ">" + out.stack().getCount() + "x " + out.stack().getHoverName().getString();
-            if (out.chance() != 1F) line += " (" + (out.chance() * 100) + "%)";
+            var line =
+                    Component.literal(">" + out.stack().getCount() + "x ")
+                            .append(out.stack().getHoverName());
+            if (out.chance() != 1F)
+                line.append(" (")
+                        .append(Component.translatable("unit.percent", out.chance() * 100))
+                        .append(")");
             list.add(line);
         }
 

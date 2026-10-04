@@ -1,0 +1,6 @@
+{
+  "hazards": [
+    "particle_coarse"
+  ],
+  "targets": "hbm:mask_rag"
+}

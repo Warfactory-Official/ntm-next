@@ -23,6 +23,7 @@ final class ProcessorRandom {
     static final long PICK_FALLBACK = domain("pick_fallback");
     static final long IMPACT_VILLAGE = domain("impact_village");
     static final long LOOT_PILE = domain("loot_pile");
+    static final long SPAWNER_ENTITY = domain("spawner_entity");
 
     private ProcessorRandom() {}
 
@@ -70,7 +71,6 @@ final class ProcessorRandom {
     }
 
     private static ServerLevelAccessor server(LevelReader level) {
-
         if (!(level instanceof ServerLevelAccessor server)) {
             throw new IllegalStateException(
                     "a template processor drew without the placing server level: " + level);

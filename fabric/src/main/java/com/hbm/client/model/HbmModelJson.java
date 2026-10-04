@@ -19,7 +19,6 @@ import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 
 public final class HbmModelJson {
-
     private static final Set<String> KNOWN_KEYS =
             Set.of(
                     "loader",

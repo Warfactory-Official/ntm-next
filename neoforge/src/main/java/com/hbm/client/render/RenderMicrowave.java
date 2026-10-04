@@ -3,10 +3,10 @@
 
 package com.hbm.client.render;
 
+import com.hbm.blockentity.machine.BlockEntityMicrowave;
 import com.hbm.blocks.machine.MachineMicrowave;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntityMicrowave;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -62,7 +62,6 @@ public class RenderMicrowave
         BlockEntityRenderer.super.extractRenderState(
                 be, state, partialTicks, cameraPosition, breakProgress);
         state.yaw = facingYaw(be.getBlockState().getValue(MachineMicrowave.FACING));
-
         state.spin = be.time > 0 ? (float) ((GameTime.now() * be.speed / 10D) % 360D) : Float.NaN;
     }
 

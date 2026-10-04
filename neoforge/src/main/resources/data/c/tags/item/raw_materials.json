@@ -1,0 +1,18 @@
+{
+  "values": [
+    "#c:raw_materials/aluminum",
+    "#c:raw_materials/beryllium",
+    "#c:raw_materials/cobalt",
+    "#c:raw_materials/copper",
+    "#c:raw_materials/gold",
+    "#c:raw_materials/iron",
+    "#c:raw_materials/lead",
+    "#c:raw_materials/lithium",
+    "#c:raw_materials/plutonium",
+    "#c:raw_materials/schrabidium",
+    "#c:raw_materials/thorium",
+    "#c:raw_materials/titanium",
+    "#c:raw_materials/tungsten",
+    "#c:raw_materials/uranium"
+  ]
+}

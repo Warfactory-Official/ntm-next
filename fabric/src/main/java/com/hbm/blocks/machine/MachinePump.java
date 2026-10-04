@@ -3,6 +3,9 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.blockentity.machine.BlockEntityMachinePumpBase;
+import com.hbm.blockentity.machine.BlockEntityMachinePumpElectric;
+import com.hbm.blockentity.machine.BlockEntityMachinePumpSteam;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -11,9 +14,6 @@ import com.hbm.capability.MachineCaps;
 import com.hbm.data.MachineData;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.inventory.fluid.NTMFluidProperties;
-import com.hbm.tileentity.machine.BlockEntityMachinePumpBase;
-import com.hbm.tileentity.machine.BlockEntityMachinePumpElectric;
-import com.hbm.tileentity.machine.BlockEntityMachinePumpSteam;
 import com.hbm.util.BobMathUtil;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;

@@ -4,8 +4,8 @@
 package com.hbm.entity.logic;
 
 import com.hbm.handler.threading.TargetPoint;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.MukePayload;
-import com.hbm.platform.Services;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ChunkUtil;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -52,11 +52,10 @@ public class EntityDeathBlast extends Entity {
                                     level(), 40, getX(), getY(), getZ()));
 
             if (level() instanceof ServerLevel server) {
-                Services.NETWORK.sendToAllAround(
+                PacketWire.sendToAllAround(
                         new MukePayload(getX(), getY() + 0.5D, getZ(), false, false),
                         new TargetPoint(server, getX(), getY(), getZ(), 250));
             }
-
             level().playSound(
                             null,
                             getX(),

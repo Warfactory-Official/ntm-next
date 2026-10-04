@@ -9,7 +9,6 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class LibraryDungeonFeature extends PlaceTemplateFeature {
-
     private static final List<BlockPos> CORNERS =
             List.of(
                     new BlockPos(0, 0, 0), new BlockPos(8, 0, 0),

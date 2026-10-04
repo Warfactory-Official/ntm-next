@@ -3,12 +3,12 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.bomb.BlockEntityCompactLauncher;
 import com.hbm.client.model.Meshes;
 import com.hbm.handler.MissileStruct;
 import com.hbm.items.weapon.ItemCustomMissilePart.PartType;
 import com.hbm.items.weapon.ItemCustomMissilePart;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.bomb.BlockEntityCompactLauncher;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;

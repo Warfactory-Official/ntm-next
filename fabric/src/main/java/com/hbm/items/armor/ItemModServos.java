@@ -11,10 +11,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -40,8 +37,6 @@ public class ItemModServos extends ItemArmorMod {
             this.key = key;
         }
     }
-
-    private static final int EFFECT_DURATION = 60;
 
     private final Tier tier;
 
@@ -81,26 +76,25 @@ public class ItemModServos extends ItemArmorMod {
                         .withStyle(ChatFormatting.DARK_PURPLE));
     }
 
+    public int effectAmplifier(EquipmentSlot slot) {
+        return switch (slot) {
+            case CHEST -> tier.haste;
+            case LEGS -> tier.jump;
+            default -> -1;
+        };
+    }
+
     @Override
-    public void modUpdate(LivingEntity entity, ItemStack armor) {
-        switch (slotOf(armor)) {
-            case CHEST ->
-                    entity.addEffect(
-                            new MobEffectInstance(MobEffects.HASTE, EFFECT_DURATION, tier.haste));
-            case LEGS ->
-                    entity.addEffect(
-                            new MobEffectInstance(
-                                    MobEffects.JUMP_BOOST, EFFECT_DURATION, tier.jump));
-            default -> {}
-        }
+    public boolean hasAttributes() {
+        return true;
     }
 
     @Override
     public void collectModifiers(
-            ItemStack armor,
+            EquipmentSlot slot,
             Identifier id,
             BiConsumer<Holder<Attribute>, AttributeModifier> adder) {
-        switch (slotOf(armor)) {
+        switch (slot) {
             case CHEST ->
                     adder.accept(
                             Attributes.ATTACK_DAMAGE,

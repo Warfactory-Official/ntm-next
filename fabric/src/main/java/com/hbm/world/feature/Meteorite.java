@@ -10,7 +10,6 @@ import com.hbm.data.WorldData;
 import com.hbm.explosion.ExplosionLarge;
 import com.hbm.items.ModItems;
 import com.hbm.lib.ModDamageTypes;
-import com.hbm.platform.Services;
 import com.hbm.registration.RegistryHandle;
 import com.hbm.tags.HbmBlockTags;
 import net.minecraft.core.BlockPos;
@@ -158,7 +157,6 @@ public class Meteorite {
                     setBlock(level, pos, work, 0, 0, 0, Palette.TAINT_AGE_9, safe);
                     return;
                 }
-
                 case 12 -> {
                     explode(level, pos, 10F, safe);
                     ItemStack blaster = new ItemStack(ModItems.GUN_B92.get());

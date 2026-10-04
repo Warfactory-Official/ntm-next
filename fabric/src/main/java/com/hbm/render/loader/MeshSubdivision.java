@@ -69,7 +69,6 @@ public final class MeshSubdivision {
             emit(vertices, stride, count, output);
             return;
         }
-
         float plane = (float) (Math.floor(((double) low + high) * 0.5) + 0.5);
         assert plane > low && plane < high;
         for (int side = 0; side < 2; side++) {

@@ -61,7 +61,6 @@ public final class CloudTomVisual extends HbmDynamicEntityVisual<EntityCloudTom>
             for (int j = 0; j < CURTAINS; j++) {
                 double mod = 1D - j * 0.025D;
                 double h = HEIGHT + j * 10D;
-
                 double off = 1D / j;
 
                 Vec3 vector = new Vec3(1D, 0D, 0D).yRot(angle * i);

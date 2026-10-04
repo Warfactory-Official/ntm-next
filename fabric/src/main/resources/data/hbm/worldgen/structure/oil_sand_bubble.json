@@ -19,5 +19,5 @@
     "tag": "minecraft:sand"
   },
   "spawn_overrides": {},
-  "step": "underground_ores"
+  "step": "raw_generation"
 }

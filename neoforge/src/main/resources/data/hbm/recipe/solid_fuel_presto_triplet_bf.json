@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "hbm:crafting_shapeless",
   "ingredients": [
     "hbm:solid_fuel_presto_bf",
     "hbm:solid_fuel_presto_bf",

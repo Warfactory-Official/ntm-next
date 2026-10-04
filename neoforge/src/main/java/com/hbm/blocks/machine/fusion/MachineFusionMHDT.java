@@ -3,6 +3,8 @@
 
 package com.hbm.blocks.machine.fusion;
 
+import com.hbm.blockentity.machine.fusion.BlockEntityFusionMHDT;
+import com.hbm.blockentity.machine.fusion.FusionPorts;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
@@ -10,8 +12,6 @@ import com.hbm.data.MachineData;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
-import com.hbm.tileentity.machine.fusion.BlockEntityFusionMHDT;
-import com.hbm.tileentity.machine.fusion.FusionPorts;
 import com.hbm.util.BobMathUtil;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -24,7 +24,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineFusionMHDT extends BlockFusionMachine
         implements ILookOverlay, ICapabilityBlock {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         2, 0, 6, 7, 2, 2, 0, 0, 0,
         3, -2, 6, 2, 1, 1, 0, 0, 0,

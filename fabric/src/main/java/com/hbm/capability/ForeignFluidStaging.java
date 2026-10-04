@@ -63,7 +63,6 @@ public final class ForeignFluidStaging {
         if (receiver == null || be.isRemoved() || !addressable(tanks, index, fluid, true))
             return 0L;
         long room = roomIn(tanks[index]) - delta[index];
-
         long demand =
                 Math.min(
                         receiver.getDemand(fluid, PRESSURE),

@@ -3,9 +3,9 @@
 
 package com.hbm.inventory.container;
 
+import com.hbm.blockentity.machine.BlockEntityFurnaceBrick;
 import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.inventory.slot.SlotSmelting;
-import com.hbm.tileentity.machine.BlockEntityFurnaceBrick;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -45,7 +45,6 @@ public class MenuFurnaceBrick extends BlockEntityMenu<BlockEntityFurnaceBrick> {
                     int machineEnd = BlockEntityFurnaceBrick.SLOT_COUNT;
                     if (index < machineEnd)
                         return moveItemStackTo(stack, machineEnd, slots.size(), true);
-
                     if (container().canPlaceItem(BlockEntityFurnaceBrick.SLOT_FUEL, stack))
                         return moveItemStackTo(
                                         stack,

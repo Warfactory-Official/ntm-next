@@ -29,7 +29,7 @@ public class DudFeature extends Feature<NoneFeatureConfiguration> {
 
         if (!level.getBlockState(pos).isAir()
                 || !LocationIsValidSpawn.isValidGround(
-                        level.getBlockState(pos.below()), level.getBlockState(pos.below(2)), false))
+                        level.getBlockState(pos.below()), level.getBlockState(pos.below(2))))
             return false;
 
         EnumDudType type = DUD_TYPES[rand.nextInt(DUD_TYPES.length)];

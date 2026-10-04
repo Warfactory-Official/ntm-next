@@ -51,6 +51,22 @@
     "hbm:chemical_dye_lightblue",
     "hbm:chemical_dye_magenta",
     "hbm:chemical_dye_orange",
-    "hbm:chemical_dye_white"
+    "hbm:chemical_dye_white",
+    "#c:dyes/black",
+    "#c:dyes/blue",
+    "#c:dyes/brown",
+    "#c:dyes/cyan",
+    "#c:dyes/gray",
+    "#c:dyes/green",
+    "#c:dyes/light_blue",
+    "#c:dyes/light_gray",
+    "#c:dyes/lime",
+    "#c:dyes/magenta",
+    "#c:dyes/orange",
+    "#c:dyes/pink",
+    "#c:dyes/purple",
+    "#c:dyes/red",
+    "#c:dyes/white",
+    "#c:dyes/yellow"
   ]
 }

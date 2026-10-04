@@ -4,11 +4,10 @@
 
 package com.hbm.util;
 
-import com.hbm.blocks.generic.BlockLoot.TileEntityLoot.Entry;
+import com.hbm.blocks.generic.BlockLoot.BlockEntityLoot.Entry;
 import com.hbm.itempool.ItemPool;
 import com.hbm.itempool.ItemPools;
 import com.hbm.itempool.LoreBooks;
-import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
 import java.util.ArrayList;

@@ -47,7 +47,6 @@ public final class AnvilCraftPayload extends ThreadedPayload {
         if (!recipe.isTierValid(anvil.tier)) return;
 
         List<AnvilOutput> outputs = recipe.outputs();
-
         int count =
                 payload.mode != 1
                         ? 1
@@ -59,7 +58,6 @@ public final class AnvilCraftPayload extends ThreadedPayload {
         for (int i = 0; i < count; i++) {
             if (!InventoryUtil.consumeIngredients(sp, recipe.input())) break;
             InventoryUtil.giveChanceOutputs(sp, outputs);
-
             HbmCriteria.itemCrafted(sp, outputs.get(0).stack());
         }
 

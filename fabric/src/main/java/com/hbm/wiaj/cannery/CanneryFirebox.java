@@ -21,9 +21,9 @@ import com.hbm.wiaj.actions.ActionSetBlock;
 import com.hbm.wiaj.actions.ActionSetZoom;
 import com.hbm.wiaj.actions.ActionUpdateActor;
 import com.hbm.wiaj.actions.ActionWait;
+import com.hbm.wiaj.actors.ActorBlockEntity;
 import com.hbm.wiaj.actors.ActorFancyPanel.Orientation;
 import com.hbm.wiaj.actors.ActorFancyPanel;
-import com.hbm.wiaj.actors.ActorTileEntity;
 import com.hbm.wiaj.actors.ITileActorRenderer;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.rendertype.RenderType;
@@ -69,7 +69,7 @@ public class CanneryFirebox extends CanneryBase {
         firebox.putDouble("y", 1);
         firebox.putDouble("z", 2);
         firebox.putInt("rotation", 5);
-        scene0.add(new ActionCreateActor(0, new ActorTileEntity(new ActorFirebox(), firebox)));
+        scene0.add(new ActionCreateActor(0, new ActorBlockEntity(new ActorFirebox(), firebox)));
         scene0.add(new ActionWait(10));
 
         scene0.add(
@@ -160,7 +160,7 @@ public class CanneryFirebox extends CanneryBase {
         stirling.putBoolean("hasCog", true);
         scene1.add(
                 new ActionCreateActor(
-                        1, new ActorTileEntity(new CanneryStirling.ActorStirling(), stirling)));
+                        1, new ActorBlockEntity(new CanneryStirling.ActorStirling(), stirling)));
         scene1.add(new ActionUpdateActor(1, "speed", 0F));
 
         scene1.add(new ActionWait(10));

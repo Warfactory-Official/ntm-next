@@ -6,10 +6,9 @@ package com.hbm.particle;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
 
-public class ParticleSpark extends Particle {
+public class ParticleSpark extends LegacyMoveParticle {
 
     public static final ParticleRenderType SPARK_GROUP = new ParticleRenderType("hbm:spark", "HSP");
 
@@ -47,8 +46,6 @@ public class ParticleSpark extends Particle {
 
         this.yd -= 0.04D * this.gravity;
         double lastY = this.yd;
-
-        this.stoppedByCollision = false;
         this.move(this.xd, this.yd, this.zd);
 
         if (this.onGround) {

@@ -52,7 +52,6 @@ public final class SyncBindings {
         else if (owner instanceof SyncList<?> list) {
             for (int i = 0; i < list.size(); i++) bind(owner, list.get(i), 3);
         } else if ((Object) owner instanceof ItemStack stack) {
-
             if (!(parent instanceof SyncInventory inventory) || inventory.components())
                 bind(owner, stack.components, 3);
         }

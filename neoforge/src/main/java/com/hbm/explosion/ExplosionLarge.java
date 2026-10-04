@@ -6,9 +6,9 @@ package com.hbm.explosion;
 import com.hbm.entity.projectile.EntityRubble;
 import com.hbm.entity.projectile.EntityShrapnel;
 import com.hbm.handler.threading.TargetPoint;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.SmokeShockPayload;
 import com.hbm.particle.helper.ExplosionCreator;
-import com.hbm.platform.Services;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -62,7 +62,6 @@ public final class ExplosionLarge {
             boolean shrapnel) {
         level.explode(
                 detonator, null, null, x, y, z, strength, fire, Level.ExplosionInteraction.BLOCK);
-
         if (cloud) ExplosionCreator.composeEffectStandard(level, x, y + 2, z);
         if (rubble) spawnRubble(level, x, y + 2, z, rubbleCount(strength));
         if (shrapnel) spawnShrapnels(level, x, y + 2, z, shrapnelCount(strength));
@@ -79,7 +78,7 @@ public final class ExplosionLarge {
     public static void spawnShock(
             Level level, double x, double y, double z, int count, double strength) {
         if (!(level instanceof ServerLevel server)) return;
-        Services.NETWORK.sendToAllAround(
+        PacketWire.sendToAllAround(
                 new SmokeShockPayload(x, y + 0.5, z, count, strength, SmokeShockPayload.MODE_SHOCK),
                 new TargetPoint(server, x, y, z, 250));
     }
@@ -87,28 +86,28 @@ public final class ExplosionLarge {
     public static void spawnBurst(
             Level level, double x, double y, double z, int count, double strength) {
         if (!(level instanceof ServerLevel server)) return;
-        Services.NETWORK.sendToAllAround(
+        PacketWire.sendToAllAround(
                 new SmokeShockPayload(x, y, z, count, strength, SmokeShockPayload.MODE_BURST),
                 new TargetPoint(server, x, y, z, 250));
     }
 
     public static void spawnParticlesRadial(Level level, double x, double y, double z, int count) {
         if (!(level instanceof ServerLevel server)) return;
-        Services.NETWORK.sendToAllAround(
+        PacketWire.sendToAllAround(
                 new SmokeShockPayload(x, y, z, count, 0, SmokeShockPayload.MODE_RADIAL),
                 new TargetPoint(server, x, y, z, 250));
     }
 
     public static void spawnFoam(Level level, double x, double y, double z, int count) {
         if (!(level instanceof ServerLevel server)) return;
-        Services.NETWORK.sendToAllAround(
+        PacketWire.sendToAllAround(
                 new SmokeShockPayload(x, y, z, count, 0, SmokeShockPayload.MODE_FOAM),
                 new TargetPoint(server, x, y, z, 250));
     }
 
     public static void spawnParticles(Level level, double x, double y, double z, int count) {
         if (!(level instanceof ServerLevel server)) return;
-        Services.NETWORK.sendToAllAround(
+        PacketWire.sendToAllAround(
                 new SmokeShockPayload(x, y, z, count, 0, SmokeShockPayload.MODE_CLOUD),
                 new TargetPoint(server, x, y, z, 250));
     }
@@ -257,7 +256,6 @@ public final class ExplosionLarge {
                 if (state.getBlock().getExplosionResistance() > 70F) continue;
                 EntityRubble rubble = new EntityRubble(level, bx + 0.5, by + 0.5, bz + 0.5);
                 rubble.setBlockState(state);
-
                 Vec3 back = new Vec3(x - (bx + 0.5), y - (by + 0.5), z - (bz + 0.5)).scale(vel);
                 rubble.setDeltaMovement(back);
                 level.addFreshEntity(rubble);

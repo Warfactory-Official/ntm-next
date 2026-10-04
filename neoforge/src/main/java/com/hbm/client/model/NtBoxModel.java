@@ -4,9 +4,9 @@
 package com.hbm.client.model;
 
 import com.hbm.blocks.generic.BlockWoodBarrier;
+import com.mojang.math.Quadrant;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
@@ -26,7 +26,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Vector3f;
-import org.jspecify.annotations.Nullable;
 
 public final class NtBoxModel implements BlockStateModel {
 
@@ -104,7 +103,6 @@ public final class NtBoxModel implements BlockStateModel {
 
             @Override
             public int key(BlockAndTintGetter level, BlockPos pos, BlockState state) {
-
                 return key(state) | (level.getBlockState(pos.above()).isSolidRender() ? UP : 0);
             }
 
@@ -138,7 +136,6 @@ public final class NtBoxModel implements BlockStateModel {
                 if ((key & UP) != 0) ceiling(out);
             }
         },
-
         WOOD_ROOF {
             @Override
             public int key(BlockState state) {
@@ -160,7 +157,6 @@ public final class NtBoxModel implements BlockStateModel {
                 out.box(x0, 2, 9, x1, 3, 15);
             }
         },
-
         WOOD_SCAFFOLD {
             @Override
             public int key(BlockState state) {
@@ -190,7 +186,6 @@ public final class NtBoxModel implements BlockStateModel {
                 if ((key & UP) == 0) out.box(0, 14, 0, 16, 16, 16);
             }
         },
-
         WOOD_CEILING {
             @Override
             public int key(BlockState state) {
@@ -225,7 +220,7 @@ public final class NtBoxModel implements BlockStateModel {
         private final Int2ObjectMap<BlockStateModelPart> parts = new Int2ObjectOpenHashMap<>();
 
         private Shared(ModelBaker baker, ResolvedModel carrier) {
-            this.baker = baker;
+            this.baker = RuntimeBaker.capture(baker, carrier);
             TextureSlots slots = carrier.getTopTextureSlots();
             this.sheet = BlockModel.slot(baker, carrier, slots, "texture");
             this.particle = carrier.resolveParticleMaterial(slots, baker);
@@ -242,11 +237,47 @@ public final class NtBoxModel implements BlockStateModel {
                             (x0, y0, z0, x1, y1, z1) -> {
                                 Vector3f from = new Vector3f(x0, y0, z0);
                                 Vector3f to = new Vector3f(x1, y1, z1);
+                                UvRotation[] uvs =
+                                        (new UvRotation[] {
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            from.x(), to.z(), to.x(), from.z()),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            from.x(), from.z(), to.x(), to.z()),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            16F - to.x(),
+                                                            16F - to.y(),
+                                                            16F - from.x(),
+                                                            16F - from.y()),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            from.x(),
+                                                            16F - to.y(),
+                                                            to.x(),
+                                                            16F - from.y()),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            from.z(),
+                                                            16F - to.y(),
+                                                            to.z(),
+                                                            16F - from.y()),
+                                                    Quadrant.R0),
+                                            new UvRotation(
+                                                    new CuboidFace.UVs(
+                                                            16F - to.z(),
+                                                            16F - to.y(),
+                                                            16F - from.z(),
+                                                            16F - from.y()),
+                                                    Quadrant.R0)
+                                        });
                                 for (Direction dir : Direction.VALUES) {
-                                    NtBoxUv.Uv uv =
-                                            NtBoxUv.window(
-                                                    dir, from.x(), from.y(), from.z(), to.x(),
-                                                    to.y(), to.z());
+                                    UvRotation uv = uvs[dir.ordinal()];
                                     b.addUnculledFace(
                                             Boxes.face(
                                                     baker,

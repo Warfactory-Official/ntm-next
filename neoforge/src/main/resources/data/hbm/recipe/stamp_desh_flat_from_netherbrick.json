@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "B": "minecraft:nether_brick",
     "D": "#c:ingots/workers_alloy",

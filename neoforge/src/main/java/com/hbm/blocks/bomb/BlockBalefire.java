@@ -3,7 +3,6 @@
 
 package com.hbm.blocks.bomb;
 
-import com.hbm.platform.Services;
 import com.hbm.potion.HbmPotion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -121,7 +120,7 @@ public class BlockBalefire extends FireBlock {
             int age) {
         BlockPos pos = fire.relative(toward);
         BlockState burnt = level.getBlockState(pos);
-        int odds = Services.PLATFORM.burnOdds(level, pos, burnt, toward.getOpposite());
+        int odds = burnt.getFlammability((BlockGetter) level, pos, toward.getOpposite());
         if (odds <= 0 || random.nextInt(chance) >= odds) return;
         level.setBlock(pos, defaultBlockState().setValue(AGE, age + 1), 3);
         if (burnt.getBlock() instanceof TntBlock) TntBlock.prime(level, pos);
@@ -143,8 +142,8 @@ public class BlockBalefire extends FireBlock {
     private boolean canNeighborBurn(Level level, BlockPos pos) {
         for (Direction dir : Direction.VALUES) {
             BlockPos neighbor = pos.relative(dir);
-            if (Services.PLATFORM.isFlammable(
-                    level, neighbor, level.getBlockState(neighbor), dir.getOpposite())) {
+            if (level.getBlockState(neighbor)
+                    .isFlammable((BlockGetter) level, neighbor, dir.getOpposite())) {
                 return true;
             }
         }
@@ -158,11 +157,9 @@ public class BlockBalefire extends FireBlock {
             odds =
                     Math.max(
                             odds,
-                            Services.PLATFORM.igniteOdds(
-                                    level,
-                                    neighbor,
-                                    level.getBlockState(neighbor),
-                                    dir.getOpposite()));
+                            level.getBlockState(neighbor)
+                                    .getFireSpreadSpeed(
+                                            (BlockGetter) level, neighbor, dir.getOpposite()));
         }
         return odds;
     }

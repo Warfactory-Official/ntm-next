@@ -10,10 +10,10 @@ import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.lib.Library;
-import com.hbm.platform.Services;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -38,21 +38,20 @@ public final class CraftingRows {
         List<RecipeHolder<CraftingRecipe>> rows = new ArrayList<>();
         FluidPipeBlockItem duct = (FluidPipeBlockItem) ModBlocks.FLUID_PIPE.get().asItem();
         Ingredient plain = Ingredient.of(duct);
-
         Ingredient typed =
-                Services.PLATFORM.anyIngredient(
+                DefaultCustomIngredients.any(
                         NTMFluids.displayOrder().stream()
                                 .filter(fluid -> fluid != NTMFluids.NONE)
-                                .map(fluid -> Services.PLATFORM.exactIngredient(duct.of(fluid)))
-                                .toList());
-
+                                .map(fluid -> DefaultCustomIngredients.components(duct.of(fluid)))
+                                .toList()
+                                .toArray(Ingredient[]::new));
         for (int id = 1; id < NTMFluids.legacyIdCount(); id++) {
             Fluid fluid = NTMFluids.byLegacyId(id);
             ItemStack identifier = new ItemStack(ModItems.FLUID_IDENTIFIER);
             identifier.set(
                     ModDataComponents.FLUID_IDENTIFIER.get(),
                     FluidIdentifierData.EMPTY.withPrimary(fluid));
-            Ingredient stamp = Services.PLATFORM.exactIngredient(identifier);
+            Ingredient stamp = DefaultCustomIngredients.components(identifier);
             String key = PageIds.segment(BuiltInRegistries.FLUID.getKey(fluid));
             rows.add(
                     row(
@@ -83,7 +82,6 @@ public final class CraftingRows {
                             typed,
                             stamp));
         }
-
         rows.add(
                 new RecipeHolder<>(
                         ResourceKey.create(

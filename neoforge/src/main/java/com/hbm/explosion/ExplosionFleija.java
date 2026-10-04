@@ -77,9 +77,7 @@ public class ExplosionFleija {
                     y--) {
                 pos.set(this.posX + x, this.posY + y, this.posZ + z);
                 BlockState state = this.worldObj.getBlockState(pos);
-
                 if (state.getBlock() instanceof BlockStatueElbF) continue;
-
                 if (this.posY + y <= this.worldObj.getMinY()) continue;
                 this.worldObj.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
             }

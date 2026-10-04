@@ -14,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -21,9 +22,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemModWD40 extends ItemArmorMod {
-
     private static final double HEALTH = 4D;
-
     private static final int SPRAY_COLOR = ARGB.colorFromFloat(1F, 0.01F, 0.5F, 0.8F);
 
     public ItemModWD40(Properties properties) {
@@ -59,6 +58,11 @@ public class ItemModWD40 extends ItemArmorMod {
     }
 
     @Override
+    public boolean ticksClient() {
+        return true;
+    }
+
+    @Override
     public void modUpdateClient(LivingEntity entity, ItemStack armor) {
         if (entity.hurtTime <= 0) return;
         var random = entity.getRandom();
@@ -74,8 +78,13 @@ public class ItemModWD40 extends ItemArmorMod {
     }
 
     @Override
+    public boolean hasAttributes() {
+        return true;
+    }
+
+    @Override
     public void collectModifiers(
-            ItemStack armor,
+            EquipmentSlot slot,
             Identifier id,
             BiConsumer<Holder<Attribute>, AttributeModifier> adder) {
         adder.accept(

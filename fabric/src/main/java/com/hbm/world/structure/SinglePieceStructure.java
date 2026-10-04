@@ -46,7 +46,11 @@ public final class SinglePieceStructure extends JigsawStructure {
                                                             .optionalFieldOf("max_height", 128)
                                                             .forGetter(
                                                                     structure ->
-                                                                            structure.maxHeight))
+                                                                            structure.maxHeight),
+                                                    Codec.BOOL
+                                                            .optionalFieldOf("aquatic", false)
+                                                            .forGetter(
+                                                                    structure -> structure.aquatic))
                                             .apply(instance, SinglePieceStructure::new))
                     .validate(
                             structure ->
@@ -58,14 +62,15 @@ public final class SinglePieceStructure extends JigsawStructure {
     private final int heightOffset;
     private final int minHeight;
     private final int maxHeight;
+    private final boolean aquatic;
 
     public SinglePieceStructure(
             Structure.StructureSettings settings,
             Holder<StructureTemplatePool> pool,
             int heightOffset,
             int minHeight,
-            int maxHeight) {
-
+            int maxHeight,
+            boolean aquatic) {
         super(
                 settings,
                 pool,
@@ -81,38 +86,50 @@ public final class SinglePieceStructure extends JigsawStructure {
         this.heightOffset = heightOffset;
         this.minHeight = minHeight;
         this.maxHeight = maxHeight;
+        this.aquatic = aquatic;
     }
 
     @Override
     public Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
-
         return super.findGenerationPoint(context)
-                .map(
-                        stub ->
-                                new GenerationStub(
-                                        stub.position(),
-                                        output -> {
-                                            var builder = stub.getPiecesBuilder();
-                                            var pieces = builder.build().pieces();
-                                            if (pieces.size() != 1)
-                                                throw new IllegalStateException(
-                                                        "Single-piece pool "
-                                                                + getStartPool()
-                                                                + " produced "
-                                                                + pieces.size()
-                                                                + " pieces");
-                                            PoolElementStructurePiece piece =
-                                                    (PoolElementStructurePiece) pieces.getFirst();
-                                            int y =
-                                                    averageGround(context, piece.getBoundingBox())
-                                                            + heightOffset;
-
-                                            if (!(context.chunkGenerator()
-                                                    instanceof FlatLevelSource))
-                                                y = Math.clamp(y, minHeight, maxHeight);
-                                            piece.move(0, y - piece.getBoundingBox().minY(), 0);
-                                            output.addPiece(piece);
-                                        }));
+                .flatMap(
+                        stub -> {
+                            var pieces = stub.getPiecesBuilder().build().pieces();
+                            if (pieces.size() != 1)
+                                throw new IllegalStateException(
+                                        "Single-piece pool "
+                                                + getStartPool()
+                                                + " produced "
+                                                + pieces.size()
+                                                + " pieces");
+                            PoolElementStructurePiece piece =
+                                    (PoolElementStructurePiece) pieces.getFirst();
+                            BoundingBox footprint = piece.getBoundingBox();
+                            if (!aquatic
+                                    && getLowestY(
+                                                    context,
+                                                    footprint.minX(),
+                                                    footprint.minZ(),
+                                                    footprint.getXSpan() - 1,
+                                                    footprint.getZSpan() - 1)
+                                            < context.chunkGenerator().getSeaLevel())
+                                return Optional.empty();
+                            return Optional.of(
+                                    new GenerationStub(
+                                            stub.position(),
+                                            output -> {
+                                                int y =
+                                                        averageGround(
+                                                                        context,
+                                                                        piece.getBoundingBox())
+                                                                + heightOffset;
+                                                if (!(context.chunkGenerator()
+                                                        instanceof FlatLevelSource))
+                                                    y = Math.clamp(y, minHeight, maxHeight);
+                                                piece.move(0, y - piece.getBoundingBox().minY(), 0);
+                                                output.addPiece(piece);
+                                            }));
+                        });
     }
 
     private static int averageGround(GenerationContext context, BoundingBox footprint) {

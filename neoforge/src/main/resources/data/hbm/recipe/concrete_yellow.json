@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "hbm:crafting_shaped",
   "key": {
     "C": "hbm:concrete_smooth",
     "D": "#c:dyes/yellow"

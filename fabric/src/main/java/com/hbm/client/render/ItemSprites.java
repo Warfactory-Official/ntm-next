@@ -141,7 +141,6 @@ public final class ItemSprites {
 
         private static BakedQuad opaque(BakedQuad quad) {
             var original = quad.materialInfo();
-
             var material =
                     new BakedQuad.MaterialInfo(
                             original.sprite(),
@@ -150,7 +149,6 @@ public final class ItemSprites {
                             original.tintIndex(),
                             original.shade(),
                             0);
-
             return new BakedQuad(
                     quad.position0(),
                     quad.position1(),

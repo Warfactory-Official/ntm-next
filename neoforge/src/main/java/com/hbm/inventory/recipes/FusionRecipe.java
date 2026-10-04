@@ -7,7 +7,6 @@ package com.hbm.inventory.recipes;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.util.BobMathUtil;
-import com.hbm.util.I18nUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -17,6 +16,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
@@ -89,11 +89,8 @@ public class FusionRecipe extends GenericRecipe {
                     FusionRecipe::new, EXTRAS_STREAM_CODEC, APPLY_EXTRAS, EXTRACT_EXTRAS);
     public static final RecipeSerializer<FusionRecipe> SERIALIZER =
             new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
-
     public long ignitionTemp;
-
     public long outputTemp;
-
     public double neutronFlux;
     public float r = 1F;
     public float g = 0.2F;
@@ -126,30 +123,35 @@ public class FusionRecipe extends GenericRecipe {
     }
 
     @Override
-    public List<String> print() {
-        List<String> list = new ArrayList<>();
-        list.add(ChatFormatting.YELLOW + getLocalizedName());
+    public List<Component> print() {
+        List<Component> list = new ArrayList<>();
+        list.add(getLocalizedName().copy().withStyle(ChatFormatting.YELLOW));
 
         duration(list);
         power(list);
         list.add(
-                ChatFormatting.LIGHT_PURPLE
-                        + I18nUtil.resolveKey("gui.recipe.fusionIn")
-                        + ": "
-                        + BobMathUtil.getShortNumber(ignitionTemp)
-                        + "KyU/t");
+                Component.translatable("gui.recipe.fusionIn")
+                        .append(": ")
+                        .append(
+                                Component.translatable(
+                                        "unit.ignition_per_tick",
+                                        BobMathUtil.getShortNumber(ignitionTemp)))
+                        .withStyle(ChatFormatting.LIGHT_PURPLE));
         list.add(
-                ChatFormatting.LIGHT_PURPLE
-                        + I18nUtil.resolveKey("gui.recipe.fusionOut")
-                        + ": "
-                        + BobMathUtil.getShortNumber(outputTemp)
-                        + "TU/t");
+                Component.translatable("gui.recipe.fusionOut")
+                        .append(": ")
+                        .append(
+                                Component.translatable(
+                                        "unit.heat_per_tick",
+                                        BobMathUtil.getShortNumber(outputTemp)))
+                        .withStyle(ChatFormatting.LIGHT_PURPLE));
         list.add(
-                ChatFormatting.LIGHT_PURPLE
-                        + I18nUtil.resolveKey("gui.recipe.fusionFlux")
-                        + ": "
-                        + ((int) (neutronFlux * 10)) / 10D
-                        + " flux/t");
+                Component.translatable("gui.recipe.fusionFlux")
+                        .append(": ")
+                        .append(
+                                Component.translatable(
+                                        "unit.flux_per_tick", ((int) (neutronFlux * 10)) / 10D))
+                        .withStyle(ChatFormatting.LIGHT_PURPLE));
         input(list);
         output(list);
 

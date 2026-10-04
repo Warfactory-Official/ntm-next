@@ -6,7 +6,6 @@ package com.hbm.inventory.recipes.loader;
 import net.minecraft.world.item.crafting.RecipeBookCategory;
 
 public interface INamedRecipe {
-
     RecipeBookCategory BOOK_CATEGORY = new RecipeBookCategory();
 
     String getInternalName();

@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntitySawmill;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.tileentity.machine.BlockEntitySawmill;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.Material;
@@ -82,7 +82,6 @@ public final class SawmillVisual extends HbmDynamicBlockEntityVisual<BlockEntity
         boolean bladeChanged = !initialized || hasBlade != lastHasBlade;
         if (!spinChanged && !bladeChanged) return;
         if (bladeChanged || hasBlade && spinChanged) {
-
             partPoses[0]
                     .set(basePose)
                     .translate(0F, 1.375F, 0F)

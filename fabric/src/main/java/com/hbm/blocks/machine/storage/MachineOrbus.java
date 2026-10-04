@@ -3,6 +3,8 @@
 
 package com.hbm.blocks.machine.storage;
 
+import com.hbm.blockentity.machine.storage.BlockEntityBarrel;
+import com.hbm.blockentity.machine.storage.BlockEntityMachineOrbus;
 import com.hbm.blocks.IPersistentInfoProvider;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
@@ -14,8 +16,6 @@ import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.tileentity.machine.storage.BlockEntityBarrel;
-import com.hbm.tileentity.machine.storage.BlockEntityMachineOrbus;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -127,7 +127,6 @@ public class MachineOrbus extends BlockMultiblockCore
     @Override
     protected InteractionResult useAtCore(
             BlockState coreState, Level level, BlockPos core, Player player, BlockHitResult hit) {
-
         if (player.isShiftKeyDown()) return InteractionResult.SUCCESS;
         if (level.isClientSide()) return InteractionResult.SUCCESS;
         if (level.getBlockEntity(core) instanceof MenuProvider menu) {
@@ -143,7 +142,6 @@ public class MachineOrbus extends BlockMultiblockCore
 
     @Override
     public MachineCaps caps() {
-
         return MachineCaps.of(ModBlockEntities.ORBUS)
                 .fluidIn()
                 .fluidOut()

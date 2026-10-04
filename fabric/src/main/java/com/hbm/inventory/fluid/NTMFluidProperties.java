@@ -23,19 +23,16 @@ import net.minecraft.world.level.material.Fluids;
 import org.jspecify.annotations.Nullable;
 
 public final class NTMFluidProperties {
-
     private static volatile Reference2ObjectOpenHashMap<Fluid, NTMFluidProperty> OWN =
             new Reference2ObjectOpenHashMap<>();
     private static volatile Reference2ObjectOpenHashMap<Fluid, Component> NAMES =
             new Reference2ObjectOpenHashMap<>();
-
     private static volatile Reference2ReferenceOpenHashMap<Fluid, Fluid> KINDS =
             new Reference2ReferenceOpenHashMap<>();
     private static volatile Reference2ObjectOpenHashMap<Fluid, Fluid[]> EQUIVALENTS =
             new Reference2ObjectOpenHashMap<>();
     private static final Fluid[] NO_FLUIDS = new Fluid[0];
     private static final Component EMPTY_NAME = Component.translatable("hbmfluid.none");
-
     private static volatile boolean resyncPending;
     private static volatile boolean syncOwned;
 
@@ -129,7 +126,6 @@ public final class NTMFluidProperties {
                     if (!isForeign(member)) continue;
                     Fluid prior = kinds.putIfAbsent(member, ntm);
                     if (prior != null && prior != ntm) continue;
-
                     if (member.isSource(member.defaultFluidState()) && !sources.contains(member))
                         sources.add(member);
                 }
@@ -177,13 +173,11 @@ public final class NTMFluidProperties {
     }
 
     public static Component getDisplayName(@Nullable Fluid fluid) {
-
         if (fluid == null || fluid == Fluids.EMPTY) return EMPTY_NAME;
         Component own = NAMES.get(fluid);
         if (own != null) return own;
         Identifier id = BuiltInRegistries.FLUID.getKey(fluid);
         String key = nameKey(id);
-
         if (Language.getInstance().has(key)) return Component.translatable(key);
         return Component.literal(prettify(id.getPath()));
     }

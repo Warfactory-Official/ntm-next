@@ -84,7 +84,6 @@ public final class GrenadeAssemblyPage extends RecipePage<GrenadeAssemblyPage.Re
 
     @Override
     public void layout(Recipe recipe, PageLayout page) {
-
         int[][] positions =
                 GenericMachinePage.universalInputPositions(recipe.extra() == null ? 3 : 4);
         page.input(positions[0][0], positions[0][1]).background().item(recipe.shell());

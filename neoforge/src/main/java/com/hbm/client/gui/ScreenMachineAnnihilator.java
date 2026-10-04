@@ -3,16 +3,15 @@
 
 package com.hbm.client.gui;
 
-import com.hbm.interfaces.ILookOverlay;
+import com.hbm.blockentity.machine.BlockEntityMachineAnnihilator;
 import com.hbm.inventory.container.MenuMachineAnnihilator;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.FluidIdentifierItem;
 import com.hbm.lib.Library;
+import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
-import com.hbm.platform.Services;
-import com.hbm.tileentity.machine.BlockEntityMachineAnnihilator;
 import java.util.List;
 import java.util.Locale;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -61,8 +60,7 @@ public class ScreenMachineAnnihilator extends ScreenInfoContainer<MenuMachineAnn
     private void sendPool(String text) {
         CompoundTag data = new CompoundTag();
         data.putString("pool", text);
-        Services.NETWORK.sendToServer(
-                new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
+        PacketWire.sendToServer(new NbtControlPayload(menu.blockEntity().getBlockPos(), data));
     }
 
     @Override

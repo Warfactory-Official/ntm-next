@@ -27,7 +27,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class BlockMultiblockGeometryCell extends BlockMultiblockCell implements ClimbBox {
-
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
 
     private static CellBuckets.@Nullable Geometry constructing;

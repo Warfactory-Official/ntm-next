@@ -3,18 +3,15 @@
 
 package com.hbm.util;
 
-import com.hbm.blocks.network.CraneInserter;
 import com.hbm.capability.NtmContracts;
 import com.hbm.inventory.recipes.anvil.AnvilConstructionRecipe.AnvilOutput;
 import com.hbm.inventory.recipes.ingredient.CountIngredient;
-import com.hbm.tileentity.machine.BlockEntityFurnaceBrick;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.WorldlyContainerHolder;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +19,6 @@ import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
@@ -119,7 +115,6 @@ public final class InventoryUtil {
         RandomSource random = player.getRandom();
         for (AnvilOutput out : outputs) {
             if (out.chance() == 1.0F || random.nextFloat() < out.chance()) {
-
                 player.getInventory().placeItemBackInInventory(out.stack().copy());
             }
         }
@@ -185,7 +180,6 @@ public final class InventoryUtil {
 
         for (int i = start; i <= end; i++) {
             if (inv.get(i).isEmpty()) {
-
                 inv.set(i, stack.copy());
                 stack.setCount(0);
                 return true;

@@ -3,10 +3,10 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.storage.BlockEntityMassStorage;
 import com.hbm.blocks.machine.storage.BlockMassStorage;
 import com.hbm.client.render.RenderMassStorage;
 import com.hbm.main.ResourceManager;
-import com.hbm.tileentity.machine.storage.BlockEntityMassStorage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;

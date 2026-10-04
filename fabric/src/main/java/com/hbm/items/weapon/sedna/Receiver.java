@@ -70,7 +70,6 @@ public class Receiver {
     protected int reloadCockOnEmptyPre_DNA;
     protected int reloadCockOnEmptyPost_DNA;
     protected int jamDuration_DNA = 0;
-
     protected Supplier<SoundEvent> fireSound_DNA;
     protected float fireVolume_DNA = 1.0F;
     protected float firePitch_DNA = 1.0F;

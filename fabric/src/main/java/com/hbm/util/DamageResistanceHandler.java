@@ -35,7 +35,6 @@ public final class DamageResistanceHandler {
     public static final String CATEGORY_FIRE = "FIRE";
     public static final String CATEGORY_PHYSICAL = "PHYS";
     public static final String CATEGORY_ENERGY = "EN";
-
     public static final String EXACT_FALL = "fall";
 
     private static final HashMap<Item, ResistanceStats> itemStats = new HashMap<>();
@@ -153,7 +152,6 @@ public final class DamageResistanceHandler {
 
     public static float calculateDamage(
             LivingEntity entity, DamageSource damage, float amount, float pierceDT, float pierce) {
-
         if (damage.is(DamageTypeTags.BYPASSES_EFFECTS)) return amount;
 
         float[] vals = getDTDR(entity, damage, amount, pierceDT, pierce);
@@ -163,7 +161,6 @@ public final class DamageResistanceHandler {
         dt = Math.max(0F, dt - pierceDT);
         if (dt >= amount) return 0F;
         amount -= dt;
-
         dr *= Mth.clamp(1F - pierce, 0F, 2F);
 
         return amount * (1F - dr);
@@ -240,7 +237,6 @@ public final class DamageResistanceHandler {
         if (source.is(DamageTypes.CACTUS)) return CATEGORY_PHYSICAL;
         if (source.is(ModDamageTypes.SPIKES)) return CATEGORY_PHYSICAL;
         if (source.is(ModDamageTypes.ELECTRICITY)) return CATEGORY_ENERGY;
-
         if (source.getEntity() != null || source.getDirectEntity() != null)
             return CATEGORY_PHYSICAL;
         return source.getMsgId();
@@ -249,7 +245,6 @@ public final class DamageResistanceHandler {
     private record ArmorSet(Item helmet, Item plate, Item legs, Item boots) {}
 
     public static final class ResistanceStats {
-
         final Map<String, Resistance> exactResistances = new LinkedHashMap<>();
         final Map<String, Resistance> categoryResistances = new LinkedHashMap<>();
         Resistance otherResistance;

@@ -3,12 +3,12 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blockentity.machine.BlockEntityMachineEPress;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.render.FramedItem;
 import com.hbm.client.render.RenderPress;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.GroupObject;
-import com.hbm.tileentity.machine.BlockEntityMachineEPress;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;

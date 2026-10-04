@@ -3,11 +3,11 @@
 
 package com.hbm.blocks.machine.rbmk;
 
+import com.hbm.blockentity.machine.rbmk.BlockEntityCraneConsole;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.interfaces.IToolable;
-import com.hbm.tileentity.machine.rbmk.BlockEntityCraneConsole;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +21,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class RBMKCraneConsole extends BlockMultiblockCore implements ITickingBlock, IToolable {
-
     private static final int[] PLACEMENT_DIMENSIONS = {
         1, 0, 0, 0, 1, 1, 0, 0, 0,
         0, 0, 0, 1, 1, 1, 0, 0, 0,
@@ -52,7 +51,6 @@ public class RBMKCraneConsole extends BlockMultiblockCore implements ITickingBlo
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-
         return RenderShape.MODEL;
     }
 

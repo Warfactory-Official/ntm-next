@@ -5,6 +5,7 @@
 package com.hbm.entity.projectile;
 
 import com.hbm.api.entity.IRadarDetectable;
+import com.hbm.handler.UnstableFuses;
 import com.hbm.interfaces.StoredItems;
 import com.hbm.items.weapon.ItemAmmoArty;
 import com.hbm.sound.ModSounds;
@@ -145,7 +146,6 @@ public class EntityArtilleryShell extends EntityThrowableInterp
 
             this.getShell().onUpdate(this);
         } else {
-
             Vec3 backlog = this.getInterpolation().position().subtract(this.position());
             if (backlog.length() < 0.2) {
                 this.level()
@@ -165,7 +165,6 @@ public class EntityArtilleryShell extends EntityThrowableInterp
     protected void onImpact(HitResult mop) {
 
         if (!this.level().isClientSide()) {
-
             if (mop.getType() == HitResult.Type.ENTITY
                     && ((EntityHitResult) mop).getEntity() instanceof EntityArtilleryShell) return;
             this.getShell().onImpact(this, mop);
@@ -199,6 +198,7 @@ public class EntityArtilleryShell extends EntityThrowableInterp
 
     public void setCargo(ItemStack stack) {
         this.cargo = stack;
+        UnstableFuses.changed(this);
     }
 
     @Override

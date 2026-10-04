@@ -59,7 +59,6 @@ public final class HbmParticleGroups {
         out.accept(
                 ParticleSkeleton.GIB_EXT_GROUP,
                 engine -> new SkeletonParticleGroup(engine, ResourceManager.skoilet_blood_tex));
-
         out.accept(
                 ParticleGiblet.MEAT_GROUP,
                 engine ->
@@ -81,7 +80,6 @@ public final class HbmParticleGroups {
                         new QuadParticleGroup(
                                 engine,
                                 ParticleRenderTypes.litTranslucent(ResourceManager.dead_leaf_tex)));
-
         out.accept(
                 ParticleBlackPowderSmoke.BLACK_POWDER_SMOKE_GROUP,
                 engine ->

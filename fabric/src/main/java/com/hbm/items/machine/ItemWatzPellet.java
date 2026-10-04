@@ -21,10 +21,8 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import org.jspecify.annotations.Nullable;
 
 public class ItemWatzPellet extends Item {
-
     public static final int SOURCE_LIGHT = 0xD2D2D2;
     public static final int SOURCE_DARK = 0x333333;
-
     public final boolean depleted;
     public final EnumWatzType type;
 
