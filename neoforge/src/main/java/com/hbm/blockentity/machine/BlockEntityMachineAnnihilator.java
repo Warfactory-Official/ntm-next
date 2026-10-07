@@ -86,7 +86,7 @@ public class BlockEntityMachineAnnihilator extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
-        tank.setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory);
+        if (tank.setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory)) markChanged();
 
         if (pool != null && !pool.isEmpty()) {
             AnnihilatorSavedData data = AnnihilatorSavedData.get((ServerLevel) level);

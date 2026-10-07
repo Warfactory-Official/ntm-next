@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import org.jspecify.annotations.Nullable;
@@ -92,6 +93,31 @@ public final class MaterialShapeRoster {
             index(shape, mat, handle);
             out.add(handle);
         }
+    }
+
+    public static RegistryHandle<MaterialShapeItem> registerNamed(
+            String namespace,
+            MaterialShapes shape,
+            NTMMaterial mat,
+            Supplier<Item.Properties> props) {
+        String name = mat.legacyId(shape);
+        String layer = "item/" + mat.legacyArt(shape);
+        RegistryHandle<MaterialShapeItem> handle =
+                Reg.in(namespace)
+                        .item(
+                                name,
+                                Identifier.fromNamespaceAndPath(namespace, name),
+                                properties -> new MaterialShapeItem(properties, mat, shape),
+                                props);
+        index(shape, mat, handle);
+        ADDON_NAMED.add(handle);
+        return handle;
+    }
+
+    private static final List<RegistryHandle<MaterialShapeItem>> ADDON_NAMED = new ArrayList<>();
+
+    public static List<RegistryHandle<MaterialShapeItem>> addonNamed() {
+        return ADDON_NAMED;
     }
 
     private static final Set<String> CLAIMED = new HashSet<>();

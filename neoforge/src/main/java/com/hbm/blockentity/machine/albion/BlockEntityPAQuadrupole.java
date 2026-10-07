@@ -79,6 +79,7 @@ public class BlockEntityPAQuadrupole extends BlockEntityCooledBase
         particle.addDistance(3);
         particle.focus(focusGain);
         this.power -= usage * mult;
+        markChanged();
     }
 
     @Override

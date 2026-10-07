@@ -3,14 +3,14 @@
 
 package com.hbm.blockentity.machine;
 
+import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blocks.ModBlockEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BlockEntityMachineLPW2 extends BlockEntity {
+public class BlockEntityMachineLPW2 extends BlockEntityMachineBase {
 
     public BlockEntityMachineLPW2(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.LPW2.get(), pos, state);
+        super(ModBlockEntities.LPW2.get(), pos, state, 0);
     }
 }

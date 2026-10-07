@@ -156,6 +156,6 @@
   },
   "gui_light": "side",
   "textures": {
-    "particle": "hbm:block/glass_boron_plain"
+    "particle": "hbm:block/glass_boron"
   }
 }

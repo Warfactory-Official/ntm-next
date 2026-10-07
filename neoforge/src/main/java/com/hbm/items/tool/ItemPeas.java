@@ -22,12 +22,13 @@ public class ItemPeas extends ItemCustomLore {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
+        ItemStack offered = stack.copyWithCount(1);
         stack.consume(1, player);
         if (level instanceof ServerLevel server) {
             for (EntityQuackos duck :
                     server.getEntitiesOfClass(
                             EntityQuackos.class, player.getBoundingBox().inflate(RANGE))) {
-                duck.despawn();
+                duck.despawn(player, offered);
             }
         }
         return InteractionResult.CONSUME;

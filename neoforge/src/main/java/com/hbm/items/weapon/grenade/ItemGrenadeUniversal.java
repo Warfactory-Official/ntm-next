@@ -12,6 +12,7 @@ import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.GrenadeAnimationPayload;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -153,8 +154,8 @@ public class ItemGrenadeUniversal extends Item {
         switch (getData(stack).shell()) {
             case FRAG -> {
                 if (deployed == 18)
-                    level.playSound(
-                            null,
+                    EntitySounds.play(
+                            player,
                             player.getX(),
                             player.getY(),
                             player.getZ(),
@@ -165,8 +166,8 @@ public class ItemGrenadeUniversal extends Item {
             }
             case STICK -> {
                 if (deployed == 16 || deployed == 25)
-                    level.playSound(
-                            null,
+                    EntitySounds.play(
+                            player,
                             player.getX(),
                             player.getY(),
                             player.getZ(),
@@ -177,8 +178,8 @@ public class ItemGrenadeUniversal extends Item {
             }
             case TECH -> {
                 if (deployed == 18)
-                    level.playSound(
-                            null,
+                    EntitySounds.play(
+                            player,
                             player.getX(),
                             player.getY(),
                             player.getZ(),
@@ -189,8 +190,8 @@ public class ItemGrenadeUniversal extends Item {
             }
             case NUKE -> {
                 if (deployed == 26)
-                    level.playSound(
-                            null,
+                    EntitySounds.play(
+                            player,
                             player.getX(),
                             player.getY(),
                             player.getZ(),

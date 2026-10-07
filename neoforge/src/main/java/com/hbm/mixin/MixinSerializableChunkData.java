@@ -7,8 +7,11 @@ import com.hbm.blocks.multiblock.MultiblockCoreIndex;
 import com.hbm.entity.item.PendingFallers;
 import com.hbm.interfaces.injected.IChunkExtension;
 import com.hbm.util.datafix.HbmDataFixers;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import java.util.Arrays;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.level.ChunkPos;
@@ -218,5 +221,77 @@ public abstract class MixinSerializableChunkData implements IChunkExtension {
                             hbm$pendingFallerStates,
                             hbm$pendingFallerSize));
         }
+    }
+
+    @Unique private @Nullable Long2ObjectOpenHashMap<String> hbm$ductFluids;
+
+    @Override
+    public @Nullable Long2ObjectOpenHashMap<String> hbm$ductFluids() {
+        return this.hbm$ductFluids;
+    }
+
+    @Override
+    public void hbm$setDuctFluids(@Nullable Long2ObjectOpenHashMap<String> fluids) {
+        this.hbm$ductFluids = fluids;
+    }
+
+    @Inject(method = "copyOf", at = @At("RETURN"))
+    private static void hbm$captureDuctFluids(
+            ServerLevel level,
+            ChunkAccess chunk,
+            CallbackInfoReturnable<SerializableChunkData> cir) {
+        SerializableChunkData data = cir.getReturnValue();
+        Long2ObjectOpenHashMap<String> fluids = chunk.hbm$ductFluids();
+        if (data != null && fluids != null && !fluids.isEmpty())
+            data.hbm$setDuctFluids(fluids.clone());
+    }
+
+    @Inject(method = "parse", at = @At("RETURN"))
+    private static void hbm$parseDuctFluids(
+            LevelHeightAccessor levelHeight,
+            PalettedContainerFactory containerFactory,
+            CompoundTag chunkData,
+            CallbackInfoReturnable<SerializableChunkData> cir) {
+        SerializableChunkData data = cir.getReturnValue();
+        CompoundTag tag = chunkData.getCompound(IChunkExtension.DUCT_FLUIDS_NBT_KEY).orElse(null);
+        if (data == null || tag == null) return;
+        long[] positions = tag.getLongArray("pos").orElseThrow();
+        ListTag ids = tag.getListOrEmpty("fluid");
+        if (ids.size() != positions.length) throw new IllegalStateException("duct fluids: " + tag);
+        Long2ObjectOpenHashMap<String> fluids = new Long2ObjectOpenHashMap<>(positions.length);
+        for (int i = 0; i < positions.length; i++) fluids.put(positions[i], ids.getStringOr(i, ""));
+        data.hbm$setDuctFluids(fluids);
+    }
+
+    @Inject(method = "write", at = @At("RETURN"))
+    private void hbm$writeDuctFluids(CallbackInfoReturnable<CompoundTag> cir) {
+        CompoundTag tag = cir.getReturnValue();
+        Long2ObjectOpenHashMap<String> fluids = this.hbm$ductFluids;
+        if (tag == null || fluids == null) return;
+        long[] positions = new long[fluids.size()];
+        ListTag ids = new ListTag();
+        int i = 0;
+        for (var entry : fluids.long2ObjectEntrySet()) {
+            positions[i++] = entry.getLongKey();
+            ids.add(StringTag.valueOf(entry.getValue()));
+        }
+        CompoundTag out = new CompoundTag();
+        out.putLongArray("pos", positions);
+        out.put("fluid", ids);
+        tag.put(IChunkExtension.DUCT_FLUIDS_NBT_KEY, out);
+    }
+
+    @Inject(method = "read", at = @At("RETURN"))
+    private void hbm$readDuctFluids(
+            ServerLevel level,
+            PoiManager poiManager,
+            RegionStorageInfo regionInfo,
+            ChunkPos pos,
+            CallbackInfoReturnable<ProtoChunk> cir) {
+        if (this.hbm$ductFluids == null) return;
+        ProtoChunk result = cir.getReturnValue();
+        ChunkAccess target =
+                (result instanceof ImposterProtoChunk imposter) ? imposter.getWrapped() : result;
+        target.hbm$setDuctFluids(this.hbm$ductFluids);
     }
 }

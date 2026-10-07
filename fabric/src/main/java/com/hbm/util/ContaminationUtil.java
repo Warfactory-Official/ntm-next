@@ -38,6 +38,7 @@ public final class ContaminationUtil {
     private ContaminationUtil() {}
 
     public static boolean isRadImmune(Entity e) {
+        if (e instanceof LivingEntity living && living.hasEffect(HbmPotion.mutation())) return true;
         return e.getType().builtInRegistryHolder().is(HbmEntityTypeTags.RADIATION_IMMUNE);
     }
 

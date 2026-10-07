@@ -12,7 +12,7 @@
       "ingredient": "hbm:billet_yharonite"
     }
   ],
-  "order": 100,
+  "order": 25600,
   "output_items": [
     "hbm:plate_armor_fau"
   ],

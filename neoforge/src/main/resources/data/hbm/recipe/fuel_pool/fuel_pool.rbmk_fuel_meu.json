@@ -13,7 +13,7 @@
       "ingredient": "hbm:rbmk_fuel_meu"
     }
   ],
-  "order": 32,
+  "order": 8192,
   "output_items": [
     {
       "components": {

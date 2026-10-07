@@ -32,7 +32,6 @@ public class EntityGlyphidBlaster extends EntityGlyphidBombardier {
                                 EntityType.Builder.<EntityGlyphidBlaster>of(
                                                 EntityGlyphidBlaster::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .sized(2F, 1.125F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)

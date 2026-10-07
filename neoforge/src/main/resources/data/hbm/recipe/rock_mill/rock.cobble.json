@@ -11,7 +11,11 @@
   ],
   "input_items": [
     {
-      "ingredient": "#c:cobblestones"
+      "ingredient": {
+        "neoforge:ingredient_type": "neoforge:difference",
+        "base": "#c:cobblestones",
+        "subtracted": "#c:cobblestones/deepslate"
+      }
     }
   ],
   "name_wrapper": "rock.crushing",

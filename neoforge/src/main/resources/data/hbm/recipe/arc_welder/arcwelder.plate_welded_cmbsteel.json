@@ -13,7 +13,7 @@
       "ingredient": "#hbm:plates_cast/cmbsteel"
     }
   ],
-  "order": 16,
+  "order": 4096,
   "output_items": [
     "hbm:plate_welded_cmbsteel"
   ],

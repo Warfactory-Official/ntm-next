@@ -30,7 +30,7 @@
     }
   ],
   "neutron_flux": 2000.0,
-  "order": 8,
+  "order": 2048,
   "output_items": [
     "hbm:powder_balefire"
   ],

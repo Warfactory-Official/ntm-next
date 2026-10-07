@@ -5,22 +5,18 @@ package com.hbm.entity.mob;
 
 import com.hbm.advancement.BossKilledTrigger;
 import com.hbm.advancement.HbmCriteria;
+import com.hbm.api.environment.ISuffocationImmune;
 import com.hbm.handler.radiation.RadiationSystemNT;
-import com.hbm.inventory.material.MaterialShapes;
-import com.hbm.inventory.material.Mats;
 import com.hbm.items.ModItems;
-import com.hbm.items.machine.ItemZirnoxRod.EnumZirnoxType;
-import com.hbm.items.special.Autogen;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.MobUtil;
 import java.util.EnumSet;
-import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -40,18 +36,18 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class EntityRADBeast extends Monster {
+public class EntityRADBeast extends Monster implements ISuffocationImmune {
+
+    public static final String WET_LOOT = "wet";
+
     private static final EntityDataAccessor<Integer> VICTIM =
             SynchedEntityData.defineId(EntityRADBeast.class, EntityDataSerializers.INT);
 
@@ -218,52 +214,14 @@ public class EntityRADBeast extends Monster {
     }
 
     @Override
-    protected void dropCustomDeathLoot(
-            ServerLevel level, DamageSource source, boolean killedByPlayer) {
-        super.dropCustomDeathLoot(level, source, killedByPlayer);
-        if (!killedByPlayer) return;
-
-        int looting = 0;
-        if (source.getEntity() instanceof LivingEntity attacker) {
-            Holder<Enchantment> lootingEnchant =
-                    level.registryAccess()
-                            .lookupOrThrow(Registries.ENCHANTMENT)
-                            .getOrThrow(Enchantments.LOOTING);
-            looting = EnchantmentHelper.getEnchantmentLevel(lootingEnchant, attacker);
-        }
-
-        if (looting > 0) {
-            spawnAtLocation(
-                    level,
-                    new ItemStack(
-                            Autogen.require(MaterialShapes.NUGGET, Mats.MAT_POLONIUM), looting));
-        }
-
-        boolean wet = isInWaterOrRain();
-        int count = random.nextInt(3) + 1;
-
-        for (int i = 0; i < count; i++) {
-            EnumZirnoxType rod =
-                    switch (random.nextInt(3)) {
-                        case 0 -> EnumZirnoxType.URANIUM_FUEL;
-                        case 1 -> EnumZirnoxType.MOX_FUEL;
-                        default -> EnumZirnoxType.PLUTONIUM_FUEL;
-                    };
-
-            spawnAtLocation(
-                    level,
-                    wet
-                            ? new ItemStack(wasteFor(rod), 2)
-                            : new ItemStack(ModItems.zirnoxDepleted(rod)));
-        }
+    protected void dropFromLootTable(ServerLevel level, DamageSource source, boolean playerKilled) {
+        dropFromLootTable(level, source, playerKilled, deathLootTable());
     }
 
-    private static Item wasteFor(EnumZirnoxType rod) {
-        return switch (rod) {
-            case MOX_FUEL -> ModItems.WASTE_MOX.get();
-            case PLUTONIUM_FUEL -> ModItems.WASTE_PLUTONIUM.get();
-            default -> ModItems.WASTE_URANIUM.get();
-        };
+    public ResourceKey<LootTable> deathLootTable() {
+        return isInWaterOrRain()
+                ? MobUtil.lootVariant(getType(), WET_LOOT)
+                : getLootTable().orElseThrow();
     }
 
     private static class RadiationAttackGoal extends Goal {

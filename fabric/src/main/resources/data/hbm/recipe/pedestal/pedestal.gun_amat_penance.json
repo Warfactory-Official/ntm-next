@@ -29,7 +29,7 @@
       "ingredient": "#c:ingots/starmetal"
     }
   },
-  "order": 5,
+  "order": 1280,
   "output_items": [
     "hbm:gun_amat_penance"
   ],

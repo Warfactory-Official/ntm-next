@@ -256,6 +256,10 @@ public class BlockEntityMachineArcFurnace extends BlockEntityMachineBase
         upgradeManager.scan(this, SLOT_UPGRADE, SLOT_UPGRADE);
         this.upgrade = upgradeManager.getLevel(UpgradeType.SPEED);
 
+        long priorPower = this.power;
+        float priorProgress = this.progress;
+        float priorLid = this.lid;
+        int priorDelay = this.delay;
         this.power += ItemEnergyTransfer.extract(this, SLOT_BATTERY, MAX_POWER - power, false);
         this.isProgressing = false;
 
@@ -320,10 +324,15 @@ public class BlockEntityMachineArcFurnace extends BlockEntityMachineBase
                 this.pourColor = didPour.material.moltenColor;
                 this.pourLen = Math.max(1F, y + 1 - (float) (Math.ceil(impact.y) - 0.875));
                 markSyncEvent();
+                markChanged();
             }
         }
 
         liquids.removeIf(o -> o.amount <= 0);
+        if (this.power != priorPower
+                || this.progress != priorProgress
+                || this.lid != priorLid
+                || this.delay != priorDelay) markChanged();
 
         networkPackNT(150);
     }

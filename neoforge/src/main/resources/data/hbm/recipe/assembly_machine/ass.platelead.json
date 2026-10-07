@@ -10,7 +10,7 @@
       "ingredient": "#c:ingots/lead"
     }
   ],
-  "order": 5,
+  "order": 1280,
   "output_items": [
     "hbm:plate_lead"
   ],

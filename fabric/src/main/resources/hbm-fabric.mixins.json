@@ -16,7 +16,8 @@
     "ServerLevelCapCacheMixin",
     "MixinServerPlayer",
     "MixinLootTableBuilder",
-    "MixinFabricLootTableBuilder"
+    "MixinFabricLootTableBuilder",
+    "MixinCropBlock"
   ],
   "client": [
     "MixinCreativeModeInventoryScreen",

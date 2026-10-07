@@ -31,7 +31,9 @@ public final class ChungusPeripheral extends TurbinePeripheral<BlockEntityChungu
 
     @LuaFunction(mainThread = true)
     public final Object[] setType(int type) {
-        machine().tanks[0].setTankType(SteamTypes.fromInt(type));
+        BlockEntityChungus machine = machine();
+        machine.tanks[0].setTankType(SteamTypes.fromInt(type));
+        machine.markChanged();
         return new Object[] {};
     }
 

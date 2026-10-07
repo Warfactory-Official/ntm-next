@@ -72,7 +72,7 @@ public final class NtmContracts {
 
     public static final Contract<Container> INVENTORY = contract("inventory", Container.class);
 
-    public static final class Contract<T> {
+    public static final class Contract<T> implements ContractLink.Resolver<T> {
 
         private final String path;
         private final Class<T> type;
@@ -87,6 +87,7 @@ public final class NtmContracts {
             return type;
         }
 
+        @Override
         public @Nullable T at(Level level, BlockPos pos) {
             return at(level, pos, level.getBlockState(pos), null);
         }

@@ -113,6 +113,7 @@ public class BlockEntityFusionKlystron extends BlockEntityMachineBase
             output = powerReq;
             power -= powerReq;
             compair.setFill(compair.getFill() - airReq);
+            if (powerReq > 0) markChanged();
         }
 
         if (output < outputTarget / 50) output = 0;

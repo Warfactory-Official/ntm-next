@@ -7,7 +7,7 @@
       "ingredient": "#c:fine_wires/mingrade"
     }
   ],
-  "order": 5,
+  "order": 1280,
   "output_items": [
     "hbm:wire_dense_mingrade"
   ],

@@ -128,6 +128,9 @@ public class BlockEntityMachineSuperComputer extends BlockEntityMachineBase
     @Override
     public void tickServer() {
         long previousPower = power;
+        long previousMaxPower = maxPower;
+        double previousProgress = module.progress;
+        String previousRecipe = module.getRecipeName();
         GenericRecipe selected = module.getRecipe();
         if (selected != null) maxPower = selected.power * 100L;
         maxPower = Math.max(Math.max(power, maxPower), MIN_POWER);
@@ -135,6 +138,9 @@ public class BlockEntityMachineSuperComputer extends BlockEntityMachineBase
         module.update(1D, 1D, true, inventory.get(SLOT_SCHEMATIC));
         didProcess = module.didProcess;
         if (module.markDirty || power != previousPower) setChanged();
+        if (maxPower != previousMaxPower
+                || module.progress != previousProgress
+                || !module.getRecipeName().equals(previousRecipe)) markChanged();
         flush.provide((ServerLevel) level, this);
         networkPackNT(100);
     }

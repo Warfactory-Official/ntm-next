@@ -4,6 +4,7 @@
 package com.hbm.items.food;
 
 import com.hbm.config.VersatileConfig;
+import com.hbm.sound.EntitySounds;
 import com.hbm.util.InventoryUtil;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import java.util.HashMap;
@@ -98,16 +99,15 @@ public final class ConsumableTreatments {
         rule.sound()
                 .ifPresent(
                         sound ->
-                                player.level()
-                                        .playSound(
-                                                null,
-                                                player.getX(),
-                                                player.getY(),
-                                                player.getZ(),
-                                                sound.value(),
-                                                SoundSource.PLAYERS,
-                                                1F,
-                                                1F));
+                                EntitySounds.play(
+                                        player,
+                                        player.getX(),
+                                        player.getY(),
+                                        player.getZ(),
+                                        sound.value(),
+                                        SoundSource.PLAYERS,
+                                        1F,
+                                        1F));
         for (TreatmentAction action : rule.actions()) action.apply(player, randoms.get(item));
     }
 

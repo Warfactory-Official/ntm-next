@@ -10,6 +10,7 @@ import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
+import com.hbm.inventory.WornAccessories;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import com.hbm.util.TickPhase;
@@ -21,6 +22,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -91,6 +93,11 @@ public class BlockEntityCharger extends BlockEntity
                                 inventorySlot(player, slot),
                                 Long.MAX_VALUE,
                                 true);
+            }
+            for (Container worn : WornAccessories.of(player)) {
+                for (int index = 0; index < worn.getContainerSize(); index++) {
+                    charge += ItemEnergyTransfer.insert(worn, index, Long.MAX_VALUE, true);
+                }
             }
         }
 
@@ -169,19 +176,29 @@ public class BlockEntityCharger extends BlockEntity
         for (Player player : players) {
             for (EquipmentSlot slot : SLOTS) {
                 if (remaining <= 0L) return 0L;
-                Inventory inventory = player.getInventory();
-                int index = inventorySlot(player, slot);
-                ItemStack stack = inventory.getItem(index);
-                long allowance = Math.min(Math.max(remaining / 5L, 1L), remaining);
-                long accepted = ItemEnergyTransfer.insert(inventory, index, allowance, simulate);
-
-                if (!simulate && (accepted > 0L || stack.getItem() instanceof IBatteryItem)) {
-                    lastOp = 4;
+                remaining -=
+                        chargeSlot(
+                                player.getInventory(),
+                                inventorySlot(player, slot),
+                                remaining,
+                                simulate);
+            }
+            for (Container worn : WornAccessories.of(player)) {
+                for (int index = 0; index < worn.getContainerSize(); index++) {
+                    if (remaining <= 0L) return 0L;
+                    remaining -= chargeSlot(worn, index, remaining, simulate);
                 }
-                remaining -= accepted;
             }
         }
         return remaining;
+    }
+
+    private long chargeSlot(Container container, int slot, long remaining, boolean simulate) {
+        ItemStack stack = container.getItem(slot);
+        long allowance = Math.min(Math.max(remaining / 5L, 1L), remaining);
+        long accepted = ItemEnergyTransfer.insert(container, slot, allowance, simulate);
+        if (!simulate && (accepted > 0L || stack.getItem() instanceof IBatteryItem)) lastOp = 4;
+        return accepted;
     }
 
     private static int inventorySlot(Player player, EquipmentSlot slot) {

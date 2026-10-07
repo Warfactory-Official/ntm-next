@@ -19,7 +19,7 @@
       "ingredient": "#c:dusts/borax"
     }
   ],
-  "order": 9,
+  "order": 2304,
   "output_material": {
     "amount": 288,
     "material": "saturnite"

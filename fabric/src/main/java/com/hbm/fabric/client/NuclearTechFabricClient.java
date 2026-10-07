@@ -23,7 +23,6 @@ import com.hbm.handler.EquipmentProtections;
 import com.hbm.handler.HazmatRegistry;
 import com.hbm.handler.SuitProtections;
 import com.hbm.hazard.HazardSystem;
-import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.NTMTokenFluidBase;
 import com.hbm.inventory.machine.CustomMachineDefinitions;
@@ -31,10 +30,10 @@ import com.hbm.inventory.recipes.ModRecipes;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.inventory.recipes.loader.RecipeSource;
 import com.hbm.items.food.ConsumableTreatments;
-import com.hbm.lib.Library;
 import com.hbm.packet.toserver.CrateOpenHeldPayload;
 import com.hbm.particle.HbmParticleGroups;
 import com.hbm.particle.HbmParticles;
+import com.hbm.registration.Reg;
 import com.hbm.render.loader.ObjMeshCache;
 import com.hbm.wiaj.CanneryClient;
 import com.hbm.world.ore.OreGeneration;
@@ -61,6 +60,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemTintSources;
@@ -111,6 +111,19 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
                         PackActivationType.ALWAYS_ENABLED)) {
             throw new IllegalStateException("Missing connected-texture pack: " + ctm.directory());
         }
+        if (System.getProperty("fabric-api.datagen") == null && ctm != CtmEngine.NONE) {
+            for (String namespace : Reg.addonNamespaces()) {
+                ModContainer addon =
+                        FabricLoader.getInstance().getModContainer(namespace).orElseThrow();
+                if (addon.findPath(ctm.directory()).isPresent()) {
+                    ResourceLoader.registerBuiltinPack(
+                            ctm.packId(namespace),
+                            addon,
+                            ctm.title(),
+                            PackActivationType.ALWAYS_ENABLED);
+                }
+            }
+        }
         if (ctm == CtmEngine.CONTINUITY) {
             HbmCtmLoader.register();
         }
@@ -119,8 +132,8 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
                 .filter(NTMTokenFluidBase.class::isInstance)
                 .forEach(
                         fluid -> {
-                            String path = NTMFluids.spritePath(fluid);
-                            Material material = new Material(Library.id("block/fluid/" + path));
+                            Material material =
+                                    new Material(NTMFluids.sprite(fluid, "block/fluid/", ""));
                             FluidRenderingRegistry.register(
                                     fluid, new FluidModel.Unbaked(material, material, null, null));
                         });
@@ -170,7 +183,6 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
                     QMAWClient.disconnected();
                     CanneryClient.disconnected();
                     BobmazonOffers.invalidate();
-                    NTMFluidProperties.onClientDisconnect();
                     OreGeneration.disconnect();
                 });
         ClientConfigurationConnectionEvents.INIT.register(

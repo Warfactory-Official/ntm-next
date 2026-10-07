@@ -3,8 +3,38 @@
 
 package com.hbm.mixin;
 
+import com.hbm.api.environment.Environment;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.FuelValues;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(AbstractFurnaceBlockEntity.class)
-public abstract class MixinAbstractFurnaceBlockEntity {}
+public abstract class MixinAbstractFurnaceBlockEntity {
+    @WrapOperation(
+            method = "serverTick",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lnet/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity;getBurnDuration("
+                                            + "Lnet/minecraft/world/level/block/entity/FuelValues;Lnet/minecraft/world/item/ItemStack;)I"))
+    private static int hbm$burnNeedsAir(
+            AbstractFurnaceBlockEntity entity,
+            FuelValues fuelValues,
+            ItemStack fuel,
+            Operation<Integer> original,
+            ServerLevel level,
+            BlockPos pos) {
+        int burnTime = original.call(entity, fuelValues, fuel);
+        return burnTime > 0 && !fuel.is(Items.LAVA_BUCKET) && !Environment.breatheAir(level, pos, 0)
+                ? 0
+                : burnTime;
+    }
+}

@@ -22,7 +22,7 @@
     }
   ],
   "name": "ass.fusioncollectorEx",
-  "order": 266,
+  "order": 68096,
   "output_items": [
     "hbm:fusion_collector"
   ],

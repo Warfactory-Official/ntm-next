@@ -5,7 +5,7 @@
       "ingredient": "hbm:briquette_wood"
     }
   ],
-  "order": 16,
+  "order": 4096,
   "output_fluids": [
     {
       "type": "hbm:woodoil",

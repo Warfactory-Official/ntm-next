@@ -80,7 +80,9 @@ public class BlockEntityRBMKControlAuto extends BlockEntityRBMKControl
                     };
         }
 
+        double before = this.targetLevel;
         this.targetLevel = Math.clamp(fauxLevel * 0.01D, 0D, 1D);
+        if (this.targetLevel != before) this.markChanged();
 
         super.tickServer();
     }

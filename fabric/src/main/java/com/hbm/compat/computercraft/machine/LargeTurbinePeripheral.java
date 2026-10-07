@@ -32,7 +32,9 @@ public final class LargeTurbinePeripheral
 
     @LuaFunction(mainThread = true)
     public final Object[] setType(int type) {
-        machine().tanks[0].setTankType(SteamTypes.fromInt(type));
+        BlockEntityMachineLargeTurbine machine = machine();
+        machine.tanks[0].setTankType(SteamTypes.fromInt(type));
+        machine.markChanged();
         return new Object[] {};
     }
 

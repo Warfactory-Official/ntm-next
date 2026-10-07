@@ -5,12 +5,15 @@ package com.hbm.items.tool;
 
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluidProperties;
-import com.hbm.items.special.ItemBedrockOreNew.BedrockOreType;
+import com.hbm.items.special.BedrockOreKind;
+import com.hbm.items.special.BedrockOreSet;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.OreDensityPayload;
 import com.hbm.world.NtmWorldgenFields;
 import com.hbm.world.feature.BedrockOreFeature;
 import com.hbm.world.feature.BedrockOreField;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -53,8 +56,9 @@ public class ItemOreDensityScanner extends Item {
         return ChatFormatting.YELLOW;
     }
 
-    private static MutableComponent row(BedrockOreType type, double density) {
-        return Component.translatable("item.hbm.bedrock_ore.type." + type.suffix)
+    private static MutableComponent row(BedrockOreKind type, double density) {
+        return type.typeName()
+                .copy()
                 .append(Component.literal(": " + ((int) (density * 100) / 100D) + " ("))
                 .append(
                         Component.translatable(translateDensity(density))
@@ -70,36 +74,26 @@ public class ItemOreDensityScanner extends Item {
         int x = (int) Math.floor(player.getX());
         int z = (int) Math.floor(player.getZ());
         BedrockOreField field = NtmWorldgenFields.get(level).bedrock();
+        BedrockOreSet set = BedrockOreSet.OF.get().apply(level);
         double richness = field.richness(x, z);
-        double lightMetal = field.lightMetal(richness, x, z);
-        double heavyMetal = field.heavyMetal(richness, x, z);
-        double rareEarth = field.rareEarth(richness, x, z);
-        double actinide = field.actinide(richness, x, z);
-        double nonMetal = field.nonMetal(richness, x, z);
-        double crystalline = field.crystalline(richness, x, z);
-        double total =
-                (lightMetal + heavyMetal + rareEarth + actinide + nonMetal + crystalline) / 6D;
+        List<Component> rows = new ArrayList<>(set.kinds().size());
+        double total = 0D;
+        for (BedrockOreKind kind : set.kinds()) {
+            double density = field.oreLevel(richness, x, z, kind);
+            total += density;
+            rows.add(row(kind, density));
+        }
 
-        int tier = BedrockOreFeature.getTier(total);
+        int tier = BedrockOreFeature.getTier(total / set.kinds().size());
         MutableComponent summary =
                 Component.translatable("item.hbm.ore_density_scanner.tier", tier)
                         .withStyle(ChatFormatting.YELLOW);
-        FluidStackNTM acid = BedrockOreFeature.getBoreFluid(tier);
+        FluidStackNTM acid = BedrockOreFeature.BORE_FLUID.get().apply(level);
+        if (acid == null) acid = BedrockOreFeature.getBoreFluid(tier);
         if (acid != null && acid.type() != Fluids.EMPTY) {
             summary.append(Component.literal(" - " + acid.amount() + "mB "))
                     .append(NTMFluidProperties.getDisplayName(acid.type()));
         }
-        PacketWire.sendTo(
-                new OreDensityPayload(
-                        row(BedrockOreType.LIGHT_METAL, lightMetal),
-                        row(BedrockOreType.HEAVY_METAL, heavyMetal),
-                        row(BedrockOreType.RARE_EARTH, rareEarth),
-                        row(BedrockOreType.ACTINIDE, actinide),
-                        row(BedrockOreType.NON_METAL, nonMetal),
-                        row(BedrockOreType.CRYSTALLINE, crystalline),
-                        summary,
-                        FIRST_ID,
-                        LIFETIME),
-                player);
+        PacketWire.sendTo(new OreDensityPayload(rows, summary, FIRST_ID, LIFETIME), player);
     }
 }

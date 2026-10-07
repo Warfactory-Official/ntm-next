@@ -9,7 +9,7 @@
       "ingredient": "#c:ingots/steel"
     }
   ],
-  "order": 180,
+  "order": 46080,
   "output_items": [
     "hbm:mold_mechanism"
   ],

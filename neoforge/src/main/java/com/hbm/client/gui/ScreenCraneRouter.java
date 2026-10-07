@@ -7,11 +7,9 @@ import com.hbm.blockentity.network.BlockEntityCraneRouter;
 import com.hbm.client.Keybinds;
 import com.hbm.inventory.container.MenuCraneRouter;
 import com.hbm.lib.Library;
-import com.hbm.module.ModulePatternMatcher;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
 import java.util.List;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -25,8 +23,6 @@ public class ScreenCraneRouter extends ScreenInfoContainer<MenuCraneRouter> {
 
     private static final Identifier TEXTURE =
             Library.id("textures/gui/storage/gui_crane_router.png");
-
-    private static final int TOOLTIP_LIFT = 30;
 
     private static final int BUTTON_X = 7;
     private static final int BUTTON_Y = 16;
@@ -103,26 +99,6 @@ public class ScreenCraneRouter extends ScreenInfoContainer<MenuCraneRouter> {
             }
         }
 
-        if (menu.getCarried().isEmpty()) {
-            for (int i = 0; i < BlockEntityCraneRouter.SLOT_COUNT; i++) {
-                Slot slot = menu.getSlot(i);
-                String mode =
-                        router.patterns[i / BlockEntityCraneRouter.FILTERS_PER_SIDE].mode(
-                                i % BlockEntityCraneRouter.FILTERS_PER_SIDE);
-
-                if (mode != null && isHovering(slot.x, slot.y, 16, 16, mouseX, mouseY)) {
-                    graphics.setComponentTooltipForNextFrame(
-                            font,
-                            List.of(
-                                    Component.translatable("desc.shared.rightClickToChange")
-                                            .withStyle(ChatFormatting.RED),
-                                    ModulePatternMatcher.getLabel(mode)),
-                            mouseX,
-                            mouseY - TOOLTIP_LIFT);
-                }
-            }
-        }
-
         if (Keybinds.DIAGNOSTICS.isDown()) {
             for (int i = 0; i < menu.slots.size(); i++) {
                 Slot slot = menu.getSlot(i);
@@ -139,6 +115,15 @@ public class ScreenCraneRouter extends ScreenInfoContainer<MenuCraneRouter> {
         }
 
         super.extractLabels(graphics, mouseX, mouseY);
+    }
+
+    @Override
+    protected List<Component> slotTooltip(Slot slot) {
+        if (slot.index >= BlockEntityCraneRouter.SLOT_COUNT) return List.of();
+        return patternModeLines(
+                menu.blockEntity()
+                        .patterns[slot.index / BlockEntityCraneRouter.FILTERS_PER_SIDE]
+                        .mode(slot.index % BlockEntityCraneRouter.FILTERS_PER_SIDE));
     }
 
     @Override

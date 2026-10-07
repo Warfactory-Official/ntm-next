@@ -97,6 +97,7 @@ public class BlockEntityFusionBoiler extends BlockEntity
 
         tanks[0].setFill(tanks[0].getFill() - steamCycles);
         tanks[1].setFill(tanks[1].getFill() + steamCycles);
+        markChanged();
 
         if (level.getRandom().nextInt(200) == 0) {
             level.playSound(

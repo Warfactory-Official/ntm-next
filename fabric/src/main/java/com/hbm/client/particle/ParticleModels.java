@@ -60,6 +60,10 @@ final class ParticleModels {
 
     private ParticleModels() {}
 
+    static Model texturedLit(Identifier texture) {
+        return build(ParticleLayers.TRANSLUCENT, true, texture);
+    }
+
     public static void initModels() {}
 
     private static Model build(SingleQuadParticle.Layer layer, boolean worldLit) {

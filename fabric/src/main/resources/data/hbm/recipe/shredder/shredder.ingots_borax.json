@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/borax"
     }
   ],
-  "order": 241,
+  "order": 61696,
   "output_items": [
     "hbm:powder_borax"
   ]

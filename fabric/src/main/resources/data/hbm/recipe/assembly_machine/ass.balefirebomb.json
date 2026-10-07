@@ -28,7 +28,7 @@
       "ingredient": "#c:dyes/gray"
     }
   ],
-  "order": 300,
+  "order": 76800,
   "output_items": [
     "hbm:nuke_fstbmb"
   ],

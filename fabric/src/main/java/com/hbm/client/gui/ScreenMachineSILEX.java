@@ -44,6 +44,10 @@ public class ScreenMachineSILEX extends ScreenInfoContainer<MenuMachineSILEX> {
         return this.imageWidth / 2 - 54;
     }
 
+    public static float waveFrequency(EnumWavelengths mode) {
+        return 0.1F * (float) Math.pow(2, mode.ordinal());
+    }
+
     @Override
     protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         graphics.blit(
@@ -61,7 +65,7 @@ public class ScreenMachineSILEX extends ScreenInfoContainer<MenuMachineSILEX> {
         BlockEntitySILEX be = silex();
 
         if (be.mode != EnumWavelengths.NULL) {
-            float freq = 0.1F * (float) Math.pow(2, be.mode.ordinal());
+            float freq = waveFrequency(be.mode);
             int color =
                     be.mode != EnumWavelengths.VISIBLE
                             ? be.mode.guiColor

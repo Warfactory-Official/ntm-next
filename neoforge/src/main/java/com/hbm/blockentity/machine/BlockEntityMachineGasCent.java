@@ -259,6 +259,7 @@ public class BlockEntityMachineGasCent extends BlockEntityMachineBase
 
             tank.setFill(tank.getFill() - fill);
             inputTank.setFill(inputTank.getFill() + fill);
+            markChanged();
         }
     }
 
@@ -271,6 +272,7 @@ public class BlockEntityMachineGasCent extends BlockEntityMachineBase
                 GasCentrifugeRecipe recipe = GasCentrifugeRecipes.INSTANCE.byStage(product);
                 cent.inputTank.setStage(product);
                 cent.outputTank.setStage(recipe == null ? null : recipe.next);
+                cent.markChanged();
             }
 
             if (cent.inputTank.getFill() < cent.inputTank.getMaxFill()
@@ -469,7 +471,7 @@ public class BlockEntityMachineGasCent extends BlockEntityMachineBase
     }
 
     public boolean acceptsFluid(Fluid type, Direction dir) {
-        return dir != null && tank.accepts(type) && acceptsFeed();
+        return dir != null && tank.joins(type) && acceptsFeed();
     }
 
     @Override

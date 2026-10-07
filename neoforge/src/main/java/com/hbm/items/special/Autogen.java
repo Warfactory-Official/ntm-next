@@ -3,10 +3,10 @@
 
 package com.hbm.items.special;
 
+import com.hbm.NuclearTech;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
 import com.hbm.inventory.material.NTMMaterial;
-import com.hbm.lib.Library;
 import com.hbm.registration.Reg;
 import com.hbm.registration.RegistryHandle;
 import java.util.ArrayList;
@@ -26,32 +26,26 @@ public final class Autogen {
     private Autogen() {}
 
     public static void register() {
+        register(NuclearTech.MOD_ID);
+    }
+
+    public static void register(String namespace) {
+        Reg.Namespace reg = Reg.in(namespace);
         for (NTMMaterial mat : Mats.orderedList) {
             for (MaterialShapes shape : mat.autogen) {
                 if (shape.autogenItemPrefix == null) continue;
+                Map<NTMMaterial, RegistryHandle<MaterialShapeItem>> byMaterial =
+                        INDEX.computeIfAbsent(shape, ignored -> new IdentityHashMap<>());
+                if (byMaterial.containsKey(mat)) continue;
                 String name = shape.autogenItemId(mat.tagPath).getPath();
-                boolean owns = AutogenIcons.ownsSprite(shape, mat);
                 String layer = "item/" + AutogenIcons.sprite(shape, mat);
-                Identifier model = owns ? Library.id(name) : Library.id(shape.autogenItemPrefix);
                 RegistryHandle<MaterialShapeItem> handle =
-                        Reg.item(
+                        reg.item(
                                 name,
-                                model,
+                                Identifier.fromNamespaceAndPath(namespace, name),
                                 props -> new MaterialShapeItem(props, mat, shape),
                                 Item.Properties::new);
-                RegistryHandle<MaterialShapeItem> clash =
-                        INDEX.computeIfAbsent(shape, ignored -> new IdentityHashMap<>())
-                                .put(mat, handle);
-                if (clash != null) {
-                    throw new IllegalStateException(
-                            mat.tagPath
-                                    + " autogens "
-                                    + shape.name()
-                                    + " twice: "
-                                    + clash.id()
-                                    + " and "
-                                    + handle.id());
-                }
+                byMaterial.put(mat, handle);
                 ITEMS.add(handle);
             }
         }
@@ -70,9 +64,13 @@ public final class Autogen {
     }
 
     public static @Nullable MaterialShapeItem find(MaterialShapes shape, NTMMaterial mat) {
-        Map<NTMMaterial, RegistryHandle<MaterialShapeItem>> byMaterial = INDEX.get(shape);
-        if (byMaterial == null) return null;
-        RegistryHandle<MaterialShapeItem> handle = byMaterial.get(mat);
+        RegistryHandle<MaterialShapeItem> handle = handle(shape, mat);
         return handle == null ? null : handle.get();
+    }
+
+    public static @Nullable RegistryHandle<MaterialShapeItem> handle(
+            MaterialShapes shape, NTMMaterial mat) {
+        Map<NTMMaterial, RegistryHandle<MaterialShapeItem>> byMaterial = INDEX.get(shape);
+        return byMaterial == null ? null : byMaterial.get(mat);
     }
 }

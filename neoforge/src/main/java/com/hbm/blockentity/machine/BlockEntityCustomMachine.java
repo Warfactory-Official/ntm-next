@@ -170,6 +170,7 @@ public class BlockEntityCustomMachine extends BlockEntityMachinePolluting
         outputTanks = new FluidTankNTM[found.fluidOutCount()];
         for (int i = 0; i < outputTanks.length; i++)
             outputTanks[i] = new FluidTankNTM(found.fluidOutCap());
+        if (level instanceof ServerLevel) forEachTank(tank -> tank.bindOwner(this));
         matcher = new ModulePatternMatcher(found.itemInCount());
         smoke.changeTankSize(found.maxPollutionCap());
         smokeLeaded.changeTankSize(found.maxPollutionCap());
@@ -192,7 +193,8 @@ public class BlockEntityCustomMachine extends BlockEntityMachinePolluting
                         this, SLOT_BATTERY, definition.maxPower() - power, false);
 
         for (int i = 0; i < Math.min(inputTanks.length, MAX_FLUID_IN); i++) {
-            inputTanks[i].setType(SLOT_FLUID_ID_START + i, SLOT_FLUID_ID_START + i, inventory);
+            if (inputTanks[i].setType(SLOT_FLUID_ID_START + i, SLOT_FLUID_ID_START + i, inventory))
+                markChanged();
         }
 
         structureCheckDelay--;
@@ -206,6 +208,7 @@ public class BlockEntityCustomMachine extends BlockEntityMachinePolluting
         flush.provide((ServerLevel) level, this);
 
         if (!structureOK) {
+            if (progress != 0) markChanged();
             progress = 0;
         } else if (definition.generatorMode()) {
             tickGenerator();
@@ -229,6 +232,7 @@ public class BlockEntityCustomMachine extends BlockEntityMachinePolluting
         long powerReq = (long) Math.max(cachedRecipe.power * definition.recipeConsumptionMult(), 1);
 
         progress++;
+        markChanged();
         power = Math.min(power + powerReq, definition.maxPower());
         heat -= cachedRecipe.heat;
         if (TickPhase.every(this, 20)) {
@@ -245,6 +249,7 @@ public class BlockEntityCustomMachine extends BlockEntityMachinePolluting
     private void tickConsumer() {
         CustomMachineRecipe recipe = getMatchingRecipe();
         if (recipe == null) {
+            if (progress != 0) markChanged();
             progress = 0;
             return;
         }
@@ -255,6 +260,7 @@ public class BlockEntityCustomMachine extends BlockEntityMachinePolluting
         if (power < powerReq || !hasRequiredQuantities(recipe) || !hasSpace(recipe)) return;
 
         progress++;
+        markChanged();
         power -= powerReq;
         heat -= recipe.heat;
         if (TickPhase.every(this, 20)) {
@@ -293,6 +299,7 @@ public class BlockEntityCustomMachine extends BlockEntityMachinePolluting
                 if (diff <= 0) continue;
                 source.useUpHeat(level, probe, diff);
                 heat = Math.min(heat + diff, definition.maxHeat());
+                markChanged();
             }
         }
     }

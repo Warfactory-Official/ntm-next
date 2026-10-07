@@ -5,6 +5,7 @@ package com.hbm.blockentity.machine.oil;
 
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.generic.FluidReserveBlock;
 import com.hbm.data.MachineData;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
@@ -86,5 +87,12 @@ public class BlockEntityMachineOilWell extends BlockEntityOilDrillBase {
             level.setBlock(pos, ModBlocks.ORE_OIL_EMPTY.get().defaultBlockState(), 3);
         }
         setChanged();
+    }
+
+    @Override
+    protected void onReserveSuck(BlockPos pos, FluidReserveBlock reserve) {
+        level.playSound(
+                null, worldPosition, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS, 2.0F, 0.5F);
+        super.onReserveSuck(pos, reserve);
     }
 }

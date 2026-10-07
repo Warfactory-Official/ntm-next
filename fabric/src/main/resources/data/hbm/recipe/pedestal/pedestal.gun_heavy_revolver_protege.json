@@ -33,7 +33,7 @@
       "ingredient": "hbm:dungeon_chain"
     }
   },
-  "order": 3,
+  "order": 768,
   "output_items": [
     "hbm:gun_heavy_revolver_protege"
   ],

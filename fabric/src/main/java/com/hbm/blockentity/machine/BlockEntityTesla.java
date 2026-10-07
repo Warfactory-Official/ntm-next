@@ -15,6 +15,7 @@ import com.hbm.lib.ModDamageTypes;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncList;
 import com.hbm.packet.SyncUnitSchema;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
@@ -141,8 +142,8 @@ public class BlockEntityTesla extends BlockEntityMachineBase
             float amount = Mth.clamp(e.getMaxHealth() * 0.5F, 3F, 20F) / found.size();
             if (!(e instanceof Player player && ArmorUtil.checkForFaraday(player))
                     && e.hurtServer(level, damage, amount))
-                level.playSound(
-                        null,
+                EntitySounds.play(
+                        e,
                         e.getX(),
                         e.getY(),
                         e.getZ(),
@@ -175,8 +176,10 @@ public class BlockEntityTesla extends BlockEntityMachineBase
     private boolean onMeteorBattery;
 
     public void refreshMeteorBattery() {
+        boolean wasOnMeteorBattery = onMeteorBattery;
         onMeteorBattery =
                 level.getBlockState(worldPosition.below()).is(ModBlocks.METEOR_BATTERY.get());
+        if (onMeteorBattery != wasOnMeteorBattery) markChanged();
     }
 
     @Override

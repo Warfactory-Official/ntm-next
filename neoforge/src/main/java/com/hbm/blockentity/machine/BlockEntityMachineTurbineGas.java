@@ -178,8 +178,10 @@ public class BlockEntityMachineTurbineGas extends BlockEntityMachineBase
                     id.getOrDefault(
                             ModDataComponents.FLUID_IDENTIFIER.get(), FluidIdentifierData.EMPTY);
             Fluid target = data.primary();
-            if (target != null && target != Fluids.EMPTY && isGasFuel(target))
+            if (target != null && target != Fluids.EMPTY && isGasFuel(target)) {
+                if (tanks[0].getDeclaredFluid() != target || !tanks[0].isStrict()) markChanged();
                 tanks[0].setTankTypeByIdentifier(target);
+            }
         }
 
         if (autoMode) {
@@ -190,6 +192,7 @@ public class BlockEntityMachineTurbineGas extends BlockEntityMachineBase
                 powerSliderTarget =
                         (int) (tanks[0].getFill() * 0.0001 * (60 - (int) (60 * power / maxPower)));
             }
+            if (powerSliderTarget != powerSliderPos) markChanged();
             if (powerSliderTarget > powerSliderPos) powerSliderPos++;
             else if (powerSliderTarget < powerSliderPos) powerSliderPos--;
         }
@@ -225,6 +228,7 @@ public class BlockEntityMachineTurbineGas extends BlockEntityMachineBase
     private void stopIfNotReady() {
         if (tanks[0].getFill() == 0 || tanks[1].getFill() == 0) state = 0;
         if (!hasAcceptableFuel()) state = 0;
+        if (state == 0) markChanged();
     }
 
     public boolean hasAcceptableFuel() {
@@ -232,6 +236,11 @@ public class BlockEntityMachineTurbineGas extends BlockEntityMachineBase
     }
 
     private void startup() {
+        if (!breatheAir(0)) {
+            state = 0;
+            return;
+        }
+
         counter++;
 
         if (counter <= 20) rpm = 5 * counter;
@@ -257,10 +266,12 @@ public class BlockEntityMachineTurbineGas extends BlockEntityMachineBase
             counter = 225;
 
             state = 1;
+            markChanged();
         }
     }
 
     private void shutdown() {
+        if (autoMode) markChanged();
         autoMode = false;
         instantPowerOutput = 0;
         if (powerSliderPos > 0) powerSliderPos--;
@@ -292,6 +303,8 @@ public class BlockEntityMachineTurbineGas extends BlockEntityMachineBase
     }
 
     private void run() {
+        int prevRpm = rpm;
+        int prevTemp = temp;
         if ((int) (throttle * 0.9) > rpm - rpmIdle) {
             if (TickPhase.every(this, 5)) rpm++;
         } else if ((int) (throttle * 0.9) < rpm - rpmIdle) {
@@ -305,6 +318,7 @@ public class BlockEntityMachineTurbineGas extends BlockEntityMachineBase
         } else if (throttle * 5 * (maxTemp - tempIdle) / 500 < temp - tempIdle) {
             if (TickPhase.every(this, 2)) temp--;
         }
+        if (rpm != prevRpm || temp != prevTemp) markChanged();
 
         double consumption = fuelMaxConsumption(tanks[0].getTankType());
         if (TickPhase.every(this, SharedConstants.TICKS_PER_SECOND)
@@ -320,10 +334,21 @@ public class BlockEntityMachineTurbineGas extends BlockEntityMachineBase
         double consumption = idleConsumption + consMax * throttle / 100;
 
         fuelToConsume += consumption;
+
+        if (!breatheAir((int) Math.floor(fuelToConsume))) {
+            state = 0;
+            markChanged();
+            return;
+        }
+
+        if (fuelToConsume >= 1) markChanged();
         tanks[0].setFill(tanks[0].getFill() - (int) Math.floor(fuelToConsume));
         fuelToConsume -= (int) Math.floor(fuelToConsume);
 
-        if (TickPhase.every(this, 10)) tanks[1].setFill(tanks[1].getFill() - 1);
+        if (TickPhase.every(this, 10)) {
+            tanks[1].setFill(tanks[1].getFill() - 1);
+            markChanged();
+        }
 
         if (tanks[0].getFill() < 0) {
             tanks[0].setFill(0);
@@ -342,6 +367,7 @@ public class BlockEntityMachineTurbineGas extends BlockEntityMachineBase
         int rpmEff = rpm - rpmIdle;
 
         long target = (long) (consMax * energy * rpmEff / 90);
+        int prevOutput = instantPowerOutput;
         if (instantPowerOutput < target) {
             instantPowerOutput += (int) (level.getRandom().nextDouble() * 0.005 * consMax * energy);
             if (instantPowerOutput > target) instantPowerOutput = (int) target;
@@ -364,6 +390,7 @@ public class BlockEntityMachineTurbineGas extends BlockEntityMachineBase
 
         tanks[2].setFill(tanks[2].getFill() - cycles);
         tanks[3].setFill(tanks[3].getFill() + cycles * 10);
+        if (instantPowerOutput != 0 || prevOutput != 0 || cycles > 0) markChanged();
     }
 
     @Override
@@ -473,6 +500,21 @@ public class BlockEntityMachineTurbineGas extends BlockEntityMachineBase
         if (type == tanks[1].getTankType()) return tanks[1];
         if (type == tanks[2].getTankType()) return tanks[2];
         return null;
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return tanks[0].joins(type) || tanks[1].joins(type) || tanks[2].joins(type);
+    }
+
+    @Override
+    public boolean canProvideFluid(Fluid type) {
+        return tanks[3].joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
     }
 
     @Override

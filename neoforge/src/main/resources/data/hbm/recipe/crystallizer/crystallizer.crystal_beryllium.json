@@ -9,10 +9,10 @@
   ],
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/beryllium"
+      "ingredient": "#c:ores/beryllium"
     }
   ],
-  "order": 236,
+  "order": 61440,
   "output_items": [
     "hbm:crystal_beryllium"
   ],

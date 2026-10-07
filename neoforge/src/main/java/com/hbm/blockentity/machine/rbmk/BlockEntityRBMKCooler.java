@@ -60,6 +60,7 @@ public class BlockEntityRBMKCooler extends BlockEntityRBMKBase
         if (cold.getFill() >= 50 && hot.getMaxFill() - hot.getFill() >= 50) {
             cold.setFill(cold.getFill() - 50);
             hot.setFill(hot.getFill() + 50);
+            markChanged();
 
             for (BlockEntityRBMKBase neighbor : coolCache) {
                 if (neighbor != null && !neighbor.isRemoved()) {

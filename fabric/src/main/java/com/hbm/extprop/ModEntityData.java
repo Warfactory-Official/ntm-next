@@ -4,7 +4,7 @@
 package com.hbm.extprop;
 
 import com.hbm.lib.Library;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import com.hbm.platform.FabricEntityData;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 
 public final class ModEntityData {
@@ -16,20 +16,16 @@ public final class ModEntityData {
 
     public static void register() {
         PLAYER_PROPS =
-                AttachmentRegistry.create(
+                FabricEntityData.register(
                         Library.id("player_props"),
-                        builder -> {
-                            builder.initializer(HbmPlayerProps::new)
-                                    .persistent(HbmPlayerProps.MAP_CODEC.codec());
-                            if (true) builder.copyOnDeath();
-                        });
+                        HbmPlayerProps::new,
+                        HbmPlayerProps.MAP_CODEC,
+                        true);
         LIVING_PROPS =
-                AttachmentRegistry.create(
+                FabricEntityData.register(
                         Library.id("living_props"),
-                        builder2 -> {
-                            builder2.initializer(HbmLivingProps::new)
-                                    .persistent(HbmLivingProps.MAP_CODEC.codec());
-                            if (false) builder2.copyOnDeath();
-                        });
+                        HbmLivingProps::new,
+                        HbmLivingProps.MAP_CODEC,
+                        false);
     }
 }

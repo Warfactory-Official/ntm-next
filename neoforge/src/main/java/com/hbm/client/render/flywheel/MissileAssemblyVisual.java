@@ -5,7 +5,7 @@ package com.hbm.client.render.flywheel;
 
 import com.hbm.blockentity.machine.BlockEntityMachineMissileAssembly;
 import com.hbm.blocks.machine.BlockMachineHorizontal;
-import com.hbm.client.model.Meshes;
+import com.hbm.client.render.MissilePronter;
 import com.hbm.handler.MissileStruct;
 import com.hbm.items.weapon.ItemCustomMissilePart.PartType;
 import com.hbm.items.weapon.ItemCustomMissilePart;
@@ -266,7 +266,7 @@ public final class MissileAssemblyVisual
                             new PartKey(source.mesh, source.skin),
                             key ->
                                     MeshPart.objParts(
-                                            Meshes.faceNormals(key.mesh),
+                                            MissilePronter.partMesh(key.mesh),
                                             MeshPart.litCutout(key.skin)));
             groups = new ArrayList<>(models.length);
             for (var model : models) groups.add(new PartVisual(model));

@@ -3,6 +3,7 @@
 
 package com.hbm.mixin;
 
+import com.hbm.api.environment.Environment;
 import com.hbm.handler.radiation.RadiationSystemNT;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -61,11 +62,23 @@ public abstract class MixinLevelChunk extends ChunkAccess {
                     protoChunk.hbm$pendingFallerStates(),
                     protoChunk.hbm$pendingFallerSize());
         }
+        hbm$setDuctFluids(protoChunk.hbm$ductFluids());
     }
 
     @Inject(method = "setBlockState", at = @At("HEAD"))
     private void hbm$radShieldEdit(
             BlockPos pos, BlockState state, int flags, CallbackInfoReturnable<BlockState> cir) {
         RadiationSystemNT.onBlockStateReplaced((LevelChunk) (Object) this, pos, state);
+    }
+
+    @Inject(method = "setBlockState", at = @At("RETURN"))
+    private void hbm$environmentEdit(
+            BlockPos pos, BlockState state, int flags, CallbackInfoReturnable<BlockState> cir) {
+        if (!Environment.installed()) return;
+        BlockState previous = cir.getReturnValue();
+        if (previous != null
+                && ((LevelChunk) (Object) this).getLevel() instanceof ServerLevel level) {
+            Environment.blockChanged(level, pos, previous, state);
+        }
     }
 }

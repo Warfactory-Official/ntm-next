@@ -26,7 +26,7 @@
       "ingredient": "hbm:circuit_controller_advanced"
     }
   ],
-  "order": 423,
+  "order": 108288,
   "output_items": [
     "hbm:satellite_miner_lunar"
   ],

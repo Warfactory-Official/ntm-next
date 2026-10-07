@@ -100,6 +100,7 @@ public class BlockEntityFusionMHDT extends BlockEntity
             if (!hasMinimumPlasma()) power /= 2;
             tanks[0].setFill(tanks[0].getFill() - COOLANT_USE);
             tanks[1].setFill(tanks[1].getFill() + COOLANT_USE);
+            markChanged();
         }
 
         flush.provide((ServerLevel) level, this);

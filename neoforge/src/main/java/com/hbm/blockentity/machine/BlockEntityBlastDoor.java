@@ -52,17 +52,21 @@ public class BlockEntityBlastDoor extends BlockEntityLockableBase {
         boolean powered =
                 level.hasNeighborSignal(worldPosition)
                         || level.hasNeighborSignal(worldPosition.above(BlastDoor.LEAF_TOP + 1));
+        boolean wasRedstoned = redstoned;
         if (!isLocked() && powered) {
             if (!redstoned) tryToggle(null);
             redstoned = true;
         } else {
             redstoned = false;
         }
+        if (redstoned != wasRedstoned) markChanged();
 
         if (state != STATE_MOVING) {
+            if (timer != 0) markChanged();
             timer = 0;
         } else {
             timer++;
+            markChanged();
             travel((ServerLevel) level);
             if (timer >= TRAVEL_TICKS) {
                 if (isOpening) finishOpen();
@@ -117,6 +121,7 @@ public class BlockEntityBlastDoor extends BlockEntityLockableBase {
         if (state != STATE_CLOSED) return;
         isOpening = true;
         state = STATE_MOVING;
+        markChanged();
         cue(ModSounds.REACTOR_START.get(), 0.75F);
     }
 
@@ -124,6 +129,7 @@ public class BlockEntityBlastDoor extends BlockEntityLockableBase {
         if (state != STATE_OPEN) return;
         isOpening = false;
         state = STATE_MOVING;
+        markChanged();
         cue(ModSounds.REACTOR_START.get(), 0.75F);
     }
 

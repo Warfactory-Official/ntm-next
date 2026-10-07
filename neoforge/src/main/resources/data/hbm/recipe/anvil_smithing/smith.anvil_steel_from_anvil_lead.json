@@ -9,7 +9,7 @@
       "ingredient": "#c:ingots/steel"
     }
   ],
-  "order": 9,
+  "order": 2304,
   "output_items": [
     "hbm:anvil_steel"
   ]

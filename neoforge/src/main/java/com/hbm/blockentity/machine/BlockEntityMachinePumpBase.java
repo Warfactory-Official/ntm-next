@@ -3,6 +3,7 @@
 
 package com.hbm.blockentity.machine;
 
+import com.hbm.api.environment.Environment;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidFlushSender;
 import com.hbm.blockentity.FoldedCoreResident;
@@ -15,8 +16,12 @@ import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
+import com.hbm.registration.NeoForgeRegistrar;
 import io.netty.buffer.ByteBuf;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
@@ -38,6 +43,11 @@ public abstract class BlockEntityMachinePumpBase extends BlockEntity
                 SyncUnitSchema {
 
     public static @Nullable Consumer<BlockEntityMachinePumpBase> CLIENT_SOUND;
+
+    private static final int NON_WATER_DEBUFF = 100;
+
+    private static final List<Supplier<? extends Block>> ADDON_GROUND = new ArrayList<>();
+    private static Block @Nullable [] addonGround;
 
     @SyncField(units = 1L << 2)
     public final FluidTankNTM water;
@@ -62,6 +72,11 @@ public abstract class BlockEntityMachinePumpBase extends BlockEntity
         this.sending = new FluidTankNTM[] {water};
     }
 
+    public static void addGround(Supplier<? extends Block> block) {
+        NeoForgeRegistrar.assertOpen("BlockEntityMachinePumpBase.addGround");
+        ADDON_GROUND.add(block);
+    }
+
     private static boolean isValidGround(Block b) {
         return b == Blocks.GRASS_BLOCK
                 || b == Blocks.DIRT
@@ -71,7 +86,18 @@ public abstract class BlockEntityMachinePumpBase extends BlockEntity
                 || b == ModBlocks.DIRT_DEAD.get()
                 || b == ModBlocks.DIRT_OILY.get()
                 || b == ModBlocks.SAND_DIRTY.get()
-                || b == ModBlocks.SAND_DIRTY_RED.get();
+                || b == ModBlocks.SAND_DIRTY_RED.get()
+                || isAddonGround(b);
+    }
+
+    private static boolean isAddonGround(Block b) {
+        Block[] ground = addonGround;
+        if (ground == null)
+            addonGround = ground = ADDON_GROUND.stream().map(Supplier::get).toArray(Block[]::new);
+        for (Block block : ground) {
+            if (block == b) return true;
+        }
+        return false;
     }
 
     public void tickServer() {
@@ -109,8 +135,18 @@ public abstract class BlockEntityMachinePumpBase extends BlockEntity
 
     protected abstract void operate();
 
+    protected int pumpSpeed(int speed) {
+        return water.getTankType() == NTMFluids.WATER ? speed : speed / NON_WATER_DEBUFF;
+    }
+
     protected boolean checkGround() {
         if (!level.dimensionType().hasSkyLight()) return false;
+        Fluid table = Environment.groundwater((ServerLevel) level);
+        if (table == null) return false;
+
+        Fluid previousType = water.getTankType();
+        water.setTankType(table);
+        if (water.getTankType() != previousType) markChanged();
 
         int valid = 0, invalid = 0;
         BlockPos.MutableBlockPos scratch = new BlockPos.MutableBlockPos();

@@ -136,10 +136,11 @@ public final class BlockEntityDungeonSpawner extends BlockEntity {
         if (type.phaseCondition.test(this)) {
             phase++;
             timer = 0;
+            level.blockEntityChanged(worldPosition);
         } else {
             timer++;
+            if (timer <= 60) level.blockEntityChanged(worldPosition);
         }
-        setChanged();
     }
 
     @Override

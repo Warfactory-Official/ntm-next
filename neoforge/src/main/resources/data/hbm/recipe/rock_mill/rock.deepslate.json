@@ -1,0 +1,60 @@
+{
+  "type": "hbm:rock_mill",
+  "auto_switch_group": "autoswitch.crushing",
+  "duration": 100,
+  "icon_from_input": true,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": {
+        "neoforge:ingredient_type": "neoforge:compound",
+        "children": [
+          "minecraft:deepslate",
+          "#c:cobblestones/deepslate"
+        ]
+      }
+    }
+  ],
+  "name_wrapper": "rock.crushing",
+  "order": 3072,
+  "output_fluids": [
+    {
+      "type": "hbm:colloid",
+      "amount": 250
+    }
+  ],
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "minecraft:gravel"
+        },
+        "weight": 75
+      },
+      {
+        "data": {
+          "id": "hbm:powder_iron"
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "id": "hbm:powder_quartz"
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "id": "hbm:powder_titanium"
+        },
+        "weight": 5
+      }
+    ]
+  ],
+  "power": 25
+}

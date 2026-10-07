@@ -4,6 +4,7 @@
 package com.hbm.items.tool;
 
 import com.hbm.entity.logic.EntityBomber;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -52,8 +53,8 @@ public class ItemBombCaller extends Item {
             level.addFreshEntity(bomber);
             player.sendSystemMessage(
                     Component.translatable("desc.item.bombCaller.calledInAirstrike"));
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),

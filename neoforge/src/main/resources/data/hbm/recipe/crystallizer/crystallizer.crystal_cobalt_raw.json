@@ -1,0 +1,23 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 400,
+  "input_fluids": [
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 333
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:raw_materials/cobalt"
+    }
+  ],
+  "order": 66304,
+  "output_items": [
+    {
+      "chance": 0.667,
+      "id": "hbm:crystal_cobalt"
+    }
+  ],
+  "productivity": 0.05
+}

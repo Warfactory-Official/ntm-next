@@ -770,7 +770,8 @@ public final class ModBlocks {
                             BlockBehaviour.Properties.of()
                                     .strength(5.0F, 6.0F)
                                     .requiresCorrectToolForDrops()
-                                    .noOcclusion());
+                                    .noOcclusion(),
+                    ItemCapacitor::new);
     public static final RegistryHandle<Block> PRESS_PREHEATER =
             Reg.blockItem(
                     "press_preheater",
@@ -1916,6 +1917,7 @@ public final class ModBlocks {
                                             .strength(0.0F, 0.6F)
                                             .sound(SoundType.STONE)
                                             .noOcclusion()
+                                            .forceSolidOn()
                                             .noLootTable()
                                             .ignitedByLava(),
                             (block, props) -> new ItemBlockCharge(block, props))
@@ -1929,6 +1931,7 @@ public final class ModBlocks {
                                             .strength(0.0F, 0.6F)
                                             .sound(SoundType.STONE)
                                             .noOcclusion()
+                                            .forceSolidOn()
                                             .noLootTable()
                                             .ignitedByLava(),
                             (block, props) -> new ItemBlockCharge(block, props))
@@ -1943,6 +1946,7 @@ public final class ModBlocks {
                                             .strength(0.0F, 0.6F)
                                             .sound(SoundType.STONE)
                                             .noOcclusion()
+                                            .forceSolidOn()
                                             .noLootTable()
                                             .ignitedByLava(),
                             (block, props) -> new ItemBlockCharge(block, props))
@@ -1957,6 +1961,7 @@ public final class ModBlocks {
                                             .strength(0.0F, 0.6F)
                                             .sound(SoundType.STONE)
                                             .noOcclusion()
+                                            .forceSolidOn()
                                             .noLootTable()
                                             .ignitedByLava(),
                             (block, props) -> new ItemBlockCharge(block, props))
@@ -5302,7 +5307,7 @@ public final class ModBlocks {
     public static RegistryHandle<Block> ASPHALT_LIGHT;
     public static RegistryHandle<Block> BLOCK_FOAM;
     public static RegistryHandle<BlockBoxcar> BOXCAR;
-    public static RegistryHandle<Block> BOAT;
+    public static RegistryHandle<BlockBoat> BOAT;
     public static RegistryHandle<BlockLayering> FOAM_LAYER;
     public static RegistryHandle<ColoredFallingBlock> SAND_BORON;
     public static RegistryHandle<ColoredFallingBlock> SAND_LEAD;
@@ -5559,7 +5564,9 @@ public final class ModBlocks {
                         0.4F,
                         6.0F,
                         UnaryOperator.identity());
-        ORE_OIL = extraOre("ore_oil", 5.0F, 6.0F);
+        ORE_OIL =
+                ModBlocks.<Block>extraOre(
+                        "ore_oil", BlockOreOil::new, 5.0F, 6.0F, UnaryOperator.identity());
         ORE_OIL_EMPTY = extraOre("ore_oil_empty", 5.0F, 6.0F);
         ORE_BEDROCK_OIL =
                 extraOre(
@@ -6406,13 +6413,14 @@ public final class ModBlocks {
         BOAT =
                 Reg.block(
                         "boat",
-                        Block::new,
+                        BlockBoat::new,
                         () ->
                                 BlockBehaviour.Properties.of()
                                         .mapColor(MapColor.METAL)
                                         .sound(SoundType.METAL)
                                         .strength(10.0F, 6.0F)
-                                        .requiresCorrectToolForDrops());
+                                        .requiresCorrectToolForDrops()
+                                        .noOcclusion());
         DECO_BLOCKS.add(decoItem("boat", BOAT));
         BLOCK_FOAM =
                 Reg.block(
@@ -8820,19 +8828,36 @@ public final class ModBlocks {
         for (CellBuckets.Plain key : CellBuckets.plain()) {
             out.put(
                     key,
-                    Reg.block(
+                    declarePlainCell(
+                            Reg.block(
                                     key.name(),
                                     props -> BlockMultiblockCell.create(key, props),
-                                    () -> cellProperties(key))
-                            .afterRegistration(
-                                    cell ->
-                                            RadiationSystemNT.markRadResistant(
-                                                    cell,
-                                                    state ->
-                                                            state.getValue(
-                                                                    BlockMultiblockCell.SEALED))));
+                                    () -> cellProperties(key)),
+                            key.mineable()));
         }
         return out;
+    }
+
+    private static Reg.Handle<BlockMultiblockCell> declarePlainCell(
+            Reg.Handle<BlockMultiblockCell> cell, TagKey<Block> mineable) {
+        return cell.afterRegistration(
+                block ->
+                        RadiationSystemNT.markRadResistant(
+                                block, state -> state.getValue(BlockMultiblockCell.SEALED)));
+    }
+
+    public static RegistryHandle<? extends BlockMultiblockCell> addonPlainCell(
+            Reg.Namespace namespace, String name, CellBuckets.Plain key) {
+        CellBuckets.addAddonPlain(key);
+        RegistryHandle<? extends BlockMultiblockCell> cell =
+                declarePlainCell(
+                        namespace.block(
+                                name,
+                                props -> BlockMultiblockCell.create(key, props),
+                                () -> cellProperties(key)),
+                        key.mineable());
+        PLAIN_CELLS.put(key, cell);
+        return cell;
     }
 
     private static Map<CellBuckets.Geometry, RegistryHandle<BlockMultiblockGeometryCell>>
@@ -8840,6 +8865,7 @@ public final class ModBlocks {
         Map<CellBuckets.Geometry, RegistryHandle<BlockMultiblockGeometryCell>> out =
                 new LinkedHashMap<>();
         for (CellBuckets.Geometry bucket : CellBuckets.geometry()) {
+            TagKey<Block> mineable = bucket.key().mineable();
             RegistryHandle<BlockMultiblockGeometryCell> handle =
                     Reg.block(
                                     bucket.name(),
@@ -8879,12 +8905,13 @@ public final class ModBlocks {
     }
 
     private static BlockBehaviour.Properties cellProperties(CellBuckets.Plain key) {
-        return BlockBehaviour.Properties.of()
-                .mapColor(key.mapColor())
-                .strength(key.hardness(), key.resistance())
-                .lightLevel(state -> key.light())
-                .requiresCorrectToolForDrops()
-                .noOcclusion();
+        BlockBehaviour.Properties props =
+                BlockBehaviour.Properties.of()
+                        .mapColor(key.mapColor())
+                        .strength(key.hardness(), key.resistance())
+                        .lightLevel(state -> key.light())
+                        .noOcclusion();
+        return key.requiresTool() ? props.requiresCorrectToolForDrops() : props;
     }
 
     private static BlockBehaviour.Properties paProperties() {

@@ -243,25 +243,22 @@ public class ScreenMachineCustom extends ScreenInfoContainer<MenuMachineCustom> 
                     be.outputTanks[i]);
         }
 
-        if (this.menu.getCarried().isEmpty()) {
-            for (Slot slot : this.menu.slots) {
-                if (!(slot instanceof SlotPattern)
-                        || !isHovering(slot.x, slot.y, 16, 16, mouseX, mouseY)) continue;
-                int index = slot.getContainerSlot() - BlockEntityCustomMachine.SLOT_TEMPLATE_START;
-                String mode = be.matcher.mode(index);
-                if (mode == null) continue;
-                graphics.setComponentTooltipForNextFrame(
-                        this.font,
-                        List.of(
-                                Component.translatable("gui.customMachine.pattern")
-                                        .withStyle(ChatFormatting.RED),
-                                ModulePatternMatcher.getLabel(mode)),
-                        mouseX,
-                        mouseY - 30);
-            }
-        }
-
         super.extractLabels(graphics, mouseX, mouseY);
+    }
+
+    @Override
+    protected List<Component> slotTooltip(Slot slot) {
+        if (!(slot instanceof SlotPattern)) return List.of();
+        String mode =
+                menu.blockEntity()
+                        .matcher
+                        .mode(
+                                slot.getContainerSlot()
+                                        - BlockEntityCustomMachine.SLOT_TEMPLATE_START);
+        if (mode == null) return List.of();
+        return List.of(
+                Component.translatable("gui.customMachine.pattern").withStyle(ChatFormatting.RED),
+                ModulePatternMatcher.getLabel(mode));
     }
 
     private static Component grouped(int value) {

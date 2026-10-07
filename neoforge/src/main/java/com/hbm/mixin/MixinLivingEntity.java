@@ -3,6 +3,7 @@
 
 package com.hbm.mixin;
 
+import com.hbm.api.entity.LivingHooks;
 import com.hbm.blocks.ClimbBoxes;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.config.NeoForgeHbmConfig;
@@ -421,7 +422,9 @@ public class MixinLivingEntity implements NtmDamageContext, ArmorModWearer {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void hbm$livingUpdate(CallbackInfo ci) {
-        EntityEffectHandler.onLivingTick((LivingEntity) (Object) this);
+        LivingEntity self = (LivingEntity) (Object) this;
+        EntityEffectHandler.onLivingTick(self);
+        LivingHooks.tick(self);
     }
 
     @ModifyReturnValue(method = "onClimbable", at = @At("RETURN"))

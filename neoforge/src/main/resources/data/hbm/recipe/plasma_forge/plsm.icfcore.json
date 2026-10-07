@@ -37,7 +37,7 @@
       "ingredient": "hbm:circuit_quantum"
     }
   ],
-  "order": 34,
+  "order": 8704,
   "output_items": [
     "hbm:struct_icf_core"
   ],

@@ -5,7 +5,7 @@
       "ingredient": "#c:dusts/sodium"
     }
   ],
-  "order": 8,
+  "order": 2048,
   "output_fluids": [
     {
       "type": "hbm:sodium",

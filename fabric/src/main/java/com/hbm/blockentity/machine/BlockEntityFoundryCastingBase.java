@@ -66,10 +66,12 @@ public abstract class BlockEntityFoundryCastingBase extends BlockEntityFoundryBa
     public void tickServer() {
         if (this.amount > this.getCapacity()) {
             this.amount = this.getCapacity();
+            markChanged();
         }
 
-        if (this.amount == 0) {
+        if (this.amount == 0 && this.type != null) {
             this.type = null;
+            markChanged();
         }
 
         Mold mold = this.getInstalledMold();

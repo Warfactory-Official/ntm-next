@@ -8,6 +8,8 @@ import com.hbm.lib.Library;
 import com.hbm.packet.IPayloadHandlerContext;
 import com.hbm.packet.threading.ThreadedPayload;
 import io.netty.buffer.ByteBuf;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.StreamCodec;
@@ -18,32 +20,13 @@ public final class OreDensityPayload extends ThreadedPayload {
     public static final StreamCodec<ByteBuf, OreDensityPayload> STREAM_CODEC =
             streamCodec(OreDensityPayload::decode);
 
-    private final Component lightMetal;
-    private final Component heavyMetal;
-    private final Component rareEarth;
-    private final Component actinide;
-    private final Component nonMetal;
-    private final Component crystalline;
+    private final List<Component> rows;
     private final Component summary;
     private final int firstId;
     private final int millis;
 
-    public OreDensityPayload(
-            Component lightMetal,
-            Component heavyMetal,
-            Component rareEarth,
-            Component actinide,
-            Component nonMetal,
-            Component crystalline,
-            Component summary,
-            int firstId,
-            int millis) {
-        this.lightMetal = lightMetal;
-        this.heavyMetal = heavyMetal;
-        this.rareEarth = rareEarth;
-        this.actinide = actinide;
-        this.nonMetal = nonMetal;
-        this.crystalline = crystalline;
+    public OreDensityPayload(List<Component> rows, Component summary, int firstId, int millis) {
+        this.rows = List.copyOf(rows);
         this.summary = summary;
         this.firstId = firstId;
         this.millis = millis;
@@ -52,38 +35,24 @@ public final class OreDensityPayload extends ThreadedPayload {
     private static OreDensityPayload decode(ByteBuf buffer) {
         int firstId = buffer.readInt();
         int millis = buffer.readInt();
-        return new OreDensityPayload(
-                decodeComponent(buffer),
-                decodeComponent(buffer),
-                decodeComponent(buffer),
-                decodeComponent(buffer),
-                decodeComponent(buffer),
-                decodeComponent(buffer),
-                decodeComponent(buffer),
-                firstId,
-                millis);
+        int count = buffer.readInt();
+        List<Component> rows = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) rows.add(decodeComponent(buffer));
+        return new OreDensityPayload(rows, decodeComponent(buffer), firstId, millis);
     }
 
     public static void handle(OreDensityPayload payload, IPayloadHandlerContext context) {
-        push(payload.lightMetal, payload.firstId, payload.millis);
-        push(payload.heavyMetal, payload.firstId + 1, payload.millis);
-        push(payload.rareEarth, payload.firstId + 2, payload.millis);
-        push(payload.actinide, payload.firstId + 3, payload.millis);
-        push(payload.nonMetal, payload.firstId + 4, payload.millis);
-        push(payload.crystalline, payload.firstId + 5, payload.millis);
-        push(payload.summary, payload.firstId + 6, payload.millis);
+        for (int i = 0; i < payload.rows.size(); i++)
+            push(payload.rows.get(i), payload.firstId + i, payload.millis);
+        push(payload.summary, payload.firstId + payload.rows.size(), payload.millis);
     }
 
     @Override
     public void toBytes(ByteBuf buffer) {
         buffer.writeInt(firstId);
         buffer.writeInt(millis);
-        encodeComponent(buffer, lightMetal);
-        encodeComponent(buffer, heavyMetal);
-        encodeComponent(buffer, rareEarth);
-        encodeComponent(buffer, actinide);
-        encodeComponent(buffer, nonMetal);
-        encodeComponent(buffer, crystalline);
+        buffer.writeInt(rows.size());
+        for (Component row : rows) encodeComponent(buffer, row);
         encodeComponent(buffer, summary);
     }
 

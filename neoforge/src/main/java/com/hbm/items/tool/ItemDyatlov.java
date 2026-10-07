@@ -36,6 +36,7 @@ public class ItemDyatlov extends Item {
         }
         if (be instanceof BlockEntityReactorZirnox zirnox) {
             zirnox.heat = 200000;
+            zirnox.markChanged();
             return InteractionResult.SUCCESS;
         }
 

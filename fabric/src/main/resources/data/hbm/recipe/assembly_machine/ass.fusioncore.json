@@ -28,7 +28,7 @@
       "ingredient": "hbm:drive_flash_particlesim"
     }
   ],
-  "order": 255,
+  "order": 65280,
   "output_items": [
     "hbm:struct_torus_core"
   ],

@@ -10,7 +10,7 @@
       "ingredient": "hbm:pellet_cluster"
     }
   ],
-  "order": 350,
+  "order": 89600,
   "output_items": [
     "hbm:warhead_cluster_small"
   ],

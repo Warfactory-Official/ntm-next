@@ -9,7 +9,7 @@
     }
   ],
   "kind": "mold",
-  "order": 40,
+  "order": 10240,
   "output_items": [
     "hbm:mold_billet"
   ],

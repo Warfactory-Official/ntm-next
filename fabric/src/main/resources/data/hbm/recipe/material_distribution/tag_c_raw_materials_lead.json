@@ -1,0 +1,18 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 96,
+      "material": "lead"
+    },
+    {
+      "amount": 5,
+      "material": "gold"
+    },
+    {
+      "amount": 108,
+      "material": "stone"
+    }
+  ],
+  "targets": "#c:raw_materials/lead"
+}

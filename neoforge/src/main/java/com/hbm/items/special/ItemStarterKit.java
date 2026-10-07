@@ -11,6 +11,7 @@ import com.hbm.items.machine.EnumBatteryPack;
 import com.hbm.items.machine.ItemBreedingRod.BreedingRodType;
 import com.hbm.items.machine.ItemFluidTank;
 import com.hbm.registration.RegistryHandle;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.List;
 import java.util.function.Consumer;
@@ -94,8 +95,8 @@ public class ItemStarterKit extends Item {
             }
             if (kind.haz != null) giveHaz(server, player, kind.haz);
 
-            server.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),

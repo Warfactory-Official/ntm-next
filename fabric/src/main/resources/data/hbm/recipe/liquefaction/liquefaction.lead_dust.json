@@ -5,7 +5,7 @@
       "ingredient": "#c:dusts/lead"
     }
   ],
-  "order": 10,
+  "order": 2560,
   "output_fluids": [
     {
       "type": "hbm:lead",

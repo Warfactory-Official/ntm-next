@@ -21,7 +21,7 @@
       "ingredient": "hbm:circuit_capacitor"
     }
   ],
-  "order": 35,
+  "order": 8960,
   "output_items": [
     "hbm:upgrade_fortune_2"
   ],

@@ -3,7 +3,10 @@
 
 package com.hbm.mixin;
 
+import com.hbm.api.environment.LevelWeather;
+import com.hbm.api.fluidmk2.IFluidHandlerMK2;
 import com.hbm.blockentity.GraphResident;
+import com.hbm.blocks.network.FluidPipeBlock;
 import com.hbm.capability.ResolvedCapCache;
 import com.hbm.handler.UnstableFuses;
 import com.hbm.interfaces.injected.IServerLevelExtension;
@@ -85,10 +88,24 @@ public abstract class MixinServerLevel implements IServerLevelExtension {
         return hbm$storageEntities;
     }
 
+    @Inject(method = "advanceWeatherCycle", at = @At("HEAD"), cancellable = true)
+    private void hbm$addonWeather(CallbackInfo ci) {
+        if (LevelWeather.advance((ServerLevel) (Object) this)) ci.cancel();
+    }
+
+    @Inject(method = "wakeUpAllPlayers", at = @At("HEAD"))
+    private void hbm$sleptThrough(CallbackInfo ci) {
+        LevelWeather.sleptThrough((ServerLevel) (Object) this);
+    }
+
     @Inject(method = "onBlockEntityAdded", at = @At("TAIL"))
     private void hbm$graphResidentLoad(BlockEntity blockEntity, CallbackInfo ci) {
         UnstableFuses.onBlockLoad((ServerLevel) (Object) this, blockEntity);
         if (blockEntity instanceof GraphResident)
             GraphResident.onLoad((ServerLevel) (Object) this, blockEntity);
+        if (blockEntity instanceof IFluidHandlerMK2 handler) {
+            handler.forEachTank(tank -> tank.bindOwner(blockEntity));
+            FluidPipeBlock.scheduleConnections(blockEntity);
+        }
     }
 }

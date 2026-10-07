@@ -32,7 +32,7 @@
       "ingredient": "hbm:circuit_basic"
     }
   ],
-  "order": 205,
+  "order": 52480,
   "output_items": [
     "hbm:machine_cyclotron"
   ],

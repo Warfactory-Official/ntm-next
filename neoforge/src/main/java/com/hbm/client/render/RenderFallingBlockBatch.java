@@ -7,6 +7,7 @@ import com.hbm.client.render.flywheel.FallingBlockNTVisual;
 import com.hbm.entity.item.EntityFallingBlockBatch;
 import com.hbm.entity.item.EntityFallingBlockNT;
 import com.mojang.blaze3d.vertex.PoseStack;
+import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import java.util.Arrays;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -19,7 +20,8 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.util.Mth;
 
 public final class RenderFallingBlockBatch
-        extends EntityRenderer<EntityFallingBlockBatch, RenderFallingBlockBatch.State> {
+        extends EntityRenderer<EntityFallingBlockBatch, RenderFallingBlockBatch.State>
+        implements ConcurrentRenderStateExtraction {
     private final RenderFallingBlockNT child;
 
     public RenderFallingBlockBatch(EntityRendererProvider.Context context) {

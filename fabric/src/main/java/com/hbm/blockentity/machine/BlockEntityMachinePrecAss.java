@@ -141,6 +141,9 @@ public class BlockEntityMachinePrecAss extends BlockEntityMachineBase
     @Override
     public void tickServer() {
         long prevPower = power;
+        long prevMaxPower = maxPower;
+        double prevProgress = recipeModule.progress;
+        String prevRecipe = recipeModule.getRecipeName();
 
         GenericRecipe selected = recipeModule.getRecipe();
         if (selected != null) maxPower = selected.power * 100L;
@@ -160,6 +163,9 @@ public class BlockEntityMachinePrecAss extends BlockEntityMachineBase
         isProgressing = recipeModule.didProcess;
 
         if (recipeModule.markDirty || power != prevPower) setChanged();
+        if (maxPower != prevMaxPower
+                || recipeModule.progress != prevProgress
+                || !recipeModule.getRecipeName().equals(prevRecipe)) markChanged();
         flush.provide((ServerLevel) level, this);
 
         networkPackNT(100);

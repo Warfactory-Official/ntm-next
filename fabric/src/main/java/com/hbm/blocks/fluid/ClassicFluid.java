@@ -57,7 +57,30 @@ public abstract class ClassicFluid extends FlowingFluid {
             boolean displacesLiquids,
             Identifier sprite,
             Supplier<? extends BlockFluidClassicBase> block,
-            Supplier<ItemStack> bucket) {}
+            Supplier<ItemStack> bucket,
+            @Nullable Supplier<? extends Fluid> kind) {
+
+        public Spec(
+                Physics physics,
+                int quanta,
+                int tickDelay,
+                int density,
+                boolean displacesLiquids,
+                Identifier sprite,
+                Supplier<? extends BlockFluidClassicBase> block,
+                Supplier<ItemStack> bucket) {
+            this(
+                    physics,
+                    quanta,
+                    tickDelay,
+                    density,
+                    displacesLiquids,
+                    sprite,
+                    block,
+                    bucket,
+                    null);
+        }
+    }
 
     public record Pair(
             RegistryHandle<? extends ClassicFluid> source,

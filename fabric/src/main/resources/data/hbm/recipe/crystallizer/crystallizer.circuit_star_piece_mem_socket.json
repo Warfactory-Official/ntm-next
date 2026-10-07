@@ -12,7 +12,7 @@
       "ingredient": "hbm:scrap_plastic_mem_socket"
     }
   ],
-  "order": 303,
+  "order": 81152,
   "output_items": [
     "hbm:circuit_star_piece_mem_socket"
   ]

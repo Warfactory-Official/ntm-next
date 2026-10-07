@@ -37,7 +37,7 @@
       "ingredient": "hbm:circuit_basic"
     }
   ],
-  "order": 168,
+  "order": 43008,
   "output_items": [
     "hbm:machine_assembly_factory"
   ],

@@ -3,14 +3,14 @@
   "duration": 1200,
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/iron"
+      "ingredient": "#c:ores/iron"
     },
     {
       "ingredient": "hbm:powder_flux"
     }
   ],
   "name": "blast.steelWithFlux",
-  "order": 3,
+  "order": 1024,
   "output_items": [
     {
       "count": 3,

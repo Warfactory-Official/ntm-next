@@ -5,7 +5,7 @@
       "ingredient": "hbm:brick_concrete"
     }
   ],
-  "order": 16,
+  "order": 4096,
   "output_items": [
     "minecraft:gravel"
   ]

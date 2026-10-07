@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/gold"
     }
   ],
-  "order": 254,
+  "order": 65024,
   "output_items": [
     "hbm:powder_gold"
   ]

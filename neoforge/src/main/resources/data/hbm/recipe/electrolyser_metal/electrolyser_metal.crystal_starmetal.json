@@ -6,7 +6,7 @@
       "ingredient": "hbm:crystal_starmetal"
     }
   ],
-  "order": 16,
+  "order": 4096,
   "output_items": [
     {
       "count": 3,

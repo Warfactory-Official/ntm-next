@@ -37,7 +37,7 @@
       }
     }
   ],
-  "order": 192,
+  "order": 49152,
   "output_items": [
     "hbm:machine_condenser_powered"
   ],

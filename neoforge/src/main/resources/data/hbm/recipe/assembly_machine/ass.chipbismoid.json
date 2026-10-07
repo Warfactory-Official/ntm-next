@@ -25,7 +25,7 @@
     }
   ],
   "name": "ass.chipBismoid",
-  "order": 30,
+  "order": 7680,
   "output_items": [
     "hbm:circuit_chip_bismoid"
   ],

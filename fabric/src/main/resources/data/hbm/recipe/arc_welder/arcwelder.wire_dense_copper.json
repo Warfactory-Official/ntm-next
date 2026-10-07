@@ -7,7 +7,7 @@
       "ingredient": "#c:fine_wires/copper"
     }
   ],
-  "order": 4,
+  "order": 1024,
   "output_items": [
     "hbm:wire_dense_copper"
   ],

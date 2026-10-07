@@ -47,11 +47,13 @@ public class BlockEntityMachineRTG extends BlockEntityMachineBase
     public void tickServer() {
         long prevPower = power;
         int prevHeat = heat;
+        boolean decaying = hasHeat();
 
         heat = Math.min(RTGUtil.updateRTGs(inventory, SLOT_IO), MAX_HEAT);
         power = Math.min(MAX_POWER, power + (long) heat * POWER_PER_HEAT);
 
         if (power != prevPower || heat != prevHeat) setChanged();
+        if (decaying) markChanged();
         networkPackNT(50);
     }
 

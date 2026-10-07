@@ -6,6 +6,7 @@ package com.hbm.items.weapon.sedna.factory;
 import com.hbm.client.render.RenderBeam;
 import com.hbm.client.render.RenderBulletMK4;
 import com.hbm.items.ModItems;
+import com.hbm.items.weapon.grenade.ItemGrenadeFilling;
 import com.hbm.items.weapon.sedna.BulletConfig;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.item.weapon.sedna.ItemRenderAberrator;
@@ -498,6 +499,12 @@ public class GunFactoryClient {
         RenderBulletMK4.setRenderer(XFactoryTurret.shell_ap, LegoClient.RENDER_GRENADE);
         RenderBulletMK4.setRenderer(XFactoryTurret.shell_du, LegoClient.RENDER_GRENADE);
         RenderBulletMK4.setRenderer(XFactoryTurret.shell_w9, LegoClient.RENDER_GRENADE);
+        RenderBulletMK4.setRenderer(
+                ItemGrenadeFilling.fragmentation, LegoClient.RENDER_FRAGMENTATION);
+        RenderBulletMK4.setRenderer(ItemGrenadeFilling.pellets, LegoClient.RENDER_FRAGMENTATION);
+        RenderBulletMK4.setRenderer(
+                ItemGrenadeFilling.pellets_heavy, LegoClient.RENDER_FRAGMENTATION);
+        RenderBeam.setRenderer(ItemGrenadeFilling.laser, LegoClient.RENDER_LASER_RED);
         RenderBulletMK4.setRenderer(XFactory40mm.g26_flare, LegoClient.RENDER_FLARE);
         RenderBulletMK4.setRenderer(XFactory40mm.g26_flare_supply, LegoClient.RENDER_FLARE_SUPPLY);
         RenderBulletMK4.setRenderer(XFactory40mm.g26_flare_weapon, LegoClient.RENDER_FLARE_WEAPON);

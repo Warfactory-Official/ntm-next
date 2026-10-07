@@ -46,8 +46,10 @@ final class FluidTankMeshes {
         boolean danger =
                 NTMFluidProperties.hasTrait(fluid, FT_Amat.class)
                         || corrosive != null && corrosive.isHighlyCorrosive();
-        String name = danger ? "danger" : NTMFluids.spritePath(fluid);
-        Identifier texture = Library.id("textures/models/tank/tank_" + name + ".png");
+        Identifier texture =
+                danger
+                        ? Library.id("textures/models/tank/tank_danger.png")
+                        : NTMFluids.sprite(fluid, "textures/models/tank/tank_", ".png");
         return Minecraft.getInstance().getResourceManager().getResource(texture).isPresent()
                 ? texture
                 : NONE;

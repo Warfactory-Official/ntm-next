@@ -5,7 +5,7 @@
       "ingredient": "#c:gems/lignite"
     }
   ],
-  "order": 400,
+  "order": 102400,
   "output_items": [
     "hbm:powder_lignite"
   ]

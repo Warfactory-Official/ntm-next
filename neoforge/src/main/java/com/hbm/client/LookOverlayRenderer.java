@@ -4,6 +4,7 @@
 package com.hbm.client;
 
 import com.hbm.capability.NtmContracts;
+import com.hbm.interfaces.IEntityLookOverlay;
 import com.hbm.interfaces.IItemLookOverlay;
 import com.hbm.interfaces.ILookOverlay.LookInfo;
 import com.hbm.interfaces.ILookOverlay;
@@ -16,6 +17,7 @@ import net.minecraft.util.ARGB;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
 public final class LookOverlayRenderer {
@@ -27,19 +29,28 @@ public final class LookOverlayRenderer {
         if (mc.level == null || mc.player == null) return;
 
         HitResult hit = mc.hitResult;
-        if (hit == null || hit.getType() != HitResult.Type.BLOCK) return;
+        if (hit == null) return;
 
         Level level = mc.level;
-        BlockPos pos = ((BlockHitResult) hit).getBlockPos();
-        LookInfo info = new LookInfo().hitPos(pos);
+        LookInfo info;
+        if (hit.getType() == HitResult.Type.ENTITY) {
+            if (!(((EntityHitResult) hit).getEntity() instanceof IEntityLookOverlay entity)) return;
+            info = new LookInfo();
+            entity.buildLookOverlay(level, info);
+        } else if (hit.getType() == HitResult.Type.BLOCK) {
+            BlockPos pos = ((BlockHitResult) hit).getBlockPos();
+            info = new LookInfo().hitPos(pos);
 
-        ItemStack held = mc.player.getMainHandItem();
-        if (held.getItem() instanceof IItemLookOverlay item) {
-            item.buildLookOverlay(level, pos, held, mc.player, info);
+            ItemStack held = mc.player.getMainHandItem();
+            if (held.getItem() instanceof IItemLookOverlay item) {
+                item.buildLookOverlay(level, pos, held, mc.player, info);
+            } else {
+                ILookOverlay overlay = NtmContracts.LOOK_OVERLAY.at(level, pos);
+                if (overlay == null) return;
+                overlay.buildLookOverlay(level, pos, info);
+            }
         } else {
-            ILookOverlay overlay = NtmContracts.LOOK_OVERLAY.at(level, pos);
-            if (overlay == null) return;
-            overlay.buildLookOverlay(level, pos, info);
+            return;
         }
 
         if (info.isEmpty()) return;

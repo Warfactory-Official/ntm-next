@@ -12,7 +12,7 @@
       "ingredient": "hbm:drive_flash_empty"
     }
   ],
-  "order": 3,
+  "order": 768,
   "output_fluids": [
     {
       "type": "hbm:spentsteam",

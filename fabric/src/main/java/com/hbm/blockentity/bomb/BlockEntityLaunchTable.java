@@ -29,6 +29,8 @@ import com.hbm.packet.SyncUnitSchema;
 import com.hbm.particle.HbmParticles;
 import com.hbm.sound.ModSounds;
 import io.netty.buffer.ByteBuf;
+import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -107,7 +109,11 @@ public class BlockEntityLaunchTable extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
+        Fluid fuelType = fuelTank.getTankType();
+        Fluid oxidizerType = oxidizerTank.getTankType();
         updateTypes();
+        if (fuelTank.getTankType() != fuelType || oxidizerTank.getTankType() != oxidizerType)
+            markChanged();
 
         boolean loaded = fuelTank.loadTank(SLOT_FUEL_IN, SLOT_FUEL_OUT, inventory);
         loaded |= oxidizerTank.loadTank(SLOT_OXIDIZER_IN, SLOT_OXIDIZER_OUT, inventory);
@@ -164,6 +170,7 @@ public class BlockEntityLaunchTable extends BlockEntityMachineBase
                 if (getLevel().hasNeighborSignal(core.offset(dx, 0, dz))) powered = true;
             }
         }
+        if (redstone != powered) markChanged();
         redstone = powered;
     }
 
@@ -180,21 +187,18 @@ public class BlockEntityLaunchTable extends BlockEntityMachineBase
         MissileStruct multipart = struct();
         if (multipart == null || multipart.fuselage() == null) return;
 
-        switch (multipart.fuselage().fuelType()) {
-            case KEROSENE -> {
-                fuelTank.setTankType(NTMFluids.KEROSENE);
-                oxidizerTank.setTankType(NTMFluids.PEROXIDE);
-            }
-            case HYDROGEN -> {
-                fuelTank.setTankType(NTMFluids.HYDROGEN);
-                oxidizerTank.setTankType(NTMFluids.OXYGEN);
-            }
-            case XENON -> fuelTank.setTankType(NTMFluids.XENON);
-            case BALEFIRE -> {
-                fuelTank.setTankType(NTMFluids.BALEFIRE_FUEL);
-                oxidizerTank.setTankType(NTMFluids.PEROXIDE);
-            }
-            case SOLID -> {}
+        FuelType fuel = multipart.fuselage().fuelType();
+        if (fuel == FuelType.KEROSENE) {
+            fuelTank.setTankType(NTMFluids.KEROSENE);
+            oxidizerTank.setTankType(NTMFluids.PEROXIDE);
+        } else if (fuel == FuelType.HYDROGEN) {
+            fuelTank.setTankType(NTMFluids.HYDROGEN);
+            oxidizerTank.setTankType(NTMFluids.OXYGEN);
+        } else if (fuel == FuelType.XENON) {
+            fuelTank.setTankType(NTMFluids.XENON);
+        } else if (fuel == FuelType.BALEFIRE) {
+            fuelTank.setTankType(NTMFluids.BALEFIRE_FUEL);
+            oxidizerTank.setTankType(NTMFluids.PEROXIDE);
         }
     }
 
@@ -224,21 +228,21 @@ public class BlockEntityLaunchTable extends BlockEntityMachineBase
     public int liquidState(ItemStack missile) {
         ItemCustomMissilePart fuselage = fuselageOf(missile);
         if (fuselage == null) return -1;
-        return switch (fuselage.fuelType()) {
-            case KEROSENE, HYDROGEN, XENON, BALEFIRE ->
-                    fuelTank.getFill() >= fuselage.fuelAmount() ? 1 : 0;
-            default -> -1;
-        };
+        FuelType fuel = fuselage.fuelType();
+        if (fuel != FuelType.KEROSENE
+                && fuel != FuelType.HYDROGEN
+                && fuel != FuelType.XENON
+                && fuel != FuelType.BALEFIRE) return -1;
+        return fuelTank.getFill() >= fuselage.fuelAmount() ? 1 : 0;
     }
 
     public int oxidizerState(ItemStack missile) {
         ItemCustomMissilePart fuselage = fuselageOf(missile);
         if (fuselage == null) return -1;
-        return switch (fuselage.fuelType()) {
-            case KEROSENE, HYDROGEN, BALEFIRE ->
-                    oxidizerTank.getFill() >= fuselage.fuelAmount() ? 1 : 0;
-            default -> -1;
-        };
+        FuelType fuel = fuselage.fuelType();
+        if (fuel != FuelType.KEROSENE && fuel != FuelType.HYDROGEN && fuel != FuelType.BALEFIRE)
+            return -1;
+        return oxidizerTank.getFill() >= fuselage.fuelAmount() ? 1 : 0;
     }
 
     public boolean hasFuel() {
@@ -326,13 +330,14 @@ public class BlockEntityLaunchTable extends BlockEntityMachineBase
         ItemCustomMissilePart fuselage = multipart.fuselage();
         int fuel = (int) fuselage.fuelAmount();
 
-        switch (fuselage.fuelType()) {
-            case KEROSENE, HYDROGEN, BALEFIRE -> {
-                fuelTank.setFill(fuelTank.getFill() - fuel);
-                oxidizerTank.setFill(oxidizerTank.getFill() - fuel);
-            }
-            case XENON -> fuelTank.setFill(fuelTank.getFill() - fuel);
-            case SOLID -> solid -= fuel;
+        FuelType type = fuselage.fuelType();
+        if (type == FuelType.KEROSENE || type == FuelType.HYDROGEN || type == FuelType.BALEFIRE) {
+            fuelTank.setFill(fuelTank.getFill() - fuel);
+            oxidizerTank.setFill(oxidizerTank.getFill() - fuel);
+        } else if (type == FuelType.XENON) {
+            fuelTank.setFill(fuelTank.getFill() - fuel);
+        } else if (type == FuelType.SOLID) {
+            solid -= fuel;
         }
 
         power -= (long) (MAX_POWER * 0.75);
@@ -347,8 +352,8 @@ public class BlockEntityLaunchTable extends BlockEntityMachineBase
     public void receiveControl(CompoundTag data) {
         if (data.contains("padSize")) {
             int ordinal = data.getIntOr("padSize", padSize.ordinal());
-            PartSize[] sizes = PartSize.values();
-            if (ordinal >= 0 && ordinal < sizes.length) padSize = sizes[ordinal];
+            List<PartSize> sizes = PartSize.values();
+            if (ordinal >= 0 && ordinal < sizes.size()) padSize = sizes.get(ordinal);
         }
         setChanged();
     }
@@ -384,6 +389,19 @@ public class BlockEntityLaunchTable extends BlockEntityMachineBase
     }
 
     @Override
+    public boolean canReceiveFluid(Fluid type) {
+        for (FluidTankNTM tank : tanks) {
+            if (tank.joins(type)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
+    }
+
+    @Override
     public long getDemand(Fluid type, int pressure) {
         if (pressure != 0) return 0;
         long headroom = 0;
@@ -402,6 +420,7 @@ public class BlockEntityLaunchTable extends BlockEntityMachineBase
                 remaining -= tank.fill(type, (int) Math.min(remaining, Integer.MAX_VALUE), true);
             }
         }
+        if (remaining != amount) markChanged();
         return remaining;
     }
 
@@ -414,12 +433,7 @@ public class BlockEntityLaunchTable extends BlockEntityMachineBase
         super.loadAdditional(input);
         input.getLong("power").ifPresent(v -> power = v);
         solid = input.getIntOr("solidfuel", 0);
-        padSize =
-                PartSize.values()[
-                        Math.clamp(
-                                input.getIntOr("padSize", PartSize.SIZE_10.ordinal()),
-                                0,
-                                PartSize.values().length - 1)];
+        padSize = PartSize.byName(input.getStringOr("padSize", ""), PartSize.SIZE_10);
         redstone = input.getBooleanOr("redstone", false);
         input.child("fuel").ifPresent(fuelTank::deserialize);
         input.child("oxidizer").ifPresent(oxidizerTank::deserialize);
@@ -430,7 +444,7 @@ public class BlockEntityLaunchTable extends BlockEntityMachineBase
         super.saveAdditional(output);
         output.putLong("power", power);
         output.putInt("solidfuel", solid);
-        output.putInt("padSize", padSize.ordinal());
+        output.putString("padSize", padSize.name());
         output.putBoolean("redstone", redstone);
         fuelTank.serialize(output.child("fuel"));
         oxidizerTank.serialize(output.child("oxidizer"));
@@ -456,7 +470,7 @@ public class BlockEntityLaunchTable extends BlockEntityMachineBase
     }
 
     private void readPadSize(ByteBuf input) {
-        padSize = PartSize.values()[input.readByte()];
+        padSize = PartSize.values().get(input.readByte());
     }
 
     private void writeLoadedMissile(ByteBuf output) {

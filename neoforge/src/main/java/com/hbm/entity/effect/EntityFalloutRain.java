@@ -4,6 +4,7 @@
 package com.hbm.entity.effect;
 
 import com.hbm.NuclearTech;
+import com.hbm.api.environment.Environment;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.bomb.BlockVolcano;
 import com.hbm.blocks.generic.BlockFallout;
@@ -37,6 +38,7 @@ import java.util.concurrent.ForkJoinPool;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -48,6 +50,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.EmptyBlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -147,6 +150,7 @@ public class EntityFalloutRain extends EntityExplosionChunkloading
     private int workerInnerSize;
     private int workerOuterSize;
     private int workerTarget;
+    private @Nullable Block layer;
 
     public EntityFalloutRain(EntityType<? extends EntityFalloutRain> type, Level level) {
         super(type, level);
@@ -157,6 +161,15 @@ public class EntityFalloutRain extends EntityExplosionChunkloading
         rain.setScale(scale);
         rain.setPos(x, y, z);
         return rain;
+    }
+
+    public EntityFalloutRain falloutLayer(Block layer) {
+        this.layer = layer;
+        return this;
+    }
+
+    private Block layer() {
+        return layer != null ? layer : ModBlocks.FALLOUT.get();
     }
 
     private static boolean isFlammable(BlockState state) {
@@ -527,7 +540,8 @@ public class EntityFalloutRain extends EntityExplosionChunkloading
             int chunkZ = ChunkPos.getZ(packed);
             needsBiome =
                     ExplosionData.CRATER_BIOMES.get()
-                            && getCraterBiomeKey(chunkX, chunkZ, scale) != null;
+                            && getCraterBiomeKey(chunkX, chunkZ, scale) != null
+                            && !Environment.orbital(server);
             LevelChunkSection[] sections = snapshot.sections;
             int minY = server.getMinY();
             int maxY = server.getMaxY();
@@ -620,6 +634,7 @@ public class EntityFalloutRain extends EntityExplosionChunkloading
         LongOpenHashSet fallingSurfaceCells = scratch.fallingSurfaceCells;
         RandomSource random = scratch.random;
         Block fallout = ModBlocks.FALLOUT.get();
+        Block layer = layer();
 
         for (int y = maxY; y >= minY; y--) {
             if (solidDepth >= MAX_SOLID_DEPTH) return;
@@ -646,16 +661,18 @@ public class EntityFalloutRain extends EntityExplosionChunkloading
                 if (replaceable) {
                     double d = percent / 100.0D;
                     double chance = 0.1D - Math.pow(d - 0.7D, 2);
-                    if (chance >= random.nextDouble()) {
+                    if (chance >= random.nextDouble()
+                            && BlockFallout.supports(
+                                    layer, state, EmptyBlockGetter.INSTANCE, pos.set(x, y, z))) {
                         BlockState target;
-                        if (aboveState.is(fallout)) {
+                        if (aboveState.is(layer)) {
                             int existing = aboveState.getValue(BlockFallout.LAYERS);
                             target =
                                     existing < SnowLayerBlock.MAX_HEIGHT
                                             ? aboveState.setValue(BlockFallout.LAYERS, existing + 1)
                                             : null;
                         } else {
-                            target = fallout.defaultBlockState();
+                            target = layer.defaultBlockState();
                         }
                         if (target != null) updates.put(BlockPos.asLong(x, upY, z), target);
                     }
@@ -710,7 +727,7 @@ public class EntityFalloutRain extends EntityExplosionChunkloading
                 }
             }
 
-            if (!transformed && state.canOcclude()) solidDepth++;
+            if (!transformed && state.isSolidRender() && !state.isSignalSource()) solidDepth++;
         }
     }
 
@@ -735,7 +752,7 @@ public class EntityFalloutRain extends EntityExplosionChunkloading
         int minSectionY = server.getMinSectionY();
 
         if (oldStates != null && !oldStates.isEmpty()) {
-            Block fallout = ModBlocks.FALLOUT.get();
+            Block fallout = layer();
             BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
             ObjectIterator<Long2ObjectMap.Entry<BlockState>> iterator =
                     oldStates.long2ObjectEntrySet().fastIterator();
@@ -1082,6 +1099,7 @@ public class EntityFalloutRain extends EntityExplosionChunkloading
         outerChunksToProcess.clear();
         readPairs(input.getIntArray("chunks").orElse(new int[0]), chunksToProcess);
         readPairs(input.getIntArray("outerChunks").orElse(new int[0]), outerChunksToProcess);
+        layer = input.read("fallout_layer", BuiltInRegistries.BLOCK.byNameCodec()).orElse(null);
         gathered = false;
     }
 
@@ -1091,6 +1109,8 @@ public class EntityFalloutRain extends EntityExplosionChunkloading
         output.putInt("scale", getScale());
         output.putIntArray("chunks", writePairs(chunksToProcess));
         output.putIntArray("outerChunks", writePairs(outerChunksToProcess));
+        if (layer != null)
+            output.store("fallout_layer", BuiltInRegistries.BLOCK.byNameCodec(), layer);
     }
 
     static final class WorkerScratch {

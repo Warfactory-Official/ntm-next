@@ -35,7 +35,7 @@
       "ingredient": "hbm:machine_transformer"
     }
   ],
-  "order": 165,
+  "order": 42240,
   "output_items": [
     "hbm:machine_forcefield"
   ],

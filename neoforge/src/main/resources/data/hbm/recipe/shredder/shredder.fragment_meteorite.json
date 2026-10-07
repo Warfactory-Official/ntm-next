@@ -5,7 +5,7 @@
       "ingredient": "hbm:fragment_meteorite"
     }
   ],
-  "order": 45,
+  "order": 11520,
   "output_items": [
     "hbm:powder_meteorite_tiny"
   ]

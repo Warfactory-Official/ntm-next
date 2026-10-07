@@ -11,7 +11,7 @@
     }
   ],
   "name": "blast.steelFromDust",
-  "order": 1,
+  "order": 256,
   "output_items": [
     {
       "count": 2,

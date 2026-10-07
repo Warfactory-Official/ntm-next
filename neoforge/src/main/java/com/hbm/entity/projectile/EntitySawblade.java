@@ -8,6 +8,7 @@ import com.hbm.items.ModItems;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.particle.ParticleGiblet;
 import com.hbm.particle.helper.ParticleCreators;
+import com.hbm.sound.EntitySounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -101,15 +102,15 @@ public class EntitySawblade extends EntityThrowableInterp {
                 if (!e.isAlive() && e instanceof LivingEntity living) {
                     ParticleCreators.giblets(server, living, ParticleGiblet.TYPE_MEAT, 5);
 
-                    level().playSound(
-                                    null,
-                                    living.getX(),
-                                    living.getY(),
-                                    living.getZ(),
-                                    SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR,
-                                    SoundSource.HOSTILE,
-                                    2.0F,
-                                    0.95F + level().getRandom().nextFloat() * 0.2F);
+                    EntitySounds.play(
+                            living,
+                            living.getX(),
+                            living.getY(),
+                            living.getZ(),
+                            SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR,
+                            SoundSource.HOSTILE,
+                            2.0F,
+                            0.95F + level().getRandom().nextFloat() * 0.2F);
                 }
             }
         }

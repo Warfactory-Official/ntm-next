@@ -125,6 +125,7 @@ public class BlockEntityMachinePress extends BlockEntityMachineBase
                 if (progress <= 0) {
                     isRetracting = false;
                     delay = DELAY;
+                    markChanged();
                 }
             } else if (canProcess) {
                 progress += stampSpeed;
@@ -148,9 +149,13 @@ public class BlockEntityMachinePress extends BlockEntityMachineBase
             }
         } else {
             delay--;
+            markChanged();
         }
 
-        if (!canProcess && !isRetracting && progress > 0) isRetracting = true;
+        if (!canProcess && !isRetracting && progress > 0) {
+            isRetracting = true;
+            markChanged();
+        }
 
         consumeFuel();
 
@@ -159,6 +164,7 @@ public class BlockEntityMachinePress extends BlockEntityMachineBase
     }
 
     public void refreshPreheater() {
+        boolean wasPreheated = preheated;
         preheated = false;
         for (Direction dir : Direction.values()) {
             if (level.getBlockState(worldPosition.relative(dir))
@@ -167,6 +173,7 @@ public class BlockEntityMachinePress extends BlockEntityMachineBase
                 break;
             }
         }
+        if (preheated != wasPreheated) markChanged();
     }
 
     private void consumeFuel() {

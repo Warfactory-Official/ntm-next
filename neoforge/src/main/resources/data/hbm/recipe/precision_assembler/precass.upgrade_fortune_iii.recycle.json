@@ -22,7 +22,7 @@
     }
   ],
   "name_wrapper": "precass.recycle",
-  "order": 38,
+  "order": 9728,
   "output_fluids": [
     {
       "type": "hbm:solvent",

@@ -9,7 +9,10 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 
 public final class PrecAssSound {
 
@@ -34,31 +37,42 @@ public final class PrecAssSound {
         BlockEntityMachinePrecAss.CLIENT_SOUND_START =
                 be -> {
                     if (!be.isMuffled())
-                        Minecraft.getInstance()
-                                .getSoundManager()
-                                .play(
-                                        SimpleSoundInstance.forUI(
-                                                ModSounds.ASSEMBLER_START.get(),
-                                                1.25F + ONE_SHOT_RAND.nextFloat() * 0.25F));
+                        play(
+                                be,
+                                ModSounds.ASSEMBLER_START.get(),
+                                be.getVolume(0.25F),
+                                1.25F + ONE_SHOT_RAND.nextFloat() * 0.25F);
                 };
         BlockEntityMachinePrecAss.CLIENT_SOUND_STRIKE =
                 be -> {
                     if (!be.isMuffled())
-                        Minecraft.getInstance()
-                                .getSoundManager()
-                                .play(
-                                        SimpleSoundInstance.forUI(
-                                                ModSounds.ASSEMBLER_STRIKE.get(), 1.25F));
+                        play(be, ModSounds.ASSEMBLER_STRIKE.get(), be.getVolume(0.5F), 1.25F);
                 };
         BlockEntityMachinePrecAss.CLIENT_SOUND_STOP =
                 be -> {
                     if (!be.isMuffled())
-                        Minecraft.getInstance()
-                                .getSoundManager()
-                                .play(
-                                        SimpleSoundInstance.forUI(
-                                                ModSounds.ASSEMBLER_STOP.get(),
-                                                1.25F + ONE_SHOT_RAND.nextFloat() * 0.25F));
+                        play(
+                                be,
+                                ModSounds.ASSEMBLER_STOP.get(),
+                                be.getVolume(0.25F),
+                                1.25F + ONE_SHOT_RAND.nextFloat() * 0.25F);
                 };
+    }
+
+    private static void play(
+            BlockEntityMachinePrecAss be, SoundEvent sound, float volume, float pitch) {
+        BlockPos pos = be.getBlockPos();
+        Minecraft.getInstance()
+                .getSoundManager()
+                .play(
+                        new SimpleSoundInstance(
+                                sound,
+                                SoundSource.BLOCKS,
+                                volume,
+                                pitch,
+                                SoundInstance.createUnseededRandom(),
+                                pos.getX(),
+                                pos.getY(),
+                                pos.getZ()));
     }
 }

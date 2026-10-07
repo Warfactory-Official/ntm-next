@@ -159,9 +159,7 @@ public final class ModulePatternMatcher implements SyncSource {
             case MODE_EXACT -> sameItemAndState(input, filter);
             case MODE_WILDCARD ->
                     input.is(filter.getItem())
-                            || ItemFamily.of(filter.getItem()) != null
-                                    && ItemFamily.of(filter.getItem())
-                                            == ItemFamily.of(input.getItem());
+                            || ItemFamily.sameFamily(filter.getItem(), input.getItem());
             case MODE_BEDROCK ->
                     input.is(filter.getItem())
                             && input.is(ModItems.BEDROCK_ORE.get())

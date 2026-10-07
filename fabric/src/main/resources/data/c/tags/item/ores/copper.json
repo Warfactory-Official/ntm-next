@@ -1,5 +1,7 @@
 {
   "values": [
-    "hbm:ore_gneiss_copper"
+    "hbm:ore_gneiss_copper",
+    "hbm:ore_meteor_copper",
+    "hbm:cluster_copper"
   ]
 }

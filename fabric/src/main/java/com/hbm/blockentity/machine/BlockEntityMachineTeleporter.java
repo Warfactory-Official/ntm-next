@@ -10,6 +10,7 @@ import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
+import com.hbm.sound.EntitySounds;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
@@ -102,8 +103,8 @@ public class BlockEntityMachineTeleporter extends BlockEntity
                             arrival));
         }
 
-        level.playSound(
-                null,
+        EntitySounds.play(
+                entity,
                 entity.getX(),
                 entity.getY(),
                 entity.getZ(),

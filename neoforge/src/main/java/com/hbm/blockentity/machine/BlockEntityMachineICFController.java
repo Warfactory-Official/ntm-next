@@ -171,6 +171,7 @@ public class BlockEntityMachineICFController extends BlockEntity
         Direction dir = getBlockState().getValue(MachineICFController.FACING);
         fireLaser(level, dir);
         power = 0;
+        markChanged();
     }
 
     private void fireLaser(Level level, Direction dir) {

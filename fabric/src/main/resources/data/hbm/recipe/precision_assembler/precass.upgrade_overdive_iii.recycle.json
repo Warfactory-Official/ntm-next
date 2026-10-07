@@ -26,7 +26,7 @@
     }
   ],
   "name_wrapper": "precass.recycle",
-  "order": 50,
+  "order": 12800,
   "output_items": [
     {
       "chance": 0.75,

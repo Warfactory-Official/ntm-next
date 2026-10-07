@@ -14,7 +14,7 @@
       "ingredient": "#hbm:any_tar"
     }
   ],
-  "order": 16,
+  "order": 4096,
   "output_fluids": [
     {
       "type": "hbm:bitumen",

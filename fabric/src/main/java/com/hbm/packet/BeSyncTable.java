@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jspecify.annotations.Nullable;
 
 public final class BeSyncTable {
     private static final Map<ServerLevel, Long2ObjectOpenHashMap<Long2ObjectOpenHashMap<Entry>>>
@@ -25,8 +26,19 @@ public final class BeSyncTable {
     private BeSyncTable() {}
 
     public static void refresh(
-            ThreadedPayload payload, ServerLevel level, BlockPos pos, int range) {
-        refresh(payload, level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, range);
+            ThreadedPayload payload,
+            ServerLevel level,
+            BlockPos pos,
+            int range,
+            @Nullable SyncAudience audience) {
+        refresh(
+                payload,
+                level,
+                pos.getX() + 0.5,
+                pos.getY() + 0.5,
+                pos.getZ() + 0.5,
+                range,
+                audience);
     }
 
     private static void refresh(
@@ -35,7 +47,8 @@ public final class BeSyncTable {
             double targetX,
             double targetY,
             double targetZ,
-            double range) {
+            double range,
+            @Nullable SyncAudience audience) {
         try {
             if (!(payload instanceof UnitPayload unit) || !unit.requiresRecipientBase()) {
                 ByteBuf wire = payload.getCompiledBuffer();
@@ -60,6 +73,7 @@ public final class BeSyncTable {
             entry.y = targetY;
             entry.z = targetZ;
             entry.rangeSq = range * range;
+            entry.audience = audience;
             entry.position = key;
             entry.level = level;
             payload.retain();
@@ -94,9 +108,20 @@ public final class BeSyncTable {
             entry.position = pos.asLong();
             positions.put(pos.asLong(), entry);
         }
+        entry.audience = owner instanceof SyncAudience audience ? audience : null;
         entry.blob = blob;
         var players = ChunkTrackerIndex.players(level, pos.getX() >> 4, pos.getZ() >> 4);
         for (int i = 0; i < players.size(); i++) heal(entry, players.get(i));
+    }
+
+    public static void admit(BlockEntity owner, ServerPlayer player) {
+        ServerLevel level = (ServerLevel) owner.getLevel();
+        BlockPos pos = owner.getBlockPos();
+        if (!ChunkTrackerIndex.players(level, pos.getX() >> 4, pos.getZ() >> 4).contains(player))
+            return;
+        var positions = positions(level, ChunkPos.containing(pos).pack());
+        Entry entry = positions == null ? null : positions.get(pos.asLong());
+        if (entry != null) deliver(entry, player);
     }
 
     public static void evict(ServerLevel level, BlockPos pos) {
@@ -177,7 +202,12 @@ public final class BeSyncTable {
         double dx = entry.x - player.getX(),
                 dy = entry.y - player.getY(),
                 dz = entry.z - player.getZ();
-        if (dx * dx + dy * dy + dz * dz >= entry.rangeSq) return;
+        if (dx * dx + dy * dy + dz * dz >= entry.rangeSq
+                && (entry.audience == null || !entry.audience.includes(player))) return;
+        deliver(entry, player);
+    }
+
+    private static void deliver(Entry entry, ServerPlayer player) {
         if (entry.payload != null && entry.inScope.add(player.getUUID())) {
             PacketWire.enqueueSync(player, entry.level, entry.position, entry.payload);
         }
@@ -187,6 +217,7 @@ public final class BeSyncTable {
     private static final class Entry {
         final ObjectOpenHashSet<UUID> inScope = new ObjectOpenHashSet<>(4);
         double x, y, z, rangeSq;
+        SyncAudience audience;
         long position;
         ServerLevel level;
         ThreadedPayload payload;

@@ -175,8 +175,8 @@ public final class OreGenerationProfiles {
             }
             case OreCaveConfig cave -> {
                 target(cave.ore(), cave.replaceable(), targets, conditions);
-                targets.add(cave.stalactite());
-                targets.add(cave.stalagmite());
+                cave.stalactite().ifPresent(targets::add);
+                cave.stalagmite().ifPresent(targets::add);
                 cave.fluid().ifPresent(targets::add);
                 height =
                         OreHeightProfile.band(

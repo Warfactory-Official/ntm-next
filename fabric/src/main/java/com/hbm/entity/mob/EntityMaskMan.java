@@ -5,11 +5,10 @@ package com.hbm.entity.mob;
 
 import com.hbm.advancement.BossKilledTrigger;
 import com.hbm.advancement.HbmCriteria;
+import com.hbm.api.environment.ISuffocationImmune;
 import com.hbm.entity.mob.ai.EntityAIMaskmanCasualApproach;
 import com.hbm.entity.mob.ai.EntityAIMaskmanLasergun;
 import com.hbm.entity.mob.ai.EntityAIMaskmanMinigun;
-import com.hbm.handler.ArmorUtil;
-import com.hbm.items.ModItems;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -30,11 +29,9 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownEgg;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-public class EntityMaskMan extends Monster {
+public class EntityMaskMan extends Monster implements ISuffocationImmune {
 
     private final ServerBossEvent bossEvent =
             new ServerBossEvent(
@@ -149,19 +146,5 @@ public class EntityMaskMan extends Monster {
     public void stopSeenByPlayer(ServerPlayer player) {
         super.stopSeenByPlayer(player);
         this.bossEvent.removePlayer(player);
-    }
-
-    @Override
-    protected void dropCustomDeathLoot(
-            ServerLevel level, DamageSource source, boolean killedByPlayer) {
-        super.dropCustomDeathLoot(level, source, killedByPlayer);
-
-        ItemStack mask = new ItemStack(ModItems.GAS_MASK_M65.get());
-        ArmorUtil.installGasMaskFilter(mask, new ItemStack(ModItems.GAS_MASK_FILTER_COMBO.get()));
-
-        spawnAtLocation(level, mask);
-        spawnAtLocation(level, new ItemStack(ModItems.COIN_MASKMAN.get()));
-        spawnAtLocation(level, new ItemStack(ModItems.BOTTLED_CLOUD.get()));
-        spawnAtLocation(level, new ItemStack(Items.SKELETON_SKULL));
     }
 }

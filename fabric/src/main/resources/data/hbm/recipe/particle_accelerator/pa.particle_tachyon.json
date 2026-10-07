@@ -9,7 +9,7 @@
     }
   ],
   "momentum": 5000,
-  "order": 5,
+  "order": 1280,
   "output_items": [
     "hbm:particle_tachyon"
   ]

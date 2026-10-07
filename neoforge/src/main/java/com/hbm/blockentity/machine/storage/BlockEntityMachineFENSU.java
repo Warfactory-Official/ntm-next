@@ -62,7 +62,10 @@ public class BlockEntityMachineFENSU extends BlockEntityMachineBattery {
             power = freespace;
         }
 
-        if (!simulate) setPower(getPower() + power);
+        if (!simulate) {
+            setPower(getPower() + power);
+            if (power != 0) markChanged();
+        }
 
         return overshoot;
     }

@@ -3,16 +3,16 @@
 
 package com.hbm.entity.mob;
 
+import com.hbm.api.environment.ISuffocationImmune;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.projectile.EntityBullet;
 import com.hbm.entity.projectile.EntityChopperMine;
-import com.hbm.inventory.material.Mats;
-import com.hbm.items.ModItems;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.particle.HbmParticles;
 import com.hbm.sound.AudioSystem;
 import com.hbm.sound.AudioWrapper;
 import com.hbm.sound.ModSounds;
+import com.hbm.util.MobUtil;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -39,7 +39,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -47,7 +46,11 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class EntityHunterChopper extends Mob implements Enemy {
+public class EntityHunterChopper extends Mob implements Enemy, ISuffocationImmune {
+
+    public static final String HIT_LOOT = "hit";
+    public static final String CRASH_LOOT = "crash";
+
     private static final EntityDataAccessor<Byte> ATTACKING =
             SynchedEntityData.defineId(EntityHunterChopper.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Byte> DYING =
@@ -154,7 +157,8 @@ public class EntityHunterChopper extends Mob implements Enemy {
 
         if (!isDying() && random.nextInt(15) == 0) {
             level.explode(this, getX(), getY(), getZ(), 5F, Level.ExplosionInteraction.BLOCK);
-            dropDamageItem(level);
+            dropFromGiftLootTable(
+                    level, MobUtil.lootVariant(getType(), HIT_LOOT), this::spawnAtLocation);
         }
 
         for (int i = 0; i < 8; i++) {
@@ -300,7 +304,8 @@ public class EntityHunterChopper extends Mob implements Enemy {
 
         if (onGround()) {
             level.explode(this, getX(), getY(), getZ(), 15F, Level.ExplosionInteraction.BLOCK);
-            dropItems(level);
+            dropFromGiftLootTable(
+                    level, MobUtil.lootVariant(getType(), CRASH_LOOT), this::spawnAtLocation);
             discard();
         }
     }
@@ -382,20 +387,6 @@ public class EntityHunterChopper extends Mob implements Enemy {
             level.playSound(
                     null, this, ModSounds.CHOPPER_DAMAGE.get(), SoundSource.HOSTILE, 10.0F, 1.0F);
         }
-    }
-
-    private void dropDamageItem(ServerLevel level) {
-        spawnAtLocation(
-                level,
-                new ItemStack(
-                        random.nextInt(10) < 6
-                                ? ModItems.COMBINE_SCRAP.get()
-                                : ModItems.plate(Mats.MAT_CMB)));
-    }
-
-    private void dropItems(ServerLevel level) {
-        spawnAtLocation(level, new ItemStack(ModItems.COMBINE_SCRAP.get(), random.nextInt(8) + 1));
-        spawnAtLocation(level, new ItemStack(ModItems.plate(Mats.MAT_CMB), random.nextInt(5) + 1));
     }
 
     @Override

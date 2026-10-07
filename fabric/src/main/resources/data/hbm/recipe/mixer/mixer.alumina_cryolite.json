@@ -12,7 +12,7 @@
       "ingredient": "hbm:chunk_ore_cryolite"
     }
   ],
-  "order": 47,
+  "order": 12032,
   "output_fluids": [
     {
       "type": "hbm:alumina",

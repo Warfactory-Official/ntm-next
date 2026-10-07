@@ -27,7 +27,7 @@
   ],
   "name": "precass.atomic_clock.recycleEx",
   "name_wrapper": "precass.recycle",
-  "order": 13,
+  "order": 3328,
   "output_items": [
     {
       "chance": 0.5,

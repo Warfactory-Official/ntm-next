@@ -11,7 +11,7 @@
       "ingredient": "hbm:bedrock_ore"
     }
   ],
-  "order": 60,
+  "order": 15360,
   "output_materials": [
     {
       "amount": 40,

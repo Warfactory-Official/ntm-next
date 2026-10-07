@@ -8,6 +8,7 @@ import com.hbm.handler.EnumCraneKey;
 import com.hbm.handler.EnumToolKey;
 import com.hbm.handler.HbmKeybinds.EnumKeybind;
 import com.hbm.items.armor.ItemModShield;
+import com.hbm.sound.EntitySounds;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -158,16 +159,15 @@ public final class HbmPlayerProps {
     public static void plink(Player player, SoundEvent sound, float volume, float pitch) {
         HbmPlayerProps props = getData(player);
         if (props.plinkCooldown > 0) return;
-        player.level()
-                .playSound(
-                        null,
-                        player.getX(),
-                        player.getY(),
-                        player.getZ(),
-                        sound,
-                        SoundSource.PLAYERS,
-                        volume,
-                        pitch);
+        EntitySounds.play(
+                player,
+                player.getX(),
+                player.getY(),
+                player.getZ(),
+                sound,
+                SoundSource.PLAYERS,
+                volume,
+                pitch);
         props.plinkCooldown = plinkCooldownLength;
     }
 

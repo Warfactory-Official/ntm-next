@@ -9,10 +9,10 @@
   "duration": 200,
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/uranium"
+      "ingredient": "#c:ores/uranium"
     }
   ],
-  "order": 25,
+  "order": 9984,
   "output_items": [
     "hbm:powder_uranium",
     "hbm:powder_uranium",

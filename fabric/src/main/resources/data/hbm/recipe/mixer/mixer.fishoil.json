@@ -11,7 +11,7 @@
       ]
     }
   ],
-  "order": 12,
+  "order": 3072,
   "output_fluids": [
     {
       "type": "hbm:fishoil",

@@ -43,6 +43,7 @@ public final class PASourcePeripheral extends CooledPeripheral<BlockEntityPASour
         BlockEntityPASource machine = machine();
         machine.particle = null;
         machine.state = BlockEntityPASource.PAState.IDLE;
+        machine.markChanged();
         return new Object[] {};
     }
 

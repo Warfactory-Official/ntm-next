@@ -50,6 +50,9 @@ public final class WorldShaderCompiler {
                         pipeline.intensity
                                 ? ShaderKey.SHADOW_TEXT_INTENSITY
                                 : ShaderKey.SHADOW_TEXT;
+                case NATIVE_SKY ->
+                        throw new IllegalStateException(
+                                "native sky does not use a pack shader key");
             };
         return switch (pipeline.family) {
             case ENTITY -> {
@@ -77,6 +80,8 @@ public final class WorldShaderCompiler {
                 if (phase == 3) yield ShaderKey.HAND_TEXT_TRANSLUCENT;
                 yield phase == 1 ? ShaderKey.TEXT_BE : ShaderKey.TEXT;
             }
+            case NATIVE_SKY ->
+                    throw new IllegalStateException("native sky does not use a pack shader key");
         };
     }
 

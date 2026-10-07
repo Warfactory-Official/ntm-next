@@ -22,7 +22,7 @@
       "ingredient": "hbm:circuit_controller_quantum"
     }
   ],
-  "order": 44,
+  "order": 11264,
   "output_items": [
     "hbm:dfc_receiver"
   ],

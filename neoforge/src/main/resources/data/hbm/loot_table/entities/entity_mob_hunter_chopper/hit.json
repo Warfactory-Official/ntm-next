@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:gift",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:combine_scrap",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:plate_combine_steel",
+          "weight": 4
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:entities/entity_mob_hunter_chopper/hit"
+}

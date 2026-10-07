@@ -11,7 +11,7 @@
       "ingredient": "#c:plates/steel"
     }
   },
-  "order": 72,
+  "order": 18432,
   "output_items": [
     "hbm:ammo_standard_flame_napalm"
   ],

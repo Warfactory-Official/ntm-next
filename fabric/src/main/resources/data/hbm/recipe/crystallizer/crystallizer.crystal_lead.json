@@ -9,10 +9,10 @@
   ],
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/lead"
+      "ingredient": "#c:ores/lead"
     }
   ],
-  "order": 237,
+  "order": 61952,
   "output_items": [
     "hbm:crystal_lead"
   ],

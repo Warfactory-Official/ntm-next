@@ -29,7 +29,7 @@
       "ingredient": "#c:ingots/starmetal"
     }
   },
-  "order": 4,
+  "order": 1024,
   "output_items": [
     "hbm:gun_amat_subtlety"
   ],

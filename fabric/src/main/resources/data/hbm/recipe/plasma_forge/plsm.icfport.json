@@ -25,7 +25,7 @@
       "ingredient": "#hbm:wires_dense/neodymium"
     }
   ],
-  "order": 25,
+  "order": 6400,
   "output_items": [
     "hbm:icf_port"
   ],

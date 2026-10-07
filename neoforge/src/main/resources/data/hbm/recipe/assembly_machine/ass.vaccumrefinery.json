@@ -36,7 +36,7 @@
       "ingredient": "hbm:circuit_chip_bismoid"
     }
   ],
-  "order": 124,
+  "order": 31744,
   "output_items": [
     "hbm:machine_vacuum_distill"
   ],

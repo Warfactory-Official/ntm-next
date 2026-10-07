@@ -17,7 +17,7 @@
       "amount": 500
     }
   ],
-  "order": 40,
+  "order": 10240,
   "output_items": [
     "hbm:ingot_bakelite"
   ],

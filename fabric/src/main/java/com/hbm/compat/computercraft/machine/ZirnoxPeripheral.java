@@ -110,6 +110,7 @@ public final class ZirnoxPeripheral extends SnapshotPeripheral<BlockEntityReacto
         BlockEntityReactorZirnox machine = machine();
         int vent = Math.clamp(amount.orElse(1000), 0, machine.carbonDioxide.getMaxFill());
         machine.carbonDioxide.setFill(Math.max(machine.carbonDioxide.getFill() - vent, 0));
+        machine.markChanged();
         return new Object[] {};
     }
 }

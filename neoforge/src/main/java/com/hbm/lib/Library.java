@@ -125,8 +125,10 @@ public final class Library {
         if (state == null) return false;
 
         FluidFace face = FluidFace.of(side, fluid);
-        if (NeoForgeCaps.find(FluidCaps.PROVIDER, world, pos, face) != null) return true;
-        if (NeoForgeCaps.find(FluidCaps.RECEIVER, world, pos, face) != null) return true;
+        var provider = NeoForgeCaps.find(FluidCaps.PROVIDER, world, pos, face);
+        if (provider != null && provider.canProvideFluid(fluid)) return true;
+        var receiver = NeoForgeCaps.find(FluidCaps.RECEIVER, world, pos, face);
+        if (receiver != null && receiver.canReceiveFluid(fluid)) return true;
         if (NtmCapabilities.ownsFluidExposure(state)) return false;
         return NeoForgeCaps.findFluidHandler(world, pos, side) != null;
     }

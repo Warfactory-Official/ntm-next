@@ -349,9 +349,11 @@ public class BlockEntityFusionPlasmaForge extends BlockEntityMachineBase
                 !(selected instanceof PlasmaForgeRecipe forge)
                         || forge.ignitionTemp <= plasmaEnergySync;
 
+        double prevProgress = module.progress;
         module.update(speed, 1D, ignition, inventory.get(SLOT_BLUEPRINT));
         didProcess = module.didProcess;
         if (module.markDirty) setChanged();
+        if (didProcess || module.progress != prevProgress) markChanged();
 
         long powerReceived = (long) Math.ceil(plasmaEnergySync * 0.75);
 

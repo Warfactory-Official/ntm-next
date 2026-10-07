@@ -6,7 +6,7 @@
       "ingredient": "hbm:rod_dual_lithium"
     }
   ],
-  "order": 1,
+  "order": 256,
   "output_items": [
     "hbm:rod_dual_tritium"
   ]

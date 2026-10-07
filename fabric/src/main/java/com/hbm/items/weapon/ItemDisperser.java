@@ -7,6 +7,7 @@ import com.hbm.entity.grenade.EntityDisperserCanister;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.machine.ItemFluidTank;
+import com.hbm.sound.EntitySounds;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
@@ -53,8 +54,8 @@ public class ItemDisperser extends ItemFluidTank {
         ItemStack stack = player.getItemInHand(hand);
 
         if (!level.isClientSide()) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),

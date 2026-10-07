@@ -5,6 +5,7 @@ package com.hbm.client.render.flywheel;
 
 import com.hbm.blockentity.bomb.BlockEntityLaunchTable;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.client.render.MissilePronter;
 import com.hbm.handler.MissileStruct;
 import com.hbm.items.weapon.ItemCustomMissilePart.PartSize;
 import com.hbm.items.weapon.ItemCustomMissilePart.PartType;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
@@ -315,9 +315,7 @@ public final class LaunchTableVisual extends HbmDynamicBlockEntityVisual<BlockEn
                             new PartKey(source.mesh, source.skin),
                             key ->
                                     MeshPart.objParts(
-                                            new HFRWavefrontObject(
-                                                    Minecraft.getInstance().getResourceManager(),
-                                                    key.mesh),
+                                            MissilePronter.partMesh(key.mesh),
                                             MeshPart.litCutout(key.skin)));
             groups = new ArrayList<>(parts.length);
             for (var part : parts) groups.add(new PartVisual(part));

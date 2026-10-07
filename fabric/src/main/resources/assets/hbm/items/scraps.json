@@ -12,9 +12,33 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_wood",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "wood_liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_bone"
         },
         "when": "bone"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_bone",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "bone_liquid"
       },
       {
         "model": {
@@ -40,9 +64,33 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_coal",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "coal_liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_lignite"
         },
         "when": "lignite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_lignite",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "lignite_liquid"
       },
       {
         "model": {
@@ -54,9 +102,33 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_coke",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "coke_liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_pet_coke"
         },
         "when": "pet_coke"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_pet_coke",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "pet_coke_liquid"
       },
       {
         "model": {
@@ -68,6 +140,18 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_lignite_coke",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "lignite_coke_liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_graphite"
         },
         "when": "graphite"
@@ -75,9 +159,33 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_graphite",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "graphite_liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_diamond"
         },
         "when": "diamond"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_diamond",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "diamond_liquid"
       },
       {
         "model": {
@@ -124,9 +232,33 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_bauxite",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "bauxite_liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_cryolite"
         },
         "when": "cryolite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_cryolite",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "cryolite_liquid"
       },
       {
         "model": {
@@ -397,6 +529,18 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_emerald",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "emerald_liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_cobalt"
         },
         "when": "cobalt"
@@ -446,6 +590,18 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_sodalite",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "sodalite_liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_strontium"
         },
         "when": "strontium"
@@ -474,9 +630,33 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_sulfur",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "sulfur_liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_saltpeter"
         },
         "when": "saltpeter"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_saltpeter",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "saltpeter_liquid"
       },
       {
         "model": {
@@ -488,6 +668,18 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_fluorite",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "fluorite_liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_red_phosphorus"
         },
         "when": "red_phosphorus"
@@ -495,9 +687,14 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "hbm:item/scraps_iodine"
+          "model": "hbm:item/scraps_red_phosphorus",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
         },
-        "when": "iodine"
+        "when": "red_phosphorus_liquid"
       },
       {
         "model": {
@@ -509,6 +706,18 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_chlorocalcite",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "chlorocalcite_liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_molysite"
         },
         "when": "molysite"
@@ -516,9 +725,33 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_molysite",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "molysite_liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_cinnabar"
         },
         "when": "cinnabar"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_cinnabar",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "cinnabar_liquid"
       },
       {
         "model": {
@@ -698,9 +931,33 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_rare_earth",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "rare_earth_liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_polymer"
         },
         "when": "polymer"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_polymer",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "polymer_liquid"
       },
       {
         "model": {
@@ -712,9 +969,33 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_bakelite",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "bakelite_liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_rubber"
         },
         "when": "rubber"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_rubber",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "rubber_liquid"
       },
       {
         "model": {
@@ -726,9 +1007,33 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_polycarbonate",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "polycarbonate_liquid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_pvc"
         },
         "when": "pvc"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_pvc",
+          "tints": [
+            {
+              "type": "hbm:scraps_color"
+            }
+          ]
+        },
+        "when": "pvc_liquid"
       },
       {
         "model": {

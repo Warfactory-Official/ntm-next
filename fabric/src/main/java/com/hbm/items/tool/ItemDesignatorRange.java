@@ -6,6 +6,7 @@ package com.hbm.items.tool;
 import com.hbm.api.item.IDesignatorItem;
 import com.hbm.blocks.bomb.LaunchPad;
 import com.hbm.items.ModDataComponents;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -35,8 +36,8 @@ public class ItemDesignatorRange extends ItemDesignator {
                         .set(
                                 ModDataComponents.TARGET_DESIGNATOR.get(),
                                 IDesignatorItem.pack(pos.getX(), pos.getZ()));
-                level.playSound(
-                        null,
+                EntitySounds.play(
+                        player,
                         player.getX(),
                         player.getY(),
                         player.getZ(),

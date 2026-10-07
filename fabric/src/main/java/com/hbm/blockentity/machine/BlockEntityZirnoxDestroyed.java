@@ -41,6 +41,7 @@ public class BlockEntityZirnoxDestroyed extends BlockEntity {
     private void serverTick(Level level, BlockPos pos) {
         ServerLevel server = (ServerLevel) level;
         RandomSource rand = server.getRandom();
+        boolean wasOnFire = onFire;
 
         radiate(server, pos);
 
@@ -83,6 +84,8 @@ public class BlockEntityZirnoxDestroyed extends BlockEntity {
                     1.0F + rand.nextFloat(),
                     rand.nextFloat() * 0.7F + 0.3F);
         }
+
+        if (onFire != wasOnFire) level.blockEntityChanged(pos);
     }
 
     private void radiate(ServerLevel level, BlockPos pos) {

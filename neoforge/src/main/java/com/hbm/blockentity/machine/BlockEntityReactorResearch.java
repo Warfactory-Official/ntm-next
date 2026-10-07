@@ -98,6 +98,7 @@ public class BlockEntityReactorResearch extends BlockEntityMachineBase
         if (controlLevel > 0) reaction();
 
         if (heat > 0) {
+            markChanged();
             water = countWater();
 
             if (water > 0) {
@@ -126,9 +127,11 @@ public class BlockEntityReactorResearch extends BlockEntityMachineBase
         if (controlLevel < targetLevel) {
             controlLevel += ROD_SPEED;
             if (controlLevel >= targetLevel) controlLevel = targetLevel;
+            markChanged();
         } else if (controlLevel > targetLevel) {
             controlLevel -= ROD_SPEED;
             if (controlLevel <= targetLevel) controlLevel = targetLevel;
+            markChanged();
         }
     }
 
@@ -143,6 +146,7 @@ public class BlockEntityReactorResearch extends BlockEntityMachineBase
 
             if (stack.getItem() instanceof ItemPlateFuel plate) {
                 int outFlux = plate.react(stack, slotFlux[i]);
+                if (outFlux != 0 || slotFlux[i] != 0) markChanged();
                 heat += outFlux * 2;
                 slotFlux[i] = 0;
                 totalFlux += outFlux;
@@ -162,6 +166,7 @@ public class BlockEntityReactorResearch extends BlockEntityMachineBase
                     i,
                     ModItems.METEORITE_SWORD_BRED,
                     ModItems.METEORITE_SWORD_IRRADIATED);
+            if (inventory.get(i) != stack) markChanged();
             slotFlux[i] = 0;
         }
     }

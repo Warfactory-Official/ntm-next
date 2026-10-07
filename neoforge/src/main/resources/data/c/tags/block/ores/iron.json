@@ -1,5 +1,8 @@
 {
   "values": [
-    "hbm:ore_gneiss_iron"
+    "hbm:ore_gneiss_iron",
+    "hbm:ore_meteor_iron",
+    "hbm:cluster_depth_iron",
+    "hbm:cluster_iron"
   ]
 }

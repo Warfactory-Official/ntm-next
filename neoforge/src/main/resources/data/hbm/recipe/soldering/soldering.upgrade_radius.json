@@ -11,7 +11,7 @@
       "ingredient": "hbm:circuit_capacitor"
     }
   ],
-  "order": 21,
+  "order": 5376,
   "output_items": [
     "hbm:upgrade_radius"
   ],

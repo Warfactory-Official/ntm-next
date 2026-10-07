@@ -16,7 +16,7 @@
       "ingredient": "#c:dusts/fluorite"
     }
   ],
-  "order": 48,
+  "order": 12288,
   "output_fluids": [
     {
       "type": "hbm:perfluoromethyl",

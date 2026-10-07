@@ -116,15 +116,17 @@ public class BlockEntityFurnaceIron extends BlockEntitySmeltingFurnace
                     fuel.shrink(1);
                     if (fuel.isEmpty())
                         inventory.set(i, remainder != null ? remainder.create() : ItemStack.EMPTY);
+                    markChanged();
                     break;
                 }
             }
         }
 
-        if (canSmelt()) {
+        if (canSmelt() && breatheAir(TickPhase.every(this, 5) ? 1 : 0)) {
             wasOn = true;
             progress++;
             burnTime--;
+            markChanged();
 
             if (progress % 15 == 0 && !isMuffled()) {
                 level.playSound(
@@ -153,6 +155,7 @@ public class BlockEntityFurnaceIron extends BlockEntitySmeltingFurnace
                         level, worldPosition, PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND);
             }
         } else {
+            if (progress != 0) markChanged();
             progress = 0;
         }
 

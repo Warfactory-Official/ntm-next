@@ -17,13 +17,16 @@
   },
   "input_items": [
     {
-      "ingredient": "hbm:fluid_pack",
-      "predicates": {
-        "hbm:fluid_content": "hbm:helium3"
-      }
+      "components": {
+        "hbm:fluid_content": {
+          "type": "hbm:helium3",
+          "amount": 32000
+        }
+      },
+      "ingredient": "hbm:fluid_pack"
     }
   ],
-  "order": 496,
+  "order": 126976,
   "output_fluids": [
     {
       "type": "hbm:helium3",

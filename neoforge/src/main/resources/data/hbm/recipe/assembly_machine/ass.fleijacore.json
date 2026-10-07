@@ -19,7 +19,7 @@
       "ingredient": "hbm:coil_copper"
     }
   ],
-  "order": 320,
+  "order": 81920,
   "output_items": [
     "hbm:fleija_core"
   ],

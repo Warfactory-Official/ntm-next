@@ -59,7 +59,10 @@ public class BlockEntityRBMKOutgasser extends BlockEntityRBMKBase
 
     @Override
     public void tickServer() {
-        if (!canProcess()) this.progress = 0;
+        if (!canProcess() && this.progress != 0) {
+            this.progress = 0;
+            markChanged();
+        }
         flush.provide((ServerLevel) level, this);
         super.tickServer();
     }
@@ -69,6 +72,7 @@ public class BlockEntityRBMKOutgasser extends BlockEntityRBMKBase
         if (!canProcess()) return;
         double efficiency = Math.min(1 - stream.fluxRatio * 0.8, 1);
         progress += stream.fluxQuantity * efficiency * RBMKConfig.getOutgasserMod(level);
+        markChanged();
         if (progress > duration) {
             process();
             markChanged();
@@ -86,6 +90,7 @@ public class BlockEntityRBMKOutgasser extends BlockEntityRBMKBase
         if (fluid != null) {
             Fluid type = fluid.type();
             if (gas.getTankType() != type && gas.getFill() > 0) return false;
+            if (gas.getTankType() != type) markChanged();
             gas.setTankType(type);
             if (gas.getFill() + (int) fluid.amount() > gas.getMaxFill()) return false;
         }

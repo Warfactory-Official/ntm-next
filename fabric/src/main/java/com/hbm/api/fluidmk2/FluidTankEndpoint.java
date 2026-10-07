@@ -4,11 +4,13 @@
 package com.hbm.api.fluidmk2;
 
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
+import java.util.function.Consumer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
 public interface FluidTankEndpoint extends FluidFlushSender {
+
     int HIGHEST_VALID_PRESSURE = 5;
 
     @Nullable Level getLevel();
@@ -20,6 +22,20 @@ public interface FluidTankEndpoint extends FluidFlushSender {
     @Override
     default FluidTankNTM[] getSendingTanks() {
         return NO_TANKS;
+    }
+
+    @Override
+    default boolean canReceiveFluid(Fluid type) {
+        for (FluidTankNTM tank : getReceivingTanks()) {
+            if (tank.joins(type)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    default void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : getReceivingTanks()) visitor.accept(tank);
+        for (FluidTankNTM tank : getSendingTanks()) visitor.accept(tank);
     }
 
     @Override

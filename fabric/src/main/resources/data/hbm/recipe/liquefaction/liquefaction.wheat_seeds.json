@@ -5,7 +5,7 @@
       "ingredient": "minecraft:wheat_seeds"
     }
   ],
-  "order": 30,
+  "order": 7680,
   "output_fluids": [
     {
       "type": "hbm:seedslurry",

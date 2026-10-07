@@ -128,6 +128,7 @@ public class BlockEntityLaunchPadRusted extends BlockEntityMachineBase
             redstonePower--;
             if (redstonePower == 0) redstonePower = -1;
         }
+        if (redstonePower != before) markChanged();
         if (redstonePower > 0 && before <= 0) launch();
     }
 

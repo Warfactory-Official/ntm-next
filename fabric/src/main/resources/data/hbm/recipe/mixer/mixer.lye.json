@@ -12,7 +12,7 @@
       "ingredient": "hbm:powder_ash_wood"
     }
   ],
-  "order": 45,
+  "order": 11520,
   "output_fluids": [
     {
       "type": "hbm:lye",

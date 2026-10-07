@@ -28,7 +28,7 @@
       "ingredient": "#c:ingots/niobium"
     }
   ],
-  "order": 118,
+  "order": 30208,
   "output_items": [
     "hbm:machine_cracking_tower"
   ],

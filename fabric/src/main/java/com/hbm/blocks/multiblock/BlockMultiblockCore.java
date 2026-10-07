@@ -4,6 +4,7 @@
 package com.hbm.blocks.multiblock;
 
 import com.hbm.blockentity.BlockEntityMachineBase;
+import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Tiltable;
 import com.hbm.blocks.IBlockHighlight;
 import com.hbm.blocks.ISectionGeometry;
@@ -12,6 +13,7 @@ import com.hbm.blocks.network.ConveyorNeighbors;
 import com.hbm.capability.MachineCaps;
 import com.hbm.capability.NtmCapabilities.CapRole;
 import com.hbm.interfaces.ICopiable;
+import com.hbm.interfaces.PlantSoil;
 import com.hbm.interfaces.RigidPistonStructure;
 import com.hbm.inventory.IGUIProvider;
 import com.hbm.platform.FabricCaps;
@@ -38,6 +40,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
@@ -69,7 +72,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public abstract class BlockMultiblockCore extends Block
-        implements ICopiable, RigidPistonStructure, ISectionGeometry {
+        implements ICopiable, RigidPistonStructure, ISectionGeometry, PlantSoil {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public static final int MASK_NONE = 0;
@@ -374,6 +377,8 @@ public abstract class BlockMultiblockCore extends Block
         MultiblockHandlerXR.visitBox(core, getDimensions(), facing, visitor);
     }
 
+    public void assembled(LevelAccessor level, BlockPos core, BlockState coreState) {}
+
     protected void visitPlacedCells(
             LevelAccessor level, BlockPos core, Direction facing, CellVisitor visitor) {
         if (hasVariableFootprint()) visitCells(core, facing, visitor);
@@ -457,6 +462,15 @@ public abstract class BlockMultiblockCore extends Block
 
     public boolean heatSourceAt(int lx, int ly, int lz) {
         return false;
+    }
+
+    public boolean plantSoilAt(int lx, int ly, int lz) {
+        return false;
+    }
+
+    @Override
+    public final boolean sustainsPlant(BlockGetter level, BlockPos soil, BlockState soilState) {
+        return MultiblockSurface.sustainsPlant(level, soil, soilState);
     }
 
     protected boolean proxyCellAt(int lx, int ly, int lz) {
@@ -699,7 +713,11 @@ public abstract class BlockMultiblockCore extends Block
         boolean prev = BUSY.get();
         BUSY.set(true);
         try {
-            level.removeBlock(pos, false);
+            detachGraphs(level, pos);
+            level.setBlock(
+                    pos,
+                    state.getFluidState().createLegacyBlock(),
+                    UPDATE_ALL | UPDATE_SKIP_BLOCK_ENTITY_SIDEEFFECTS);
         } finally {
             BUSY.set(prev);
         }
@@ -728,15 +746,62 @@ public abstract class BlockMultiblockCore extends Block
                     placed.offset(dir.getStepX() * o, dir.getStepY() * o, dir.getStepZ() * o);
             level.setBlock(
                     core, takeWater(defaultBlockState().setValue(FACING, dir), level, core), 3);
-            fillSpace(level, core, dir);
             BlockEntity placedCore = level.getBlockEntity(core);
             if (placedCore != null) {
+                BlockItem.updateCustomBlockEntityTag(level, pl, core, stack);
                 placedCore.applyComponentsFromItemStack(stack);
                 placedCore.setChanged();
             }
+            if (hasVariableFootprint() && !checkRestoredCells(level, core, dir)) {
+                withoutTeardown(
+                        () -> {
+                            detachGraphs(level, core);
+                            level.setBlock(
+                                    core,
+                                    level.getBlockState(core).getFluidState().createLegacyBlock(),
+                                    UPDATE_ALL | UPDATE_SKIP_BLOCK_ENTITY_SIDEEFFECTS);
+                        });
+                if (!pl.getAbilities().instabuild)
+                    pl.getInventory().placeItemBackInInventory(stack.copyWithCount(1));
+                return;
+            }
+            fillSpace(level, core, dir);
         }
 
         super.setPlacedBy(level, pos, state, placer, stack);
+    }
+
+    private static void detachGraphs(Level level, BlockPos pos) {
+        if (level instanceof ServerLevel server
+                && level.getBlockEntity(pos) instanceof GraphResident resident) {
+            resident.onGraphDetach(server);
+        }
+    }
+
+    private boolean checkRestoredCells(Level level, BlockPos core, Direction dir) {
+        try {
+            visitPlacedCells(
+                    level,
+                    core,
+                    dir,
+                    (pos, mask) -> {
+                        if (level.isOutsideBuildHeight(pos)
+                                || !level.getBlockState(pos).canBeReplaced()) {
+                            throw RestoredPlacementRefusal.INSTANCE;
+                        }
+                    });
+            return true;
+        } catch (RestoredPlacementRefusal refused) {
+            return false;
+        }
+    }
+
+    private static final class RestoredPlacementRefusal extends RuntimeException {
+        private static final RestoredPlacementRefusal INSTANCE = new RestoredPlacementRefusal();
+
+        private RestoredPlacementRefusal() {
+            super(null, null, false, false);
+        }
     }
 
     public boolean checkRequirement(Level level, BlockPos placed, Direction dir, int o) {
@@ -801,6 +866,10 @@ public abstract class BlockMultiblockCore extends Block
                 : state;
     }
 
+    protected @Nullable BlockState swappedCellStateFor(int lx, int ly, int lz, Direction facing) {
+        return null;
+    }
+
     protected boolean cellsHaveAnalogOutput() {
         return false;
     }
@@ -853,7 +922,8 @@ public abstract class BlockMultiblockCore extends Block
                 defaultDestroyTime(),
                 getExplosionResistance(),
                 defaultMapColor(),
-                defaultBlockState().getLightEmission());
+                defaultBlockState().getLightEmission(),
+                defaultBlockState().requiresCorrectToolForDrops());
     }
 
     public final CellBuckets.Geometry cellBucket() {

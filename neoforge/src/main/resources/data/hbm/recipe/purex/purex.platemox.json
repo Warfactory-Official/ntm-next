@@ -22,7 +22,7 @@
     }
   ],
   "name_wrapper": "purex.recycle",
-  "order": 16,
+  "order": 4096,
   "output_items": [
     "hbm:powder_sr90_tiny",
     {

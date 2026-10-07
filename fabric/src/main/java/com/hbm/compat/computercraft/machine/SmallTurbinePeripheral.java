@@ -31,7 +31,9 @@ public final class SmallTurbinePeripheral extends TurbinePeripheral<BlockEntityM
 
     @LuaFunction(mainThread = true)
     public final Object[] setType(int type) {
-        machine().tank0.setTankType(SteamTypes.fromInt(type));
+        BlockEntityMachineTurbine machine = machine();
+        machine.tank0.setTankType(SteamTypes.fromInt(type));
+        machine.markChanged();
         return new Object[] {true};
     }
 

@@ -21,7 +21,7 @@
       "ingredient": "hbm:battery_pack_battery_lithium"
     }
   ],
-  "order": 160,
+  "order": 40960,
   "output_items": [
     "hbm:machine_teleporter"
   ],

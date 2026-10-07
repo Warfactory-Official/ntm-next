@@ -9,10 +9,10 @@
   ],
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/tungsten"
+      "ingredient": "#c:ores/tungsten"
     }
   ],
-  "order": 242,
+  "order": 64512,
   "output_items": [
     "hbm:crystal_tungsten"
   ],

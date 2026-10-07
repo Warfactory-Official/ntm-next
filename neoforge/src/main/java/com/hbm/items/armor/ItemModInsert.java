@@ -6,6 +6,8 @@ package com.hbm.items.armor;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.items.ModItems;
+import com.hbm.lib.Library;
+import com.hbm.registration.OverridePoint;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -54,8 +56,12 @@ public class ItemModInsert extends ItemArmorMod {
         return String.valueOf(Math.round((1F - mod) * 100F));
     }
 
+    public static final OverridePoint<BiConsumer<ItemStack, Consumer<Component>>> EXTRA_LINES =
+            OverridePoint.of(Library.id("armor_insert_extra_lines"), (stack, adder) -> {});
+
     @Override
     protected void addSpecificTooltip(ItemStack stack, Consumer<Component> adder) {
+        EXTRA_LINES.get().accept(stack, adder);
         if (damageMod != 1F)
             adder.accept(
                     Component.translatable(

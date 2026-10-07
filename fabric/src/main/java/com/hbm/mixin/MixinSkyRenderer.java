@@ -3,6 +3,8 @@
 
 package com.hbm.mixin;
 
+import com.hbm.api.client.CustomSkies;
+import com.hbm.api.client.ShaderPacks;
 import com.hbm.client.render.NTMSkybox;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -30,6 +32,7 @@ public abstract class MixinSkyRenderer {
     @Inject(method = "close", at = @At("HEAD"))
     private void hbm$closeSkyGeometry(CallbackInfo ci) {
         NTMSkybox.close();
+        CustomSkies.close();
     }
 
     @Inject(method = "extractRenderState", at = @At("TAIL"))
@@ -39,7 +42,37 @@ public abstract class MixinSkyRenderer {
             Camera camera,
             SkyRenderState state,
             CallbackInfo ci) {
-        NTMSkybox.extract(level, state);
+        if (CustomSkies.extract(level, partialTicks, camera, state)) NTMSkybox.clear();
+        else NTMSkybox.extract(level, state);
+    }
+
+    @Inject(method = "renderSkyDisc", at = @At("HEAD"), cancellable = true)
+    private void hbm$customSky(int skyColor, CallbackInfo ci) {
+        if (CustomSkies.replace((SkyRenderer) (Object) this, true)) ci.cancel();
+    }
+
+    @Inject(method = "renderSunriseAndSunset", at = @At("HEAD"), cancellable = true)
+    private void hbm$customSkySunrise(
+            PoseStack poseStack, float sunAngle, int sunriseAndSunsetColor, CallbackInfo ci) {
+        if (CustomSkies.replace((SkyRenderer) (Object) this, false)) ci.cancel();
+    }
+
+    @Inject(method = "renderSunMoonAndStars", at = @At("HEAD"), cancellable = true)
+    private void hbm$customSkyBodies(
+            PoseStack poseStack,
+            float sunAngle,
+            float moonAngle,
+            float starAngle,
+            MoonPhase moonPhase,
+            float rainBrightness,
+            float starBrightness,
+            CallbackInfo ci) {
+        if (CustomSkies.replace((SkyRenderer) (Object) this, false)) ci.cancel();
+    }
+
+    @Inject(method = "renderDarkDisc", at = @At("HEAD"), cancellable = true)
+    private void hbm$customSkyDarkDisc(CallbackInfo ci) {
+        if (CustomSkies.replace((SkyRenderer) (Object) this, false)) ci.cancel();
     }
 
     @Inject(method = "renderSunMoonAndStars", at = @At("HEAD"))
@@ -79,7 +112,7 @@ public abstract class MixinSkyRenderer {
                             target =
                                     "Lnet/minecraft/client/renderer/RenderPipelines;STARS:Lcom/mojang/blaze3d/pipeline/RenderPipeline;"))
     private RenderPipeline hbm$impactStarBlend(RenderPipeline original) {
-        return NTMSkybox.impact() ? NTMSkybox.IMPACT_STARS : original;
+        return NTMSkybox.impact() && !ShaderPacks.inUse() ? NTMSkybox.IMPACT_STARS : original;
     }
 
     @ModifyArg(

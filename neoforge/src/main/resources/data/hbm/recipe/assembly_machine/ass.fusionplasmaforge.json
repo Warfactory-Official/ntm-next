@@ -28,7 +28,7 @@
       "ingredient": "hbm:circuit_bismoid"
     }
   ],
-  "order": 275,
+  "order": 70400,
   "output_items": [
     "hbm:fusion_plasma_forge"
   ],

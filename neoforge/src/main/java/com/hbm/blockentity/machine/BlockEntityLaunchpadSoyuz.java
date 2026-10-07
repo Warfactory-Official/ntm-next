@@ -33,6 +33,7 @@ import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -535,6 +536,19 @@ public class BlockEntityLaunchpadSoyuz extends BlockEntityMachineBase
     @Override
     public FluidTankNTM[] getAllTanks() {
         return tanks;
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        for (FluidTankNTM tank : tanks) {
+            if (tank.joins(type)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
     }
 
     @Override

@@ -14,7 +14,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import java.util.List;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import java.util.SortedSet;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
@@ -23,7 +23,6 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.extract.LevelExtractor;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.state.level.BlockBreakingRenderState;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -114,15 +113,16 @@ public class MixinLevelExtractor {
         return MultiblockCrumbling.globalOverlay(blockEntity, camera, level);
     }
 
-    @WrapOperation(
+    @ModifyExpressionValue(
             method = "extractBlockDestroyAnimation",
-            at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
-    private boolean hbm$coreBreaking(
-            List<BlockBreakingRenderState> states, Object state, Operation<Boolean> original) {
-        BlockBreakingRenderState mined = (BlockBreakingRenderState) state;
-        if (!MultiblockCrumbling.remaps(mined)) return original.call(states, mined);
-        MultiblockCrumbling.extractOwner(mined, level, owner -> original.call(states, owner));
-        return true;
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lnet/minecraft/client/multiplayer/ClientLevel;destructionProgress()Lit/unimi/dsi/fastutil/longs/Long2ObjectMap;"))
+    private Long2ObjectMap<SortedSet<BlockDestructionProgress>> hbm$coreBreaking(
+            Long2ObjectMap<SortedSet<BlockDestructionProgress>> mined) {
+        return MultiblockCrumbling.owners(level, mined);
     }
 
     @WrapOperation(

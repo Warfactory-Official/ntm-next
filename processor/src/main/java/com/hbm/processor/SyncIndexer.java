@@ -4,9 +4,14 @@
 package com.hbm.processor;
 
 import com.sun.source.util.Trees;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.Function;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -17,6 +22,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileManager;
+import javax.tools.StandardLocation;
 import mov.movblock.tenon.core.IndexFile;
 import mov.movblock.tenon.core.TypeRecorder;
 
@@ -27,21 +33,17 @@ final class SyncIndexer implements TypeRecorder {
 
     private final Elements elements;
     private final Trees trees;
-    private final IndexFile file;
+    private final JavaFileManager files;
+    private final String name;
 
     private final Set<String> found = new TreeSet<>();
     private final Set<String> compiled = new HashSet<>();
 
-    SyncIndexer(Elements elements, Trees trees, JavaFileManager files, String resource) {
+    SyncIndexer(Elements elements, Trees trees, JavaFileManager files, String name) {
         this.elements = elements;
         this.trees = trees;
-        this.file =
-                new IndexFile(
-                        files,
-                        resource,
-                        "container-sync index",
-                        "so a menu would ship a stale field set",
-                        "<owner> <field> <type>");
+        this.files = files;
+        this.name = name;
     }
 
     @Override
@@ -97,6 +99,41 @@ final class SyncIndexer implements TypeRecorder {
     }
 
     void write() {
-        file.write(found, compiled, line -> line.substring(0, line.indexOf(' ')));
+        Map<String, Set<String>> foundBy =
+                byPackage(found, line -> line.substring(0, line.indexOf(' ')));
+        Map<String, Set<String>> compiledBy = byPackage(compiled, owner -> owner);
+        Set<String> packages = new TreeSet<>(foundBy.keySet());
+        for (String pkg : compiledBy.keySet()) if (indexed(pkg)) packages.add(pkg);
+        for (String pkg : packages) {
+            new IndexFile(
+                            files,
+                            pkg.replace('.', '/') + "/" + name,
+                            "container-sync index of " + pkg,
+                            "so a menu would ship a stale field set",
+                            "<owner> <field> <type>")
+                    .write(
+                            foundBy.getOrDefault(pkg, Set.of()),
+                            compiledBy.getOrDefault(pkg, Set.of()),
+                            line -> line.substring(0, line.indexOf(' ')));
+        }
+    }
+
+    private static Map<String, Set<String>> byPackage(
+            Set<String> entries, Function<String, String> ownerOf) {
+        Map<String, Set<String>> by = new TreeMap<>();
+        for (String entry : entries) {
+            String owner = ownerOf.apply(entry);
+            by.computeIfAbsent(owner.substring(0, owner.lastIndexOf('.')), k -> new TreeSet<>())
+                    .add(entry);
+        }
+        return by;
+    }
+
+    private boolean indexed(String pkg) {
+        try {
+            return files.getFileForInput(StandardLocation.CLASS_OUTPUT, pkg, name) != null;
+        } catch (IOException e) {
+            throw new UncheckedIOException("Cannot read the class output", e);
+        }
     }
 }

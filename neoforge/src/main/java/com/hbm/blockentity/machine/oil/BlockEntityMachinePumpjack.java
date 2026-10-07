@@ -5,6 +5,7 @@ package com.hbm.blockentity.machine.oil;
 
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.generic.FluidReserveBlock;
 import com.hbm.data.MachineData;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
@@ -99,6 +100,21 @@ public class BlockEntityMachinePumpjack extends BlockEntityOilDrillBase {
             level.setBlock(pos, ModBlocks.ORE_OIL_EMPTY.get().defaultBlockState(), 3);
         }
         setChanged();
+    }
+
+    @Override
+    protected int reservePrimary(FluidReserveBlock reserve) {
+        return (int) (super.reservePrimary(reserve) * 1.5D);
+    }
+
+    @Override
+    protected int reserveSecondary(FluidReserveBlock reserve) {
+        return (int) (super.reserveSecondary(reserve) * 0.5D);
+    }
+
+    @Override
+    protected double reserveDrainMultiplier() {
+        return 0.5D;
     }
 
     private void writeDrillState(ByteBuf output) {

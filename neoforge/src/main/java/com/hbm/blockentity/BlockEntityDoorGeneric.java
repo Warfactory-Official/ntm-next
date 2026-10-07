@@ -75,6 +75,7 @@ public class BlockEntityDoorGeneric extends BlockEntityLockableBase implements A
         if (door.onDoorUpdate() != null) door.onDoorUpdate().accept(this);
 
         advanceOpenTicks(door);
+        if (state == STATE_OPENING || state == STATE_CLOSING) markChanged();
         updateDoorCells(door);
 
         if (state == STATE_OPENING && openTicks == door.timeToOpen()) state = STATE_OPEN;
@@ -85,7 +86,10 @@ public class BlockEntityDoorGeneric extends BlockEntityLockableBase implements A
 
         if (redstonePower == -1 && state == STATE_OPEN) tryToggle(-1);
         else if (redstonePower > 0 && state == STATE_CLOSED) tryToggle(-1);
-        if (redstonePower == -1) redstonePower = 0;
+        if (redstonePower == -1) {
+            redstonePower = 0;
+            markChanged();
+        }
     }
 
     public void tickClient() {
@@ -206,11 +210,17 @@ public class BlockEntityDoorGeneric extends BlockEntityLockableBase implements A
     }
 
     public void open() {
-        if (state == STATE_CLOSED) state = STATE_OPENING;
+        if (state == STATE_CLOSED) {
+            state = STATE_OPENING;
+            markChanged();
+        }
     }
 
     public void close() {
-        if (state == STATE_OPEN) state = STATE_CLOSING;
+        if (state == STATE_OPEN) {
+            state = STATE_CLOSING;
+            markChanged();
+        }
     }
 
     public void updateRedstonePower(BlockPos pos) {
@@ -220,10 +230,12 @@ public class BlockEntityDoorGeneric extends BlockEntityLockableBase implements A
             activatedBlocks.add(pos);
             if (redstonePower == -1) redstonePower = 0;
             redstonePower++;
+            markChanged();
         } else if (contained && !powered) {
             activatedBlocks.remove(pos);
             redstonePower--;
             if (redstonePower == 0) redstonePower = -1;
+            markChanged();
         }
     }
 

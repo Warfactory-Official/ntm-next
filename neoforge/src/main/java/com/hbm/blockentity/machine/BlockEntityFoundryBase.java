@@ -105,6 +105,7 @@ public abstract class BlockEntityFoundryBase extends BlockEntity
     public @Nullable MaterialStack standardAdd(
             Level level, BlockPos pos, Direction side, MaterialStack stack) {
         this.type = stack.material;
+        markChanged();
 
         if (stack.amount + this.amount <= this.getCapacity()) {
             this.amount += stack.amount;

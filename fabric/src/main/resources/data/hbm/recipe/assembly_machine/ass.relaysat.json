@@ -22,7 +22,7 @@
       "ingredient": "hbm:circuit_controller"
     }
   ],
-  "order": 427,
+  "order": 109312,
   "output_items": [
     "hbm:satellite_relay"
   ],

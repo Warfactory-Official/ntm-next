@@ -39,7 +39,7 @@
       "ingredient": "hbm:item_secret_folly"
     }
   },
-  "order": 10,
+  "order": 2560,
   "output_items": [
     "hbm:gun_folly"
   ],

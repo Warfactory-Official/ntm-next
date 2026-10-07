@@ -3,13 +3,12 @@
 
 package com.hbm.client.gui;
 
+import com.hbm.blockentity.network.BlockEntityRadioTorchCounter;
 import com.hbm.inventory.container.MenuRadioTorchCounter;
 import com.hbm.lib.Library;
-import com.hbm.module.ModulePatternMatcher;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
 import java.util.List;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
@@ -21,6 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
 
 public final class ScreenRadioTorchCounter extends ScreenInfoContainer<MenuRadioTorchCounter> {
 
@@ -112,26 +112,13 @@ public final class ScreenRadioTorchCounter extends ScreenInfoContainer<MenuRadio
             graphics.setTooltipForNextFrame(
                     font, Component.translatable("desc.shared.saveSettings"), mouseX, mouseY);
         }
+    }
 
-        if (!menu.getCarried().isEmpty()) return;
-        for (int i = 0; i < channels.length; i++) {
-            if (mouseX < leftPos + 138
-                    || mouseX >= leftPos + 154
-                    || mouseY < topPos + 18 + 44 * i
-                    || mouseY >= topPos + 34 + 44 * i) continue;
-            String mode = menu.blockEntity().matcher.mode(i);
-            if (mode != null) {
-                graphics.setComponentTooltipForNextFrame(
-                        font,
-                        List.of(
-                                Component.translatable("desc.shared.rightClickToChange")
-                                        .withStyle(ChatFormatting.RED),
-                                ModulePatternMatcher.getLabel(mode)),
-                        mouseX,
-                        mouseY - 30);
-            }
-            break;
-        }
+    @Override
+    protected List<Component> slotTooltip(Slot slot) {
+        return slot.index < BlockEntityRadioTorchCounter.FILTER_COUNT
+                ? patternModeLines(menu.blockEntity().matcher.mode(slot.index))
+                : List.of();
     }
 
     @Override

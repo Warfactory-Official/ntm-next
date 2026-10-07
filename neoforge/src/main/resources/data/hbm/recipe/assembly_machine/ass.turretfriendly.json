@@ -33,7 +33,7 @@
       "ingredient": "hbm:crt_display"
     }
   ],
-  "order": 326,
+  "order": 83456,
   "output_items": [
     "hbm:turret_friendly"
   ],

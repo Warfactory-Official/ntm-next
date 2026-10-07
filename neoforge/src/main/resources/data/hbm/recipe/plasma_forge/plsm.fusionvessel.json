@@ -55,7 +55,7 @@
       "ingredient": "hbm:circuit_quantum"
     }
   ],
-  "order": 14,
+  "order": 3584,
   "output_items": [
     "hbm:fusion_torus"
   ],

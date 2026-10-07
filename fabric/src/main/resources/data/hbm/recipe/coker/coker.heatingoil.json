@@ -6,7 +6,7 @@
       "amount": 1600
     }
   ],
-  "order": 4,
+  "order": 1024,
   "output_fluids": [
     {
       "type": "hbm:oil_coker",

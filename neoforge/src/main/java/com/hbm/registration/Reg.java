@@ -3,6 +3,7 @@
 
 package com.hbm.registration;
 
+import com.hbm.NuclearTech;
 import com.hbm.blocks.IPersistentInfoProvider;
 import com.hbm.blocks.fluid.ClassicFluid;
 import com.hbm.client.model.BlockModel;
@@ -12,11 +13,13 @@ import com.hbm.items.MaterialShapeRoster;
 import com.hbm.items.PersistentInfoBlockItem;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.*;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.Identifier;
@@ -96,11 +99,39 @@ public final class Reg {
         AFTER_REGISTRATION.clear();
     }
 
+    public static <T> void afterRegistration(RegistryHandle<T> handle, Consumer<? super T> action) {
+        NeoForgeRegistrar.assertOpen("Reg.afterRegistration(" + handle.id() + ")");
+        AFTER_REGISTRATION.add(() -> action.accept(handle.get()));
+    }
+
+    private static final Namespace HBM = new Namespace(NuclearTech.MOD_ID);
+
+    private static volatile Set<String> namespaces = Set.of(NuclearTech.MOD_ID);
+
+    public static synchronized Namespace in(String namespace) {
+        if (!namespaces.contains(namespace)) {
+            Set<String> next = new HashSet<>(namespaces);
+            next.add(namespace);
+            namespaces = Set.copyOf(next);
+        }
+        return new Namespace(namespace);
+    }
+
+    public static boolean isNtmNamespace(String namespace) {
+        return namespaces.contains(namespace);
+    }
+
+    public static Set<String> addonNamespaces() {
+        Set<String> addons = new HashSet<>(namespaces);
+        addons.remove(NuclearTech.MOD_ID);
+        return Set.copyOf(addons);
+    }
+
     public static <I extends Item> Handle<I> item(
             String name,
             Function<Item.Properties, ? extends I> factory,
             Supplier<Item.Properties> props) {
-        return new Handle<>(NeoForgeRegistrar.registerItem(name, factory, props));
+        return HBM.item(name, factory, props);
     }
 
     public static <I extends Item> Handle<I> item(
@@ -108,7 +139,7 @@ public final class Reg {
             Identifier model,
             Function<Item.Properties, ? extends I> factory,
             Supplier<Item.Properties> props) {
-        return new Handle<>(NeoForgeRegistrar.registerItem(name, model, factory, props));
+        return HBM.item(name, model, factory, props);
     }
 
     public static <E extends Enum<E>, I extends Item> ItemFamily<E, I> family(
@@ -116,11 +147,7 @@ public final class Reg {
             Class<E> type,
             BiFunction<Item.Properties, E, ? extends I> factory,
             Supplier<Item.Properties> props) {
-        return family(
-                type,
-                constant -> base + "_" + constant.name().toLowerCase(Locale.ROOT),
-                factory,
-                props);
+        return HBM.family(base, type, factory, props);
     }
 
     public static <E extends Enum<E>, I extends Item> ItemFamily<E, I> family(
@@ -128,7 +155,7 @@ public final class Reg {
             Function<E, String> id,
             BiFunction<Item.Properties, E, ? extends I> factory,
             Supplier<Item.Properties> props) {
-        return family(type.getEnumConstants(), id, factory, props);
+        return HBM.family(type, id, factory, props);
     }
 
     public static <E extends Enum<E>, I extends Item> ItemFamily<E, I> family(
@@ -136,15 +163,7 @@ public final class Reg {
             Function<E, String> id,
             BiFunction<Item.Properties, E, ? extends I> factory,
             Supplier<Item.Properties> props) {
-        List<Handle<I>> members = new ArrayList<>(constants.length);
-        for (E constant : constants) {
-            members.add(
-                    item(
-                            memberId(id.apply(constant)),
-                            properties -> factory.apply(properties, constant),
-                            props));
-        }
-        return new ItemFamily<>(constants, members);
+        return HBM.family(constants, id, factory, props);
     }
 
     static String memberId(String raw) {
@@ -174,14 +193,36 @@ public final class Reg {
             String name,
             Function<BlockBehaviour.Properties, ? extends B> factory,
             Supplier<BlockBehaviour.Properties> props) {
-        return new Handle<>(NeoForgeRegistrar.registerBlock(name, factory, props));
+        return HBM.block(name, factory, props);
     }
 
     public static <B extends Block> Handle<B> blockItem(
             String name,
             Function<BlockBehaviour.Properties, ? extends B> factory,
             Supplier<BlockBehaviour.Properties> props) {
-        return blockItem(name, factory, props, Reg::defaultBlockItem);
+        return HBM.blockItem(name, factory, props);
+    }
+
+    public static <B extends Block> Handle<B> blockItem(
+            String name,
+            Function<BlockBehaviour.Properties, ? extends B> factory,
+            Supplier<BlockBehaviour.Properties> props,
+            BiFunction<? super B, Item.Properties, ? extends Item> itemFactory) {
+        return HBM.blockItem(name, factory, props, itemFactory);
+    }
+
+    public static ClassicFluid.Pair classicFluid(String name, ClassicFluid.Spec spec) {
+        return HBM.classicFluid(name, spec);
+    }
+
+    public static <T extends BlockEntity> BeHandle<T> be(
+            String name, Supplier<BlockEntityType<T>> typeFactory) {
+        return HBM.be(name, typeFactory);
+    }
+
+    public static <T extends Entity> EntityHandle<T> entity(
+            String name, Supplier<EntityType<T>> typeFactory) {
+        return HBM.entity(name, typeFactory);
     }
 
     private static Item defaultBlockItem(Block block, Item.Properties props) {
@@ -190,31 +231,112 @@ public final class Reg {
                 : new BlockItem(block, props);
     }
 
-    public static <B extends Block> Handle<B> blockItem(
-            String name,
-            Function<BlockBehaviour.Properties, ? extends B> factory,
-            Supplier<BlockBehaviour.Properties> props,
-            BiFunction<? super B, Item.Properties, ? extends Item> itemFactory) {
-        Handle<B> block = new Handle<>(NeoForgeRegistrar.registerBlock(name, factory, props));
-        NeoForgeRegistrar.registerItem(
-                name,
-                itemProps -> itemFactory.apply(block.get(), itemProps),
-                () -> new Item.Properties().useBlockDescriptionPrefix());
-        return block;
-    }
+    public static final class Namespace {
+        private final String namespace;
 
-    public static ClassicFluid.Pair classicFluid(String name, ClassicFluid.Spec spec) {
-        return NeoForgeRegistrar.registerClassicFluid(name, spec);
-    }
+        private Namespace(String namespace) {
+            this.namespace = namespace;
+        }
 
-    public static <T extends BlockEntity> BeHandle<T> be(
-            String name, Supplier<BlockEntityType<T>> typeFactory) {
-        return new BeHandle<>(NeoForgeRegistrar.registerBlockEntityType(name, typeFactory));
-    }
+        private String qualify(String name) {
+            return namespace + ":" + name;
+        }
 
-    public static <T extends Entity> EntityHandle<T> entity(
-            String name, Supplier<EntityType<T>> typeFactory) {
-        return new EntityHandle<>(NeoForgeRegistrar.registerEntityType(name, typeFactory));
+        public <I extends Item> Handle<I> item(
+                String name,
+                Function<Item.Properties, ? extends I> factory,
+                Supplier<Item.Properties> props) {
+            return new Handle<>(NeoForgeRegistrar.registerItem(qualify(name), factory, props));
+        }
+
+        public <I extends Item> Handle<I> item(
+                String name,
+                Identifier model,
+                Function<Item.Properties, ? extends I> factory,
+                Supplier<Item.Properties> props) {
+            return new Handle<>(
+                    NeoForgeRegistrar.registerItem(qualify(name), model, factory, props));
+        }
+
+        public <E extends Enum<E>, I extends Item> ItemFamily<E, I> family(
+                String base,
+                Class<E> type,
+                BiFunction<Item.Properties, E, ? extends I> factory,
+                Supplier<Item.Properties> props) {
+            return family(
+                    type,
+                    constant -> base + "_" + constant.name().toLowerCase(Locale.ROOT),
+                    factory,
+                    props);
+        }
+
+        public <E extends Enum<E>, I extends Item> ItemFamily<E, I> family(
+                Class<E> type,
+                Function<E, String> id,
+                BiFunction<Item.Properties, E, ? extends I> factory,
+                Supplier<Item.Properties> props) {
+            return family(type.getEnumConstants(), id, factory, props);
+        }
+
+        public <E extends Enum<E>, I extends Item> ItemFamily<E, I> family(
+                E[] constants,
+                Function<E, String> id,
+                BiFunction<Item.Properties, E, ? extends I> factory,
+                Supplier<Item.Properties> props) {
+            List<Handle<I>> members = new ArrayList<>(constants.length);
+            for (E constant : constants) {
+                members.add(
+                        item(
+                                memberId(id.apply(constant)),
+                                properties -> factory.apply(properties, constant),
+                                props));
+            }
+            return new ItemFamily<>(constants, members);
+        }
+
+        public <B extends Block> Handle<B> block(
+                String name,
+                Function<BlockBehaviour.Properties, ? extends B> factory,
+                Supplier<BlockBehaviour.Properties> props) {
+            return new Handle<>(NeoForgeRegistrar.registerBlock(qualify(name), factory, props));
+        }
+
+        public <B extends Block> Handle<B> blockItem(
+                String name,
+                Function<BlockBehaviour.Properties, ? extends B> factory,
+                Supplier<BlockBehaviour.Properties> props) {
+            return blockItem(name, factory, props, Reg::defaultBlockItem);
+        }
+
+        public <B extends Block> Handle<B> blockItem(
+                String name,
+                Function<BlockBehaviour.Properties, ? extends B> factory,
+                Supplier<BlockBehaviour.Properties> props,
+                BiFunction<? super B, Item.Properties, ? extends Item> itemFactory) {
+            Handle<B> block =
+                    new Handle<>(NeoForgeRegistrar.registerBlock(qualify(name), factory, props));
+            NeoForgeRegistrar.registerItem(
+                    qualify(name),
+                    itemProps -> itemFactory.apply(block.get(), itemProps),
+                    () -> new Item.Properties().useBlockDescriptionPrefix());
+            return block;
+        }
+
+        public ClassicFluid.Pair classicFluid(String name, ClassicFluid.Spec spec) {
+            return NeoForgeRegistrar.registerClassicFluid(qualify(name), spec);
+        }
+
+        public <T extends BlockEntity> BeHandle<T> be(
+                String name, Supplier<BlockEntityType<T>> typeFactory) {
+            return new BeHandle<>(
+                    NeoForgeRegistrar.registerBlockEntityType(qualify(name), typeFactory));
+        }
+
+        public <T extends Entity> EntityHandle<T> entity(
+                String name, Supplier<EntityType<T>> typeFactory) {
+            return new EntityHandle<>(
+                    NeoForgeRegistrar.registerEntityType(qualify(name), typeFactory));
+        }
     }
 
     public static final class BeHandle<E extends BlockEntity>

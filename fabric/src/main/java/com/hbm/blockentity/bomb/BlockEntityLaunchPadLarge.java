@@ -83,6 +83,9 @@ public class BlockEntityLaunchPadLarge extends BlockEntityLaunchPadBase implemen
     public void tickServer() {
         prevLift = lift;
         prevErector = erector;
+        int prevFormFactor = formFactor;
+        boolean wasErected = erected;
+        boolean wasReadyToLoad = readyToLoad;
 
         float erectorSpeed = ERECTOR_SPEED;
         float liftSpeed = LIFT_SPEED;
@@ -131,6 +134,12 @@ public class BlockEntityLaunchPadLarge extends BlockEntityLaunchPadBase implemen
 
         if (!hasFuel() || !isMissileValid(missile)) state = STATE_MISSING;
         if (erected && canLaunch()) state = STATE_READY;
+
+        if (lift != prevLift
+                || erector != prevErector
+                || formFactor != prevFormFactor
+                || erected != wasErected
+                || readyToLoad != wasReadyToLoad) markChanged();
 
         boolean prevLiftMoving = liftMoving;
         boolean prevErectorMoving = erectorMoving;
@@ -277,6 +286,7 @@ public class BlockEntityLaunchPadLarge extends BlockEntityLaunchPadBase implemen
                 if (getLevel().hasNeighborSignal(core.offset(dx, 0, dz))) powered = true;
             }
         }
+        if (redstone != powered) markChanged();
         redstone = powered;
     }
 

@@ -6,9 +6,10 @@ package com.hbm.integration.recipeviewer;
 import com.hbm.blockentity.machine.BlockEntityMachineOreSlopper;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.items.ModItems;
+import com.hbm.items.special.BedrockOreKind;
+import com.hbm.items.special.BedrockOreSet;
+import com.hbm.items.special.ItemBedrockOreBase;
 import com.hbm.items.special.ItemBedrockOreNew.BedrockOreGrade;
-import com.hbm.items.special.ItemBedrockOreNew.BedrockOreType;
 import com.hbm.items.special.ItemBedrockOreNew;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,17 +27,19 @@ public final class OreSlopperPage extends RecipePage<OreSlopperPage.Recipe> {
 
     @Override
     public List<Recipe> rows() {
-        List<ItemStack> ores = new ArrayList<>();
-        for (BedrockOreType type : BedrockOreType.VALUES)
-            ores.add(ItemBedrockOreNew.make(BedrockOreGrade.BASE, type));
-        ItemStack base = new ItemStack(ModItems.BEDROCK_ORE_BASE);
-        return List.of(
-                new Recipe(
-                        PageIds.derived(
-                                id(),
-                                PageIds.segment(BuiltInRegistries.ITEM.getKey(base.getItem()))),
-                        base,
-                        ores));
+        List<Recipe> rows = new ArrayList<>();
+        for (ItemStack base : BedrockOreSet.SAMPLES.get().get()) {
+            BedrockOreSet set = ItemBedrockOreBase.sample(base).set();
+            List<ItemStack> ores = new ArrayList<>();
+            for (BedrockOreKind type : set.kinds())
+                ores.add(ItemBedrockOreNew.make(BedrockOreGrade.BASE, type));
+            Identifier id =
+                    PageIds.derived(
+                            id(), PageIds.segment(BuiltInRegistries.ITEM.getKey(base.getItem())));
+            if (set != BedrockOreSet.NTM) id = PageIds.derived(id, set.id());
+            rows.add(new Recipe(id, base, ores));
+        }
+        return rows;
     }
 
     @Override

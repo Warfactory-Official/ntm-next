@@ -463,6 +463,9 @@ public final class RecipePages {
                     area(ScreenFusionTorus.class, 99, 39, 28, 10, FUSION),
                     area(ScreenMachinePlasmaForge.class, 62, 81, 70, 16, PLASMA_FORGE));
 
+    private static volatile List<RecipePage<?>> pages = FIXED;
+    private static volatile List<ClickArea> clickAreas = CLICK_AREAS;
+
     public static final int CUSTOM_MACHINE_X = 78,
             CUSTOM_MACHINE_Y = 119,
             CUSTOM_MACHINE_WIDTH = 90,
@@ -499,8 +502,26 @@ public final class RecipePages {
         return new ClickArea(screen, x, y, width, height, VANILLA_SMELTING);
     }
 
+    public static synchronized void addon(RecipePage<?> page) {
+        List<RecipePage<?>> next = new ArrayList<>(pages);
+        next.add(page);
+        pages = List.copyOf(next);
+    }
+
+    public static synchronized void addonClickArea(
+            Class<? extends AbstractContainerScreen<?>> screen,
+            int x,
+            int y,
+            int width,
+            int height,
+            RecipePage<?> page) {
+        List<ClickArea> next = new ArrayList<>(clickAreas);
+        next.add(area(screen, x, y, width, height, page));
+        clickAreas = List.copyOf(next);
+    }
+
     public static List<RecipePage<?>> fixed() {
-        return FIXED;
+        return pages;
     }
 
     public static List<CustomMachinePage> customMachines() {
@@ -511,7 +532,7 @@ public final class RecipePages {
     }
 
     public static List<ClickArea> clickAreas() {
-        return CLICK_AREAS;
+        return clickAreas;
     }
 
     public static List<ItemStack> hiddenStacks() {

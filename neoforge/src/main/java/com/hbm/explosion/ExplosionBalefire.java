@@ -101,7 +101,7 @@ public class ExplosionBalefire {
         return this.n > this.nlimit;
     }
 
-    private void breakColumn(int x, int z) {
+    protected void breakColumn(int x, int z) {
         int dist = (int) (radius - Math.sqrt(x * x + z * z));
 
         if (dist <= 0) return;
@@ -153,19 +153,22 @@ public class ExplosionBalefire {
 
         for (int i = depth; i > depth - 5; i--) {
             BlockPos pos = new BlockPos(pX, i, pZ);
-            BlockState state = level.getBlockState(pos);
-            if (state.is(BlockTags.BASE_STONE_OVERWORLD)
-                    || state.is(Blocks.CALCITE)
-                    || state.is(Blocks.DRIPSTONE_BLOCK)
-                    || state.is(Blocks.SULFUR)
-                    || state.is(Blocks.CINNABAR)
-                    || state.is(Blocks.SMOOTH_BASALT)) {
+            if (slakes(level.getBlockState(pos))) {
                 level.setBlock(
                         pos,
                         ModBlocks.SELLAFIELD_SLAKED.get().defaultBlockState(),
                         Block.UPDATE_ALL);
             }
         }
+    }
+
+    protected static boolean slakes(BlockState state) {
+        return state.is(BlockTags.BASE_STONE_OVERWORLD)
+                || state.is(Blocks.CALCITE)
+                || state.is(Blocks.DRIPSTONE_BLOCK)
+                || state.is(Blocks.SULFUR)
+                || state.is(Blocks.CINNABAR)
+                || state.is(Blocks.SMOOTH_BASALT);
     }
 
     private static BlockState copyPillarAxis(BlockState from, Block to) {

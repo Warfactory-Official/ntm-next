@@ -5,7 +5,7 @@
       "ingredient": "hbm:chunk_ore_rare"
     }
   ],
-  "order": 204,
+  "order": 52224,
   "output_items": [
     "hbm:fragment_boron",
     {

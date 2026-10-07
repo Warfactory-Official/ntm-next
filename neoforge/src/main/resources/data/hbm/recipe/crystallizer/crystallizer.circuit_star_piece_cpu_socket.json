@@ -12,7 +12,7 @@
       "ingredient": "hbm:scrap_plastic_cpu_socket"
     }
   ],
-  "order": 302,
+  "order": 80896,
   "output_items": [
     "hbm:circuit_star_piece_cpu_socket"
   ]

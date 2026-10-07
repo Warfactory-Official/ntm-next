@@ -22,6 +22,7 @@ import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncSlots;
 import com.hbm.packet.SyncUnitSchema;
 import com.hbm.packet.toclient.BlockDustBurstPayload;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.Facing;
 import io.netty.buffer.ByteBuf;
@@ -97,6 +98,7 @@ public class BlockEntitySawmill extends BlockEntityMachineBase
                 ItemStack result = getOutput(inventory.get(0));
                 if (result != null) {
                     progress += heat / 10;
+                    markChanged();
                     if (progress >= PROCESSING_TIME) {
                         progress = 0;
                         inventory.set(0, ItemStack.EMPTY);
@@ -107,6 +109,7 @@ public class BlockEntitySawmill extends BlockEntityMachineBase
                         setChanged();
                     }
                 } else {
+                    if (progress != 0) markChanged();
                     progress = 0;
                 }
 
@@ -116,8 +119,8 @@ public class BlockEntitySawmill extends BlockEntityMachineBase
                                     level,
                                     level.damageSources().source(ModDamageTypes.BLENDER),
                                     100)) {
-                        level.playSound(
-                                null,
+                        EntitySounds.play(
+                                e,
                                 e.getX(),
                                 e.getY(),
                                 e.getZ(),
@@ -138,6 +141,7 @@ public class BlockEntitySawmill extends BlockEntityMachineBase
                     }
                 }
             } else {
+                if (progress != 0) markChanged();
                 progress = 0;
             }
 

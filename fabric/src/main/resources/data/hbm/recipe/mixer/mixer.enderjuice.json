@@ -12,7 +12,7 @@
       "ingredient": "#c:dusts/diamond"
     }
   ],
-  "order": 5,
+  "order": 1280,
   "output_fluids": [
     {
       "type": "hbm:enderjuice",

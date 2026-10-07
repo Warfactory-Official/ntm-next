@@ -6,11 +6,9 @@ package com.hbm.integration.recipeviewer;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.recipes.CentrifugeRecipe;
 import com.hbm.inventory.recipes.CentrifugeRecipes;
-import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.random.Weighted;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.ItemStack;
 
@@ -59,9 +57,8 @@ public final class CentrifugePage extends TablePage<CentrifugeRecipe> {
         WeightedList<ItemStack>[] outputs = recipe.outputItems();
         int[][] positions = outputPositions(outputs.length);
         for (int i = 0; i < outputs.length; i++) {
-            List<ItemStack> stacks = new ArrayList<>();
-            for (Weighted<ItemStack> entry : outputs[i].unwrap()) stacks.add(entry.value().copy());
-            page.output(positions[i][0], positions[i][1]).background().items(stacks);
+            GenericMachinePage.outputSlot(
+                    page.output(positions[i][0], positions[i][1]).background(), outputs[i]);
         }
 
         page.catalyst(75, 31).item(ModBlocks.MACHINE_CENTRIFUGE.get());

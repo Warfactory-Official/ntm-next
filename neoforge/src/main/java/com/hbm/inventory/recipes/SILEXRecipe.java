@@ -7,10 +7,12 @@ import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.items.machine.EnumWavelengths;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -23,11 +25,19 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 public class SILEXRecipe extends GenericRecipe {
 
     private static final Codec<EnumWavelengths> WAVELENGTH_CODEC =
-            Codec.STRING.xmap(
-                    name -> EnumWavelengths.valueOf(name.toUpperCase(Locale.ROOT)),
+            Codec.STRING.comapFlatMap(
+                    name ->
+                            Optional.ofNullable(
+                                            EnumWavelengths.REGISTRY.byName(
+                                                    name.toUpperCase(Locale.ROOT)))
+                                    .map(DataResult::success)
+                                    .orElseGet(
+                                            () ->
+                                                    DataResult.error(
+                                                            () -> "unknown wavelength " + name)),
                     wavelength -> wavelength.name().toLowerCase(Locale.ROOT));
     private static final StreamCodec<ByteBuf, EnumWavelengths> WAVELENGTH_STREAM_CODEC =
-            ByteBufCodecs.idMapper(id -> EnumWavelengths.values()[id], Enum::ordinal);
+            EnumWavelengths.REGISTRY.streamCodec();
     private static final MapCodec<Extras> EXTRAS_MAP_CODEC =
             RecordCodecBuilder.mapCodec(
                     i ->
@@ -76,7 +86,7 @@ public class SILEXRecipe extends GenericRecipe {
     }
 
     public SILEXRecipe setup(int fluidProduced, int fluidConsumed, int laserStrength) {
-        return setup(fluidProduced, fluidConsumed, EnumWavelengths.values()[laserStrength]);
+        return setup(fluidProduced, fluidConsumed, EnumWavelengths.legacy(laserStrength));
     }
 
     public SILEXRecipe setup(int fluidProduced, int fluidConsumed, EnumWavelengths laserStrength) {

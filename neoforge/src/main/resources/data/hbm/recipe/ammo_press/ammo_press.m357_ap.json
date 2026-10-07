@@ -12,7 +12,7 @@
       "ingredient": "hbm:casing_small_steel"
     }
   },
-  "order": 4,
+  "order": 1024,
   "output_items": [
     {
       "count": 8,

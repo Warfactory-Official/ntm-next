@@ -9,10 +9,10 @@
   ],
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/iron"
+      "ingredient": "#c:ores/iron"
     }
   ],
-  "order": 226,
+  "order": 57856,
   "output_items": [
     "hbm:crystal_iron"
   ],

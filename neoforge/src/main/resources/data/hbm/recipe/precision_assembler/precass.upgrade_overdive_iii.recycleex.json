@@ -27,7 +27,7 @@
   ],
   "name": "precass.upgrade_overdive_iii.recycleEx",
   "name_wrapper": "precass.recycle",
-  "order": 51,
+  "order": 13056,
   "output_items": [
     {
       "chance": 0.5,

@@ -9,6 +9,7 @@ import com.hbm.world.gen.component.*;
 import com.hbm.world.gen.dungeon.HolePunchPiece;
 import com.hbm.world.gen.dungeon.JungleDungeonStructure;
 import com.hbm.world.gen.nbt.ConductorPoolElement;
+import com.hbm.world.gen.nbt.LegacyPiecePoolElement;
 import com.hbm.world.gen.nbt.LegacyStartPoolElement;
 import com.hbm.world.gen.nbt.ParentOverlapPoolElement;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -63,6 +64,9 @@ public final class HbmStructureTypes {
             LEGACY_START_POOL_ELEMENT;
     public static RegistryHandle<StructurePoolElementType<ConductorPoolElement>>
             CONDUCTOR_POOL_ELEMENT;
+    public static RegistryHandle<StructurePoolElementType<LegacyPiecePoolElement>>
+            LEGACY_PIECE_POOL_ELEMENT;
+    public static RegistryHandle<StructureType<LegacyJigsawStructure>> LEGACY_JIGSAW;
 
     public static RegistryHandle<StructureType<AncientTombStructure>> ANCIENT_TOMB;
     public static RegistryHandle<StructurePieceType> ANCIENT_TOMB_PIECE;
@@ -89,6 +93,12 @@ public final class HbmStructureTypes {
         LEGACY_START_POOL_ELEMENT =
                 NeoForgeRegistrar.registerStructurePoolElementType(
                         "legacy_start", LegacyStartPoolElement.CODEC);
+        LEGACY_PIECE_POOL_ELEMENT =
+                NeoForgeRegistrar.registerStructurePoolElementType(
+                        "legacy_piece", LegacyPiecePoolElement.CODEC);
+        LEGACY_JIGSAW =
+                NeoForgeRegistrar.registerStructureType(
+                        "legacy_jigsaw", LegacyJigsawStructure.CODEC);
         NULL_SPAWN =
                 NeoForgeRegistrar.registerStructureType("null_spawn", NullSpawnStructure.CODEC);
         NULL_SPAWN_PIECE =

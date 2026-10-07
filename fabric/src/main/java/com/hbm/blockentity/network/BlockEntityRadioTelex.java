@@ -150,6 +150,7 @@ public class BlockEntityRadioTelex extends BlockEntity
     public void clearReceiveBuffer() {
         for (int i = 0; i < BUFFER_LINES; i++) rxBuffer[i] = "";
         writingLine = 0;
+        markChanged();
     }
 
     public void print() {

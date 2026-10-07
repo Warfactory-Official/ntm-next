@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
+import org.jspecify.annotations.Nullable;
 
 public final class MultiblockFootprint {
     private MultiblockFootprint() {}
@@ -27,6 +28,7 @@ public final class MultiblockFootprint {
                 });
         long[] offsets = unique.toLongArray();
         BlockState[] states = new BlockState[offsets.length];
+        BlockState[] swapped = null;
         for (int i = 0; i < offsets.length; i++) {
             long offset = offsets[i];
             int x = BlockPos.getX(offset), y = BlockPos.getY(offset), z = BlockPos.getZ(offset);
@@ -35,19 +37,26 @@ public final class MultiblockFootprint {
             states[i] =
                     block.cellStateFor(
                             lx, y, lz, facing, MultiblockCellShapes.idAt(block, lx, y, lz, facing));
+            BlockState swap = block.swappedCellStateFor(lx, y, lz, facing);
+            if (swap == null) continue;
+            if (swapped == null) swapped = new BlockState[offsets.length];
+            swapped[i] = swap;
         }
-        return new Layout(offsets, states);
+        return new Layout(offsets, states, swapped);
     }
 
     public static final class Layout {
         public final long[] offsets;
         public final BlockState[] states;
+        public final @Nullable BlockState @Nullable [] swapped;
         private final long[] sorted;
         private final int minX, maxX, minZ, maxZ;
 
-        private Layout(long[] offsets, BlockState[] states) {
+        private Layout(
+                long[] offsets, BlockState[] states, @Nullable BlockState @Nullable [] swapped) {
             this.offsets = offsets;
             this.states = states;
+            this.swapped = swapped;
             sorted = offsets.clone();
             Arrays.sort(sorted);
             int minX = 0, maxX = 0, minZ = 0, maxZ = 0;
@@ -61,6 +70,11 @@ public final class MultiblockFootprint {
             this.maxX = maxX;
             this.minZ = minZ;
             this.maxZ = maxZ;
+        }
+
+        boolean matchesAt(int i, BlockState actual) {
+            return matches(actual, states[i])
+                    || swapped != null && swapped[i] != null && matches(actual, swapped[i]);
         }
 
         public boolean contains(int x, int y, int z) {
@@ -127,7 +141,7 @@ public final class MultiblockFootprint {
                     if (MultiblockSurface.recordedCorePacked(
                                     server, pos.getX(), pos.getY(), pos.getZ())
                             != core.asLong()) continue;
-                } else if (!matches(state, layout.states[i])) continue;
+                } else if (!layout.matchesAt(i, state)) continue;
                 visitor.accept(pos, state);
             }
             return;
@@ -155,9 +169,12 @@ public final class MultiblockFootprint {
                         int lz = MultiblockMaskTable.localZ(dx, dy, dz, facing);
                         int shape = MultiblockCellShapes.idAt(block, lx, dy, lz, facing);
                         BlockState expected = block.cellStateFor(lx, dy, lz, facing, shape);
-                        if (!state.is(expected.getBlock())) return;
-                        if (state.getBlock() instanceof BlockMultiblockGeometryCell
-                                && BlockMultiblockGeometryCell.shapeId(state) != shape) return;
+                        BlockState swapped = block.swappedCellStateFor(lx, dy, lz, facing);
+                        if (swapped == null || !matches(state, swapped)) {
+                            if (!state.is(expected.getBlock())) return;
+                            if (state.getBlock() instanceof BlockMultiblockGeometryCell
+                                    && BlockMultiblockGeometryCell.shapeId(state) != shape) return;
+                        }
                     }
                     visitor.accept(pos, state);
                 });

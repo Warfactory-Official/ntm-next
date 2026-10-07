@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/mingrade"
     }
   ],
-  "order": 8,
+  "order": 2048,
   "output_items": [
     "hbm:ingot_desh"
   ]

@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSetting
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
-public final class LegacyStartPoolElement extends SinglePoolElement {
+public final class LegacyStartPoolElement extends SinglePoolElement implements LegacyPlacement {
     public static final MapCodec<LegacyStartPoolElement> CODEC =
             RecordCodecBuilder.mapCodec(
                     instance ->
@@ -38,11 +38,21 @@ public final class LegacyStartPoolElement extends SinglePoolElement {
                                                     .forGetter(LegacyStartPoolElement::sizeLimit),
                                             Codec.intRange(1, 128)
                                                     .fieldOf("range_limit")
-                                                    .forGetter(LegacyStartPoolElement::rangeLimit))
+                                                    .forGetter(LegacyStartPoolElement::rangeLimit),
+                                            Codec.INT
+                                                    .optionalFieldOf("height_offset", 0)
+                                                    .forGetter(
+                                                            LegacyStartPoolElement::heightOffset),
+                                            Codec.BOOL
+                                                    .optionalFieldOf("align_to_terrain", false)
+                                                    .forGetter(
+                                                            LegacyStartPoolElement::alignToTerrain))
                                     .apply(instance, LegacyStartPoolElement::new));
 
     private final int sizeLimit;
     private final int rangeLimit;
+    private final int heightOffset;
+    private final boolean alignToTerrain;
 
     private LegacyStartPoolElement(
             Either<Identifier, StructureTemplate> template,
@@ -50,10 +60,14 @@ public final class LegacyStartPoolElement extends SinglePoolElement {
             StructureTemplatePool.Projection projection,
             Optional<LiquidSettings> liquidSettings,
             int sizeLimit,
-            int rangeLimit) {
+            int rangeLimit,
+            int heightOffset,
+            boolean alignToTerrain) {
         super(template, processors, projection, liquidSettings);
         this.sizeLimit = sizeLimit;
         this.rangeLimit = rangeLimit;
+        this.heightOffset = heightOffset;
+        this.alignToTerrain = alignToTerrain;
     }
 
     public static Function<StructureTemplatePool.Projection, LegacyStartPoolElement> single(
@@ -68,7 +82,9 @@ public final class LegacyStartPoolElement extends SinglePoolElement {
                         projection,
                         Optional.empty(),
                         sizeLimit,
-                        rangeLimit);
+                        rangeLimit,
+                        0,
+                        false);
     }
 
     public int sizeLimit() {
@@ -77,6 +93,16 @@ public final class LegacyStartPoolElement extends SinglePoolElement {
 
     public int rangeLimit() {
         return rangeLimit;
+    }
+
+    @Override
+    public int heightOffset() {
+        return heightOffset;
+    }
+
+    @Override
+    public boolean alignToTerrain() {
+        return alignToTerrain;
     }
 
     @Override

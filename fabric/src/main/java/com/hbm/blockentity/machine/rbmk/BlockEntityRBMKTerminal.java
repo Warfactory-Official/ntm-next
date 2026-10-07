@@ -139,6 +139,7 @@ public class BlockEntityRBMKTerminal extends BlockEntity
 
         if (cmd.equals("clear")) {
             for (int i = 0; i < history.length; i++) history[i] = "";
+            markChanged();
             return;
         }
 
@@ -148,6 +149,7 @@ public class BlockEntityRBMKTerminal extends BlockEntity
     public void push(String msg) {
         for (int i = history.length - 2; i > 0; i--) history[i] = history[i - 1];
         history[0] = msg;
+        markChanged();
     }
 
     @Override

@@ -5,6 +5,7 @@ package com.hbm.entity.mob;
 
 import com.hbm.advancement.BossKilledTrigger;
 import com.hbm.advancement.HbmCriteria;
+import com.hbm.api.environment.ISuffocationImmune;
 import com.hbm.entity.projectile.EntityBulletBaseMK4;
 import com.hbm.explosion.ExplosionNukeSmall;
 import com.hbm.items.ModItems;
@@ -47,7 +48,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class EntityUFO extends Mob implements Enemy {
+public class EntityUFO extends Mob implements Enemy, ISuffocationImmune {
     private static final EntityDataAccessor<Boolean> BEAM =
             SynchedEntityData.defineId(EntityUFO.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> WAYPOINT_X =

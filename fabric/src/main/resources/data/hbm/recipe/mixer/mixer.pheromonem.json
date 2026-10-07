@@ -16,7 +16,7 @@
       "ingredient": "hbm:pill_herbal"
     }
   ],
-  "order": 43,
+  "order": 11008,
   "output_fluids": [
     {
       "type": "hbm:pheromone_m",

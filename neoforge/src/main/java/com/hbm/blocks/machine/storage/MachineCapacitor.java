@@ -11,6 +11,7 @@ import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
+import com.hbm.interfaces.ILookOverlay;
 import com.hbm.items.ModDataComponents;
 import com.hbm.util.BobMathUtil;
 import com.mojang.serialization.MapCodec;
@@ -21,6 +22,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,7 +30,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import org.jspecify.annotations.Nullable;
 
 public class MachineCapacitor extends BlockDirectionalBase
-        implements ITickingBlock, ICapabilityBlock, IPersistentInfoProvider {
+        implements ITickingBlock, ICapabilityBlock, IPersistentInfoProvider, ILookOverlay {
 
     public final long maxPower;
     private final MapCodec<MachineCapacitor> ownCodec;
@@ -70,23 +72,24 @@ public class MachineCapacitor extends BlockDirectionalBase
     }
 
     @Override
+    public void buildLookOverlay(Level level, BlockPos pos, ILookOverlay.LookInfo info) {
+        if (!(level.getBlockEntity(pos) instanceof BlockEntityMachineCapacitor capacitor)) return;
+        info.title(getName(), 0xffff00, 0x404000)
+                .charge(capacitor.getPower(), capacitor.getMaxPower());
+        info.line(
+                Component.translatable(
+                        "overlay.hbm.capacitor.received",
+                        BobMathUtil.getShortNumber(capacitor.powerReceivedThisTick())));
+        info.line(
+                Component.translatable(
+                        "overlay.hbm.capacitor.sent",
+                        BobMathUtil.getShortNumber(capacitor.powerSentThisTick())));
+    }
+
+    @Override
     public void appendPersistentInfo(ItemStack stack, Consumer<Component> adder) {
         CapacitorCharge state = stack.get(ModDataComponents.CAPACITOR_STATE.get());
         if (state == null) return;
-        adder.accept(
-                Component.translatable(
-                                "desc.shared.storesUpTo", BobMathUtil.getShortNumber(maxPower))
-                        .withStyle(ChatFormatting.GOLD));
-        adder.accept(
-                Component.translatable(
-                                "desc.shared.chargeSpeed",
-                                BobMathUtil.getShortNumber(maxPower / 200))
-                        .withStyle(ChatFormatting.GOLD));
-        adder.accept(
-                Component.translatable(
-                                "desc.shared.dischargeSpeed",
-                                BobMathUtil.getShortNumber(maxPower / 600))
-                        .withStyle(ChatFormatting.GOLD));
         adder.accept(
                 Component.literal(
                                 BobMathUtil.getShortNumber(state.power())

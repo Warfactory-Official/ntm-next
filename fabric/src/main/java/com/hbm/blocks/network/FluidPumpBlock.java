@@ -101,8 +101,7 @@ public class FluidPumpBlock extends Block implements ITickingBlock, ILookOverlay
                                 FluidIdentifierData.EMPTY);
                 Fluid type = data.primary();
                 if (type != null && type != Fluids.EMPTY) {
-                    pump.type = type;
-                    pump.setChanged();
+                    if (pump.setFluidType(type)) pump.markChanged();
                     player.sendSystemMessage(
                             Component.translatable(
                                     "hbm.message.pumpSet",

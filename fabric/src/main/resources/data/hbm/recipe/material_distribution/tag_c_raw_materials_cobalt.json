@@ -1,0 +1,14 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 48,
+      "material": "cobalt"
+    },
+    {
+      "amount": 108,
+      "material": "stone"
+    }
+  ],
+  "targets": "#c:raw_materials/cobalt"
+}

@@ -4,8 +4,8 @@
 package com.hbm.client.render.flywheel;
 
 import com.hbm.blockentity.BlockEntityPlushie;
+import com.hbm.blocks.generic.BlockPlushie.Plushie;
 import com.hbm.blocks.generic.BlockPlushie.PlushieType;
-import com.hbm.client.render.PlushieItemRenderer;
 import com.hbm.client.render.RenderPlushie;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
@@ -18,21 +18,21 @@ import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 
 public final class PlushieItemVisual extends HbmItemVisual {
-    private final PlushieType type;
+    private final Plushie type;
     private final List<TransformedInstance> parts = new ArrayList<>();
     private final List<Matrix4f> locals = new ArrayList<>();
     private final Matrix4f world = new Matrix4f();
 
-    public PlushieItemVisual(VisualizationContext ctx, PlushieType type) {
+    public PlushieItemVisual(VisualizationContext ctx, Plushie type) {
         super(ctx);
         this.type = type;
         PoseStack poses = new PoseStack();
-        PlushieItemRenderer.itemPose(type, poses);
+        RenderPlushie.itemPose(type, poses);
         RenderPlushie.visitParts(
                 type,
                 poses,
                 (part, mesh, group, face, ps) -> {
-                    if (!face.shows(false)) return;
+                    if (!face.shows(0L)) return;
                     parts.add(
                             transformed(
                                     ItemMaterials.item(

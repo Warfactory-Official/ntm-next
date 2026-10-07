@@ -5,7 +5,7 @@
       "ingredient": "#c:dusts/coal"
     }
   ],
-  "order": 8,
+  "order": 2048,
   "output_items": [
     "hbm:briquette_coal"
   ],

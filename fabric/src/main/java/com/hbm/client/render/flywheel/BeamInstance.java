@@ -45,8 +45,8 @@ public final class BeamInstance extends AbstractInstance {
                 .build();
     }
 
-    private static int rgba(int rgb) {
-        return (rgb >>> 16 & 255) | (rgb & 0xff00) | (rgb & 255) << 16 | 0xff000000;
+    private static int rgba(int rgb, int alpha) {
+        return (rgb >>> 16 & 255) | (rgb & 0xff00) | (rgb & 255) << 16 | alpha << 24;
     }
 
     public void update(
@@ -59,10 +59,24 @@ public final class BeamInstance extends AbstractInstance {
             int count,
             int outer,
             int inner) {
+        update(pose, length, size, thickness, phase, wave, count, outer, inner, 255);
+    }
+
+    public void update(
+            Matrix4fc pose,
+            float length,
+            float size,
+            float thickness,
+            int phase,
+            int wave,
+            int count,
+            int outer,
+            int inner,
+            int alpha) {
         setVisible(true);
         long ptr = slabPtr();
-        MemoryUtil.memPutInt(ptr, rgba(outer));
-        MemoryUtil.memPutInt(ptr + 4, rgba(inner));
+        MemoryUtil.memPutInt(ptr, rgba(outer, alpha));
+        MemoryUtil.memPutInt(ptr + 4, rgba(inner, 255));
         ExtraMemoryOps.putMatrix4f(ptr + 8, pose);
         MemoryUtil.memPutFloat(ptr + 72, length);
         MemoryUtil.memPutFloat(ptr + 76, size);

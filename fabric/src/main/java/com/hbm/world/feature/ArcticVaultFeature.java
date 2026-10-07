@@ -5,9 +5,10 @@ package com.hbm.world.feature;
 
 import com.hbm.blockentity.BlockEntityBobble;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.BlockBobble.BobbleType;
+import com.hbm.blocks.generic.BlockBobble.Bobble;
 import com.hbm.blocks.generic.BlockBobble;
 import com.hbm.world.gen.WorldgenHeight;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -22,8 +23,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public class ArcticVaultFeature extends Feature<NoneFeatureConfiguration> {
-
-    private static final BobbleType[] BOBBLE_TYPES = BobbleType.values();
 
     private static final int BRICK = 0;
     private static final int WEB = 1;
@@ -164,7 +163,8 @@ public class ArcticVaultFeature extends Feature<NoneFeatureConfiguration> {
                                 .setValue(BlockBobble.ROTATION, rand.nextInt(16));
                 level.setBlock(at, bobblehead, 3);
                 if (level.getBlockEntity(at) instanceof BlockEntityBobble bobble) {
-                    bobble.type = BOBBLE_TYPES[rand.nextInt(BobbleType.count() - 1) + 1];
+                    List<Bobble> types = BlockBobble.TYPES.values();
+                    bobble.type = types.get(rand.nextInt(types.size() - 1) + 1);
                     bobble.setChanged();
                 }
                 continue;

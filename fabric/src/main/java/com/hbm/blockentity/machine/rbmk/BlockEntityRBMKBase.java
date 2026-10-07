@@ -140,6 +140,7 @@ public abstract class BlockEntityRBMKBase extends BlockEntityMachineBase {
         this.reasimWater -= processedWater;
         this.reasimSteam += processedWater;
         this.heat -= processedWater * heatConsumption;
+        this.markChanged();
     }
 
     private void moveHeat() {
@@ -187,6 +188,7 @@ public abstract class BlockEntityRBMKBase extends BlockEntityMachineBase {
                     base.reasimWater = tWater;
                     base.reasimSteam = tSteam;
                 }
+                base.markChanged();
             }
             this.heat += (targetHeat - this.heat) * stepSize;
             if (reasim) {
@@ -202,8 +204,10 @@ public abstract class BlockEntityRBMKBase extends BlockEntityMachineBase {
     }
 
     protected void coolPassively(int neighbors) {
+        double before = this.heat;
         this.heat -= this.passiveCooling(neighbors);
         if (heat < 20) heat = 20D;
+        if (this.heat != before) this.markChanged();
     }
 
     @Override

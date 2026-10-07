@@ -1,0 +1,29 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#c:raw_materials/beryllium"
+    }
+  ],
+  "order": 11776,
+  "output_items": [
+    {
+      "chance": 0.667,
+      "id": "hbm:powder_beryllium"
+    },
+    {
+      "chance": 0.667,
+      "id": "hbm:powder_beryllium"
+    },
+    {
+      "chance": 0.667,
+      "id": "hbm:powder_emerald"
+    },
+    {
+      "chance": 0.667,
+      "id": "minecraft:gravel"
+    }
+  ],
+  "power": 200
+}

@@ -14,7 +14,7 @@
       "ingredient": "#c:plates/copper"
     }
   ],
-  "order": 56,
+  "order": 14336,
   "output_items": [
     "hbm:machine_blast_furnace"
   ],

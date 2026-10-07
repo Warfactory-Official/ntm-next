@@ -17,6 +17,7 @@ import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -75,6 +76,7 @@ public abstract class BlockEntityPneumaticStorageBase extends BlockEntityMachine
         if (this.compair.getFill() > 0) {
             int consumption = this.compair.getFill() * 9 / this.compair.getMaxFill() + 1;
             this.compair.setFill(Math.max(this.compair.getFill() - consumption, 0));
+            this.markChanged();
         }
 
         this.networkPackNT(15);
@@ -112,6 +114,16 @@ public abstract class BlockEntityPneumaticStorageBase extends BlockEntityMachine
                                 == null)
                 && (!ModList.get().isLoaded("sophisticatedcore")
                         || !SophisticatedCoreNesting.hasStorage(stack));
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return compair.joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        visitor.accept(compair);
     }
 
     @Override

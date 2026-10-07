@@ -21,7 +21,7 @@
       "ingredient": "#c:ingots/rubber"
     }
   ],
-  "order": 24,
+  "order": 6144,
   "output_items": [
     "hbm:item_expensive_plastic"
   ],

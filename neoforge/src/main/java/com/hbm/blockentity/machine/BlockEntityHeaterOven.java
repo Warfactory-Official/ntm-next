@@ -63,6 +63,7 @@ public class BlockEntityHeaterOven extends BlockEntityFireboxBase implements Men
                                 MachineData.HEATER_OVEN_MAX_HEAT_ENERGY.get() - this.heatEnergy),
                         0);
         this.heatEnergy += (int) (toPull * MachineData.HEATER_OVEN_HEAT_EFF.get());
+        if (toPull > 0) markChanged();
         source.useUpHeat(level, heatPos, toPull);
     }
 

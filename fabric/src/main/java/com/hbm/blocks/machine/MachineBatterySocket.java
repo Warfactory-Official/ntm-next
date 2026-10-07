@@ -11,9 +11,11 @@ import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.network.CableConductorBlockBase;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
+import com.hbm.interfaces.ILookOverlay;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,7 +23,7 @@ import org.jspecify.annotations.Nullable;
 
 @RefreshesNeighborState(be = BlockEntityBatterySocket.class, calling = "refreshMode")
 public class MachineBatterySocket extends BlockMultiblockCore
-        implements ITickingBlock, ICapabilityBlock {
+        implements ITickingBlock, ICapabilityBlock, ILookOverlay {
 
     private static final int[] DIMENSIONS = {1, 0, 1, 0, 1, 0};
     private static final int NODE_MASK =
@@ -121,6 +123,16 @@ public class MachineBatterySocket extends BlockMultiblockCore
     @Override
     protected boolean comparatorCellAt(int lx, int ly, int lz) {
         return ly == 0;
+    }
+
+    @Override
+    public void buildLookOverlay(Level level, BlockPos pos, ILookOverlay.LookInfo info) {
+        if (!(level.getBlockEntity(pos) instanceof BlockEntityBatterySocket socket)
+                || socket.syncStack.isEmpty()) {
+            return;
+        }
+        info.title(socket.syncStack.getHoverName(), 0xffff00, 0x404000)
+                .charge(socket.syncPower, socket.syncMaxPower);
     }
 
     @Override

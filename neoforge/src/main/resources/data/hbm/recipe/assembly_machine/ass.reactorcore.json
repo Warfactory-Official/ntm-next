@@ -19,7 +19,7 @@
       "ingredient": "#c:ingots/asbestos"
     }
   ],
-  "order": 39,
+  "order": 9984,
   "output_items": [
     "hbm:reactor_core"
   ],

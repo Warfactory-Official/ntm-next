@@ -9,6 +9,8 @@ import com.hbm.inventory.IGUIProvider;
 import com.hbm.inventory.container.MenuMachineSatLinker;
 import com.hbm.items.ISatChip;
 import com.hbm.saveddata.SatelliteSavedData;
+import com.hbm.saveddata.satellites.Satellite;
+import com.hbm.saveddata.satellites.SatelliteType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -66,6 +68,10 @@ public class BlockEntityMachineSatLinker extends BlockEntityMachineBase implemen
                 ISatChip.setFreqS(target, freq);
                 written = true;
             }
+            if (SatelliteType.fromStack(source) != null
+                    && SatelliteType.fromStack(target) != null) {
+                written |= Satellite.copyCarried(source, target);
+            }
         }
 
         ItemStack randomize = getItem(SLOT_RANDOMIZE);
@@ -73,7 +79,8 @@ public class BlockEntityMachineSatLinker extends BlockEntityMachineBase implemen
             rolled = null;
         } else if (randomize != rolled && randomize.getItem() instanceof ISatChip) {
             rolled = randomize;
-            SatelliteSavedData satellites = SatelliteSavedData.get(server);
+            SatelliteSavedData satellites =
+                    SatelliteSavedData.at(server, getBlockPos().getX(), getBlockPos().getZ());
             for (int attempt = 0; attempt < FREQ_BOUND; attempt++) {
                 int freq = server.getRandom().nextInt(FREQ_BOUND);
                 if (satellites.isFreqTaken(freq)) continue;

@@ -132,7 +132,8 @@ public class BlockEntityMachineAssemblyFactory extends BlockEntityMachineBase
     @SyncField(units = 1L << 3)
     public final ModuleMachineAssembler[] module = new ModuleMachineAssembler[MODULES];
 
-    private final FluidPort coolantPort = FluidPort.of(coolant, new int[] {0}, new int[] {1});
+    private final FluidPort coolantPort =
+            FluidPort.of(coolant, new int[] {0}, new int[] {1}, this::markChanged);
     private final ItemPort[] ioPorts = new ItemPort[MODULES];
     private final UpgradeManager upgradeManager = new UpgradeManager(this);
 
@@ -215,6 +216,8 @@ public class BlockEntityMachineAssemblyFactory extends BlockEntityMachineBase
     @Override
     public void tickServer() {
         long prevPower = power;
+        long prevMaxPower = maxPower;
+        boolean changed = false;
         dirtyThisTick = false;
 
         long nextMaxPower = 0;
@@ -238,16 +241,20 @@ public class BlockEntityMachineAssemblyFactory extends BlockEntityMachineBase
 
         boolean cool = canCool();
         for (int i = 0; i < MODULES; i++) {
+            double prevProgress = module[i].progress;
             module[i].update(speed * 2D, pow * 2D, cool, inventory.get(4 + i * SLOTS_PER_MODULE));
             didProcess[i] = module[i].didProcess;
             dirtyThisTick |= module[i].markDirty;
+            changed |= module[i].progress != prevProgress;
             if (didProcess[i]) {
                 water().setFill(water().getFill() - 100);
                 lps().setFill(lps().getFill() + 100);
+                changed = true;
             }
         }
 
         if (dirtyThisTick || power != prevPower) setChanged();
+        else if (changed || maxPower != prevMaxPower) markChanged();
 
         networkPackNT(100);
     }
@@ -321,6 +328,12 @@ public class BlockEntityMachineAssemblyFactory extends BlockEntityMachineBase
     @Override
     public int[] getValidUpgrades() {
         return VALID_UPGRADES;
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        FluidTankEndpoint.super.forEachTank(visitor);
+        for (FluidTankNTM tank : coolant) visitor.accept(tank);
     }
 
     @Override

@@ -5,9 +5,10 @@
       "ingredient": "#c:raw_materials/beryllium"
     }
   ],
-  "order": 358,
+  "order": 91648,
   "output_items": [
     {
+      "chance": 0.667,
       "count": 2,
       "id": "hbm:powder_beryllium"
     }

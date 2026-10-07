@@ -104,6 +104,7 @@ public class MenuMachineCustom extends BlockEntityMenu<BlockEntityCustomMachine>
 
         if (button == 1 && input == ContainerInput.PICKUP && slot.hasItem()) {
             be.matcher.nextMode(be.getLevel(), slot.getItem(), index);
+            be.markChanged();
             return;
         }
         slot.set(getCarried());

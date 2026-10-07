@@ -115,8 +115,13 @@ public class BlockEntityMachineArcWelder extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
+        long priorPower = power;
+        long priorMaxPower = maxPower;
+        long priorConsumption = consumption;
+        int priorProgress = progress;
+        int priorProcessTime = processTime;
         power += ItemEnergyTransfer.extract(this, SLOT_BATTERY, maxPower - power, false);
-        tank.setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory);
+        if (tank.setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory)) markChanged();
 
         upgradeManager.scan(this, SLOT_UPGRADE_START, SLOT_UPGRADE_END);
         int speedLevel = upgradeManager.getLevel(UpgradeType.SPEED);
@@ -169,6 +174,11 @@ public class BlockEntityMachineArcWelder extends BlockEntityMachineBase
         }
 
         maxPower = Math.max(intendedMaxPower, power);
+        if (power != priorPower
+                || maxPower != priorMaxPower
+                || consumption != priorConsumption
+                || progress != priorProgress
+                || processTime != priorProcessTime) markChanged();
         networkPackNT(25);
     }
 

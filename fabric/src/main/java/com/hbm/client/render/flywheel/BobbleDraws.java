@@ -3,7 +3,9 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.blocks.generic.BlockBobble.Bobble;
 import com.hbm.blocks.generic.BlockBobble.BobbleType;
+import com.hbm.client.render.BobbleFigures;
 import com.hbm.client.render.RenderBobble;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
@@ -19,6 +21,9 @@ import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
@@ -42,6 +47,8 @@ final class BobbleDraws {
                     RenderBobble.DRILLGON,
                     material(ResourceManager.bobble_drillgon_tex, true));
     private static final SkinMeshes[] GUY_MESHES = buildGuyMeshes();
+    private static final Map<Bobble, SkinMeshes> FIGURE_MESHES = new ConcurrentHashMap<>();
+    private static final Map<Bobble, MeshPart> FIGURE_BODIES = new ConcurrentHashMap<>();
     private static final SkinMeshes MELLOW_MESHES =
             skinMeshes(
                     fixed(
@@ -138,13 +145,31 @@ final class BobbleDraws {
     @Nullable Matrix4f propPivot;
     final Matrix4f labelLocal;
 
-    BobbleDraws(BobbleType type, PoseStack root) {
+    BobbleDraws(Bobble type, PoseStack root) {
         part(root, SOCKET_MESH, 0xFFFFFFFF, 0);
-        switch (type) {
-            case PU238 -> renderPellet(root);
-            case UFFR -> renderFumo(root);
-            case DRILLGON -> part(root, DRILLGON_MESH, 0xFFFFFFFF, 0);
-            default -> renderGuy(root, type, GUY_MESHES[type.ordinal()], 0);
+        Supplier<RenderBobble.Body> body =
+                type instanceof BobbleType ? null : BobbleFigures.get(type).body();
+        if (body != null) {
+            part(
+                    root,
+                    FIGURE_BODIES.computeIfAbsent(
+                            type,
+                            key ->
+                                    mesh(
+                                            body.get().mesh(),
+                                            body.get().group(),
+                                            material(RenderBobble.skinTexture(key), true))),
+                    0xFFFFFFFF,
+                    0);
+        } else if (!(type instanceof BobbleType ntm)) {
+            renderGuy(root, type, FIGURE_MESHES.computeIfAbsent(type, BobbleDraws::guyMeshes), 0);
+        } else {
+            switch (ntm) {
+                case PU238 -> renderPellet(root);
+                case UFFR -> renderFumo(root);
+                case DRILLGON -> part(root, DRILLGON_MESH, 0xFFFFFFFF, 0);
+                default -> renderGuy(root, type, GUY_MESHES[ntm.ordinal()], 0);
+            }
         }
         root.pushPose();
         renderPost(type, root);
@@ -163,13 +188,14 @@ final class BobbleDraws {
 
     private static SkinMeshes[] buildGuyMeshes() {
         SkinMeshes[] meshes = new SkinMeshes[BobbleType.values().length];
-        for (BobbleType type : BobbleType.values()) {
-            meshes[type.ordinal()] =
-                    skinMeshes(
-                            blended(RenderBobble.skinTexture(type)),
-                            type.skinLayers ? RenderBobble.LAYERED : RenderBobble.FLAT);
-        }
+        for (BobbleType type : BobbleType.values()) meshes[type.ordinal()] = guyMeshes(type);
         return meshes;
+    }
+
+    private static SkinMeshes guyMeshes(Bobble type) {
+        return skinMeshes(
+                blended(RenderBobble.skinTexture(type)),
+                type.skinLayers() ? RenderBobble.LAYERED : RenderBobble.FLAT);
     }
 
     private static SkinMeshes skinMeshes(Material material, RenderBobble.Skin skin) {
@@ -236,7 +262,7 @@ final class BobbleDraws {
                 .build();
     }
 
-    private void renderGuy(PoseStack pose, BobbleType type, SkinMeshes skin, int light) {
+    private void renderGuy(PoseStack pose, Bobble type, SkinMeshes skin, int light) {
         RenderBobble.Pose angles = RenderBobble.pose(type);
         pose.pushPose();
         pose.mulPose(Axis.YP.rotationDegrees((float) angles.body()));
@@ -308,8 +334,9 @@ final class BobbleDraws {
         pose.popPose();
     }
 
-    private void renderPost(BobbleType type, PoseStack pose) {
-        switch (type) {
+    private void renderPost(Bobble type, PoseStack pose) {
+        if (!(type instanceof BobbleType ntm)) return;
+        switch (ntm) {
             case BLUEHAT -> {
                 pose.translate(0D, .875D, -.5D);
                 pose.mulPose(Axis.YP.rotationDegrees(-90F));
@@ -380,7 +407,7 @@ final class BobbleDraws {
         }
     }
 
-    private void holdProp(BobbleType type, PoseStack pose, @Nullable Matrix4f pivot) {
+    private void holdProp(Bobble type, PoseStack pose, @Nullable Matrix4f pivot) {
         RenderBobble.propPose(type, pose);
         propLocal.set(pose.last().pose());
         propPivot = pivot;

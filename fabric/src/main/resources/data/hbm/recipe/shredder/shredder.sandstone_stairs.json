@@ -5,7 +5,7 @@
       "ingredient": "minecraft:sandstone_stairs"
     }
   ],
-  "order": 32,
+  "order": 8192,
   "output_items": [
     {
       "count": 6,

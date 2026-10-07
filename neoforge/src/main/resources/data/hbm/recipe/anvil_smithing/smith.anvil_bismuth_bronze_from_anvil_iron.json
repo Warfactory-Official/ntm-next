@@ -9,7 +9,7 @@
       "ingredient": "#c:ingots/bismuth_bronze"
     }
   ],
-  "order": 4,
+  "order": 1024,
   "output_items": [
     "hbm:anvil_bismuth_bronze"
   ]

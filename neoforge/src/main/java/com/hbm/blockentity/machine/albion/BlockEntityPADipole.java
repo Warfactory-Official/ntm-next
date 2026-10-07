@@ -119,6 +119,7 @@ public class BlockEntityPADipole extends BlockEntityCooledBase
         }
 
         this.power -= usage * mult;
+        markChanged();
     }
 
     @Override
@@ -148,6 +149,7 @@ public class BlockEntityPADipole extends BlockEntityCooledBase
                 break;
             }
         }
+        if (redstonePowered != powered) markChanged();
         redstonePowered = powered;
     }
 

@@ -9,6 +9,7 @@ import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.BulletConfig;
 import com.hbm.items.weapon.sedna.factory.XFactory12ga;
 import com.hbm.particle.helper.ParticleCreators;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.List;
 import java.util.function.Consumer;
@@ -81,8 +82,8 @@ public class ItemModTwoKick extends ItemArmorMod {
                         0.25F);
             }
         }
-        level.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.getX(),
                 player.getY(),
                 player.getZ(),

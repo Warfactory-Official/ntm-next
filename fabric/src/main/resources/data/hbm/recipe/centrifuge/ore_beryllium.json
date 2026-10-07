@@ -3,10 +3,10 @@
   "duration": 200,
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/beryllium"
+      "ingredient": "#c:ores/beryllium"
     }
   ],
-  "order": 28,
+  "order": 11520,
   "output_items": [
     "hbm:powder_beryllium",
     "hbm:powder_beryllium",

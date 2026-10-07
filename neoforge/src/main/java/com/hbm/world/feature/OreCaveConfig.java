@@ -14,14 +14,15 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 public record OreCaveConfig(
         BlockState ore,
         Optional<BlockState> fluid,
-        BlockState stalactite,
-        BlockState stalagmite,
+        Optional<BlockState> stalactite,
+        Optional<BlockState> stalagmite,
         RuleTest replaceable,
         double threshold,
         int rangeMult,
         int maxRange,
         int yLevel,
-        Identifier domain)
+        Identifier domain,
+        boolean exposedByFluid)
         implements FeatureConfiguration {
 
     public static final Codec<OreCaveConfig> CODEC =
@@ -35,10 +36,10 @@ public record OreCaveConfig(
                                                     .optionalFieldOf("fluid")
                                                     .forGetter(OreCaveConfig::fluid),
                                             BlockState.CODEC
-                                                    .fieldOf("stalactite")
+                                                    .optionalFieldOf("stalactite")
                                                     .forGetter(OreCaveConfig::stalactite),
                                             BlockState.CODEC
-                                                    .fieldOf("stalagmite")
+                                                    .optionalFieldOf("stalagmite")
                                                     .forGetter(OreCaveConfig::stalagmite),
                                             RuleTest.CODEC
                                                     .fieldOf("replaceable")
@@ -57,6 +58,9 @@ public record OreCaveConfig(
                                                     .forGetter(OreCaveConfig::yLevel),
                                             Identifier.CODEC
                                                     .fieldOf("domain")
-                                                    .forGetter(OreCaveConfig::domain))
+                                                    .forGetter(OreCaveConfig::domain),
+                                            Codec.BOOL
+                                                    .optionalFieldOf("exposed_by_fluid", false)
+                                                    .forGetter(OreCaveConfig::exposedByFluid))
                                     .apply(inst, OreCaveConfig::new));
 }

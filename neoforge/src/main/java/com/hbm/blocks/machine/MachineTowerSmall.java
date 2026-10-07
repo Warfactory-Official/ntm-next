@@ -32,8 +32,13 @@ public class MachineTowerSmall extends BlockMultiblockCore
     }
 
     static void towerOverlay(
-            ILookOverlay.LookInfo info, Block block, FluidTankNTM in, FluidTankNTM out) {
+            Level level,
+            ILookOverlay.LookInfo info,
+            Block block,
+            FluidTankNTM in,
+            FluidTankNTM out) {
         info.title(block.getName().getString(), 0xFFFF00, 0x404000);
+        MachineCondenser.vacuumWarning(level, info);
         info.line(
                 ChatFormatting.GREEN
                         + "-> "
@@ -97,7 +102,7 @@ public class MachineTowerSmall extends BlockMultiblockCore
     @Override
     public void buildLookOverlay(Level level, BlockPos pos, LookInfo info) {
         if (!(level.getBlockEntity(pos) instanceof BlockEntityTowerSmall be)) return;
-        towerOverlay(info, this, be.input, be.output);
+        towerOverlay(level, info, this, be.input, be.output);
     }
 
     @Override

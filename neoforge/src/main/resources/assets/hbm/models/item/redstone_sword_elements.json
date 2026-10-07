@@ -478,6 +478,7 @@
     }
   ],
   "textures": {
+    "particle": "hbm:item/redstone_sword",
     "texture": "hbm:block/models/model_sword_redstone"
   }
 }

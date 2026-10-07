@@ -8,9 +8,13 @@ import com.hbm.api.redstoneoverradio.IRORValueProvider;
 import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.PersistentDrop;
+import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.machine.storage.MachineCapacitor;
 import com.hbm.items.ModDataComponents;
+import com.hbm.packet.SyncField;
+import com.hbm.packet.SyncUnitSchema;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentGetter;
@@ -23,7 +27,9 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineCapacitor extends BlockEntity
-        implements GraphResident,
+        implements Synced,
+                SyncUnitSchema,
+                GraphResident,
                 FoldedCoreResident,
                 IEnergyHandlerMK2,
                 PersistentDrop,
@@ -35,10 +41,18 @@ public class BlockEntityMachineCapacitor extends BlockEntity
                 PREFIX_VALUE + "fill", PREFIX_VALUE + "fillpercent",
             };
 
+    @SyncField(units = 1L)
     private long power;
+
+    @SyncField(units = 1L)
     private long maxPower;
+
+    @SyncField(units = 1L)
     private long powerReceived;
+
+    @SyncField(units = 1L)
     private long powerSent;
+
     private long lastPowerReceived;
     private long lastPowerSent;
     private long counted = Long.MIN_VALUE;
@@ -50,6 +64,12 @@ public class BlockEntityMachineCapacitor extends BlockEntity
     public BlockEntityMachineCapacitor(BlockPos pos, BlockState state, long maxPower) {
         super(ModBlockEntities.CAPACITOR.get(), pos, state);
         this.maxPower = maxPower;
+    }
+
+    public void tickServer() {
+        getMaxPower();
+        networkPackNT(15);
+        rollover();
     }
 
     @Override
@@ -83,6 +103,37 @@ public class BlockEntityMachineCapacitor extends BlockEntity
         return lastPowerSent;
     }
 
+    public long powerReceivedThisTick() {
+        return powerReceived;
+    }
+
+    public long powerSentThisTick() {
+        return powerSent;
+    }
+
+    @Override
+    public long syncUnitMask() {
+        return 1L;
+    }
+
+    @Override
+    public void writeSyncUnit(int unit, ByteBuf output) {
+        if (unit != 0) throw new IllegalArgumentException();
+        output.writeLong(power);
+        output.writeLong(maxPower);
+        output.writeLong(powerReceived);
+        output.writeLong(powerSent);
+    }
+
+    @Override
+    public void readSyncUnit(int unit, ByteBuf input) {
+        if (unit != 0) throw new IllegalArgumentException();
+        power = input.readLong();
+        maxPower = input.readLong();
+        powerReceived = input.readLong();
+        powerSent = input.readLong();
+    }
+
     @Override
     public long transferPower(long power, boolean simulate) {
         long overshoot = IEnergyHandlerMK2.super.transferPower(power, simulate);
@@ -98,6 +149,7 @@ public class BlockEntityMachineCapacitor extends BlockEntity
         rollover();
         powerSent += Math.min(getPower(), power);
         setPower(getPower() - power);
+        if (power != 0) markChanged();
     }
 
     @Override
@@ -135,7 +187,21 @@ public class BlockEntityMachineCapacitor extends BlockEntity
     @Override
     public @Nullable String provideRORValue(String name) {
         if ((PREFIX_VALUE + "fill").equals(name)) return "" + power;
-        if ((PREFIX_VALUE + "fillpercent").equals(name)) return "" + power * 100 / getMaxPower();
+        if ((PREFIX_VALUE + "fillpercent").equals(name)) {
+            long ceiling = getMaxPower();
+            if (ceiling == 0) throw new ArithmeticException();
+            long hundreds = ceiling / 100;
+            long remainder = ceiling % 100;
+            int low = 0;
+            int high = 100;
+            while (low < high) {
+                int middle = (low + high + 1) >>> 1;
+                long threshold = hundreds * middle + (remainder * middle + 99) / 100;
+                if (power >= threshold) low = middle;
+                else high = middle - 1;
+            }
+            return Integer.toString(low);
+        }
         return null;
     }
 

@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/workers_alloy"
     }
   ],
-  "order": 9,
+  "order": 2304,
   "output_items": [
     "hbm:ingot_bscco"
   ]

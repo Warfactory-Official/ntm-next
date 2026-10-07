@@ -5,9 +5,10 @@
       "ingredient": "#c:raw_materials/cobalt"
     }
   ],
-  "order": 363,
+  "order": 92928,
   "output_items": [
     {
+      "chance": 0.667,
       "count": 2,
       "id": "hbm:powder_cobalt"
     }

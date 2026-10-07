@@ -6,7 +6,7 @@
       "ingredient": "#c:plates/dura_steel"
     }
   ],
-  "order": 50,
+  "order": 12800,
   "output_items": [
     "hbm:pipe_dura_steel"
   ],

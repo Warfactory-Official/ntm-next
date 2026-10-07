@@ -27,6 +27,8 @@ import dev.engine_room.flywheel.lib.visual.AbstractVisual;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
@@ -50,7 +52,7 @@ public final class BeamVisual extends AbstractVisual {
     private float beamLength;
     private double lastX, lastY, lastZ;
     private float lastSize, lastThickness;
-    private int lastPhase, lastOuter, lastInner, lastOriginX, lastOriginY, lastOriginZ;
+    private int lastPhase, lastOuter, lastInner, lastAlpha, lastOriginX, lastOriginY, lastOriginZ;
     private EnumWaveType lastWave;
 
     public BeamVisual(
@@ -137,6 +139,49 @@ public final class BeamVisual extends AbstractVisual {
             float thickness,
             int outer,
             int inner) {
+        update(base, x, y, z, wave, phase, count, size, thickness, outer, inner, 1F);
+    }
+
+    public void update(
+            Matrix4fc base,
+            Vec3 skeleton,
+            EnumWaveType wave,
+            int phase,
+            int count,
+            float size,
+            float thickness,
+            int outer,
+            int inner,
+            float alpha) {
+        update(
+                base,
+                skeleton.x,
+                skeleton.y,
+                skeleton.z,
+                wave,
+                phase,
+                count,
+                size,
+                thickness,
+                outer,
+                inner,
+                alpha);
+    }
+
+    public void update(
+            Matrix4fc base,
+            double x,
+            double y,
+            double z,
+            EnumWaveType wave,
+            int phase,
+            int count,
+            float size,
+            float thickness,
+            int outer,
+            int inner,
+            float alpha) {
+        int alphaByte = ARGB.as8BitChannel(Mth.clamp(alpha, 0F, 1F));
         double lengthSquared = x * x + y * y + z * z;
         if (count <= 0 || lengthSquared == 0) {
             hide();
@@ -160,7 +205,8 @@ public final class BeamVisual extends AbstractVisual {
                 && lastSize == size
                 && lastThickness == thickness
                 && lastOuter == outer
-                && lastInner == inner) return;
+                && lastInner == inner
+                && lastAlpha == alphaByte) return;
         if (model == null || count > modelCount || count <= modelCount / 4) {
             int capacity = Math.max(1, Integer.highestOneBit(count - 1) << 1);
             Model wanted =
@@ -199,7 +245,8 @@ public final class BeamVisual extends AbstractVisual {
                 wave == EnumWaveType.SPIRAL ? 1 : 0,
                 count,
                 outer,
-                inner);
+                inner,
+                alphaByte);
         lastCount = count;
         lastBase.set(base);
         lastX = x;
@@ -211,6 +258,7 @@ public final class BeamVisual extends AbstractVisual {
         lastThickness = thickness;
         lastOuter = outer;
         lastInner = inner;
+        lastAlpha = alphaByte;
         lastOriginX = origin.getX();
         lastOriginY = origin.getY();
         lastOriginZ = origin.getZ();

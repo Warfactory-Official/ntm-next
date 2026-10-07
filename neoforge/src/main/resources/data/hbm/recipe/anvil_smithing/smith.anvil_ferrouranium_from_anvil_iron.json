@@ -9,7 +9,7 @@
       "ingredient": "#c:ingots/ferrouranium"
     }
   ],
-  "order": 3,
+  "order": 768,
   "output_items": [
     "hbm:anvil_ferrouranium"
   ]

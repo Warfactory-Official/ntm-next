@@ -12,7 +12,7 @@
       "ingredient": "hbm:scrap_plastic_bridge_cmos"
     }
   ],
-  "order": 295,
+  "order": 79104,
   "output_items": [
     "hbm:circuit_star_piece_bridge_cmos"
   ]

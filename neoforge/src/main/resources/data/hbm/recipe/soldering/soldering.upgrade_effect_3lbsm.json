@@ -28,7 +28,7 @@
     }
   ],
   "name": "soldering.upgrade_effect_3Lbsm",
-  "order": 30,
+  "order": 7680,
   "output_items": [
     "hbm:upgrade_effect_3"
   ],

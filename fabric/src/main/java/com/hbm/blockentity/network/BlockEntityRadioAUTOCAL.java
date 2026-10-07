@@ -128,6 +128,7 @@ public class BlockEntityRadioAUTOCAL extends BlockEntity
                     stop(EVALUATION_UNSUCCESSFUL);
                 }
             }
+            if (emergencyBrake < 100) markChanged();
         }
 
         networkPackNT(15);

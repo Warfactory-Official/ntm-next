@@ -30,7 +30,13 @@ public class BedrockOilDepositFeature extends Feature<BedrockOilDepositConfig> {
         int centerZ = ctx.origin().getZ();
         boolean placedAny = placeNode(level, ctx.config(), ctx.random(), centerX, centerZ);
         OilSurfaceScarring.addBedrockOilSpot(
-                level, ctx.random(), centerX, centerZ, OIL_SPOT_WIDTH, OIL_SPOT_COUNT);
+                level,
+                ctx.random(),
+                centerX,
+                centerZ,
+                OIL_SPOT_WIDTH,
+                OIL_SPOT_COUNT,
+                ctx.config().surfaceScars());
         return placedAny;
     }
 

@@ -50,6 +50,7 @@ public class BlockEntityPileBreedingFuel extends BlockEntityPileBase
         this.neutrons = 0;
 
         if (lastNeutrons <= 0) return;
+        level.blockEntityChanged(worldPosition);
 
         for (int i = 0; i < 2; i++) this.castRay(1);
     }
@@ -57,6 +58,7 @@ public class BlockEntityPileBreedingFuel extends BlockEntityPileBase
     @Override
     public void receiveNeutrons(int n) {
         this.neutrons += n;
+        if (n != 0) level.blockEntityChanged(worldPosition);
     }
 
     @Override

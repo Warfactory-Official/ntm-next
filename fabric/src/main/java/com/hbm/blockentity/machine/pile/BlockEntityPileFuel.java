@@ -78,6 +78,7 @@ public class BlockEntityPileFuel extends BlockEntityPileBase implements IPileNeu
     }
 
     private void dissipateHeat() {
+        if (this.heat != 0) level.blockEntityChanged(worldPosition);
         this.heat -=
                 getBlockState().getValue(BlockGraphiteDrilledBase.SHROUDED)
                         ? heat * 0.065
@@ -90,6 +91,7 @@ public class BlockEntityPileFuel extends BlockEntityPileBase implements IPileNeu
 
         this.lastNeutrons = this.neutrons;
         this.neutrons = 0;
+        if (this.lastNeutrons != 0) level.blockEntityChanged(worldPosition);
 
         int lastProgress = this.progress;
 
@@ -125,6 +127,7 @@ public class BlockEntityPileFuel extends BlockEntityPileBase implements IPileNeu
     @Override
     public void receiveNeutrons(int n) {
         this.neutrons += n;
+        if (n != 0) level.blockEntityChanged(worldPosition);
     }
 
     @Override

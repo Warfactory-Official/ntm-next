@@ -6,6 +6,7 @@ package com.hbm.client.model;
 import com.hbm.blocks.network.RadioTorchBlock;
 import com.hbm.lib.Library;
 import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.util.Facing;
 import com.mojang.math.OctahedralGroup;
 import java.util.List;
 import net.minecraft.client.renderer.block.dispatch.BlockModelRotation;
@@ -46,12 +47,12 @@ public record RadioTorchModel() implements BlockModel<HFRWavefrontObject> {
 
     static OctahedralGroup rotationFor(Direction facing) {
         return switch (facing) {
-            case DOWN -> OctahedralGroup.BLOCK_ROT_Z_180;
+            case DOWN -> Facing.rz(-180);
             case UP -> OctahedralGroup.IDENTITY;
-            case NORTH -> OctahedralGroup.BLOCK_ROT_Y_90.compose(OctahedralGroup.BLOCK_ROT_Z_90);
-            case SOUTH -> OctahedralGroup.BLOCK_ROT_Y_270.compose(OctahedralGroup.BLOCK_ROT_Z_90);
-            case WEST -> OctahedralGroup.BLOCK_ROT_Y_180.compose(OctahedralGroup.BLOCK_ROT_Z_90);
-            case EAST -> OctahedralGroup.BLOCK_ROT_Z_90;
+            case NORTH -> Facing.ry(90).compose(Facing.rz(-90));
+            case SOUTH -> Facing.ry(270).compose(Facing.rz(-90));
+            case WEST -> Facing.ry(180).compose(Facing.rz(-90));
+            case EAST -> Facing.rz(-90);
         };
     }
 

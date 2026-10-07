@@ -16,7 +16,7 @@
       "ingredient": "hbm:pellet_charged"
     }
   ],
-  "order": 10,
+  "order": 2560,
   "output_fluids": [
     {
       "type": "hbm:iongel",

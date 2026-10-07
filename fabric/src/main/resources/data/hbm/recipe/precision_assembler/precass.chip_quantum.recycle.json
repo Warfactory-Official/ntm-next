@@ -26,7 +26,7 @@
     }
   ],
   "name_wrapper": "precass.recycle",
-  "order": 9,
+  "order": 2304,
   "output_fluids": [
     {
       "type": "hbm:helium4",

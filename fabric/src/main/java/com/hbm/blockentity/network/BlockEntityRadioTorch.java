@@ -10,7 +10,6 @@ import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.network.RadioTorchBlock;
 import com.hbm.capability.ContractLink;
-import com.hbm.capability.NtmContracts.Contract;
 import com.hbm.explosion.vanillant.ExplosionVNT;
 import com.hbm.explosion.vanillant.standard.EntityProcessorCrossSmooth;
 import com.hbm.explosion.vanillant.standard.ExplosionEffectWeapon;
@@ -35,13 +34,18 @@ import org.jspecify.annotations.Nullable;
 public abstract class BlockEntityRadioTorch extends BlockEntity
         implements Synced, GraphResident, FoldedCoreResident, IControlReceiver, SyncUnitSchema {
 
+    protected static final int SIGNAL_UNIT = 32;
+    protected static final long SIGNAL_MASK = 1L << SIGNAL_UNIT;
+
     @SyncField(units = 1L << 2)
     public final String[] mapping = new String[16];
 
     @SyncField(units = 1L << 1)
     public String channel = "";
 
+    @SyncField(units = SIGNAL_MASK)
     public int lastState;
+
     public long lastUpdate;
 
     @SyncField(units = 1L)
@@ -60,7 +64,7 @@ public abstract class BlockEntityRadioTorch extends BlockEntity
             BlockEntityType<?> type,
             BlockPos pos,
             BlockState state,
-            @Nullable Contract<?> attachment) {
+            ContractLink.@Nullable Resolver<?> attachment) {
         super(type, pos, state);
         this.attachment = attachment == null ? null : new ContractLink<>(attachment);
         Arrays.fill(mapping, "");
@@ -102,7 +106,8 @@ public abstract class BlockEntityRadioTorch extends BlockEntity
 
     public void refreshAttached() {
         if (level != null && attachment != null) {
-            attachment.refresh(level, worldPosition.relative(supportDirection()));
+            if (attachment.refresh(level, worldPosition.relative(supportDirection())))
+                markChanged();
         }
     }
 
@@ -219,7 +224,7 @@ public abstract class BlockEntityRadioTorch extends BlockEntity
 
     @Override
     public long syncUnitMask() {
-        return 0xfL;
+        return 0xfL | SIGNAL_MASK;
     }
 
     @Override
@@ -229,6 +234,7 @@ public abstract class BlockEntityRadioTorch extends BlockEntity
             case 1 -> writeChannel(output);
             case 2 -> writeMapping(output);
             case 3 -> output.writeBoolean(this.customMap);
+            case SIGNAL_UNIT -> output.writeByte(this.lastState);
             default -> throw new IllegalArgumentException();
         }
     }
@@ -240,6 +246,7 @@ public abstract class BlockEntityRadioTorch extends BlockEntity
             case 1 -> readChannel(input);
             case 2 -> readMapping(input);
             case 3 -> this.customMap = input.readBoolean();
+            case SIGNAL_UNIT -> this.lastState = input.readByte();
             default -> throw new IllegalArgumentException();
         }
     }

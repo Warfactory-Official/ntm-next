@@ -19,14 +19,20 @@ import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemCustomMissile;
+import com.hbm.items.weapon.ItemCustomMissilePart.FuelType;
 import com.hbm.items.weapon.ItemCustomMissilePart.PartSize;
 import com.hbm.items.weapon.ItemCustomMissilePart;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncSlots;
 import com.hbm.packet.SyncUnitSchema;
 import com.hbm.particle.HbmParticles;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.sound.ModSounds;
 import io.netty.buffer.ByteBuf;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -43,6 +49,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
+import org.jspecify.annotations.Nullable;
 
 @SyncSlots(
         value = {BlockEntityCompactLauncher.SLOT_MISSILE},
@@ -72,6 +79,7 @@ public class BlockEntityCompactLauncher extends BlockEntityMachineBase
     private static final double LAUNCH_OFFSET = 2.5D;
     private static final int FOOTPRINT_RADIUS = 1;
     private static final int[] ACCESSIBLE_SLOTS = {SLOT_MISSILE};
+    private static final List<AddonFuel> ADDON_FUELS = new ArrayList<>();
 
     @SyncField(units = 1L << 2)
     public final FluidTankNTM fuelTank = new FluidTankNTM(TANK_CAPACITY);
@@ -94,6 +102,21 @@ public class BlockEntityCompactLauncher extends BlockEntityMachineBase
         super(ModBlockEntities.SMALL_LAUNCHER.get(), pos, state, SLOT_COUNT);
     }
 
+    public record AddonFuel(
+            FuelType type, Supplier<Fluid> fuel, @Nullable Supplier<Fluid> oxidizer) {}
+
+    public static void addFuel(AddonFuel fuel) {
+        FabricRegistrar.assertOpen("BlockEntityCompactLauncher.addFuel");
+        ADDON_FUELS.add(fuel);
+    }
+
+    private static @Nullable AddonFuel addonFuel(FuelType type) {
+        for (AddonFuel fuel : ADDON_FUELS) {
+            if (fuel.type() == type) return fuel;
+        }
+        return null;
+    }
+
     public static boolean hasDesignator(ItemStack stack) {
         return stack.getItem() instanceof IDesignatorItem designator && designator.isReady(stack);
     }
@@ -104,7 +127,11 @@ public class BlockEntityCompactLauncher extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
+        Fluid fuelType = fuelTank.getTankType();
+        Fluid oxidizerType = oxidizerTank.getTankType();
         updateTypes();
+        if (fuelTank.getTankType() != fuelType || oxidizerTank.getTankType() != oxidizerType)
+            markChanged();
 
         boolean loaded = fuelTank.loadTank(SLOT_FUEL_IN, SLOT_FUEL_OUT, inventory);
         loaded |= oxidizerTank.loadTank(SLOT_OXIDIZER_IN, SLOT_OXIDIZER_OUT, inventory);
@@ -160,6 +187,7 @@ public class BlockEntityCompactLauncher extends BlockEntityMachineBase
                 if (getLevel().hasNeighborSignal(core.offset(dx, 0, dz))) powered = true;
             }
         }
+        if (redstone != powered) markChanged();
         redstone = powered;
     }
 
@@ -176,21 +204,23 @@ public class BlockEntityCompactLauncher extends BlockEntityMachineBase
         MissileStruct multipart = struct();
         if (multipart == null || multipart.fuselage() == null) return;
 
-        switch (multipart.fuselage().fuelType()) {
-            case KEROSENE -> {
-                fuelTank.setTankType(NTMFluids.KEROSENE);
-                oxidizerTank.setTankType(NTMFluids.PEROXIDE);
-            }
-            case HYDROGEN -> {
-                fuelTank.setTankType(NTMFluids.HYDROGEN);
-                oxidizerTank.setTankType(NTMFluids.OXYGEN);
-            }
-            case XENON -> fuelTank.setTankType(NTMFluids.XENON);
-            case BALEFIRE -> {
-                fuelTank.setTankType(NTMFluids.BALEFIRE_FUEL);
-                oxidizerTank.setTankType(NTMFluids.PEROXIDE);
-            }
-            case SOLID -> {}
+        FuelType fuel = multipart.fuselage().fuelType();
+        if (fuel == FuelType.KEROSENE) {
+            fuelTank.setTankType(NTMFluids.KEROSENE);
+            oxidizerTank.setTankType(NTMFluids.PEROXIDE);
+        } else if (fuel == FuelType.HYDROGEN) {
+            fuelTank.setTankType(NTMFluids.HYDROGEN);
+            oxidizerTank.setTankType(NTMFluids.OXYGEN);
+        } else if (fuel == FuelType.XENON) {
+            fuelTank.setTankType(NTMFluids.XENON);
+        } else if (fuel == FuelType.BALEFIRE) {
+            fuelTank.setTankType(NTMFluids.BALEFIRE_FUEL);
+            oxidizerTank.setTankType(NTMFluids.PEROXIDE);
+        } else {
+            AddonFuel addon = addonFuel(fuel);
+            if (addon == null) return;
+            fuelTank.setTankType(addon.fuel().get());
+            if (addon.oxidizer() != null) oxidizerTank.setTankType(addon.oxidizer().get());
         }
     }
 
@@ -209,29 +239,36 @@ public class BlockEntityCompactLauncher extends BlockEntityMachineBase
 
     public int solidState(ItemStack missile) {
         ItemCustomMissilePart fuselage = fuselageOf(missile);
-        if (fuselage == null || fuselage.fuelType() != ItemCustomMissilePart.FuelType.SOLID)
-            return -1;
+        if (fuselage == null || fuselage.fuelType() != FuelType.SOLID) return -1;
         return solid >= fuselage.fuelAmount() ? 1 : 0;
     }
 
     public int liquidState(ItemStack missile) {
         ItemCustomMissilePart fuselage = fuselageOf(missile);
         if (fuselage == null) return -1;
-        return switch (fuselage.fuelType()) {
-            case KEROSENE, HYDROGEN, XENON, BALEFIRE ->
-                    fuelTank.getFill() >= fuselage.fuelAmount() ? 1 : 0;
-            default -> -1;
-        };
+        FuelType fuel = fuselage.fuelType();
+        if (fuel != FuelType.KEROSENE
+                && fuel != FuelType.HYDROGEN
+                && fuel != FuelType.XENON
+                && fuel != FuelType.BALEFIRE
+                && addonFuel(fuel) == null) return -1;
+        return fuelTank.getFill() >= fuselage.fuelAmount() ? 1 : 0;
     }
 
     public int oxidizerState(ItemStack missile) {
         ItemCustomMissilePart fuselage = fuselageOf(missile);
         if (fuselage == null) return -1;
-        return switch (fuselage.fuelType()) {
-            case KEROSENE, HYDROGEN, BALEFIRE ->
-                    oxidizerTank.getFill() >= fuselage.fuelAmount() ? 1 : 0;
-            default -> -1;
-        };
+        FuelType fuel = fuselage.fuelType();
+        if (fuel != FuelType.KEROSENE
+                && fuel != FuelType.HYDROGEN
+                && fuel != FuelType.BALEFIRE
+                && !burnsAddonOxidizer(fuel)) return -1;
+        return oxidizerTank.getFill() >= fuselage.fuelAmount() ? 1 : 0;
+    }
+
+    private static boolean burnsAddonOxidizer(FuelType type) {
+        AddonFuel addon = addonFuel(type);
+        return addon != null && addon.oxidizer() != null;
     }
 
     private boolean hasFuel() {
@@ -315,13 +352,20 @@ public class BlockEntityCompactLauncher extends BlockEntityMachineBase
         ItemCustomMissilePart fuselage = multipart.fuselage();
         int fuel = (int) fuselage.fuelAmount();
 
-        switch (fuselage.fuelType()) {
-            case KEROSENE, HYDROGEN, BALEFIRE -> {
+        FuelType type = fuselage.fuelType();
+        if (type == FuelType.KEROSENE || type == FuelType.HYDROGEN || type == FuelType.BALEFIRE) {
+            fuelTank.setFill(fuelTank.getFill() - fuel);
+            oxidizerTank.setFill(oxidizerTank.getFill() - fuel);
+        } else if (type == FuelType.XENON) {
+            fuelTank.setFill(fuelTank.getFill() - fuel);
+        } else if (type == FuelType.SOLID) {
+            solid -= fuel;
+        } else {
+            AddonFuel addon = addonFuel(type);
+            if (addon != null) {
                 fuelTank.setFill(fuelTank.getFill() - fuel);
-                oxidizerTank.setFill(oxidizerTank.getFill() - fuel);
+                if (addon.oxidizer() != null) oxidizerTank.setFill(oxidizerTank.getFill() - fuel);
             }
-            case XENON -> fuelTank.setFill(fuelTank.getFill() - fuel);
-            case SOLID -> solid -= fuel;
         }
 
         power -= (long) (MAX_POWER * 0.75);
@@ -358,6 +402,19 @@ public class BlockEntityCompactLauncher extends BlockEntityMachineBase
     }
 
     @Override
+    public boolean canReceiveFluid(Fluid type) {
+        for (FluidTankNTM tank : tanks) {
+            if (tank.joins(type)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
+    }
+
+    @Override
     public long getDemand(Fluid type, int pressure) {
         if (pressure != 0) return 0;
         long headroom = 0;
@@ -376,6 +433,7 @@ public class BlockEntityCompactLauncher extends BlockEntityMachineBase
                 remaining -= tank.fill(type, (int) Math.min(remaining, Integer.MAX_VALUE), true);
             }
         }
+        if (remaining != amount) markChanged();
         return remaining;
     }
 

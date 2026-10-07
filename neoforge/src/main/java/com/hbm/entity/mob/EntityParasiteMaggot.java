@@ -3,6 +3,7 @@
 
 package com.hbm.entity.mob;
 
+import com.hbm.api.environment.ISuffocationImmune;
 import com.hbm.lib.Library;
 import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.Reg;
@@ -29,7 +30,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
-public class EntityParasiteMaggot extends Monster {
+public class EntityParasiteMaggot extends Monster implements ISuffocationImmune {
 
     public static Reg.@Nullable EntityHandle<EntityParasiteMaggot> TYPE;
 

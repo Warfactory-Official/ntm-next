@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/uranium"
     }
   ],
-  "order": 14,
+  "order": 3584,
   "output_items": [
     "hbm:ingot_u238"
   ]

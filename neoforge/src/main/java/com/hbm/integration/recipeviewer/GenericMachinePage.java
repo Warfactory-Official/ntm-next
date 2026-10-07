@@ -12,6 +12,7 @@ import com.hbm.inventory.recipes.PlasmaForgeRecipe;
 import com.hbm.inventory.recipes.ingredient.CountIngredient;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
+import com.hbm.inventory.recipes.loader.Outputs;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.util.BobMathUtil;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -99,7 +101,7 @@ public final class GenericMachinePage<T extends GenericRecipe> extends TablePage
         return positions;
     }
 
-    static int[][] universalInputPositions(int count) {
+    public static int[][] universalInputPositions(int count) {
         if (count == 1) return new int[][] {{48, 24}};
         if (count == 2) return new int[][] {{48, 24}, {30, 24}};
         if (count == 3) return new int[][] {{48, 24}, {30, 24}, {12, 24}};
@@ -131,7 +133,7 @@ public final class GenericMachinePage<T extends GenericRecipe> extends TablePage
         return positions;
     }
 
-    static int[][] outputPositions(int count) {
+    public static int[][] outputPositions(int count) {
         return switch (count) {
             case 0 -> new int[0][2];
             case 1 -> new int[][] {{102, 24}};
@@ -157,6 +159,27 @@ public final class GenericMachinePage<T extends GenericRecipe> extends TablePage
         List<ItemStack> stacks = new ArrayList<>();
         for (Weighted<ItemStack> entry : output.unwrap()) stacks.add(entry.value().copy());
         return stacks;
+    }
+
+    static void outputSlot(PageSlot slot, WeightedList<ItemStack> output) {
+        ItemStack single = Outputs.single(output);
+        if (single == null || single.isEmpty() || output.unwrap().size() == 1) {
+            slot.items(outputStacks(output));
+            return;
+        }
+        int total = 0;
+        int present = 0;
+        for (Weighted<ItemStack> entry : output.unwrap()) {
+            total += entry.weight();
+            if (!entry.value().isEmpty()) present += entry.weight();
+        }
+        double percent = (int) ((long) present * Outputs.RESOLUTION / total) / 10D;
+        slot.item(single.copy())
+                .tooltip(
+                        (shown, lines) ->
+                                lines.accept(
+                                        Component.translatable("unit.percent", percent)
+                                                .withStyle(ChatFormatting.RED)));
     }
 
     private static List<ItemStack> blueprintStacks(String[] pools) {
@@ -309,9 +332,8 @@ public final class GenericMachinePage<T extends GenericRecipe> extends TablePage
     private int outputItems(PageLayout page, T recipe, int[][] outputs, int offset, int slot) {
         if (recipe.outputItems() == null) return slot;
         for (WeightedList<ItemStack> output : recipe.outputItems()) {
-            page.output(outputs[slot][0] + offset, outputs[slot][1])
-                    .background()
-                    .items(outputStacks(output));
+            outputSlot(
+                    page.output(outputs[slot][0] + offset, outputs[slot][1]).background(), output);
             slot++;
         }
         return slot;

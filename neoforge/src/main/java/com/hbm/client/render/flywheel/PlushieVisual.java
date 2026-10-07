@@ -4,6 +4,7 @@
 package com.hbm.client.render.flywheel;
 
 import com.hbm.blockentity.BlockEntityPlushie;
+import com.hbm.blocks.generic.BlockPlushie.Plushie;
 import com.hbm.blocks.generic.BlockPlushie.PlushieType;
 import com.hbm.blocks.generic.BlockPlushie;
 import com.hbm.client.render.RenderPlushie;
@@ -17,11 +18,11 @@ import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
@@ -30,7 +31,7 @@ import org.jspecify.annotations.Nullable;
 
 public final class PlushieVisual extends HbmDynamicBlockEntityVisual<BlockEntityPlushie>
         implements ShaderLightVisual {
-    private static final Map<RenderPlushie.Part, Material> MATERIALS = materials();
+    private static final Map<RenderPlushie.Part, Material> MATERIALS = new ConcurrentHashMap<>();
     private static final Map<PartKey, MeshPart> PARTS = new ConcurrentHashMap<>();
     private final int rotation;
     private final List<TransformedInstance> parts = new ArrayList<>();
@@ -38,8 +39,9 @@ public final class PlushieVisual extends HbmDynamicBlockEntityVisual<BlockEntity
     private final List<RenderPlushie.Face> faces = new ArrayList<>();
     private final Matrix4f world = new Matrix4f();
     private final PoseStack rootPoses = new PoseStack();
-    private @Nullable PlushieType lastType;
+    private @Nullable Plushie lastType;
     private boolean lastSquishing;
+    private boolean lastMiserable;
     private final WorldItem cigarette = new WorldItem(visualizationContext, level, pos);
     private final PoseStack cigarettePoses = new PoseStack();
 
@@ -57,22 +59,19 @@ public final class PlushieVisual extends HbmDynamicBlockEntityVisual<BlockEntity
                 && !WorldItem.draws(RenderPlushie.cigarette(), ItemDisplayContext.NONE);
     }
 
-    private static Map<RenderPlushie.Part, Material> materials() {
-        Map<RenderPlushie.Part, Material> materials = new EnumMap<>(RenderPlushie.Part.class);
-        for (RenderPlushie.Part part : RenderPlushie.Part.values()) {
-            materials.put(
-                    part,
-                    SimpleMaterial.builderOf(MeshPart.litCutout(part.texture))
-                            .backfaceCulling(part.cull)
-                            .build());
-        }
-        return materials;
+    private static Material material(RenderPlushie.Part part) {
+        return MATERIALS.computeIfAbsent(
+                part,
+                key ->
+                        SimpleMaterial.builderOf(MeshPart.litCutout(key.texture))
+                                .backfaceCulling(key.cull)
+                                .build());
     }
 
     static MeshPart meshPart(RenderPlushie.Part part, HFRWavefrontObject mesh, int group) {
         return PARTS.computeIfAbsent(
                 new PartKey(part, mesh, group),
-                key -> MeshPart.obj(mesh.groups[group], mesh.smoothing(), MATERIALS.get(part)));
+                key -> MeshPart.obj(mesh.groups[group], mesh.smoothing(), material(part)));
     }
 
     @Override
@@ -81,10 +80,12 @@ public final class PlushieVisual extends HbmDynamicBlockEntityVisual<BlockEntity
     }
 
     public void updateMovingParts(float partialTick) {
-        PlushieType type = blockEntity.type;
+        Plushie type = blockEntity.type;
         long timer = blockEntity.squishTimer();
         boolean squishing = timer > 0;
-        if (type == lastType && !squishing && !lastSquishing) return;
+        boolean miserable = blockEntity.miseryFactor > 0.01F;
+        if (type == lastType && !miserable && !lastMiserable && !squishing && !lastSquishing)
+            return;
         if (type != lastType) {
             for (var part : parts) part.delete();
             parts.clear();
@@ -108,25 +109,29 @@ public final class PlushieVisual extends HbmDynamicBlockEntityVisual<BlockEntity
                     ItemDisplayContext.NONE);
         }
         double squish = timer - partialTick;
+        double misery =
+                Mth.lerp(partialTick, blockEntity.lastMiseryFactor, blockEntity.miseryFactor);
         rootPoses.setIdentity();
         rootPoses.translate(visualPos.getX(), visualPos.getY(), visualPos.getZ());
-        RenderPlushie.rootPose(rootPoses, type, rotation, squishing, squish);
+        RenderPlushie.rootPose(rootPoses, type, rotation, miserable, misery, squishing, squish);
         Matrix4f root = rootPoses.last().pose();
         for (int i = 0; i < parts.size(); i++) {
             TransformedInstance part = parts.get(i);
-            boolean shown = faces.get(i).shows(squishing);
+            boolean shown = faces.get(i).shows(timer);
             part.setVisible(shown);
             if (shown) part.setTransform(world.set(root).mul(locals.get(i))).light(0).setChanged();
         }
         if (type == PlushieType.NUMBERNINE) {
             cigarettePoses.setIdentity();
             cigarettePoses.translate(visualPos.getX(), visualPos.getY(), visualPos.getZ());
-            RenderPlushie.rootPose(cigarettePoses, type, rotation, squishing, squish);
+            RenderPlushie.rootPose(
+                    cigarettePoses, type, rotation, miserable, misery, squishing, squish);
             RenderPlushie.cigarettePose(cigarettePoses);
             cigarette.write(cigarettePoses.last().pose(), partialTick);
         }
         lastType = type;
         lastSquishing = squishing;
+        lastMiserable = miserable;
     }
 
     @Override

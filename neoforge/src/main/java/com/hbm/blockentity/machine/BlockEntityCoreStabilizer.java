@@ -92,6 +92,7 @@ public class BlockEntityCoreStabilizer extends BlockEntityMachineBase
 
             if (be instanceof BlockEntityCore core) {
                 core.field = Math.max(core.field, watts);
+                core.markChanged();
                 this.power -= demand;
                 beam = i;
 

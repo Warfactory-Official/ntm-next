@@ -87,6 +87,7 @@ public class BlockEntityFoundryChannel extends BlockEntityFoundryBase {
 
         if (this.type == null && this.amount != 0) {
             this.amount = 0;
+            markChanged();
         }
 
         nextUpdate--;
@@ -123,6 +124,7 @@ public class BlockEntityFoundryChannel extends BlockEntityFoundryBase {
                         } else {
                             this.amount = left.amount;
                         }
+                        markChanged();
                         hasOp = true;
                         break;
                     }
@@ -136,10 +138,13 @@ public class BlockEntityFoundryChannel extends BlockEntityFoundryBase {
 
                     if (b instanceof BlockEntityFoundryChannel acc) {
                         if (acc.type == null || acc.type == this.type || acc.amount == 0) {
+                            int flow = dir.getOpposite().get3DDataValue();
+                            if (acc.type != this.type || acc.lastFlow != flow) acc.markChanged();
                             acc.type = this.type;
                             acc.setChannelMaterial(this.type);
 
-                            acc.lastFlow = dir.getOpposite().get3DDataValue();
+                            acc.lastFlow = flow;
+                            int before = this.amount;
 
                             if (level.getRandom().nextInt(5) == 0 || this.amount == 1) {
                                 int buf = this.amount;
@@ -153,6 +158,10 @@ public class BlockEntityFoundryChannel extends BlockEntityFoundryBase {
                                     acc.amount += diff;
                                 }
                             }
+                            if (this.amount != before) {
+                                markChanged();
+                                acc.markChanged();
+                            }
                         }
                     }
                 }
@@ -160,6 +169,7 @@ public class BlockEntityFoundryChannel extends BlockEntityFoundryBase {
         }
 
         if (this.amount == 0) {
+            if (this.lastFlow != 0) markChanged();
             this.lastFlow = 0;
             this.nextUpdate = 5;
         }

@@ -9,7 +9,7 @@
     }
   ],
   "momentum": 2500,
-  "order": 3,
+  "order": 768,
   "output_items": [
     "hbm:particle_muon"
   ]

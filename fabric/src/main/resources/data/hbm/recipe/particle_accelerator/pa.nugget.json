@@ -9,7 +9,7 @@
     }
   ],
   "momentum": 100,
-  "order": 10,
+  "order": 2560,
   "output_items": [
     "hbm:nugget",
     "hbm:nugget"

@@ -121,8 +121,13 @@ public class BlockEntityMachineSolderingStation extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
+        long prevPower = power;
+        long prevMaxPower = maxPower;
+        long prevConsumption = consumption;
+        int prevProgress = progress;
+        int prevProcessTime = processTime;
         power += ItemEnergyTransfer.extract(this, SLOT_BATTERY, maxPower - power, false);
-        tank.setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory);
+        if (tank.setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory)) markChanged();
 
         upgradeManager.scan(this, SLOT_UPGRADE_START, SLOT_UPGRADE_END);
         int speedLevel = upgradeManager.getLevel(UpgradeType.SPEED);
@@ -179,6 +184,11 @@ public class BlockEntityMachineSolderingStation extends BlockEntityMachineBase
         }
 
         maxPower = Math.max(intendedMaxPower, power);
+        if (power != prevPower
+                || maxPower != prevMaxPower
+                || consumption != prevConsumption
+                || progress != prevProgress
+                || processTime != prevProcessTime) markChanged();
         networkPackNT(25);
     }
 

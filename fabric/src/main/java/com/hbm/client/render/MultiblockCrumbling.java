@@ -12,13 +12,10 @@ import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMaps;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import java.util.SortedSet;
-import java.util.function.Consumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.state.level.BlockBreakingRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.BlockDestructionProgress;
@@ -34,7 +31,6 @@ public final class MultiblockCrumbling {
     private static final Long2ObjectOpenHashMap<SortedSet<BlockDestructionProgress>> BY_CORE =
             new Long2ObjectOpenHashMap<>();
     private static final Long2LongOpenHashMap CORE_OF = new Long2LongOpenHashMap();
-    private static final LongOpenHashSet EMITTED = new LongOpenHashSet();
 
     private MultiblockCrumbling() {}
 
@@ -49,7 +45,6 @@ public final class MultiblockCrumbling {
         if (!CORE_OF.isEmpty()) {
             BY_CORE.clear();
             CORE_OF.clear();
-            EMITTED.clear();
         }
         Long2ObjectMap<SortedSet<BlockDestructionProgress>> progress = level.destructionProgress();
         if (progress.isEmpty()) return;
@@ -95,29 +90,30 @@ public final class MultiblockCrumbling {
                 BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(type).getNamespace());
     }
 
-    public static boolean remaps(BlockBreakingRenderState mined) {
-        return CORE_OF.containsKey(mined.blockPos().asLong());
-    }
-
-    public static void extractOwner(
-            BlockBreakingRenderState mined,
-            ClientLevel level,
-            Consumer<BlockBreakingRenderState> output) {
-        long key = CORE_OF.get(mined.blockPos().asLong());
-        if (!EMITTED.add(key)) return;
-        BlockPos core = BlockPos.of(key);
-        BlockState coreState = level.getBlockState(core);
-        int stage = BY_CORE.get(key).last().getProgress();
-        if (((BlockMultiblockCore) coreState.getBlock()).usesSharedCells()) {
-            output.accept(new BlockBreakingRenderState(core, coreState, stage));
-        } else {
-            MultiblockFootprint.visitPresent(
-                    level,
-                    core,
-                    coreState,
-                    (pos, state) ->
-                            output.accept(
-                                    new BlockBreakingRenderState(pos.immutable(), state, stage)));
+    public static Long2ObjectMap<SortedSet<BlockDestructionProgress>> owners(
+            ClientLevel level, Long2ObjectMap<SortedSet<BlockDestructionProgress>> mined) {
+        if (CORE_OF.isEmpty()) return mined;
+        Long2ObjectOpenHashMap<SortedSet<BlockDestructionProgress>> owners =
+                new Long2ObjectOpenHashMap<>(mined.size());
+        for (Long2ObjectMap.Entry<SortedSet<BlockDestructionProgress>> entry :
+                Long2ObjectMaps.fastIterable(mined)) {
+            long pos = entry.getLongKey();
+            if (!CORE_OF.containsKey(pos)) {
+                owners.put(pos, entry.getValue());
+                continue;
+            }
+            long key = CORE_OF.get(pos);
+            if (owners.containsKey(key)) continue;
+            SortedSet<BlockDestructionProgress> stages = BY_CORE.get(key);
+            BlockPos core = BlockPos.of(key);
+            BlockState coreState = level.getBlockState(core);
+            if (((BlockMultiblockCore) coreState.getBlock()).usesSharedCells()) {
+                owners.put(key, stages);
+            } else {
+                MultiblockFootprint.visitPresent(
+                        level, core, coreState, (cell, state) -> owners.put(cell.asLong(), stages));
+            }
         }
+        return owners;
     }
 }

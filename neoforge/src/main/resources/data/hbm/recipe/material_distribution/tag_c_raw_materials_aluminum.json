@@ -1,0 +1,18 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 96,
+      "material": "aluminum"
+    },
+    {
+      "amount": 16,
+      "material": "sodium"
+    },
+    {
+      "amount": 108,
+      "material": "stone"
+    }
+  ],
+  "targets": "#c:raw_materials/aluminum"
+}

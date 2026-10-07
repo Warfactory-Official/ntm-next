@@ -6,6 +6,7 @@ package com.hbm.world.feature;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.world.LocationIsValidSpawn;
 import com.hbm.world.gen.WorldgenHeight;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import org.jspecify.annotations.Nullable;
 
@@ -223,8 +225,14 @@ public final class OilSurfaceScarring {
         }
     }
 
-    static void addBedrockOilSpot(
-            WorldGenLevel level, RandomSource rand, int xCoord, int zCoord, int width, int count) {
+    public static void addBedrockOilSpot(
+            WorldGenLevel level,
+            RandomSource rand,
+            int xCoord,
+            int zCoord,
+            int width,
+            int count,
+            List<OreConfiguration.TargetBlockState> scars) {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos sub = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos above = new BlockPos.MutableBlockPos();
@@ -281,11 +289,28 @@ public final class OilSurfaceScarring {
                     } else if (LocationIsValidSpawn.isStone(subState)) {
                         level.setBlock(sub, ModBlocks.STONE_CRACKED.get().defaultBlockState(), 2);
                         break;
+                    } else if (scar(level, rand, sub, subState, scars)) {
+                        break;
                     }
                 }
                 break;
             }
         }
+    }
+
+    private static boolean scar(
+            WorldGenLevel level,
+            RandomSource rand,
+            BlockPos pos,
+            BlockState state,
+            List<OreConfiguration.TargetBlockState> scars) {
+        for (OreConfiguration.TargetBlockState scar : scars) {
+            if (scar.target.test(state, rand)) {
+                level.setBlock(pos, scar.state, 2);
+                return true;
+            }
+        }
+        return false;
     }
 
     private static BlockState randomDeadPlant(RandomSource rand) {

@@ -1,0 +1,54 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "hbm:persistent_data": {
+                  "filter_stack": {
+                    "id": "hbm:gas_mask_filter_combo"
+                  }
+                }
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "hbm:gas_mask_m65"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:coin_maskman"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:bottled_cloud"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:skeleton_skull"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:entities/entity_mob_mask_man"
+}

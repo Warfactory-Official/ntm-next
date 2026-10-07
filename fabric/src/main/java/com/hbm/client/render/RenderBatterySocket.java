@@ -63,6 +63,7 @@ public class RenderBatterySocket
     private final HFRWavefrontObject model;
     private final ItemModelResolver itemModelResolver;
     private final Map<Identifier, RenderType> bodyTypes = new HashMap<>();
+    private final Map<Identifier, RenderType> centrepieceTypes = new HashMap<>();
     private final Map<EnumBatteryPack, Identifier> tierTextures = new ConcurrentHashMap<>();
 
     public RenderBatterySocket(BlockEntityRendererProvider.Context context) {
@@ -119,7 +120,12 @@ public class RenderBatterySocket
             state.bodyPart = NO_PART;
             state.bodyTexture = null;
         }
-        state.generic = !stack.isEmpty() && state.bodyPart == NO_PART && !state.unicorn;
+        state.centrepiece = SocketCentrepieces.of(stack);
+        state.generic =
+                !stack.isEmpty()
+                        && state.bodyPart == NO_PART
+                        && !state.unicorn
+                        && state.centrepiece == null;
         ItemStack rendered =
                 state.generic && (!state.itemsOnly || !WorldItem.bakesFramed(stack))
                         ? stack.copyWithCount(1)
@@ -165,8 +171,12 @@ public class RenderBatterySocket
             poseStack.popPose();
         }
         if (!state.itemsOnly && state.unicorn) submitUnicorn(state, poseStack, collector, light);
-        if (!state.itemsOnly && (state.unicorn || state.generic))
+        if (!state.itemsOnly && state.centrepiece != null) {
+            submitCentrepiece(state.centrepiece, state.spin, poseStack, collector, light);
+        }
+        if (!state.itemsOnly && (state.unicorn || state.generic || state.centrepiece != null)) {
             submitArcs(state, poseStack, collector);
+        }
         poseStack.popPose();
     }
 
@@ -193,6 +203,24 @@ public class RenderBatterySocket
         HorsePronter.reset();
         HorsePronter.enableHorn();
         HorsePronter.pront(poseStack, collector, horseType, light);
+        poseStack.popPose();
+    }
+
+    private void submitCentrepiece(
+            SocketCentrepieces.Centrepiece piece,
+            float spin,
+            PoseStack poseStack,
+            SubmitNodeCollector collector,
+            int light) {
+        poseStack.pushPose();
+        poseStack.scale(piece.scale(), piece.scale(), piece.scale());
+        poseStack.mulPose(Axis.YN.rotationDegrees(spin * piece.degreesPerTick()));
+        RenderType type =
+                centrepieceTypes.computeIfAbsent(piece.texture(), RenderTypes::entityCutoutCull);
+        HFRWavefrontObject mesh = piece.mesh();
+        int part = piece.part();
+        collector.submitCustomGeometry(
+                poseStack, type, (pose, buffer) -> mesh.renderPart(pose, buffer, light, -1, part));
         poseStack.popPose();
     }
 
@@ -243,6 +271,7 @@ public class RenderBatterySocket
         public boolean frame;
         public boolean unicorn;
         public boolean generic;
+        public SocketCentrepieces.@Nullable Centrepiece centrepiece;
         public boolean itemsOnly;
         public final ItemStackRenderState item = new ItemStackRenderState();
         public FramedItem.Arm itemArm = FramedItem.Arm.SPRITE;

@@ -3,6 +3,7 @@
 
 package com.hbm.inventory.fluid;
 
+import com.hbm.blocks.fluid.ClassicFluid;
 import com.hbm.inventory.fluid.trait.FluidTrait;
 import com.hbm.util.RegistryUtil;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
@@ -116,10 +117,19 @@ public final class NTMFluidProperties {
         Reference2ReferenceOpenHashMap<Fluid, Fluid> kinds = new Reference2ReferenceOpenHashMap<>();
         Reference2ObjectOpenHashMap<Fluid, Fluid[]> equivalents =
                 new Reference2ObjectOpenHashMap<>();
+        Reference2ObjectOpenHashMap<Fluid, List<Fluid>> placed =
+                new Reference2ObjectOpenHashMap<>();
+        for (Fluid fluid : BuiltInRegistries.FLUID) {
+            if (!(fluid instanceof ClassicFluid classic) || classic.spec().kind() == null) continue;
+            Fluid kind = classic.spec().kind().get();
+            kinds.put(fluid, kind);
+            if (!fluid.isSource(fluid.defaultFluidState())) continue;
+            placed.computeIfAbsent(kind, k -> new ArrayList<>(1)).add(fluid);
+        }
         for (Fluid ntm : NTMFluids.displayOrder()) {
             NTMFluidProperty property = own.get(ntm);
             if (property == null) continue;
-            List<Fluid> sources = new ArrayList<>(0);
+            List<Fluid> sources = new ArrayList<>(placed.getOrDefault(ntm, List.of()));
             for (TagKey<Fluid> tag : property.shares()) {
                 for (Holder<Fluid> holder : BuiltInRegistries.FLUID.getTagOrEmpty(tag)) {
                     Fluid member = holder.value();

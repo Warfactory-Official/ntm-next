@@ -5,7 +5,7 @@
       "ingredient": "minecraft:quartz_block"
     }
   ],
-  "order": 4,
+  "order": 1024,
   "output_items": [
     {
       "count": 4,

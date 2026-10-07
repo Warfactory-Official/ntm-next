@@ -27,7 +27,7 @@
   ],
   "name": "precass.controller.recycleEx",
   "name_wrapper": "precass.recycle",
-  "order": 16,
+  "order": 4096,
   "output_fluids": [
     {
       "type": "hbm:perfluoromethyl",

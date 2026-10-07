@@ -5,9 +5,11 @@ package com.hbm.mixin;
 
 import com.hbm.client.render.ManlyPlayerLayer;
 import com.hbm.client.render.PlayerCapes;
+import com.hbm.client.render.RiderTiltRenderState;
 import com.hbm.interfaces.injected.PlayerAppearance;
 import com.hbm.main.Polaroid;
 import com.hbm.packet.toclient.PlayerAppearancePayload;
+import com.hbm.render.util.RiderTilt;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -16,6 +18,7 @@ import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.core.ClientAsset;
 import net.minecraft.world.entity.Avatar;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerSkin;
@@ -71,5 +74,20 @@ public abstract class MixinAvatarRenderer
                                 skin.body(), cape, skin.elytra(), skin.model(), skin.secure());
             }
         }
+    }
+
+    @Inject(
+            method =
+                    "extractRenderState(Lnet/minecraft/world/entity/Avatar;"
+                            + "Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;F)V",
+            at = @At("TAIL"))
+    private void hbm$extractRiderTilt(
+            Avatar avatar, AvatarRenderState state, float partialTicks, CallbackInfo ci) {
+        Entity vehicle = avatar.getVehicle();
+        ((RiderTiltRenderState) state)
+                .hbm$setRiderTilt(
+                        vehicle == null
+                                ? 0F
+                                : RiderTilt.POINT.get().degrees(vehicle, partialTicks));
     }
 }

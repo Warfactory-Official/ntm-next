@@ -29,7 +29,7 @@ public class BlockEntityChungus extends BlockEntityTurbineBase implements AudioL
     public float fanAcceleration = 0F;
 
     @SyncField(units = 1L << 3)
-    private int turnTimer;
+    protected int turnTimer;
 
     public BlockEntityChungus(BlockPos pos, BlockState state) {
         super(

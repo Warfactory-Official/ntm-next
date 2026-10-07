@@ -6,7 +6,7 @@
       "amount": 100
     }
   ],
-  "order": 3,
+  "order": 768,
   "output_fluids": [
     {
       "type": "hbm:heatingoil",

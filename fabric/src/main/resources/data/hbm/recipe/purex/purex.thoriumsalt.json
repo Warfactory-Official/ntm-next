@@ -27,7 +27,7 @@
       "ingredient": "#c:nuggets/thorium"
     }
   ],
-  "order": 38,
+  "order": 9728,
   "output_fluids": [
     {
       "type": "hbm:thorium_salt",

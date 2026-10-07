@@ -185,11 +185,16 @@ public final class ChunkUtil {
     @ServerThread
     public static void loadTickingForEntity(ServerLevel level, ChunkPos pos) {
         holdForEntity(level, pos, HOLD_RADIUS);
+        flushChunkTickets(level);
         level.getChunk(pos.x(), pos.z());
         ChunkHolder holder = level.getChunkSource().chunkMap.getVisibleChunkIfPresent(pos.pack());
         CompletableFuture<ChunkResult<LevelChunk>> ticking = holder.getEntityTickingChunkFuture();
         level.getServer().managedBlock(ticking::isDone);
-        ticking.join().orElseThrow(IllegalStateException::new);
+        ChunkResult<LevelChunk> result = ticking.join();
+        result.orElseThrow(
+                () ->
+                        new IllegalStateException(
+                                "entity-ticking chunk " + pos + ": " + result.getError()));
         level.waitForEntities(pos, 0);
     }
 

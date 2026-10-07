@@ -8,6 +8,7 @@ import com.hbm.items.ModItems;
 import com.hbm.items.special.ItemCustomLore;
 import com.hbm.packet.toclient.VomitPayload;
 import com.hbm.particle.helper.ParticleCreators;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.GameTime;
 import java.util.function.Consumer;
@@ -61,8 +62,8 @@ public class ItemCigarette extends ItemCustomLore {
         if (!entity.level().isClientSide()) {
             ItemStack smoked = stack.copyWithCount(1);
             stack.shrink(1);
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    entity,
                     entity.getX(),
                     entity.getY(),
                     entity.getZ(),

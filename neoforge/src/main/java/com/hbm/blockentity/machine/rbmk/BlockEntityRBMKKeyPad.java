@@ -117,6 +117,7 @@ public class BlockEntityRBMKKeyPad extends BlockEntity
                 if (canSend()) RTTYSystem.broadcast(level, rtty, command);
                 isPressed = true;
                 clickTimer = CLICK_TICKS;
+                panel.markChanged();
             } else {
                 isPressed = !isPressed;
                 panel.setChanged();
@@ -142,7 +143,10 @@ public class BlockEntityRBMKKeyPad extends BlockEntity
             }
 
             if (!polling && isPressed) {
-                if (clickTimer-- <= 0) isPressed = false;
+                if (clickTimer-- <= 0) {
+                    isPressed = false;
+                    panel.markChanged();
+                }
             }
         }
 

@@ -9,7 +9,7 @@
     }
   ],
   "momentum": 10000,
-  "order": 9,
+  "order": 2304,
   "output_items": [
     "hbm:item_expensive_degenerate_matter"
   ]

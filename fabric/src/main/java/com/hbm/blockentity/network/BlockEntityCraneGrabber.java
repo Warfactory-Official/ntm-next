@@ -129,6 +129,7 @@ public class BlockEntityCraneGrabber extends BlockEntityCraneBase
                 if (!accepts(item.getItemStack())) continue;
 
                 lastGrabbedTick = level.getGameTime();
+                markChanged();
 
                 Vec3 pos =
                         new Vec3(
@@ -154,6 +155,7 @@ public class BlockEntityCraneGrabber extends BlockEntityCraneBase
             if (!accepts(stack)) continue;
 
             lastGrabbedTick = level.getGameTime();
+            markChanged();
 
             int toAdd = Math.min(stack.getCount(), amount);
             ItemStack left =
@@ -185,6 +187,7 @@ public class BlockEntityCraneGrabber extends BlockEntityCraneBase
     @Override
     public void nextMode(int i) {
         matcher.nextMode(level, getItem(i), i);
+        markChanged();
     }
 
     @Override

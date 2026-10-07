@@ -76,7 +76,7 @@ public class MachineTowerLarge extends BlockMultiblockCore
     @Override
     public void buildLookOverlay(Level level, BlockPos pos, LookInfo info) {
         if (!(level.getBlockEntity(pos) instanceof BlockEntityTowerLarge be)) return;
-        MachineTowerSmall.towerOverlay(info, this, be.input, be.output);
+        MachineTowerSmall.towerOverlay(level, info, this, be.input, be.output);
     }
 
     @Override

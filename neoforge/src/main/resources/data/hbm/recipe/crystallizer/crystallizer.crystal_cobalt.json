@@ -9,10 +9,10 @@
   ],
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/cobalt"
+      "ingredient": "#c:ores/cobalt"
     }
   ],
-  "order": 245,
+  "order": 66048,
   "output_items": [
     "hbm:crystal_cobalt"
   ],

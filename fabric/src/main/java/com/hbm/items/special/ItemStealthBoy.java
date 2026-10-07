@@ -3,6 +3,7 @@
 
 package com.hbm.items.special;
 
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import net.minecraft.SharedConstants;
 import net.minecraft.server.level.ServerLevel;
@@ -33,8 +34,8 @@ public class ItemStealthBoy extends Item {
                             1,
                             true,
                             true));
-            server.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),

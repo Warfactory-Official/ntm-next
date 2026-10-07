@@ -5,7 +5,7 @@
       "ingredient": "#c:plates/copper"
     }
   ],
-  "order": 112,
+  "order": 28672,
   "output_items": [
     "hbm:fluid_duct_box_copper_1"
   ],

@@ -4,6 +4,7 @@
 package com.hbm.items.tool;
 
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
+import com.hbm.sound.EntitySounds;
 import java.util.function.Supplier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -50,8 +51,8 @@ public final class ItemRepairKit extends Item {
 
         ItemStack stack = player.getItemInHand(hand);
         if (didSomething) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),

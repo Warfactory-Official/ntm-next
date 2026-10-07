@@ -28,7 +28,7 @@
     }
   ],
   "name": "soldering.upgrade_power_3Lbsm",
-  "order": 34,
+  "order": 8704,
   "output_items": [
     "hbm:upgrade_power_3"
   ],

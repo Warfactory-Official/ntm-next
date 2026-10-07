@@ -165,8 +165,9 @@ public class BlockEntityCrucible extends BlockEntityMachineBase
             entity.igniteForSeconds(5);
         }
 
-        if (!trySmelt()) {
+        if (!trySmelt() && this.progress != 0) {
             this.progress = 0;
+            markChanged();
         }
 
         tryRecipe();
@@ -220,6 +221,7 @@ public class BlockEntityCrucible extends BlockEntityMachineBase
                         impact);
 
         if (didPour != null) {
+            markChanged();
             float len = Math.max(1F, y - (float) (Math.ceil(impact.y) - 0.875));
             if (waste) {
                 this.wastePourColor = didPour.material.moltenColor;
@@ -401,11 +403,15 @@ public class BlockEntityCrucible extends BlockEntityMachineBase
                 source.useUpHeat(level, heatPos, diff);
                 this.heat += diff;
                 if (this.heat > maxHeat) this.heat = maxHeat;
+                markChanged();
                 return;
             }
         }
 
-        this.heat = Math.max(this.heat - Math.max(this.heat / 1000, 1), 0);
+        if (this.heat > 0) {
+            this.heat = Math.max(this.heat - Math.max(this.heat / 1000, 1), 0);
+            markChanged();
+        }
     }
 
     protected boolean trySmelt() {
@@ -419,6 +425,7 @@ public class BlockEntityCrucible extends BlockEntityMachineBase
 
         this.progress += delta;
         this.heat -= delta;
+        if (delta != 0) markChanged();
 
         if (this.progress >= MachineData.CRUCIBLE_PROCESS_TIME.get()) {
             this.progress = 0;
@@ -458,6 +465,7 @@ public class BlockEntityCrucible extends BlockEntityMachineBase
         for (MaterialStack stack : this.recipeStack) {
             stack.amount -= getQuantaFromType(loaded.input, stack.material);
         }
+        markChanged();
 
         outer:
         for (MaterialStack out : loaded.output) {
@@ -621,6 +629,7 @@ public class BlockEntityCrucible extends BlockEntityMachineBase
     @Override
     public MaterialStack pour(
             Level level, BlockPos pos, Vec3 hit, Direction side, MaterialStack stack) {
+        markChanged();
         CrucibleRecipe loaded = getLoadedRecipe();
 
         if (loaded == null) {
@@ -640,20 +649,20 @@ public class BlockEntityCrucible extends BlockEntityMachineBase
         int recipeInputRequired = getQuantaFromType(loaded.input, stack.material);
         int matMaximum =
                 recipeInputRequired * MachineData.CRUCIBLE_RECIPE_CAPACITY.get() / recipeContent;
+        int amount = getQuantaFromType(this.recipeStack, stack.material);
+        int amountTotal = getQuantaFromType(this.recipeStack, null);
 
-        if (recipeInputRequired + stack.amount <= matMaximum) {
-            addToStack(this.recipeStack, stack.copy());
-            return null;
-        }
-
-        int toAdd = matMaximum - stack.amount;
-        toAdd =
+        int toAdd =
                 Math.min(
-                        toAdd,
-                        MachineData.CRUCIBLE_RECIPE_CAPACITY.get()
-                                - getQuantaFromType(this.recipeStack, null));
+                        matMaximum - amount,
+                        MachineData.CRUCIBLE_RECIPE_CAPACITY.get() - amountTotal);
+        toAdd = Math.min(toAdd, stack.amount);
+        if (toAdd <= 0) return stack;
+
         addToStack(this.recipeStack, new MaterialStack(stack.material, toAdd));
-        return new MaterialStack(stack.material, stack.amount - toAdd);
+        return toAdd < stack.amount
+                ? new MaterialStack(stack.material, stack.amount - toAdd)
+                : null;
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
 import com.hbm.render.anim.BusAnimationSequence;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.DamageClass;
 import java.util.function.BiConsumer;
@@ -153,16 +154,15 @@ public class XFactoryAccelerator {
                     coin.setThrower(player);
                     player.level().addFreshEntity(coin);
 
-                    player.level()
-                            .playSound(
-                                    null,
-                                    player.getX(),
-                                    player.getY(),
-                                    player.getZ(),
-                                    SoundEvents.EXPERIENCE_ORB_PICKUP,
-                                    SoundSource.PLAYERS,
-                                    1.0F,
-                                    1F + player.getRandom().nextFloat() * 0.25F);
+                    EntitySounds.play(
+                            player,
+                            player.getX(),
+                            player.getY(),
+                            player.getZ(),
+                            SoundEvents.EXPERIENCE_ORB_PICKUP,
+                            SoundSource.PLAYERS,
+                            1.0F,
+                            1F + player.getRandom().nextFloat() * 0.25F);
 
                     ItemGunNI4NI.setCoinCount(stack, ItemGunNI4NI.getCoinCount(stack) - 1);
                 }

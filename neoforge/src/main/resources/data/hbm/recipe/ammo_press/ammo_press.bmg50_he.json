@@ -15,7 +15,7 @@
       "ingredient": "hbm:casing_large_steel"
     }
   },
-  "order": 40,
+  "order": 10240,
   "output_items": [
     {
       "count": 12,

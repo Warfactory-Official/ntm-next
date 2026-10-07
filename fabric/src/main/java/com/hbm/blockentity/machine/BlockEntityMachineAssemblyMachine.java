@@ -275,6 +275,7 @@ public class BlockEntityMachineAssemblyMachine extends BlockEntityMachineBase
         double speed = 1D + speedLevel / 3D + overdriveLevel;
         double pow = 1D - powerLevel * 0.25D + speedLevel + overdriveLevel * 10D / 3D;
 
+        double prevProgress = recipeModule.progress;
         recipeModule.update(speed, pow, true, inventory.get(SLOT_BLUEPRINT));
         isProgressing = recipeModule.didProcess;
         if (recipeModule.didProcess) {
@@ -286,6 +287,7 @@ public class BlockEntityMachineAssemblyMachine extends BlockEntityMachineBase
         }
 
         if (recipeModule.markDirty || power != prevPower) setChanged();
+        else if (recipeModule.didProcess || recipeModule.progress != prevProgress) markChanged();
         networkPackNT(100);
     }
 

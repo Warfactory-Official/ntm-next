@@ -12,7 +12,7 @@
       "ingredient": "hbm:powder_impure_osmiridium"
     }
   ],
-  "order": 250,
+  "order": 67584,
   "output_items": [
     "hbm:crystal_osmiridium"
   ]

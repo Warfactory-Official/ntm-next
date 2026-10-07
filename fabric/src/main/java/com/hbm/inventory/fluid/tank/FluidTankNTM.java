@@ -3,6 +3,8 @@
 
 package com.hbm.inventory.fluid.tank;
 
+import com.hbm.blocks.fluid.ClassicFluid;
+import com.hbm.blocks.network.FluidPipeBlock;
 import com.hbm.capability.FluidContainerRows;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.inventory.fluid.FluidStackNTM;
@@ -21,6 +23,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
@@ -37,6 +40,7 @@ public class FluidTankNTM implements SyncSource {
     @SyncField private int fill;
     @SyncField private int capacity;
     @SyncField private int pressure;
+    private transient @Nullable BlockEntity owner;
 
     public FluidTankNTM(int capacity) {
         this.capacity = capacity;
@@ -88,6 +92,16 @@ public class FluidTankNTM implements SyncSource {
         return pin != null;
     }
 
+    public void bindOwner(BlockEntity owner) {
+        assert this.owner == null || this.owner == owner;
+        this.owner = owner;
+        scheduleConnections();
+    }
+
+    private void scheduleConnections() {
+        if (owner != null) FluidPipeBlock.scheduleConnections(owner);
+    }
+
     protected void declaredFluidChanged(@Nullable Fluid previous) {}
 
     public void setTankType(@Nullable Fluid fluid) {
@@ -100,10 +114,13 @@ public class FluidTankNTM implements SyncSource {
         held = null;
         fill = 0;
         declaredFluidChanged(previous);
+        scheduleConnections();
     }
 
     public void setTankTypeByIdentifier(@Nullable Fluid fluid) {
         Fluid previous = getDeclaredFluid();
+        Fluid previousType = type;
+        Fluid previousPin = pin;
         Fluid exact = (fluid == null || fluid == Fluids.EMPTY) ? null : fluid;
         Fluid kind = kindOf(exact);
         if (kind != type || fill > 0 && getFluid() != exact) {
@@ -113,6 +130,7 @@ public class FluidTankNTM implements SyncSource {
         type = kind;
         pin = exact;
         if (previous != getDeclaredFluid()) declaredFluidChanged(previous);
+        if (previousType != type || previousPin != pin) scheduleConnections();
     }
 
     private static @Nullable Fluid kindOf(@Nullable Fluid fluid) {
@@ -128,6 +146,13 @@ public class FluidTankNTM implements SyncSource {
 
     public boolean provides(@Nullable Fluid fluid) {
         return fluid != null && type != null && fluid == getFluid();
+    }
+
+    public boolean joins(@Nullable Fluid fluid) {
+        if (fluid == null || fluid == Fluids.EMPTY || type == null) return false;
+        return pin != null
+                ? fluid == pin
+                : fluid == type || NTMFluidProperties.kindOf(fluid) == type;
     }
 
     public int receive(Fluid fluid, int amount) {
@@ -178,7 +203,10 @@ public class FluidTankNTM implements SyncSource {
         held = null;
         fill = 0;
         pressure = 0;
-        if (previous != null) declaredFluidChanged(previous);
+        if (previous != null) {
+            declaredFluidChanged(previous);
+            scheduleConnections();
+        }
     }
 
     public int changeTankSize(int size) {
@@ -200,6 +228,7 @@ public class FluidTankNTM implements SyncSource {
                 held = incoming == type ? null : incoming;
                 fill = toTransfer;
                 declaredFluidChanged(null);
+                scheduleConnections();
             }
             return toTransfer;
         }
@@ -225,6 +254,8 @@ public class FluidTankNTM implements SyncSource {
     }
 
     public void deserialize(ValueInput in) {
+        Fluid previousType = type;
+        Fluid previousPin = pin;
         fill = in.getIntOr("fill", 0);
         capacity = in.getIntOr("capacity", capacity);
         pressure = in.getIntOr("pressure", 0);
@@ -235,6 +266,7 @@ public class FluidTankNTM implements SyncSource {
         held = resolveFluid(heldId);
         if (!heldId.isEmpty() && held == null) fill = 0;
         if (fill == 0) held = null;
+        if (previousType != type || previousPin != pin) scheduleConnections();
     }
 
     public void packetSerialize(ByteBuf buf) {
@@ -288,6 +320,7 @@ public class FluidTankNTM implements SyncSource {
             Fluid given = item.fluid() == null ? getFluid() : item.fluid();
             if (type != null
                     && accepts(given)
+                    && item.operates(stack)
                     && (item.chance() <= 1 || LOADER_RANDOM.nextInt(item.chance()) == 0)) {
                 receive(given, item.amount());
             }
@@ -309,6 +342,7 @@ public class FluidTankNTM implements SyncSource {
         if (stack.getItem() instanceof ItemFluidContainerInfinite item) {
             if (item.allowPressure(pressure)
                     && (item.fluid() == null || item.fluid() == getFluid())
+                    && item.operates(stack)
                     && (item.chance() <= 1 || LOADER_RANDOM.nextInt(item.chance()) == 0)) {
                 setFill(Math.max(fill - item.amount(), 0));
             }
@@ -440,14 +474,26 @@ public class FluidTankNTM implements SyncSource {
         IFluidHandlerView view = FabricCaps.findFluidHandler(scratch, 0);
         if (view == null) return;
 
+        Fluid offered = content;
         long room = view.insertable(content);
+        if (room <= 0 && content == type) {
+            for (Fluid placed : NTMFluidProperties.equivalents(type)) {
+                if (!(placed instanceof ClassicFluid classic) || classic.spec().kind() == null)
+                    break;
+                room = view.insertable(placed);
+                if (room > 0) {
+                    offered = placed;
+                    break;
+                }
+            }
+        }
         if (room <= 0) return;
-        long given = view.insert(content, Math.min(room, fill));
+        long given = view.insert(offered, Math.min(room, fill));
         if (given <= 0) return;
 
         ItemStack result = scratch.getItem(0);
         if (!changed(probe, result)) return;
-        if (view.insertable(content) <= 0) {
+        if (view.insertable(offered) <= 0) {
             if (!ejectFits(slots, out, result)) return;
             setFill(fill - (int) given);
             eject(slots, in, out, result);

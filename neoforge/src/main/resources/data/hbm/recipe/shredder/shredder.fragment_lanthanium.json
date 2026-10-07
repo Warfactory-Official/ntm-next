@@ -5,7 +5,7 @@
       "ingredient": "hbm:fragment_lanthanium"
     }
   ],
-  "order": 42,
+  "order": 10752,
   "output_items": [
     "hbm:powder_lanthanium_tiny"
   ]

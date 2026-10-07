@@ -6,11 +6,16 @@ package com.hbm.inventory.recipes;
 import com.hbm.inventory.recipes.ingredient.CountIngredient;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
+import com.hbm.inventory.recipes.loader.Outputs;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
+import java.util.List;
+import java.util.Optional;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.random.Weighted;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public class ShredderRecipe extends GenericRecipe {
@@ -38,11 +43,18 @@ public class ShredderRecipe extends GenericRecipe {
                     () -> "shredder does not consume recipe fluids, duration or power");
         }
         var outputs = recipe.outputTemplates();
-        if (outputs.size() != 1
-                || outputs.getFirst().unwrap().size() != 1
-                || outputs.getFirst().unwrap().getFirst().weight() <= 0) {
+        List<Weighted<Optional<ItemStackTemplate>>> entries =
+                outputs.size() == 1 ? outputs.getFirst().unwrap() : List.of();
+        boolean fixed =
+                entries.size() == 1
+                        && entries.getFirst().value().isPresent()
+                        && entries.getFirst().weight() > 0;
+        boolean chance =
+                entries.size() == 2
+                        && entries.get(0).value().isPresent() != entries.get(1).value().isPresent();
+        if (!fixed && !chance) {
             return DataResult.error(
-                    () -> "shredder needs one fixed output, without chance or alternatives");
+                    () -> "shredder needs one fixed or chance output, without alternatives");
         }
         return DataResult.success(recipe);
     }
@@ -52,9 +64,13 @@ public class ShredderRecipe extends GenericRecipe {
     }
 
     public ItemStack output() {
-        return outputItems() == null || outputItems().length == 0
-                ? ItemStack.EMPTY
-                : outputItems()[0].unwrap().getFirst().value();
+        if (outputItems() == null || outputItems().length == 0) return ItemStack.EMPTY;
+        ItemStack single = Outputs.single(outputItems()[0]);
+        return single == null ? ItemStack.EMPTY : single;
+    }
+
+    public ItemStack roll() {
+        return outputItems()[0].getRandom(GenericRecipes.RNG).orElse(ItemStack.EMPTY).copy();
     }
 
     @Override

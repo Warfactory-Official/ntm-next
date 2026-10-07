@@ -4,8 +4,10 @@
 package com.hbm.world.gen.nbt;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.BlockBobble.BobbleType;
+import com.hbm.blocks.generic.BlockBobble.Bobble;
+import com.hbm.blocks.generic.BlockBobble;
 import com.mojang.serialization.MapCodec;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.LevelReader;
@@ -36,15 +38,17 @@ public class BobbleRandomizerProcessor implements StructureProcessor {
                         ? new CompoundTag()
                         : processedBlockInfo.nbt().copy();
         nbt.putString("id", "hbm:bobblehead");
-        nbt.putByte(
+        List<Bobble> types = BlockBobble.TYPES.values();
+        nbt.putString(
                 "type",
-                (byte)
-                        (ProcessorRandom.bounded(
-                                        level,
-                                        processedBlockInfo.pos(),
-                                        ProcessorRandom.BOBBLE_TYPE,
-                                        BobbleType.count() - 1)
-                                + 1));
+                types.get(
+                                ProcessorRandom.bounded(
+                                                level,
+                                                processedBlockInfo.pos(),
+                                                ProcessorRandom.BOBBLE_TYPE,
+                                                types.size() - 1)
+                                        + 1)
+                        .id());
         return new StructureTemplate.StructureBlockInfo(
                 processedBlockInfo.pos(), processedBlockInfo.state(), nbt);
     }

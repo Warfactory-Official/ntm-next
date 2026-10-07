@@ -9,8 +9,6 @@ import com.hbm.entity.logic.EntityNukeExplosionMK5;
 import com.hbm.explosion.ExplosionNukeGeneric;
 import com.hbm.explosion.ExplosionNukeSmall;
 import com.hbm.handler.threading.TargetPoint;
-import com.hbm.items.ModItems;
-import com.hbm.items.weapon.sedna.factory.GunFactory;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.MukePayload;
@@ -18,8 +16,6 @@ import com.hbm.sound.ModSounds;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.ContaminationUtil;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -30,14 +26,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.arrow.Arrow;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gamerules.GameRules;
 
@@ -67,27 +56,6 @@ public class EntityCreeperNuclear extends EntityCreeperBase {
     }
 
     @Override
-    protected void dropCustomDeathLoot(
-            ServerLevel level, DamageSource source, boolean killedByPlayer) {
-        super.dropCustomDeathLoot(level, source, killedByPlayer);
-
-        int looting = 0;
-        if (source.getEntity() instanceof LivingEntity attacker) {
-            Holder<Enchantment> lootingEnchant =
-                    level.registryAccess()
-                            .lookupOrThrow(Registries.ENCHANTMENT)
-                            .getOrThrow(Enchantments.LOOTING);
-            looting = EnchantmentHelper.getEnchantmentLevel(lootingEnchant, attacker);
-        }
-
-        int tnt = random.nextInt(3) + (looting > 0 ? random.nextInt(looting + 1) : 0);
-        for (int i = 0; i < tnt; i++) spawnAtLocation(level, new ItemStack(Items.TNT));
-
-        if (random.nextInt(3) == 0)
-            spawnAtLocation(level, new ItemStack(ModItems.COIN_CREEPER.get()));
-    }
-
-    @Override
     public void die(DamageSource source) {
         super.die(source);
 
@@ -98,15 +66,6 @@ public class EntityCreeperNuclear extends EntityCreeperBase {
                     HbmCriteria.detonation(serverPlayer, DetonationTrigger.Kind.NUCLEAR_CREEPER);
                 }
             }
-        }
-
-        boolean shotBySkeleton = source.getEntity() instanceof AbstractSkeleton;
-        boolean strayArrow =
-                source.getDirectEntity() instanceof Arrow arrow && arrow.getOwner() == null;
-
-        if ((shotBySkeleton || strayArrow) && level() instanceof ServerLevel server) {
-            spawnAtLocation(
-                    server, ModItems.AMMO_STANDARD.stack(GunFactory.EnumAmmo.NUKE_STANDARD));
         }
     }
 

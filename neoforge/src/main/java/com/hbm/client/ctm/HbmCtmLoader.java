@@ -18,6 +18,10 @@ import me.pepperbell.continuity.client.properties.BaseCtmProperties;
 import me.pepperbell.continuity.client.properties.OrientedConnectingCtmProperties;
 import me.pepperbell.continuity.client.properties.PropertiesParsingHelper;
 import me.pepperbell.continuity.client.properties.TileAmountValidator;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -85,8 +89,26 @@ public final class HbmCtmLoader {
             if (base == null) {
                 return;
             }
-            connectionPredicate =
-                    (level,
+            connectionPredicate = new Joined(base, join);
+        }
+    }
+
+    private record Joined(ConnectionPredicate base, Predicate<BlockState> join)
+            implements ConnectionPredicate {
+
+        @Override
+        public boolean shouldConnect(
+                BlockAndTintGetter level,
+                BlockPos pos,
+                BlockState appearance,
+                BlockState state,
+                BlockPos otherPos,
+                BlockState otherAppearance,
+                BlockState otherState,
+                Direction face,
+                TextureAtlasSprite sprite) {
+            return base.shouldConnect(
+                            level,
                             pos,
                             appearance,
                             state,
@@ -94,18 +116,35 @@ public final class HbmCtmLoader {
                             otherAppearance,
                             otherState,
                             face,
-                            sprite) ->
-                            base.shouldConnect(
-                                            level,
-                                            pos,
-                                            appearance,
-                                            state,
-                                            otherPos,
-                                            otherAppearance,
-                                            otherState,
-                                            face,
-                                            sprite)
-                                    || join.test(otherAppearance);
+                            sprite)
+                    || join.test(otherAppearance);
+        }
+
+        public boolean shouldConnect(
+                BlockAndTintGetter level,
+                BlockState appearance,
+                BlockState state,
+                BlockPos pos,
+                BlockState otherAppearance,
+                BlockState otherState,
+                BlockPos otherPos,
+                Direction face,
+                TextureAtlasSprite sprite) {
+            ConnectionPredicate inner = base;
+            boolean connected = __asm__(boolean) {
+                aload inner;
+                aload level;
+                aload appearance;
+                aload state;
+                aload pos;
+                aload otherAppearance;
+                aload otherState;
+                aload otherPos;
+                aload face;
+                aload sprite;
+                invokeinterface "me/pepperbell/continuity/client/processor/ConnectionPredicate" "shouldConnect" "(Lnet/minecraft/client/renderer/block/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)Z";
+            };
+            return connected || join.test(otherAppearance);
         }
     }
 }

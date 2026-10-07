@@ -7,20 +7,29 @@ import com.hbm.api.redstoneoverradio.IRORInteractive;
 import com.hbm.blockentity.network.RTTYSystem;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.missile.EntitySatellitePod;
+import com.hbm.lib.Library;
+import com.hbm.registration.OverridePoint;
 import com.hbm.saveddata.SatelliteSavedData;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.Nullable;
 
 public abstract class Satellite {
 
     public static final String CHAN_SATLINK = "SAT_LINK";
+    public static final int AUTOMATIC_Y = Integer.MIN_VALUE;
 
     public int targetX;
     public int targetZ;
@@ -28,6 +37,18 @@ public abstract class Satellite {
     public Optional<DriveType> driveInput = Optional.empty();
     public Optional<DriveType> driveOutput = Optional.empty();
     public List<ItemStack> requestableSlots = List.of();
+    public DataComponentMap components = DataComponentMap.EMPTY;
+
+    public static final OverridePoint<List<Supplier<? extends DataComponentType<?>>>> CARRIED =
+            OverridePoint.of(Library.id("satellite_carried"), List.of());
+
+    public static final OverridePoint<OrbitLevel> ORBIT_LEVEL =
+            OverridePoint.of(Library.id("satellite_orbit_level"), (level, type) -> level);
+
+    @FunctionalInterface
+    public interface OrbitLevel {
+        ServerLevel orbitLevel(ServerLevel level, SatelliteType type);
+    }
 
     public static void orbit(
             ServerLevel level, SatelliteType type, int freq, double x, double y, double z) {
@@ -36,7 +57,8 @@ public abstract class Satellite {
 
     public static boolean orbit(
             ServerLevel level, ItemStack part, int freq, double x, double y, double z) {
-        SatelliteSavedData data = SatelliteSavedData.get(level);
+        int bx = Mth.floor(x), bz = Mth.floor(z);
+        SatelliteSavedData data = SatelliteSavedData.at(level, bx, bz);
         Satellite existing = data.getSatFromFreq(freq);
         if (existing != null) {
             existing.onPartDelivered(level, part);
@@ -45,11 +67,40 @@ public abstract class Satellite {
         }
         SatelliteType type = SatelliteType.fromStack(part);
         if (type == null) return false;
+        ServerLevel orbit = ORBIT_LEVEL.get().orbitLevel(level, type);
+        data = SatelliteSavedData.at(orbit, bx, bz);
         Satellite sat = type.create();
+        sat.components = carried(part);
         data.put(freq, sat);
-        sat.setTarget((int) Math.floor(x), (int) Math.floor(z));
-        sat.onOrbit(level, x, y, z);
+        sat.setTarget(bx, bz);
+        sat.onOrbit(orbit, x, y, z);
         data.setDirty();
+        return true;
+    }
+
+    private static DataComponentMap carried(ItemStack stack) {
+        DataComponentMap.Builder builder = DataComponentMap.builder();
+        for (Supplier<? extends DataComponentType<?>> type : CARRIED.get())
+            carry(builder, stack, type.get());
+        return builder.build();
+    }
+
+    private static <T> void carry(
+            DataComponentMap.Builder builder, ItemStack stack, DataComponentType<T> type) {
+        builder.set(type, stack.get(type));
+    }
+
+    public static boolean copyCarried(ItemStack from, ItemStack to) {
+        boolean changed = false;
+        for (Supplier<? extends DataComponentType<?>> type : CARRIED.get())
+            changed |= copy(from, to, type.get());
+        return changed;
+    }
+
+    private static <T> boolean copy(ItemStack from, ItemStack to, DataComponentType<T> type) {
+        @Nullable T value = from.get(type);
+        if (Objects.equals(value, to.get(type))) return false;
+        to.set(type, value);
         return true;
     }
 
@@ -135,13 +186,19 @@ public abstract class Satellite {
         pod.setPos(x + 0.5D, 300D, z + 0.5D);
         level.addFreshEntity(pod);
         requestableSlots = List.of();
-        SatelliteSavedData.get(level).setDirty();
+        SatelliteSavedData.at(level, x, z).setDirty();
         return true;
     }
 
     public State state() {
         return new State(
-                targetX, targetZ, tx, driveInput, driveOutput, List.copyOf(requestableSlots));
+                targetX,
+                targetZ,
+                tx,
+                driveInput,
+                driveOutput,
+                List.copyOf(requestableSlots),
+                components);
     }
 
     public static Satellite restore(Satellite sat, State state) {
@@ -151,6 +208,7 @@ public abstract class Satellite {
         sat.driveInput = state.driveInput();
         sat.driveOutput = state.driveOutput();
         sat.requestableSlots = state.requestableSlots();
+        sat.components = state.components();
         return sat;
     }
 
@@ -184,7 +242,8 @@ public abstract class Satellite {
             String tx,
             Optional<DriveType> driveInput,
             Optional<DriveType> driveOutput,
-            List<ItemStack> requestableSlots) {
+            List<ItemStack> requestableSlots,
+            DataComponentMap components) {
         public static final Codec<State> CODEC =
                 RecordCodecBuilder.create(
                         i ->
@@ -208,7 +267,12 @@ public abstract class Satellite {
                                                         .listOf()
                                                         .optionalFieldOf(
                                                                 "requestableSlots", List.of())
-                                                        .forGetter(State::requestableSlots))
+                                                        .forGetter(State::requestableSlots),
+                                                DataComponentMap.CODEC
+                                                        .optionalFieldOf(
+                                                                "components",
+                                                                DataComponentMap.EMPTY)
+                                                        .forGetter(State::components))
                                         .apply(i, State::new));
     }
 }

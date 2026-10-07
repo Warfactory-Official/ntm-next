@@ -11,6 +11,7 @@ import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.items.weapon.sedna.Receiver;
 import com.hbm.items.weapon.sedna.mags.IMagazine;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
+import com.hbm.sound.EntitySounds;
 import java.util.function.BiConsumer;
 import java.util.function.BooleanSupplier;
 import net.minecraft.sounds.SoundSource;
@@ -124,16 +125,15 @@ public class GunStateDecider {
                     ItemGunBaseNT.setTimer(stack, gunIndex, rec.getDelayAfterFire(stack));
 
                     if (rec.getFireSound(stack) != null)
-                        entity.level()
-                                .playSound(
-                                        null,
-                                        entity.getX(),
-                                        entity.getY(),
-                                        entity.getZ(),
-                                        rec.getFireSound(stack).get(),
-                                        SoundSource.PLAYERS,
-                                        rec.getFireVolume(stack),
-                                        rec.getFirePitch(stack));
+                        EntitySounds.play(
+                                entity,
+                                entity.getX(),
+                                entity.getY(),
+                                entity.getZ(),
+                                rec.getFireSound(stack).get(),
+                                SoundSource.PLAYERS,
+                                rec.getFireVolume(stack),
+                                rec.getFirePitch(stack));
 
                     int remaining = rec.getRoundsPerCycle(stack) - 1;
                     for (int i = 0; i < remaining; i++)

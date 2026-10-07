@@ -4,9 +4,13 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blockentity.BlockEntityPlushie;
+import com.hbm.blocks.ModBlocks;
+import com.hbm.registration.OpenRegistry;
 import com.hbm.sound.ModSounds;
+import java.util.Locale;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -30,6 +34,11 @@ import org.jspecify.annotations.Nullable;
 
 public class BlockPlushie extends Block implements EntityBlock {
     public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
+    public static final OpenRegistry<Plushie> TYPES = new OpenRegistry<>("plushie", Plushie::id);
+
+    static {
+        for (PlushieType type : PlushieType.values()) TYPES.add(type);
+    }
 
     public BlockPlushie(Properties props) {
         super(props);
@@ -106,35 +115,62 @@ public class BlockPlushie extends Block implements EntityBlock {
     }
 
     @Override
+    protected InteractionResult useItemOn(
+            ItemStack stack,
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hit) {
+        if (!(level.getBlockEntity(pos) instanceof BlockEntityPlushie plushie)) {
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
+        }
+        return plushie.type.useItemOn(stack, plushie, player);
+    }
+
+    @Override
     protected InteractionResult useWithoutItem(
             BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (!(level.getBlockEntity(pos) instanceof BlockEntityPlushie plushie))
             return InteractionResult.SUCCESS;
         if (level.isClientSide()) {
             plushie.squish();
-        } else if (plushie.type == PlushieType.HUNDUN) {
-            level.playSound(
-                    null,
-                    pos,
-                    ModSounds.BLOCK_HUNDUNS_MAGNIFICENT_HOWL.get(),
-                    SoundSource.BLOCKS,
-                    100.0F,
-                    1.0F);
         } else {
-            level.playSound(
-                    null, pos, ModSounds.BLOCK_PLUSHY.get(), SoundSource.BLOCKS, 0.25F, 1.0F);
+            plushie.type.squeak(level, pos);
         }
         return InteractionResult.SUCCESS;
     }
 
-    public enum PlushieType {
+    public interface Plushie {
+
+        String name();
+
+        String label();
+
+        @Nullable String inscription();
+
+        ItemStack stack();
+
+        void squeak(Level level, BlockPos pos);
+
+        default InteractionResult useItemOn(
+                ItemStack held, BlockEntityPlushie plushie, Player player) {
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
+        }
+
+        default String id() {
+            return name().toLowerCase(Locale.ROOT);
+        }
+    }
+
+    public enum PlushieType implements Plushie {
         NONE("NONE", null),
         YOMI("Yomi", "Hi! Can I be your rabbit friend?"),
         NUMBERNINE("Number Nine", "None of y'all deserve coal."),
         HUNDUN("Hundun", "混沌"),
         DERG("Dragon", "Squeeze him.");
 
-        private static final PlushieType[] VALUES = values();
         public final String label;
         public final @Nullable String inscription;
 
@@ -143,12 +179,35 @@ public class BlockPlushie extends Block implements EntityBlock {
             this.inscription = inscription;
         }
 
-        public static PlushieType byOrdinal(int raw) {
-            return VALUES[Math.abs(raw) % VALUES.length];
+        @Override
+        public String label() {
+            return label;
         }
 
-        public static int count() {
-            return VALUES.length;
+        @Override
+        public @Nullable String inscription() {
+            return inscription;
+        }
+
+        @Override
+        public ItemStack stack() {
+            return this == NONE ? new ItemStack(ModBlocks.PLUSHIE) : ModBlocks.PLUSHIES.stack(this);
+        }
+
+        @Override
+        public void squeak(Level level, BlockPos pos) {
+            if (this == HUNDUN) {
+                level.playSound(
+                        null,
+                        pos,
+                        ModSounds.BLOCK_HUNDUNS_MAGNIFICENT_HOWL.get(),
+                        SoundSource.BLOCKS,
+                        100.0F,
+                        1.0F);
+            } else {
+                level.playSound(
+                        null, pos, ModSounds.BLOCK_PLUSHY.get(), SoundSource.BLOCKS, 0.25F, 1.0F);
+            }
         }
     }
 }

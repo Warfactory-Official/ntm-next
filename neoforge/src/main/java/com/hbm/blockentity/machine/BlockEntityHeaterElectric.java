@@ -158,7 +158,9 @@ public class BlockEntityHeaterElectric extends BlockEntityMachineBase
     @Override
     public void useUpHeat(Level level, BlockPos pos, int heat) {
         if (!BlockMultiblockCore.vendsHeatAt(this, pos)) return;
+        int prevHeat = heatEnergy;
         heatEnergy = Math.max(0, heatEnergy - heat);
+        if (heatEnergy != prevHeat) markChanged();
     }
 
     @Override

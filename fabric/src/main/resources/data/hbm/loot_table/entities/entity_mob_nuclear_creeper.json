@@ -1,0 +1,98 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 0.0
+              },
+              "function": "minecraft:set_count"
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 0.0
+              },
+              "enchantment": "minecraft:looting",
+              "function": "minecraft:enchanted_count_increase"
+            }
+          ],
+          "name": "minecraft:tnt"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "conditions": [
+        {
+          "condition": "minecraft:entity_properties",
+          "entity": "attacker",
+          "predicate": {
+            "minecraft:entity_type": "#minecraft:skeletons"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:tag",
+          "expand": true,
+          "name": "minecraft:creeper_drop_music_discs"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "conditions": [
+        {
+          "chance": 0.33333334,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:coin_creeper"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "conditions": [
+        {
+          "condition": "minecraft:any_of",
+          "terms": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "attacker",
+              "predicate": {
+                "minecraft:entity_type": "#minecraft:skeletons"
+              }
+            },
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "attacker",
+              "predicate": {
+                "minecraft:entity_type": "minecraft:arrow"
+              }
+            }
+          ]
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:ammo_standard_nuke_standard"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:entities/entity_mob_nuclear_creeper"
+}

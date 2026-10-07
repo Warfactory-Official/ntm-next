@@ -14,7 +14,7 @@
       "ingredient": "hbm:thruster_medium"
     }
   ],
-  "order": 36,
+  "order": 9216,
   "output_items": [
     "hbm:missile_inferno"
   ],

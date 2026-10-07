@@ -36,6 +36,7 @@ import com.hbm.particle.ParticleGiblet;
 import com.hbm.particle.helper.ParticleCreators;
 import com.hbm.sound.AudioSystem;
 import com.hbm.sound.AudioWrapper;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.TickPhase;
 import io.netty.buffer.ByteBuf;
@@ -154,6 +155,7 @@ public class BlockEntityMachineTurbofan extends BlockEntityMachinePolluting
         boolean redstone = blockedByRedstone();
         long burnValue = redstone ? 0 : getHEFromFuel(tank.getTankType());
         int amountToBurn = Math.min(1 + afterburner, tank.getFill());
+        if (!redstone && amountToBurn > 0 && !breatheAir(amountToBurn)) amountToBurn = 0;
 
         if (!redstone && amountToBurn > 0) {
             wasOn = true;
@@ -161,6 +163,7 @@ public class BlockEntityMachineTurbofan extends BlockEntityMachinePolluting
             output = (int) (burnValue * amountToBurn * (1 + Math.min(afterburner / 3D, 4)));
             power += output;
             consumption = amountToBurn;
+            markChanged();
 
             if (TickPhase.every(this, 20))
                 pollute(tank.getTankType(), FluidReleaseType.BURN, amountToBurn * 5F);
@@ -221,8 +224,8 @@ public class BlockEntityMachineTurbofan extends BlockEntityMachinePolluting
 
             if (!entity.isAlive() && entity instanceof LivingEntity) {
                 ParticleCreators.giblets(level, entity, ParticleGiblet.TYPE_MEAT, 5);
-                level.playSound(
-                        null,
+                EntitySounds.play(
+                        entity,
                         entity.getX(),
                         entity.getY(),
                         entity.getZ(),

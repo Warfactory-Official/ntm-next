@@ -10,7 +10,7 @@
       "ingredient": "#hbm:ingots/any_highexplosive"
     }
   ],
-  "order": 355,
+  "order": 90880,
   "output_items": [
     "hbm:warhead_buster_large"
   ],

@@ -16,7 +16,7 @@
       "ingredient": "hbm:powder_flux"
     }
   ],
-  "order": 42,
+  "order": 10752,
   "output_fluids": [
     {
       "type": "hbm:chlorocalcite_mix",

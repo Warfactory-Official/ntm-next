@@ -145,9 +145,10 @@ public class BlockEntityCore extends BlockEntityMachineBase
         networkPackNT(250);
 
         heat = 0;
-        if (lastTickValid && field > 0) field -= 1;
-
-        setChanged();
+        if (lastTickValid && field > 0) {
+            field -= 1;
+            markChanged();
+        }
     }
 
     public static int blastSize(int fill, int heat, int max) {
@@ -265,6 +266,7 @@ public class BlockEntityCore extends BlockEntityMachineBase
 
         tanks[0].setFill(tanks[0].getFill() - demand);
         tanks[1].setFill(tanks[1].getFill() - demand);
+        markChanged();
 
         return (long)
                 (joules

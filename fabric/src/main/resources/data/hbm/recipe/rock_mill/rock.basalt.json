@@ -1,0 +1,63 @@
+{
+  "type": "hbm:rock_mill",
+  "auto_switch_group": "autoswitch.crushing",
+  "duration": 200,
+  "icon_from_input": true,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": [
+        "minecraft:basalt",
+        "minecraft:smooth_basalt"
+      ]
+    }
+  ],
+  "name_wrapper": "rock.crushing",
+  "order": 3840,
+  "output_fluids": [
+    {
+      "type": "minecraft:lava",
+      "amount": 100
+    }
+  ],
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "minecraft:gravel"
+        },
+        "weight": 50
+      },
+      {
+        "data": {
+          "id": "hbm:sulfur"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "hbm:fluorite"
+        },
+        "weight": 15
+      },
+      {
+        "data": {
+          "id": "hbm:powder_asbestos"
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "id": "hbm:powder_molysite"
+        },
+        "weight": 5
+      }
+    ]
+  ],
+  "power": 25
+}

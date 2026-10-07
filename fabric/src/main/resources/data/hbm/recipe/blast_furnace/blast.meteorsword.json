@@ -10,7 +10,7 @@
     }
   ],
   "name": "blast.meteorSword",
-  "order": 9,
+  "order": 3072,
   "output_items": [
     "hbm:meteorite_sword_alloyed"
   ]

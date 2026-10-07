@@ -53,6 +53,15 @@ transitive-accessible field net/minecraft/world/level/chunk/LevelChunkSection no
 transitive-accessible field net/minecraft/world/level/Level soundSeedGenerator Lnet/minecraft/util/RandomSource;
 
 transitive-accessible field net/minecraft/world/level/levelgen/synth/SimplexNoise p [I
+transitive-accessible class net/minecraft/world/level/levelgen/SurfaceRules$Context
+transitive-accessible class net/minecraft/world/level/levelgen/SurfaceRules$Condition
+transitive-accessible class net/minecraft/world/level/levelgen/SurfaceRules$SurfaceRule
+transitive-accessible field net/minecraft/world/level/levelgen/SurfaceRules$Context randomState Lnet/minecraft/world/level/levelgen/RandomState;
+transitive-accessible field net/minecraft/world/level/levelgen/SurfaceRules$Context blockX I
+transitive-accessible field net/minecraft/world/level/levelgen/SurfaceRules$Context blockY I
+transitive-accessible field net/minecraft/world/level/levelgen/SurfaceRules$Context blockZ I
+transitive-accessible field net/minecraft/world/level/levelgen/SurfaceRules$Context stoneDepthAbove I
+transitive-accessible method net/minecraft/world/level/levelgen/feature/TreeFeature updateLeaves (Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/world/level/levelgen/structure/BoundingBox;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;)Lnet/minecraft/world/phys/shapes/DiscreteVoxelShape;
 
 transitive-accessible method net/minecraft/client/gui/screens/MenuScreens register (Lnet/minecraft/world/inventory/MenuType;Lnet/minecraft/client/gui/screens/MenuScreens$ScreenConstructor;)V
 
@@ -152,6 +161,8 @@ accessible field net/minecraft/client/renderer/ItemInHandRenderer mainHandHeight
 accessible field net/minecraft/client/renderer/ItemInHandRenderer oMainHandHeight F
 accessible method net/minecraft/world/item/ItemStack processDurabilityChange (ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/server/level/ServerPlayer;)I
 accessible field net/minecraft/client/gui/render/pip/PictureInPictureRenderer texture Lcom/mojang/blaze3d/textures/GpuTexture;
+accessible field com/mojang/blaze3d/audio/Channel source I
+accessible field net/minecraft/client/resources/sounds/EntityBoundSoundInstance entity Lnet/minecraft/world/entity/Entity;
 extendable class net/minecraft/world/level/levelgen/structure/structures/JigsawStructure
 
 transitive-accessible field net/minecraft/client/particle/Particle x D

@@ -12,7 +12,7 @@
       "ingredient": "#c:storage_blocks/coal"
     }
   ],
-  "order": 262,
+  "order": 70656,
   "output_items": [
     "hbm:block_graphite"
   ]

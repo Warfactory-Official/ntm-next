@@ -7,7 +7,6 @@ import com.hbm.api.ntl.PneumaticNetwork;
 import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTube;
 import com.hbm.inventory.container.MenuPneumoTube;
 import com.hbm.lib.Library;
-import com.hbm.module.ModulePatternMatcher;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
 import java.util.List;
@@ -27,8 +26,6 @@ public class ScreenPneumoTube extends ScreenInfoContainer<MenuPneumoTube> {
             Library.id("textures/gui/storage/gui_pneumatic_pipe.png");
     private static final Identifier TEXTURE_ENDPOINT =
             Library.id("textures/gui/storage/gui_pneumatic_endpoint.png");
-
-    private static final int TOOLTIP_LIFT = 30;
 
     public ScreenPneumoTube(MenuPneumoTube menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 176, 185);
@@ -176,24 +173,14 @@ public class ScreenPneumoTube extends ScreenInfoContainer<MenuPneumoTube> {
                                                     : "Random")));
         }
 
-        if (menu.getCarried().isEmpty()) {
-            for (int i = 0; i < BlockEntityPneumoTube.SLOT_COUNT; i++) {
-                Slot slot = menu.getSlot(i);
-                String mode = tube.pattern.mode(i);
-                if (mode != null && isHovering(slot.x, slot.y, 16, 16, mouseX, mouseY)) {
-                    graphics.setComponentTooltipForNextFrame(
-                            font,
-                            List.of(
-                                    Component.translatable("desc.shared.rightClickToChange")
-                                            .withStyle(ChatFormatting.RED),
-                                    ModulePatternMatcher.getLabel(mode)),
-                            mouseX,
-                            mouseY - TOOLTIP_LIFT);
-                }
-            }
-        }
-
         super.extractLabels(graphics, mouseX, mouseY);
+    }
+
+    @Override
+    protected List<Component> slotTooltip(Slot slot) {
+        return slot.index < BlockEntityPneumoTube.SLOT_COUNT
+                ? patternModeLines(menu.blockEntity().pattern.mode(slot.index))
+                : List.of();
     }
 
     @Override

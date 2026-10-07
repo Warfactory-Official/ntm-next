@@ -24,7 +24,7 @@
     }
   ],
   "neutron_flux": 500.0,
-  "order": 5,
+  "order": 1280,
   "output_items": [
     "hbm:pellet_charged"
   ],

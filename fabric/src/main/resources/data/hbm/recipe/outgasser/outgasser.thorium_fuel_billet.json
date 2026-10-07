@@ -6,7 +6,7 @@
       "ingredient": "#hbm:billets/thorium"
     }
   ],
-  "order": 9,
+  "order": 2304,
   "output_items": [
     "hbm:billet_thorium_fuel"
   ]

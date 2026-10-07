@@ -12,7 +12,7 @@
       "ingredient": "hbm:scrap_plastic_mem_16k_b"
     }
   ],
-  "order": 305,
+  "order": 81664,
   "output_items": [
     "hbm:circuit_star_piece_mem_16k_b"
   ]

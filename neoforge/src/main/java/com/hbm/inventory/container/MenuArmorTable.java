@@ -111,9 +111,8 @@ public class MenuArmorTable extends NtmContainerMenu {
             ItemStack mod = upgrades.getItem(i);
             if (mod.isEmpty()) {
                 ArmorModHandler.removeMod(target, i);
-            } else if (ArmorModHandler.modSlot(mod) == i
-                    && ArmorModHandler.isApplicable(target, mod)) {
-                ArmorModHandler.applyMod(target, mod);
+            } else if (ArmorModHandler.fits(mod, i) && ArmorModHandler.isApplicable(target, mod)) {
+                ArmorModHandler.applyMod(target, mod, i);
             }
         }
     }
@@ -137,9 +136,11 @@ public class MenuArmorTable extends NtmContainerMenu {
                     if (ArmorModHandler.isArmor(stack))
                         return moveItemStackTo(
                                 stack, ARMOR_STACK_SLOT, ARMOR_STACK_SLOT + 1, false);
-                    int modSlot = ArmorModHandler.modSlot(stack);
-                    if (modSlot >= 0 && slots.get(modSlot).mayPlace(stack))
-                        return moveItemStackTo(stack, modSlot, modSlot + 1, false);
+                    for (int socket = 0; socket < ArmorModHandler.MOD_SLOTS; socket++) {
+                        Slot slot = slots.get(socket);
+                        if (!slot.hasItem() && slot.mayPlace(stack))
+                            return moveItemStackTo(stack, socket, socket + 1, false);
+                    }
                     return false;
                 });
     }
@@ -166,7 +167,7 @@ public class MenuArmorTable extends NtmContainerMenu {
         @Override
         public boolean mayPlace(ItemStack stack) {
             return !armor.getItem(0).isEmpty()
-                    && ArmorModHandler.modSlot(stack) == getContainerSlot()
+                    && ArmorModHandler.fits(stack, getContainerSlot())
                     && ArmorModHandler.isApplicable(armor.getItem(0), stack);
         }
     }

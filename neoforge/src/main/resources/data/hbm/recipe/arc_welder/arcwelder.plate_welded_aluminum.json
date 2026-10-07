@@ -7,7 +7,7 @@
       "ingredient": "#hbm:plates_cast/aluminum"
     }
   ],
-  "order": 12,
+  "order": 3072,
   "output_items": [
     "hbm:plate_welded_aluminum"
   ],

@@ -1,6 +1,8 @@
 {
   "values": [
     "hbm:ore_titanium",
-    "hbm:ore_titanium_deepslate"
+    "hbm:ore_titanium_deepslate",
+    "hbm:cluster_depth_titanium",
+    "hbm:cluster_titanium"
   ]
 }

@@ -11,7 +11,7 @@
       "ingredient": "hbm:cap_sparkle"
     }
   ],
-  "order": 80,
+  "order": 20480,
   "output_items": [
     "hbm:block_cap_sparkle"
   ],

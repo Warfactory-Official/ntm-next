@@ -9,6 +9,7 @@ import com.hbm.items.weapon.sedna.factory.ConfettiUtil;
 import com.hbm.items.weapon.sedna.factory.XFactoryPA;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.sound.EntitySounds;
 import com.hbm.util.EntityDamageUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -126,16 +127,15 @@ public abstract class ArmorPAMeleeBase implements IPAMelee {
             hit.hurtServer(server, player.damageSources().playerAttack(player), damage);
         }
 
-        source.level()
-                .playSound(
-                        null,
-                        hit.getX(),
-                        hit.getY(),
-                        hit.getZ(),
-                        hitSound(),
-                        SoundSource.PLAYERS,
-                        1F,
-                        0.9F + source.getRandom().nextFloat() * 0.2F);
+        EntitySounds.play(
+                hit,
+                hit.getX(),
+                hit.getY(),
+                hit.getZ(),
+                hitSound(),
+                SoundSource.PLAYERS,
+                1F,
+                0.9F + source.getRandom().nextFloat() * 0.2F);
     }
 
     @Override

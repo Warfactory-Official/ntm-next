@@ -11,7 +11,7 @@
       "amount": 100
     }
   ],
-  "order": 40,
+  "order": 10240,
   "output_fluids": [
     {
       "type": "hbm:kerosene_reform",

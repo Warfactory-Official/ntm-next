@@ -15,7 +15,7 @@
       "ingredient": "hbm:thermo_element"
     }
   ],
-  "order": 42,
+  "order": 10752,
   "output_items": [
     "hbm:rtg_unit"
   ],

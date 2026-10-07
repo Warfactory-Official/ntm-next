@@ -32,7 +32,7 @@
       "ingredient": "hbm:circuit_basic"
     }
   ],
-  "order": 180,
+  "order": 46080,
   "output_items": [
     "hbm:machine_turbofan"
   ],

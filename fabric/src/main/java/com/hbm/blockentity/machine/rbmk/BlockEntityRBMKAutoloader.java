@@ -73,10 +73,14 @@ public class BlockEntityRBMKAutoloader extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
-        if (delay > 0) delay--;
+        if (delay > 0) {
+            delay--;
+            markChanged();
+        }
 
         if (delay <= 0 && isRetracting && piston > 0D) {
             piston -= SPEED;
+            markChanged();
             if (piston <= 0) {
                 piston = 0;
                 delay = DELAY;
@@ -91,12 +95,14 @@ public class BlockEntityRBMKAutoloader extends BlockEntityMachineBase
                         || (loaded.getItem() instanceof ItemRBMKRod
                                 && ItemRBMKRod.getEnrichment(loaded) * 100 < cycle)) {
                     isRetracting = false;
+                    markChanged();
                 }
             }
         }
 
         if (delay <= 0 && !isRetracting && piston < 1D) {
             piston += SPEED;
+            markChanged();
             if (piston >= 1) {
                 piston = 1;
                 delay = DELAY;
@@ -133,6 +139,7 @@ public class BlockEntityRBMKAutoloader extends BlockEntityMachineBase
 
                 isRetracting = true;
                 delay = DELAY;
+                markChanged();
             }
         }
 
@@ -236,6 +243,7 @@ public class BlockEntityRBMKAutoloader extends BlockEntityMachineBase
     public void pasteSettings(
             CompoundTag nbt, int index, Level level, Player player, BlockPos pos) {
         nbt.getInt("cycle").ifPresent(value -> cycle = Mth.clamp(value, 5, 95));
+        markChanged();
     }
 
     @Override

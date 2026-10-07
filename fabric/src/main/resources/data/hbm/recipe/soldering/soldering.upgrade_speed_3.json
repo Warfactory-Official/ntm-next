@@ -27,7 +27,7 @@
       "ingredient": "hbm:circuit_capacitor"
     }
   ],
-  "order": 25,
+  "order": 6400,
   "output_items": [
     "hbm:upgrade_speed_3"
   ],

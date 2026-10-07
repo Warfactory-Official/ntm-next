@@ -38,8 +38,9 @@ public class OreCaveFeature extends Feature<OreCaveConfig> {
         int yLevel = cfg.yLevel();
         BlockState ore = cfg.ore();
         @Nullable BlockState fluid = cfg.fluid().orElse(null);
-        BlockState stalactite = cfg.stalactite();
-        BlockState stalagmite = cfg.stalagmite();
+        @Nullable BlockState stalactite = cfg.stalactite().orElse(null);
+        @Nullable BlockState stalagmite = cfg.stalagmite().orElse(null);
+        boolean exposedByFluid = cfg.exposedByFluid();
 
         Scratch scratch = SCRATCH.get();
         double[] noiseValues = scratch.noiseValues;
@@ -68,7 +69,11 @@ public class OreCaveFeature extends Feature<OreCaveConfig> {
                         for (Direction dir : Direction.VALUES) {
                             npos.setWithOffset(pos, dir);
                             BlockState nb = level.getBlockState(npos);
-                            if (nb.isAir() || nb.getBlock() instanceof BlockSpike) shouldGen = true;
+                            if (nb.isAir()
+                                    || nb.getBlock() instanceof BlockSpike
+                                    || exposedByFluid && !nb.getFluidState().isEmpty()) {
+                                shouldGen = true;
+                            }
                             if (shouldGen && (fluid == null || !canGenFluid)) break;
 
                             if (fluid != null) {
@@ -101,13 +106,15 @@ public class OreCaveFeature extends Feature<OreCaveConfig> {
                         } else if (shouldGen) {
                             level.setBlock(pos, ore, UPDATE);
                         }
-                    } else if ((cur.isAir() || !cur.isCollisionShapeFullBlock(level, pos))
+                    } else if (stalactite != null
+                            && (cur.isAir() || !cur.isCollisionShapeFullBlock(level, pos))
                             && rand.nextInt(5) == 0
                             && cur.getFluidState().isEmpty()) {
                         if (stalactite.canSurvive(level, pos))
                             level.setBlock(pos, stalactite, UPDATE);
-                        else if (stalagmite.canSurvive(level, pos))
+                        else if (stalagmite != null && stalagmite.canSurvive(level, pos)) {
                             level.setBlock(pos, stalagmite, UPDATE);
+                        }
                     }
                 }
             }

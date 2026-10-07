@@ -4,7 +4,7 @@
 package com.hbm.client.render.flywheel;
 
 import com.hbm.blockentity.bomb.BlockEntityCompactLauncher;
-import com.hbm.client.model.Meshes;
+import com.hbm.client.render.MissilePronter;
 import com.hbm.handler.MissileStruct;
 import com.hbm.items.weapon.ItemCustomMissilePart.PartType;
 import com.hbm.items.weapon.ItemCustomMissilePart;
@@ -55,7 +55,7 @@ public final class CompactLauncherVisual
     }
 
     private static PartModels models(PartKey key) {
-        HFRWavefrontObject mesh = Meshes.faceNormals(key.mesh);
+        HFRWavefrontObject mesh = MissilePronter.partMesh(key.mesh);
         return new PartModels(
                 MeshPart.objParts(mesh, MeshPart.litCutout(key.skin)), mesh.getExtents()[4]);
     }

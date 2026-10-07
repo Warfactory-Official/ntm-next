@@ -12,7 +12,7 @@
       "ingredient": "hbm:drive_disk_orbitdata"
     }
   ],
-  "order": 9,
+  "order": 2304,
   "output_fluids": [
     {
       "type": "hbm:spentsteam",

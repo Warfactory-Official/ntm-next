@@ -3,10 +3,10 @@
   "duration": 200,
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/schrabidium"
+      "ingredient": "#c:ores/schrabidium"
     }
   ],
-  "order": 22,
+  "order": 8704,
   "output_items": [
     "hbm:powder_schrabidium",
     "hbm:powder_schrabidium",

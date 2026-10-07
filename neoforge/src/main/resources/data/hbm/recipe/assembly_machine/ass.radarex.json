@@ -30,7 +30,7 @@
     }
   ],
   "name": "ass.radarEx",
-  "order": 162,
+  "order": 41472,
   "output_items": [
     "hbm:machine_radar"
   ],

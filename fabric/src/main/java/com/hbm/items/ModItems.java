@@ -3,6 +3,7 @@
 
 package com.hbm.items;
 
+import com.hbm.NuclearTech;
 import com.hbm.blockentity.machine.rbmk.IRBMKFluxReceiver.NType;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.rbmk.RBMKBase;
@@ -862,6 +863,11 @@ public final class ModItems {
             Reg.item("powder_desh", Item::new, Item.Properties::new)
                     .materialShape(Mats.MAT_DESH, MaterialShapes.DUST)
                     .addTo(COMPONENT_ALL);
+    public static final RegistryHandle<ItemCustomLore> POWDER_IODINE =
+            Reg.item(
+                    "powder_iodine",
+                    ItemCustomLore::new,
+                    () -> new Item.Properties().rarity(Rarity.EPIC));
     public static final RegistryHandle<ItemCustomLore> POWDER_NITAN_MIX =
             residualLore("powder_nitan_mix").addTo(RESIDUAL_ALL);
     public static final RegistryHandle<ItemCustomLore> POWDER_SPARK_MIX =
@@ -926,7 +932,8 @@ public final class ModItems {
     public static final RegistryHandle<Item> BALL_FIRECLAY =
             Reg.item("ball_fireclay", Item::new, Item.Properties::new).addTo(WEAPON_ALL);
     public static final RegistryHandle<ItemBedrockOreBase> BEDROCK_ORE_BASE =
-            Reg.item("bedrock_ore_base", ItemBedrockOreBase::new, Item.Properties::new);
+            Reg.item("bedrock_ore_base", ItemBedrockOreBase::new, Item.Properties::new)
+                    .subtypes(ItemSubtype.BEDROCK_ORE_SET);
     public static final RegistryHandle<ItemBedrockOreNew> BEDROCK_ORE =
             Reg.item(
                             "bedrock_ore",
@@ -1998,7 +2005,9 @@ public final class ModItems {
     public static final ItemFamily<ItemCassette.TrackType, ItemCassette> SIREN_TRACK =
             Reg.family(
                     Arrays.copyOfRange(
-                            ItemCassette.TrackType.VALUES, 1, ItemCassette.TrackType.VALUES.length),
+                            ItemCassette.TrackType.VALUES,
+                            1,
+                            ItemCassette.TrackType.RAZORTRAIN.ordinal() + 1),
                     type -> "siren_track_" + type.name().toLowerCase(Locale.ROOT),
                     (props, type) -> new ItemCassette(props),
                     () -> new Item.Properties().stacksTo(1));
@@ -9576,7 +9585,6 @@ public final class ModItems {
         if (material == Mats.MAT_THORIUM) return new Item.Properties().rarity(Rarity.UNCOMMON);
         if (material == Mats.MAT_BORON
                 || material == Mats.MAT_COBALT
-                || material == Mats.MAT_IODINE
                 || material == Mats.MAT_NEODYMIUM
                 || material == Mats.MAT_STRONTIUM
                 || material == Mats.MAT_NIOBIUM) {
@@ -9699,7 +9707,8 @@ public final class ModItems {
             float height,
             float guiHeight,
             UnaryOperator<ItemCustomMissilePart> build) {
-        Reg.Handle<ItemCustomMissilePart> h = registerPart(name, mesh, skin, height, build);
+        Reg.Handle<ItemCustomMissilePart> h =
+                registerPart(name, mesh, skin, height, guiHeight, build);
         return h;
     }
 
@@ -9711,7 +9720,8 @@ public final class ModItems {
             float height,
             float guiHeight,
             UnaryOperator<ItemCustomMissilePart> build) {
-        Reg.Handle<ItemCustomMissilePart> h = registerPart(name, mesh, skin, height, build);
+        Reg.Handle<ItemCustomMissilePart> h =
+                registerPart(name, mesh, skin, height, guiHeight, build);
         return h;
     }
 
@@ -9740,6 +9750,7 @@ public final class ModItems {
             String mesh,
             String skin,
             float height,
+            float guiHeight,
             UnaryOperator<ItemCustomMissilePart> build) {
         return registerPart(
                 name,
@@ -9747,6 +9758,7 @@ public final class ModItems {
                         build.apply(p)
                                 .setAssembly(
                                         height,
+                                        guiHeight,
                                         Library.id("models/missile_parts/" + mesh + ".obj"),
                                         Identifier.parse(skin)));
     }
@@ -10594,8 +10606,13 @@ public final class ModItems {
 
     private static Reg.Handle<ItemRBMKRod> rbmkFuel(
             String name, String fullName, Configurator cfg) {
+        return rbmkFuel(Reg.in(NuclearTech.MOD_ID), name, fullName, cfg::apply);
+    }
+
+    public static Reg.Handle<ItemRBMKRod> rbmkFuel(
+            Reg.Namespace namespace, String name, String fullName, UnaryOperator<ItemRBMKRod> cfg) {
         Reg.Handle<ItemRBMKRod> handle =
-                Reg.item(
+                namespace.item(
                         name,
                         props -> cfg.apply(new ItemRBMKRod(props, fullName)),
                         () ->
@@ -10613,9 +10630,19 @@ public final class ModItems {
 
     private static RegistryHandle<ItemRBMKPellet> pellet(
             RegistryHandle<ItemRBMKRod> rod, String name, String fullName, boolean disableXenon) {
+        return rbmkPellet(Reg.in(NuclearTech.MOD_ID), rod, name, fullName, disableXenon);
+    }
+
+    public static Reg.Handle<ItemRBMKPellet> rbmkPellet(
+            Reg.Namespace namespace,
+            RegistryHandle<ItemRBMKRod> rod,
+            String name,
+            String fullName,
+            boolean disableXenon) {
         int metas = disableXenon ? 5 : 10;
-        RegistryHandle<ItemRBMKPellet> handle =
-                Reg.item(
+        Reg.Handle<ItemRBMKPellet> handle =
+                namespace
+                        .item(
                                 name,
                                 props -> {
                                     ItemRBMKPellet p = new ItemRBMKPellet(props, fullName);

@@ -9,10 +9,10 @@
   ],
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/aluminium"
+      "ingredient": "#c:ores/aluminum"
     }
   ],
-  "order": 234,
+  "order": 60672,
   "output_items": [
     "hbm:crystal_aluminium"
   ],

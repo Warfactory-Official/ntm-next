@@ -3,10 +3,10 @@
   "duration": 200,
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/cobalt"
+      "ingredient": "#c:ores/cobalt"
     }
   ],
-  "order": 32,
+  "order": 12800,
   "output_items": [
     {
       "count": 2,

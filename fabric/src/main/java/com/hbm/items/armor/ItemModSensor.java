@@ -5,6 +5,7 @@ package com.hbm.items.armor;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.handler.ArmorModHandler;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.List;
 import java.util.function.Consumer;
@@ -85,8 +86,8 @@ public class ItemModSensor extends ItemArmorMod {
 
         if (explosive) return;
         if (poison) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    entity,
                     entity.blockPosition(),
                     ModSounds.TECH_BOOP.get(),
                     SoundSource.PLAYERS,

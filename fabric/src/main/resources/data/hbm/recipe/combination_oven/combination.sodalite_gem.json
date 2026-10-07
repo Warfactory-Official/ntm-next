@@ -5,7 +5,7 @@
       "ingredient": "#c:gems/sodalite"
     }
   ],
-  "order": 10,
+  "order": 2560,
   "output_fluids": [
     {
       "type": "hbm:chlorine",

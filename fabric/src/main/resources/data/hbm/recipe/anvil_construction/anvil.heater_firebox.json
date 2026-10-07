@@ -13,7 +13,7 @@
       "ingredient": "#c:ingots/copper"
     }
   ],
-  "order": 62,
+  "order": 15872,
   "output_items": [
     "hbm:heater_firebox"
   ],

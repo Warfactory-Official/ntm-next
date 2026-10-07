@@ -3,6 +3,7 @@
 
 package com.hbm.entity.mob;
 
+import com.hbm.api.environment.ISuffocationImmune;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.projectile.EntityBullet;
 import com.hbm.lib.ModDamageTypes;
@@ -30,7 +31,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathType;
 
-public class EntityCyberCrab extends Monster implements RangedAttackMob {
+public class EntityCyberCrab extends Monster implements RangedAttackMob, ISuffocationImmune {
 
     public EntityCyberCrab(EntityType<? extends EntityCyberCrab> type, Level level) {
         super(type, level);

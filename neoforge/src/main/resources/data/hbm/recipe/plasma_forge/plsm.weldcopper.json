@@ -9,7 +9,7 @@
       "ingredient": "#hbm:plates_cast/copper"
     }
   ],
-  "order": 5,
+  "order": 1280,
   "output_items": [
     "hbm:plate_welded_copper"
   ],

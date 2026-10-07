@@ -25,6 +25,7 @@ import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
 import com.hbm.render.anim.BusAnimationSequence;
 import com.hbm.render.anim.HbmAnimations;
+import com.hbm.sound.EntitySounds;
 import com.hbm.util.EntityDamageUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.function.BiConsumer;
@@ -282,8 +283,8 @@ public class XFactoryDrill {
                         && state.getDestroyProgress(player, world, pos) == 0.0F)
                 || state.is(ModBlocks.STONE_KEYHOLE.get())) {
             if (!didPlink) {
-                world.playSound(
-                        null,
+                EntitySounds.play(
+                        player,
                         player.getX(),
                         player.getY(),
                         player.getZ(),

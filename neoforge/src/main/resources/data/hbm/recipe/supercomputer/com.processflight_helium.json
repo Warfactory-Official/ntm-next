@@ -12,7 +12,7 @@
       "ingredient": "hbm:drive_disk_flightdata"
     }
   ],
-  "order": 8,
+  "order": 2048,
   "output_items": [
     [
       {

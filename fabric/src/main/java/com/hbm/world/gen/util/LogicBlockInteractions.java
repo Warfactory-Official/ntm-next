@@ -6,6 +6,7 @@ package com.hbm.world.gen.util;
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.blockentity.BlockEntityLogicBlock;
 import com.hbm.blockentity.machine.BlockEntityLockableBase;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -58,8 +59,8 @@ public final class LogicBlockInteractions {
             BlockEntity neighbor = level.getBlockEntity(pos.relative(direction));
             if (neighbor instanceof BlockEntityLockableBase safe) {
                 safe.unlock();
-                level.playSound(
-                        null,
+                EntitySounds.play(
+                        player,
                         player.getX(),
                         player.getY(),
                         player.getZ(),

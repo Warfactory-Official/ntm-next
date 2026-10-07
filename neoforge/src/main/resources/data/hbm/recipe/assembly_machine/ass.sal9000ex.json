@@ -30,7 +30,7 @@
     }
   ],
   "name": "ass.sal9000Ex",
-  "order": 96,
+  "order": 24576,
   "output_items": [
     "hbm:machine_supercomputer"
   ],

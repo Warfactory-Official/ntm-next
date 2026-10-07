@@ -6,7 +6,7 @@
       "ingredient": "#c:tiny_dusts/lithium"
     }
   ],
-  "order": 3,
+  "order": 768,
   "output_fluids": [
     {
       "type": "hbm:tritium",

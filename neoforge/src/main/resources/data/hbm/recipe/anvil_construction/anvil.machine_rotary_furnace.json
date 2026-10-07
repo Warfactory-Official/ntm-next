@@ -18,7 +18,7 @@
       "ingredient": "#c:plates/copper"
     }
   ],
-  "order": 70,
+  "order": 17920,
   "output_items": [
     "hbm:machine_rotary_furnace"
   ],

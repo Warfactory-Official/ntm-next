@@ -19,6 +19,7 @@ import com.hbm.inventory.fluid.trait.FT_Coolable;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -75,6 +76,7 @@ public abstract class BlockEntityTurbineBase extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
+        if (this.powerBuffer != 0) markChanged();
         this.powerBuffer = 0;
         info[0] = info[1] = info[2] = 0;
 
@@ -96,6 +98,7 @@ public abstract class BlockEntityTurbineBase extends BlockEntityMachineBase
                 int outputOps = (tanks[1].getMaxFill() - tanks[1].getFill()) / trait.amountProduced;
                 int ops = Math.min(inputOps, outputOps);
                 if (ops > 0) {
+                    markChanged();
                     tanks[0].setFill(tanks[0].getFill() - ops * trait.amountReq);
                     tanks[1].setFill(tanks[1].getFill() + ops * trait.amountProduced);
                     this.generatePower(
@@ -184,6 +187,16 @@ public abstract class BlockEntityTurbineBase extends BlockEntityMachineBase
     @Override
     public long getMaxPower() {
         return powerBuffer;
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return tanks[0].joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
     }
 
     @Override

@@ -16,7 +16,10 @@ public final class ItemEnergyTransfer {
     public static long insert(Container container, int slot, long maxHe, boolean simulate) {
         if (maxHe <= 0) return 0;
         ItemStack stack = container.getItem(slot);
-        if (stack.getItem() instanceof ItemBatteryCreative) return maxHe;
+        if (stack.getItem() instanceof ItemBatteryCreative) {
+            if (!simulate) container.setChanged();
+            return maxHe;
+        }
         if (stack.getItem() instanceof IBatteryItem battery) {
             long accepted =
                     Math.max(
@@ -45,7 +48,10 @@ public final class ItemEnergyTransfer {
     public static long extract(Container container, int slot, long maxHe, boolean simulate) {
         if (maxHe <= 0) return 0;
         ItemStack stack = container.getItem(slot);
-        if (stack.getItem() instanceof ItemBatteryCreative) return maxHe;
+        if (stack.getItem() instanceof ItemBatteryCreative) {
+            if (!simulate) container.setChanged();
+            return maxHe;
+        }
         if (stack.getItem() instanceof IBatteryItem battery) {
             long provided =
                     Math.max(

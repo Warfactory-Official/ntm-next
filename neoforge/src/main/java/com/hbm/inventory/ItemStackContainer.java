@@ -6,6 +6,7 @@ package com.hbm.inventory;
 import com.hbm.handler.UnstableFuses;
 import com.hbm.items.tool.ItemLeadBox;
 import com.hbm.items.tool.ItemPlasticBag;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvent;
@@ -103,15 +104,14 @@ public class ItemStackContainer extends SimpleContainer {
 
     private void cue(SoundEvent sound) {
         if (owner == null || target.getItem() instanceof ItemPlasticBag) return;
-        owner.level()
-                .playSound(
-                        null,
-                        owner.getX(),
-                        owner.getY(),
-                        owner.getZ(),
-                        sound,
-                        SoundSource.PLAYERS,
-                        1.0F,
-                        0.8F);
+        EntitySounds.play(
+                owner,
+                owner.getX(),
+                owner.getY(),
+                owner.getZ(),
+                sound,
+                SoundSource.PLAYERS,
+                1.0F,
+                0.8F);
     }
 }

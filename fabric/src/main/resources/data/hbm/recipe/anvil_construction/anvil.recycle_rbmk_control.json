@@ -5,7 +5,7 @@
       "ingredient": "hbm:rbmk_control"
     }
   ],
-  "order": 240,
+  "order": 61440,
   "output_items": [
     "hbm:rbmk_absorber",
     {

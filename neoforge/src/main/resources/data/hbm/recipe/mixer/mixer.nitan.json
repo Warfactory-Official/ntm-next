@@ -16,7 +16,7 @@
       "ingredient": "hbm:powder_nitan_mix"
     }
   ],
-  "order": 2,
+  "order": 512,
   "output_fluids": [
     {
       "type": "hbm:nitan",

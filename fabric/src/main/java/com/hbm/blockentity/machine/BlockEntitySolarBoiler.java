@@ -4,6 +4,7 @@
 
 package com.hbm.blockentity.machine;
 
+import com.hbm.api.environment.Environment;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
 import com.hbm.api.fluidmk2.FlushLanes;
@@ -60,12 +61,13 @@ public class BlockEntitySolarBoiler extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
-        int process = heat / 50;
+        int process = Environment.sunHeat((ServerLevel) level, worldPosition, heat) / 50;
         this.display = process;
         process = Math.min(process, water.getFill());
         process = Math.min(process, (steam.getMaxFill() - steam.getFill()) / 100);
 
         if (process < 0) process = 0;
+        if (process > 0) markChanged();
 
         water.setFill(water.getFill() - process);
         steam.setFill(steam.getFill() + process * 100);

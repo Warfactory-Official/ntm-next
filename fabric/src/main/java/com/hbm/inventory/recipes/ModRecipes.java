@@ -79,6 +79,11 @@ public final class ModRecipes {
         handlers.add(ArcFurnaceRecipes.INSTANCE);
     }
 
+    public static void addon(SerializableRecipe table) {
+        table.registerType();
+        SerializableRecipe.recipeHandlers.add(table);
+    }
+
     public static void register() {
         registerAllHandlers();
         for (SerializableRecipe table : SerializableRecipe.recipeHandlers) table.registerType();
@@ -90,7 +95,8 @@ public final class ModRecipes {
         registerCustomCrafting("grenade_assembly", GrenadeCraftingRecipe.SERIALIZER);
         registerCustomCrafting("cargo_shell", CargoShellRecipe.SERIALIZER);
         registerCustomCrafting("scraps_split", ScrapsSplittingRecipe.SERIALIZER);
-        registerListedCrafting("crafting_shaped", StateShapedRecipe.SERIALIZER);
+        FabricRegistrar.registerListedRecipeSerializer(
+                "crafting_shaped", StateShapedRecipe.SERIALIZER);
         registerListedCrafting("crafting_shapeless", StateShapelessRecipe.SERIALIZER);
         registerListedCrafting("tag_result", TagResultRecipe.SERIALIZER);
     }

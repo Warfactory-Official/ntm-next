@@ -4,6 +4,7 @@
 
 package com.hbm.entity.projectile;
 
+import com.hbm.api.environment.Environment;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.client.ClientEffects;
@@ -21,6 +22,7 @@ import com.hbm.inventory.fluid.trait.*;
 import com.hbm.lib.Library;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.particle.helper.FlameCreator;
+import com.hbm.sound.EntitySounds;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.ContaminationUtil;
@@ -439,8 +441,8 @@ public class EntityChemical extends EntityThrowableNT {
                 SoundSource.HOSTILE,
                 1F,
                 1F);
-        server.playSound(
-                null,
+        EntitySounds.play(
+                e,
                 e.getX(),
                 e.getY(),
                 e.getZ(),
@@ -550,58 +552,49 @@ public class EntityChemical extends EntityThrowableNT {
                     }
                 }
 
-                if (type == NTMFluids.SEEDSLURRY) {
+                if (type == NTMFluids.SEEDSLURRY) seedSlurry(pos);
 
-                    for (int i = -1; i <= 1; i++)
-                        for (int j = -1; j <= 1; j++)
-                            for (int k = -1; k <= 1; k++) {
-                                BlockPos target = pos.offset(i, j, k);
-                                BlockState state = level().getBlockState(target);
-
-                                if (state.is(Blocks.DIRT)
-                                        || state.is(ModBlocks.WASTE_EARTH.get())
-                                        || state.is(ModBlocks.DIRT_DEAD.get())
-                                        || state.is(ModBlocks.DIRT_OILY.get())) {
-                                    BlockPos above = target.above();
-                                    if (level().getMaxLocalRawBrightness(above) >= 9
-                                            && level().getBlockState(above).getLightDampening()
-                                                    <= 2) {
-                                        level().setBlockAndUpdate(
-                                                        target,
-                                                        Blocks.GRASS_BLOCK.defaultBlockState());
-                                    }
-                                }
-                                if (state.is(Blocks.COBBLESTONE))
-                                    level().setBlockAndUpdate(
-                                                    target,
-                                                    Blocks.MOSSY_COBBLESTONE.defaultBlockState());
-                                if (state.is(Blocks.STONE_BRICKS))
-                                    level().setBlockAndUpdate(
-                                                    target,
-                                                    Blocks.MOSSY_STONE_BRICKS.defaultBlockState());
-                                if (state.is(ModBlocks.WASTE_EARTH.get()))
-                                    level().setBlockAndUpdate(
-                                                    target, Blocks.GRASS_BLOCK.defaultBlockState());
-                                if (state.is(brickConcrete()))
-                                    level().setBlockAndUpdate(
-                                                    target,
-                                                    brickConcreteMossy().defaultBlockState());
-                                if (state.is(block("brick_concrete_slab")))
-                                    level().setBlockAndUpdate(
-                                                    target,
-                                                    block("brick_concrete_mossy_slab")
-                                                            .withPropertiesOf(state));
-                                if (state.is(block("brick_concrete_stairs")))
-                                    level().setBlockAndUpdate(
-                                                    target,
-                                                    block("brick_concrete_mossy_stairs")
-                                                            .withPropertiesOf(state));
-                            }
-                }
+                Environment.chemicalImpact((ServerLevel) level(), pos, type);
 
                 this.discard();
             }
         }
+    }
+
+    private void seedSlurry(BlockPos pos) {
+        for (int i = -1; i <= 1; i++)
+            for (int j = -1; j <= 1; j++)
+                for (int k = -1; k <= 1; k++) seedBlock(pos.offset(i, j, k));
+    }
+
+    private void seedBlock(BlockPos target) {
+        BlockState state = level().getBlockState(target);
+
+        if (state.is(Blocks.DIRT)
+                || state.is(ModBlocks.WASTE_EARTH.get())
+                || state.is(ModBlocks.DIRT_DEAD.get())
+                || state.is(ModBlocks.DIRT_OILY.get())) {
+            BlockPos above = target.above();
+            if (level().getMaxLocalRawBrightness(above) >= 9
+                    && level().getBlockState(above).getLightDampening() <= 2
+                    && Environment.fertilize((ServerLevel) level(), target)) {
+                level().setBlockAndUpdate(target, Blocks.GRASS_BLOCK.defaultBlockState());
+            }
+        }
+        if (state.is(Blocks.COBBLESTONE))
+            level().setBlockAndUpdate(target, Blocks.MOSSY_COBBLESTONE.defaultBlockState());
+        if (state.is(Blocks.STONE_BRICKS))
+            level().setBlockAndUpdate(target, Blocks.MOSSY_STONE_BRICKS.defaultBlockState());
+        if (state.is(ModBlocks.WASTE_EARTH.get()))
+            level().setBlockAndUpdate(target, Blocks.GRASS_BLOCK.defaultBlockState());
+        if (state.is(brickConcrete()))
+            level().setBlockAndUpdate(target, brickConcreteMossy().defaultBlockState());
+        if (state.is(block("brick_concrete_slab")))
+            level().setBlockAndUpdate(
+                            target, block("brick_concrete_mossy_slab").withPropertiesOf(state));
+        if (state.is(block("brick_concrete_stairs")))
+            level().setBlockAndUpdate(
+                            target, block("brick_concrete_mossy_stairs").withPropertiesOf(state));
     }
 
     @Override

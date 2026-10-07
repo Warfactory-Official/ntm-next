@@ -4,6 +4,7 @@
 package com.hbm.client.render;
 
 import com.hbm.blockentity.BlockEntityPlushie;
+import com.hbm.blocks.generic.BlockPlushie.Plushie;
 import com.hbm.blocks.generic.BlockPlushie.PlushieType;
 import com.hbm.client.render.flywheel.ItemVisuals;
 import com.hbm.client.render.flywheel.PlushieItemVisual;
@@ -14,6 +15,8 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.engine_room.flywheel.api.visual.ItemStackVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
@@ -32,22 +35,25 @@ import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
 
 public class PlushieItemRenderer
-        implements SpecialModelRenderer<PlushieType>, ItemVisuals.Factory<PlushieType> {
+        implements SpecialModelRenderer<Plushie>, ItemVisuals.Factory<Plushie> {
 
     private final RenderPlushie geometry;
     private final float[] bounds;
 
     private PlushieItemRenderer(RenderPlushie geometry) {
         this.geometry = geometry;
-        this.bounds =
-                union(
-                        ResourceManager.yomi,
-                        ResourceManager.hundun,
-                        ResourceManager.derg,
-                        ResourceManager.horse);
+        List<HFRWavefrontObject> meshes =
+                new ArrayList<>(
+                        List.of(
+                                ResourceManager.yomi,
+                                ResourceManager.hundun,
+                                ResourceManager.derg,
+                                ResourceManager.horse));
+        for (RenderPlushie.Figure figure : PlushieFigures.all()) meshes.addAll(figure.meshes());
+        this.bounds = union(meshes);
     }
 
-    private static float[] union(HFRWavefrontObject... meshes) {
+    private static float[] union(List<HFRWavefrontObject> meshes) {
         float[] box = null;
         for (HFRWavefrontObject mesh : meshes) {
             float[] own = mesh.boundsExcluding(Set.of());
@@ -62,49 +68,33 @@ public class PlushieItemRenderer
     }
 
     @Override
-    public @Nullable PlushieType extractArgument(ItemStack stack) {
+    public @Nullable Plushie extractArgument(ItemStack stack) {
         return BlockEntityPlushie.typeOf(stack);
-    }
-
-    public static void itemPose(PlushieType type, PoseStack ps) {
-        switch (type) {
-            case YOMI -> ps.scale(1.25F, 1.25F, 1.25F);
-            case NUMBERNINE -> {
-                ps.translate(0, 0.25, 0.25);
-                ps.scale(1.25F, 1.25F, 1.25F);
-            }
-            case HUNDUN -> {
-                ps.translate(0.5, 0.5, 0);
-                ps.scale(1.25F, 1.25F, 1.25F);
-            }
-            case DERG -> ps.scale(1.5F, 1.5F, 1.5F);
-            default -> {}
-        }
     }
 
     @Override
     public void submit(
-            @Nullable PlushieType type,
+            @Nullable Plushie type,
             PoseStack ps,
             SubmitNodeCollector col,
             int lightCoords,
             int overlayCoords,
             boolean hasFoil,
             int outlineColor) {
-        PlushieType resolved = type == null ? PlushieType.NONE : type;
-        itemPose(resolved, ps);
+        Plushie resolved = type == null ? PlushieType.NONE : type;
+        RenderPlushie.itemPose(resolved, ps);
         ItemStackRenderState cigarette = null;
         if (resolved == PlushieType.NUMBERNINE) {
             cigarette = new ItemStackRenderState();
             geometry.resolveCigarette(cigarette, Minecraft.getInstance().level);
         }
-        geometry.renderPlushie(resolved, false, ps, col, lightCoords, cigarette);
+        geometry.renderPlushie(resolved, 0L, ps, col, lightCoords, cigarette);
     }
 
     @Override
     public ItemStackVisual createVisual(
             VisualizationContext ctx,
-            @Nullable PlushieType type,
+            @Nullable Plushie type,
             ItemStack stack,
             ItemDisplayContext context,
             @Nullable ItemOwner owner) {

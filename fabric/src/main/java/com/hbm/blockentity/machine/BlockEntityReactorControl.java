@@ -74,6 +74,7 @@ public class BlockEntityReactorControl extends BlockEntityMachineBase
     @Override
     public void tickServer() {
         BlockEntityReactorResearch reactor = establishLink();
+        if (isLinked != (reactor != null)) markChanged();
         isLinked = reactor != null;
 
         if (reactor != null) {
@@ -86,7 +87,10 @@ public class BlockEntityReactorControl extends BlockEntityMachineBase
             else fauxLevel = getTargetLevel(function, heat);
 
             double level = Mth.clamp(fauxLevel * 0.01D, 0D, 1D);
-            if (level != rodLevel) reactor.targetLevel = level;
+            if (level != rodLevel) {
+                reactor.targetLevel = level;
+                reactor.markChanged();
+            }
         }
 
         networkPackNT(150);

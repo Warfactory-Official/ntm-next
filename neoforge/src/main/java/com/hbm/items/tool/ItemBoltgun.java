@@ -18,6 +18,7 @@ import com.hbm.render.anim.AnimationEnums;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationSequence;
 import com.hbm.render.anim.HbmAnimations;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.EntityDamageUtil;
 import java.util.List;
@@ -73,8 +74,8 @@ public class ItemBoltgun extends Item implements IToolable.Tool, IAnimatedItem {
                 if (slot.isEmpty() || slot.getItem() != bolt) continue;
 
                 if (!level.isClientSide()) {
-                    level.playSound(
-                            null,
+                    EntitySounds.play(
+                            entity,
                             entity.getX(),
                             entity.getY(),
                             entity.getZ(),

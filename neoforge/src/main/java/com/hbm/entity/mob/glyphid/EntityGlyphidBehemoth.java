@@ -8,8 +8,6 @@ import com.hbm.entity.effect.EntityMist;
 import com.hbm.entity.mob.glyphid.GlyphidStats.StatBundle;
 import com.hbm.entity.projectile.EntityChemical;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.items.ModItems;
-import com.hbm.items.weapon.ItemDisperser;
 import com.hbm.main.ResourceManager;
 import com.hbm.util.MobUtil;
 import net.minecraft.resources.Identifier;
@@ -24,9 +22,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluid;
 
 public class EntityGlyphidBehemoth extends EntityGlyphid {
 
@@ -130,18 +126,6 @@ public class EntityGlyphidBehemoth extends EntityGlyphid {
             mist.setDuration(120);
             level().addFreshEntity(mist);
         }
-    }
-
-    @Override
-    protected void dropCustomDeathLoot(
-            ServerLevel level, DamageSource source, boolean killedByPlayer) {
-        spawnAtLocation(level, glandStack(NTMFluids.SULFURIC_ACID));
-        super.dropCustomDeathLoot(level, source, killedByPlayer);
-    }
-
-    private static ItemStack glandStack(Fluid fluid) {
-        ItemDisperser gland = ModItems.GLYPHID_GLAND.get();
-        return gland.make(fluid, gland.capacity);
     }
 
     @Override

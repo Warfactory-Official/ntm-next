@@ -7,7 +7,6 @@ import com.hbm.blockentity.BlockEntityLogicBlock;
 import com.hbm.blockentity.BlockEntityPedestal;
 import com.hbm.blockentity.bomb.BlockEntityCharge;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.bomb.BlockChargeBase;
 import com.hbm.entity.mob.EntityUndeadSoldier;
 import com.hbm.items.ModItems;
 import com.hbm.util.TickPhase;
@@ -16,7 +15,6 @@ import java.util.Map;
 import java.util.function.Predicate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
@@ -119,14 +117,8 @@ public final class LogicBlockConditions {
 
         BlockPos pos = tile.getBlockPos();
         if (tile.phase == 0) {
-            BlockPos chargePos = pos.above();
-            level.setBlockAndUpdate(
-                    chargePos,
-                    ModBlocks.CHARGE_C4
-                            .get()
-                            .defaultBlockState()
-                            .setValue(BlockChargeBase.FACING, Direction.UP));
-            if (level.getBlockEntity(chargePos) instanceof BlockEntityCharge charge) {
+            BlockEntityCharge charge = LogicBlockActions.craneCharge(level, pos.above(), 200);
+            if (charge.timer != 200) {
                 charge.timer = 200;
                 charge.changed();
             }

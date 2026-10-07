@@ -5,6 +5,7 @@ package com.hbm.items.tool;
 
 import com.hbm.handler.ability.AvailableAbilities;
 import com.hbm.handler.ability.WeaponAbility;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -35,8 +36,8 @@ public final class ItemMeseGavel extends ItemSwordAbility {
     @Override
     public void hurtEnemy(ItemStack stack, LivingEntity victim, LivingEntity attacker) {
         if (victim.level() instanceof ServerLevel level) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    victim,
                     victim.blockPosition(),
                     ModSounds.GAVEL.get(),
                     SoundSource.HOSTILE,

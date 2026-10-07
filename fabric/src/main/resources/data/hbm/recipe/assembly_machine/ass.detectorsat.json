@@ -26,7 +26,7 @@
       "ingredient": "hbm:circuit_controller_advanced"
     }
   ],
-  "order": 428,
+  "order": 109568,
   "output_items": [
     "hbm:satellite_detector"
   ],

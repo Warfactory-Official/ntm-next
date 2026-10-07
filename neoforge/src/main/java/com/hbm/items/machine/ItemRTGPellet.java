@@ -5,6 +5,7 @@ package com.hbm.items.machine;
 
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
+import com.hbm.sound.EntitySounds;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.RTGUtil;
 import java.text.NumberFormat;
@@ -184,8 +185,8 @@ public class ItemRTGPellet extends Item {
             player.sendSystemMessage(
                     Component.literal(FACTS[level.getRandom().nextInt(FACTS.length)])
                             .withStyle(ChatFormatting.YELLOW));
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),

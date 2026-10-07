@@ -12,7 +12,7 @@
       "ingredient": "hbm:drive_disk_flightdata"
     }
   ],
-  "order": 7,
+  "order": 1792,
   "output_fluids": [
     {
       "type": "hbm:perfluoromethyl",

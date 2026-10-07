@@ -28,6 +28,7 @@ public final class OreDictManager {
             TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "concretes"));
     public static final TagKey<Item> KEY_SAND = ItemTags.SAND;
     public static final TagKey<Item> KEY_COBBLESTONE = common("cobblestones");
+    public static final TagKey<Item> KEY_COBBLESTONE_DEEPSLATE = common("cobblestones/deepslate");
     public static final TagKey<Item> KEY_DYE = common("dyes");
     public static final TagKey<Item> KEY_STICK = common("rods/wooden");
     public static final TagKey<Item> KEY_TOOL_SCREWDRIVER =
@@ -273,6 +274,7 @@ public final class OreDictManager {
             return key(MaterialShapes.DENSEWIRE);
         }
 
+        @DropSafe
         public TagKey<Item> plate() {
             return key(MaterialShapes.PLATE);
         }

@@ -21,7 +21,7 @@
       "ingredient": "#hbm:ingots/any_resistant_alloy"
     }
   ],
-  "order": 21,
+  "order": 5376,
   "output_items": [
     "hbm:item_expensive_ferro_plating"
   ],

@@ -5,7 +5,7 @@
       "ingredient": "hbm:bobblehead_mellow"
     }
   ],
-  "order": 200,
+  "order": 51200,
   "output_items": [
     "hbm:scrap_plastic_card_processor"
   ]

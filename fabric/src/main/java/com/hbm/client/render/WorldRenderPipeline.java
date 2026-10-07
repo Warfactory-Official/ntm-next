@@ -118,6 +118,10 @@ public final class WorldRenderPipeline extends RenderPipeline {
     public final float alphaCutout;
 
     private WorldRenderPipeline(RenderPipeline source) {
+        this(source, family(source.getFragmentShader().toString()));
+    }
+
+    private WorldRenderPipeline(RenderPipeline source, Family family) {
         super(
                 source.getLocation(),
                 source.getVertexShader(),
@@ -132,8 +136,8 @@ public final class WorldRenderPipeline extends RenderPipeline {
                 source.getPrimitiveTopology(),
                 source.getSortKey());
         String shader = source.getFragmentShader().toString();
-        family = family(shader);
-        if (family(source.getVertexShader().toString()) != family)
+        this.family = family;
+        if (family != Family.NATIVE_SKY && family(source.getVertexShader().toString()) != family)
             throw new IllegalArgumentException(shader);
         var flags = source.getShaderDefines().flags();
         var samplers = BindGroupLayout.flattenSamplers(source.getBindGroupLayouts());
@@ -144,7 +148,7 @@ public final class WorldRenderPipeline extends RenderPipeline {
                                 && family != Family.TEXT;
         overlay = family == Family.ENTITY && !flags.contains("NO_OVERLAY");
         intensity = family == Family.TEXT && flags.contains("IS_GRAYSCALE");
-        fog = !shader.endsWith("_nofog") && family != Family.BASIC;
+        fog = !shader.endsWith("_nofog") && family != Family.BASIC && family != Family.NATIVE_SKY;
         translucent = source.getColorTargetState().blendFunction().isPresent();
         alphaAdditive =
                 source.getColorTargetState()
@@ -208,6 +212,10 @@ public final class WorldRenderPipeline extends RenderPipeline {
         return new WorldRenderPipeline(builder.build());
     }
 
+    public static WorldRenderPipeline nativeSky(RenderPipeline source) {
+        return new WorldRenderPipeline(source, Family.NATIVE_SKY);
+    }
+
     private static WorldRenderPipeline untextured(String location, boolean cull) {
         return of(
                 RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
@@ -229,6 +237,7 @@ public final class WorldRenderPipeline extends RenderPipeline {
         LINES,
         LIGHTNING,
         BASIC,
-        TEXT
+        TEXT,
+        NATIVE_SKY
     }
 }

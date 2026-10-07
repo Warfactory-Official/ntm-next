@@ -3,6 +3,7 @@
 
 package com.hbm.inventory.recipes.crafting;
 
+import com.hbm.inventory.recipes.ingredient.RecipeInputState;
 import com.hbm.util.DataCodecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -22,7 +23,7 @@ import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
 
-public final class StateShapedRecipe extends HbmNormalCraftingRecipe {
+public final class StateShapedRecipe extends ShapedRecipe implements CraftingInputState {
     private static final MapCodec<Definition> DEFINITION_CODEC =
             DataCodecs.recipe(
                     RecordCodecBuilder.mapCodec(
@@ -60,7 +61,6 @@ public final class StateShapedRecipe extends HbmNormalCraftingRecipe {
     public static final RecipeSerializer<StateShapedRecipe> SERIALIZER =
             new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
     private final ShapedRecipePattern.Data data;
-    private final ShapedRecipePattern pattern;
     private final ItemStackTemplate result;
     private final Map<String, InputStateRule> inputState;
     private final InputStateRule.Bound[] cells;
@@ -68,10 +68,9 @@ public final class StateShapedRecipe extends HbmNormalCraftingRecipe {
     private final int ingredientCount;
 
     private StateShapedRecipe(Definition definition) {
-        super(definition.commonInfo, definition.bookInfo);
-        data = definition.pattern;
-        result = definition.result;
-        inputState = Map.copyOf(definition.inputState);
+        ShapedRecipePattern.Data data = definition.pattern;
+        ItemStackTemplate result = definition.result;
+        Map<String, InputStateRule> inputState = Map.copyOf(definition.inputState);
         int left = 3;
         int top = 3;
         for (int y = 0; y < data.pattern().size(); y++) {
@@ -83,13 +82,13 @@ public final class StateShapedRecipe extends HbmNormalCraftingRecipe {
                 }
         }
         if (top == 3) throw new IllegalArgumentException("pattern contains no ingredients");
-        pattern = ShapedRecipePattern.of(data.key(), data.pattern());
+        ShapedRecipePattern pattern = ShapedRecipePattern.of(data.key(), data.pattern());
         for (String symbol : inputState.keySet()) {
             if (symbol.length() != 1 || !data.key().containsKey(symbol.charAt(0)))
                 throw new IllegalArgumentException(
                         "input_state references undefined pattern symbol '" + symbol + "'");
         }
-        cells = new InputStateRule.Bound[pattern.width() * pattern.height()];
+        InputStateRule.Bound[] cells = new InputStateRule.Bound[pattern.width() * pattern.height()];
         int resultCarrier = -1;
         for (int y = 0; y < pattern.height(); y++)
             for (int x = 0; x < pattern.width(); x++) {
@@ -107,14 +106,33 @@ public final class StateShapedRecipe extends HbmNormalCraftingRecipe {
                     resultCarrier = index;
                 }
             }
-        carrier = resultCarrier;
-        ingredientCount = (int) Arrays.stream(cells).filter(Objects::nonNull).count();
-        if (carrier != -1) {
-            InputStateRule.Bound bound = cells[carrier];
+        if (resultCarrier != -1) {
+            InputStateRule.Bound bound = cells[resultCarrier];
             String error =
                     new InputStateRule(bound.matchers(), bound.preserve()).resultError(result);
             if (error != null) throw new IllegalArgumentException(error);
         }
+        super(
+                definition.commonInfo,
+                definition.bookInfo,
+                new ShapedRecipePattern(
+                        pattern.width(),
+                        pattern.height(),
+                        Arrays.stream(cells)
+                                .map(
+                                        cell ->
+                                                cell == null
+                                                        ? Optional.<Ingredient>empty()
+                                                        : Optional.of(cell.placementIngredient()))
+                                .toList(),
+                        Optional.empty()),
+                result);
+        this.data = data;
+        this.result = result;
+        this.inputState = inputState;
+        this.cells = cells;
+        carrier = resultCarrier;
+        ingredientCount = (int) Arrays.stream(cells).filter(Objects::nonNull).count();
     }
 
     private static DataResult<StateShapedRecipe> decode(Definition definition) {
@@ -126,7 +144,7 @@ public final class StateShapedRecipe extends HbmNormalCraftingRecipe {
     }
 
     private int orientation(CraftingInput input) {
-        if (input.width() != pattern.width() || input.height() != pattern.height()) return -1;
+        if (input.width() != getWidth() || input.height() != getHeight()) return -1;
         for (int flip = 0; flip <= 1; flip++) {
             boolean matched = true;
             for (int slot = 0; slot < input.size(); slot++) {
@@ -143,15 +161,17 @@ public final class StateShapedRecipe extends HbmNormalCraftingRecipe {
     }
 
     private int sourceCell(int slot, int flip) {
-        int x = slot % pattern.width();
-        return (flip == 0 ? x : pattern.width() - 1 - x) + slot / pattern.width() * pattern.width();
+        int width = getWidth();
+        int x = slot % width;
+        return (flip == 0 ? x : width - 1 - x) + slot / width * width;
     }
 
     @Override
-    protected boolean matchesInput(CraftingInput input, Level level) {
-        return input.width() == pattern.width()
-                && input.height() == pattern.height()
-                && input.ingredientCount() == ingredientCount;
+    public boolean matches(CraftingInput input, Level level) {
+        return input.width() == getWidth()
+                && input.height() == getHeight()
+                && input.ingredientCount() == ingredientCount
+                && RecipeInputState.crafting(this, input, null, true);
     }
 
     @Override
@@ -183,23 +203,11 @@ public final class StateShapedRecipe extends HbmNormalCraftingRecipe {
     }
 
     @Override
-    protected PlacementInfo createPlacementInfo() {
-        return PlacementInfo.createFromOptionals(
-                Arrays.stream(cells)
-                        .map(
-                                cell ->
-                                        cell == null
-                                                ? Optional.<Ingredient>empty()
-                                                : Optional.of(cell.placementIngredient()))
-                        .toList());
-    }
-
-    @Override
     public List<RecipeDisplay> display() {
         return List.of(
                 new ShapedCraftingRecipeDisplay(
-                        pattern.width(),
-                        pattern.height(),
+                        getWidth(),
+                        getHeight(),
                         Arrays.stream(cells)
                                 .map(
                                         cell ->
@@ -212,8 +220,9 @@ public final class StateShapedRecipe extends HbmNormalCraftingRecipe {
     }
 
     @Override
-    public RecipeSerializer<StateShapedRecipe> getSerializer() {
-        return SERIALIZER;
+    @SuppressWarnings("unchecked")
+    public RecipeSerializer<ShapedRecipe> getSerializer() {
+        return (RecipeSerializer<ShapedRecipe>) (RecipeSerializer<?>) SERIALIZER;
     }
 
     private record Definition(

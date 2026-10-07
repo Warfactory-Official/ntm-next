@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/saturnite"
     }
   ],
-  "order": 6,
+  "order": 1536,
   "output_items": [
     "hbm:ingot_starmetal"
   ]

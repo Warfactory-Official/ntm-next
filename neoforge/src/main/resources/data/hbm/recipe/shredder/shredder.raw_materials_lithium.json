@@ -5,9 +5,10 @@
       "ingredient": "#c:raw_materials/lithium"
     }
   ],
-  "order": 413,
+  "order": 105728,
   "output_items": [
     {
+      "chance": 0.667,
       "count": 2,
       "id": "hbm:powder_lithium"
     }

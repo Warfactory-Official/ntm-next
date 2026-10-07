@@ -6,7 +6,7 @@
       "ingredient": "#c:nuggets/thorium"
     }
   ],
-  "order": 8,
+  "order": 2048,
   "output_items": [
     "hbm:nugget_thorium_fuel"
   ]

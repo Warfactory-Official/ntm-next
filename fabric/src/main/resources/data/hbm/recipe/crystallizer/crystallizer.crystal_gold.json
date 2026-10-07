@@ -9,10 +9,10 @@
   ],
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/gold"
+      "ingredient": "#c:ores/gold"
     }
   ],
-  "order": 227,
+  "order": 58368,
   "output_items": [
     "hbm:crystal_gold"
   ],

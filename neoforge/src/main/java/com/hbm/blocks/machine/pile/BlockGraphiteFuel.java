@@ -120,7 +120,9 @@ public class BlockGraphiteFuel extends BlockGraphiteDrilledBE implements IBlowab
 
     @Override
     public void applyFan(Level level, BlockPos pos, Direction dir, int dist) {
-        if (level.getBlockEntity(pos) instanceof BlockEntityPileFuel pile)
+        if (level.getBlockEntity(pos) instanceof BlockEntityPileFuel pile) {
             pile.heat -= pile.heat * 0.025;
+            level.blockEntityChanged(pos);
+        }
     }
 }

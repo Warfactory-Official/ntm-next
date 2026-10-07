@@ -8,6 +8,10 @@ import com.hbm.inventory.material.Mats;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.EnumAshType;
 import com.hbm.items.machine.EnumBriquetteType;
+import com.hbm.registration.FabricRegistrar;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.ObjIntConsumer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -16,6 +20,7 @@ import net.minecraft.world.level.Level;
 public final class FuelHandler {
 
     private static final int SINGLE = 200;
+    private static final List<Consumer<ObjIntConsumer<ItemLike>>> ADDONS = new ArrayList<>();
 
     private FuelHandler() {}
 
@@ -23,7 +28,21 @@ public final class FuelHandler {
         return level.fuelValues().burnDuration(fuel);
     }
 
+    public static void addon(Consumer<ObjIntConsumer<ItemLike>> fuels) {
+        FabricRegistrar.assertOpen("FuelHandler.addon");
+        ADDONS.add(fuels);
+    }
+
+    public static void forEachAddonFuel(ObjIntConsumer<ItemLike> out) {
+        for (Consumer<ObjIntConsumer<ItemLike>> fuels : ADDONS) fuels.accept(out);
+    }
+
     public static void forEachUniformFuel(ObjIntConsumer<ItemLike> out) {
+        forEachNtmFuel(out);
+        forEachAddonFuel(out);
+    }
+
+    public static void forEachNtmFuel(ObjIntConsumer<ItemLike> out) {
         out.accept(ModItems.SOLID_FUEL.get(), SINGLE * 16);
         out.accept(ModItems.SOLID_FUEL_PRESTO.get(), SINGLE * 40);
         out.accept(ModItems.SOLID_FUEL_PRESTO_TRIPLET.get(), SINGLE * 200);

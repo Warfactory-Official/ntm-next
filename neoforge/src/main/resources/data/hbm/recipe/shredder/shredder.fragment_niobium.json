@@ -5,7 +5,7 @@
       "ingredient": "hbm:fragment_niobium"
     }
   ],
-  "order": 40,
+  "order": 10240,
   "output_items": [
     "hbm:powder_niobium_tiny"
   ]

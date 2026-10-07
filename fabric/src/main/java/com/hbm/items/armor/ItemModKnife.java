@@ -8,6 +8,7 @@ import com.hbm.handler.ArmorModHandler;
 import com.hbm.lib.Library;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.ProperJoltPayload;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.List;
 import java.util.function.Consumer;
@@ -57,16 +58,15 @@ public class ItemModKnife extends ItemArmorMod {
                 || entity.tickCount % 50 != 0
                 || entity.getMaxHealth() <= 2F) return;
 
-        entity.level()
-                .playSound(
-                        null,
-                        entity.getX(),
-                        entity.getY(),
-                        entity.getZ(),
-                        ModSounds.SLICER.get(),
-                        entity.getSoundSource(),
-                        1.0F,
-                        1.0F);
+        EntitySounds.play(
+                entity,
+                entity.getX(),
+                entity.getY(),
+                entity.getZ(),
+                ModSounds.SLICER.get(),
+                entity.getSoundSource(),
+                1.0F,
+                1.0F);
 
         AttributeInstance maxHealth = entity.getAttribute(Attributes.MAX_HEALTH);
         float health = entity.getMaxHealth();

@@ -41,7 +41,7 @@
       "ingredient": "hbm:circuit_basic"
     }
   ],
-  "order": 170,
+  "order": 43520,
   "output_items": [
     "hbm:machine_chemical_factory"
   ],

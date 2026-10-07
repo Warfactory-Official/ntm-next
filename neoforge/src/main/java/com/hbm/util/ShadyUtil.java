@@ -6,14 +6,16 @@ package com.hbm.util;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 public final class ShadyUtil {
     public static final Set<String> HASHES =
-            Set.of(
-                    "41de5c372b0589bbdb80571e87efa95ea9e34b0d74c6005b8eab495b7afd9994",
-                    "31da6223a100ed348ceb3254ceab67c9cc102cb2a04ac24de0df3ef3479b1036");
+            new HashSet<>(
+                    Set.of(
+                            "41de5c372b0589bbdb80571e87efa95ea9e34b0d74c6005b8eab495b7afd9994",
+                            "31da6223a100ed348ceb3254ceab67c9cc102cb2a04ac24de0df3ef3479b1036"));
 
     private ShadyUtil() {}
 

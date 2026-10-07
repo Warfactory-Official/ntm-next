@@ -96,6 +96,7 @@ public class PistonInserter extends Block implements ITickingBlock, ICapabilityB
 
         if (flag && !piston.lastState && piston.extend <= 0) piston.isRetracting = false;
 
+        if (piston.lastState != flag) piston.markChanged();
         piston.lastState = flag;
     }
 

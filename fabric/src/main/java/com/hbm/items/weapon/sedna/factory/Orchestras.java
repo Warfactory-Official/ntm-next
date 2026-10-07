@@ -24,10 +24,10 @@ import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.HbmAnimations;
 import com.hbm.sound.AudioSystem;
 import com.hbm.sound.AudioWrapper;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.EntityDamageUtil;
 import java.util.function.BiConsumer;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -348,16 +348,15 @@ public class Orchestras {
                                             damage);
                                 }
                                 hit.setDeltaMovement(hit.getDeltaMovement().multiply(2, 1, 2));
-                                hit.level()
-                                        .playSound(
-                                                null,
-                                                hit.getX(),
-                                                hit.getY(),
-                                                hit.getZ(),
-                                                ModSounds.GUN_SMACK.get(),
-                                                SoundSource.PLAYERS,
-                                                1F,
-                                                0.9F + entity.getRandom().nextFloat() * 0.2F);
+                                EntitySounds.play(
+                                        hit,
+                                        hit.getX(),
+                                        hit.getY(),
+                                        hit.getZ(),
+                                        ModSounds.GUN_SMACK.get(),
+                                        SoundSource.PLAYERS,
+                                        1F,
+                                        0.9F + entity.getRandom().nextFloat() * 0.2F);
                             }
                             if (mop instanceof BlockHitResult blockHit) {
                                 BlockState b = entity.level().getBlockState(blockHit.getBlockPos());
@@ -1382,26 +1381,24 @@ public class Orchestras {
                                         ItemGunBaseNT.getWear(stack, ctx.configIndex()) + 10_000F,
                                         ctx.config().getDurability(stack)));
 
-                        entity.level()
-                                .playSound(
-                                        null,
-                                        entity.getX(),
-                                        entity.getY() + entity.getEyeHeight(),
-                                        entity.getZ(),
-                                        ModSounds.UFO_BLAST.get(),
-                                        SoundSource.PLAYERS,
-                                        5.0F,
-                                        0.9F);
-                        entity.level()
-                                .playSound(
-                                        null,
-                                        entity.getX(),
-                                        entity.getY() + entity.getEyeHeight(),
-                                        entity.getZ(),
-                                        SoundEvents.FIREWORK_ROCKET_BLAST,
-                                        SoundSource.PLAYERS,
-                                        5.0F,
-                                        0.5F);
+                        EntitySounds.play(
+                                entity,
+                                entity.getX(),
+                                entity.getY() + entity.getEyeHeight(),
+                                entity.getZ(),
+                                ModSounds.UFO_BLAST.get(),
+                                SoundSource.PLAYERS,
+                                5.0F,
+                                0.9F);
+                        EntitySounds.play(
+                                entity,
+                                entity.getX(),
+                                entity.getY() + entity.getEyeHeight(),
+                                entity.getZ(),
+                                SoundEvents.FIREWORK_ROCKET_BLAST,
+                                SoundSource.PLAYERS,
+                                5.0F,
+                                0.5F);
 
                         float yaw = entity.getRandom().nextFloat() * 180F;
                         for (int i = 0; i < 3; i++) {
@@ -2383,30 +2380,19 @@ public class Orchestras {
 
     private static void play(
             LivingEntity entity, SoundEvent sound, float volume, float pitch, boolean legacy) {
-        GunSoundPayload.send(
-                (ServerLevel) entity.level(),
-                legacy,
-                BuiltInRegistries.SOUND_EVENT.wrapAsHolder(sound),
-                SoundSource.PLAYERS,
-                entity.getX(),
-                entity.getY(),
-                entity.getZ(),
-                volume,
-                pitch,
-                entity.level().soundSeedGenerator.nextLong());
+        GunSoundPayload.send(entity, legacy, sound, volume, pitch);
     }
 
     private static void play(LivingEntity entity, SoundEvent sound, float volume, float pitch) {
-        entity.level()
-                .playSound(
-                        null,
-                        entity.getX(),
-                        entity.getY(),
-                        entity.getZ(),
-                        sound,
-                        SoundSource.PLAYERS,
-                        volume,
-                        pitch);
+        EntitySounds.play(
+                entity,
+                entity.getX(),
+                entity.getY(),
+                entity.getZ(),
+                sound,
+                SoundSource.PLAYERS,
+                volume,
+                pitch);
     }
 
     private static void muzzleFlash(LambdaContext ctx) {

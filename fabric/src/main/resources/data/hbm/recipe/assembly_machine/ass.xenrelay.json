@@ -25,7 +25,7 @@
       "ingredient": "hbm:circuit_controller_advanced"
     }
   ],
-  "order": 426,
+  "order": 109056,
   "output_items": [
     "hbm:satellite_xenium_resonator"
   ],

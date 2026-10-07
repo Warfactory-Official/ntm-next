@@ -161,6 +161,7 @@ public class BlockEntityRBMKLever extends BlockEntity
 
             if (isTurningOn && flipProgress < 1F) {
                 flipProgress += FLIP_SPEED;
+                panel.markChanged();
                 if (flipProgress >= 1F) {
                     flipProgress = 1F;
                     if (!polling && canSend(commandOn))
@@ -171,6 +172,7 @@ public class BlockEntityRBMKLever extends BlockEntity
             } else if (!isTurningOn && flipProgress > 0F) {
                 if (prevFlipProgress >= 1) arcFlash = true;
                 flipProgress -= FLIP_SPEED;
+                panel.markChanged();
                 if (flipProgress <= 0F) {
                     flipProgress = 0F;
                     if (!polling && canSend(commandOff))

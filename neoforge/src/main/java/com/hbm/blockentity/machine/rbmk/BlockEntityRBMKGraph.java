@@ -18,6 +18,7 @@ import com.hbm.packet.SyncSource;
 import com.hbm.packet.SyncUnitSchema;
 import com.hbm.util.TickPhase;
 import io.netty.buffer.ByteBuf;
+import java.util.Arrays;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -46,7 +47,11 @@ public class BlockEntityRBMKGraph extends BlockEntity
     public static void tickServer(
             Level level, BlockPos pos, BlockState state, BlockEntityRBMKGraph graph) {
         if (TickPhase.every(graph, SAMPLE_PERIOD)) {
-            for (GraphUnit unit : graph.graphs) unit.update(level);
+            for (GraphUnit unit : graph.graphs) {
+                long[] values = unit.values.clone();
+                unit.update(level);
+                if (!Arrays.equals(values, unit.values)) graph.markChanged();
+            }
         }
         graph.networkPackNT(50);
     }

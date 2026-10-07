@@ -5,7 +5,7 @@
       "ingredient": "minecraft:packed_ice"
     }
   ],
-  "order": 12,
+  "order": 3072,
   "output_items": [
     "hbm:powder_ice"
   ]

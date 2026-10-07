@@ -3,8 +3,10 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.tags.HbmBlockTags;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,6 +27,12 @@ public class BlockMetalFence extends FenceBlock {
     @Override
     public MapCodec<FenceBlock> codec() {
         return CODEC;
+    }
+
+    @Override
+    public boolean connectsTo(BlockState state, boolean faceSolid, Direction direction) {
+        return state.is(HbmBlockTags.METAL_FENCE_JOINS)
+                || super.connectsTo(state, faceSolid, direction);
     }
 
     @Override

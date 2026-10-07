@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/gold"
     }
   ],
-  "order": 12,
+  "order": 3072,
   "output_items": [
     "hbm:plate_gold"
   ],

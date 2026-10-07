@@ -4,7 +4,7 @@
     "minecraft:clay_ball",
     "minecraft:clay_ball",
     "minecraft:clay_ball",
-    "#hbm:ore_processing/aluminium"
+    "#c:ores/aluminum"
   ],
   "result": {
     "count": 4,

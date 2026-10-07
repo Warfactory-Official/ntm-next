@@ -78,7 +78,9 @@ public final class RBMKBoilerPeripheral extends RBMKColumnPeripheral<BlockEntity
 
     @LuaFunction(mainThread = true)
     public final Object[] setSteamType(int type) {
-        machine().steam.setTankType(SteamTypes.fromInt(type));
+        BlockEntityRBMKBoiler machine = machine();
+        machine.steam.setTankType(SteamTypes.fromInt(type));
+        machine.markChanged();
         return new Object[] {true};
     }
 }

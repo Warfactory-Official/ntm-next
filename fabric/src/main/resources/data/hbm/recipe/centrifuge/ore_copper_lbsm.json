@@ -9,10 +9,10 @@
   "duration": 200,
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/copper"
+      "ingredient": "#c:ores/copper"
     }
   ],
-  "order": 4,
+  "order": 2048,
   "output_items": [
     {
       "count": 2,

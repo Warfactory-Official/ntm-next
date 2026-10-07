@@ -27,7 +27,7 @@
   ],
   "name": "precass.chip.recycleEx",
   "name_wrapper": "precass.recycle",
-  "order": 4,
+  "order": 1024,
   "output_items": [
     {
       "chance": 0.5,

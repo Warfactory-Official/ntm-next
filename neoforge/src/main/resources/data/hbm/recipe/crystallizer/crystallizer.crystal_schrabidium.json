@@ -9,10 +9,10 @@
   ],
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/schrabidium"
+      "ingredient": "#c:ores/schrabidium"
     }
   ],
-  "order": 243,
+  "order": 65024,
   "output_items": [
     "hbm:crystal_schrabidium"
   ],

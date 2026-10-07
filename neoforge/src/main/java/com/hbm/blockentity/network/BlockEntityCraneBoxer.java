@@ -86,6 +86,7 @@ public class BlockEntityCraneBoxer extends BlockEntityCraneBase
             if (held > 0) ship(held, false);
         }
 
+        if (this.lastRedstone != redstone) markChanged();
         this.lastRedstone = redstone;
 
         if (mode != MODE_REDSTONE && level.getGameTime() % 2 == 0) {

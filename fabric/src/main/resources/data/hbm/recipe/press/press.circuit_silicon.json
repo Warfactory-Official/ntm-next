@@ -5,7 +5,7 @@
       "ingredient": "#hbm:billets/silicon"
     }
   ],
-  "order": 39,
+  "order": 9984,
   "output_items": [
     "hbm:circuit_silicon"
   ],

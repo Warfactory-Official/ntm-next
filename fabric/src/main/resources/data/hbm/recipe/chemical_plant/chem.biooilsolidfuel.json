@@ -17,7 +17,7 @@
       "ingredient": "hbm:biomass_compressed"
     }
   ],
-  "order": 55,
+  "order": 14080,
   "output_items": [
     "hbm:solid_fuel"
   ],

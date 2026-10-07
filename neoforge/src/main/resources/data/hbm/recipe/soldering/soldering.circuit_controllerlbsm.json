@@ -32,7 +32,7 @@
     }
   ],
   "name": "soldering.circuit_controllerLbsm",
-  "order": 10,
+  "order": 2560,
   "output_items": [
     "hbm:circuit_controller"
   ],

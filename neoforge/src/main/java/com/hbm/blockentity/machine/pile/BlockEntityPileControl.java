@@ -41,7 +41,10 @@ public class BlockEntityPileControl extends BlockEntityPileDeviceBase
     public void tickServer() {
         PileChannel channel = attachedChannel(BlockPile.Role.CONTROL);
         if (channel != null) {
-            channel.control = extension;
+            if (channel.control != extension) {
+                channel.control = extension;
+                channel.coreChanged();
+            }
             if (extension != targetExtension) {
                 if (Math.abs(extension - targetExtension) <= SPEED) extension = targetExtension;
                 else extension += Math.copySign(SPEED, targetExtension - extension);

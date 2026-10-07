@@ -19,7 +19,7 @@
       "ingredient": "hbm:bedrock_ore"
     }
   ],
-  "order": 150,
+  "order": 38400,
   "output_items": [
     {
       "components": {

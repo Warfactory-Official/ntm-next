@@ -6,6 +6,7 @@ package com.hbm.blocks.fluid;
 import com.hbm.advancement.AwardRegions;
 import com.hbm.advancement.HbmCriteria;
 import com.hbm.lib.ModDamageTypes;
+import com.hbm.sound.EntitySounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -65,8 +66,8 @@ public class BlockSulfuricAcid extends BlockFluidClassicBase {
         }
 
         if (entity.tickCount % 5 == 0 && !level.isClientSide()) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    entity,
                     entity.getX(),
                     entity.getY(),
                     entity.getZ(),

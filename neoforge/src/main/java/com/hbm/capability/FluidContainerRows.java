@@ -59,55 +59,60 @@ public final class FluidContainerRows {
             Supplier<? extends ItemLike> empty, Supplier<? extends ItemFluidTank> family) {}
 
     private static final List<Row> ROWS =
-            List.of(
-                    new Row(
-                            () -> Items.POTION,
-                            Potions.WATER,
-                            () -> Items.GLASS_BOTTLE,
-                            () -> NTMFluids.WATER,
-                            () -> 250),
-                    row(
-                            () -> ModBlocks.RED_BARREL,
-                            () -> ModItems.TANK_STEEL,
-                            () -> NTMFluids.DIESEL,
-                            () -> 10_000),
-                    row(
-                            () -> ModBlocks.PINK_BARREL,
-                            () -> ModItems.TANK_STEEL,
-                            () -> NTMFluids.KEROSENE,
-                            () -> 10_000),
-                    row(
-                            () -> ModBlocks.LOX_BARREL,
-                            () -> ModItems.TANK_STEEL,
-                            () -> NTMFluids.OXYGEN,
-                            () -> 10_000),
-                    row(() -> ModBlocks.ORE_OIL, null, () -> NTMFluids.OIL, () -> 250),
-                    row(
-                            () -> ModBlocks.ORE_GNEISS_GAS,
-                            null,
-                            () -> NTMFluids.PETROLEUM,
-                            () -> BalanceConfig.enable528 ? 50 : 250),
-                    row(
-                            () -> ModItems.BOTTLE_MERCURY,
-                            () -> Items.GLASS_BOTTLE,
-                            () -> NTMFluids.MERCURY,
-                            () -> 1000),
-                    row(() -> ModItems.NUGGET_MERCURY, null, () -> NTMFluids.MERCURY, () -> 125),
-                    row(
-                            () -> ModItems.ROD_ZIRNOX_TRITIUM,
-                            () -> ModItems.ROD_ZIRNOX_EMPTY,
-                            () -> NTMFluids.TRITIUM,
-                            () -> 2000),
-                    row(
-                            () -> Items.EXPERIENCE_BOTTLE,
-                            () -> Items.GLASS_BOTTLE,
-                            () -> NTMFluids.XPJUICE,
-                            () -> 100),
-                    row(
-                            () -> ModItems.CAN_MUG,
-                            () -> ModItems.CAN_EMPTY,
-                            () -> NTMFluids.MUG,
-                            () -> 100));
+            new ArrayList<>(
+                    List.of(
+                            new Row(
+                                    () -> Items.POTION,
+                                    Potions.WATER,
+                                    () -> Items.GLASS_BOTTLE,
+                                    () -> NTMFluids.WATER,
+                                    () -> 250),
+                            row(
+                                    () -> ModBlocks.RED_BARREL,
+                                    () -> ModItems.TANK_STEEL,
+                                    () -> NTMFluids.DIESEL,
+                                    () -> 10_000),
+                            row(
+                                    () -> ModBlocks.PINK_BARREL,
+                                    () -> ModItems.TANK_STEEL,
+                                    () -> NTMFluids.KEROSENE,
+                                    () -> 10_000),
+                            row(
+                                    () -> ModBlocks.LOX_BARREL,
+                                    () -> ModItems.TANK_STEEL,
+                                    () -> NTMFluids.OXYGEN,
+                                    () -> 10_000),
+                            row(() -> ModBlocks.ORE_OIL, null, () -> NTMFluids.OIL, () -> 250),
+                            row(
+                                    () -> ModBlocks.ORE_GNEISS_GAS,
+                                    null,
+                                    () -> NTMFluids.PETROLEUM,
+                                    () -> BalanceConfig.enable528 ? 50 : 250),
+                            row(
+                                    () -> ModItems.BOTTLE_MERCURY,
+                                    () -> Items.GLASS_BOTTLE,
+                                    () -> NTMFluids.MERCURY,
+                                    () -> 1000),
+                            row(
+                                    () -> ModItems.NUGGET_MERCURY,
+                                    null,
+                                    () -> NTMFluids.MERCURY,
+                                    () -> 125),
+                            row(
+                                    () -> ModItems.ROD_ZIRNOX_TRITIUM,
+                                    () -> ModItems.ROD_ZIRNOX_EMPTY,
+                                    () -> NTMFluids.TRITIUM,
+                                    () -> 2000),
+                            row(
+                                    () -> Items.EXPERIENCE_BOTTLE,
+                                    () -> Items.GLASS_BOTTLE,
+                                    () -> NTMFluids.XPJUICE,
+                                    () -> 100),
+                            row(
+                                    () -> ModItems.CAN_MUG,
+                                    () -> ModItems.CAN_EMPTY,
+                                    () -> NTMFluids.MUG,
+                                    () -> 100)));
 
     private static final List<FamilyFill> FAMILY_FILLS =
             List.of(
@@ -119,6 +124,10 @@ public final class FluidContainerRows {
                             () -> ModItems.GLYPHID_GLAND.get()));
 
     private FluidContainerRows() {}
+
+    public static void addon(Row row) {
+        ROWS.add(row);
+    }
 
     private static Row row(
             Supplier<? extends ItemLike> full,

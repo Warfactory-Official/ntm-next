@@ -7,9 +7,11 @@ import com.hbm.interfaces.injected.IBufferBuilderExtension;
 import com.hbm.render.util.Vertices;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import java.util.Arrays;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import org.joml.Matrix4fc;
 import org.joml.Vector3f;
+import org.jspecify.annotations.Nullable;
 
 public final class GroupObject {
     public static final int STRIDE = 8;
@@ -351,31 +353,67 @@ public final class GroupObject {
                 continue;
             }
             System.arraycopy(src, q, in, 0, QUAD);
-            int n = 4;
-            for (float[] plane : planes) {
-                float nx = plane[0], ny = plane[1], nz = plane[2], d = plane[3];
-                int m = 0;
-                for (int i = 0; i < n; i++) {
-                    int a = i * STRIDE, b = ((i + 1) % n) * STRIDE;
-                    float da = in[a] * nx + in[a + 1] * ny + in[a + 2] * nz - d;
-                    float db = in[b] * nx + in[b + 1] * ny + in[b + 2] * nz - d;
-                    if (da >= 0) {
-                        System.arraycopy(in, a, out, m * STRIDE, STRIDE);
-                        m++;
-                    }
-                    if ((da >= 0) != (db >= 0)) {
-                        float t = da / (da - db);
-                        for (int k = 0; k < STRIDE; k++)
-                            out[m * STRIDE + k] = in[a + k] + (in[b + k] - in[a + k]) * t;
-                        m++;
-                    }
-                }
-                System.arraycopy(out, 0, in, 0, m * STRIDE);
-                n = m;
-                if (n == 0) break;
-            }
-            emitFan(pose, buffer, light, color, in, n);
+            emitFan(pose, buffer, light, color, in, clip(in, out, planes));
         }
+    }
+
+    public @Nullable GroupObject clipped(boolean smoothing, float[][] planes) {
+        float[] src = quads(smoothing);
+        float[] in = new float[(4 + planes.length + 4) * STRIDE];
+        float[] out = new float[in.length];
+        float[] kept = new float[src.length];
+        int written = 0;
+        for (int q = 0; q < src.length; q += QUAD) {
+            int fate = classify(src, q, planes);
+            if (fate == WHOLLY_OUT) continue;
+            System.arraycopy(src, q, in, 0, QUAD);
+            int n = fate == WHOLLY_IN ? 4 : clip(in, out, planes);
+            for (int i = 1; i + 1 < n; i += 2) {
+                if (written + QUAD > kept.length) kept = Arrays.copyOf(kept, kept.length * 2);
+                System.arraycopy(in, 0, kept, written, STRIDE);
+                System.arraycopy(in, i * STRIDE, kept, written + STRIDE, 2 * STRIDE);
+                System.arraycopy(
+                        in,
+                        (i + 2 < n ? i + 2 : i + 1) * STRIDE,
+                        kept,
+                        written + 3 * STRIDE,
+                        STRIDE);
+                written += QUAD;
+            }
+        }
+        if (written == 0) return null;
+        kept = Arrays.copyOf(kept, written);
+        float[] normals = new float[written / QUAD * 3];
+        for (int face = 0; face < normals.length / 3; face++)
+            normal(kept, face * QUAD, STRIDE, normals, face * 3);
+        return new GroupObject(name, kept, normals);
+    }
+
+    private static int clip(float[] in, float[] out, float[][] planes) {
+        int n = 4;
+        for (float[] plane : planes) {
+            float nx = plane[0], ny = plane[1], nz = plane[2], d = plane[3];
+            int m = 0;
+            for (int i = 0; i < n; i++) {
+                int a = i * STRIDE, b = ((i + 1) % n) * STRIDE;
+                float da = in[a] * nx + in[a + 1] * ny + in[a + 2] * nz - d;
+                float db = in[b] * nx + in[b + 1] * ny + in[b + 2] * nz - d;
+                if (da >= 0) {
+                    System.arraycopy(in, a, out, m * STRIDE, STRIDE);
+                    m++;
+                }
+                if ((da >= 0) != (db >= 0)) {
+                    float t = da / (da - db);
+                    for (int k = 0; k < STRIDE; k++)
+                        out[m * STRIDE + k] = in[a + k] + (in[b + k] - in[a + k]) * t;
+                    m++;
+                }
+            }
+            System.arraycopy(out, 0, in, 0, m * STRIDE);
+            n = m;
+            if (n == 0) break;
+        }
+        return n;
     }
 
     private void emitFan(

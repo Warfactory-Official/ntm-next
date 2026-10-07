@@ -84,6 +84,7 @@ public class BlockEntityConveyorPress extends BlockEntityMachineBase
             if (canRetract()) {
                 press -= SPEED;
                 power -= USAGE;
+                markChanged();
                 if (press <= 0) {
                     press = 0;
                     isRetracting = false;
@@ -93,6 +94,7 @@ public class BlockEntityConveyorPress extends BlockEntityMachineBase
         } else if (canExtend(server)) {
             press += SPEED;
             power -= USAGE;
+            markChanged();
             if (press >= 1) {
                 press = 1;
                 isRetracting = true;

@@ -3,6 +3,7 @@
 
 package com.hbm.packet.toserver;
 
+import com.hbm.api.environment.Environment;
 import com.hbm.entity.missile.EntityBobmazon;
 import com.hbm.handler.BobmazonOffer;
 import com.hbm.handler.BobmazonOffers;
@@ -45,6 +46,12 @@ public final class BobmazonPurchasePayload extends ThreadedPayload {
     public static void handleServer(BobmazonPurchasePayload payload, IPayloadHandlerContext ctx) {
         if (!(ctx.player() instanceof ServerPlayer player)) return;
         if (!(player.level() instanceof ServerLevel level)) return;
+
+        Component refusal = Environment.deliveryRefusal(level);
+        if (refusal != null) {
+            player.sendSystemMessage(refusal);
+            return;
+        }
 
         List<BobmazonOffer> catalog = BobmazonOffers.forStack(player.getMainHandItem());
 

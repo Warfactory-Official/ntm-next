@@ -14,6 +14,7 @@ import com.hbm.items.ModItems;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.RegistryHandle;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ContaminationUtil;
 import net.minecraft.core.BlockPos;
@@ -157,8 +158,8 @@ public final class HbmPotion {
             entity.setHealth(0.0F);
             if (!(entity instanceof Player)) entity.discard();
 
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    entity,
                     entity.getX(),
                     entity.getY(),
                     entity.getZ(),

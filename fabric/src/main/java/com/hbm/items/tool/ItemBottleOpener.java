@@ -4,6 +4,7 @@
 package com.hbm.items.tool;
 
 import com.hbm.items.special.ItemCustomLore;
+import com.hbm.sound.EntitySounds;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -28,7 +29,7 @@ public class ItemBottleOpener extends ItemCustomLore {
         if (i == 1) mob.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 5 * 60 * 20, 2));
         if (i == 2) mob.addEffect(new MobEffectInstance(MobEffects.MINING_FATIGUE, 5 * 60 * 20, 2));
         if (i == 3) mob.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 60 * 20, 0));
-        level.playSound(
-                null, mob.blockPosition(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 3.0F, 1.0F);
+        EntitySounds.play(
+                mob, mob.blockPosition(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 3.0F, 1.0F);
     }
 }

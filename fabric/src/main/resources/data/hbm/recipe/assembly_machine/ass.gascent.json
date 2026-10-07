@@ -31,7 +31,7 @@
       "ingredient": "hbm:circuit_advanced"
     }
   ],
-  "order": 99,
+  "order": 25344,
   "output_items": [
     "hbm:machine_gascent"
   ],

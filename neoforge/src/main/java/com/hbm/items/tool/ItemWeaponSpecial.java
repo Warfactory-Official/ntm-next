@@ -5,6 +5,7 @@ package com.hbm.items.tool;
 
 import com.hbm.entity.projectile.EntityRubble;
 import com.hbm.items.special.ItemCustomLore;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
@@ -57,8 +58,13 @@ public class ItemWeaponSpecial extends ItemCustomLore {
         }
         SoundEvent sound = effect.sound();
         if (sound != null) {
-            level.playSound(
-                    null, victim.blockPosition(), sound, SoundSource.PLAYERS, effect.volume, 1.0F);
+            EntitySounds.play(
+                    victim,
+                    victim.blockPosition(),
+                    sound,
+                    SoundSource.PLAYERS,
+                    effect.volume,
+                    1.0F);
         }
     }
 

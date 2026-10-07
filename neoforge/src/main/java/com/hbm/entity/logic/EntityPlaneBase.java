@@ -179,6 +179,7 @@ public abstract class EntityPlaneBase extends Entity {
     }
 
     public void forceSpawnChunk() {
-        if (level() instanceof ServerLevel server) ChunkUtil.loadForEntity(server, chunkPosition());
+        if (level() instanceof ServerLevel server)
+            ChunkUtil.loadTickingForEntity(server, chunkPosition());
     }
 }

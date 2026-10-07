@@ -20,6 +20,7 @@ import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import io.netty.buffer.ByteBuf;
 import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -80,8 +81,8 @@ public class BlockEntityICFPress extends BlockEntityMachineBase
     @Override
     public void tickServer() {
 
-        tanks[0].setType(SLOT_FLUID_ID_A, SLOT_FLUID_ID_A, inventory);
-        tanks[1].setType(SLOT_FLUID_ID_B, SLOT_FLUID_ID_B, inventory);
+        if (tanks[0].setType(SLOT_FLUID_ID_A, SLOT_FLUID_ID_A, inventory)) markChanged();
+        if (tanks[1].setType(SLOT_FLUID_ID_B, SLOT_FLUID_ID_B, inventory)) markChanged();
 
         if (muon <= 0 && inventory.get(SLOT_MUON_IN).is(ModItems.PARTICLE_MUON.get())) {
             ItemStackTemplate remainder = inventory.get(SLOT_MUON_IN).getCraftingRemainder();
@@ -190,6 +191,19 @@ public class BlockEntityICFPress extends BlockEntityMachineBase
         tanks[0].serialize(output.child("t0"));
         tanks[1].serialize(output.child("t1"));
         output.putByte("muon", (byte) muon);
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        for (FluidTankNTM tank : tanks) {
+            if (tank.joins(type)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
     }
 
     @Override

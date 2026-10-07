@@ -89,7 +89,7 @@ public class BlockEntityMachineCoker extends BlockEntityMachineBase
     @Override
     public void tickServer() {
         tryPullHeat();
-        tanks[0].setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory);
+        if (tanks[0].setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory)) markChanged();
 
         this.wasOn = false;
 
@@ -100,6 +100,7 @@ public class BlockEntityMachineCoker extends BlockEntityMachineBase
                 this.wasOn = true;
                 this.progress += burn;
                 this.heat -= burn;
+                markChanged();
 
                 if (progress >= PROCESS_TIME) {
                     setChanged();
@@ -184,10 +185,12 @@ public class BlockEntityMachineCoker extends BlockEntityMachineBase
                 source.useUpHeat(level, heatPos, diff);
                 this.heat += diff;
                 if (this.heat > MAX_HEAT) this.heat = MAX_HEAT;
+                markChanged();
                 return;
             }
         }
 
+        if (this.heat > 0) markChanged();
         this.heat = Math.max(this.heat - Math.max(this.heat / 1000, 1), 0);
     }
 

@@ -29,7 +29,7 @@
       "ingredient": "hbm:circuit_bismoid"
     }
   ],
-  "order": 27,
+  "order": 6912,
   "output_items": [
     "hbm:icf_controller"
   ],

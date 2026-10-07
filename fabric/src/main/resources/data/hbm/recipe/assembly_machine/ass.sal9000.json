@@ -32,7 +32,7 @@
       "ingredient": "hbm:circuit_bismoid"
     }
   ],
-  "order": 95,
+  "order": 24320,
   "output_items": [
     "hbm:machine_supercomputer"
   ],

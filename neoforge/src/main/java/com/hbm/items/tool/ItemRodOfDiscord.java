@@ -3,6 +3,7 @@
 
 package com.hbm.items.tool;
 
+import com.hbm.sound.EntitySounds;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -63,8 +64,8 @@ public final class ItemRodOfDiscord extends Item {
             }
         } else if (player instanceof ServerPlayer serverPlayer) {
             serverPlayer.stopRiding();
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),
@@ -80,8 +81,8 @@ public final class ItemRodOfDiscord extends Item {
                     location.y + direction.getStepY() - 1.0D,
                     location.z + direction.getStepZ());
 
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    serverPlayer,
                     serverPlayer.getX(),
                     serverPlayer.getY(),
                     serverPlayer.getZ(),

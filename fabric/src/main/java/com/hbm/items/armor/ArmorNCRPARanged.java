@@ -10,6 +10,7 @@ import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.items.weapon.sedna.factory.XFactoryRocket;
 import com.hbm.items.weapon.sedna.mags.MagazineBelt;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
@@ -51,16 +52,15 @@ public class ArmorNCRPARanged implements IPARanged {
         ItemGunBaseNT.setTimer(stack, 0, COOLDOWN);
 
         if (amount <= 0) {
-            player.level()
-                    .playSound(
-                            null,
-                            player.getX(),
-                            player.getY(),
-                            player.getZ(),
-                            ModSounds.GUN_DRY_FIRE.get(),
-                            SoundSource.PLAYERS,
-                            1F,
-                            1F);
+            EntitySounds.play(
+                    player,
+                    player.getX(),
+                    player.getY(),
+                    player.getZ(),
+                    ModSounds.GUN_DRY_FIRE.get(),
+                    SoundSource.PLAYERS,
+                    1F,
+                    1F);
             return;
         }
 
@@ -68,16 +68,15 @@ public class ArmorNCRPARanged implements IPARanged {
         float side = SIDE_OFFSET * (player.getRandom().nextBoolean() ? -1F : 1F);
         EntityBulletBaseMK4 rocket = new EntityBulletBaseMK4(player, cfg, DAMAGE, 0F, side, 0D, 0D);
         player.level().addFreshEntity(rocket);
-        player.level()
-                .playSound(
-                        null,
-                        player.getX(),
-                        player.getY(),
-                        player.getZ(),
-                        ModSounds.GUN_ROCKET_FIRE.get(),
-                        SoundSource.PLAYERS,
-                        0.5F,
-                        0.9F + player.getRandom().nextFloat() * 0.2F);
+        EntitySounds.play(
+                player,
+                player.getX(),
+                player.getY(),
+                player.getZ(),
+                ModSounds.GUN_ROCKET_FIRE.get(),
+                SoundSource.PLAYERS,
+                0.5F,
+                0.9F + player.getRandom().nextFloat() * 0.2F);
         player.inventoryMenu.broadcastChanges();
     }
 }

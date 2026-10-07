@@ -99,6 +99,7 @@ public abstract class BlockEntityRBMKControl extends BlockEntityRBMKBase
             if (this.isPowered() && level != lastLevel) {
                 this.power -= consumption;
             }
+            if (level != lastLevel) this.markChanged();
         }
 
         super.tickServer();

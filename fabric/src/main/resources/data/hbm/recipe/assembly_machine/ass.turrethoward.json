@@ -39,7 +39,7 @@
       "ingredient": "hbm:crt_display"
     }
   ],
-  "order": 330,
+  "order": 84480,
   "output_items": [
     "hbm:turret_howard"
   ],

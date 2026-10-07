@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/polymer"
     }
   ],
-  "order": 220,
+  "order": 56320,
   "output_items": [
     "hbm:powder_polymer"
   ]

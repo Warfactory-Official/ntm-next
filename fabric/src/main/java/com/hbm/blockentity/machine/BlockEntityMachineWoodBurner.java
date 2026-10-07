@@ -27,6 +27,7 @@ import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import com.hbm.util.TickPhase;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -131,9 +132,10 @@ public class BlockEntityMachineWoodBurner extends BlockEntityMachineBase
                                 remainder != null ? remainder.create() : ItemStack.EMPTY);
                     setChanged();
                 }
-            } else if (power < MAX_POWER && isOn) {
+            } else if (power < MAX_POWER && isOn && breatheAir(1)) {
                 burnTime--;
                 powerGen += 100;
+                markChanged();
                 if (TickPhase.every(this, SharedConstants.TICKS_PER_SECOND)) {
                     PollutionHandler.incrementPollution(
                             level,
@@ -142,7 +144,7 @@ public class BlockEntityMachineWoodBurner extends BlockEntityMachineBase
                             PollutionHandler.SOOT_PER_SECOND);
                 }
             }
-        } else if (power < MAX_POWER && tank.getFill() > 0 && isOn) {
+        } else if (power < MAX_POWER && tank.getFill() > 0 && isOn && breatheAir(1)) {
             FT_Flammable trait =
                     NTMFluidProperties.getTrait(tank.getTankType(), FT_Flammable.class);
             if (trait != null) {
@@ -150,6 +152,7 @@ public class BlockEntityMachineWoodBurner extends BlockEntityMachineBase
                 if (toBurn > 0) {
                     powerGen += (int) (trait.getHeatEnergy() * toBurn / 2_000L);
                     tank.setFill(tank.getFill() - toBurn);
+                    markChanged();
                     if (TickPhase.every(this, SharedConstants.TICKS_PER_SECOND)) {
                         PollutionHandler.incrementPollution(
                                 level,
@@ -211,6 +214,16 @@ public class BlockEntityMachineWoodBurner extends BlockEntityMachineBase
     @Override
     public long getMaxPower() {
         return MAX_POWER;
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return tank.joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        visitor.accept(tank);
     }
 
     @Override

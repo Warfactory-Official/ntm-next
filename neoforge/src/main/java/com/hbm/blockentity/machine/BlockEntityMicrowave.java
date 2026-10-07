@@ -101,6 +101,7 @@ public class BlockEntityMicrowave extends BlockEntityMachineBase
             if (canProcess()) {
                 power -= CONSUMPTION;
                 time += speed * 2;
+                markChanged();
             }
         }
 

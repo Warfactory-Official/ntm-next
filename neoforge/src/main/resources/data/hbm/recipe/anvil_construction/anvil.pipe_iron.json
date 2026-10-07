@@ -6,7 +6,7 @@
       "ingredient": "#c:plates/iron"
     }
   ],
-  "order": 45,
+  "order": 11520,
   "output_items": [
     "hbm:pipe_iron"
   ],

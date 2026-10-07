@@ -247,6 +247,7 @@ public final class ExplosionNukeGeneric {
         BlockEntity entity = world.getBlockEntity(pos);
         if (entity instanceof IEnergyHandlerMK2 power) {
             power.setPower(0);
+            world.blockEntityChanged(pos);
             if (world.getRandom().nextInt(5) < 1) {
                 world.setBlock(
                         pos,

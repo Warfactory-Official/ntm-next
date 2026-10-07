@@ -21,6 +21,11 @@ public class ShredderRecipes extends SimpleGenericRecipes<ShredderRecipe> {
                 : ItemStack.EMPTY;
     }
 
+    public static ItemStack shred(ItemStack stack) {
+        ShredderRecipe recipe = getRecipe(stack);
+        return recipe != null ? recipe.roll() : getShredderResult(stack);
+    }
+
     public static @Nullable ShredderRecipe getRecipe(ItemStack stack) {
         if (stack.isEmpty()) return null;
         return INSTANCE.findByItem(stack, recipe -> recipe.input().matchesItem(stack));

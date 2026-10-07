@@ -138,14 +138,7 @@ public class EntityMissileCustom extends EntityMissileBaseNT {
         FuelType fuel = fuselage != null ? fuselage.fuelType() : null;
         if (fuel == null) return;
 
-        ClientEffects.Contrail contrail =
-                switch (fuel) {
-                    case KEROSENE -> ClientEffects.Contrail.KEROSENE;
-                    case SOLID -> ClientEffects.Contrail.SOLID;
-                    case HYDROGEN -> ClientEffects.Contrail.HYDROGEN;
-                    case BALEFIRE -> ClientEffects.Contrail.BALEFIRE;
-                    case XENON -> null;
-                };
+        ClientEffects.Contrail contrail = fuel.contrail;
         if (contrail == null) return;
 
         double len = Math.max(step.length(), 1D);
@@ -168,116 +161,94 @@ public class EntityMissileCustom extends EntityMissileBaseNT {
             return;
         }
 
-        switch (type) {
-            case HE:
-                ExplosionLarge.explode(
-                        level(), getX(), getY(), getZ(), strength, true, false, true);
-                ExplosionLarge.jolt(
-                        level(),
-                        getX(),
-                        getY(),
-                        getZ(),
-                        (int) strength,
-                        (int) (strength * 50),
-                        0.25);
-                break;
-            case INC:
-                ExplosionLarge.explodeFire(
-                        level(), getX(), getY(), getZ(), strength, true, false, true);
-                ExplosionLarge.jolt(
-                        level(),
-                        getX(),
-                        getY(),
-                        getZ(),
-                        (int) (strength * 1.5F),
-                        (int) (strength * 50),
-                        0.25);
-                break;
-            case CLUSTER:
-                break;
-            case BUSTER:
-                ExplosionLarge.buster(
-                        level(),
-                        getX(),
-                        getY(),
-                        getZ(),
-                        new Vec3(getDeltaMovement().x, getDeltaMovement().y, getDeltaMovement().z),
-                        strength,
-                        (int) (strength * 4));
-                break;
-            case NUCLEAR:
-            case TX:
+        if (type == WarheadType.HE) {
+            ExplosionLarge.explode(level(), getX(), getY(), getZ(), strength, true, false, true);
+            ExplosionLarge.jolt(
+                    level(), getX(), getY(), getZ(), (int) strength, (int) (strength * 50), 0.25);
+        } else if (type == WarheadType.INC) {
+            ExplosionLarge.explodeFire(
+                    level(), getX(), getY(), getZ(), strength, true, false, true);
+            ExplosionLarge.jolt(
+                    level(),
+                    getX(),
+                    getY(),
+                    getZ(),
+                    (int) (strength * 1.5F),
+                    (int) (strength * 50),
+                    0.25);
+        } else if (type == WarheadType.BUSTER) {
+            ExplosionLarge.buster(
+                    level(),
+                    getX(),
+                    getY(),
+                    getZ(),
+                    new Vec3(getDeltaMovement().x, getDeltaMovement().y, getDeltaMovement().z),
+                    strength,
+                    (int) (strength * 4));
+        } else if (type == WarheadType.NUCLEAR || type == WarheadType.TX) {
+            level().addFreshEntity(
+                            EntityNukeExplosionMK5.statFac(
+                                    level(), (int) strength, getX(), getY(), getZ()));
+            EntityNukeTorex.statFac(level(), getX(), getY(), getZ(), strength);
+        } else if (type == WarheadType.BALEFIRE) {
+            EntityBalefire bf = new EntityBalefire(ModEntities.BALEFIRE.get(), level());
+            bf.setPos(getX(), getY(), getZ());
+            bf.destructionRange = (int) strength;
+            level().addFreshEntity(bf);
+            EntityNukeTorex.statFacBale(level(), getX(), getY(), getZ(), strength);
+        } else if (type == WarheadType.N2) {
+            level().addFreshEntity(
+                            EntityNukeExplosionMK5.statFacNoRad(
+                                    level(), (int) strength, getX(), getY(), getZ()));
+            EntityNukeTorex.statFac(level(), getX(), getY(), getZ(), strength);
+        } else if (type == WarheadType.TAINT) {
+            int r = (int) strength;
+            for (int i = 0; i < r * 10; i++) {
+                BlockPos pos =
+                        new BlockPos(
+                                random.nextInt(r) + (int) getX() - (r / 2 - 1),
+                                random.nextInt(r) + (int) getY() - (r / 2 - 1),
+                                random.nextInt(r) + (int) getZ() - (r / 2 - 1));
+                BlockState hit = level().getBlockState(pos);
+                if (!hit.isSolidRender() || hit.isAir()) continue;
+                level().setBlock(
+                                pos,
+                                ModBlocks.TAINT
+                                        .get()
+                                        .defaultBlockState()
+                                        .setValue(BlockTaint.AGE, random.nextInt(3) + 4),
+                                Block.UPDATE_CLIENTS);
+            }
+        } else if (type == WarheadType.CLOUD) {
+            level().levelEvent(2002, BlockPos.containing(getX(), getY(), getZ()), 0);
+            ExplosionChaos.spawnPoisonCloud(
+                    level(),
+                    getX() - getDeltaMovement().x,
+                    getY() - getDeltaMovement().y,
+                    getZ() - getDeltaMovement().z,
+                    750,
+                    2.5,
+                    2);
+        } else if (type == WarheadType.TURBINE) {
+            ExplosionLarge.explode(level(), getX(), getY(), getZ(), 10, true, false, true);
+            int count = (int) strength;
+            Vec3 fan = new Vec3(0.5D, 0D, 0D);
+            for (int i = 0; i < count; i++) {
                 level().addFreshEntity(
-                                EntityNukeExplosionMK5.statFac(
-                                        level(), (int) strength, getX(), getY(), getZ()));
-                EntityNukeTorex.statFac(level(), getX(), getY(), getZ(), strength);
-                break;
-            case BALEFIRE:
-                EntityBalefire bf = new EntityBalefire(ModEntities.BALEFIRE.get(), level());
-                bf.setPos(getX(), getY(), getZ());
-                bf.destructionRange = (int) strength;
-                level().addFreshEntity(bf);
-                EntityNukeTorex.statFacBale(level(), getX(), getY(), getZ(), strength);
-                break;
-            case N2:
-                level().addFreshEntity(
-                                EntityNukeExplosionMK5.statFacNoRad(
-                                        level(), (int) strength, getX(), getY(), getZ()));
-                EntityNukeTorex.statFac(level(), getX(), getY(), getZ(), strength);
-                break;
-            case TAINT:
-                int r = (int) strength;
-                for (int i = 0; i < r * 10; i++) {
-                    BlockPos pos =
-                            new BlockPos(
-                                    random.nextInt(r) + (int) getX() - (r / 2 - 1),
-                                    random.nextInt(r) + (int) getY() - (r / 2 - 1),
-                                    random.nextInt(r) + (int) getZ() - (r / 2 - 1));
-                    BlockState hit = level().getBlockState(pos);
-                    if (!hit.isSolidRender() || hit.isAir()) continue;
-                    level().setBlock(
-                                    pos,
-                                    ModBlocks.TAINT
-                                            .get()
-                                            .defaultBlockState()
-                                            .setValue(BlockTaint.AGE, random.nextInt(3) + 4),
-                                    Block.UPDATE_CLIENTS);
-                }
-                break;
-            case CLOUD:
-                level().levelEvent(2002, BlockPos.containing(getX(), getY(), getZ()), 0);
-                ExplosionChaos.spawnPoisonCloud(
-                        level(),
-                        getX() - getDeltaMovement().x,
-                        getY() - getDeltaMovement().y,
-                        getZ() - getDeltaMovement().z,
-                        750,
-                        2.5,
-                        2);
-                break;
-            case TURBINE:
-                ExplosionLarge.explode(level(), getX(), getY(), getZ(), 10, true, false, true);
-                int count = (int) strength;
-                Vec3 fan = new Vec3(0.5D, 0D, 0D);
-                for (int i = 0; i < count; i++) {
-                    level().addFreshEntity(
-                                    new EntityBulletBaseMK4(
-                                            level(),
-                                            null,
-                                            XFactoryWarhead.warhead_turbine,
-                                            XFactoryWarhead.TURBINE_BLADE_DAMAGE,
-                                            0F,
-                                            getX() - getDeltaMovement().x,
-                                            getY() - getDeltaMovement().y + random.nextGaussian(),
-                                            getZ() - getDeltaMovement().z,
-                                            fan.x,
-                                            0D,
-                                            fan.z));
-                    fan = fan.yRot((float) (Math.PI * 2F / count));
-                }
-                break;
-            default:
-                break;
+                                new EntityBulletBaseMK4(
+                                        level(),
+                                        null,
+                                        XFactoryWarhead.warhead_turbine,
+                                        XFactoryWarhead.TURBINE_BLADE_DAMAGE,
+                                        0F,
+                                        getX() - getDeltaMovement().x,
+                                        getY() - getDeltaMovement().y + random.nextGaussian(),
+                                        getZ() - getDeltaMovement().z,
+                                        fan.x,
+                                        0D,
+                                        fan.z));
+                fan = fan.yRot((float) (Math.PI * 2F / count));
+            }
         }
     }
 

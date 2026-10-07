@@ -15,7 +15,7 @@
     }
   ],
   "name_wrapper": "rock.crushing",
-  "order": 7,
+  "order": 1792,
   "output_fluids": [
     {
       "type": "hbm:colloid",

@@ -9,10 +9,10 @@
   ],
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/thorium"
+      "ingredient": "#c:ores/thorium"
     }
   ],
-  "order": 239,
+  "order": 62976,
   "output_items": [
     "hbm:crystal_thorium"
   ],

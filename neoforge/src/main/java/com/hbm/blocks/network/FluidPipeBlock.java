@@ -4,6 +4,10 @@
 package com.hbm.blocks.network;
 
 import com.hbm.api.fluidmk2.*;
+import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockMaskTable;
+import com.hbm.capability.MachineCaps;
+import com.hbm.capability.NtmCapabilities.CapRole;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.items.ModDataComponents;
 import com.hbm.lib.Library;
@@ -12,7 +16,9 @@ import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.AutoRotate;
 import com.hbm.util.ChunkUtil;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -27,6 +33,7 @@ import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -54,6 +61,8 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
     public static final BooleanProperty DOWN = BlockStateProperties.DOWN;
 
     private static final VoxelShape[] SHAPES = buildShapes();
+    private static final Reference2ObjectOpenHashMap<BlockMultiblockCore, long[][]> FLUID_CONTACTS =
+            new Reference2ObjectOpenHashMap<>();
 
     public FluidPipeBlock(BlockBehaviour.Properties props) {
         super(props);
@@ -84,20 +93,11 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
         arm[Direction.EAST.ordinal()] =
                 Shapes.box(11 / 16D, 5 / 16D, 5 / 16D, 1, 11 / 16D, 11 / 16D);
 
-        int x = (1 << Direction.EAST.ordinal()) | (1 << Direction.WEST.ordinal());
-        int y = (1 << Direction.UP.ordinal()) | (1 << Direction.DOWN.ordinal());
-        int z = (1 << Direction.SOUTH.ordinal()) | (1 << Direction.NORTH.ordinal());
         VoxelShape[] shapes = new VoxelShape[64];
         for (int mask = 0; mask < 64; mask++) {
-            int visualMask = mask;
-            if (mask == 0) visualMask = OPEN_ALL;
-            else if ((mask & ~x) == 0) visualMask = x;
-            else if ((mask & ~y) == 0) visualMask = y;
-            else if ((mask & ~z) == 0) visualMask = z;
-
             VoxelShape shape = core;
             for (int o = 0; o < 6; o++) {
-                if ((visualMask & (1 << o)) != 0) shape = Shapes.or(shape, arm[o]);
+                if ((mask & (1 << o)) != 0) shape = Shapes.or(shape, arm[o]);
             }
             shapes[mask] = shape;
         }
@@ -151,12 +151,97 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
                 else to.addDormantLink(key, peer);
             }
         }
+        BlockPos pos = BlockPos.of(key);
+        ChunkDuctNodes.schedule(level, pos);
+        for (Direction dir : Direction.VALUES) ChunkDuctNodes.schedule(level, pos.relative(dir));
         return true;
     }
 
     public static void refreshAround(ServerLevel level, BlockPos pos) {
         refreshConnections(level, pos);
         for (Direction d : Direction.VALUES) refreshConnections(level, pos.relative(d));
+    }
+
+    public static void scheduleConnections(BlockEntity owner) {
+        ChunkDuctNodes.schedule(owner);
+    }
+
+    static void queueConnections(BlockEntity owner) {
+        if (!(owner.getLevel() instanceof ServerLevel level) || owner.isRemoved()) return;
+        BlockPos origin = owner.getBlockPos();
+        int domains = MachineCaps.declaredDomains(owner);
+        if ((domains & (MachineCaps.FLUID_IN | MachineCaps.FLUID_OUT)) != 0
+                && owner.getBlockState().getBlock() instanceof BlockMultiblockCore core) {
+            Direction facing = owner.getBlockState().getValue(BlockMultiblockCore.FACING);
+            for (long contact : fluidContacts(core, facing, domains)) {
+                ChunkDuctNodes.schedule(
+                        level,
+                        origin.offset(
+                                BlockPos.getX(contact),
+                                BlockPos.getY(contact),
+                                BlockPos.getZ(contact)));
+            }
+        } else if ((domains & (MachineCaps.FLUID_IN | MachineCaps.FLUID_OUT)) != 0) {
+            for (Direction side : Direction.VALUES)
+                ChunkDuctNodes.schedule(level, origin.relative(side));
+        }
+        level.hbm$endpoints()
+                .forEachRemoteCell(
+                        origin.asLong(),
+                        MachineCaps.FLUID_IN | MachineCaps.FLUID_OUT,
+                        (cellKey, faceMask) -> {
+                            BlockPos cell = BlockPos.of(cellKey);
+                            for (Direction side : Direction.VALUES) {
+                                if ((faceMask & (1 << side.ordinal())) != 0) {
+                                    ChunkDuctNodes.schedule(level, cell.relative(side));
+                                }
+                            }
+                        });
+    }
+
+    private static long[] fluidContacts(BlockMultiblockCore core, Direction facing, int domains) {
+        long[][] byFacing = FLUID_CONTACTS.computeIfAbsent(core, ignored -> new long[4][]);
+        long[] contacts = byFacing[facing.get2DDataValue()];
+        if (contacts != null) return contacts;
+        LongLinkedOpenHashSet out = new LongLinkedOpenHashSet();
+        core.maskTable()
+                .forEachLocalCell(
+                        (lx, ly, lz) -> {
+                            int dx = MultiblockMaskTable.worldX(lx, ly, lz, facing);
+                            int dz = MultiblockMaskTable.worldZ(lx, ly, lz, facing);
+                            for (Direction side : Direction.VALUES) {
+                                boolean receives =
+                                        (domains & MachineCaps.FLUID_IN) != 0
+                                                && core.isOpenAt(
+                                                        facing,
+                                                        dx,
+                                                        ly,
+                                                        dz,
+                                                        side,
+                                                        BlockMultiblockCore.PASSIVE_FLUID_IN,
+                                                        CapRole.FLUID_IN);
+                                boolean provides =
+                                        (domains & MachineCaps.FLUID_OUT) != 0
+                                                && core.isOpenAt(
+                                                        facing,
+                                                        dx,
+                                                        ly,
+                                                        dz,
+                                                        side,
+                                                        BlockMultiblockCore.PASSIVE_NONE,
+                                                        CapRole.FLUID_OUT);
+                                if (receives || provides) {
+                                    out.add(
+                                            BlockPos.asLong(
+                                                    dx + side.getStepX(),
+                                                    ly + side.getStepY(),
+                                                    dz + side.getStepZ()));
+                                }
+                            }
+                        });
+        contacts = out.toLongArray();
+        byFacing[facing.get2DDataValue()] = contacts;
+        return contacts;
     }
 
     public static void retypeRun(ServerLevel level, long key, Fluid fluid) {
@@ -215,7 +300,8 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
                     updated.setValue(
                             propertyFor(dir), pipe.connectsVisually(level, pos, dir, self));
         }
-        if (updated != state) level.setBlock(pos, updated, Block.UPDATE_ALL);
+        if (updated != state)
+            level.setBlock(pos, updated, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
     }
 
     @Override

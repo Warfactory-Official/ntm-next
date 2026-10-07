@@ -8,12 +8,17 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.ModItems;
+import com.hbm.items.special.BedrockOreSet;
+import com.hbm.lib.Library;
+import com.hbm.registration.OverridePoint;
 import com.hbm.world.NtmWorldgenFields;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,6 +39,9 @@ public class BedrockOreFeature extends Feature<BedrockOreConfig> {
         if (density > 0.75) return 2;
         return 1;
     }
+
+    public static final OverridePoint<Function<Level, @Nullable FluidStackNTM>> BORE_FLUID =
+            OverridePoint.of(Library.id("bedrock_bore_fluid"), level -> null);
 
     public static @Nullable FluidStackNTM getBoreFluid(int tier) {
         return switch (tier) {
@@ -71,7 +79,6 @@ public class BedrockOreFeature extends Feature<BedrockOreConfig> {
         RandomSource rand = ctx.random();
         int x = ctx.origin().getX();
         int z = ctx.origin().getZ();
-        int floor = level.getMinY();
 
         ItemStack resource;
         FluidStackNTM acid;
@@ -80,8 +87,12 @@ public class BedrockOreFeature extends Feature<BedrockOreConfig> {
 
         if (cfg.auto()) {
             BedrockOreField field = NtmWorldgenFields.get(level).bedrock();
-            tier = getTier(field.averageOreLevel(x, z));
-            acid = getBoreFluid(tier);
+            tier =
+                    getTier(
+                            field.averageOreLevel(
+                                    BedrockOreSet.OF.get().apply(level.getLevel()), x, z));
+            acid = BORE_FLUID.get().apply(level.getLevel());
+            if (acid == null) acid = getBoreFluid(tier);
             color = 0xD78A16;
             resource = new ItemStack(ModItems.BEDROCK_ORE_BASE);
         } else {
@@ -93,8 +104,33 @@ public class BedrockOreFeature extends Feature<BedrockOreConfig> {
             acid = null;
         }
 
+        generate(
+                level,
+                x,
+                z,
+                resource,
+                acid,
+                color,
+                tier,
+                cfg.depthRock(),
+                cur -> cfg.host().test(cur, rand),
+                rand);
+        return true;
+    }
+
+    public static void generate(
+            WorldGenLevel level,
+            int x,
+            int z,
+            ItemStack resource,
+            @Nullable FluidStackNTM acid,
+            int color,
+            int tier,
+            BlockState depth,
+            Predicate<BlockState> host,
+            RandomSource rand) {
+        int floor = level.getMinY();
         BlockState ore = ModBlocks.ORE_BEDROCK.get().defaultBlockState();
-        BlockState depth = cfg.depthRock();
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
         for (int ix = x - 1; ix <= x + 1; ix++) {
@@ -116,12 +152,9 @@ public class BedrockOreFeature extends Feature<BedrockOreConfig> {
                     pos.set(ix, floor + dy, iz);
                     BlockState cur = level.getBlockState(pos);
                     if (dy >= 3 && !cur.is(Blocks.BEDROCK)) continue;
-                    if (cur.is(BlockTags.BASE_STONE_OVERWORLD) || cur.is(Blocks.BEDROCK)) {
-                        level.setBlock(pos, depth, 2);
-                    }
+                    if (host.test(cur) || cur.is(Blocks.BEDROCK)) level.setBlock(pos, depth, 2);
                 }
             }
         }
-        return true;
     }
 }

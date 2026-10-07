@@ -9,6 +9,10 @@ import com.hbm.client.TorexClientFX;
 import com.hbm.entity.ModEntities;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import net.minecraft.SharedConstants;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -24,6 +28,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 
 public class EntityNukeTorex extends Entity {
 
@@ -134,16 +139,41 @@ public class EntityNukeTorex extends Entity {
     }
 
     private static final int CATCHUP_UPDATES = 200_000;
+    private static final List<Simulation> SIMULATIONS = new CopyOnWriteArrayList<>();
+    private @Nullable Simulation simulation;
+
+    public static void registerSimulation(Simulation simulation) {
+        SIMULATIONS.add(simulation);
+    }
+
+    private static final Map<Byte, Palette> PALETTES = new ConcurrentHashMap<>();
+
+    public static void registerPalette(int torexType, Palette palette) {
+        if (torexType == 0
+                || torexType == 1
+                || PALETTES.putIfAbsent((byte) torexType, palette) != null) {
+            throw new IllegalStateException("torex type " + torexType + " already has a palette");
+        }
+    }
 
     private void tickClient() {
         if (this.tickCount == 1) {
             this.setScale((float) this.getScaleVal());
             this.simAge = 0;
+            for (Simulation candidate : SIMULATIONS) {
+                if (candidate.claims(this)) {
+                    simulation = candidate;
+                    break;
+                }
+            }
         }
         int target = age();
         for (int spent = 0; simAge < target && spent < CATCHUP_UPDATES; ) {
             simAge++;
-            spent += simulateTick(simAge, simAge == target);
+            spent +=
+                    simulation != null
+                            ? simulation.tick(this, simAge, simAge == target)
+                            : simulateTick(simAge, simAge == target);
         }
     }
 
@@ -348,11 +378,38 @@ public class EntityNukeTorex extends Entity {
         return 1.0F;
     }
 
-    public enum TorexType {
-        STANDARD,
-        RING,
-        CONDENSATION,
-        SHOCK
+    public static final class TorexType {
+        public static final TorexType STANDARD = new TorexType(null);
+        public static final TorexType RING = new TorexType(null);
+        public static final TorexType CONDENSATION = new TorexType(null);
+        public static final TorexType SHOCK = new TorexType(null);
+
+        private final @Nullable Behavior behavior;
+
+        private TorexType(@Nullable Behavior behavior) {
+            this.behavior = behavior;
+        }
+
+        public static TorexType of(Behavior behavior) {
+            return new TorexType(Objects.requireNonNull(behavior));
+        }
+    }
+
+    public interface Simulation {
+        boolean claims(EntityNukeTorex torex);
+
+        int tick(EntityNukeTorex torex, int age, boolean live);
+    }
+
+    @FunctionalInterface
+    public interface Palette {
+        void colour(Cloudlet cloud, double col);
+    }
+
+    public interface Behavior {
+        void move(Cloudlet cloud);
+
+        void colour(Cloudlet cloud);
     }
 
     public class Cloudlet {
@@ -407,7 +464,7 @@ public class EntityNukeTorex extends Entity {
             this.updateColor();
         }
 
-        private void update() {
+        public void update() {
             age++;
             if (age > cloudletLife) this.isDead = true;
 
@@ -421,42 +478,31 @@ public class EntityNukeTorex extends Entity {
                     EntityNukeTorex.this.getX()
                             + Math.sqrt(simDeltaX * simDeltaX + simDeltaZ * simDeltaZ);
 
-            switch (this.type) {
-                case STANDARD -> {
-                    getConvectionMotion(simPosX);
-                    double convX = this.computedMotionX;
-                    double convY = this.computedMotionY;
-                    double convZ = this.computedMotionZ;
-                    getLiftMotion(simPosX);
-                    double factor =
-                            Mth.clamp(
-                                    (this.posY - EntityNukeTorex.this.getY())
-                                            / EntityNukeTorex.this.coreHeight,
-                                    0,
-                                    1);
-                    double inverseFactor = 1D - factor;
-                    this.motionX = convX * factor + this.computedMotionX * inverseFactor;
-                    this.motionY = convY * factor + this.computedMotionY * inverseFactor;
-                    this.motionZ = convZ * factor + this.computedMotionZ * inverseFactor;
-                }
-                case RING -> {
-                    getRingMotion(simPosX);
-                    this.motionX = this.computedMotionX;
-                    this.motionY = this.computedMotionY;
-                    this.motionZ = this.computedMotionZ;
-                }
-                case CONDENSATION -> {
-                    getCondensationMotion();
-                    this.motionX = this.computedMotionX;
-                    this.motionY = this.computedMotionY;
-                    this.motionZ = this.computedMotionZ;
-                }
-                case SHOCK -> {
-                    getShockwaveMotion();
-                    this.motionX = this.computedMotionX;
-                    this.motionY = this.computedMotionY;
-                    this.motionZ = this.computedMotionZ;
-                }
+            if (this.type.behavior != null) {
+                this.type.behavior.move(this);
+            } else if (this.type == TorexType.STANDARD) {
+                getConvectionMotion(simPosX);
+                double convX = this.computedMotionX;
+                double convY = this.computedMotionY;
+                double convZ = this.computedMotionZ;
+                getLiftMotion(simPosX);
+                double factor =
+                        Mth.clamp(
+                                (this.posY - EntityNukeTorex.this.getY())
+                                        / EntityNukeTorex.this.coreHeight,
+                                0,
+                                1);
+                double inverseFactor = 1D - factor;
+                this.motionX = convX * factor + this.computedMotionX * inverseFactor;
+                this.motionY = convY * factor + this.computedMotionY * inverseFactor;
+                this.motionZ = convZ * factor + this.computedMotionZ * inverseFactor;
+            } else {
+                if (this.type == TorexType.RING) getRingMotion(simPosX);
+                else if (this.type == TorexType.CONDENSATION) getCondensationMotion();
+                else getShockwaveMotion();
+                this.motionX = this.computedMotionX;
+                this.motionY = this.computedMotionY;
+                this.motionZ = this.computedMotionZ;
             }
 
             double mult = this.motionMult * getSimulationSpeed();
@@ -579,6 +625,10 @@ public class EntityNukeTorex extends Entity {
             this.prevColorR = this.colorR;
             this.prevColorG = this.colorG;
             this.prevColorB = this.colorB;
+            if (this.type.behavior != null) {
+                this.type.behavior.colour(this);
+                return;
+            }
 
             double exX = EntityNukeTorex.this.getX();
             double exY = EntityNukeTorex.this.getY() + EntityNukeTorex.this.coreHeight;
@@ -595,8 +645,11 @@ public class EntityNukeTorex extends Entity {
 
             double col = 2D / Math.max(distSq, 1);
             byte type = EntityNukeTorex.this.getTorexType();
+            Palette palette = PALETTES.get(type);
 
-            if (type == 0) {
+            if (palette != null) {
+                palette.colour(this, col);
+            } else if (type == 0) {
                 this.colorR = nr2 + (nr1 - nr2) * col;
                 this.colorG = ng2 + (ng1 - ng2) * col;
                 this.colorB = nb2 + (nb1 - nb2) * col;
@@ -627,6 +680,10 @@ public class EntityNukeTorex extends Entity {
         public Cloudlet setMotion(double mult) {
             this.motionMult = mult;
             return this;
+        }
+
+        public EntityNukeTorex torex() {
+            return EntityNukeTorex.this;
         }
     }
 }

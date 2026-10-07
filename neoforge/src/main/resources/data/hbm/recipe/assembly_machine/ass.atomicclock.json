@@ -21,7 +21,7 @@
     }
   ],
   "name": "ass.atomicClock",
-  "order": 32,
+  "order": 8192,
   "output_items": [
     "hbm:circuit_atomic_clock"
   ],

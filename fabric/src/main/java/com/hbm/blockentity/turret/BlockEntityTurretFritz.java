@@ -24,6 +24,7 @@ import com.hbm.sound.ModSounds;
 import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -127,6 +128,7 @@ public class BlockEntityTurretFritz extends BlockEntityTurretBaseNT
 
         FT_Flammable trait = NTMFluidProperties.getTrait(type, FT_Flammable.class);
         tank.setFill(tank.getFill() - 2);
+        markChanged();
 
         Vec3 tip = barrelTip();
         float damage = Math.min((float) (trait.getHeatEnergy() / 500_000F), 20F);
@@ -156,8 +158,9 @@ public class BlockEntityTurretFritz extends BlockEntityTurretBaseNT
     public void tickServer() {
         super.tickServer();
 
-        tank.setType(9, 9, inventory);
-        for (int i = 1; i < 9; i++) tank.loadTank(i, 9, inventory);
+        boolean changed = tank.setType(9, 9, inventory);
+        for (int i = 1; i < 9; i++) changed |= tank.loadTank(i, 9, inventory);
+        if (changed) markChanged();
 
         for (int i = SLOT_AMMO_FIRST; i <= SLOT_AMMO_LAST; i++) {
             ItemStack stack = getItem(i);
@@ -188,6 +191,16 @@ public class BlockEntityTurretFritz extends BlockEntityTurretBaseNT
     }
 
     @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return tank.joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        visitor.accept(tank);
+    }
+
+    @Override
     public long getDemand(Fluid type, int pressure) {
         if (pressure != 0 || !tank.accepts(type)) return 0;
         return tank.getMaxFill() - tank.getFill();
@@ -198,6 +211,7 @@ public class BlockEntityTurretFritz extends BlockEntityTurretBaseNT
         if (pressure != 0 || !tank.accepts(type)) return amount;
         long headroom = tank.getMaxFill() - tank.getFill();
         long accepted = tank.receive(type, (int) Math.min(headroom, amount));
+        if (accepted != 0) markChanged();
         return amount - accepted;
     }
 

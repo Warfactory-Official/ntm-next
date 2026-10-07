@@ -23,6 +23,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -197,7 +198,11 @@ public class BlockEntityMachineShredder extends BlockEntityMachineBase
             ItemStack input = inventory.get(inputSlot);
             if (input.isEmpty() || !hasSpace(input)) continue;
 
-            ItemStack result = ShredderRecipes.getShredderResult(input);
+            ItemStack result = ShredderRecipes.shred(input);
+            if (result.isEmpty()) {
+                input.shrink(1);
+                continue;
+            }
             boolean merged = false;
 
             for (int outputSlot = SLOT_OUTPUT_START; outputSlot < SLOT_OUTPUT_END; outputSlot++) {
@@ -233,10 +238,18 @@ public class BlockEntityMachineShredder extends BlockEntityMachineBase
 
         for (int slot = SLOT_INPUT_START; slot < SLOT_INPUT_END; slot++) {
             ItemStack input = inventory.get(slot);
+            if (input.getItem() instanceof Wrecker wrecker) {
+                wrecker.wreck(level, worldPosition);
+                return false;
+            }
             if (!input.isEmpty() && hasSpace(input)) return true;
         }
 
         return false;
+    }
+
+    public interface Wrecker {
+        void wreck(Level level, BlockPos pos);
     }
 
     public boolean hasSpace(ItemStack stack) {

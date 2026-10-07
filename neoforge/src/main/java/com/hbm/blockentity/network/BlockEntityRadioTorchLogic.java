@@ -35,6 +35,7 @@ public final class BlockEntityRadioTorchLogic extends BlockEntityRadioTorch {
                             || received.timeStamp > lastUpdate - 1L && received.timeStamp != -1L)) {
                 String message = String.valueOf(received.signal);
                 lastUpdate = level.getGameTime();
+                markChanged();
                 if (polling && received.timeStamp < lastUpdate - 1L) message = "0";
 
                 int nextState = 0;

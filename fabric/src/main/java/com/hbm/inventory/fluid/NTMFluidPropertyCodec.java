@@ -41,6 +41,13 @@ public final class NTMFluidPropertyCodec {
                                                             + name
                                                             + "'; expected one of "
                                                             + FluidTraitCodecs.phases().keySet()));
+    private static final Codec<List<String>> PHASES =
+            DataCodecs.listOrSingle(PHASE)
+                    .validate(
+                            names ->
+                                    names.isEmpty()
+                                            ? DataResult.error(() -> "a fluid declares no phase")
+                                            : DataResult.success(names));
     private static final Codec<Map<String, FluidTrait>> TRAITS =
             Codec.dispatchedMap(
                     Codec.STRING,
@@ -72,8 +79,8 @@ public final class NTMFluidPropertyCodec {
             RecordCodecBuilder.create(
                     i ->
                             i.group(
-                                            PHASE.fieldOf("type")
-                                                    .forGetter(NTMFluidPropertyCodec::phaseName),
+                                            PHASES.fieldOf("type")
+                                                    .forGetter(NTMFluidPropertyCodec::phaseNames),
                                             FluidTraitCodecs.COLOR
                                                     .fieldOf("color")
                                                     .forGetter(NTMFluidProperty::color),
@@ -109,15 +116,19 @@ public final class NTMFluidPropertyCodec {
                                         () -> "'" + name + "' is not a " + expected + "; " + hint));
     }
 
-    private static String phaseName(NTMFluidProperty property) {
+    private static List<String> phaseNames(NTMFluidProperty property) {
+        List<String> out = new ArrayList<>();
         for (FluidTrait trait : property.traits()) {
             String name = FluidTraitCodecs.nameOf(trait);
-            if (name != null && FluidTraitCodecs.phases().containsKey(name)) return name;
+            if (name != null && FluidTraitCodecs.phases().containsKey(name)) out.add(name);
         }
-        throw new IllegalStateException(
-                "a fluid carries no phase trait, so it has no type to ship; every "
-                        + "fluid must declare exactly one of "
-                        + FluidTraitCodecs.phases().keySet());
+        if (out.isEmpty()) {
+            throw new IllegalStateException(
+                    "a fluid carries no phase trait, so it has no type to ship; every "
+                            + "fluid must declare at least one of "
+                            + FluidTraitCodecs.phases().keySet());
+        }
+        return out;
     }
 
     private static List<String> flagNames(NTMFluidProperty property) {
@@ -141,7 +152,7 @@ public final class NTMFluidPropertyCodec {
     }
 
     private static NTMFluidProperty assemble(
-            String phase,
+            List<String> phases,
             int color,
             EnumSymbol symbol,
             int temperature,
@@ -151,7 +162,7 @@ public final class NTMFluidPropertyCodec {
             Map<String, FluidTrait> containers,
             List<TagKey<Fluid>> shares) {
         List<FluidTrait> all = new ArrayList<>();
-        all.add(FluidTraitCodecs.phases().get(phase));
+        for (String phase : phases) all.add(FluidTraitCodecs.phases().get(phase));
         for (String flag : flags) {
             FluidTrait trait = FluidTraitCodecs.flags().get(flag);
             if (trait == null) {

@@ -9,7 +9,7 @@
       "ingredient": "#c:ingots/workers_alloy"
     }
   ],
-  "order": 10,
+  "order": 2560,
   "output_items": [
     "hbm:anvil_desh"
   ]

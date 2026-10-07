@@ -4,7 +4,6 @@
 package com.hbm.capability;
 
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.capability.NtmContracts.Contract;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.FullChunkStatus;
 import net.minecraft.server.level.ServerLevel;
@@ -17,26 +16,30 @@ import org.jspecify.annotations.Nullable;
 
 public final class ContractLink<T> {
 
-    private final Contract<T> contract;
+    public interface Resolver<T> {
+        @Nullable T at(Level level, BlockPos pos);
+    }
+
+    private final Resolver<T> resolver;
     private @Nullable T resolved;
     private @Nullable BlockEntity residency;
     private @Nullable LevelChunk resolvedChunk;
     private boolean known;
     private boolean connected;
 
-    public ContractLink(Contract<T> contract) {
-        this.contract = contract;
+    public ContractLink(Resolver<T> resolver) {
+        this.resolver = resolver;
     }
 
-    public void refresh(Level level, BlockPos pos) {
+    public boolean refresh(Level level, BlockPos pos) {
         if (!level.isLoaded(pos)) {
             resolved = null;
             residency = null;
             resolvedChunk = null;
             known = false;
-            return;
+            return false;
         }
-        T found = contract.at(level, pos);
+        T found = resolver.at(level, pos);
         residency = found instanceof BlockEntity be ? be : null;
         resolvedChunk = null;
         if (found != null && level instanceof ServerLevel server) {
@@ -50,8 +53,10 @@ public final class ContractLink<T> {
             }
         }
         resolved = found;
+        boolean was = connected;
         connected = found != null;
         known = !level.isClientSide() || found != null;
+        return connected != was;
     }
 
     public @Nullable T get(Level level, BlockPos pos) {

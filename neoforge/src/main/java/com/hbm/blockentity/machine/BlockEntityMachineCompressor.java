@@ -26,6 +26,7 @@ import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import com.hbm.sound.ModSounds;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -117,7 +118,7 @@ public class BlockEntityMachineCompressor extends BlockEntityMachineBase
     @Override
     public void tickServer() {
         power += ItemEnergyTransfer.extract(this, SLOT_BATTERY, maxPower - power, false);
-        tanks[0].setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory);
+        if (tanks[0].setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory)) markChanged();
         setupTanks();
 
         upgradeManager.scan(this, SLOT_UPGRADE_START, SLOT_UPGRADE_END);
@@ -143,6 +144,7 @@ public class BlockEntityMachineCompressor extends BlockEntityMachineBase
             progress++;
             isOn = true;
             power -= powerRequirement;
+            markChanged();
 
             if (progress >= processTime) {
                 progress = 0;
@@ -150,6 +152,7 @@ public class BlockEntityMachineCompressor extends BlockEntityMachineBase
                 setChanged();
             }
         } else {
+            if (progress != 0) markChanged();
             progress = 0;
             isOn = false;
         }
@@ -293,6 +296,16 @@ public class BlockEntityMachineCompressor extends BlockEntityMachineBase
     public int[] getReceivingPressureRange(Fluid type) {
         int p = tanks[0].getPressure();
         return new int[] {p, p};
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return tanks[0].joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
     }
 
     @Override

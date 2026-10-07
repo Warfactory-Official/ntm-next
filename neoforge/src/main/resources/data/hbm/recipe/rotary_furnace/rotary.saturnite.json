@@ -16,7 +16,7 @@
       "ingredient": "#c:dusts/copper"
     }
   ],
-  "order": 8,
+  "order": 2048,
   "output_material": {
     "amount": 144,
     "material": "saturnite"

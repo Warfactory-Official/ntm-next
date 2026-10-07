@@ -21,6 +21,7 @@ import com.hbm.particle.ParticleDebris;
 import com.hbm.particle.ParticleExSmoke;
 import com.hbm.particle.ParticleMukeWave;
 import com.hbm.particle.ParticleRocketFlame;
+import com.hbm.particle.RocketFlameColor;
 import com.hbm.sound.ModSounds;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.client.Minecraft;
@@ -547,12 +548,129 @@ public final class ClientEffects {
             double mY,
             double mZ,
             int maxAge) {
-        if (RocketFlameVisuals.trySpawnInstanced(level, x, y, z, scale, mX, mY, mZ, maxAge)) return;
+        spawnRocketFlame(level, x, y, z, scale, mX, mY, mZ, maxAge, RocketFlameColor.FLAME);
+    }
+
+    public static void spawnRocketFlame(
+            Level level,
+            double x,
+            double y,
+            double z,
+            float scale,
+            double mX,
+            double mY,
+            double mZ,
+            int maxAge,
+            float tintR,
+            float tintG,
+            float tintB) {
+        spawnRocketFlame(
+                level,
+                x,
+                y,
+                z,
+                scale,
+                mX,
+                mY,
+                mZ,
+                maxAge,
+                RocketFlameColor.tinted(tintR, tintG, tintB));
+    }
+
+    public static void spawnRocketFlame(
+            Level level,
+            double x,
+            double y,
+            double z,
+            float scale,
+            double mX,
+            double mY,
+            double mZ,
+            int maxAge,
+            RocketFlameColor color) {
+        if (RocketFlameVisuals.trySpawnInstanced(level, x, y, z, scale, mX, mY, mZ, maxAge, color))
+            return;
         if (!(level instanceof ClientLevel client)) return;
         ParticleRocketFlame fx =
-                new ParticleRocketFlame(client, x, y, z).setScale(scale).setMaxAge(maxAge).noClip();
+                new ParticleRocketFlame(client, x, y, z)
+                        .setScale(scale)
+                        .setMaxAge(maxAge)
+                        .noClip()
+                        .color(color);
         fx.setParticleSpeed(mX, mY, mZ);
         Minecraft.getInstance().particleEngine.add(fx);
+    }
+
+    public static void spawnRocketFlameInAir(
+            Level level,
+            double x,
+            double y,
+            double z,
+            float scale,
+            double mX,
+            double mY,
+            double mZ,
+            int maxAge,
+            double pressure) {
+        spawnRocketFlameInAir(
+                level, x, y, z, scale, mX, mY, mZ, maxAge, pressure, RocketFlameColor.FLAME);
+    }
+
+    public static void spawnRocketFlameInAir(
+            Level level,
+            double x,
+            double y,
+            double z,
+            float scale,
+            double mX,
+            double mY,
+            double mZ,
+            int maxAge,
+            double pressure,
+            float tintR,
+            float tintG,
+            float tintB) {
+        spawnRocketFlameInAir(
+                level,
+                x,
+                y,
+                z,
+                scale,
+                mX,
+                mY,
+                mZ,
+                maxAge,
+                pressure,
+                RocketFlameColor.tinted(tintR, tintG, tintB));
+    }
+
+    public static void spawnRocketFlameInAir(
+            Level level,
+            double x,
+            double y,
+            double z,
+            float scale,
+            double mX,
+            double mY,
+            double mZ,
+            int maxAge,
+            double pressure,
+            RocketFlameColor color) {
+        if (pressure < 0.08D) {
+            double factor = (0.08D - pressure) * 20;
+            RandomSource rand = level.getRandom();
+            mX += (rand.nextDouble() - 0.5D) * factor;
+            mY += (rand.nextDouble() - 0.5D) * factor;
+            mZ += (rand.nextDouble() - 0.5D) * factor;
+        }
+
+        if (pressure < 0.05D) {
+            maxAge /= 4;
+        } else if (pressure < 0.2D) {
+            maxAge /= 2;
+        }
+
+        spawnRocketFlame(level, x, y, z, scale, mX, mY, mZ, maxAge, color);
     }
 
     public static void spawnSmokeShockRand(
@@ -566,6 +684,20 @@ public final class ClientEffects {
             double r = rand.nextDouble();
             ParticleExSmoke fx = new ParticleExSmoke(client, x, y, z);
             fx.setParticleSpeed(Math.cos(angle) * strength * r, 0, Math.sin(angle) * strength * r);
+            Minecraft.getInstance().particleEngine.add(fx);
+            angle += step;
+        }
+    }
+
+    public static void spawnSmokeShock(
+            Level level, double x, double y, double z, int count, double strength) {
+        if (!(level instanceof ClientLevel client)) return;
+        RandomSource rand = client.getRandom();
+        float angle = rand.nextInt(360) * Mth.DEG_TO_RAD;
+        float step = Mth.TWO_PI / count;
+        for (int i = 0; i < count; i++) {
+            ParticleExSmoke fx = new ParticleExSmoke(client, x, y, z);
+            fx.setParticleSpeed(Math.cos(angle) * strength, 0, Math.sin(angle) * strength);
             Minecraft.getInstance().particleEngine.add(fx);
             angle += step;
         }

@@ -6,7 +6,7 @@
       "ingredient": "#c:ingots/lithium"
     }
   ],
-  "order": 1,
+  "order": 256,
   "output_fluids": [
     {
       "type": "hbm:tritium",

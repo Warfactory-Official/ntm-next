@@ -17,13 +17,10 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.state.level.ParticleGroupRenderState;
 import net.minecraft.util.ARGB;
-import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 public class RocketFlameParticleGroup extends ParticleGroup<ParticleRocketFlame> {
-
-    private static final int LIGHT = LightCoordsUtil.pack(15, 0);
 
     public RocketFlameParticleGroup(ParticleEngine engine) {
         super(engine);
@@ -50,7 +47,8 @@ public class RocketFlameParticleGroup extends ParticleGroup<ParticleRocketFlame>
                             flame.dark(),
                             flame.spread(),
                             flame.growth(),
-                            flame.baseScale()));
+                            flame.baseScale(),
+                            flame.color()));
         }
 
         return new State(out);
@@ -65,7 +63,8 @@ public class RocketFlameParticleGroup extends ParticleGroup<ParticleRocketFlame>
             float dark,
             float spread,
             float growth,
-            float baseScale) {}
+            float baseScale,
+            RocketFlameColor color) {}
 
     private record State(List<Instance> instances) implements ParticleGroupRenderState {
 
@@ -85,9 +84,10 @@ public class RocketFlameParticleGroup extends ParticleGroup<ParticleRocketFlame>
                     int color =
                             ARGB.color(
                                     channel(in.alpha),
-                                    channel(in.dark + add),
-                                    channel(0.6F * in.dark + add),
-                                    channel(add));
+                                    channel(in.color.red(in.dark, add)),
+                                    channel(in.color.green(in.dark, add)),
+                                    channel(in.color.blue(in.dark, add)));
+                    int light = in.color.light();
 
                     pose.pushPose();
                     pose.translate(in.relX + oX, in.relY + oY, in.relZ + oZ);
@@ -98,13 +98,13 @@ public class RocketFlameParticleGroup extends ParticleGroup<ParticleRocketFlame>
                             WeaponRenderTypes.ROCKET_FLAME,
                             (p, tess) -> {
                                 Vertices.emit(
-                                        tess, p, scale, -scale, 0, color, 1, 1, LIGHT, 0F, 1F, 0F);
+                                        tess, p, scale, -scale, 0, color, 1, 1, light, 0F, 1F, 0F);
                                 Vertices.emit(
-                                        tess, p, scale, scale, 0, color, 1, 0, LIGHT, 0F, 1F, 0F);
+                                        tess, p, scale, scale, 0, color, 1, 0, light, 0F, 1F, 0F);
                                 Vertices.emit(
-                                        tess, p, -scale, scale, 0, color, 0, 0, LIGHT, 0F, 1F, 0F);
+                                        tess, p, -scale, scale, 0, color, 0, 0, light, 0F, 1F, 0F);
                                 Vertices.emit(
-                                        tess, p, -scale, -scale, 0, color, 0, 1, LIGHT, 0F, 1F, 0F);
+                                        tess, p, -scale, -scale, 0, color, 0, 1, light, 0F, 1F, 0F);
                             });
                     pose.popPose();
                 }

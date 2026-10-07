@@ -7,7 +7,10 @@ import com.hbm.client.render.ArmorHeadRenderer;
 import com.hbm.client.render.ArmorSocketRenderer;
 import com.hbm.client.render.ArmorWorldRenderer;
 import com.hbm.items.armor.ModArmorItem;
+import com.hbm.render.util.InnerArmorModel;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -21,6 +24,7 @@ import net.minecraft.world.item.equipment.Equippable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HumanoidArmorLayer.class)
@@ -64,5 +68,32 @@ public abstract class MixinHumanoidArmorLayer {
                 || !ArmorWorldRenderer.hidesSkin(stack)) return;
         ArmorWorldRenderer.submit(pose, collector, light, model, state, slot, armor.suit(), stack);
         ci.cancel();
+    }
+
+    @ModifyArg(
+            method = "renderArmorPiece",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lnet/minecraft/client/renderer/entity/"
+                                            + "layers/HumanoidArmorLayer;getArmorModel(Lnet/minecraft/client/renderer/entity/state/HumanoidRenderState;"
+                                            + "Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/client/model/HumanoidModel;"),
+            index = 1)
+    private EquipmentSlot hbm$innerModel(
+            EquipmentSlot slot, @Local(argsOnly = true) ItemStack stack) {
+        return InnerArmorModel.POINT.get().test(stack) ? EquipmentSlot.LEGS : slot;
+    }
+
+    @ModifyExpressionValue(
+            method = "renderArmorPiece",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lnet/minecraft/client/"
+                                            + "renderer/entity/layers/HumanoidArmorLayer;usesInnerModel(Lnet/minecraft/world/entity/EquipmentSlot;)Z"))
+    private boolean hbm$innerLayer(boolean inner, @Local(argsOnly = true) ItemStack stack) {
+        return inner || InnerArmorModel.POINT.get().test(stack);
     }
 }

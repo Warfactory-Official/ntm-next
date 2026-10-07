@@ -6,7 +6,7 @@
       "ingredient": "#c:ores/lapis"
     }
   ],
-  "order": 11,
+  "order": 4096,
   "output_items": [
     {
       "count": 6,

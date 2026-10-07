@@ -145,6 +145,8 @@ public abstract class BlockEntityTurretBaseNT extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
+        long prevPower = power;
+        int prevStattrak = stattrak;
         aligned = false;
 
         if (target != null && !target.isAlive()) {
@@ -184,6 +186,7 @@ public abstract class BlockEntityTurretBaseNT extends BlockEntityMachineBase
         if (aligned) updateFiringTick();
 
         power += ItemEnergyTransfer.extract(this, SLOT_BATTERY, getMaxPower() - power, false);
+        if (power != prevPower || stattrak != prevStattrak) markChanged();
 
         if (level instanceof ServerLevel server) refreshConnectors(server);
 
@@ -508,7 +511,10 @@ public abstract class BlockEntityTurretBaseNT extends BlockEntityMachineBase
 
     public void addName(String name) {
         ItemStack chip = getItem(SLOT_CHIP);
-        if (chip.is(ModItems.TURRET_CHIP.get())) ItemTurretBiometry.addName(chip, name);
+        if (chip.is(ModItems.TURRET_CHIP.get())) {
+            ItemTurretBiometry.addName(chip, name);
+            markChanged();
+        }
     }
 
     public void removeName(int index) {
@@ -522,6 +528,7 @@ public abstract class BlockEntityTurretBaseNT extends BlockEntityMachineBase
         ItemTurretBiometry.clearNames(chip);
         if (index >= 0 && index < names.size()) names.remove(index);
         for (String name : names) ItemTurretBiometry.addName(chip, name);
+        markChanged();
     }
 
     @Override
@@ -532,6 +539,7 @@ public abstract class BlockEntityTurretBaseNT extends BlockEntityMachineBase
             addName(data.getStringOr("name", ""));
         } else if (data.contains("toggle")) {
             handleButtonPacket(data.getIntOr("toggle", -1));
+            markChanged();
         }
     }
 

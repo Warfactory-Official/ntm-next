@@ -18,7 +18,7 @@
       "ingredient": "hbm:filter_coal"
     }
   ],
-  "order": 90,
+  "order": 23040,
   "output_items": [
     "hbm:chimney_industrial"
   ],

@@ -31,6 +31,7 @@ public class BlockEntityFoundryTank extends BlockEntityFoundryBase {
     public void tickServer() {
         if (this.type == null && this.amount != 0) {
             this.amount = 0;
+            markChanged();
         }
 
         nextUpdate--;
@@ -48,6 +49,8 @@ public class BlockEntityFoundryTank extends BlockEntityFoundryBase {
                     int toFill = Math.min(this.amount, tank.getCapacity() - tank.amount);
                     this.amount -= toFill;
                     tank.amount += toFill;
+                    markChanged();
+                    tank.markChanged();
                     hasOp = true;
                 }
             }
@@ -85,6 +88,7 @@ public class BlockEntityFoundryTank extends BlockEntityFoundryBase {
                             } else {
                                 this.amount = left.amount;
                             }
+                            markChanged();
                             hasOp = true;
                             break;
                         }
@@ -98,7 +102,9 @@ public class BlockEntityFoundryTank extends BlockEntityFoundryBase {
 
                     if (b instanceof BlockEntityFoundryTank acc) {
                         if (acc.type == null || acc.type == this.type || acc.amount == 0) {
+                            if (acc.type != this.type) acc.markChanged();
                             acc.type = this.type;
+                            int before = this.amount;
                             if (level.getRandom().nextInt(5) == 0) {
                                 int buf = this.amount;
                                 this.amount = acc.amount;
@@ -110,6 +116,10 @@ public class BlockEntityFoundryTank extends BlockEntityFoundryBase {
                                     this.amount -= diff;
                                     acc.amount += diff;
                                 }
+                            }
+                            if (this.amount != before) {
+                                markChanged();
+                                acc.markChanged();
                             }
                         }
                     }

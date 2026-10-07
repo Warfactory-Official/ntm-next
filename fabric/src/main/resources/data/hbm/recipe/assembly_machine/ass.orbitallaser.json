@@ -26,7 +26,7 @@
       "ingredient": "hbm:circuit_controller_advanced"
     }
   ],
-  "order": 424,
+  "order": 108544,
   "output_items": [
     "hbm:satellite_precision_laser"
   ],

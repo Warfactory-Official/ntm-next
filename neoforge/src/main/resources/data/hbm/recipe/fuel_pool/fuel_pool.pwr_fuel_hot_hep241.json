@@ -5,7 +5,7 @@
       "ingredient": "hbm:pwr_fuel_hot_hep241"
     }
   ],
-  "order": 24,
+  "order": 6144,
   "output_items": [
     "hbm:pwr_fuel_depleted_hep241"
   ]

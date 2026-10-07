@@ -32,7 +32,7 @@
       "ingredient": "hbm:circuit_analog"
     }
   ],
-  "order": 87,
+  "order": 22272,
   "output_items": [
     "hbm:machine_chemical_plant"
   ],

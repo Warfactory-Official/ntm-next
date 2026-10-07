@@ -3,7 +3,9 @@
 
 package com.hbm.items.machine;
 
+import com.hbm.blockentity.AudioLoop;
 import com.hbm.blockentity.BlockEntityMachineBase;
+import com.hbm.blockentity.machine.BlockEntityMachineLPW2;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.sound.ModSounds;
 import net.minecraft.core.BlockPos;
@@ -28,6 +30,8 @@ public class ItemMuffler extends Item {
         if (target == null) target = ctx.getClickedPos();
 
         BlockEntity be = level.getBlockEntity(target);
+        if (be instanceof BlockEntityMachineLPW2 && !(be instanceof AudioLoop))
+            return InteractionResult.PASS;
         if (!(be instanceof BlockEntityMachineBase machine) || machine.isMuffled())
             return InteractionResult.PASS;
 

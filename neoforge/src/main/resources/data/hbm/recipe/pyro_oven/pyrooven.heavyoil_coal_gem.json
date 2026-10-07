@@ -12,7 +12,7 @@
       "ingredient": "#c:gems/coal"
     }
   ],
-  "order": 63,
+  "order": 16128,
   "output_fluids": [
     {
       "type": "hbm:heavyoil",

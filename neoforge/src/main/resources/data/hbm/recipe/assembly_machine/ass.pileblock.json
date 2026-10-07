@@ -20,7 +20,7 @@
       "ingredient": "#c:bolts/steel"
     }
   ],
-  "order": 225,
+  "order": 57600,
   "output_items": [
     "hbm:pile_brick"
   ],

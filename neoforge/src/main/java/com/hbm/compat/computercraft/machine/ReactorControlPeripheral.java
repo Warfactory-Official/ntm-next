@@ -67,6 +67,7 @@ public final class ReactorControlPeripheral extends SnapshotPeripheral<BlockEnti
         machine.heatLower = Mth.clamp(minHeat, 0, 9999);
         machine.levelUpper = Mth.clamp(maxLevel / 100.0, 0, 1);
         machine.levelLower = Mth.clamp(minLevel / 100.0, 0, 1);
+        machine.markChanged();
         return new Object[] {};
     }
 

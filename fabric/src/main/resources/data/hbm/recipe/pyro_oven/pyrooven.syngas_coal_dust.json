@@ -12,7 +12,7 @@
       "ingredient": "#c:dusts/coal"
     }
   ],
-  "order": 59,
+  "order": 15104,
   "output_fluids": [
     {
       "type": "hbm:syngas",

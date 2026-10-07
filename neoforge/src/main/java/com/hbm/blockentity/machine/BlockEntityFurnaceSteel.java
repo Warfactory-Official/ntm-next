@@ -15,6 +15,7 @@ import com.hbm.handler.pollution.PollutionType;
 import com.hbm.inventory.OreDictManager;
 import com.hbm.inventory.container.MenuFurnaceSteel;
 import com.hbm.inventory.recipes.ingredient.RecipeInputState;
+import com.hbm.inventory.recipes.loader.Outputs;
 import com.hbm.packet.SyncArrays;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
@@ -98,6 +99,7 @@ public class BlockEntityFurnaceSteel extends BlockEntitySmeltingFurnace
             if (in.isEmpty()
                     || lastItems[i].isEmpty()
                     || !ItemStack.isSameItemSameComponents(in, lastItems[i])) {
+                if (progress[i] != 0 || bonus[i] != 0) markChanged();
                 progress[i] = 0;
                 bonus[i] = 0;
             }
@@ -105,6 +107,7 @@ public class BlockEntityFurnaceSteel extends BlockEntitySmeltingFurnace
             if (canSmelt(i)) {
                 progress[i] += burn;
                 heat -= burn;
+                if (burn != 0) markChanged();
                 wasOn = true;
                 if (TickPhase.every(this, SharedConstants.TICKS_PER_SECOND)) {
                     PollutionHandler.incrementPollution(
@@ -115,12 +118,14 @@ public class BlockEntityFurnaceSteel extends BlockEntitySmeltingFurnace
                 }
             }
 
+            if (!ItemStack.matches(lastItems[i], in)) markChanged();
             lastItems[i] = in.copy();
 
             if (progress[i] >= PROCESS_TIME) {
                 RecipeHolder<SmeltingRecipe> recipe = smeltRecipe(inventory.get(i));
                 if (recipe == null) {
                     progress[i] = 0;
+                    markChanged();
                     continue;
                 }
                 ItemStack result = recipe.value().assemble(new SingleRecipeInput(inventory.get(i)));
@@ -197,8 +202,12 @@ public class BlockEntityFurnaceSteel extends BlockEntitySmeltingFurnace
     }
 
     private void addBonus(ItemStack stack, int index) {
-        if (stack.is(C_ORES) || stack.is(C_RAW_MATERIALS)) {
+        if (stack.is(C_ORES)) {
             bonus[index] += 25;
+            return;
+        }
+        if (stack.is(C_RAW_MATERIALS)) {
+            if (level.getRandom().nextFloat() < Outputs.RAW_SHARE) bonus[index] += 25;
             return;
         }
         if (stack.is(ItemTags.LOGS)) {
@@ -223,10 +232,12 @@ public class BlockEntityFurnaceSteel extends BlockEntitySmeltingFurnace
                 source.useUpHeat(level, heatPos, diff);
                 heat += diff;
                 if (heat > MAX_HEAT) heat = MAX_HEAT;
+                markChanged();
                 return;
             }
         }
 
+        if (heat > 0) markChanged();
         heat = Math.max(heat - Math.max(heat / 1000, 1), 0);
     }
 

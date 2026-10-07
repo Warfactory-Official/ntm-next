@@ -13,7 +13,7 @@
       "ingredient": "#hbm:plates_cast/tungsten"
     }
   ],
-  "order": 15,
+  "order": 3840,
   "output_items": [
     "hbm:plate_welded_tungsten"
   ],

@@ -8,6 +8,7 @@ import com.hbm.capability.NtmContracts;
 import com.hbm.config.FabricHbmConfig;
 import com.hbm.interfaces.IBomb.BombReturnCode;
 import com.hbm.interfaces.IBomb;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -60,8 +61,8 @@ public class ItemLaserDetonator extends Item {
         IBomb bomb = aimed == null ? null : NtmContracts.BOMB.at(level, aimed);
         if (bomb != null) {
             if (!level.isClientSide()) {
-                level.playSound(
-                        null,
+                EntitySounds.play(
+                        player,
                         player.getX(),
                         player.getY(),
                         player.getZ(),
@@ -88,8 +89,8 @@ public class ItemLaserDetonator extends Item {
             return InteractionResult.SUCCESS;
         }
         if (!level.isClientSide()) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),

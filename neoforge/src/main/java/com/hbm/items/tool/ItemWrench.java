@@ -9,6 +9,7 @@ import com.hbm.blocks.network.FluidPipeAnchorBlock;
 import com.hbm.blocks.network.FluidPipeBlock;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.items.ModDataComponents;
+import com.hbm.sound.EntitySounds;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
@@ -46,16 +47,15 @@ public class ItemWrench extends Item {
     public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         Vec3 look = attacker.getLookAngle();
         target.push(look.x * 0.5D, look.y * 0.5D, look.z * 0.5D);
-        target.level()
-                .playSound(
-                        null,
-                        target.getX(),
-                        target.getY(),
-                        target.getZ(),
-                        SoundEvents.ANVIL_LAND,
-                        target.getSoundSource(),
-                        3.0F,
-                        0.75F);
+        EntitySounds.play(
+                target,
+                target.getX(),
+                target.getY(),
+                target.getZ(),
+                SoundEvents.ANVIL_LAND,
+                target.getSoundSource(),
+                3.0F,
+                0.75F);
     }
 
     private static String connect(ServerLevel level, BlockPos first, BlockPos second) {

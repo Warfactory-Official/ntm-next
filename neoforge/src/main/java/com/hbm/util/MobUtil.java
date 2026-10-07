@@ -17,7 +17,11 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
@@ -25,6 +29,7 @@ import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.jspecify.annotations.Nullable;
 
 public final class MobUtil {
@@ -347,6 +352,15 @@ public final class MobUtil {
 
     public static double oldAiWalkSpeed(double legacy) {
         return Math.sqrt(0.1D * Math.min(0.98D * legacy, 1D));
+    }
+
+    public static ResourceKey<LootTable> lootVariant(EntityType<?> type, String variant) {
+        return ResourceKey.create(
+                Registries.LOOT_TABLE,
+                BuiltInRegistries.ENTITY_TYPE
+                        .getKey(type)
+                        .withPrefix("entities/")
+                        .withSuffix("/" + variant));
     }
 
     private static WeightedItem w(RegistryHandle<? extends Item> item, int weight) {

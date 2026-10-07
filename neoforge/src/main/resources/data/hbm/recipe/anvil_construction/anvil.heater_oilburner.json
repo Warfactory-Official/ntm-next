@@ -18,7 +18,7 @@
       "ingredient": "#c:ingots/copper"
     }
   ],
-  "order": 65,
+  "order": 16640,
   "output_items": [
     "hbm:heater_oilburner"
   ],

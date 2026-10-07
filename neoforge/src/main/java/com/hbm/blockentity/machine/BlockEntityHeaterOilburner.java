@@ -5,6 +5,7 @@
 package com.hbm.blockentity.machine;
 
 import com.hbm.api.control.IControlReceiver;
+import com.hbm.api.environment.Environment;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
 import com.hbm.api.redstoneoverradio.IRORInteractive;
@@ -102,22 +103,26 @@ public class BlockEntityHeaterOilburner extends BlockEntityMachinePolluting
             if (trait != null) {
                 int burnRate = setting;
                 int toBurn = Math.min(burnRate, tank.getFill());
-                tank.setFill(tank.getFill() - toBurn);
+                if (toBurn > 0 ? breatheAir(toBurn) : !Environment.installed()) {
+                    tank.setFill(tank.getFill() - toBurn);
 
-                int heat = (int) (trait.getHeatEnergy() / 1000L);
-                this.heatEnergy += heat * toBurn;
+                    int heat = (int) (trait.getHeatEnergy() / 1000L);
+                    this.heatEnergy += heat * toBurn;
+                    if (toBurn > 0) markChanged();
 
-                if (TickPhase.every(this, 5) && toBurn > 0) {
-                    pollute(tank.getTankType(), FluidReleaseType.BURN, toBurn * 5);
+                    if (TickPhase.every(this, 5) && toBurn > 0) {
+                        pollute(tank.getTankType(), FluidReleaseType.BURN, toBurn * 5);
+                    }
+
+                    shouldCool = false;
                 }
-
-                shouldCool = false;
             }
         }
 
         if (this.heatEnergy >= MAX_HEAT_ENERGY) shouldCool = false;
 
         if (shouldCool) {
+            if (this.heatEnergy > 0) markChanged();
             this.heatEnergy = Math.max(this.heatEnergy - Math.max(this.heatEnergy / 1000, 1), 0);
         }
 
@@ -139,6 +144,7 @@ public class BlockEntityHeaterOilburner extends BlockEntityMachinePolluting
     @Override
     public void useUpHeat(Level level, BlockPos pos, int heat) {
         if (!BlockMultiblockCore.vendsHeatAt(this, pos)) return;
+        if (heat > 0 && this.heatEnergy > 0) markChanged();
         this.heatEnergy = Math.max(0, this.heatEnergy - heat);
     }
 
@@ -192,6 +198,7 @@ public class BlockEntityHeaterOilburner extends BlockEntityMachinePolluting
         IFluidCopiable.super.pasteSettings(nbt, index, level, player, pos);
         if (nbt.contains("isOn")) isOn = nbt.getBooleanOr("isOn", isOn);
         if (nbt.contains("burnRate")) setting = nbt.getIntOr("burnRate", setting);
+        markChanged();
     }
 
     @Override

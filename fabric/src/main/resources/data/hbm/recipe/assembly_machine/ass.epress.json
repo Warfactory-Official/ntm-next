@@ -24,7 +24,7 @@
       "ingredient": "hbm:circuit_basic"
     }
   ],
-  "order": 140,
+  "order": 35840,
   "output_items": [
     "hbm:machine_epress"
   ],

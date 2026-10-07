@@ -20,6 +20,7 @@ public final class HbmStructureProcessors {
     public static RegistryHandle<MapCodec<GravityProcessor>> GROUND_HEIGHT;
     public static RegistryHandle<MapCodec<ImpactVillageProcessor>> IMPACT_VILLAGE;
     public static RegistryHandle<MapCodec<SpawnerEntityProcessor>> SPAWNER_ENTITY;
+    public static RegistryHandle<MapCodec<DuctFluidProcessor>> DUCT_FLUID;
 
     private HbmStructureProcessors() {}
 
@@ -54,5 +55,8 @@ public final class HbmStructureProcessors {
         SPAWNER_ENTITY =
                 FabricRegistrar.registerStructureProcessorType(
                         "spawner_entity", SpawnerEntityProcessor.MAP_CODEC);
+        DUCT_FLUID =
+                FabricRegistrar.registerStructureProcessorType(
+                        "duct_fluid", DuctFluidProcessor.MAP_CODEC);
     }
 }

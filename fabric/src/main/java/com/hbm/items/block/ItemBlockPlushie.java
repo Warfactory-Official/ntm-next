@@ -3,6 +3,7 @@
 
 package com.hbm.items.block;
 
+import com.hbm.blocks.generic.BlockPlushie.Plushie;
 import com.hbm.blocks.generic.BlockPlushie.PlushieType;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
@@ -12,9 +13,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.block.Block;
 
-public class ItemBlockPlushie extends ItemBlockTrinket<PlushieType> {
+public class ItemBlockPlushie extends ItemBlockTrinket<Plushie> {
 
-    public ItemBlockPlushie(Block block, Properties props, PlushieType type) {
+    public ItemBlockPlushie(Block block, Properties props, Plushie type) {
         super(block, props, type);
     }
 
@@ -22,7 +23,7 @@ public class ItemBlockPlushie extends ItemBlockTrinket<PlushieType> {
     public Component getName(ItemStack stack) {
         return type == PlushieType.NONE
                 ? super.getName(stack)
-                : Component.translatable(getDescriptionId(), type.label);
+                : Component.translatable(getDescriptionId(), type.label());
     }
 
     @Override
@@ -33,7 +34,7 @@ public class ItemBlockPlushie extends ItemBlockTrinket<PlushieType> {
             Consumer<Component> adder,
             TooltipFlag flag) {
         super.appendHoverText(stack, context, display, adder, flag);
-        String inscription = type.inscription;
+        String inscription = type.inscription();
         if (inscription != null) adder.accept(Component.literal(inscription));
     }
 }

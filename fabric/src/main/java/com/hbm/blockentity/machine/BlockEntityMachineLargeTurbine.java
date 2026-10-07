@@ -102,6 +102,7 @@ public class BlockEntityMachineLargeTurbine extends BlockEntityMachineBase
 
         power -= ItemEnergyTransfer.insert(this, SLOT_BATTERY, power, false);
 
+        if (this.power != 0) markChanged();
         this.power = (long) (this.power * 0.95);
 
         Fluid in = tanks[0].getTankType();
@@ -121,6 +122,7 @@ public class BlockEntityMachineLargeTurbine extends BlockEntityMachineBase
                 this.power += (long) (ops * trait.heatEnergy * eff);
                 valid = true;
                 operational = ops > 0;
+                if (operational) markChanged();
             }
         }
         if (!valid) tanks[1].setTankType(null);
@@ -186,6 +188,16 @@ public class BlockEntityMachineLargeTurbine extends BlockEntityMachineBase
     @Override
     public long getMaxPower() {
         return maxPower;
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return tanks[0].joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
     }
 
     @Override

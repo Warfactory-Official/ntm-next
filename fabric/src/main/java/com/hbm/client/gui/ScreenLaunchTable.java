@@ -128,12 +128,9 @@ public class ScreenLaunchTable extends ScreenInfoContainer<MenuLaunchTable> {
         pip(graphics, OX_PIP_X, table.oxidizerState(missile));
         pip(graphics, SOLID_PIP_X, table.solidState(missile));
 
-        switch (table.padSize) {
-            case SIZE_10 -> pressed(graphics, BUTTON_10_X, 176);
-            case SIZE_15 -> pressed(graphics, BUTTON_15_X, 194);
-            case SIZE_20 -> pressed(graphics, BUTTON_20_X, 212);
-            default -> {}
-        }
+        if (table.padSize == PartSize.SIZE_10) pressed(graphics, BUTTON_10_X, 176);
+        else if (table.padSize == PartSize.SIZE_15) pressed(graphics, BUTTON_15_X, 194);
+        else if (table.padSize == PartSize.SIZE_20) pressed(graphics, BUTTON_20_X, 212);
 
         drawInfoPanel(graphics, PANEL_X, PANEL_Y, PANEL_SIZE, PANEL_SIZE, 2);
         drawInfoPanel(graphics, PANEL_X, PANEL_Y + PANEL_SIZE, PANEL_SIZE, PANEL_SIZE, 11);

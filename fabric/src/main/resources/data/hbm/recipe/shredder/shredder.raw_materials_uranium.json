@@ -5,9 +5,10 @@
       "ingredient": "#c:raw_materials/uranium"
     }
   ],
-  "order": 304,
+  "order": 77824,
   "output_items": [
     {
+      "chance": 0.667,
       "count": 2,
       "id": "hbm:powder_uranium"
     }

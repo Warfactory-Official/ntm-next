@@ -22,7 +22,7 @@
       "ingredient": "hbm:circuit_controller_advanced"
     }
   ],
-  "order": 45,
+  "order": 11520,
   "output_items": [
     "hbm:dfc_injector"
   ],

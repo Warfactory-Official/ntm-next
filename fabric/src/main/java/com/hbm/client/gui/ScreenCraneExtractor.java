@@ -6,7 +6,6 @@ package com.hbm.client.gui;
 import com.hbm.blockentity.network.BlockEntityCraneExtractor;
 import com.hbm.inventory.container.MenuCraneExtractor;
 import com.hbm.lib.Library;
-import com.hbm.module.ModulePatternMatcher;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
 import java.util.List;
@@ -24,8 +23,6 @@ public class ScreenCraneExtractor extends ScreenInfoContainer<MenuCraneExtractor
 
     private static final Identifier TEXTURE =
             Library.id("textures/gui/storage/gui_crane_ejector.png");
-
-    private static final int TOOLTIP_LIFT = 30;
 
     private static final int MAX_EJECT_X = 187;
     private static final int MAX_EJECT_Y = 34;
@@ -101,24 +98,14 @@ public class ScreenCraneExtractor extends ScreenInfoContainer<MenuCraneExtractor
                                                                 ? ChatFormatting.GREEN
                                                                 : ChatFormatting.RED))));
 
-        if (menu.getCarried().isEmpty()) {
-            for (int i = 0; i < BlockEntityCraneExtractor.FILTER_SLOTS; i++) {
-                Slot slot = menu.getSlot(i);
-                String mode = extractor.matcher.mode(i);
-                if (mode != null && isHovering(slot.x, slot.y, 16, 16, mouseX, mouseY)) {
-                    graphics.setComponentTooltipForNextFrame(
-                            font,
-                            List.of(
-                                    Component.translatable("desc.shared.rightClickToChange")
-                                            .withStyle(ChatFormatting.RED),
-                                    ModulePatternMatcher.getLabel(mode)),
-                            mouseX,
-                            mouseY - TOOLTIP_LIFT);
-                }
-            }
-        }
-
         super.extractLabels(graphics, mouseX, mouseY);
+    }
+
+    @Override
+    protected List<Component> slotTooltip(Slot slot) {
+        return slot.index < BlockEntityCraneExtractor.FILTER_SLOTS
+                ? patternModeLines(menu.blockEntity().matcher.mode(slot.index))
+                : List.of();
     }
 
     @Override

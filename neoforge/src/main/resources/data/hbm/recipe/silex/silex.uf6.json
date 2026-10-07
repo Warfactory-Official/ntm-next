@@ -9,7 +9,7 @@
     }
   ],
   "laser_strength": "visible",
-  "order": 1,
+  "order": 256,
   "output_items": [
     [
       {

@@ -6,7 +6,7 @@
       "amount": 590
     }
   ],
-  "order": 16,
+  "order": 4096,
   "output_fluids": [
     {
       "type": "hbm:gas_coker",

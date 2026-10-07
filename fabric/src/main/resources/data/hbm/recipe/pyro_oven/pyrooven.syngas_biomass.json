@@ -7,7 +7,7 @@
       "ingredient": "hbm:biomass"
     }
   ],
-  "order": 61,
+  "order": 15616,
   "output_fluids": [
     {
       "type": "hbm:syngas",

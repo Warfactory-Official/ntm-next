@@ -6,8 +6,6 @@ package com.hbm.entity.mob.glyphid;
 import com.hbm.entity.effect.EntityMist;
 import com.hbm.entity.mob.glyphid.GlyphidStats.StatBundle;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.items.ModItems;
-import com.hbm.items.weapon.ItemDisperser;
 import com.hbm.main.ResourceManager;
 import com.hbm.registration.Reg;
 import com.hbm.util.MobUtil;
@@ -20,9 +18,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
@@ -108,17 +104,5 @@ public class EntityGlyphidBrenda extends EntityGlyphid {
                 }
             }
         }
-    }
-
-    @Override
-    protected void dropCustomDeathLoot(
-            ServerLevel level, DamageSource source, boolean killedByPlayer) {
-        super.dropCustomDeathLoot(level, source, killedByPlayer);
-        if (random.nextInt(3) == 0) spawnAtLocation(level, glandStack(NTMFluids.PHEROMONE));
-    }
-
-    private static ItemStack glandStack(Fluid fluid) {
-        ItemDisperser gland = ModItems.GLYPHID_GLAND.get();
-        return gland.make(fluid, gland.capacity);
     }
 }

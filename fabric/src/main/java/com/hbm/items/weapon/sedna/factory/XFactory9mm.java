@@ -23,6 +23,7 @@ import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
 import com.hbm.render.anim.BusAnimationSequence;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.stats.ModStats;
 import com.hbm.util.DamageClass;
@@ -87,16 +88,15 @@ public class XFactory9mm {
                                     ItemGunBaseNT.getWear(stack, index) + config.wear,
                                     ctx.config().getDurability(stack)));
                     if (primary.getFireSound(stack) != null)
-                        player.level()
-                                .playSound(
-                                        null,
-                                        player.getX(),
-                                        player.getY(),
-                                        player.getZ(),
-                                        primary.getFireSound(stack).get(),
-                                        SoundSource.PLAYERS,
-                                        primary.getFireVolume(stack),
-                                        primary.getFirePitch(stack));
+                        EntitySounds.play(
+                                player,
+                                player.getX(),
+                                player.getY(),
+                                player.getZ(),
+                                primary.getFireSound(stack).get(),
+                                SoundSource.PLAYERS,
+                                primary.getFireVolume(stack),
+                                primary.getFirePitch(stack));
                     ItemGunBaseNT.setState(stack, index, GunState.COOLDOWN);
                     ItemGunBaseNT.setTimer(stack, index, primary.getDelayAfterFire(stack));
                     EntityDamageUtil.attackEntityFromNT(

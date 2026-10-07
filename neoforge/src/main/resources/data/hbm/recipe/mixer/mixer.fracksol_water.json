@@ -16,7 +16,7 @@
       "ingredient": "#c:dusts/sulfur"
     }
   ],
-  "order": 4,
+  "order": 1024,
   "output_fluids": [
     {
       "type": "hbm:fracksol",

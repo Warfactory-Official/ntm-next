@@ -4,6 +4,7 @@
 package com.hbm.items.tool;
 
 import com.hbm.handler.BossSpawnHandler;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
@@ -36,8 +37,8 @@ public class ItemMeteorRemote extends Item {
             BossSpawnHandler.spawnMeteorAtPlayer(player, false);
             player.sendSystemMessage(Component.translatable("chat.meteorRemote.summoned"));
         }
-        level.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.blockPosition(),
                 ModSounds.TECH_BLEEP.get(),
                 SoundSource.PLAYERS,

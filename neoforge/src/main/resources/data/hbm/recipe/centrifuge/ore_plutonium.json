@@ -3,10 +3,10 @@
   "duration": 200,
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/plutonium"
+      "ingredient": "#c:ores/plutonium"
     }
   ],
-  "order": 24,
+  "order": 9472,
   "output_items": [
     "hbm:powder_plutonium",
     "hbm:powder_plutonium",

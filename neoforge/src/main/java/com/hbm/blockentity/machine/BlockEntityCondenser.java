@@ -3,6 +3,7 @@
 
 package com.hbm.blockentity.machine;
 
+import com.hbm.api.environment.Environment;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidFlushSender;
 import com.hbm.blockentity.BlockEntityMachineBase;
@@ -14,6 +15,7 @@ import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -68,7 +70,10 @@ public class BlockEntityCondenser extends BlockEntityMachineBase
         if (extraCondition(convert)) {
             input.setFill(input.getFill() - convert);
             if (convert > 0) waterTimer = 20;
-            output.setFill(output.getFill() + convert);
+            output.setFill(
+                    Environment.evaporates((ServerLevel) level, worldPosition, vacuumProof())
+                            ? output.getFill() - convert
+                            : output.getFill() + convert);
             postConvert(convert);
             if (convert > 0) setChanged();
         }
@@ -83,6 +88,21 @@ public class BlockEntityCondenser extends BlockEntityMachineBase
     }
 
     protected void postConvert(int convert) {}
+
+    protected boolean vacuumProof() {
+        return false;
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return input.joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        visitor.accept(input);
+        visitor.accept(output);
+    }
 
     @Override
     public long getDemand(Fluid type, int pressure) {

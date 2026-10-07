@@ -22,6 +22,7 @@ import com.hbm.items.machine.FluidIdentifierItem;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -89,6 +90,8 @@ public class BlockEntityMachineTurbine extends BlockEntityMachineBase
         if (changed) setChanged();
 
         long maxPower = MachineData.TURBINE_MAX_POWER.get();
+        long prevPower = power;
+        Fluid prevOut = tank1.getTankType();
         power -= ItemEnergyTransfer.insert(this, SLOT_BATTERY, power, false);
 
         power = (long) (power * 0.95);
@@ -108,11 +111,13 @@ public class BlockEntityMachineTurbine extends BlockEntityMachineBase
                 tank0.setFill(tank0.getFill() - ops * trait.amountReq);
                 tank1.setFill(tank1.getFill() + ops * trait.amountProduced);
                 power = (long) (power + ops * trait.heatEnergy * eff);
+                if (ops > 0) markChanged();
                 valid = true;
             }
         }
         if (!valid) tank1.setTankType(NTMFluids.NONE);
         if (power > maxPower) power = maxPower;
+        if (power != prevPower || tank1.getTankType() != prevOut) markChanged();
 
         flush.provide((ServerLevel) level, this);
 
@@ -139,6 +144,17 @@ public class BlockEntityMachineTurbine extends BlockEntityMachineBase
     @Override
     public long getMaxPower() {
         return MachineData.TURBINE_MAX_POWER.get();
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return tank0.joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        visitor.accept(tank0);
+        visitor.accept(tank1);
     }
 
     @Override

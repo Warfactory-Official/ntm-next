@@ -3,11 +3,12 @@
 
 package com.hbm.blocks.network;
 
+import com.hbm.NuclearTech;
 import com.hbm.api.energymk2.CableData;
 import com.hbm.api.energymk2.PowerGraph;
 import com.hbm.api.energymk2.PowerGraphProvider;
+import com.hbm.platform.NeoForgeAttachments;
 import com.hbm.platform.NeoForgeChunkData;
-import com.hbm.platform.NeoForgeEntityData;
 import com.hbm.platform.NeoForgeServerEvents;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.mojang.serialization.Codec;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.WorldGenLevel;
@@ -32,8 +34,8 @@ public final class GeneratedConductors {
     private static final MapCodec<int[]> CODEC =
             Codec.INT_STREAM.xmap(IntStream::toArray, Arrays::stream).fieldOf("positions");
     public static final Supplier<AttachmentType<int[]>> DATA =
-            NeoForgeEntityData.ATTACHMENTS.register(
-                    "generated_conductors",
+            NeoForgeAttachments.register(
+                    Identifier.fromNamespaceAndPath(NuclearTech.MOD_ID, "generated_conductors"),
                     () ->
                             AttachmentType.builder(() -> EMPTY)
                                     .serialize(CODEC)

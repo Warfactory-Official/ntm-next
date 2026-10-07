@@ -3,6 +3,7 @@
 
 package com.hbm.entity.mob;
 
+import com.hbm.api.environment.ISuffocationImmune;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -22,7 +23,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public abstract class EntityUFOBase extends Mob implements Enemy {
+public abstract class EntityUFOBase extends Mob implements Enemy, ISuffocationImmune {
     private static final EntityDataAccessor<Integer> WAYPOINT_X =
             SynchedEntityData.defineId(EntityUFOBase.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> WAYPOINT_Y =

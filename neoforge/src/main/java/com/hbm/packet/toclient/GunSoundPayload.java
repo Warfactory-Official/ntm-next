@@ -9,14 +9,18 @@ import com.hbm.lib.Library;
 import com.hbm.packet.IPayloadHandlerContext;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.threading.ThreadedPayload;
+import com.hbm.platform.NeoForgePlatform;
 import com.hbm.platform.NeoForgeServerEvents;
+import com.hbm.sound.EntitySounds;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.LivingEntity;
 
 public final class GunSoundPayload extends ThreadedPayload {
     public static final Type<GunSoundPayload> TYPE = new Type<>(Library.id("gun_sound"));
@@ -24,6 +28,7 @@ public final class GunSoundPayload extends ThreadedPayload {
             streamCodec(GunSoundPayload::new);
 
     private final boolean legacy;
+    private final int emitter;
     private final Holder<SoundEvent> sound;
     private final SoundSource source;
     private final int x, y, z;
@@ -32,6 +37,7 @@ public final class GunSoundPayload extends ThreadedPayload {
 
     public GunSoundPayload(
             boolean legacy,
+            int emitter,
             Holder<SoundEvent> sound,
             SoundSource source,
             double x,
@@ -41,6 +47,7 @@ public final class GunSoundPayload extends ThreadedPayload {
             float pitch,
             long seed) {
         this.legacy = legacy;
+        this.emitter = emitter;
         this.sound = sound;
         this.source = source;
         this.x = (int) (x * 8.0);
@@ -53,6 +60,7 @@ public final class GunSoundPayload extends ThreadedPayload {
 
     private GunSoundPayload(ByteBuf buf) {
         legacy = buf.readBoolean();
+        emitter = buf.readInt();
         sound = SoundEvent.STREAM_CODEC.decode((RegistryFriendlyByteBuf) buf);
         source = ((RegistryFriendlyByteBuf) buf).readEnum(SoundSource.class);
         x = buf.readInt();
@@ -64,25 +72,52 @@ public final class GunSoundPayload extends ThreadedPayload {
     }
 
     public static void send(
-            ServerLevel level,
-            boolean legacy,
-            Holder<SoundEvent> sound,
-            SoundSource source,
-            double x,
-            double y,
-            double z,
-            float volume,
-            float pitch,
-            long seed) {
+            LivingEntity emitter, boolean legacy, SoundEvent sound, float volume, float pitch) {
+        ServerLevel level = (ServerLevel) emitter.level();
+        double x = emitter.getX(), y = emitter.getY(), z = emitter.getZ();
+        EntitySounds.Emission emission =
+                NeoForgePlatform.soundAtPosition(
+                        level,
+                        x,
+                        y,
+                        z,
+                        BuiltInRegistries.SOUND_EVENT.wrapAsHolder(sound),
+                        SoundSource.PLAYERS,
+                        volume,
+                        pitch);
+        if (emission == null) return;
         PacketWire.sendToAllAround(
-                new GunSoundPayload(legacy, sound, source, x, y, z, volume, pitch, seed),
-                new TargetPoint(level, x, y, z, sound.value().getRange(volume)));
+                new GunSoundPayload(
+                        legacy,
+                        emitter.getId(),
+                        emission.sound(),
+                        emission.source(),
+                        x,
+                        y,
+                        z,
+                        emission.volume(),
+                        emission.pitch(),
+                        level.soundSeedGenerator.nextLong()),
+                new TargetPoint(
+                        level, x, y, z, emission.sound().value().getRange(emission.volume())));
     }
 
     public static void handleClient(GunSoundPayload payload, IPayloadHandlerContext context) {
         if (GunVisualConfig.legacyAnimations != payload.legacy) return;
         var player = context.playerOrNull();
         if (player == null) return;
+        if (payload.emitter == player.getId()) {
+            player.level()
+                    .playSeededSound(
+                            player,
+                            player,
+                            payload.sound,
+                            payload.source,
+                            payload.volume,
+                            payload.pitch,
+                            payload.seed);
+            return;
+        }
         player.level()
                 .playSeededSound(
                         player,
@@ -102,6 +137,7 @@ public final class GunSoundPayload extends ThreadedPayload {
                 new RegistryFriendlyByteBuf(
                         buf, NeoForgeServerEvents.getCurrentServer().registryAccess());
         reg.writeBoolean(legacy);
+        reg.writeInt(emitter);
         SoundEvent.STREAM_CODEC.encode(reg, sound);
         reg.writeEnum(source);
         reg.writeInt(x);

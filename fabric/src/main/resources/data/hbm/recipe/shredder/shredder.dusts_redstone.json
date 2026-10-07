@@ -5,7 +5,7 @@
       "ingredient": "#c:dusts/redstone"
     }
   ],
-  "order": 235,
+  "order": 60160,
   "output_items": [
     "hbm:dust"
   ]

@@ -10,6 +10,7 @@ import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.packet.SyncField;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -55,7 +56,9 @@ public class BlockEntityMachinePumpSteam extends BlockEntityMachinePumpBase
         steam.setFill(steam.getFill() - STEAM_PER_OP);
         lps.setFill(lps.getFill() + 1);
         water.setFill(
-                Math.min(water.getFill() + MachineData.PUMP_STEAM_SPEED.get(), water.getMaxFill()));
+                Math.min(
+                        water.getFill() + pumpSpeed(MachineData.PUMP_STEAM_SPEED.get()),
+                        water.getMaxFill()));
         setChanged();
     }
 
@@ -73,6 +76,18 @@ public class BlockEntityMachinePumpSteam extends BlockEntityMachinePumpBase
         if (!lps.provides(type) || pressure != lps.getPressure()) return;
         int drained = (int) Math.min(amount, Integer.MAX_VALUE);
         if (lps.drain(drained, true) > 0) setChanged();
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return steam.joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        visitor.accept(water);
+        visitor.accept(steam);
+        visitor.accept(lps);
     }
 
     @Override

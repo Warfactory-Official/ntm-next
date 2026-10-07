@@ -29,6 +29,8 @@ public final class EndpointRegistry {
                     | MachineCaps.FLUID_OUT
                     | MachineCaps.FE;
     private final Long2ObjectOpenHashMap<Endpoint> byCell = new Long2ObjectOpenHashMap<>();
+    private final Long2ObjectOpenHashMap<LongOpenHashSet> remoteByOwner =
+            new Long2ObjectOpenHashMap<>();
     private final ChunkPositionIndex byChunk = new ChunkPositionIndex();
     private int capabilityShapeCount;
 
@@ -74,7 +76,9 @@ public final class EndpointRegistry {
         LongOpenHashSet cells = byChunk.take(chunkKey);
         if (cells == null) return;
         for (LongIterator it = cells.iterator(); it.hasNext(); ) {
-            Endpoint removed = byCell.remove(it.nextLong());
+            long cellKey = it.nextLong();
+            Endpoint removed = byCell.remove(cellKey);
+            removeRemote(cellKey, removed);
             if (removed.capabilityShape) capabilityShapeCount--;
         }
     }
@@ -90,18 +94,52 @@ public final class EndpointRegistry {
             withdraw(cell);
             return;
         }
+        long ownerKey = owner.asLong();
         Endpoint previous =
-                byCell.put(
-                        cellKey, new Endpoint(owner.asLong(), faceMask, domains, capabilityShape));
-        if (previous != null && previous.capabilityShape) capabilityShapeCount--;
+                byCell.put(cellKey, new Endpoint(ownerKey, faceMask, domains, capabilityShape));
+        if (previous != null) {
+            removeRemote(cellKey, previous);
+            if (previous.capabilityShape) capabilityShapeCount--;
+        }
+        if (ownerKey != cellKey) {
+            remoteByOwner.computeIfAbsent(ownerKey, ignored -> new LongOpenHashSet()).add(cellKey);
+        }
         if (capabilityShape) capabilityShapeCount++;
         byChunk.add(cellKey);
     }
 
     public void withdraw(BlockPos cell) {
-        Endpoint removed = byCell.remove(cell.asLong());
-        if (removed != null && removed.capabilityShape) capabilityShapeCount--;
-        byChunk.remove(cell.asLong());
+        long cellKey = cell.asLong();
+        Endpoint removed = byCell.remove(cellKey);
+        if (removed != null) {
+            removeRemote(cellKey, removed);
+            if (removed.capabilityShape) capabilityShapeCount--;
+        }
+        byChunk.remove(cellKey);
+    }
+
+    private void removeRemote(long cellKey, Endpoint endpoint) {
+        if (endpoint.owner == cellKey) return;
+        LongOpenHashSet cells = remoteByOwner.get(endpoint.owner);
+        assert cells != null;
+        boolean removed = cells.remove(cellKey);
+        assert removed;
+        if (cells.isEmpty()) remoteByOwner.remove(endpoint.owner);
+    }
+
+    public void forEachRemoteCell(long ownerKey, int domains, CellVisitor visitor) {
+        LongOpenHashSet cells = remoteByOwner.get(ownerKey);
+        if (cells == null) return;
+        for (long cellKey : cells) {
+            Endpoint endpoint = byCell.get(cellKey);
+            assert endpoint != null;
+            if ((endpoint.domains & domains) != 0) visitor.visit(cellKey, endpoint.faceMask);
+        }
+    }
+
+    @FunctionalInterface
+    public interface CellVisitor {
+        void visit(long cellKey, int faceMask);
     }
 
     public @Nullable Endpoint declared(long cellKey) {

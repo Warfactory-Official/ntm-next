@@ -22,6 +22,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
+import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuType;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
@@ -30,6 +31,7 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributeHandler;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
 import net.minecraft.advancements.triggers.CriterionTrigger;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.predicates.DataComponentPredicate;
@@ -58,12 +60,18 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
+import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
@@ -71,6 +79,8 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
+import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
@@ -92,7 +102,7 @@ public final class FabricRegistrar {
             Function<BlockBehaviour.Properties, ? extends B> factory,
             Supplier<BlockBehaviour.Properties> props) {
         assertOpen("registerBlock");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, id);
         B block = factory.apply(props.get().setId(key));
         Registry.register(BuiltInRegistries.BLOCK, key, block);
@@ -106,7 +116,7 @@ public final class FabricRegistrar {
             Function<Item.Properties, ? extends I> factory,
             Supplier<Item.Properties> props) {
         assertOpen("registerItem");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, id);
         I item = factory.apply(props.get().setId(key));
         Registry.register(BuiltInRegistries.ITEM, key, item);
@@ -119,7 +129,7 @@ public final class FabricRegistrar {
             Function<Item.Properties, ? extends I> factory,
             Supplier<Item.Properties> props) {
         assertOpen("registerItem");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, id);
         I item = factory.apply(props.get().setId(key));
         Reg.recordItemModel(id, model);
@@ -134,7 +144,7 @@ public final class FabricRegistrar {
             RegistryHandle<BlockEntityType<T>> registerBlockEntityType(
                     String name, Supplier<BlockEntityType<T>> typeFactory) {
         assertOpen("registerBlockEntityType");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         BlockEntityType<T> type = typeFactory.get();
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, type);
         return RegistryHandle.bound(id, type);
@@ -143,7 +153,7 @@ public final class FabricRegistrar {
     public static <T extends AbstractContainerMenu> RegistryHandle<MenuType<T>> registerMenu(
             String name, MenuType.MenuSupplier<T> factory) {
         assertOpen("registerMenu");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         MenuType<T> type = new MenuType<>(factory, FeatureFlags.VANILLA_SET);
         Registry.register(BuiltInRegistries.MENU, id, type);
         return RegistryHandle.bound(id, type);
@@ -154,7 +164,7 @@ public final class FabricRegistrar {
             RegistryHandle<MenuType<T>> registerBlockEntityMenu(
                     String name, Class<BE> blockEntityClass) {
         assertOpen("registerBlockEntityMenu");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         MenuType<T> type =
                 new ExtendedMenuType<>(
                         (containerId, inventory, context) -> {
@@ -191,7 +201,7 @@ public final class FabricRegistrar {
     public static RegistryHandle<CreativeModeTab> registerCreativeModeTab(
             String name, Consumer<CreativeModeTab.Builder> config) {
         assertOpen("registerCreativeModeTab");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         CreativeModeTab.Builder builder = FabricCreativeModeTab.builder();
         config.accept(builder);
         CreativeModeTab tab = builder.build();
@@ -207,16 +217,22 @@ public final class FabricRegistrar {
         };
     }
 
+    public static void modifyDefaultComponents(
+            ItemLike item, Consumer<DataComponentMap.Builder> patch) {
+        assertOpen("modifyDefaultComponents");
+        DefaultItemComponentEvents.MODIFY.register(context -> context.modify(item.asItem(), patch));
+    }
+
     public static <T extends Recipe<?>> RegistryHandle<RecipeType<T>> registerRecipeType(
             String name) {
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         return registerRecipeType(name, new NamedRecipeType<>(id));
     }
 
     public static <T extends Recipe<?>> RegistryHandle<RecipeType<T>> registerRecipeType(
             String name, RecipeType<T> instance) {
         assertOpen("registerRecipeType");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         Registry.register(BuiltInRegistries.RECIPE_TYPE, id, instance);
         return RegistryHandle.bound(id, instance);
     }
@@ -225,7 +241,7 @@ public final class FabricRegistrar {
             RegistryHandle<RecipeSerializer<T>> registerRecipeSerializer(
                     String name, RecipeSerializer<T> serializer) {
         assertOpen("registerRecipeSerializer");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id, serializer);
         return RegistryHandle.bound(id, serializer);
     }
@@ -241,7 +257,7 @@ public final class FabricRegistrar {
     public static <T extends CriterionTrigger<?>> RegistryHandle<T> registerCriterionTrigger(
             String name, T trigger) {
         assertOpen("registerCriterionTrigger");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         Registry.register(BuiltInRegistries.TRIGGER_TYPES, id, trigger);
         return RegistryHandle.bound(id, trigger);
     }
@@ -250,7 +266,7 @@ public final class FabricRegistrar {
             RegistryHandle<DataComponentPredicate.Type<T>> registerDataComponentPredicate(
                     String name, Codec<T> codec) {
         assertOpen("registerDataComponentPredicate");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         DataComponentPredicate.Type<T> type = new DataComponentPredicate.ConcreteType<>(codec);
         Registry.register(BuiltInRegistries.DATA_COMPONENT_PREDICATE_TYPE, id, type);
         return RegistryHandle.bound(id, type);
@@ -259,14 +275,14 @@ public final class FabricRegistrar {
     public static <T> RegistryHandle<DataComponentType<T>> registerDataComponent(
             String name, DataComponentType<T> type) {
         assertOpen("registerDataComponent");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, id, type);
         return RegistryHandle.bound(id, type);
     }
 
     public static RegistryHandle<Fluid> registerFluid(String name) {
         assertOpen("registerFluid");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         ResourceKey<Fluid> key = ResourceKey.create(Registries.FLUID, id);
         Fluid fluid = new FabricTokenFluid();
         Registry.register(BuiltInRegistries.FLUID, key, fluid);
@@ -276,8 +292,8 @@ public final class FabricRegistrar {
 
     public static ClassicFluid.Pair registerClassicFluid(String name, ClassicFluid.Spec spec) {
         assertOpen("registerClassicFluid");
-        Identifier sourceId = Library.id(name);
-        Identifier flowingId = Library.id("flowing_" + name);
+        Identifier sourceId = Library.resolve(name);
+        Identifier flowingId = sourceId.withPrefix("flowing_");
         Supplier<Fluid> source = () -> BuiltInRegistries.FLUID.getValue(sourceId);
         Supplier<Fluid> flowing = () -> BuiltInRegistries.FLUID.getValue(flowingId);
         ClassicFluid.Source still =
@@ -296,7 +312,7 @@ public final class FabricRegistrar {
 
     public static RegistryHandle<SoundEvent> registerSound(String name) {
         assertOpen("registerSound");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         SoundEvent event = SoundEvent.createVariableRangeEvent(id);
         Registry.register(BuiltInRegistries.SOUND_EVENT, id, event);
         return RegistryHandle.bound(id, event);
@@ -304,7 +320,7 @@ public final class FabricRegistrar {
 
     public static RegistryHandle<Identifier> registerCustomStat(String name) {
         assertOpen("registerCustomStat");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         Registry.register(BuiltInRegistries.CUSTOM_STAT, id, id);
         return RegistryHandle.bound(id, id);
     }
@@ -312,7 +328,7 @@ public final class FabricRegistrar {
     public static <T extends MobEffect> RegistryHandle<T> registerMobEffect(
             String name, Supplier<T> factory) {
         assertOpen("registerMobEffect");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         T effect = factory.get();
         Registry.register(BuiltInRegistries.MOB_EFFECT, id, effect);
         return RegistryHandle.bound(id, effect);
@@ -321,7 +337,7 @@ public final class FabricRegistrar {
     public static <T extends Entity> RegistryHandle<EntityType<T>> registerEntityType(
             String name, Supplier<EntityType<T>> typeFactory) {
         assertOpen("registerEntityType");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         EntityType<T> type = typeFactory.get();
         Registry.register(BuiltInRegistries.ENTITY_TYPE, id, type);
         return RegistryHandle.bound(id, type);
@@ -345,7 +361,7 @@ public final class FabricRegistrar {
     public static <T extends ParticleType<?>> RegistryHandle<T> registerParticleType(
             String name, Supplier<T> typeFactory) {
         assertOpen("registerParticleType");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         T type = typeFactory.get();
         Registry.register(BuiltInRegistries.PARTICLE_TYPE, id, type);
         return RegistryHandle.bound(id, type);
@@ -354,7 +370,7 @@ public final class FabricRegistrar {
     public static RegistryHandle<TicketType> registerTicketType(
             String name, Supplier<TicketType> typeFactory) {
         assertOpen("registerTicketType");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         TicketType type = typeFactory.get();
         Registry.register(BuiltInRegistries.TICKET_TYPE, id, type);
         return RegistryHandle.bound(id, type);
@@ -363,7 +379,7 @@ public final class FabricRegistrar {
     public static <T extends Structure> RegistryHandle<StructureType<T>> registerStructureType(
             String name, MapCodec<T> codec) {
         assertOpen("registerStructureType");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         StructureType<T> type = () -> codec;
         Registry.register(BuiltInRegistries.STRUCTURE_TYPE, id, type);
         return RegistryHandle.bound(id, type);
@@ -372,7 +388,7 @@ public final class FabricRegistrar {
     public static RegistryHandle<StructurePieceType> registerStructurePieceType(
             String name, StructurePieceType type) {
         assertOpen("registerStructurePieceType");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         Registry.register(BuiltInRegistries.STRUCTURE_PIECE, id, type);
         return RegistryHandle.bound(id, type);
     }
@@ -381,7 +397,7 @@ public final class FabricRegistrar {
             RegistryHandle<StructurePoolElementType<T>> registerStructurePoolElementType(
                     String name, MapCodec<T> codec) {
         assertOpen("registerStructurePoolElementType");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         StructurePoolElementType<T> type = () -> codec;
         Registry.register(BuiltInRegistries.STRUCTURE_POOL_ELEMENT, id, type);
         return RegistryHandle.bound(id, type);
@@ -391,16 +407,26 @@ public final class FabricRegistrar {
             RegistryHandle<PlacementModifierType<P>> registerPlacementModifierType(
                     String name, MapCodec<P> codec) {
         assertOpen("registerPlacementModifierType");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         PlacementModifierType<P> type = () -> codec;
         Registry.register(BuiltInRegistries.PLACEMENT_MODIFIER_TYPE, id, type);
+        return RegistryHandle.bound(id, type);
+    }
+
+    public static <P extends StructurePlacement>
+            RegistryHandle<StructurePlacementType<P>> registerStructurePlacementType(
+                    String name, MapCodec<P> codec) {
+        assertOpen("registerStructurePlacementType");
+        Identifier id = Library.resolve(name);
+        StructurePlacementType<P> type = () -> codec;
+        Registry.register(BuiltInRegistries.STRUCTURE_PLACEMENT, id, type);
         return RegistryHandle.bound(id, type);
     }
 
     public static <FC extends FeatureConfiguration, F extends Feature<FC>>
             RegistryHandle<F> registerFeature(String name, F feature) {
         assertOpen("registerFeature");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         Registry.register(BuiltInRegistries.FEATURE, id, feature);
         return RegistryHandle.bound(id, feature);
     }
@@ -409,7 +435,7 @@ public final class FabricRegistrar {
             RegistryHandle<MapCodec<T>> registerStructureProcessorType(
                     String name, MapCodec<T> codec) {
         assertOpen("registerStructureProcessorType");
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         Registry.register(BuiltInRegistries.STRUCTURE_PROCESSOR, id, codec);
         return RegistryHandle.bound(id, codec);
     }
@@ -417,7 +443,7 @@ public final class FabricRegistrar {
     public static <T extends NumberProvider>
             RegistryHandle<MapCodec<T>> registerLootNumberProviderType(
                     String name, MapCodec<T> codec) {
-        Identifier id = Library.id(name);
+        Identifier id = Library.resolve(name);
         Registry.register(BuiltInRegistries.LOOT_NUMBER_PROVIDER_TYPE, id, codec);
         return RegistryHandle.bound(id, codec);
     }
@@ -431,6 +457,47 @@ public final class FabricRegistrar {
             ResourceKey<Registry<T>> key, Codec<T> codec) {
         assertOpen("registerSyncedDataPackRegistry");
         DynamicRegistries.registerSynced(key, codec);
+    }
+
+    public static <T extends BiomeSource> RegistryHandle<MapCodec<T>> registerBiomeSource(
+            String name, MapCodec<T> codec) {
+        assertOpen("registerBiomeSource");
+        Identifier id = Library.resolve(name);
+        Registry.register(BuiltInRegistries.BIOME_SOURCE, id, codec);
+        return RegistryHandle.bound(id, codec);
+    }
+
+    public static <C extends CarverConfiguration, W extends WorldCarver<C>>
+            RegistryHandle<W> registerCarver(String name, W carver) {
+        assertOpen("registerCarver");
+        Identifier id = Library.resolve(name);
+        Registry.register(BuiltInRegistries.CARVER, id, carver);
+        return RegistryHandle.bound(id, carver);
+    }
+
+    public static <T extends DensityFunction>
+            RegistryHandle<MapCodec<T>> registerDensityFunctionType(
+                    String name, MapCodec<T> codec) {
+        assertOpen("registerDensityFunctionType");
+        Identifier id = Library.resolve(name);
+        Registry.register(BuiltInRegistries.DENSITY_FUNCTION_TYPE, id, codec);
+        return RegistryHandle.bound(id, codec);
+    }
+
+    public static <T extends SurfaceRules.RuleSource>
+            RegistryHandle<MapCodec<T>> registerMaterialRule(String name, MapCodec<T> codec) {
+        assertOpen("registerMaterialRule");
+        Identifier id = Library.resolve(name);
+        Registry.register(BuiltInRegistries.MATERIAL_RULE, id, codec);
+        return RegistryHandle.bound(id, codec);
+    }
+
+    public static <T extends SurfaceRules.ConditionSource>
+            RegistryHandle<MapCodec<T>> registerMaterialCondition(String name, MapCodec<T> codec) {
+        assertOpen("registerMaterialCondition");
+        Identifier id = Library.resolve(name);
+        Registry.register(BuiltInRegistries.MATERIAL_CONDITION, id, codec);
+        return RegistryHandle.bound(id, codec);
     }
 
     public static void assertOpen(String what) {

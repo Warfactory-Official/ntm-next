@@ -42,7 +42,7 @@
       "ingredient": "hbm:circuit_bismoid"
     }
   ],
-  "order": 126,
+  "order": 32256,
   "output_items": [
     "hbm:machine_catalytic_reformer"
   ],

@@ -1,0 +1,54 @@
+{
+  "type": "hbm:rock_mill",
+  "auto_switch_group": "autoswitch.crushing",
+  "duration": 200,
+  "icon_from_input": true,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "minecraft:magma_block"
+    }
+  ],
+  "name_wrapper": "rock.crushing",
+  "order": 4096,
+  "output_fluids": [
+    {
+      "type": "minecraft:lava",
+      "amount": 100
+    }
+  ],
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "minecraft:netherrack"
+        },
+        "weight": 50
+      },
+      {
+        "data": {
+          "id": "hbm:sulfur"
+        },
+        "weight": 25
+      },
+      {
+        "data": {
+          "id": "hbm:powder_fire"
+        },
+        "weight": 15
+      },
+      {
+        "data": {
+          "id": "minecraft:blaze_powder"
+        },
+        "weight": 10
+      }
+    ]
+  ],
+  "power": 25
+}

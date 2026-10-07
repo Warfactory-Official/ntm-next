@@ -30,7 +30,7 @@
       "ingredient": "hbm:circuit_bismoid"
     }
   ],
-  "order": 130,
+  "order": 33280,
   "output_items": [
     "hbm:machine_pyrooven"
   ],

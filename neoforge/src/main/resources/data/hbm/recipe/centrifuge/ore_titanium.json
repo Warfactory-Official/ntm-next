@@ -9,10 +9,10 @@
   "duration": 200,
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/titanium"
+      "ingredient": "#c:ores/titanium"
     }
   ],
-  "order": 15,
+  "order": 5120,
   "output_items": [
     "hbm:powder_titanium",
     "hbm:powder_titanium",

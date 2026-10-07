@@ -5,7 +5,6 @@ package com.hbm.client.gui;
 
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.lib.Library;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.client.Minecraft;
@@ -30,8 +29,7 @@ public final class FluidGauge {
     public static @Nullable Identifier sheet(Fluid fluid) {
         if (!NTMFluidProperties.isOwn(fluid)) return null;
         return SHEETS.computeIfAbsent(
-                fluid,
-                own -> Library.id("textures/gui/fluids/" + NTMFluids.spritePath(own) + ".png"));
+                fluid, own -> NTMFluids.sprite(own, "textures/gui/fluids/", ".png"));
     }
 
     public static void vertical(

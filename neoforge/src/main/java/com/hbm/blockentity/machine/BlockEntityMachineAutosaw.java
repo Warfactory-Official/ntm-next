@@ -22,6 +22,7 @@ import com.hbm.packet.SyncUnitSchema;
 import com.hbm.packet.toclient.BlockDustBurstPayload;
 import com.hbm.sound.AudioSystem;
 import com.hbm.sound.AudioWrapper;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.TickPhase;
 import io.netty.buffer.ByteBuf;
@@ -173,7 +174,11 @@ public class BlockEntityMachineAutosaw extends BlockEntity
             if (tank.getFill() > 0) {
                 tank.setFill(tank.getFill() - 1);
                 isOn = true;
-            } else isOn = false;
+                markChanged();
+            } else {
+                if (isOn) markChanged();
+                isOn = false;
+            }
         }
 
         if (isOn && !isSuspended) {
@@ -199,8 +204,8 @@ public class BlockEntityMachineAutosaw extends BlockEntity
                 if (e.isAlive()
                         && e.hurtServer(
                                 level, level.damageSources().source(ModDamageTypes.BLENDER), 100)) {
-                    level.playSound(
-                            null,
+                    EntitySounds.play(
+                            e,
                             e.getX(),
                             e.getY(),
                             e.getZ(),
@@ -273,6 +278,7 @@ public class BlockEntityMachineAutosaw extends BlockEntity
                     state = 0;
                 }
             }
+            markChanged();
         }
 
         networkPackNT(100);
@@ -340,8 +346,8 @@ public class BlockEntityMachineAutosaw extends BlockEntity
         HashMap<BlockPos, BlockPos> blockOwner = new HashMap<>();
         ArrayDeque<BlockPos[]> deque = new ArrayDeque<>();
         int[] hitColCount = {1};
-        int minY = Math.max(0, sawY - FELL_MAX_BASE_DEPTH);
-        int maxY = Math.min(255, sawY + FELL_VERTICAL_RANGE);
+        int minY = Math.max(level.getMinY(), sawY - FELL_MAX_BASE_DEPTH);
+        int maxY = Math.min(level.getMaxY(), sawY + FELL_VERTICAL_RANGE);
 
         for (Map.Entry<BlockPos, BlockPos> trunk : trunks.entrySet()) {
             deque.addFirst(new BlockPos[] {trunk.getValue(), trunk.getKey()});

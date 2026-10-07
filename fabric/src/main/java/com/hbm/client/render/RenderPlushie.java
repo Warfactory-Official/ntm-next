@@ -4,6 +4,7 @@
 package com.hbm.client.render;
 
 import com.hbm.blockentity.BlockEntityPlushie;
+import com.hbm.blocks.generic.BlockPlushie.Plushie;
 import com.hbm.blocks.generic.BlockPlushie.PlushieType;
 import com.hbm.blocks.generic.BlockPlushie;
 import com.hbm.client.render.flywheel.HbmBlockEntityVisual;
@@ -15,6 +16,7 @@ import com.hbm.render.util.HorsePronter;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -28,6 +30,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -67,13 +70,45 @@ public class RenderPlushie
     }
 
     public static void rootPose(
-            PoseStack poses, PlushieType type, int rotation, boolean squishing, double squish) {
+            PoseStack poses,
+            Plushie type,
+            int rotation,
+            boolean miserable,
+            double misery,
+            boolean squishing,
+            double squish) {
         poses.translate(.5, 0, .5);
         poses.mulPose(Axis.YN.rotationDegrees(22.5F * rotation + 90F));
-        if (squishing) poses.scale(1F, (float) (1D + (-Math.sin(squish) * squish) * .025D), 1F);
-        switch (type) {
+        if (miserable) poses.scale(1F, (float) (1D - misery), 1F);
+        else if (squishing)
+            poses.scale(1F, (float) (1D + (-Math.sin(squish) * squish) * .025D), 1F);
+        if (!(type instanceof PlushieType ntm)) {
+            PlushieFigures.get(type).scale(poses);
+            return;
+        }
+        switch (ntm) {
             case YOMI -> poses.scale(.5F, .5F, .5F);
             case NUMBERNINE -> poses.scale(.75F, .75F, .75F);
+            default -> {}
+        }
+    }
+
+    public static void itemPose(Plushie type, PoseStack ps) {
+        if (!(type instanceof PlushieType ntm)) {
+            PlushieFigures.get(type).itemPose(ps);
+            return;
+        }
+        switch (ntm) {
+            case YOMI -> ps.scale(1.25F, 1.25F, 1.25F);
+            case NUMBERNINE -> {
+                ps.translate(0, 0.25, 0.25);
+                ps.scale(1.25F, 1.25F, 1.25F);
+            }
+            case HUNDUN -> {
+                ps.translate(0.5, 0.5, 0);
+                ps.scale(1.25F, 1.25F, 1.25F);
+            }
+            case DERG -> ps.scale(1.5F, 1.5F, 1.5F);
             default -> {}
         }
     }
@@ -134,6 +169,9 @@ public class RenderPlushie
         state.type = be.type;
         state.rotation = be.getBlockState().getValue(BlockPlushie.ROTATION);
         long timer = be.squishTimer();
+        state.timer = timer;
+        state.miserable = be.miseryFactor > 0.01F;
+        state.misery = Mth.lerp(partialTicks, be.lastMiseryFactor, be.miseryFactor);
         state.squishing = timer > 0;
         state.squish = timer - partialTicks;
         if (state.type == PlushieType.NUMBERNINE
@@ -148,15 +186,17 @@ public class RenderPlushie
     public void submit(
             State state, PoseStack poses, SubmitNodeCollector collector, CameraRenderState camera) {
         poses.pushPose();
-        rootPose(poses, state.type, state.rotation, state.squishing, state.squish);
+        rootPose(
+                poses,
+                state.type,
+                state.rotation,
+                state.miserable,
+                state.misery,
+                state.squishing,
+                state.squish);
         if (!state.visualized) {
             renderPlushie(
-                    state.type,
-                    state.squishing,
-                    poses,
-                    collector,
-                    state.lightCoords,
-                    state.cigarette);
+                    state.type, state.timer, poses, collector, state.lightCoords, state.cigarette);
         } else if (!state.cigarette.isEmpty()) {
             cigarettePose(poses);
             state.cigarette.submit(
@@ -166,8 +206,8 @@ public class RenderPlushie
     }
 
     public void renderPlushie(
-            PlushieType type,
-            boolean squish,
+            Plushie type,
+            long squishTimer,
             PoseStack poses,
             SubmitNodeCollector collector,
             int light,
@@ -176,7 +216,7 @@ public class RenderPlushie
                 type,
                 poses,
                 (part, mesh, group, face, ps) -> {
-                    if (face.shows(squish))
+                    if (face.shows(squishTimer))
                         collector.submitCustomGeometry(
                                 ps,
                                 part.type,
@@ -189,8 +229,12 @@ public class RenderPlushie
         poses.popPose();
     }
 
-    public static void visitParts(PlushieType type, PoseStack poses, PartVisitor visitor) {
-        switch (type) {
+    public static void visitParts(Plushie type, PoseStack poses, PartVisitor visitor) {
+        if (!(type instanceof PlushieType ntm)) {
+            PlushieFigures.get(type).visitParts(poses, visitor);
+            return;
+        }
+        switch (ntm) {
             case NONE -> {}
             case YOMI -> {
                 for (int group = 0; group < ResourceManager.yomi.groups.length; group++) {
@@ -239,19 +283,19 @@ public class RenderPlushie
                 state, cigarette(), ItemDisplayContext.NONE, level, null, 0);
     }
 
-    public enum Part {
-        YOMI(ResourceManager.yomi_tex, true),
-        NUMBERNINE(ResourceManager.numbernine_tex, false),
-        HUNDUN(ResourceManager.hundun_tex, true),
-        DERG(ResourceManager.derg_tex, true),
-        NO9(ResourceManager.no9_tex, false),
-        NO9_TRIM(ResourceManager.no9_insignia_tex, false);
+    public static final class Part {
+        public static final Part YOMI = new Part(ResourceManager.yomi_tex, true);
+        public static final Part NUMBERNINE = new Part(ResourceManager.numbernine_tex, false);
+        public static final Part HUNDUN = new Part(ResourceManager.hundun_tex, true);
+        public static final Part DERG = new Part(ResourceManager.derg_tex, true);
+        public static final Part NO9 = new Part(ResourceManager.no9_tex, false);
+        public static final Part NO9_TRIM = new Part(ResourceManager.no9_insignia_tex, false);
 
         public final Identifier texture;
         public final boolean cull;
         private final RenderType type;
 
-        Part(Identifier texture, boolean cull) {
+        public Part(Identifier texture, boolean cull) {
             this.texture = texture;
             this.cull = cull;
             type =
@@ -261,14 +305,24 @@ public class RenderPlushie
         }
     }
 
-    public enum Face {
-        ALWAYS,
-        SQUISHED,
-        RELAXED;
+    public record Face(long min, long max) {
+        public static final Face ALWAYS = new Face(Long.MIN_VALUE, Long.MAX_VALUE);
+        public static final Face SQUISHED = new Face(1, Long.MAX_VALUE);
+        public static final Face RELAXED = new Face(Long.MIN_VALUE, 0);
 
-        public boolean shows(boolean squish) {
-            return this == ALWAYS || (this == SQUISHED) == squish;
+        public boolean shows(long squishTimer) {
+            return squishTimer >= min && squishTimer <= max;
         }
+    }
+
+    public interface Figure {
+        void scale(PoseStack poses);
+
+        void itemPose(PoseStack poses);
+
+        void visitParts(PoseStack poses, PartVisitor visitor);
+
+        List<HFRWavefrontObject> meshes();
     }
 
     @FunctionalInterface
@@ -278,8 +332,11 @@ public class RenderPlushie
 
     public static final class State extends BlockEntityRenderState {
         public final ItemStackRenderState cigarette = new ItemStackRenderState();
-        public PlushieType type = PlushieType.NONE;
+        public Plushie type = PlushieType.NONE;
         public int rotation;
+        public long timer;
+        public boolean miserable;
+        public double misery;
         public boolean squishing;
         public double squish;
         public boolean visualized;

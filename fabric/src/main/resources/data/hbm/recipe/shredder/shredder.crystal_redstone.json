@@ -5,7 +5,7 @@
       "ingredient": "hbm:crystal_redstone"
     }
   ],
-  "order": 100,
+  "order": 25600,
   "output_items": [
     {
       "count": 8,

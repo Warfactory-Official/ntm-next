@@ -153,6 +153,7 @@ public class BlockEntityMachineRotaryFurnace extends BlockEntityMachinePolluting
 
     @Override
     public void tickServer() {
+        float prevProgress = this.progress;
         this.pourColor = -1;
         int x = worldPosition.getX(), y = worldPosition.getY(), z = worldPosition.getZ();
 
@@ -183,6 +184,7 @@ public class BlockEntityMachineRotaryFurnace extends BlockEntityMachinePolluting
                 this.pourColor = leftover.material.moltenColor;
                 this.pourLen = Math.max(1F, y + 1 - (float) (Math.ceil(impact.y) - 1.125));
                 markSyncEvent();
+                markChanged();
             }
 
             if (output.amount <= 0) this.output = null;
@@ -240,11 +242,13 @@ public class BlockEntityMachineRotaryFurnace extends BlockEntityMachinePolluting
                 int doesReturn = Math.min(steamReturn, canReturn);
                 this.steamUsed -= doesReturn * 100;
                 tanks[2].setFill(tanks[2].getFill() + doesReturn);
+                if (doesReturn > 0) markChanged();
             }
 
         } else {
             this.progress = 0;
         }
+        if (this.progress != prevProgress) markChanged();
 
         this.networkPackNT(50);
     }
@@ -315,10 +319,10 @@ public class BlockEntityMachineRotaryFurnace extends BlockEntityMachinePolluting
 
         if (this.output != null) {
             if (this.output.material != recipe.output.material) return false;
-            return this.output.amount + recipe.output.amount <= MAX_OUTPUT;
+            if (this.output.amount + recipe.output.amount > MAX_OUTPUT) return false;
         }
 
-        return true;
+        return breatheAir(1);
     }
 
     public void consumeItems(RotaryFurnaceRecipe recipe) {
@@ -345,6 +349,7 @@ public class BlockEntityMachineRotaryFurnace extends BlockEntityMachinePolluting
                         : type == PollutionType.HEAVYMETAL ? smokeLeaded : smokePoison;
         int fluidAmount = (int) Math.ceil(amount * 100);
         int overflow = fluidAmount - tank.fill(tank.getTankType(), fluidAmount, true);
+        if (overflow < fluidAmount) markChanged();
         if (overflow > 0) {
             PollutionHandler.incrementPollution(level, worldPosition, type, overflow / 100F);
         }

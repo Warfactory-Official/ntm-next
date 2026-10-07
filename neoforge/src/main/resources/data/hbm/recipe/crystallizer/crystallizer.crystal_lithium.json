@@ -9,10 +9,10 @@
   ],
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/lithium"
+      "ingredient": "#c:ores/lithium"
     }
   ],
-  "order": 244,
+  "order": 65536,
   "output_items": [
     "hbm:crystal_lithium"
   ],

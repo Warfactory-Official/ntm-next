@@ -13,7 +13,7 @@
       "ingredient": "#hbm:billets/silicon"
     }
   ],
-  "order": 41,
+  "order": 10496,
   "output_items": [
     "hbm:thermo_element"
   ],

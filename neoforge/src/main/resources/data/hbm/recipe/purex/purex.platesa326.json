@@ -22,7 +22,7 @@
     }
   ],
   "name_wrapper": "purex.recycle",
-  "order": 20,
+  "order": 5120,
   "output_items": [
     "hbm:nugget_solinium",
     "hbm:powder_neodymium_tiny",

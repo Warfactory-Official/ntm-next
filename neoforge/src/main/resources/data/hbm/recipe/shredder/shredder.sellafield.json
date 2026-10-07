@@ -5,7 +5,7 @@
       "ingredient": "hbm:sellafield"
     }
   ],
-  "order": 144,
+  "order": 36864,
   "output_items": [
     "hbm:scrap_nuclear"
   ]

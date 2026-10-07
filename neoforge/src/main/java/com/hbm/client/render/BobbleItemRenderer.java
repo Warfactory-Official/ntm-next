@@ -4,6 +4,7 @@
 package com.hbm.client.render;
 
 import com.hbm.blockentity.BlockEntityBobble;
+import com.hbm.blocks.generic.BlockBobble.Bobble;
 import com.hbm.blocks.generic.BlockBobble.BobbleType;
 import com.hbm.client.render.flywheel.BobbleItemVisual;
 import com.hbm.client.render.flywheel.ItemVisuals;
@@ -32,7 +33,7 @@ import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
 
 public class BobbleItemRenderer
-        implements SpecialModelRenderer<BobbleType>, ItemVisuals.Factory<BobbleType> {
+        implements SpecialModelRenderer<Bobble>, ItemVisuals.Factory<Bobble> {
 
     private final RenderBobble geometry;
     private final float[] bounds;
@@ -43,20 +44,20 @@ public class BobbleItemRenderer
     }
 
     @Override
-    public @Nullable BobbleType extractArgument(ItemStack stack) {
+    public @Nullable Bobble extractArgument(ItemStack stack) {
         return BlockEntityBobble.typeOf(stack);
     }
 
     @Override
     public void submit(
-            @Nullable BobbleType type,
+            @Nullable Bobble type,
             PoseStack ps,
             SubmitNodeCollector col,
             int lightCoords,
             int overlayCoords,
             boolean hasFoil,
             int outlineColor) {
-        BobbleType resolved = type == null ? BobbleType.NONE : type;
+        Bobble resolved = type == null ? BobbleType.NONE : type;
         ItemStackRenderState cigarette = null;
         if (resolved == BobbleType.VAER) {
             cigarette = new ItemStackRenderState();
@@ -79,7 +80,7 @@ public class BobbleItemRenderer
     @Override
     public ItemStackVisual createVisual(
             VisualizationContext ctx,
-            @Nullable BobbleType type,
+            @Nullable Bobble type,
             ItemStack stack,
             ItemDisplayContext context,
             @Nullable ItemOwner owner) {

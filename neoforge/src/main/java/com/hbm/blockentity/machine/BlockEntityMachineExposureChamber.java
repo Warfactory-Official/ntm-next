@@ -109,7 +109,10 @@ public class BlockEntityMachineExposureChamber extends BlockEntityMachineBase
         boolean changed = drawParticle();
         changed |= expose();
 
-        if (savedParticles <= 0) inventory.set(SLOT_PARTICLE_INTERNAL, ItemStack.EMPTY);
+        if (savedParticles <= 0 && !inventory.get(SLOT_PARTICLE_INTERNAL).isEmpty()) {
+            inventory.set(SLOT_PARTICLE_INTERNAL, ItemStack.EMPTY);
+            changed = true;
+        }
 
         if (changed) setChanged();
         networkPackNT(50);
@@ -162,6 +165,7 @@ public class BlockEntityMachineExposureChamber extends BlockEntityMachineBase
         ExposureChamberRecipe recipe = currentRecipe();
 
         if (recipe == null || savedParticles <= 0 || power < consumption || !outputFits(recipe)) {
+            if (progress != 0) markChanged();
             progress = 0;
             return false;
         }
@@ -169,6 +173,7 @@ public class BlockEntityMachineExposureChamber extends BlockEntityMachineBase
         progress++;
         power -= consumption;
         isOn = true;
+        markChanged();
 
         if (progress < processTime) return false;
 

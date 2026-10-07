@@ -3,6 +3,7 @@
 
 package com.hbm.client.particle;
 
+import com.hbm.particle.RocketFlameColor;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import dev.engine_room.flywheel.lib.visualization.VisualizationHelper;
 import java.util.ArrayList;
@@ -26,9 +27,11 @@ public final class RocketFlameVisuals {
             double mX,
             double mY,
             double mZ,
-            int maxAge) {
+            int maxAge,
+            RocketFlameColor color) {
         if (!VisualizationManager.supportsVisualization(level)) return false;
-        RocketFlameEffect effect = new RocketFlameEffect(level, x, y, z, scale, mX, mY, mZ, maxAge);
+        RocketFlameEffect effect =
+                new RocketFlameEffect(level, x, y, z, scale, mX, mY, mZ, maxAge, color);
         VisualizationHelper.queueAdd(effect);
         ACTIVE.add(effect);
         return true;

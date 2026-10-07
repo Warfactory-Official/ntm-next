@@ -14,7 +14,7 @@
       "ingredient": "#c:dusts/niobium"
     }
   ],
-  "order": 16,
+  "order": 4096,
   "output_items": [
     "hbm:plate_bismuth"
   ],

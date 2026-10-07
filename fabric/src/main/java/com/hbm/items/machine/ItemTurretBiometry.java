@@ -4,6 +4,7 @@
 package com.hbm.items.machine;
 
 import com.hbm.items.ModDataComponents;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +56,8 @@ public class ItemTurretBiometry extends Item {
             player.sendSystemMessage(
                     Component.translatable("desc.item.turretBiometry.addedPlayerData"));
 
-        level.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.getX(),
                 player.getY(),
                 player.getZ(),

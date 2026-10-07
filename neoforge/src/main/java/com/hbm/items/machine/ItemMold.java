@@ -6,9 +6,11 @@ package com.hbm.items.machine;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.lib.Library;
+import com.hbm.registration.NeoForgeRegistrar;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -143,6 +145,8 @@ public class ItemMold extends Item {
 
     public static class MoldMulti extends Mold {
 
+        private static final Map<String, MoldMulti> NAMED = new HashMap<>();
+
         private final HashMap<NTMMaterial, Identifier> map = new HashMap<>();
         private final int amount;
 
@@ -151,6 +155,20 @@ public class ItemMold extends Item {
             this.amount = amount;
             for (int i = 0; i < inputs.length; i += 2) {
                 map.put((NTMMaterial) inputs[i], Library.id((String) inputs[i + 1]));
+            }
+            NAMED.put(name, this);
+        }
+
+        public static MoldMulti named(String name) {
+            MoldMulti mold = NAMED.get(name);
+            if (mold == null) throw new IllegalArgumentException("no fixed-output mold " + name);
+            return mold;
+        }
+
+        public void addon(NTMMaterial mat, Identifier item) {
+            NeoForgeRegistrar.assertOpen("MoldMulti.addon(" + name + ")");
+            if (map.putIfAbsent(mat, item) != null) {
+                throw new IllegalStateException(name + " already casts " + mat.tagPath);
             }
         }
 

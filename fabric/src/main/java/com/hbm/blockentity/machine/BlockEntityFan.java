@@ -3,6 +3,7 @@
 
 package com.hbm.blockentity.machine;
 
+import com.hbm.api.environment.Environment;
 import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
@@ -17,6 +18,7 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,6 +38,9 @@ public class BlockEntityFan extends BlockEntity
     @SyncField(units = 1L << 1)
     public boolean suck = false;
 
+    @SyncField(units = 1L << 2)
+    public boolean hasAir = true;
+
     public BlockEntityFan(BlockPos pos, BlockState state) {
         super(ModBlockEntities.FAN.get(), pos, state);
     }
@@ -50,6 +55,22 @@ public class BlockEntityFan extends BlockEntity
 
         this.prevSpin = this.spin;
 
+        if (!level.isClientSide()) hasAir = Environment.hasAir((ServerLevel) level, worldPosition);
+        if (hasAir) blow();
+
+        this.spin += 30;
+
+        if (this.spin >= 360) {
+            this.prevSpin -= 360;
+            this.spin -= 360;
+        }
+
+        if (!level.isClientSide()) {
+            networkPackNT(150);
+        }
+    }
+
+    private void blow() {
         Direction dir = getBlockState().getValue(MachineFan.FACING);
 
         int range = 10;
@@ -125,17 +146,6 @@ public class BlockEntityFan extends BlockEntity
                     dir.getStepY() * speed,
                     dir.getStepZ() * speed);
         }
-
-        this.spin += 30;
-
-        if (this.spin >= 360) {
-            this.prevSpin -= 360;
-            this.spin -= 360;
-        }
-
-        if (!level.isClientSide()) {
-            networkPackNT(150);
-        }
     }
 
     @Override
@@ -154,7 +164,7 @@ public class BlockEntityFan extends BlockEntity
 
     @Override
     public long syncUnitMask() {
-        return 0x3L;
+        return 0x7L;
     }
 
     @Override
@@ -162,6 +172,7 @@ public class BlockEntityFan extends BlockEntity
         switch (unit) {
             case 0 -> output.writeBoolean(this.falloff);
             case 1 -> output.writeBoolean(this.suck);
+            case 2 -> output.writeBoolean(this.hasAir);
             default -> throw new IllegalArgumentException();
         }
     }
@@ -171,6 +182,7 @@ public class BlockEntityFan extends BlockEntity
         switch (unit) {
             case 0 -> this.falloff = input.readBoolean();
             case 1 -> this.suck = input.readBoolean();
+            case 2 -> this.hasAir = input.readBoolean();
             default -> throw new IllegalArgumentException();
         }
     }

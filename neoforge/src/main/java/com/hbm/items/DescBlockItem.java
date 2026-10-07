@@ -10,6 +10,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -47,7 +48,8 @@ public class DescBlockItem extends BlockItem {
             TooltipFlag flag) {
         if (descLines > 0) {
             if (mode != Desc.STANDARD || ModifierKeys.detailsHeld()) {
-                String key = "desc.hbm." + BuiltInRegistries.BLOCK.getKey(getBlock()).getPath();
+                Identifier id = BuiltInRegistries.BLOCK.getKey(getBlock());
+                String key = "desc." + id.getNamespace() + "." + id.getPath();
                 for (int i = 1; i <= descLines; i++) {
                     MutableComponent line = Component.translatable(key + ".line" + i);
                     adder.accept(mode == Desc.PLAIN ? line : line.withStyle(ChatFormatting.YELLOW));

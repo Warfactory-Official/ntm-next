@@ -35,6 +35,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
@@ -93,8 +94,11 @@ public class BlockEntityMachineRadiolysis extends BlockEntityMachineBase
     public void tickServer() {
         power -= ItemEnergyTransfer.insert(this, SLOT_BATTERY, power, false);
 
+        boolean decaying = RTGUtil.hasHeat(inventory, SLOT_RTG);
+        int prevHeat = heat;
         heat = RTGUtil.updateRTGs(inventory, SLOT_RTG);
         power = Math.min(MAX_POWER, power + (long) heat * POWER_PER_HEAT);
+        if (decaying || heat != prevHeat) markChanged();
 
         if (tanks[0].setType(SLOT_FLUID_ID, SLOT_FLUID_ID_OUT, inventory)) setChanged();
         setupTanks();
@@ -129,6 +133,9 @@ public class BlockEntityMachineRadiolysis extends BlockEntityMachineBase
     }
 
     private void setupTanks() {
+        Fluid in = tanks[0].getTankType();
+        Fluid out1 = tanks[1].getTankType();
+        Fluid out2 = tanks[2].getTankType();
         RadiolysisRecipe recipe = RadiolysisRecipes.INSTANCE.getRadiolysis(tanks[0].getTankType());
         if (recipe != null && recipe.outputFluid.length >= 2) {
             tanks[1].setTankType(recipe.outputFluid[0].type());
@@ -137,6 +144,11 @@ public class BlockEntityMachineRadiolysis extends BlockEntityMachineBase
             tanks[0].setTankType(null);
             tanks[1].setTankType(null);
             tanks[2].setTankType(null);
+        }
+        if (tanks[0].getTankType() != in
+                || tanks[1].getTankType() != out1
+                || tanks[2].getTankType() != out2) {
+            markChanged();
         }
     }
 

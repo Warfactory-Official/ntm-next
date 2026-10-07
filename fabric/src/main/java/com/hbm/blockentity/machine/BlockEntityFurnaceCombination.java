@@ -110,6 +110,7 @@ public class BlockEntityFurnaceCombination extends BlockEntityMachinePolluting
                 wasOn = true;
                 progress += burn;
                 heat -= burn;
+                markChanged();
 
                 if (progress >= PROCESS_TIME) {
                     setChanged();
@@ -159,6 +160,7 @@ public class BlockEntityFurnaceCombination extends BlockEntityMachinePolluting
                 }
             }
         } else {
+            if (progress != 0) markChanged();
             progress = 0;
         }
 
@@ -207,10 +209,12 @@ public class BlockEntityFurnaceCombination extends BlockEntityMachinePolluting
                 source.useUpHeat(level, heatPos, diff);
                 heat += diff;
                 if (heat > MAX_HEAT) heat = MAX_HEAT;
+                markChanged();
                 return;
             }
         }
 
+        if (heat > 0) markChanged();
         heat = Math.max(heat - Math.max(heat / 1000, 1), 0);
     }
 

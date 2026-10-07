@@ -4,6 +4,7 @@
 package com.hbm.items.tool;
 
 import com.hbm.extprop.HbmLivingProps;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.TickPhase;
@@ -50,8 +51,8 @@ public class ItemDosimeter extends Item {
                         ? pickGeiger(x, level.getRandom())
                         : (level.getRandom().nextInt(100) == 0 ? 1 : 0);
         if (idx > 0) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    entity,
                     entity.getX(),
                     entity.getY(),
                     entity.getZ(),
@@ -65,8 +66,8 @@ public class ItemDosimeter extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide()) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),

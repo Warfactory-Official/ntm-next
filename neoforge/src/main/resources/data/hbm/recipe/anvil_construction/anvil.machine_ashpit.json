@@ -14,7 +14,7 @@
       "ingredient": "#c:ingots/iron"
     }
   ],
-  "order": 64,
+  "order": 16384,
   "output_items": [
     "hbm:machine_ashpit"
   ],

@@ -9,10 +9,10 @@
   "duration": 200,
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/tungsten"
+      "ingredient": "#c:ores/tungsten"
     }
   ],
-  "order": 18,
+  "order": 6656,
   "output_items": [
     {
       "count": 2,

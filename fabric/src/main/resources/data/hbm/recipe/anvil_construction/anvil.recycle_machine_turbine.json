@@ -5,7 +5,7 @@
       "ingredient": "hbm:machine_turbine"
     }
   ],
-  "order": 252,
+  "order": 64512,
   "output_items": [
     "hbm:turbine_titanium",
     {

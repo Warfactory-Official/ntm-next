@@ -8,7 +8,7 @@
       "ingredient": "#c:ingots/uranium_238"
     }
   ],
-  "order": 1,
+  "order": 256,
   "output_items": [
     "hbm:ingot_schrabidium"
   ]

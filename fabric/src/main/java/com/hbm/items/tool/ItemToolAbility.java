@@ -18,6 +18,7 @@ import com.hbm.lib.Library;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.PlayerInformPayload;
 import com.hbm.platform.FabricPlatform;
+import com.hbm.sound.EntitySounds;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -421,16 +422,15 @@ public class ItemToolAbility extends Item implements IKeybindReceiver {
                         PlayerInformPayload.ID_TOOL_ABILITY,
                         PlayerInformPayload.DEFAULT_MILLIS),
                 player);
-        player.level()
-                .playSound(
-                        null,
-                        player.getX(),
-                        player.getY(),
-                        player.getZ(),
-                        SoundEvents.EXPERIENCE_ORB_PICKUP,
-                        SoundSource.PLAYERS,
-                        0.25F,
-                        active.isNone() ? 0.75F : 1.25F);
+        EntitySounds.play(
+                player,
+                player.getX(),
+                player.getY(),
+                player.getZ(),
+                SoundEvents.EXPERIENCE_ORB_PICKUP,
+                SoundSource.PLAYERS,
+                0.25F,
+                active.isNone() ? 0.75F : 1.25F);
     }
 
     @Override

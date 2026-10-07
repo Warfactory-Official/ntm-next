@@ -12,6 +12,7 @@ import com.hbm.blockentity.IFluidCopiable;
 import com.hbm.blockentity.IUpgradeInfoProvider;
 import com.hbm.blockentity.PersistentDrop;
 import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.generic.FluidReserveBlock;
 import com.hbm.inventory.container.MenuMachineOilWell;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
@@ -158,6 +159,7 @@ public abstract class BlockEntityOilDrillBase extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
+        long priorPower = power;
         power += ItemEnergyTransfer.extract(this, SLOT_BATTERY, getMaxPower() - power, false);
 
         upgradeManager.scan(this, SLOT_UPGRADE_START, SLOT_UPGRADE_END);
@@ -207,7 +209,7 @@ public abstract class BlockEntityOilDrillBase extends BlockEntityMachineBase
             this.indicator = 2;
         }
 
-        setChanged();
+        if (power != priorPower) markChanged();
         networkPackNT(25);
     }
 
@@ -242,7 +244,11 @@ public abstract class BlockEntityOilDrillBase extends BlockEntityMachineBase
     }
 
     protected boolean canSuckBlock(Block b) {
-        return b == ModBlocks.ORE_OIL.get() || b == ModBlocks.ORE_OIL_EMPTY.get();
+        FluidReserveBlock reserve = FluidReserveBlock.of(b);
+        return b == ModBlocks.ORE_OIL.get()
+                || b == ModBlocks.ORE_OIL_EMPTY.get()
+                || reserve != null && !reserve.requiresFracking()
+                || b instanceof FluidReserveBlock.Drained;
     }
 
     protected boolean canPump() {
@@ -259,12 +265,17 @@ public abstract class BlockEntityOilDrillBase extends BlockEntityMachineBase
         if (layer > 64) return false;
 
         Block b = level.getBlockState(pos).getBlock();
+        FluidReserveBlock reserve = FluidReserveBlock.of(b);
+        if (reserve != null) {
+            onReserveSuck(pos, reserve);
+            return true;
+        }
         if (b == ModBlocks.ORE_OIL.get() || b == ModBlocks.ORE_BEDROCK_OIL.get()) {
             doSuck(pos);
             return true;
         }
 
-        if (b == ModBlocks.ORE_OIL_EMPTY.get()) {
+        if (b == ModBlocks.ORE_OIL_EMPTY.get() || b instanceof FluidReserveBlock.Drained) {
             for (Direction dir : BobMathUtil.getShuffledDirs()) {
                 if (suckRec(pos.relative(dir), layer + 1)) return true;
             }
@@ -273,9 +284,37 @@ public abstract class BlockEntityOilDrillBase extends BlockEntityMachineBase
     }
 
     protected void doSuck(BlockPos pos) {
+        tanks[0].setTankType(NTMFluids.OIL);
+        tanks[1].setTankType(NTMFluids.GAS);
         if (level.getBlockState(pos).is(ModBlocks.ORE_OIL.get())) {
             onSuck(pos);
         }
+    }
+
+    protected void onReserveSuck(BlockPos pos, FluidReserveBlock reserve) {
+        tanks[0].setTankType(reserve.primaryFluid());
+        tanks[1].setTankType(reserve.secondaryFluid());
+        tanks[0].setFill(
+                Math.min(tanks[0].getFill() + reservePrimary(reserve), tanks[0].getMaxFill()));
+        if (tanks[1].getTankType() != null) {
+            tanks[1].setFill(
+                    Math.min(
+                            tanks[1].getFill() + reserveSecondary(reserve), tanks[1].getMaxFill()));
+        }
+        reserve.drain(level, pos, level.getRandom(), reserveDrainMultiplier());
+        setChanged();
+    }
+
+    protected int reservePrimary(FluidReserveBlock reserve) {
+        return reserve.primaryAmount();
+    }
+
+    protected int reserveSecondary(FluidReserveBlock reserve) {
+        return reserve.secondaryAmount(level.getRandom());
+    }
+
+    protected double reserveDrainMultiplier() {
+        return 1.0D;
     }
 
     @Override

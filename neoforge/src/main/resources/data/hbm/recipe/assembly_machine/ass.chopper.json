@@ -22,7 +22,7 @@
       "ingredient": "hbm:circuit_controller_advanced"
     }
   ],
-  "order": 286,
+  "order": 73216,
   "output_items": [
     "hbm:chopper"
   ],

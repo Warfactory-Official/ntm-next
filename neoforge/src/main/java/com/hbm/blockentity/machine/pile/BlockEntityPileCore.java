@@ -269,10 +269,10 @@ public class BlockEntityPileCore extends BlockEntity
     }
 
     public void tickServer() {
-        runSimulation();
-        handleVentilation();
+        boolean changed = runSimulation();
+        changed |= handleVentilation();
         handleMeltdown();
-        setChanged();
+        if (changed) markChanged();
         networkPackNT(25);
     }
 
@@ -293,7 +293,8 @@ public class BlockEntityPileCore extends BlockEntity
         highestHeat = input.readDouble();
     }
 
-    private void runSimulation() {
+    private boolean runSimulation() {
+        boolean changed = false;
         for (PileChannel channel : fuelChannels) {
             if (channel.length <= 0) continue;
             double produced = 0D;
@@ -308,6 +309,7 @@ public class BlockEntityPileCore extends BlockEntity
                     channel.rods[i] = ItemPileRodMK2.react(stack, flux);
                 }
             }
+            if (produced != 0D || channel.incomingNeutrons != 0D) changed = true;
             channel.outgoingNeutrons = produced;
             channel.incomingNeutrons = 0D;
         }
@@ -345,11 +347,14 @@ public class BlockEntityPileCore extends BlockEntity
                         channel.incomingNeutrons += outgoing * multiplier;
             }
         }
+        return changed;
     }
 
-    private void handleVentilation() {
+    private boolean handleVentilation() {
+        boolean changed = false;
         for (PileChannel channel : ventilationChannels) {
             if (channel.air <= 0) continue;
+            changed = true;
             double airCap = (double) channel.air / PileChannel.MAX_AIR;
             for (PileChannel fuel : fuelChannels) {
                 if (Math.abs(fuel.entry.pos().getY() - channel.entry.pos().getY()) <= 1)
@@ -384,9 +389,11 @@ public class BlockEntityPileCore extends BlockEntity
         }
 
         for (PileChannel channel : fuelChannels) {
+            if (channel.heat != 20D) changed = true;
             channel.heat *= 0.999D;
             if (channel.heat < 20D) channel.heat = 20D;
         }
+        return changed;
     }
 
     private void handleMeltdown() {
@@ -582,6 +589,10 @@ public class BlockEntityPileCore extends BlockEntity
             }
             dropItem(shifted, length);
             setChanged();
+        }
+
+        public void coreChanged() {
+            markChanged();
         }
 
         public void ejectAll() {

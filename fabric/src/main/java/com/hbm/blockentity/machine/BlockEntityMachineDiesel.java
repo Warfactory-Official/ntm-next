@@ -126,14 +126,16 @@ public class BlockEntityMachineDiesel extends BlockEntityMachinePolluting
     }
 
     public void refreshRedstone() {
+        boolean wasRedstone = redstone;
         redstone = level.hasNeighborSignal(worldPosition);
+        if (redstone != wasRedstone) markChanged();
     }
 
     private void generate() {
         if (!isOn) return;
         if (redstone) return;
 
-        if (hasAcceptableFuel() && tank.getFill() > 0) {
+        if (hasAcceptableFuel() && tank.getFill() > 0 && breatheAir(1)) {
             wasOn = true;
             tank.setFill(tank.getFill() - 1);
 

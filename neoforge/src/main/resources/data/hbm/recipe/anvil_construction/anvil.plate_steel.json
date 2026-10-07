@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/steel"
     }
   ],
-  "order": 4,
+  "order": 1024,
   "output_items": [
     "hbm:plate_steel"
   ],

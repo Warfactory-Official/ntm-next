@@ -8,6 +8,7 @@ import com.hbm.capability.NtmContracts;
 import com.hbm.config.NeoForgeHbmConfig;
 import com.hbm.interfaces.IBomb;
 import com.hbm.items.ModDataComponents;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.KeyHints;
 import java.util.ArrayList;
@@ -59,8 +60,8 @@ public class ItemMultiDetonator extends Item {
         grown.add(context.getClickedPos().asLong());
         stack.set(ModDataComponents.DETONATOR_POS_LIST.get(), List.copyOf(grown));
 
-        level.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.blockPosition(),
                 ModSounds.TECH_BOOP.get(),
                 SoundSource.PLAYERS,
@@ -92,8 +93,8 @@ public class ItemMultiDetonator extends Item {
 
         if (player.isShiftKeyDown()) {
             stack.remove(ModDataComponents.DETONATOR_POS_LIST.get());
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.blockPosition(),
                     ModSounds.TECH_BOOP.get(),
                     SoundSource.PLAYERS,
@@ -125,8 +126,8 @@ public class ItemMultiDetonator extends Item {
                 }
             }
         }
-        level.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.blockPosition(),
                 ModSounds.TECH_BLEEP.get(),
                 SoundSource.PLAYERS,

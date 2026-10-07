@@ -3,10 +3,9 @@
 
 package com.hbm.client.render;
 
+import com.hbm.api.fluidmk2.FluidPipeTintData;
 import com.hbm.blockentity.machine.BlockEntityRefueler;
 import com.hbm.blocks.machine.BlockMachineHorizontal;
-import com.hbm.inventory.fluid.NTMFluidProperties;
-import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
@@ -38,9 +37,9 @@ import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
-import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
@@ -145,9 +144,7 @@ public class RenderRefueler
     }
 
     private static int fluidColor(@Nullable Fluid fluid) {
-        if (fluid == null) return CommonColors.WHITE;
-        NTMFluidProperty property = NTMFluidProperties.get(fluid);
-        return property.colorARGB();
+        return FluidPipeTintData.colorFor(fluid == null ? Fluids.EMPTY : fluid);
     }
 
     @Override

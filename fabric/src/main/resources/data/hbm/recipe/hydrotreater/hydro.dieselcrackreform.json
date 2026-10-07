@@ -12,7 +12,7 @@
       "pressure": 1
     }
   ],
-  "order": 4,
+  "order": 1024,
   "output_fluids": [
     {
       "type": "hbm:diesel_reform",

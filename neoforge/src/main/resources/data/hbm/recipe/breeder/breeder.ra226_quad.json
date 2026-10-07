@@ -6,7 +6,7 @@
       "ingredient": "hbm:rod_quad_ra226"
     }
   ],
-  "order": 8,
+  "order": 2048,
   "output_items": [
     "hbm:rod_quad_ac227"
   ]

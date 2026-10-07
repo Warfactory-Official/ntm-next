@@ -28,7 +28,7 @@
       "ingredient": "hbm:circuit_basic"
     }
   ],
-  "order": 103,
+  "order": 26368,
   "output_items": [
     "hbm:machine_crystallizer"
   ],

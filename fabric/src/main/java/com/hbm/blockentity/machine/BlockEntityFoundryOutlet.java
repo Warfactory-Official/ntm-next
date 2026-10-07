@@ -63,7 +63,10 @@ public class BlockEntityFoundryOutlet extends BlockEntityFoundryBase {
     }
 
     public void refreshRedstone() {
-        redstone = level.hasNeighborSignal(worldPosition);
+        boolean signal = level.hasNeighborSignal(worldPosition);
+        if (signal == redstone) return;
+        redstone = signal;
+        markChanged();
     }
 
     @Override

@@ -6,8 +6,6 @@ package com.hbm.client.gui;
 import com.hbm.inventory.container.MenuRebarPlacer;
 import com.hbm.items.tool.ItemRebarPlacer;
 import com.hbm.lib.Library;
-import com.hbm.util.GameTime;
-import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -16,11 +14,13 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 
 public class ScreenRebarPlacer extends ScreenInfoContainer<MenuRebarPlacer> {
 
     private static final Identifier TEXTURE = Library.id("textures/gui/gui_rebar.png");
+
+    private final List<ItemStack> concrete =
+            ItemRebarPlacer.acceptableConcrete().stream().map(ItemStack::new).toList();
 
     public ScreenRebarPlacer(MenuRebarPlacer menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title, 176, 182);
@@ -64,20 +64,7 @@ public class ScreenRebarPlacer extends ScreenInfoContainer<MenuRebarPlacer> {
         Slot pattern = menu.pattern();
         if (!isHovering(pattern.x, pattern.y, 16, 16, mouseX, mouseY) || pattern.hasItem()) return;
 
-        List<ItemStack> list = new ArrayList<>();
-        for (Block block : ItemRebarPlacer.acceptableConcrete()) list.add(new ItemStack(block));
-        int cycle = (int) (GameTime.now() % (1000L * list.size()) / 1000L);
-        ItemStack selected = list.get(cycle);
-
-        int bound0 = (int) Math.ceil(list.size() / 3D);
-        int bound1 = (int) Math.ceil(list.size() / 3D * 2D);
-        List<Object[]> lines = new ArrayList<>();
-        lines.add(list.subList(0, bound0).toArray());
-        lines.add(list.subList(bound0, bound1).toArray());
-        lines.add(list.subList(bound1, list.size()).toArray());
-        lines.add(new Object[] {selected.getHoverName().getString()});
-
-        GUIElements.drawStackText(
-                graphics, this.font, lines, mouseX, mouseY, this.width, this.height, selected);
+        GUIElements.drawCyclingStackText(
+                graphics, font, null, concrete, mouseX, mouseY, width, height);
     }
 }

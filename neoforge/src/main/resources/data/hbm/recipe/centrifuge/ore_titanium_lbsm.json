@@ -9,10 +9,10 @@
   "duration": 200,
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/titanium"
+      "ingredient": "#c:ores/titanium"
     }
   ],
-  "order": 16,
+  "order": 5632,
   "output_items": [
     {
       "count": 2,

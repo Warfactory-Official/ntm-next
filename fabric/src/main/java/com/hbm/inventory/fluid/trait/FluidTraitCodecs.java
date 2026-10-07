@@ -415,6 +415,20 @@ public final class FluidTraitCodecs {
         CONTAINERS.put(name, codec);
     }
 
+    public static <T extends FluidTrait> void register(String name, MapCodec<T> codec) {
+        if (BY_NAME.containsKey(name)) {
+            throw new IllegalStateException("trait codec " + name + " is already registered");
+        }
+        put(name, codec);
+    }
+
+    public static <T extends FluidTrait> void registerFlag(String name, T instance) {
+        if (BY_NAME.containsKey(name)) {
+            throw new IllegalStateException("trait codec " + name + " is already registered");
+        }
+        marker(name, instance);
+    }
+
     private static <T extends FluidTrait> void put(String name, MapCodec<T> codec) {
         if (!FluidTrait.traitNameMap.containsKey(name)) {
             throw new IllegalStateException(

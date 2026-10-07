@@ -5,11 +5,11 @@ package com.hbm.blockentity.network;
 
 import com.hbm.blockentity.IControlReceiverFilter;
 import com.hbm.blocks.ModBlockEntities;
-import com.hbm.capability.NtmContracts;
 import com.hbm.inventory.container.MenuRadioTorchCounter;
 import com.hbm.module.ModulePatternMatcher;
 import com.hbm.packet.SyncBindings;
 import com.hbm.packet.SyncField;
+import com.hbm.util.InventoryUtil;
 import io.netty.buffer.ByteBuf;
 import java.util.Arrays;
 import net.minecraft.core.BlockPos;
@@ -49,13 +49,17 @@ public final class BlockEntityRadioTorchCounter extends BlockEntityRadioTorch
     public final ModulePatternMatcher matcher = new ModulePatternMatcher(FILTER_COUNT);
 
     public BlockEntityRadioTorchCounter(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.RTTY_COUNTER.get(), pos, state, NtmContracts.INVENTORY);
+        super(ModBlockEntities.RTTY_COUNTER.get(), pos, state, InventoryUtil::anchorAt);
         Arrays.fill(channels, "");
     }
 
     @Override
     public void tickServer() {
-        Container inventory = attached(Container.class);
+        Container inventory =
+                InventoryUtil.whole(
+                        level,
+                        worldPosition.relative(supportDirection()),
+                        attached(Container.class));
         if (inventory != null) {
             for (int i = 0; i < FILTER_COUNT; i++) {
                 if (channels[i].isEmpty() || filters.get(i).isEmpty()) continue;
@@ -70,6 +74,7 @@ public final class BlockEntityRadioTorchCounter extends BlockEntityRadioTorch
                     RTTYSystem.broadcast(level, channels[i], count);
                     forceUpdate[i] = false;
                 }
+                if (lastCount[i] != count) markChanged();
                 lastCount[i] = count;
             }
         }
@@ -236,7 +241,7 @@ public final class BlockEntityRadioTorchCounter extends BlockEntityRadioTorch
 
     @Override
     public long syncUnitMask() {
-        return (super.syncUnitMask() | 0x7f0L) & ~0xeL;
+        return (super.syncUnitMask() | 0x7f0L) & ~(0xeL | SIGNAL_MASK);
     }
 
     @Override

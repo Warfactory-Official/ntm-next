@@ -10,7 +10,7 @@
       "ingredient": "#hbm:ingots/any_highexplosive"
     }
   ],
-  "order": 288,
+  "order": 73728,
   "output_items": [
     "hbm:pellet_cluster"
   ],

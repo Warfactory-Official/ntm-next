@@ -14,7 +14,7 @@
       "ingredient": "#c:ingots/schrabidate"
     }
   ],
-  "order": 3,
+  "order": 768,
   "output_items": [
     "hbm:ingot_dineutronium"
   ]

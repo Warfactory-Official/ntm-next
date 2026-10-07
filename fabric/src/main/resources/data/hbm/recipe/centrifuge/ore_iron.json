@@ -3,7 +3,7 @@
   "duration": 200,
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/iron"
+      "ingredient": "#c:ores/iron"
     }
   ],
   "order": 0,

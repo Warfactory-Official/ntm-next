@@ -30,6 +30,7 @@ import com.hbm.packet.toclient.EffectNTPayload;
 import com.hbm.particle.HbmEffectNT;
 import com.hbm.saveddata.satellites.SatelliteRayEvents;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -106,7 +107,7 @@ public class BlockEntityICF extends BlockEntityMachineBase
     public void tickServer() {
         ServerLevel server = (ServerLevel) level;
 
-        tanks[0].setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory);
+        if (tanks[0].setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory)) markChanged();
 
         boolean markDirty = false;
 
@@ -139,6 +140,7 @@ public class BlockEntityICF extends BlockEntityMachineBase
                 && ItemICFPellet.getFusingDifficulty(loaded) <= this.laser) {
             this.heatup = ItemICFPellet.react(loaded, this.laser);
             this.heat += heatup;
+            markChanged();
             if (ItemICFPellet.getDepletion(loaded) >= ItemICFPellet.getMaxDepletion(loaded)) {
                 inventory.set(SLOT_LOADED, new ItemStack(ModItems.ICF_PELLET_DEPLETED));
                 markDirty = true;
@@ -191,10 +193,12 @@ public class BlockEntityICF extends BlockEntityMachineBase
 
             this.consumption = step.amountReq * cycles;
             this.output = step.amountProduced * cycles;
+            if (cycles > 0) markChanged();
         }
 
         flush.provide(server, this);
 
+        if (this.heat != 0) markChanged();
         this.heat *= 0.999D;
         if (this.heat > maxHeat) this.heat = maxHeat;
         if (markDirty) this.setChanged();
@@ -207,6 +211,11 @@ public class BlockEntityICF extends BlockEntityMachineBase
     @Override
     public FluidTankNTM[] copiableTanks() {
         return tanks;
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
     }
 
     @Override

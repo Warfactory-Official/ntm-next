@@ -3,7 +3,7 @@
 
 package com.hbm.util;
 
-import com.hbm.NuclearTech;
+import com.hbm.registration.Reg;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +45,7 @@ public final class TooltipStyle {
     }
 
     public static boolean isNtm(Item item) {
-        return BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(NuclearTech.MOD_ID);
+        return Reg.isNtmNamespace(BuiltInRegistries.ITEM.getKey(item).getNamespace());
     }
 
     public static Component defaultColor(Component line, ChatFormatting color) {

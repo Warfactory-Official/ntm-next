@@ -10,7 +10,7 @@
       "ingredient": "#c:ingots/cmbsteel"
     }
   ],
-  "order": 8,
+  "order": 2048,
   "output_items": [
     "hbm:plate_combine_steel"
   ],

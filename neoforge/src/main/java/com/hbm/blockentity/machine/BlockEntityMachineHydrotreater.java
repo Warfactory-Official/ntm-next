@@ -164,6 +164,7 @@ public class BlockEntityMachineHydrotreater extends BlockEntityMachineBase
         tanks[3].setFill((int) (tanks[3].getFill() + out2.amount()));
 
         power -= recipe.power;
+        markChanged();
     }
 
     @Override

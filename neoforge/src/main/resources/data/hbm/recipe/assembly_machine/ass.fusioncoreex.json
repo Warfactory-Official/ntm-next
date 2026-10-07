@@ -29,7 +29,7 @@
     }
   ],
   "name": "ass.fusioncoreEx",
-  "order": 256,
+  "order": 65536,
   "output_items": [
     "hbm:struct_torus_core"
   ],

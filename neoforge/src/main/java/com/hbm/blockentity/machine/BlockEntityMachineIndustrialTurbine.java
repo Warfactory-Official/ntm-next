@@ -78,6 +78,7 @@ public class BlockEntityMachineIndustrialTurbine extends BlockEntityTurbineBase
                 (int) Math.ceil((tanks[0].getMaxFill() * consumptionPercent()) / trait.amountReq);
         this.maxPower = (long) (maxOps * trait.heatEnergy * eff);
         this.flywheel_energy += power;
+        markChanged();
     }
 
     @Override
@@ -87,6 +88,7 @@ public class BlockEntityMachineIndustrialTurbine extends BlockEntityTurbineBase
                 Math.min((long) (Math.max(this.spin, 0.05) * maxPower), this.flywheel_energy);
         this.flywheel_energy -= this.lastPowerTarget;
         this.powerBuffer = this.lastPowerTarget;
+        if (this.lastPowerTarget != 0) markChanged();
     }
 
     @Override

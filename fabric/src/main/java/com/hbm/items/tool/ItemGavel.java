@@ -4,6 +4,7 @@
 package com.hbm.items.tool;
 
 import com.hbm.potion.HbmPotion;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -31,16 +32,16 @@ public final class ItemGavel extends Item {
         if (!(target.level() instanceof ServerLevel level)) return;
 
         if (type == Type.WOOD) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    target,
                     target.blockPosition(),
                     ModSounds.GAVEL.get(),
                     SoundSource.PLAYERS,
                     3.0F,
                     1.0F);
         } else if (type == Type.LEAD) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    target,
                     target.blockPosition(),
                     ModSounds.GAVEL.get(),
                     SoundSource.PLAYERS,
@@ -49,8 +50,8 @@ public final class ItemGavel extends Item {
             target.addEffect(new MobEffectInstance(HbmPotion.lead(), 15 * 20, 4));
         } else {
             target.setHealth(target.getHealth() - target.getMaxHealth() / 3.0F);
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    target,
                     target.blockPosition(),
                     ModSounds.GAVEL.get(),
                     SoundSource.PLAYERS,

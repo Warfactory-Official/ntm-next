@@ -16,6 +16,7 @@ import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import com.hbm.util.TickPhase;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -80,6 +81,7 @@ public class BlockEntityMachineCrackingTower extends BlockEntityMachineBase
                 tanks[2].setFill(tanks[2].getFill() + left);
                 tanks[3].setFill(tanks[3].getFill() + right);
                 tanks[4].setFill(tanks[4].getFill() + 2);
+                markChanged();
             }
         }
     }
@@ -88,6 +90,24 @@ public class BlockEntityMachineCrackingTower extends BlockEntityMachineBase
         return tanks[2].getFill() + left <= tanks[2].getMaxFill()
                 && tanks[3].getFill() + right <= tanks[3].getMaxFill()
                 && tanks[4].getFill() + 2 <= tanks[4].getMaxFill();
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return tanks[0].joins(type) || tanks[1].joins(type);
+    }
+
+    @Override
+    public boolean canProvideFluid(Fluid type) {
+        for (int i = 2; i <= 4; i++) {
+            if (tanks[i].joins(type)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
     }
 
     @Override
@@ -109,6 +129,7 @@ public class BlockEntityMachineCrackingTower extends BlockEntityMachineBase
         if (tanks[1].accepts(type) && remaining > 0) {
             remaining -= tanks[1].fill(type, (int) Math.min(remaining, Integer.MAX_VALUE), true);
         }
+        if (remaining != amount) markChanged();
         return remaining;
     }
 
@@ -130,6 +151,7 @@ public class BlockEntityMachineCrackingTower extends BlockEntityMachineBase
                 remaining -= tanks[i].drain((int) Math.min(remaining, Integer.MAX_VALUE), true);
             }
         }
+        if (remaining != amount) markChanged();
     }
 
     @Override

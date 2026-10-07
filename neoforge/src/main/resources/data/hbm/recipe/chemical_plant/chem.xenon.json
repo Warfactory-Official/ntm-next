@@ -17,7 +17,7 @@
       "amount": 16000
     }
   ],
-  "order": 3,
+  "order": 768,
   "output_fluids": [
     {
       "type": "hbm:xenon",

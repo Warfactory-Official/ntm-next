@@ -5,7 +5,7 @@
       "ingredient": "minecraft:polished_sulfur"
     }
   ],
-  "order": 60,
+  "order": 15360,
   "output_items": [
     "hbm:sulfur"
   ]

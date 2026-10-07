@@ -85,6 +85,7 @@ public final class CraneConsolePeripheral extends SnapshotPeripheral<BlockEntity
             }
             default -> {}
         }
+        machine.markChanged();
         return new Object[] {};
     }
 

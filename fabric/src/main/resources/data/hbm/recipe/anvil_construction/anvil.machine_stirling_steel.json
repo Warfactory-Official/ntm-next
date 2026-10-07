@@ -21,7 +21,7 @@
       "ingredient": "hbm:gear_large_steel"
     }
   ],
-  "order": 72,
+  "order": 18432,
   "output_items": [
     "hbm:machine_stirling_steel"
   ],

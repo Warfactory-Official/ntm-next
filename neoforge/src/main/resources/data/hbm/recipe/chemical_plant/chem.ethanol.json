@@ -17,7 +17,7 @@
       "ingredient": "minecraft:sugar"
     }
   ],
-  "order": 9,
+  "order": 2304,
   "output_fluids": [
     {
       "type": "hbm:ethanol",

@@ -68,6 +68,7 @@ public class BlockEntityFloodlight extends BlockEntity
 
         if (power >= POWER_DRAW) {
             power -= POWER_DRAW;
+            markChanged();
             if (!isOn) {
                 isOn = true;
                 castLights();

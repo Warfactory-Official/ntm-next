@@ -42,7 +42,11 @@ public class BlockEntityRBMKIndicator extends BlockEntity
 
     public static void tickServer(
             Level level, BlockPos pos, BlockState state, BlockEntityRBMKIndicator indicator) {
-        for (IndicatorUnit unit : indicator.indicators) unit.update(level);
+        for (IndicatorUnit unit : indicator.indicators) {
+            boolean light = unit.light;
+            unit.update(level);
+            if (unit.light != light) indicator.markChanged();
+        }
         indicator.networkPackNT(50);
     }
 

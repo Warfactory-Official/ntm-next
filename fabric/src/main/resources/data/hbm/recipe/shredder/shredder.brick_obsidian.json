@@ -5,7 +5,7 @@
       "ingredient": "hbm:brick_obsidian"
     }
   ],
-  "order": 20,
+  "order": 5120,
   "output_items": [
     "hbm:gravel_obsidian"
   ]

@@ -6,7 +6,7 @@
       "ingredient": "#c:plates/copper"
     }
   ],
-  "order": 40,
+  "order": 10240,
   "output_items": [
     "hbm:shell_copper"
   ],

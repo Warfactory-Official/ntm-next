@@ -5,25 +5,16 @@ package com.hbm.entity.mob;
 
 import com.hbm.blockentity.machine.BlockEntityTesla;
 import com.hbm.handler.threading.TargetPoint;
-import com.hbm.items.ModItems;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.TeslaArcPayload;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -58,25 +49,5 @@ public class EntityTeslaCrab extends EntityCyberCrab {
         }
 
         super.tick();
-    }
-
-    @Override
-    protected void dropCustomDeathLoot(
-            ServerLevel level, DamageSource source, boolean killedByPlayer) {
-        super.dropCustomDeathLoot(level, source, killedByPlayer);
-
-        if (!killedByPlayer) return;
-
-        int looting = 0;
-        if (source.getEntity() instanceof LivingEntity attacker) {
-            Holder<Enchantment> lootingEnchant =
-                    level.registryAccess()
-                            .lookupOrThrow(Registries.ENCHANTMENT)
-                            .getOrThrow(Enchantments.LOOTING);
-            looting = EnchantmentHelper.getEnchantmentLevel(lootingEnchant, attacker);
-        }
-
-        if (random.nextInt(200) - looting < 5)
-            spawnAtLocation(level, new ItemStack(ModItems.COIL_COPPER.get()));
     }
 }

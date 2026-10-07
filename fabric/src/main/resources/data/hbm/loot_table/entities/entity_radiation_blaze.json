@@ -1,0 +1,63 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        },
+        {
+          "condition": "minecraft:random_chance_with_enchanted_bonus",
+          "enchanted_chance": 1.0,
+          "enchantment": "minecraft:looting",
+          "unenchanted_chance": 0.0
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 0.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "count": 1.0,
+              "enchantment": "minecraft:looting",
+              "function": "minecraft:enchanted_count_increase"
+            }
+          ],
+          "name": "hbm:nugget_polonium"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_zirnox_depleted_uranium_fuel"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_zirnox_depleted_mox_fuel"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm:rod_zirnox_depleted_plutonium_fuel"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 3.0,
+        "min": 1.0
+      }
+    }
+  ],
+  "random_sequence": "hbm:entities/entity_radiation_blaze"
+}

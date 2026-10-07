@@ -21,7 +21,7 @@
     }
   ],
   "name": "ass.solidifierEx",
-  "order": 135,
+  "order": 34560,
   "output_items": [
     "hbm:machine_solidifier"
   ],

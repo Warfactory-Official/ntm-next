@@ -2357,6 +2357,7 @@
   "desc.gui.zirnox.pressure": "§6Pressão§r\nA pressão pode ser reduzida liberando CO2.\nPorém, uma pressão muito baixa reduzirá\na eficiência do resfriamento e da produção de vapor.\nFique atento a fusões do reator!",
   "desc.gui.zirnox.warning1": "§cErro:§r Água é necessária para\no funcionamento correto do reator!",
   "desc.gui.zirnox.warning2": "§cErro:§r CO2 é necessário para\no funcionamento correto do reator!",
+  "desc.hbm.capacitor": "Entrada: Superior\nSaída: Inferior, via Barramento de Capacitores",
   "desc.hbm.capacitor.line1": "Entrada: Superior",
   "desc.hbm.capacitor.line2": "Saída: Inferior, via Barramento de Capacitores",
   "desc.hbm.capacitor_bus.line1": "Bloco de saída para capacitores",

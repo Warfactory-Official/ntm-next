@@ -44,6 +44,7 @@ public abstract class BlockEntityMachinePolluting extends BlockEntityMachineBase
 
         int fluidAmount = (int) Math.ceil(amount * 100);
         int accepted = tank.fill(tank.getTankType(), fluidAmount, true);
+        if (accepted > 0) markChanged();
         int overflow = fluidAmount - accepted;
         if (overflow > 0) {
             PollutionHandler.incrementPollution(level, worldPosition, type, overflow / 100F);
@@ -88,6 +89,7 @@ public abstract class BlockEntityMachinePolluting extends BlockEntityMachineBase
     protected void useUpSmokeFluid(Fluid type, long amount) {
         for (FluidTankNTM tank : getSmokeTanks()) {
             if (tank.provides(type)) {
+                if (amount > 0 && tank.getFill() > 0) markChanged();
                 tank.setFill((int) Math.max(0, tank.getFill() - amount));
                 return;
             }

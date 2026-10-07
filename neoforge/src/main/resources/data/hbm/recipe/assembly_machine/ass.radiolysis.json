@@ -33,7 +33,7 @@
       "ingredient": "hbm:thermo_element"
     }
   ],
-  "order": 120,
+  "order": 30720,
   "output_items": [
     "hbm:machine_radiolysis"
   ],

@@ -1745,6 +1745,7 @@
   "desc.gui.soyuz.fueling": "Tanken",
   "desc.gui.soyuz.loading": "Beladen",
   "desc.gui.soyuz.ready": "Bereit",
+  "desc.hbm.capacitor": "Input: Oben\nOutput: Unten, über Kondensator-Bus",
   "desc.hbm.capacitor.line1": "Input: Oben",
   "desc.hbm.capacitor.line2": "Output: Unten, über Kondensator-Bus",
   "desc.hbm.capacitor_bus.line1": "Output für Kondensatoren",

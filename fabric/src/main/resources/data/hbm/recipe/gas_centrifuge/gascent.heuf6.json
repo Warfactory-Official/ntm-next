@@ -2,7 +2,7 @@
   "type": "hbm:gas_centrifuge",
   "consumed": 300,
   "duration": 150,
-  "order": 3,
+  "order": 768,
   "output_items": [
     {
       "count": 2,

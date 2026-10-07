@@ -87,7 +87,10 @@ public class BlockEntityFusionBreeder extends BlockEntityMachineBase
     public void tickServer() {
         if (tanks[0].setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory)) setChanged();
 
-        if (!canProcessSolid() && !canProcessLiquid()) progress = 0;
+        if (!canProcessSolid() && !canProcessLiquid()) {
+            if (progress != 0) markChanged();
+            progress = 0;
+        }
 
         neutronEnergySync = neutronEnergy;
 
@@ -160,6 +163,7 @@ public class BlockEntityFusionBreeder extends BlockEntityMachineBase
     }
 
     public void doProgress() {
+        double prevProgress = progress;
         if (canProcessSolid()) {
             progress += neutronEnergy;
             if (progress > CAPACITY) {
@@ -177,6 +181,7 @@ public class BlockEntityFusionBreeder extends BlockEntityMachineBase
         } else {
             progress = 0;
         }
+        if (progress != prevProgress) markChanged();
     }
 
     private @Nullable OutgasserRecipe recipeFor(ItemStack stack) {

@@ -5,7 +5,7 @@
       "ingredient": "minecraft:ender_pearl"
     }
   ],
-  "order": 20,
+  "order": 5120,
   "output_fluids": [
     {
       "type": "hbm:enderjuice",

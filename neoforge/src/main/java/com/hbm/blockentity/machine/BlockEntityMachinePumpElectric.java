@@ -40,7 +40,7 @@ public class BlockEntityMachinePumpElectric extends BlockEntityMachinePumpBase
         power -= POWER_PER_OP;
         water.setFill(
                 Math.min(
-                        water.getFill() + MachineData.PUMP_ELECTRIC_SPEED.get(),
+                        water.getFill() + pumpSpeed(MachineData.PUMP_ELECTRIC_SPEED.get()),
                         water.getMaxFill()));
         setChanged();
     }

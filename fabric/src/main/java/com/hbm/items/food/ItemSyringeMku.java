@@ -7,6 +7,7 @@ import com.hbm.NuclearTech;
 import com.hbm.config.FabricHbmConfig;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.handler.EntityEffectHandler;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -29,8 +30,8 @@ public class ItemSyringeMku extends Item {
     public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (!(target.level() instanceof ServerLevel level)) return;
         HbmLivingProps.getData(target).contagion = EntityEffectHandler.CONTAGION_DURATION;
-        level.playSound(
-                null,
+        EntitySounds.play(
+                target,
                 target.getX(),
                 target.getY(),
                 target.getZ(),

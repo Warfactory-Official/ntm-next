@@ -6,7 +6,7 @@
       "ingredient": "hbm:oil_tar_wax"
     }
   ],
-  "order": 18,
+  "order": 4608,
   "output_fluids": [
     {
       "type": "hbm:radiosolvent",

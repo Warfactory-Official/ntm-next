@@ -16,6 +16,7 @@ import com.hbm.inventory.fluid.trait.*;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Delicious;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Liquid;
 import com.hbm.lib.ModDamageTypes;
+import com.hbm.sound.EntitySounds;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.ContaminationUtil;
@@ -281,8 +282,8 @@ public class EntityMist extends Entity {
                 SoundSource.HOSTILE,
                 1F,
                 1F);
-        server.playSound(
-                null,
+        EntitySounds.play(
+                living,
                 living.getX(),
                 living.getY(),
                 living.getZ(),

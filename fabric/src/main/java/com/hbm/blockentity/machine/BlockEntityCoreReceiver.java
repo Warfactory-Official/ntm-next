@@ -50,11 +50,13 @@ public class BlockEntityCoreReceiver extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
+        if (power != joules * HE_PER_SPK) markChanged();
         power = joules * HE_PER_SPK;
 
         if (joules > 0) {
             if (tank.getFill() >= CRYOGEL_PER_TICK) {
                 tank.setFill(tank.getFill() - CRYOGEL_PER_TICK);
+                markChanged();
             } else {
                 level.setBlockAndUpdate(worldPosition, Blocks.LAVA.defaultBlockState());
                 return;
@@ -69,6 +71,7 @@ public class BlockEntityCoreReceiver extends BlockEntityMachineBase
     public void addEnergy(Level level, BlockPos pos, long energy, Direction dir) {
         if (dir.getOpposite() == getBlockState().getValue(CoreComponent.FACING)) {
             joules += energy;
+            markChanged();
             return;
         }
         level.destroyBlock(worldPosition, false);

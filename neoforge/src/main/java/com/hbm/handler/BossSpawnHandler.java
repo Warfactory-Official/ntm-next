@@ -4,6 +4,7 @@
 package com.hbm.handler;
 
 import com.hbm.advancement.AwardRegions;
+import com.hbm.api.environment.Environment;
 import com.hbm.blockentity.BlockEntityPedestal.PedestalEntry;
 import com.hbm.blockentity.BlockEntityPedestal.PedestalEntryType;
 import com.hbm.blockentity.BlockEntityPedestal;
@@ -289,7 +290,7 @@ public final class BossSpawnHandler {
 
                 Player p = players.get(meteorRand.nextInt(players.size()));
 
-                if (p != null && level.dimension() == Level.OVERWORLD) {
+                if (p != null && Environment.meteorStrikes(level)) {
 
                     boolean repell = false;
                     boolean strike = true;

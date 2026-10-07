@@ -5,7 +5,7 @@
       "ingredient": "hbm:fusion_heater"
     }
   ],
-  "order": 256,
+  "order": 65536,
   "output_items": [
     {
       "count": 4,

@@ -12,6 +12,7 @@ import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,7 +44,10 @@ public class BlockEntityPileVent extends BlockEntityPileDeviceBase
             channel.air += fill;
             compair.setFill(compair.getFill() - fill);
             active = fill > 0;
-            if (active) setChanged();
+            if (active) {
+                setChanged();
+                channel.coreChanged();
+            }
         }
         networkPackNT(35);
     }
@@ -67,6 +71,16 @@ public class BlockEntityPileVent extends BlockEntityPileDeviceBase
             lastFan -= 360F;
             fan -= 360F;
         }
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return compair.joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        visitor.accept(compair);
     }
 
     @Override

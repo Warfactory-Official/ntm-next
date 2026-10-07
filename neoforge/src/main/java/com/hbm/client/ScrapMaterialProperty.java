@@ -38,6 +38,7 @@ public record ScrapMaterialProperty() implements SelectItemModelProperty<String>
         if (ItemScraps.isLiquid(stack)) {
             if (contents.material.smeltable == SmeltingBehavior.SMELTABLE) return LIQUID;
             if (contents.material.smeltable == SmeltingBehavior.ADDITIVE) return ADDITIVE;
+            return contents.material.tagPath + "_liquid";
         }
 
         return contents.material.tagPath;

@@ -85,9 +85,13 @@ public class BlockEntityMachineStrandCaster extends BlockEntityFoundryCastingBas
                             worldPosition.getZ() + 0.5,
                             scrap));
             this.amount = getCapacity();
+            markChanged();
         }
 
-        if (this.amount == 0) this.type = null;
+        if (this.amount == 0 && this.type != null) {
+            this.type = null;
+            markChanged();
+        }
 
         int moldsToCast = maxProcessable();
 
@@ -205,6 +209,7 @@ public class BlockEntityMachineStrandCaster extends BlockEntityFoundryCastingBas
     public @Nullable MaterialStack standardAdd(
             Level level, BlockPos pos, Direction side, MaterialStack stack) {
         this.type = stack.material;
+        markChanged();
         Mold mold = this.getInstalledMold();
         int limit = mold != null ? mold.getCost() * BATCH : this.getCapacity();
         if (stack.amount + this.amount <= limit) {

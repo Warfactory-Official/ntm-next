@@ -24,9 +24,16 @@ import com.hbm.items.special.ItemWasteLong;
 import com.hbm.items.special.ItemWasteShort;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.TickPhase;
 import io.netty.buffer.ByteBuf;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -40,6 +47,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.jspecify.annotations.Nullable;
 
 public class BlockEntityStorageDrum extends BlockEntityMachineBase
         implements FluidFlushSender, IGUIProvider, IFluidCopiable, SyncUnitSchema {
@@ -144,12 +152,21 @@ public class BlockEntityStorageDrum extends BlockEntityMachineBase
                 inventory.set(i, new ItemStack(Decay.BISMUTH_NUGGET));
             }
 
+            AddonDecay addon = addonDecay(item);
+            if (addon != null && roll(shortChance / addon.divisor())) {
+                liquid += addon.liquid();
+                gas += addon.gas();
+                inventory.set(i, addon.into().get());
+            }
+
             if (item == ModItems.POWDER_SR90.get() && roll(shortChance / 10)) {
                 inventory.set(i, new ItemStack(Decay.ZIRCONIUM_POWDER));
             }
             if (item == ModItems.NUGGET_SR90.get() && roll(shortChance / 50)) {
                 inventory.set(i, new ItemStack(Decay.ZIRCONIUM_NUGGET));
             }
+
+            if (inventory.get(i) != stack) markChanged();
         }
 
         fill(tanks[0], liquid);
@@ -173,6 +190,35 @@ public class BlockEntityStorageDrum extends BlockEntityMachineBase
 
     private boolean roll(int chance) {
         return chance > 0 && level.getRandom().nextInt(chance) == 0;
+    }
+
+    public record AddonDecay(
+            Supplier<? extends Item> from,
+            Supplier<ItemStack> into,
+            int divisor,
+            int liquid,
+            int gas) {}
+
+    private static final List<AddonDecay> ADDON_DECAYS = new ArrayList<>();
+    private static volatile @Nullable Map<Item, AddonDecay> addonByItem;
+
+    public static synchronized void addon(AddonDecay... decays) {
+        FabricRegistrar.assertOpen("BlockEntityStorageDrum.addon");
+        ADDON_DECAYS.addAll(List.of(decays));
+    }
+
+    public static List<AddonDecay> addonDecays() {
+        return Collections.unmodifiableList(ADDON_DECAYS);
+    }
+
+    private static @Nullable AddonDecay addonDecay(Item item) {
+        Map<Item, AddonDecay> table = addonByItem;
+        if (table == null) {
+            table = new IdentityHashMap<>();
+            for (AddonDecay decay : ADDON_DECAYS) table.put(decay.from().get(), decay);
+            addonByItem = table;
+        }
+        return table.get(item);
     }
 
     private static ItemWasteShort.WasteClass shortYield(ItemWasteShort.WasteClass type) {
@@ -216,7 +262,8 @@ public class BlockEntityStorageDrum extends BlockEntityMachineBase
                 || ModItems.NUCLEAR_WASTE_LONG_TINY.typeOf(item) != null
                 || ModItems.NUCLEAR_WASTE_SHORT.typeOf(item) != null
                 || ModItems.NUCLEAR_WASTE_SHORT_TINY.typeOf(item) != null
-                || item == Decay.GOLD_198_INGOT;
+                || item == Decay.GOLD_198_INGOT
+                || addonDecay(item) != null;
     }
 
     @Override
@@ -232,7 +279,8 @@ public class BlockEntityStorageDrum extends BlockEntityMachineBase
                 && item != Decay.LEAD_209_INGOT
                 && item != Decay.LEAD_209_NUGGET
                 && item != ModItems.POWDER_SR90.get()
-                && item != ModItems.NUGGET_SR90.get();
+                && item != ModItems.NUGGET_SR90.get()
+                && addonDecay(item) == null;
     }
 
     @Override
@@ -257,7 +305,7 @@ public class BlockEntityStorageDrum extends BlockEntityMachineBase
     public void useUpFluid(Fluid type, int pressure, long amount) {
         for (FluidTankNTM tank : tanks) {
             if (tank.provides(type) && tank.getPressure() == pressure) {
-                tank.drain((int) Math.min(amount, Integer.MAX_VALUE), true);
+                if (tank.drain((int) Math.min(amount, Integer.MAX_VALUE), true) > 0) markChanged();
                 return;
             }
         }

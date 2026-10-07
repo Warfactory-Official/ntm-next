@@ -21,5 +21,8 @@ public final class HbmBlockTags {
     public static final TagKey<Block> FBI_BREAKABLE =
             TagKey.create(Registries.BLOCK, Library.id("fbi_breakable"));
 
+    public static final TagKey<Block> METAL_FENCE_JOINS =
+            TagKey.create(Registries.BLOCK, Library.id("metal_fence_joins"));
+
     private HbmBlockTags() {}
 }

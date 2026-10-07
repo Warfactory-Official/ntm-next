@@ -23,6 +23,7 @@ import com.hbm.items.machine.ItemPlateFuel;
 import com.hbm.items.machine.ItemRBMKPellet;
 import com.hbm.items.machine.ItemRBMKRod;
 import com.hbm.items.machine.ItemRTGPellet;
+import com.hbm.items.machine.ItemWatzPellet;
 import com.hbm.items.machine.ItemZirnoxRod;
 import com.hbm.items.machine.ItemZirnoxRodDepleted;
 import com.hbm.lib.Library;
@@ -93,6 +94,14 @@ public final class HazardRegistry {
 
     private static void nameType(String name, IHazardType type) {
         Identifier id = Library.id(name);
+        TYPES_BY_ID.put(id, type);
+        IDS_BY_TYPE.put(type, id);
+    }
+
+    public static void registerType(Identifier id, IHazardType type) {
+        if (TYPES_BY_ID.containsKey(id) || IDS_BY_TYPE.containsKey(type)) {
+            throw new IllegalArgumentException("duplicate hazard type " + id);
+        }
         TYPES_BY_ID.put(id, type);
         IDS_BY_TYPE.put(type, id);
     }
@@ -413,7 +422,7 @@ public final class HazardRegistry {
     private static void registerWatzPellets() {
         for (var member : ModItems.WATZ_PELLET) {
             double rad =
-                    switch (member.get().type) {
+                    switch ((ItemWatzPellet.EnumWatzType) member.get().type) {
                         case SCHRABIDIUM -> sa326 * mult_ingot * 4D;
                         case HES, MES, LES -> saf * mult_ingot * 4D;
                         case HEN -> np237 * mult_ingot * 4D;

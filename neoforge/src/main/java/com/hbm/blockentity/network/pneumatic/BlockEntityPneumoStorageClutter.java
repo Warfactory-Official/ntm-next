@@ -68,6 +68,7 @@ public class BlockEntityPneumoStorageClutter extends BlockEntityPneumaticStorage
             int capacity = this.getMaxStackSize(stack);
             int toAdd = (int) Math.min(amount, capacity - stack.getCount());
             stack.grow(toAdd);
+            if (toAdd != 0) this.markChanged();
             return amount - toAdd;
         }
         return amount;
@@ -78,6 +79,7 @@ public class BlockEntityPneumoStorageClutter extends BlockEntityPneumaticStorage
         int capacity = this.getMaxStackSize(zeroStack);
         int finalSize = (int) Math.min(amount, capacity);
         inventory.set(index, zeroStack.copyWithCount(finalSize));
+        if (finalSize > 0) this.markChanged();
         return amount - finalSize;
     }
 

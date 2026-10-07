@@ -6,7 +6,9 @@ package com.hbm.blocks.multiblock;
 import com.hbm.interfaces.ICopiable;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.interfaces.IToolable;
+import com.hbm.interfaces.PlantSoil;
 import com.hbm.interfaces.RigidPistonStructure;
+import com.hbm.platform.NeoForgePlatform;
 import java.util.List;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
@@ -14,6 +16,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.TriState;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +38,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class BlockMultiblockCell extends Block
-        implements ICopiable, ILookOverlay, IToolable, RigidPistonStructure {
+        implements ICopiable, ILookOverlay, IToolable, RigidPistonStructure, PlantSoil {
 
     public static final int SOUND_STONE = 0;
     public static final int SOUND_METAL = 1;
@@ -85,7 +88,11 @@ public class BlockMultiblockCell extends Block
     }
 
     public BlockMultiblockCell(Properties properties) {
-        super(properties.isValidSpawn((state, level, pos, type) -> false));
+        super(
+                properties
+                        .isValidSpawn((state, level, pos, type) -> false)
+                        .isSuffocating((state, level, pos) -> false)
+                        .isViewBlocking((state, level, pos) -> false));
         BlockState any = stateDefinition.any();
         if (any.hasProperty(SOUND)) any = any.setValue(SOUND, SOUND_STONE);
         if (any.hasProperty(SEALED)) any = any.setValue(SEALED, Boolean.FALSE);
@@ -218,11 +225,11 @@ public class BlockMultiblockCell extends Block
     @Override
     public BlockState playerWillDestroy(
             Level level, BlockPos pos, BlockState state, Player player) {
-        if (level instanceof ServerLevel server
-                && !player.preventsBlockDrops()
-                && state.canHarvestBlock((BlockGetter) level, pos, player)) {
+        if (level instanceof ServerLevel server && !player.preventsBlockDrops()) {
             BlockMultiblockCore.FoldedOwner owner = BlockMultiblockCore.ownerOf(server, pos);
-            if (owner != null) {
+            if (owner != null
+                    && NeoForgePlatform.canHarvestBlock(
+                            server, owner.pos(), owner.state(), player)) {
                 Block.dropResources(
                         owner.state(),
                         server,
@@ -256,6 +263,21 @@ public class BlockMultiblockCell extends Block
     @Override
     public boolean isSameMultiblock(Block other) {
         return other instanceof BlockMultiblockCore || other instanceof BlockMultiblockCell;
+    }
+
+    @Override
+    public boolean sustainsPlant(BlockGetter level, BlockPos soil, BlockState soilState) {
+        return MultiblockSurface.sustainsPlant(level, soil, soilState);
+    }
+
+    @Override
+    public TriState canSustainPlant(
+            BlockState state,
+            BlockGetter level,
+            BlockPos soilPosition,
+            Direction facing,
+            BlockState plant) {
+        return sustainsPlant(level, soilPosition, state) ? TriState.TRUE : TriState.DEFAULT;
     }
 
     @Override

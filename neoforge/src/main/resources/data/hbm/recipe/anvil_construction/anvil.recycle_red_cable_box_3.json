@@ -6,7 +6,7 @@
       "ingredient": "hbm:red_cable_box_3"
     }
   ],
-  "order": 150,
+  "order": 38400,
   "output_items": [
     "hbm:ingot_red_copper",
     "hbm:plate_polymer"

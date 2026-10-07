@@ -5,7 +5,7 @@
       "ingredient": "hbm:oil_tar_wood"
     }
   ],
-  "order": 20,
+  "order": 5120,
   "output_items": [
     "hbm:coke_coal"
   ]

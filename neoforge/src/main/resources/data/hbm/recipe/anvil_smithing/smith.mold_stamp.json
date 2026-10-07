@@ -15,7 +15,7 @@
     }
   ],
   "kind": "mold",
-  "order": 48,
+  "order": 12288,
   "output_items": [
     "hbm:mold_stamp"
   ]

@@ -17,6 +17,7 @@ import com.hbm.handler.ImpactWorldHandler;
 import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.hazard.HazardSystem;
 import com.hbm.integration.top.NTMTopPlugin;
+import com.hbm.inventory.WornAccessories;
 import com.hbm.inventory.fluid.FluidPropertyReloadListener;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.recipes.ingredient.*;
@@ -27,9 +28,9 @@ import com.hbm.lib.Library;
 import com.hbm.neoforge.hazard.CuriosHazards;
 import com.hbm.neoforge.hazard.HazardTransformerSophisticatedBackpacks;
 import com.hbm.neoforge.hazard.HazardTransformerSophisticatedStorage;
+import com.hbm.neoforge.inventory.CuriosAccessories;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.platform.NeoForgeCaps;
-import com.hbm.platform.NeoForgeEntityData;
 import com.hbm.platform.NeoForgeNetwork;
 import com.hbm.platform.NeoForgeServerEvents;
 import com.hbm.qmaw.QMAWLoader;
@@ -86,14 +87,15 @@ public final class NuclearTechNeoForge {
     public NuclearTechNeoForge(IEventBus modBus, ModContainer container) {
         NeoForgeServerEvents.install();
         NeoForgeRegistrar.subscribe(modBus);
-        NeoForgeEntityData.ATTACHMENTS.register(modBus);
         NuclearTech.init();
         NeoForge.EVENT_BUS.addListener(CapabilityInvalidation::onLevelTick);
         NeoForge.EVENT_BUS.addListener(ArmorModChestLootNeoForge::onLootTableLoad);
         modBus.addListener(
                 (AddPackFindersEvent event) -> {
                     for (ForeignModChange change : ForeignModChange.values()) {
-                        if (!ModList.get().isLoaded(change.modId) || !change.enabled()) continue;
+                        if (!change.neoForge
+                                || !ModList.get().isLoaded(change.modId)
+                                || !change.enabled()) continue;
                         event.addPackFinders(
                                 Library.id("resourcepacks/" + change.pack),
                                 PackType.SERVER_DATA,
@@ -117,7 +119,8 @@ public final class NuclearTechNeoForge {
                 });
         NeoForge.EVENT_BUS.addListener(
                 (PlayerInteractEvent.RightClickBlock event) -> {
-                    if (BobmazonSignHandler.onSignUsed(event.getLevel(), event.getPos()))
+                    if (BobmazonSignHandler.onSignUsed(
+                            event.getLevel(), event.getPos(), event.getEntity()))
                         event.setCanceled(true);
                 });
         NeoForge.EVENT_BUS.addListener(
@@ -211,6 +214,7 @@ public final class NuclearTechNeoForge {
                     }
                     if (ModList.get().isLoaded("curios")) {
                         HazardSystem.addExternalEquipmentApplicator(CuriosHazards::apply);
+                        WornAccessories.register(CuriosAccessories::collect);
                     }
                     event.enqueueWork(NuclearTech::registerFlammability);
                 });

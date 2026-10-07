@@ -25,7 +25,7 @@
     }
   ],
   "name": "anvil.machine_assembly_machineEx",
-  "order": 59,
+  "order": 15104,
   "output_items": [
     "hbm:machine_assembly_machine"
   ],

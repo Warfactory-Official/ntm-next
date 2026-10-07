@@ -26,7 +26,7 @@
     }
   ],
   "neutron_flux": 2000.0,
-  "order": 7,
+  "order": 1792,
   "output_items": [
     "hbm:powder_chlorophyte"
   ],

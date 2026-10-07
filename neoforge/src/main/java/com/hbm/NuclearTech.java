@@ -16,6 +16,7 @@ import com.hbm.blocks.FlammableBlocks;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.multiblock.AssembledMembers;
+import com.hbm.blocks.network.ChunkDuctNodes;
 import com.hbm.blocks.network.GeneratedConductors;
 import com.hbm.capability.NtmCapabilities;
 import com.hbm.capability.ResolvedCapCache;
@@ -35,6 +36,8 @@ import com.hbm.hazard.HazardAssignment;
 import com.hbm.hazard.HazardSystem;
 import com.hbm.hazard.TravelersEquipmentHazards;
 import com.hbm.hazard.TrinketsHazards;
+import com.hbm.inventory.TrinketsAccessories;
+import com.hbm.inventory.WornAccessories;
 import com.hbm.inventory.container.ModMenus;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.machine.CustomMachineDefinition;
@@ -76,6 +79,7 @@ import com.hbm.world.HbmFeatures;
 import com.hbm.world.HbmWorldgen;
 import com.hbm.world.gen.nbt.HbmStructureProcessors;
 import com.hbm.world.loot.ConfigScaledNumberProvider;
+import com.hbm.world.loot.EntityEnchantmentLevel;
 import com.hbm.world.ore.OreGeneration;
 import com.hbm.world.structure.HbmStructureTypes;
 import net.minecraft.server.MinecraftServer;
@@ -97,6 +101,7 @@ public final class NuclearTech {
     public static void init() {
         LOGGER.info("NTM common init on {}", "NeoForge");
         Polaroid.roll();
+        com.hbm.handler.JoinGreeting.register();
 
         ModDataComponents.registerBlockItemStates();
         load(ModBlocks.class);
@@ -122,6 +127,8 @@ public final class NuclearTech {
         HbmStructureProcessors.register();
         NeoForgeRegistrar.registerLootNumberProviderType(
                 "config_scaled", ConfigScaledNumberProvider.MAP_CODEC);
+        NeoForgeRegistrar.registerLootNumberProviderType(
+                "entity_enchantment_level", EntityEnchantmentLevel.MAP_CODEC);
         NeoForgeRegistrar.registerSyncedDataPackRegistry(
                 HazardAssignment.REGISTRY, HazardAssignment.CODEC);
         NeoForgeRegistrar.registerSyncedDataPackRegistry(
@@ -174,6 +181,7 @@ public final class NuclearTech {
         AssembledMembers.init();
         ResolvedCapCache.init();
         EndpointRegistry.init();
+        ChunkDuctNodes.init();
         ComputerCraft.init();
         HbmWorldgen.register();
 
@@ -232,8 +240,6 @@ public final class NuclearTech {
                     BeSyncTable.forgetIn(origin, player.getUUID());
                 });
         NeoForgeServerEvents.onServerTickPost(server -> PacketWire.flushPending());
-
-        NeoForgeRegistrar.frozen = true;
     }
 
     private static void load(Class<?>... holders) {
@@ -265,6 +271,7 @@ public final class NuclearTech {
         HudConfig.loadFrom(client);
         GunVisualConfig.loadFrom(client);
         InteractionConfig.loadFrom(client);
+        ConfigSchema.loadAddonClientFacades(client);
         clientFacades = true;
     }
 
@@ -281,6 +288,7 @@ public final class NuclearTech {
         }
         if (ModList.get().isLoaded("trinkets_updated")) {
             HazardSystem.addExternalEquipmentApplicator(TrinketsHazards::apply);
+            WornAccessories.register(TrinketsAccessories::collect);
         }
         ModItems.initHazards();
         DispenserBehaviorHandler.init();

@@ -6,7 +6,7 @@
       "amount": 2400
     }
   ],
-  "order": 8,
+  "order": 2048,
   "output_fluids": [
     {
       "type": "hbm:naphtha_coker",

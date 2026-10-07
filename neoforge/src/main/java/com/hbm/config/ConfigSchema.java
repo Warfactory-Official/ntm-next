@@ -3,7 +3,11 @@
 
 package com.hbm.config;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.ServiceLoader;
+import java.util.Set;
 
 import static com.hbm.config.ConfigEntry.*;
 
@@ -166,6 +170,14 @@ public final class ConfigSchema {
 
     public static final ConfigEntry<Boolean> ENABLE_EXPENSIVE_MODE =
             bool(Domain.CONTENT, "expensive", "enabled", false, "It does what the name implies.");
+
+    public static final ConfigEntry<Boolean> ENABLE_MOTD =
+            bool(
+                    Domain.RUNTIME,
+                    "login",
+                    "motd",
+                    true,
+                    "If enabled, shows the 'Loaded mod!' chat message when joining a world");
 
     public static final ConfigEntry<Boolean> ENABLE_DEBUG_MODE =
             bool(Domain.RUNTIME, "debug", "profiling_logs", false, "Enable debugging mode");
@@ -492,8 +504,14 @@ public final class ConfigSchema {
                     true,
                     "List an RBMK column's diagnostic data while looking at it.");
 
+    private static final List<ConfigSchemaExtension> EXTENSIONS =
+            ServiceLoader.load(ConfigSchemaExtension.class, ConfigSchema.class.getClassLoader())
+                    .stream()
+                    .map(ServiceLoader.Provider::get)
+                    .toList();
+
     public static final List<ConfigEntry<?>> ENTRIES =
-            List.of(
+            withAddons(
                     CONVEYOR_CRAM_MAX,
                     CONVEYOR_CRAM_EXPLODE,
                     ULTRA_LARP_MODE,
@@ -514,6 +532,7 @@ public final class ConfigSchema {
                     ENABLE_MEKANISM_CHANGES,
                     ENABLE_TECHREBORN_CHANGES,
                     ENABLE_EXPENSIVE_MODE,
+                    ENABLE_MOTD,
                     ENABLE_DEBUG_MODE,
                     ENABLE_EXTENDED_LOGGING,
                     ENABLE_SKYBOXES,
@@ -561,7 +580,31 @@ public final class ConfigSchema {
 
     private ConfigSchema() {}
 
+    private static List<ConfigEntry<?>> withAddons(ConfigEntry<?>... ntm) {
+        List<ConfigEntry<?>> entries = new ArrayList<>(List.of(ntm));
+        Set<String> paths = new HashSet<>();
+        for (ConfigEntry<?> entry : ntm) paths.add(entry.section() + "." + entry.key());
+        for (ConfigSchemaExtension extension : EXTENSIONS) {
+            for (ConfigEntry<?> entry : extension.entries()) {
+                if (!paths.add(entry.section() + "." + entry.key())) {
+                    throw new IllegalStateException(
+                            extension.getClass().getName()
+                                    + " redeclares config "
+                                    + entry.section()
+                                    + "."
+                                    + entry.key());
+                }
+                entries.add(entry);
+            }
+        }
+        return List.copyOf(entries);
+    }
+
     public static List<ConfigEntry<?>> of(Domain domain) {
         return ENTRIES.stream().filter(e -> e.domain() == domain).toList();
+    }
+
+    public static void loadAddonClientFacades(ConfigStore client) {
+        for (ConfigSchemaExtension extension : EXTENSIONS) extension.loadClient(client);
     }
 }

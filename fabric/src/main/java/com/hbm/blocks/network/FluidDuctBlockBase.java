@@ -160,6 +160,7 @@ public abstract class FluidDuctBlockBase extends Block
         super.onPlace(state, level, pos, oldState, movedByPiston);
         if (level instanceof ServerLevel sl && !oldState.is(this)) {
             createNodes(sl, pos, state);
+            ChunkDuctNodes.typeFromRecord(sl, pos, this);
         }
     }
 

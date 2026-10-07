@@ -581,11 +581,6 @@ public class Mats {
                     .setAutogen(FRAGMENT, DUST, BLOCK)
                     .legacy(DUST, "powder_fire", "powder_fire")
                     .n();
-    public static final NTMMaterial MAT_IODINE =
-            makeNonSmeltable(5300, I, 0x7A8796, 0x2B1C43, 0x50556E)
-                    .setAutogen(DUST)
-                    .legacy(DUST, "powder_iodine")
-                    .n();
     public static final NTMMaterial MAT_CHLOROCALCITE =
             makeNonSmeltable(1701, CHLOROCALCITE, 0xF7E761, 0x475B46, 0xB8B963)
                     .setAutogen(FRAGMENT, DUST)
@@ -875,12 +870,10 @@ public class Mats {
                     .legacy(INGOT, "ingot_pvc")
                     .n();
 
-    static {
-        for (NTMMaterial mat : orderedList) {
-            for (MaterialShapes shape : allShapes) {
-                if (shape.tagPathPlural == null || shape.q(1) == 0) continue;
-                tagToMaterial.put(shape.tagFor(mat.tagPath), new MaterialStack(mat, shape.q(1)));
-            }
+    static void bindShapeTags(NTMMaterial mat) {
+        for (MaterialShapes shape : allShapes) {
+            if (shape.tagPathPlural == null || shape.q(1) == 0) continue;
+            tagToMaterial.put(shape.tagFor(mat.tagPath), new MaterialStack(mat, shape.q(1)));
         }
     }
 

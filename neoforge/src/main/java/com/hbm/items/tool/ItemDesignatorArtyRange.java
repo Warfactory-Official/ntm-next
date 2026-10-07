@@ -6,6 +6,7 @@ package com.hbm.items.tool;
 import com.hbm.blockentity.turret.BlockEntityTurretBaseArtillery;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.items.ModDataComponents;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -70,8 +71,8 @@ public class ItemDesignatorArtyRange extends Item {
         context.getItemInHand().set(ModDataComponents.ARTY_DESIGNATOR_TARGET.get(), core.asLong());
         Player player = context.getPlayer();
         if (player != null) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),
@@ -97,8 +98,8 @@ public class ItemDesignatorArtyRange extends Item {
         BlockEntity be = level.getBlockEntity(BlockPos.of(packed));
         if (be instanceof BlockEntityTurretBaseArtillery arty) {
             arty.enqueueTarget(aim.getX() + 0.5D, aim.getY() + 0.5D, aim.getZ() + 0.5D);
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),

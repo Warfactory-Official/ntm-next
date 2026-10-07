@@ -468,13 +468,18 @@ public final class MultiblockSurface {
                 var layout = core.footprint(facing);
                 for (int i = 0; i < layout.offsets.length; i++) {
                     long offset = layout.offsets[i];
+                    long delta =
+                            BlockPos.asLong(
+                                    -BlockPos.getX(offset),
+                                    -BlockPos.getY(offset),
+                                    -BlockPos.getZ(offset));
                     deltas.computeIfAbsent(
                                     candidateKey(layout.states[i]), key -> new LongOpenHashSet())
-                            .add(
-                                    BlockPos.asLong(
-                                            -BlockPos.getX(offset),
-                                            -BlockPos.getY(offset),
-                                            -BlockPos.getZ(offset)));
+                            .add(delta);
+                    if (layout.swapped == null || layout.swapped[i] == null) continue;
+                    deltas.computeIfAbsent(
+                                    candidateKey(layout.swapped[i]), key -> new LongOpenHashSet())
+                            .add(delta);
                 }
             }
         }
@@ -546,6 +551,22 @@ public final class MultiblockSurface {
         if (view instanceof Level level) return coreOfAny(level, pos, state);
         if (foldedCore(state) != null) return pos;
         return isFoldedCell(state) ? clientCoreOf(view, pos) : null;
+    }
+
+    public static boolean sustainsPlant(BlockGetter level, BlockPos soil, BlockState soilState) {
+        BlockPos core = coreOfAny(level, soil, soilState);
+        if (core == null) return false;
+        BlockState coreState = level.getBlockState(core);
+        BlockMultiblockCore block = foldedCore(coreState);
+        if (block == null) return false;
+        Direction facing = coreState.getValue(BlockMultiblockCore.FACING);
+        int dx = soil.getX() - core.getX(),
+                dy = soil.getY() - core.getY(),
+                dz = soil.getZ() - core.getZ();
+        return block.plantSoilAt(
+                MultiblockMaskTable.localX(dx, dy, dz, facing),
+                MultiblockMaskTable.localY(dx, dy, dz, facing),
+                MultiblockMaskTable.localZ(dx, dy, dz, facing));
     }
 
     public static List<BlockPos> rigidStructureBlocks(Level level, BlockPos core) {

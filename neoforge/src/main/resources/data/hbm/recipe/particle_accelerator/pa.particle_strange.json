@@ -9,7 +9,7 @@
     }
   ],
   "momentum": 12500,
-  "order": 6,
+  "order": 1536,
   "output_items": [
     "hbm:particle_strange"
   ]

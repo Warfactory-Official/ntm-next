@@ -6,6 +6,8 @@ package com.hbm.items.weapon;
 import com.hbm.handler.MissileStruct;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
+import com.hbm.lib.Library;
+import com.hbm.registration.OverridePoint;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -13,6 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
+import org.jspecify.annotations.Nullable;
 
 public class ItemCustomMissile extends Item {
 
@@ -68,6 +71,17 @@ public class ItemCustomMissile extends Item {
         return chip instanceof ItemCustomMissilePart part ? part : null;
     }
 
+    public static final OverridePoint<Describer> DESCRIBE =
+            OverridePoint.of(Library.id("missile_describe"), ItemCustomMissile::describe);
+
+    @FunctionalInterface
+    public interface Describer {
+        void describe(
+                MissileStruct parts,
+                @Nullable ItemCustomMissilePart chip,
+                Consumer<Component> adder);
+    }
+
     @Override
     public void appendHoverText(
             ItemStack stack,
@@ -79,8 +93,11 @@ public class ItemCustomMissile extends Item {
         MissileStruct parts = getStruct(stack);
         if (parts == null) return;
 
-        ItemCustomMissilePart chip = getChip(stack);
+        DESCRIBE.get().describe(parts, getChip(stack), adder);
+    }
 
+    public static void describe(
+            MissileStruct parts, @Nullable ItemCustomMissilePart chip, Consumer<Component> adder) {
         if (parts.warhead() != null) {
             adder.accept(stat("warhead", parts.warhead().warheadType().getDisplay()));
             adder.accept(
@@ -126,7 +143,7 @@ public class ItemCustomMissile extends Item {
         adder.accept(stat("health", Component.literal(health + "HP")));
     }
 
-    private static Component stat(String key, Component value) {
+    public static Component stat(String key, Component value) {
         return Component.translatable("item.hbm.missile.desc." + key)
                 .withStyle(ChatFormatting.BOLD)
                 .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))

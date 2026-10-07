@@ -6,8 +6,12 @@ package com.hbm.inventory.recipes;
 import com.hbm.inventory.recipes.loader.SimpleGenericRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.registration.ItemFamily;
+import com.hbm.registration.NeoForgeRegistrar;
+import java.util.ArrayList;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -19,6 +23,15 @@ public class SILEXRecipes extends SimpleGenericRecipes<SILEXRecipe> {
     public static final SILEXRecipes INSTANCE = new SILEXRecipes();
 
     private volatile @Nullable Map<Item, Item> tinyWaste;
+
+    public record TinyWaste(Supplier<? extends Item> tiny, Supplier<? extends Item> full) {}
+
+    private static final List<TinyWaste> ADDON_TINY_WASTE = new ArrayList<>();
+
+    public static synchronized void addonTinyWaste(TinyWaste... pairs) {
+        NeoForgeRegistrar.assertOpen("SILEXRecipes.addonTinyWaste");
+        ADDON_TINY_WASTE.addAll(List.of(pairs));
+    }
 
     @Override
     protected String registryName() {
@@ -74,6 +87,7 @@ public class SILEXRecipes extends SimpleGenericRecipes<SILEXRecipe> {
                     map,
                     ModItems.NUCLEAR_WASTE_LONG_DEPLETED_TINY,
                     ModItems.NUCLEAR_WASTE_LONG_DEPLETED);
+            for (TinyWaste pair : ADDON_TINY_WASTE) map.put(pair.tiny().get(), pair.full().get());
             tinyWaste = held = Map.copyOf(map);
         }
         return held;

@@ -4,6 +4,7 @@
 package com.hbm.client.particle;
 
 import com.hbm.particle.IQuadParticle;
+import dev.engine_room.flywheel.api.instance.InstanceType;
 import dev.engine_room.flywheel.api.model.Model;
 import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visual.EffectVisual;
@@ -11,6 +12,7 @@ import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.core.Vec3i;
+import net.minecraft.resources.Identifier;
 
 public final class QuadParticleVisual<T extends Particle & IQuadParticle & VisualParticle>
         implements EffectVisual<T>, SimpleDynamicVisual {
@@ -32,14 +34,24 @@ public final class QuadParticleVisual<T extends Particle & IQuadParticle & Visua
                 context, particle, ParticleModels.LIT_DEAD_LEAF, partialTick);
     }
 
-    private QuadParticleVisual(
+    public static Model texturedLitModel(Identifier texture) {
+        return ParticleModels.texturedLit(texture);
+    }
+
+    public QuadParticleVisual(
             VisualizationContext context, T particle, Model model, float partialTick) {
+        this(context, particle, model, ParticleInstance.TYPE, partialTick);
+    }
+
+    public QuadParticleVisual(
+            VisualizationContext context,
+            T particle,
+            Model model,
+            InstanceType<ParticleInstance> type,
+            float partialTick) {
         this.particle = particle;
         this.origin = context.renderOrigin();
-        this.instance =
-                context.instancerProvider()
-                        .instancer(ParticleInstance.TYPE, model)
-                        .createInstance();
+        this.instance = context.instancerProvider().instancer(type, model).createInstance();
         instance.uvRegion(
                 particle.u0(),
                 particle.v0(),

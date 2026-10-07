@@ -28,7 +28,7 @@
       "ingredient": "hbm:circuit_controller"
     }
   ],
-  "order": 400,
+  "order": 102400,
   "output_items": [
     "hbm:mp_warhead_10_nuclear"
   ],

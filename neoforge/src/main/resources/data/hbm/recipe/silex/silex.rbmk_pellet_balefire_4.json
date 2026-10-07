@@ -13,7 +13,7 @@
     }
   ],
   "laser_strength": "uv",
-  "order": 255,
+  "order": 65280,
   "output_items": [
     [
       {

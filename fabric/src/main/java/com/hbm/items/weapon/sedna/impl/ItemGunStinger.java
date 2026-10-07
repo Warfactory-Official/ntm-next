@@ -6,6 +6,7 @@ package com.hbm.items.weapon.sedna.impl;
 
 import com.hbm.items.weapon.sedna.GunConfig;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.List;
 import net.minecraft.server.level.ServerLevel;
@@ -135,8 +136,8 @@ public class ItemGunStinger extends ItemGunBaseNT {
                     setLockonProgress(stack, getLockonProgress(stack) + 1);
 
                     if (getLockonProgress(stack) >= 60 && !getIsLockedOn(stack)) {
-                        level.playSound(
-                                null,
+                        EntitySounds.play(
+                                player,
                                 player.getX(),
                                 player.getY(),
                                 player.getZ(),

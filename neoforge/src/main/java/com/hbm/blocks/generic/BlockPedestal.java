@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.generic;
 
+import com.hbm.api.environment.Environment;
 import com.hbm.blockentity.BlockEntityPedestal;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.extprop.HbmPlayerProps;
@@ -65,11 +66,16 @@ public class BlockPedestal extends Block implements ITickingBlock {
                                             .getValue(EnvironmentAttributes.MOON_PHASE, pos)
                                     == MoonPhase.FULL_MOON;
             case NEW_MOON ->
-                    celestialAngle >= 0.35F
-                            && celestialAngle <= 0.65F
-                            && level.environmentAttributes()
-                                            .getValue(EnvironmentAttributes.MOON_PHASE, pos)
-                                    == MoonPhase.NEW_MOON;
+                    Environment.eclipse(level)
+                            .toBoolean(
+                                    celestialAngle >= 0.35F
+                                            && celestialAngle <= 0.65F
+                                            && level.environmentAttributes()
+                                                            .getValue(
+                                                                    EnvironmentAttributes
+                                                                            .MOON_PHASE,
+                                                                    pos)
+                                                    == MoonPhase.NEW_MOON);
             case SUN -> celestialAngle <= 0.15F || celestialAngle >= 0.85F;
             case BAD_KARMA -> hasReputation(level, pos, -10, false);
             case GOOD_KARMA -> hasReputation(level, pos, 10, true);

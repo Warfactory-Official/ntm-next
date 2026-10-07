@@ -6,7 +6,7 @@
       "ingredient": "#c:ingots/pvc"
     }
   ],
-  "order": 16,
+  "order": 4096,
   "output_fluids": [
     {
       "type": "hbm:colloid",

@@ -10,10 +10,13 @@ import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.MarkerPayload;
 import com.hbm.saveddata.SatelliteSavedData;
 import com.hbm.saveddata.satellites.SatelliteScanner;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -35,8 +38,22 @@ public class ItemModLens extends ItemArmorMod implements ISatChip {
     private static final int EXPIRES_MILLIS = 15_000;
     private static final double MAX_DIST = 300D;
 
+    private static final List<Map.Entry<Supplier<? extends Block>, Target>> ADDED =
+            new ArrayList<>();
+    private static final List<Map.Entry<Supplier<? extends Block>, Supplier<? extends Block>>>
+            ALIASES = new ArrayList<>();
+
     public ItemModLens(Properties properties) {
         super(properties, ArmorModHandler.EXTRA, true, false, false, false);
+    }
+
+    public static void addTarget(
+            Supplier<? extends Block> block, int chance, Component label, int color) {
+        ADDED.add(Map.entry(block, new Target(chance, label, color)));
+    }
+
+    public static void alias(Supplier<? extends Block> block, Supplier<? extends Block> like) {
+        ALIASES.add(Map.entry(block, like));
     }
 
     @Override
@@ -118,34 +135,62 @@ public class ItemModLens extends ItemArmorMod implements ISatChip {
     private static final class Targets {
 
         static final Map<Block, Target> BY_BLOCK =
-                Map.ofEntries(
-                        Map.entry(
-                                ModBlocks.ORE_ALEXANDRITE.get(),
-                                labelled(1, "alexandrite", 0x00ffff)),
-                        Map.entry(ModBlocks.ORE_OIL.get(), labelled(300, "oil", 0xa0a0a0)),
-                        Map.entry(
-                                ModBlocks.ORE_BEDROCK_OIL.get(),
-                                labelled(300, "bedrock_oil", 0xa0a0a0)),
-                        Map.entry(ModBlocks.ORE_COLTAN.get(), labelled(5, "coltan", 0xa0a000)),
-                        Map.entry(ModBlocks.STONE_GNEISS.get(), labelled(5000, "schist", 0x8080ff)),
-                        Map.entry(
-                                ModBlocks.ORE_AUSTRALIUM.get(),
-                                labelled(1000, "australium", 0xffff00)),
-                        Map.entry(Blocks.END_PORTAL_FRAME, labelled(1, "end_portal", 0x40b080)),
-                        Map.entry(
-                                ModBlocks.VOLCANO_CORE.get(),
-                                labelled(1, "volcano_core", 0xff4000)),
-                        Map.entry(ModBlocks.PINK_LOG.get(), labelled(1, "pink_log", 0xff00ff)),
-                        Map.entry(ModBlocks.BOBBLEHEAD.get(), labelled(1, "treasure", 0xff0000)),
-                        Map.entry(ModBlocks.LOOT.get(), new Target(1, Component.empty(), 0x800000)),
-                        Map.entry(
-                                ModBlocks.CRATE_AMMO.get(),
-                                new Target(1, Component.empty(), 0x800000)),
-                        Map.entry(
-                                ModBlocks.CRATE_CAN.get(),
-                                new Target(1, Component.empty(), 0x800000)),
-                        Map.entry(
-                                ModBlocks.ORE_BEDROCK.get(), labelled(1, "bedrock_ore", 0xff0000)));
+                new HashMap<>(
+                        Map.ofEntries(
+                                Map.entry(
+                                        ModBlocks.ORE_ALEXANDRITE.get(),
+                                        labelled(1, "alexandrite", 0x00ffff)),
+                                Map.entry(ModBlocks.ORE_OIL.get(), labelled(300, "oil", 0xa0a0a0)),
+                                Map.entry(
+                                        ModBlocks.ORE_BEDROCK_OIL.get(),
+                                        labelled(300, "bedrock_oil", 0xa0a0a0)),
+                                Map.entry(
+                                        ModBlocks.ORE_COLTAN.get(),
+                                        labelled(5, "coltan", 0xa0a000)),
+                                Map.entry(
+                                        ModBlocks.STONE_GNEISS.get(),
+                                        labelled(5000, "schist", 0x8080ff)),
+                                Map.entry(
+                                        ModBlocks.ORE_AUSTRALIUM.get(),
+                                        labelled(1000, "australium", 0xffff00)),
+                                Map.entry(
+                                        Blocks.END_PORTAL_FRAME,
+                                        labelled(1, "end_portal", 0x40b080)),
+                                Map.entry(
+                                        ModBlocks.VOLCANO_CORE.get(),
+                                        labelled(1, "volcano_core", 0xff4000)),
+                                Map.entry(
+                                        ModBlocks.PINK_LOG.get(),
+                                        labelled(1, "pink_log", 0xff00ff)),
+                                Map.entry(
+                                        ModBlocks.BOBBLEHEAD.get(),
+                                        labelled(1, "treasure", 0xff0000)),
+                                Map.entry(
+                                        ModBlocks.LOOT.get(),
+                                        new Target(1, Component.empty(), 0x800000)),
+                                Map.entry(
+                                        ModBlocks.CRATE_AMMO.get(),
+                                        new Target(1, Component.empty(), 0x800000)),
+                                Map.entry(
+                                        ModBlocks.CRATE_CAN.get(),
+                                        new Target(1, Component.empty(), 0x800000)),
+                                Map.entry(
+                                        ModBlocks.ORE_BEDROCK.get(),
+                                        labelled(1, "bedrock_ore", 0xff0000))));
+
+        static {
+            for (Map.Entry<Supplier<? extends Block>, Target> added : ADDED) {
+                Target clash = BY_BLOCK.putIfAbsent(added.getKey().get(), added.getValue());
+                assert clash == null : added.getKey().get();
+            }
+            for (Map.Entry<Supplier<? extends Block>, Supplier<? extends Block>> alias : ALIASES) {
+                Target like = BY_BLOCK.get(alias.getValue().get());
+                if (like == null)
+                    throw new IllegalStateException(alias.getValue().get() + " marks nothing");
+                Target clash = BY_BLOCK.putIfAbsent(alias.getKey().get(), like);
+                assert clash == null : alias.getKey().get();
+            }
+        }
 
         private static Target labelled(int chance, String label, int color) {
             return new Target(

@@ -190,16 +190,13 @@ public class ItemRenderFolly extends ItemRenderWeaponBase {
             if (!jingle && splash != null) {
                 player.level()
                         .playLocalSound(
-                                player.getX(),
-                                player.getY(),
-                                player.getZ(),
+                                player,
                                 ModSounds
                                         .GUN_VYLET_PONY_CUTIEMARKS_AND_THE_THINGS_THAT_BIND_US_INTRO_JINGLE
                                         .get(),
                                 SoundSource.PLAYERS,
                                 0.5F,
-                                1F,
-                                false);
+                                1F);
                 jingle = true;
             }
 

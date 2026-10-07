@@ -13,7 +13,7 @@
       "ingredient": "hbm:thruster_large"
     }
   ],
-  "order": 40,
+  "order": 10240,
   "output_items": [
     "hbm:missile_nuclear_cluster"
   ],

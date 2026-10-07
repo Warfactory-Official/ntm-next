@@ -3,6 +3,7 @@
 
 package com.hbm.client.particle;
 
+import com.hbm.api.environment.Environment;
 import com.hbm.particle.CoolingTowerParticleOptions;
 import dev.engine_room.flywheel.api.visual.EffectVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
@@ -34,17 +35,32 @@ public class ParticleCoolingTower extends SingleQuadParticle implements VisualPa
             double x,
             double y,
             double z,
+            double xd,
+            double yd,
+            double zd,
             CoolingTowerParticleOptions opts,
             int particleSetting,
             TextureAtlasSprite sprite) {
         super(level, x, y, z, sprite);
+        double pressure = Environment.particlePressure(level);
         this.baseScale = opts.baseScale();
         this.maxScale = opts.maxScale();
-        this.lift = opts.lift();
+        this.lift = Environment.orbital(level) ? 0F : opts.lift();
         this.strafe = opts.strafe();
-        this.windDir = opts.windDir();
+        this.windDir = opts.windDir() && pressure >= 0.08D;
         this.alphaMod = opts.alphaMod();
-        this.lifetime = opts.life() / (particleSetting + 1);
+        this.xd = xd;
+        this.yd = yd;
+        this.zd = zd;
+        int life = opts.life();
+        if (pressure < 0.08D) {
+            double factor = (0.08D - pressure) * 4;
+            this.xd += (this.random.nextDouble() - 0.5D) * factor;
+            this.yd += (this.random.nextDouble() - 0.5D) * factor;
+            this.zd += (this.random.nextDouble() - 0.5D) * factor;
+            life /= 8;
+        }
+        this.lifetime = life / (particleSetting + 1);
         this.gravity = 0.0F;
         this.friction = 1.0F;
         this.hasPhysics = false;
@@ -166,7 +182,7 @@ public class ParticleCoolingTower extends SingleQuadParticle implements VisualPa
             int setting = Minecraft.getInstance().options.particles().get().ordinal();
             if (!(setting == 0 || (setting == 1 && random.nextBoolean()))) return null;
             return new ParticleCoolingTower(
-                    level, x, y, z, options, setting, this.sprites.get(random));
+                    level, x, y, z, xa, ya, za, options, setting, this.sprites.get(random));
         }
     }
 }

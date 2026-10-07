@@ -1,0 +1,63 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 4.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:sulfur"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:stick_tnt"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "conditions": [
+        {
+          "condition": "minecraft:entity_properties",
+          "entity": "attacker",
+          "predicate": {
+            "minecraft:entity_type": "#minecraft:skeletons"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:tag",
+          "expand": true,
+          "name": "minecraft:creeper_drop_music_discs"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:entities/entity_mob_volatile_creeper"
+}

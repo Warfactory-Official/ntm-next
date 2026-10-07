@@ -9,7 +9,7 @@
       "ingredient": "#hbm:gems/any_coke"
     }
   ],
-  "order": 1,
+  "order": 256,
   "output_material": {
     "amount": 72,
     "material": "steel"

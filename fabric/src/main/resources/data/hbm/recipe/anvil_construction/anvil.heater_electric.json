@@ -21,7 +21,7 @@
       "ingredient": "hbm:circuit_basic"
     }
   ],
-  "order": 66,
+  "order": 16896,
   "output_items": [
     "hbm:heater_electric"
   ],

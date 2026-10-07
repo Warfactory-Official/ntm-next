@@ -9,7 +9,7 @@
       "ingredient": "#c:dusts/plutonium"
     }
   ],
-  "order": 32,
+  "order": 8192,
   "output_items": [
     "hbm:powder_tennessine"
   ]

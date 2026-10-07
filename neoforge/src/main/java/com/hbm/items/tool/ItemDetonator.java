@@ -10,6 +10,7 @@ import com.hbm.config.NeoForgeHbmConfig;
 import com.hbm.interfaces.IBomb.BombReturnCode;
 import com.hbm.interfaces.IBomb;
 import com.hbm.items.ModDataComponents;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.KeyHints;
 import java.util.function.Consumer;
@@ -56,8 +57,8 @@ public class ItemDetonator extends Item {
             if (!level.isClientSide()) {
                 BlockPos pos = context.getClickedPos();
                 context.getItemInHand().set(ModDataComponents.DETONATOR_POS.get(), pos.asLong());
-                level.playSound(
-                        null,
+                EntitySounds.play(
+                        player,
                         player.getX(),
                         player.getY(),
                         player.getZ(),
@@ -101,8 +102,8 @@ public class ItemDetonator extends Item {
             return InteractionResult.FAIL;
         }
         if (!level.isClientSide()) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),

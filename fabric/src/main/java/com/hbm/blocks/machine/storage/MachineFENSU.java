@@ -94,19 +94,10 @@ public class MachineFENSU extends BlockMultiblockCore
 
     @Override
     public void buildLookOverlay(Level level, BlockPos pos, ILookOverlay.LookInfo info) {
-        info.title(getName().getString(), 0xffff00, 0x404000);
-        if (!(level.getBlockEntity(pos) instanceof BlockEntityMachineBattery battery)) return;
-
-        info.line(
-                BobMathUtil.getShortNumber(battery.getPower())
-                        + " / "
-                        + BobMathUtil.getShortNumber(battery.getMaxPower())
-                        + "HE");
-
-        double percent = (double) battery.getPower() / (double) battery.getMaxPower();
-        int charge = (int) Math.floor(percent * 10_000D);
-        int color = ((int) (0xFF - 0xFF * percent)) << 16 | ((int) (0xFF * percent) << 8);
-        info.line((charge / 100D) + "%", color);
+        info.title(getName(), 0xffff00, 0x404000);
+        if (level.getBlockEntity(pos) instanceof BlockEntityMachineBattery battery) {
+            info.charge(battery.getPower(), battery.getMaxPower());
+        }
     }
 
     @Override

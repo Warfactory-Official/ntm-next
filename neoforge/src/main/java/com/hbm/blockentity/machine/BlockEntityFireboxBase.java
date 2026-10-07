@@ -127,8 +127,10 @@ public abstract class BlockEntityFireboxBase extends BlockEntityMachinePolluting
     @Override
     public void tickServer() {
         wasOn = false;
+        boolean canOperate;
 
         if (burnTime <= 0) {
+            canOperate = breatheAir(0);
 
             for (int i = 0; i < 2; i++) {
                 ItemStack stack = inventory.get(i);
@@ -146,11 +148,13 @@ public abstract class BlockEntityFireboxBase extends BlockEntityMachinePolluting
                     if (ashType == EnumAshType.COAL) ashpit.ashLevelCoal += baseTime;
                     else if (ashType == EnumAshType.WOOD) ashpit.ashLevelWood += baseTime;
                     else if (ashType == EnumAshType.MISC) ashpit.ashLevelMisc += baseTime;
+                    ashpit.markChanged();
                 }
 
                 ItemStackTemplate remainder = stack.getCraftingRemainder();
                 stack.shrink(1);
                 if (stack.isEmpty() && remainder != null) inventory.set(i, remainder.create());
+                markChanged();
 
                 this.wasOn = true;
                 break;
@@ -158,30 +162,42 @@ public abstract class BlockEntityFireboxBase extends BlockEntityMachinePolluting
         } else {
 
             if (this.heatEnergy < getMaxHeat()) {
-                burnTime--;
-                if (TickPhase.every(this, SharedConstants.TICKS_PER_SECOND)) {
-                    this.pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * 3);
+                canOperate = breatheAir(TickPhase.every(this, 500 / getBaseHeat()) ? 1 : 0);
+                if (canOperate) {
+                    burnTime--;
+                    markChanged();
+                    if (TickPhase.every(this, SharedConstants.TICKS_PER_SECOND)) {
+                        this.pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * 3);
+                    }
                 }
+            } else {
+                canOperate = breatheAir(0);
             }
-            this.wasOn = true;
 
-            if (level.getRandom().nextInt(15) == 0 && !isMuffled()) {
-                level.playSound(
-                        null,
-                        worldPosition,
-                        SoundEvents.FIRE_AMBIENT,
-                        SoundSource.BLOCKS,
-                        1.0F,
-                        0.5F + level.getRandom().nextFloat() * 0.5F);
+            if (canOperate) {
+                this.wasOn = true;
+
+                if (level.getRandom().nextInt(15) == 0 && !isMuffled()) {
+                    level.playSound(
+                            null,
+                            worldPosition,
+                            SoundEvents.FIRE_AMBIENT,
+                            SoundSource.BLOCKS,
+                            1.0F,
+                            0.5F + level.getRandom().nextFloat() * 0.5F);
+                }
             }
         }
 
+        int prevHeat = this.heatEnergy;
+        int prevBurnHeat = this.burnHeat;
         if (wasOn) {
             this.heatEnergy = Math.min(this.heatEnergy + this.burnHeat, getMaxHeat());
         } else {
             this.heatEnergy = Math.max(this.heatEnergy - Math.max(this.heatEnergy / 1000, 1), 0);
-            this.burnHeat = 0;
+            if (canOperate) this.burnHeat = 0;
         }
+        if (this.heatEnergy != prevHeat || this.burnHeat != prevBurnHeat) markChanged();
 
         flush.provide((ServerLevel) level, this);
 
@@ -270,7 +286,9 @@ public abstract class BlockEntityFireboxBase extends BlockEntityMachinePolluting
     @Override
     public void useUpHeat(Level level, BlockPos pos, int heat) {
         if (!BlockMultiblockCore.vendsHeatAt(this, pos)) return;
+        int prevHeat = this.heatEnergy;
         this.heatEnergy = Math.max(0, this.heatEnergy - heat);
+        if (this.heatEnergy != prevHeat) markChanged();
     }
 
     @Override

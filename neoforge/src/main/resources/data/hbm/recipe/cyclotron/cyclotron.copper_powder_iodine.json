@@ -9,7 +9,7 @@
       "ingredient": "hbm:powder_iodine"
     }
   ],
-  "order": 40,
+  "order": 10240,
   "output_items": [
     "hbm:powder_polonium"
   ]

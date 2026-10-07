@@ -9,10 +9,10 @@
   ],
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/titanium"
+      "ingredient": "#c:ores/titanium"
     }
   ],
-  "order": 241,
+  "order": 64000,
   "output_items": [
     "hbm:crystal_titanium"
   ],

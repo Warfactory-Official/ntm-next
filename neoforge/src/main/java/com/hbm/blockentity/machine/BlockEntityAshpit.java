@@ -101,10 +101,12 @@ public class BlockEntityAshpit extends BlockEntityMachineBase
             if (stack.isEmpty()) {
                 inventory.set(i, ModItems.POWDER_ASH.stack(type));
                 this.ashLevelWood -= threshold;
+                markChanged();
                 return true;
             }
             if (ModItems.POWDER_ASH.is(stack, type) && stack.getCount() < stack.getMaxStackSize()) {
                 stack.grow(1);
+                markChanged();
                 return true;
             }
         }

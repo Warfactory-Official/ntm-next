@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/neptunium"
     }
   ],
-  "order": 320,
+  "order": 81920,
   "output_items": [
     "hbm:powder_neptunium"
   ]

@@ -2,7 +2,7 @@
   "type": "hbm:gas_centrifuge",
   "consumed": 500,
   "duration": 150,
-  "order": 6,
+  "order": 1536,
   "output_items": [
     "hbm:powder_iron",
     "hbm:dust",

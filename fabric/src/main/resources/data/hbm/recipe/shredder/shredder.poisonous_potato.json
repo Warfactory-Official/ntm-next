@@ -5,7 +5,7 @@
       "ingredient": "minecraft:poisonous_potato"
     }
   ],
-  "order": 72,
+  "order": 18432,
   "output_items": [
     "hbm:powder_poison"
   ]

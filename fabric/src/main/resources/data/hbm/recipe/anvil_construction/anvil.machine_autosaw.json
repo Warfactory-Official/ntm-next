@@ -21,7 +21,7 @@
       "ingredient": "hbm:sawblade"
     }
   ],
-  "order": 80,
+  "order": 20480,
   "output_items": [
     "hbm:machine_autosaw"
   ],

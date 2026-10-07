@@ -20,7 +20,7 @@
       "ingredient": "#minecraft:sand"
     }
   ],
-  "order": 27,
+  "order": 6912,
   "output_fluids": [
     {
       "type": "hbm:liquid_concrete",

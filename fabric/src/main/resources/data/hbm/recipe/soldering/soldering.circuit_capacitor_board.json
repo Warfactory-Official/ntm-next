@@ -13,7 +13,7 @@
       "ingredient": "hbm:circuit_capacitor_tantalium"
     }
   ],
-  "order": 4,
+  "order": 1024,
   "output_items": [
     "hbm:circuit_capacitor_board"
   ],

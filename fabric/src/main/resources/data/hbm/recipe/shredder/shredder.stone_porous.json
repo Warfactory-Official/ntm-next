@@ -5,7 +5,7 @@
       "ingredient": "hbm:stone_porous"
     }
   ],
-  "order": 150,
+  "order": 38400,
   "output_items": [
     "hbm:scrap_oil"
   ]

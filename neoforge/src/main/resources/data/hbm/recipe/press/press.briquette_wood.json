@@ -5,7 +5,7 @@
       "ingredient": "hbm:powder_sawdust"
     }
   ],
-  "order": 10,
+  "order": 2560,
   "output_items": [
     "hbm:briquette_wood"
   ],

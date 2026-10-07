@@ -57,7 +57,7 @@
       "ingredient": "hbm:coin_ufo"
     }
   ],
-  "order": 40,
+  "order": 10240,
   "output_items": [
     "hbm:sat_gerald"
   ],

@@ -7,7 +7,7 @@
       "amount": 2800
     }
   ],
-  "order": 16,
+  "order": 4096,
   "output_items": [
     "hbm:solid_fuel"
   ]

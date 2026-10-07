@@ -5,7 +5,7 @@
       "ingredient": "hbm:egg_glyphid"
     }
   ],
-  "order": 255,
+  "order": 65280,
   "output_items": [
     {
       "count": 2,

@@ -29,7 +29,8 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
 
         BlockState below2 = level.getBlockState(origin.move(0, -2, 0));
         origin.move(0, 2, 0);
-        if (!LocationIsValidSpawn.isDryGround(below2) || origin.getY() <= 1) return false;
+        if (!LocationIsValidSpawn.isDryGround(below2) || origin.getY() <= level.getMinY() + 1)
+            return false;
 
         Meteorite.INSTANCE.generate(level, rand, origin, false, false, false);
         return true;

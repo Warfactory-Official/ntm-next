@@ -1,0 +1,23 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 400,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 333
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:raw_materials/lead"
+    }
+  ],
+  "order": 62208,
+  "output_items": [
+    {
+      "chance": 0.667,
+      "id": "hbm:crystal_lead"
+    }
+  ],
+  "productivity": 0.05
+}

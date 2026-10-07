@@ -21,8 +21,10 @@ import com.hbm.inventory.container.MenuMachineRadarSlots;
 import com.hbm.items.ISatChip;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemRadarLinker;
+import com.hbm.packet.BeSyncTable;
 import com.hbm.packet.BlobSynced;
 import com.hbm.packet.ChunkTrackerIndex;
+import com.hbm.packet.SyncAudience;
 import com.hbm.packet.SyncBlob;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncList;
@@ -31,6 +33,7 @@ import com.hbm.saveddata.SatelliteSavedData;
 import com.hbm.saveddata.satellites.Satellite;
 import com.hbm.saveddata.satellites.SatelliteDetector;
 import com.hbm.saveddata.satellites.SatelliteRayEvents;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ChunkUtil;
 import io.netty.buffer.ByteBuf;
@@ -42,6 +45,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
@@ -61,7 +65,12 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineRadar extends BlockEntityMachineBase
-        implements IEnergyHandlerMK2, IGUIProvider, IControlReceiver, BlobSynced, SyncUnitSchema {
+        implements IEnergyHandlerMK2,
+                IGUIProvider,
+                IControlReceiver,
+                BlobSynced,
+                SyncUnitSchema,
+                SyncAudience {
     public static final int SLOT_LINK_COUNT = 8;
     public static final int SLOT_LINKER = 8;
     public static final int SLOT_BATTERY = 9;
@@ -203,7 +212,10 @@ public class BlockEntityMachineRadar extends BlockEntityMachineBase
 
         pushToLinkedScreen();
 
-        if (this.clearFlag) mapState.clear();
+        if (this.clearFlag) {
+            mapState.clear();
+            markChanged();
+        }
         networkPackNT(50);
         if (this.clearFlag) this.clearFlag = false;
         flushSyncBlob();
@@ -224,6 +236,7 @@ public class BlockEntityMachineRadar extends BlockEntityMachineBase
         int chunkLoads = 0;
         int chunkLoadCap = MachineData.RADAR_CHUNK_LOAD_CAP.get();
         int range = getRange();
+        boolean changed = false;
 
         for (int i = 0; i < MAP_SAMPLES_PER_TICK; i++) {
             int index = (int) (level.getGameTime() % MAP_CYCLE) * MAP_SAMPLES_PER_TICK + i;
@@ -235,7 +248,9 @@ public class BlockEntityMachineRadar extends BlockEntityMachineBase
 
             ChunkAccess resident = ChunkUtil.chunkIfLoaded(level, new BlockPos(x, 0, z));
             if (resident != null) {
-                this.map[index] = sample(resident, x, z);
+                byte height = sample(resident, x, z);
+                if (this.map[index] != height) changed = true;
+                this.map[index] = height;
                 continue;
             }
             if (this.map[index] != 0 || chunkLoads >= chunkLoadCap) continue;
@@ -243,8 +258,10 @@ public class BlockEntityMachineRadar extends BlockEntityMachineBase
             ChunkAccess loaded = provideChunk(x, z);
             if (loaded == null) continue;
             this.map[index] = sample(loaded, x, z);
+            changed = true;
             chunkLoads++;
         }
+        if (changed) markChanged();
     }
 
     private byte sample(ChunkAccess chunk, int x, int z) {
@@ -283,10 +300,12 @@ public class BlockEntityMachineRadar extends BlockEntityMachineBase
         if (worldPosition.getY() < MachineData.RADAR_ALTITUDE.get()) return;
         long consumption = MachineData.RADAR_CONSUMPTION.get();
         if (this.power < consumption) {
+            if (this.power != 0) markChanged();
             this.power = 0;
             return;
         }
         this.power -= consumption;
+        if (consumption != 0) markChanged();
         int buffer = MachineData.RADAR_BUFFER.get();
 
         int scan = this.getRange();
@@ -384,6 +403,11 @@ public class BlockEntityMachineRadar extends BlockEntityMachineBase
     }
 
     @Override
+    public boolean includes(ServerPlayer player) {
+        return isRadarMenuValid(player);
+    }
+
+    @Override
     public void receiveControl(CompoundTag data) {
         if (data.contains("missiles")) this.scanMissiles = !this.scanMissiles;
         if (data.contains("shells")) this.scanShells = !this.scanShells;
@@ -392,6 +416,7 @@ public class BlockEntityMachineRadar extends BlockEntityMachineBase
         if (data.contains("red")) this.redMode = !this.redMode;
         if (data.contains("map")) this.showMap = !this.showMap;
         if (data.contains("clear")) this.clearFlag = true;
+        markChanged();
     }
 
     @Override
@@ -449,8 +474,8 @@ public class BlockEntityMachineRadar extends BlockEntityMachineBase
     }
 
     protected void bleep(Player player) {
-        level.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.blockPosition(),
                 ModSounds.TECH_BLEEP.get(),
                 SoundSource.PLAYERS,
@@ -472,6 +497,7 @@ public class BlockEntityMachineRadar extends BlockEntityMachineBase
     @Override
     public AbstractContainerMenu createMenu(
             int containerId, Inventory playerInventory, Player player, int dispatchId) {
+        if (player instanceof ServerPlayer viewer) BeSyncTable.admit(this, viewer);
         return dispatchId == DISPATCH_SLOTS
                 ? new MenuMachineRadarSlots(containerId, playerInventory, this)
                 : new MenuMachineRadar(containerId, playerInventory, this);

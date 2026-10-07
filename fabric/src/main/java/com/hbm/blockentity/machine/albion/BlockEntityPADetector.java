@@ -129,6 +129,7 @@ public class BlockEntityPADetector extends BlockEntityCooledBase
             return;
         }
         this.power -= usage;
+        markChanged();
 
         for (ParticleAcceleratorRecipe recipe : ParticleAcceleratorRecipes.INSTANCE.recipes()) {
             if (!recipe.matchesRecipe(particle.input1, particle.input2)) continue;

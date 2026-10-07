@@ -4,6 +4,7 @@
 package com.hbm.mixin;
 
 import com.hbm.interfaces.injected.IChunkExtension;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import org.jspecify.annotations.Nullable;
@@ -69,5 +70,17 @@ public abstract class MixinChunkAccess implements IChunkExtension {
         hbm$pendingFallerPositions = positions;
         hbm$pendingFallerStates = states;
         hbm$pendingFallerSize = size;
+    }
+
+    @Unique private @Nullable Long2ObjectOpenHashMap<String> hbm$ductFluids;
+
+    @Override
+    public @Nullable Long2ObjectOpenHashMap<String> hbm$ductFluids() {
+        return this.hbm$ductFluids;
+    }
+
+    @Override
+    public void hbm$setDuctFluids(@Nullable Long2ObjectOpenHashMap<String> fluids) {
+        this.hbm$ductFluids = fluids;
     }
 }

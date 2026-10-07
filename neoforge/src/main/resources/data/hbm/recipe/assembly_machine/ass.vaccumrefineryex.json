@@ -33,7 +33,7 @@
     }
   ],
   "name": "ass.vaccumrefineryEx",
-  "order": 125,
+  "order": 32000,
   "output_items": [
     "hbm:machine_vacuum_distill"
   ],

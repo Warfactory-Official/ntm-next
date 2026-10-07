@@ -14,7 +14,7 @@
       "ingredient": "hbm:thruster_medium"
     }
   ],
-  "order": 35,
+  "order": 8960,
   "output_items": [
     "hbm:missile_burst"
   ],

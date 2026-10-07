@@ -1,6 +1,17 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbm:models/duchessgambit.obj",
+  "offset_y": 2.0,
+  "offset_z": -1.5,
+  "skins": {
+    "all": [
+      "Cube_Cube.001"
+    ]
+  },
   "textures": {
-    "all": "hbm:block/asphalt"
+    "all": "hbm:block/models/duchessgambit",
+    "particle": "hbm:block/asphalt"
   }
 }

@@ -132,6 +132,7 @@ public class BlockEntityRBMKBoiler extends BlockEntityRBMKBase
             }
 
             this.heat -= waterUsed * heatPerMbWater;
+            if (waterUsed > 0 || steamProduced > 0) markChanged();
         }
 
         flush.provide((ServerLevel) level, this);

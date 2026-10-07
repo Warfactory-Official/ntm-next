@@ -81,6 +81,7 @@ public class BlockEntityTurretRichard extends BlockEntityTurretBaseNT {
 
     @Override
     public void tickServer() {
+        int prevLoaded = loaded;
         super.tickServer();
 
         if (reload > 0) {
@@ -90,6 +91,7 @@ public class BlockEntityTurretRichard extends BlockEntityTurretBaseNT {
 
         if (loaded <= 0 && reload <= 0 && getFirstConfigLoaded() != null) reload = 100;
         if (getFirstConfigLoaded() == null) loaded = 0;
+        if (loaded != prevLoaded) markChanged();
 
         networkPackNT(250);
     }

@@ -23,6 +23,7 @@ import com.hbm.items.ModItems;
 import com.hbm.items.machine.upgrade.ItemMachineUpgrade;
 import com.hbm.items.machine.upgrade.UpgradeManager;
 import com.hbm.items.machine.upgrade.UpgradeType;
+import com.hbm.items.special.BedrockOreKind;
 import com.hbm.items.special.BedrockOreSample;
 import com.hbm.items.special.ItemBedrockOreBase;
 import com.hbm.items.special.ItemBedrockOreNew.BedrockOreGrade;
@@ -33,7 +34,9 @@ import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import com.hbm.particle.ParticleGiblet;
 import com.hbm.particle.helper.ParticleCreators;
+import com.hbm.sound.EntitySounds;
 import io.netty.buffer.ByteBuf;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -87,7 +90,7 @@ public class BlockEntityMachineOreSlopper extends BlockEntityMachineBase
 
     private final FluidTankNTM[] receiving;
     private final FluidTankNTM[] sending;
-    public final double[] ores = new double[BedrockOreType.VALUES.length];
+    public final double[] ores = new double[BedrockOreType.KINDS.values().size()];
     private final UpgradeManager upgradeManager = new UpgradeManager(this);
 
     @SyncField(units = 1L << 1)
@@ -128,7 +131,7 @@ public class BlockEntityMachineOreSlopper extends BlockEntityMachineBase
     public void tickServer() {
         power += ItemEnergyTransfer.extract(this, SLOT_BATTERY, maxPower - power, false);
 
-        tanks[0].setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory);
+        if (tanks[0].setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory)) markChanged();
         Fluid conversion = getFluidOutput(tanks[0].getTankType());
         if (conversion != null) tanks[1].setTankType(conversion);
 
@@ -145,18 +148,17 @@ public class BlockEntityMachineOreSlopper extends BlockEntityMachineBase
             this.power -= this.consumption;
             this.progress += 1F / (600 - speed * 150);
             this.processing = true;
+            markChanged();
 
             while (progress >= 1F && canSlop()) {
                 progress -= 1F;
 
                 BedrockOreSample sample = ItemBedrockOreBase.sample(inventory.get(SLOT_INPUT));
                 double multiplier = 1D + efficiency * 0.1D;
-                ores[BedrockOreType.LIGHT_METAL.ordinal()] += sample.lightMetal() * multiplier;
-                ores[BedrockOreType.HEAVY_METAL.ordinal()] += sample.heavyMetal() * multiplier;
-                ores[BedrockOreType.RARE_EARTH.ordinal()] += sample.rareEarth() * multiplier;
-                ores[BedrockOreType.ACTINIDE.ordinal()] += sample.actinide() * multiplier;
-                ores[BedrockOreType.NON_METAL.ordinal()] += sample.nonMetal() * multiplier;
-                ores[BedrockOreType.CRYSTALLINE.ordinal()] += sample.crystalline() * multiplier;
+                for (int i = 0; i < sample.amounts().length; i++) {
+                    ores[BedrockOreType.KINDS.index(sample.set().kinds().get(i))] +=
+                            sample.amounts()[i] * multiplier;
+                }
 
                 inventory.get(SLOT_INPUT).shrink(1);
                 tanks[0].setFill(tanks[0].getFill() - waterUsed);
@@ -166,27 +168,32 @@ public class BlockEntityMachineOreSlopper extends BlockEntityMachineBase
 
             shred();
         } else {
+            if (this.progress != 0) markChanged();
             this.progress = 0;
         }
 
-        for (BedrockOreType type : BedrockOreType.VALUES) {
-            ItemStack output = ItemBedrockOreNew.make(BedrockOreGrade.BASE, type);
+        List<BedrockOreKind> kinds = BedrockOreType.KINDS.values();
+        for (int index = 0; index < kinds.size(); index++) {
+            if (ores[index] < 1) continue;
+            ItemStack output = ItemBedrockOreNew.make(BedrockOreGrade.BASE, kinds.get(index));
             outer:
-            while (ores[type.ordinal()] >= 1) {
+            while (ores[index] >= 1) {
                 for (int i = SLOT_OUTPUT_START; i <= SLOT_OUTPUT_END; i++) {
                     ItemStack slot = inventory.get(i);
                     if (!slot.isEmpty()
                             && ItemStack.isSameItemSameComponents(slot, output)
                             && slot.getCount() < slot.getMaxStackSize()) {
                         slot.grow(1);
-                        ores[type.ordinal()] -= 1F;
+                        ores[index] -= 1F;
+                        markChanged();
                         continue outer;
                     }
                 }
                 for (int i = SLOT_OUTPUT_START; i <= SLOT_OUTPUT_END; i++) {
                     if (inventory.get(i).isEmpty()) {
                         inventory.set(i, output.copy());
-                        ores[type.ordinal()] -= 1F;
+                        ores[index] -= 1F;
+                        markChanged();
                         continue outer;
                     }
                 }
@@ -217,8 +224,8 @@ public class BlockEntityMachineOreSlopper extends BlockEntityMachineBase
 
             if (!e.isAlive() && e instanceof LivingEntity) {
                 ParticleCreators.giblets(server, e, ParticleGiblet.TYPE_MEAT, 5);
-                server.playSound(
-                        null,
+                EntitySounds.play(
+                        e,
                         e.getX(),
                         e.getY(),
                         e.getZ(),

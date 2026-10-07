@@ -5,7 +5,7 @@
       "ingredient": "#c:dusts/polonium_210"
     }
   ],
-  "order": 325,
+  "order": 83200,
   "output_items": [
     "hbm:dust"
   ]

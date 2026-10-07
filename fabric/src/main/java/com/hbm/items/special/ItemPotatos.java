@@ -5,6 +5,7 @@ package com.hbm.items.special;
 
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.ItemBattery;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -34,8 +35,8 @@ public class ItemPotatos extends ItemBattery {
         if (!(owner instanceof Player player) || player.getMainHandItem() != stack) return;
 
         float pitch = (float) getCharge(stack) / (float) getMaxCharge(stack) * 0.5F + 0.5F;
-        level.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.getX(),
                 player.getY(),
                 player.getZ(),

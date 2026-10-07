@@ -3,6 +3,8 @@
 
 package com.hbm.entity.mob;
 
+import com.hbm.api.environment.Environment;
+import com.hbm.api.environment.ISuffocationImmune;
 import com.hbm.data.MobData;
 import com.hbm.entity.mob.ai.EntityAIBreaking;
 import com.hbm.items.ModItems;
@@ -46,7 +48,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class EntityFBI extends Monster implements RangedAttackMob {
+public class EntityFBI extends Monster implements RangedAttackMob, ISuffocationImmune {
 
     public EntityFBI(EntityType<? extends EntityFBI> type, Level level) {
         super(type, level);
@@ -114,7 +116,7 @@ public class EntityFBI extends Monster implements RangedAttackMob {
             setItemSlot(EquipmentSlot.FEET, ModItems.SECURITY_BOOTS.get().getDefaultInstance());
         }
 
-        if (level().dimension() != Level.OVERWORLD) {
+        if (!Environment.canBreathe(this).toBoolean(level().dimension() == Level.OVERWORLD)) {
             setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.GLASS));
             setItemSlot(EquipmentSlot.CHEST, ModItems.PAA_PLATE.get().getDefaultInstance());
             setItemSlot(EquipmentSlot.LEGS, ModItems.PAA_LEGS.get().getDefaultInstance());

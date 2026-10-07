@@ -4,6 +4,7 @@
 package com.hbm.items.armor;
 
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.TooltipStyle;
 import java.util.function.Consumer;
@@ -51,8 +52,8 @@ public class ItemJetpackTank extends Item {
         ArmorSuitEffects.storeWornPack(player, pack);
 
         player.getItemInHand(hand).consume(1, player);
-        server.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.getX(),
                 player.getY(),
                 player.getZ(),

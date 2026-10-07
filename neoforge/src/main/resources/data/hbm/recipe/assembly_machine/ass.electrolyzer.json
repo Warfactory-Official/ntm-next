@@ -37,7 +37,7 @@
       "ingredient": "hbm:circuit_basic"
     }
   ],
-  "order": 105,
+  "order": 26880,
   "output_items": [
     "hbm:machine_electrolyser"
   ],

@@ -4,6 +4,7 @@
 package com.hbm.mixin;
 
 import com.hbm.advancement.HbmCriteria;
+import com.hbm.api.entity.PlayerRespawns;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.inventory.InventoryChanges;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -20,10 +21,12 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.portal.TeleportTransition;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayer.class)
 public abstract class MixinServerPlayer {
@@ -87,5 +90,14 @@ public abstract class MixinServerPlayer {
         return owned == null
                 ? 0
                 : original.call(level, owned, x, y, z, count, xDist, yDist, zDist, speed);
+    }
+
+    @Inject(method = "findRespawnPositionAndUseSpawnBlock", at = @At("HEAD"), cancellable = true)
+    private void hbm$respawnRules(
+            boolean consumeSpawnBlock,
+            TeleportTransition.PostTeleportTransition then,
+            CallbackInfoReturnable<TeleportTransition> cir) {
+        TeleportTransition transition = PlayerRespawns.respawn((ServerPlayer) (Object) this, then);
+        if (transition != null) cir.setReturnValue(transition);
     }
 }

@@ -3,6 +3,7 @@
 
 package com.hbm.integration.recipeviewer;
 
+import com.hbm.blockentity.machine.BlockEntityStorageDrum;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
 import com.hbm.items.special.ItemWasteLong;
@@ -33,6 +34,9 @@ public final class WasteDecayPage extends RecipePage<WasteDecayPage.Recipe> {
                     row(
                             ModItems.NUCLEAR_WASTE_SHORT_TINY.stack(waste),
                             ModItems.NUCLEAR_WASTE_SHORT_DEPLETED_TINY.stack(waste)));
+        }
+        for (BlockEntityStorageDrum.AddonDecay decay : BlockEntityStorageDrum.addonDecays()) {
+            rows.add(row(new ItemStack(decay.from().get()), decay.into().get()));
         }
         for (ItemWasteLong.WasteClass waste : ItemWasteLong.WasteClass.VALUES) {
             rows.add(

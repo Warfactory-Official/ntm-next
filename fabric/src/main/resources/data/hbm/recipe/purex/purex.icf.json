@@ -8,7 +8,7 @@
     }
   ],
   "name_wrapper": "purex.recycle",
-  "order": 49,
+  "order": 12544,
   "output_fluids": [
     {
       "type": "hbm:helium4",

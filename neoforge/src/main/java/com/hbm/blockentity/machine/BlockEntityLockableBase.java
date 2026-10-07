@@ -10,6 +10,7 @@ import com.hbm.items.tool.ItemKey;
 import com.hbm.items.tool.ItemKeyPin;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
@@ -128,8 +129,8 @@ public abstract class BlockEntityLockableBase extends BlockEntityMachineBase
     }
 
     private void playLockOpen(Player player) {
-        level.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.getX(),
                 player.getY(),
                 player.getZ(),
@@ -156,8 +157,8 @@ public abstract class BlockEntityLockableBase extends BlockEntityMachineBase
 
         if (isJacket(player.getItemBySlot(EquipmentSlot.CHEST))) chanceOfSuccess *= 100D;
         if (level.getRandom().nextDouble() * 100 < chanceOfSuccess) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),
@@ -168,8 +169,8 @@ public abstract class BlockEntityLockableBase extends BlockEntityMachineBase
             return true;
         }
 
-        level.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.getX(),
                 player.getY(),
                 player.getZ(),

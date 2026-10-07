@@ -27,6 +27,7 @@ public final class BlockEntityRadioTorchReceiver extends BlockEntityRadioTorch {
                             || received.timeStamp > lastUpdate - 1L && received.timeStamp != -1L)) {
                 String message = String.valueOf(received.signal);
                 lastUpdate = level.getGameTime();
+                markChanged();
                 if ("selfdestruct".equals(message)) {
                     destroyWithExplosion();
                     return;

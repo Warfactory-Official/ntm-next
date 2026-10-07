@@ -5,7 +5,7 @@
       "ingredient": "#c:dusts/lapis"
     }
   ],
-  "order": 1,
+  "order": 256,
   "output_items": [
     "minecraft:lapis_lazuli"
   ],

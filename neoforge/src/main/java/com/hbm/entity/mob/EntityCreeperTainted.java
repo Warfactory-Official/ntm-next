@@ -7,21 +7,12 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.bomb.BlockTaint;
 import com.hbm.data.ItemData;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -44,24 +35,6 @@ public class EntityCreeperTainted extends EntityCreeperBase {
         super.tick();
 
         if (isAlive() && getHealth() < getMaxHealth() && tickCount % 10 == 0) heal(1.0F);
-    }
-
-    @Override
-    protected void dropCustomDeathLoot(
-            ServerLevel level, DamageSource source, boolean killedByPlayer) {
-        super.dropCustomDeathLoot(level, source, killedByPlayer);
-
-        int looting = 0;
-        if (source.getEntity() instanceof LivingEntity attacker) {
-            Holder<Enchantment> lootingEnchant =
-                    level.registryAccess()
-                            .lookupOrThrow(Registries.ENCHANTMENT)
-                            .getOrThrow(Enchantments.LOOTING);
-            looting = EnchantmentHelper.getEnchantmentLevel(lootingEnchant, attacker);
-        }
-
-        int amount = random.nextInt(3) + (looting > 0 ? random.nextInt(looting + 1) : 0);
-        for (int i = 0; i < amount; i++) spawnAtLocation(level, new ItemStack(Items.TNT));
     }
 
     @Override

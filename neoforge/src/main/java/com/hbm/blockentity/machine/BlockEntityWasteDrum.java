@@ -70,6 +70,8 @@ public class BlockEntityWasteDrum extends BlockEntityMachineBase implements Menu
             if (stack.isEmpty()) continue;
 
             if (stack.getItem() instanceof ItemRBMKRod rod) {
+                if (ItemRBMKRod.getCoreHeat(stack) > ItemRBMKRod.getHullHeat(stack)
+                        || ItemRBMKRod.getHullHeat(stack) > 20D) markChanged();
                 rod.updateHeat(level, stack, 0.025D);
                 rod.provideHeat(level, stack, 20D, 0.025D);
             } else if (level.getRandom().nextInt(r) == 0) {

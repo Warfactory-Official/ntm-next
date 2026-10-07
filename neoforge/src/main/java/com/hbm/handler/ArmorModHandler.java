@@ -15,6 +15,7 @@ import com.hbm.items.armor.ItemModObsidian;
 import com.hbm.items.armor.ItemModRevive;
 import com.hbm.lib.Library;
 import com.hbm.util.KeyHints;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
@@ -72,12 +73,22 @@ public final class ArmorModHandler {
                     Attributes.ATTACK_DAMAGE,
                     Attributes.KNOCKBACK_RESISTANCE);
 
+    private static final Reference2ObjectOpenHashMap<Item, ForeignMod> FOREIGN_MODS =
+            new Reference2ObjectOpenHashMap<>();
+
+    private record ForeignMod(int sockets, EquipmentSlot piece) {}
+
     private ArmorModHandler() {}
+
+    public static void registerForeignMod(Item item, int sockets, EquipmentSlot piece) {
+        FOREIGN_MODS.put(item, new ForeignMod(sockets, piece));
+    }
 
     public static boolean isArmor(ItemStack stack) {
         if (stack.isEmpty()
                 || stack.getItem() instanceof ItemArmorMod
-                || EquipmentProtections.isCladding(stack)) return false;
+                || EquipmentProtections.isCladding(stack)
+                || FOREIGN_MODS.containsKey(stack.getItem())) return false;
         var equippable = stack.get(DataComponents.EQUIPPABLE);
         return equippable != null
                 && switch (equippable.slot()) {
@@ -92,8 +103,15 @@ public final class ArmorModHandler {
         return -1;
     }
 
+    public static boolean fits(ItemStack mod, int socket) {
+        ForeignMod foreign = FOREIGN_MODS.get(mod.getItem());
+        return foreign == null ? modSlot(mod) == socket : (foreign.sockets & 1 << socket) != 0;
+    }
+
     public static boolean isApplicable(ItemStack armor, ItemStack mod) {
         if (!isArmor(armor)) return false;
+        ForeignMod foreign = FOREIGN_MODS.get(mod.getItem());
+        if (foreign != null) return armor.get(DataComponents.EQUIPPABLE).slot() == foreign.piece;
         if (EquipmentProtections.isCladding(mod))
             return EquipmentProtections.claddingAllows(
                     mod, armor.get(DataComponents.EQUIPPABLE).slot());
@@ -121,7 +139,10 @@ public final class ArmorModHandler {
     }
 
     public static void applyMod(ItemStack armor, ItemStack mod) {
-        int slot = modSlot(mod);
+        applyMod(armor, mod, modSlot(mod));
+    }
+
+    public static void applyMod(ItemStack armor, ItemStack mod, int slot) {
         assert slot >= 0;
         ArmorMods current = mods(armor);
         ArmorMods next = current.with(slot, mod);
@@ -180,6 +201,8 @@ public final class ArmorModHandler {
                                 .withStyle(ChatFormatting.YELLOW));
             } else if (mods[i].getItem() instanceof ItemArmorMod mod)
                 mod.addDescription(tooltip, mods[i], armor);
+            else if (FOREIGN_MODS.containsKey(mods[i].getItem()))
+                tooltip.add(mods[i].getHoverName());
         }
     }
 

@@ -3,20 +3,24 @@
 
 package com.hbm.blockentity;
 
+import com.hbm.api.environment.Environment;
 import com.hbm.inventory.ListSlotSource;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncInventory;
 import com.hbm.packet.SyncUnitSchema;
 import io.netty.buffer.ByteBuf;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.Nameable;
@@ -46,13 +50,17 @@ public abstract class BlockEntityMachineBase extends BlockEntity
     private static final int[] NO_SLOTS = new int[0];
     protected static final int MUFFLE_UNIT = Long.SIZE - 2;
     private static final long MUFFLE_MASK = 1L << MUFFLE_UNIT;
+    private static final int NAME_UNIT = Long.SIZE - 3;
+    private static final long NAME_MASK = 1L << NAME_UNIT;
 
     @SyncField public final NonNullList<ItemStack> inventory;
 
     @SyncField(units = MUFFLE_MASK)
     private boolean muffled;
 
+    @SyncField(units = NAME_MASK)
     private @Nullable Component customName;
+
     private @Nullable ResourceKey<LootTable> lootTable;
     private long lootTableSeed;
 
@@ -83,18 +91,37 @@ public abstract class BlockEntityMachineBase extends BlockEntity
         return this instanceof AudioLoop;
     }
 
+    protected boolean syncName() {
+        return false;
+    }
+
     public long syncUnitMask() {
-        return syncMuffled() ? MUFFLE_MASK : 0;
+        return (syncMuffled() ? MUFFLE_MASK : 0) | (syncName() ? NAME_MASK : 0);
     }
 
     public void writeSyncUnit(int unit, ByteBuf output) {
-        if (unit != MUFFLE_UNIT || !syncMuffled()) throw new IllegalArgumentException();
-        output.writeBoolean(muffled);
+        if (unit == MUFFLE_UNIT && syncMuffled()) {
+            output.writeBoolean(muffled);
+        } else if (unit == NAME_UNIT && syncName()) {
+            ComponentSerialization.TRUSTED_OPTIONAL_STREAM_CODEC.encode(
+                    new RegistryFriendlyByteBuf(output, level.registryAccess()),
+                    Optional.ofNullable(customName));
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public void readSyncUnit(int unit, ByteBuf input) {
-        if (unit != MUFFLE_UNIT || !syncMuffled()) throw new IllegalArgumentException();
-        muffled = input.readBoolean();
+        if (unit == MUFFLE_UNIT && syncMuffled()) {
+            muffled = input.readBoolean();
+        } else if (unit == NAME_UNIT && syncName()) {
+            customName =
+                    ComponentSerialization.TRUSTED_OPTIONAL_STREAM_CODEC
+                            .decode(new RegistryFriendlyByteBuf(input, level.registryAccess()))
+                            .orElse(null);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public boolean dropsSlot(int slot) {
@@ -136,6 +163,10 @@ public abstract class BlockEntityMachineBase extends BlockEntity
     public void tickServer() {}
 
     public void tickClient() {}
+
+    protected final boolean breatheAir(int amount) {
+        return Environment.breatheAir((ServerLevel) level, worldPosition, amount);
+    }
 
     @Override
     public int getContainerSize() {

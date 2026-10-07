@@ -28,7 +28,7 @@
     }
   ],
   "name": "soldering.upgrade_speed_3Lbsm",
-  "order": 26,
+  "order": 6656,
   "output_items": [
     "hbm:upgrade_speed_3"
   ],

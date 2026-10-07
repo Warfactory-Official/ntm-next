@@ -6,7 +6,7 @@
       "amount": 4000
     }
   ],
-  "order": 32,
+  "order": 8192,
   "output_fluids": [
     {
       "type": "hbm:sulfuric_acid",

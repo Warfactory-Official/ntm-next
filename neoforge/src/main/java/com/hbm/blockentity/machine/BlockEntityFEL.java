@@ -145,6 +145,9 @@ public class BlockEntityFEL extends BlockEntityMachineBase
     @Override
     public void tickServer() {
         Direction dir = getBlockState().getValue(BlockMultiblockCore.FACING);
+        long priorPower = power;
+        EnumWavelengths priorMode = mode;
+        int priorDistance = distance;
         power += ItemEnergyTransfer.extract(this, SLOT_BATTERY, maxPower - power, false);
 
         ItemStack crystal = inventory.get(SLOT_CRYSTAL);
@@ -177,18 +180,17 @@ public class BlockEntityFEL extends BlockEntityMachineBase
             for (LivingEntity entity :
                     level.getEntitiesOfClass(
                             LivingEntity.class, new AABB(blx, bly, blz, bux, buy, buz))) {
-                switch (mode) {
-                    case VISIBLE -> {
-                        entity.addEffect(
-                                new MobEffectInstance(MobEffects.BLINDNESS, 60 * 60 * 65536, 0));
-                        entity.igniteForSeconds(10);
-                    }
-                    case IR, UV -> entity.igniteForSeconds(10);
-                    case GAMMA ->
-                            ContaminationUtil.contaminate(
-                                    entity, HazardType.RADIATION, ContaminationType.CREATIVE, 25);
-                    case DRX -> ContaminationUtil.applyDigammaData(entity, 0.1F);
-                    default -> {}
+                if (mode == EnumWavelengths.VISIBLE) {
+                    entity.addEffect(
+                            new MobEffectInstance(MobEffects.BLINDNESS, 60 * 60 * 65536, 0));
+                    entity.igniteForSeconds(10);
+                } else if (mode == EnumWavelengths.IR || mode == EnumWavelengths.UV) {
+                    entity.igniteForSeconds(10);
+                } else if (mode == EnumWavelengths.GAMMA) {
+                    ContaminationUtil.contaminate(
+                            entity, HazardType.RADIATION, ContaminationType.CREATIVE, 25);
+                } else if (mode == EnumWavelengths.DRX) {
+                    ContaminationUtil.applyDigammaData(entity, 0.1F);
                 }
             }
 
@@ -265,7 +267,7 @@ public class BlockEntityFEL extends BlockEntityMachineBase
         this.missingValidSilex = !armedSilex;
 
         networkPackNT(250);
-        setChanged();
+        if (power != priorPower || mode != priorMode || distance != priorDistance) markChanged();
     }
 
     public long getPowerScaled(long i) {
@@ -315,7 +317,7 @@ public class BlockEntityFEL extends BlockEntityMachineBase
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
         power = input.getLongOr("power", 0L);
-        mode = EnumWavelengths.valueOf(input.getStringOr("mode", "NULL"));
+        mode = EnumWavelengths.byName(input.getStringOr("mode", "NULL"));
         isOn = input.getBooleanOr("isOn", false);
         distance = input.getIntOr("distance", 0);
     }
@@ -334,7 +336,7 @@ public class BlockEntityFEL extends BlockEntityMachineBase
     }
 
     private void readMode(ByteBuf input) {
-        mode = EnumWavelengths.values()[input.readInt()];
+        mode = EnumWavelengths.values().get(input.readInt());
     }
 
     @Override

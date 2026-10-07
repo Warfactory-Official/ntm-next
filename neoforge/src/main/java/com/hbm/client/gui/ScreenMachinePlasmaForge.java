@@ -12,7 +12,6 @@ import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.lib.Library;
 import com.hbm.util.BobMathUtil;
-import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -33,6 +32,12 @@ public class ScreenMachinePlasmaForge extends ScreenInfoContainer<MenuMachinePla
     private static final int TANK_X = 80, TANK_Y = 18, TANK_W = 16, TANK_H = 52;
     private static final int BTN_X = 7, BTN_Y = 80, BTN_W = 18, BTN_H = 18;
     private static final int PLASMA_STAT_X = 25, PLASMA_STAT_Y = 115, STAT_W = 18, STAT_H = 18;
+
+    private final List<ItemStack> isotopes =
+            BlockEntityFusionPlasmaForge.boosters().stream()
+                    .flatMap(booster -> booster.ingredient().items())
+                    .map(ItemStack::new)
+                    .toList();
 
     public ScreenMachinePlasmaForge(
             MenuMachinePlasmaForge menu, Inventory inventory, Component title) {
@@ -179,10 +184,6 @@ public class ScreenMachinePlasmaForge extends ScreenInfoContainer<MenuMachinePla
                 || !menu.getCarried().isEmpty()
                 || !isHovering(booster.x, booster.y, 16, 16, mouseX, mouseY)) {
             return;
-        }
-        List<ItemStack> isotopes = new ArrayList<>();
-        for (BlockEntityFusionPlasmaForge.Booster entry : BlockEntityFusionPlasmaForge.boosters()) {
-            entry.ingredient().items().forEach(item -> isotopes.add(new ItemStack(item)));
         }
         GUIElements.drawCyclingStackText(
                 graphics,

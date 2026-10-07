@@ -66,6 +66,12 @@ public class FluidBuilder {
         return this;
     }
 
+    public FluidBuilder removeTrait(Class<? extends FluidTrait> type) {
+        if (traits.remove(type) == null)
+            throw new IllegalStateException(name + " has no " + type.getSimpleName());
+        return this;
+    }
+
     public FluidBuilder shares(String... conventionalTags) {
         shares.addAll(Arrays.asList(conventionalTags));
         return this;

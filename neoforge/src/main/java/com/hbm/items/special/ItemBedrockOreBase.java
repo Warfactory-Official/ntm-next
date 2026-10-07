@@ -4,7 +4,6 @@
 package com.hbm.items.special;
 
 import com.hbm.items.ModDataComponents;
-import com.hbm.items.special.ItemBedrockOreNew.BedrockOreType;
 import com.hbm.items.tool.ItemOreDensityScanner;
 import com.hbm.world.feature.BedrockOreField;
 import java.util.function.Consumer;
@@ -27,24 +26,28 @@ public class ItemBedrockOreBase extends Item {
                 ModDataComponents.BEDROCK_ORE_SAMPLE.get(), BedrockOreSample.EMPTY);
     }
 
-    public static double getOreAmount(ItemStack stack, BedrockOreType type) {
+    public static double getOreAmount(ItemStack stack, BedrockOreKind type) {
         return sample(stack).amount(type);
     }
 
     public static void setOreAmount(
             ItemStack stack, BedrockOreField field, int x, int z, double multiplier) {
-        double richness = field.richness(x, z);
-        double lightMetal = field.lightMetal(richness, x, z) * multiplier;
-        double heavyMetal = field.heavyMetal(richness, x, z) * multiplier;
-        double rareEarth = field.rareEarth(richness, x, z) * multiplier;
-        double actinide = field.actinide(richness, x, z) * multiplier;
-        double nonMetal = field.nonMetal(richness, x, z) * multiplier;
-        double crystalline = field.crystalline(richness, x, z) * multiplier;
+        setOreAmount(stack, field, BedrockOreSet.NTM, x, z, multiplier);
+    }
 
-        stack.set(
-                ModDataComponents.BEDROCK_ORE_SAMPLE.get(),
-                new BedrockOreSample(
-                        lightMetal, heavyMetal, rareEarth, actinide, nonMetal, crystalline));
+    public static void setOreAmount(
+            ItemStack stack,
+            BedrockOreField field,
+            BedrockOreSet set,
+            int x,
+            int z,
+            double multiplier) {
+        double richness = field.richness(x, z);
+        double[] amounts = new double[set.kinds().size()];
+        for (int i = 0; i < amounts.length; i++) {
+            amounts[i] = field.oreLevel(richness, x, z, set.kinds().get(i)) * multiplier;
+        }
+        stack.set(ModDataComponents.BEDROCK_ORE_SAMPLE.get(), new BedrockOreSample(set, amounts));
     }
 
     @Override
@@ -55,11 +58,16 @@ public class ItemBedrockOreBase extends Item {
             Consumer<Component> adder,
             TooltipFlag flag) {
         BedrockOreSample sample = sample(stack);
-        for (BedrockOreType type : BedrockOreType.VALUES) {
-            double amount = sample.amount(type);
+        if (sample.set().origin() != null) adder.accept(sample.set().origin());
+        for (int i = 0; i < sample.amounts().length; i++) {
+            double amount = sample.amounts()[i];
             double rounded = ((int) (amount * 100)) / 100D;
             MutableComponent line =
-                    Component.translatable("item.hbm.bedrock_ore.type." + type.suffix)
+                    sample.set()
+                            .kinds()
+                            .get(i)
+                            .typeName()
+                            .copy()
                             .append(Component.literal(": " + rounded + " ("))
                             .append(
                                     Component.translatable(

@@ -4,6 +4,7 @@
 package com.hbm.client.render.flywheel;
 
 import com.hbm.blockentity.BlockEntityBobble;
+import com.hbm.blocks.generic.BlockBobble.Bobble;
 import com.hbm.blocks.generic.BlockBobble.BobbleType;
 import com.hbm.blocks.generic.BlockBobble;
 import com.hbm.client.render.RenderBobble;
@@ -48,7 +49,7 @@ public final class BobbleVisual extends HbmDynamicBlockEntityVisual<BlockEntityB
     private final Matrix4f propLocal = new Matrix4f();
     private final Matrix4f propPose = new Matrix4f();
     private @Nullable Matrix4f propPivot;
-    private @Nullable BobbleType lastType;
+    private @Nullable Bobble lastType;
     private long lastTime = Long.MIN_VALUE;
     private boolean animated;
 
@@ -61,7 +62,9 @@ public final class BobbleVisual extends HbmDynamicBlockEntityVisual<BlockEntityB
     public static void initModels() {}
 
     public static boolean vanillaNeeded(BlockEntityBobble be) {
-        int i = be.type.ordinal();
+        if (!(be.type instanceof BobbleType ntm))
+            return !WorldItem.draws(ItemStack.EMPTY, ItemDisplayContext.NONE);
+        int i = ntm.ordinal();
         Prop prop = (Prop) PROP.getAcquire(PROPS, i);
         if (prop == null || prop.stack().getPrototype() != prop.components()) {
             ItemStack stack = RenderBobble.prop(be.type);
@@ -77,7 +80,7 @@ public final class BobbleVisual extends HbmDynamicBlockEntityVisual<BlockEntityB
     }
 
     public void updateMovingParts(float partialTick) {
-        BobbleType type = blockEntity.type;
+        Bobble type = blockEntity.type;
         if (type != lastType) {
             lastType = type;
             rebuild(type);
@@ -111,7 +114,7 @@ public final class BobbleVisual extends HbmDynamicBlockEntityVisual<BlockEntityB
         if (propPivot != null) BobbleDraws.bob(propPose, anchor, propPivot, time, propLocal);
     }
 
-    private void rebuild(BobbleType type) {
+    private void rebuild(Bobble type) {
         for (TransformedInstance instance : instances) instance.delete();
         instances.clear();
         int rotation = blockState.getValue(BlockBobble.ROTATION);
@@ -125,7 +128,7 @@ public final class BobbleVisual extends HbmDynamicBlockEntityVisual<BlockEntityB
         propPivot = built.propPivot;
         anchor.translation(visualPos.getX(), visualPos.getY(), visualPos.getZ());
         labelBase.set(anchor).mul(built.labelLocal);
-        label.set(Component.literal(type.label), 0F, 0F, RenderBobble.labelColor(type));
+        label.set(Component.literal(type.label()), 0F, 0F, RenderBobble.labelColor(type));
         prop.set(RenderBobble.prop(type), ItemDisplayContext.NONE);
         if (propPivot == null) propPose.set(anchor).mul(propLocal);
         animated = false;

@@ -27,7 +27,7 @@
       "ingredient": "hbm:circuit_capacitor"
     }
   ],
-  "order": 5,
+  "order": 1280,
   "output_items": [
     "hbm:circuit_bismoid"
   ],

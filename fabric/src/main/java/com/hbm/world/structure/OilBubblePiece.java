@@ -121,7 +121,7 @@ public class OilBubblePiece extends StructurePiece {
         int minZ = Math.max(chunkBB.minZ(), centreZ - h);
         int maxZ = Math.min(chunkBB.maxZ(), centreZ + h);
         int minY = Math.max(Math.max(chunkBB.minY(), level.getMinY()), centreY - v);
-        int maxY = Math.min(Math.min(chunkBB.maxY(), level.getMaxY() - 1), centreY + v);
+        int maxY = Math.min(Math.min(chunkBB.maxY(), level.getMaxY()), centreY + v);
 
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         for (int x = minX; x <= maxX; x++) {

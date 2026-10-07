@@ -9,7 +9,7 @@
       "ingredient": "#c:dusts/red_phosphorus"
     }
   ],
-  "order": 4,
+  "order": 1024,
   "output_items": [
     "hbm:sulfur"
   ]

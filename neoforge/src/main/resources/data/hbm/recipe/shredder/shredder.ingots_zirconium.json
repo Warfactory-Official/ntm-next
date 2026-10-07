@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/zirconium"
     }
   ],
-  "order": 375,
+  "order": 96000,
   "output_items": [
     "hbm:powder_zirconium"
   ]

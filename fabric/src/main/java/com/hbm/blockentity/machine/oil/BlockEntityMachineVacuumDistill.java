@@ -176,6 +176,7 @@ public class BlockEntityMachineVacuumDistill extends BlockEntityMachineBase
         }
 
         isOn = true;
+        markChanged();
         power -= REFINE_POWER_COST;
         tanks[0].setFill(tanks[0].getFill() - REFINE_FLUID_COST);
         for (int i = 0; i < outputs.length; i++) {

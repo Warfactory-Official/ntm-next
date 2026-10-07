@@ -99,7 +99,12 @@ public final class DataCodecs {
     }
 
     public static <A> MapCodec<A> recipe(MapCodec<A> codec) {
-        return strict(codec, "type", "fabric:load_conditions", "neoforge:conditions");
+        return strict(
+                codec,
+                "type",
+                "fabric:load_conditions",
+                "neoforge:conditions",
+                "_kubejs_changed_marker");
     }
 
     public static <A> Codec<List<A>> listOrSingle(Codec<A> element) {

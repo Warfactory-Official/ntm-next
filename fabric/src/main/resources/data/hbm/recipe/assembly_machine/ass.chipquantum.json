@@ -24,7 +24,7 @@
     }
   ],
   "name": "ass.chipQuantum",
-  "order": 31,
+  "order": 7936,
   "output_items": [
     "hbm:circuit_chip_quantum"
   ],

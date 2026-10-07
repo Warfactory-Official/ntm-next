@@ -5,7 +5,7 @@
       "ingredient": "hbm:plant_flower_cd0"
     }
   ],
-  "order": 36,
+  "order": 9216,
   "output_fluids": [
     {
       "type": "hbm:ethanol",

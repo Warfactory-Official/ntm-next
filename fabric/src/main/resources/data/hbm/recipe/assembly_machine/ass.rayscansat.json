@@ -27,7 +27,7 @@
       "ingredient": "hbm:circuit_controller_advanced"
     }
   ],
-  "order": 429,
+  "order": 109824,
   "output_items": [
     "hbm:satellite_ray_scan"
   ],

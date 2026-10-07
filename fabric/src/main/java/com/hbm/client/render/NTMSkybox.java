@@ -104,6 +104,10 @@ public final class NTMSkybox {
         sunAngle = state.sunAngle;
     }
 
+    public static void clear() {
+        mode = Mode.NONE;
+    }
+
     public static boolean impact() {
         return mode == Mode.IMPACT;
     }

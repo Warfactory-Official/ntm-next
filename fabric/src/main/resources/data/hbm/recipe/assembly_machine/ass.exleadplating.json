@@ -25,7 +25,7 @@
       "ingredient": "#c:bolts/tungsten"
     }
   ],
-  "order": 20,
+  "order": 5120,
   "output_items": [
     "hbm:item_expensive_lead_plating"
   ],

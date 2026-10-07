@@ -8,7 +8,7 @@
       "ingredient": "hbm:waste_plutonium"
     }
   ],
-  "order": 4,
+  "order": 1024,
   "output_items": [
     "hbm:waste_plutonium"
   ]

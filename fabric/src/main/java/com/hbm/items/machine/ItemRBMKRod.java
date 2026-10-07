@@ -26,8 +26,8 @@ public class ItemRBMKRod extends Item {
     public String fullName = "";
     public double reactivity;
     public double selfRate;
-    public EnumBurnFunc function = EnumBurnFunc.LOG_TEN;
-    public EnumDepleteFunc depFunc = EnumDepleteFunc.GENTLE_SLOPE;
+    public BurnFunction function = EnumBurnFunc.LOG_TEN;
+    public DepletionFunction depFunc = EnumDepleteFunc.GENTLE_SLOPE;
     public double xGen = 0.5D;
     public double xBurn = 50.0D;
     public double heat = 1.0D;
@@ -111,12 +111,12 @@ public class ItemRBMKRod extends Item {
         return this;
     }
 
-    public ItemRBMKRod setFunction(EnumBurnFunc func) {
+    public ItemRBMKRod setFunction(BurnFunction func) {
         function = func;
         return this;
     }
 
-    public ItemRBMKRod setDepletionFunction(EnumDepleteFunc func) {
+    public ItemRBMKRod setDepletionFunction(DepletionFunction func) {
         depFunc = func;
         return this;
     }
@@ -233,28 +233,11 @@ public class ItemRBMKRod extends Item {
 
     public double reactivityFunc(double in, double enrichment) {
         double flux = in * reactivityModByEnrichment(enrichment);
-        return switch (function) {
-            case PASSIVE -> selfRate * enrichment;
-            case LOG_TEN -> Math.log10(flux + 1) * 0.5D * reactivity;
-            case PLATEU -> (1 - Math.pow(Math.E, -flux / 25.0D)) * reactivity;
-            case ARCH -> Math.max((flux - (flux * flux / 10000.0D)) / 100.0D * reactivity, 0.0D);
-            case SIGMOID -> reactivity / (1 + Math.pow(Math.E, -(flux - 50.0D) / 10.0D));
-            case SQUARE_ROOT -> Math.sqrt(flux) * reactivity / 10.0D;
-            case LINEAR -> flux / 100.0D * reactivity;
-            case QUADRATIC -> flux * flux / 10000.0D * reactivity;
-            case EXPERIMENTAL -> flux * (Math.sin(flux) + 1) * reactivity;
-        };
+        return function.reactivity(this, flux, enrichment);
     }
 
     public double reactivityModByEnrichment(double enrichment) {
-        return switch (depFunc) {
-            case STATIC -> 1.0D;
-            case BOOSTED_SLOPE ->
-                    enrichment + Math.sin((enrichment - 1) * (enrichment - 1) * Math.PI);
-            case RAISING_SLOPE -> enrichment + (Math.sin(enrichment * Math.PI) / 2.0D);
-            case GENTLE_SLOPE -> enrichment + (Math.sin(enrichment * Math.PI) / 3.0D);
-            default -> enrichment;
-        };
+        return depFunc.modify(enrichment);
     }
 
     public double xenonGenFunc(double flux) {
@@ -282,18 +265,7 @@ public class ItemRBMKRod extends Item {
     }
 
     public String getFuncDescription(ItemStack stack) {
-        String function =
-                switch (this.function) {
-                    case PASSIVE -> ChatFormatting.RED + "" + selfRate;
-                    case LOG_TEN -> "log10(%1$s + 1) * 0.5 * %2$s";
-                    case PLATEU -> "(1 - e^(-%1$s / 25)) * %2$s";
-                    case ARCH -> "(%1$s - %1$s² / 10000) / 100 * %2$s [0;∞]";
-                    case SIGMOID -> "%2$s / (1 + e^(-(%1$s - 50) / 10))";
-                    case SQUARE_ROOT -> "sqrt(%1$s) * %2$s / 10";
-                    case LINEAR -> "%1$s / 100 * %2$s";
-                    case QUADRATIC -> "%1$s² / 10000 * %2$s";
-                    case EXPERIMENTAL -> "%1$s * (sin(%1$s) + 1) * %2$s";
-                };
+        String function = this.function.formula(this);
 
         double enrichment = getEnrichment(stack);
         String flux =
@@ -364,7 +336,7 @@ public class ItemRBMKRod extends Item {
                             .withStyle(ChatFormatting.YELLOW));
             adder.accept(
                     Component.translatable(
-                                    "trait.rbmx.funcType", Component.translatable(function.title))
+                                    "trait.rbmx.funcType", Component.translatable(function.title()))
                             .withStyle(ChatFormatting.YELLOW));
             adder.accept(
                     Component.translatable(
@@ -432,7 +404,7 @@ public class ItemRBMKRod extends Item {
                             .withStyle(ChatFormatting.YELLOW));
             adder.accept(
                     Component.translatable(
-                                    "trait.rbmk.funcType", Component.translatable(function.title))
+                                    "trait.rbmk.funcType", Component.translatable(function.title()))
                             .withStyle(ChatFormatting.YELLOW));
             adder.accept(
                     Component.translatable(
@@ -464,7 +436,19 @@ public class ItemRBMKRod extends Item {
         }
     }
 
-    public enum EnumBurnFunc {
+    public interface BurnFunction {
+        String title();
+
+        double reactivity(ItemRBMKRod rod, double flux, double enrichment);
+
+        String formula(ItemRBMKRod rod);
+    }
+
+    public interface DepletionFunction {
+        double modify(double enrichment);
+    }
+
+    public enum EnumBurnFunc implements BurnFunction {
         PASSIVE("trait.rbmx.flux.passive"),
         LOG_TEN("trait.rbmx.flux.logten"),
         PLATEU("trait.rbmx.flux.euler"),
@@ -475,18 +459,66 @@ public class ItemRBMKRod extends Item {
         QUADRATIC("trait.rbmx.flux.quadratic"),
         EXPERIMENTAL("trait.rbmx.flux.experimental");
 
-        public final String title;
+        private final String title;
 
         EnumBurnFunc(String title) {
             this.title = title;
         }
+
+        @Override
+        public String title() {
+            return title;
+        }
+
+        @Override
+        public double reactivity(ItemRBMKRod rod, double flux, double enrichment) {
+            double reactivity = rod.reactivity;
+            return switch (this) {
+                case PASSIVE -> rod.selfRate * enrichment;
+                case LOG_TEN -> Math.log10(flux + 1) * 0.5D * reactivity;
+                case PLATEU -> (1 - Math.pow(Math.E, -flux / 25D)) * reactivity;
+                case ARCH -> Math.max((flux - (flux * flux / 10000D)) / 100D * reactivity, 0D);
+                case SIGMOID -> reactivity / (1 + Math.pow(Math.E, -(flux - 50D) / 10D));
+                case SQUARE_ROOT -> Math.sqrt(flux) * reactivity / 10D;
+                case LINEAR -> flux / 100D * reactivity;
+                case QUADRATIC -> flux * flux / 10000D * reactivity;
+                case EXPERIMENTAL -> flux * (Math.sin(flux) + 1) * reactivity;
+            };
+        }
+
+        @Override
+        public String formula(ItemRBMKRod rod) {
+            return switch (this) {
+                case PASSIVE -> ChatFormatting.RED + "" + rod.selfRate;
+                case LOG_TEN -> "log10(%1$s + 1) * 0.5 * %2$s";
+                case PLATEU -> "(1 - e^(-%1$s / 25)) * %2$s";
+                case ARCH -> "(%1$s - %1$s² / 10000) / 100 * %2$s [0;∞]";
+                case SIGMOID -> "%2$s / (1 + e^(-(%1$s - 50) / 10))";
+                case SQUARE_ROOT -> "sqrt(%1$s) * %2$s / 10";
+                case LINEAR -> "%1$s / 100 * %2$s";
+                case QUADRATIC -> "%1$s² / 10000 * %2$s";
+                case EXPERIMENTAL -> "%1$s * (sin(%1$s) + 1) * %2$s";
+            };
+        }
     }
 
-    public enum EnumDepleteFunc {
+    public enum EnumDepleteFunc implements DepletionFunction {
         LINEAR,
         RAISING_SLOPE,
         BOOSTED_SLOPE,
         GENTLE_SLOPE,
-        STATIC
+        STATIC;
+
+        @Override
+        public double modify(double enrichment) {
+            return switch (this) {
+                case STATIC -> 1D;
+                case BOOSTED_SLOPE ->
+                        enrichment + Math.sin((enrichment - 1) * (enrichment - 1) * Math.PI);
+                case RAISING_SLOPE -> enrichment + (Math.sin(enrichment * Math.PI) / 2D);
+                case GENTLE_SLOPE -> enrichment + (Math.sin(enrichment * Math.PI) / 3D);
+                case LINEAR -> enrichment;
+            };
+        }
     }
 }

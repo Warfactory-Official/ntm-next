@@ -152,15 +152,18 @@ public class BlockEntityBatterySocket extends BlockEntityMachineBase
     public void refreshMode() {
         Level level = getLevel();
         if (level == null) return;
+        boolean wasPowered = poweredCache;
         poweredCache = false;
         for (BlockPos port :
                 MachineBatterySocket.ports(
                         worldPosition, BlockMultiblockCore.coreFacing(getBlockState()))) {
             if (level.hasNeighborSignal(port)) {
                 poweredCache = true;
+                if (!wasPowered) markChanged();
                 return;
             }
         }
+        if (wasPowered) markChanged();
     }
 
     @Override
@@ -258,6 +261,7 @@ public class BlockEntityBatterySocket extends BlockEntityMachineBase
             damageTimer++;
             if (damageTimer >= damageTarget) discharge();
             fluctuate();
+            markChanged();
         }
 
         long curr = getPower();

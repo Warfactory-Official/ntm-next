@@ -2,6 +2,7 @@
   "values": [
     "hbm:ore_rare",
     "hbm:ore_gneiss_rare",
-    "hbm:ore_rare_deepslate"
+    "hbm:ore_rare_deepslate",
+    "hbm:ore_meteor_rareearth"
   ]
 }

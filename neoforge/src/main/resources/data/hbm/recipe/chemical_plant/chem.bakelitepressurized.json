@@ -20,7 +20,7 @@
     }
   ],
   "name": "chem.bakelitePressurized",
-  "order": 41,
+  "order": 10496,
   "output_items": [
     "hbm:ingot_bakelite"
   ],

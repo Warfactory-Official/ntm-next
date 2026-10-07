@@ -7,6 +7,7 @@ import com.hbm.blockentity.machine.storage.BlockEntityBatterySocket;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.client.render.FramedItem;
 import com.hbm.client.render.RenderBatterySocket;
+import com.hbm.client.render.SocketCentrepieces;
 import com.hbm.items.machine.EnumBatteryPack;
 import com.hbm.items.machine.ItemBatteryCreative;
 import com.hbm.items.machine.ItemBatteryPack;
@@ -28,7 +29,9 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -36,6 +39,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
+import org.jspecify.annotations.Nullable;
 
 public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<BlockEntityBatterySocket>
         implements ShaderLightVisual {
@@ -78,6 +82,8 @@ public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<Block
     };
     private static final MeshPart[] BATTERY_PARTS = buildBatteryParts();
     private static final MeshPart[] HORSE_PARTS = buildHorseParts();
+    private static final Map<SocketCentrepieces.Centrepiece, MeshPart> CENTREPIECE_PARTS =
+            new ConcurrentHashMap<>();
     private final AABB bodyBounds;
     private final PartVisual supports;
     private final PartVisual[] batteries;
@@ -87,6 +93,7 @@ public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<Block
     private final BeamVisual[] arcs = new BeamVisual[ARC_COUNT];
     private final Matrix4f rootPose = new Matrix4f();
     private final Matrix4f horsePose = new Matrix4f();
+    private final Matrix4f centrepiecePose = new Matrix4f();
     private final Matrix4f arcPose = new Matrix4f();
     private final Matrix4f instancePose = new Matrix4f();
     private final Vec3[] arcSkeletons = {
@@ -103,6 +110,8 @@ public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<Block
     private int lastArcUsed;
     private boolean lastUnicorn;
     private boolean lastGeneric;
+    private SocketCentrepieces.@Nullable Centrepiece lastPiece;
+    private @Nullable PartVisual centrepiece;
     private boolean initialized;
 
     public BatterySocketVisual(
@@ -130,6 +139,7 @@ public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<Block
     public static boolean vanillaNeeded(BlockEntityBatterySocket be) {
         ItemStack stack = be.syncStack;
         if (stack.isEmpty()
+                || SocketCentrepieces.of(stack) != null
                 || stack.getItem() instanceof ItemBatteryPack
                 || stack.getItem() instanceof ItemBatterySC
                 || stack.getItem() instanceof ItemBatteryCreative) return false;
@@ -189,7 +199,8 @@ public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<Block
         }
 
         boolean unicorn = stack.getItem() instanceof ItemBatteryCreative;
-        boolean generic = !stack.isEmpty() && body < 0 && !unicorn;
+        SocketCentrepieces.Centrepiece piece = SocketCentrepieces.of(stack);
+        boolean generic = !stack.isEmpty() && body < 0 && !unicorn && piece == null;
         float spin = (float) (level.getGameTime() % 360L) + partialTick;
         FramedItem.Arm arm = item.setFramed(generic ? stack : ItemStack.EMPTY, level);
         if (arm != null) {
@@ -210,6 +221,28 @@ public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<Block
         } else if (!initialized) {
             for (var part : horse) part.write(false, horsePose);
         }
+        if (piece != lastPiece && centrepiece != null) {
+            centrepiece.delete();
+            centrepiece = null;
+        }
+        if (piece != null) {
+            if (centrepiece == null) {
+                centrepiece =
+                        new PartVisual(
+                                CENTREPIECE_PARTS.computeIfAbsent(
+                                        piece,
+                                        p ->
+                                                MeshPart.obj(
+                                                        p.mesh().groups[p.part()],
+                                                        p.mesh().smoothing(),
+                                                        MeshPart.litCutout(p.texture()))));
+            }
+            centrepiecePose
+                    .set(rootPose)
+                    .scale(piece.scale())
+                    .rotateY(-spin * piece.degreesPerTick() * Mth.DEG_TO_RAD);
+            centrepiece.write(true, centrepiecePose);
+        }
 
         long bucket = level.getGameTime() / 5L;
         int phase = (int) (level.getGameTime() % 20L);
@@ -217,11 +250,12 @@ public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<Block
                 !initialized
                         || unicorn != lastUnicorn
                         || generic != lastGeneric
+                        || piece != lastPiece
                         || bucket != lastArcBucket
                         || phase != lastArcPhase;
         if (arcChanged) {
             int used = 0;
-            if (unicorn || generic) {
+            if (unicorn || generic || piece != null) {
                 arcRandom.setSeed(bucket);
                 arcRandom.nextBoolean();
                 for (int i = 0; i < 4; i++) {
@@ -257,6 +291,7 @@ public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<Block
         lastFrame = blockEntity.frame;
         lastUnicorn = unicorn;
         lastGeneric = generic;
+        lastPiece = piece;
         initialized = true;
     }
 
@@ -278,6 +313,7 @@ public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<Block
         supports.collect(consumer);
         for (var battery : batteries) battery.collect(consumer);
         for (var part : horse) part.collect(consumer);
+        if (centrepiece != null) centrepiece.collect(consumer);
     }
 
     @Override
@@ -285,6 +321,7 @@ public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<Block
         supports.delete();
         for (var battery : batteries) battery.delete();
         for (var part : horse) part.delete();
+        if (centrepiece != null) centrepiece.delete();
         item.delete();
         for (var arc : arcs) arc.delete();
     }

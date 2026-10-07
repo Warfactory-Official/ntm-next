@@ -12,7 +12,7 @@
       "ingredient": "hbm:fuel_additive_antiknock"
     }
   ],
-  "order": 35,
+  "order": 8960,
   "output_fluids": [
     {
       "type": "hbm:petroil_leaded",

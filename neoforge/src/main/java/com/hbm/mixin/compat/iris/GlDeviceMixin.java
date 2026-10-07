@@ -9,6 +9,7 @@ import com.hbm.interfaces.injected.RibbonPipeline;
 import com.hbm.interfaces.injected.WorldPipeline;
 import com.mojang.blaze3d.opengl.GlRenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.irisshaders.iris.Iris;
 import net.irisshaders.iris.pipeline.IrisRenderingPipeline;
 import net.irisshaders.iris.vertices.ImmediateState;
@@ -37,6 +38,9 @@ public class GlDeviceMixin {
     private void hbm$worldProgram(
             RenderPipeline pipeline, CallbackInfoReturnable<GlRenderPipeline> cir) {
         if (!(pipeline instanceof WorldRenderPipeline owned) || ImmediateState.bypass) return;
+        if (owned.family == WorldRenderPipeline.Family.NATIVE_SKY
+                && (RenderSystem.outputColorTextureOverride != null
+                        || RenderSystem.outputDepthTextureOverride != null)) return;
         if (Iris.getPipelineManager().getPipelineNullable() instanceof IrisRenderingPipeline world
                 && world.shouldOverrideShaders()) {
             cir.setReturnValue(((WorldPipeline) world).hbm$program(owned));

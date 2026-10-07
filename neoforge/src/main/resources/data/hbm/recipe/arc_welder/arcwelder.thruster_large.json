@@ -14,7 +14,7 @@
       "ingredient": "#c:ingots/tungsten_carbide"
     }
   ],
-  "order": 20,
+  "order": 5120,
   "output_items": [
     "hbm:thruster_large"
   ],

@@ -9,7 +9,7 @@
       "ingredient": "#hbm:plates_cast/iron"
     }
   ],
-  "order": 3,
+  "order": 768,
   "output_items": [
     "hbm:plate_welded_iron"
   ],

@@ -4,6 +4,7 @@
 package com.hbm.blockentity.machine;
 
 import com.hbm.api.energymk2.IEnergyHandlerMK2.ConnectionPriority;
+import com.hbm.api.environment.Environment;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
 import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
@@ -28,6 +29,7 @@ import com.hbm.particle.SplashParticleOptions;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -79,8 +81,10 @@ public class BlockEntityMachineDrain extends BlockEntity
 
         int toSpill = Math.max(tank.getFill() / 2, 1);
         tank.setFill(tank.getFill() - toSpill);
+        markChanged();
         FluidTrait.onRelease(
                 level, worldPosition, tank.getTankType(), tank, FluidReleaseType.SPILL, toSpill);
+        Environment.releaseGas((ServerLevel) level, tank.getTankType(), toSpill);
 
         if (toSpill >= 100
                 && level.getRandom().nextInt(20) == 0
@@ -135,7 +139,8 @@ public class BlockEntityMachineDrain extends BlockEntity
         int color =
                 props != null ? ARGB.transparent(props.colorARGB()) : SplashParticleOptions.NO_TINT;
 
-        if (NTMFluidProperties.hasTrait(tank.getTankType(), FT_Gaseous.class)) {
+        if (NTMFluidProperties.hasTrait(tank.getTankType(), FT_Gaseous.class)
+                || Environment.particlePressure(level) < 0.08D) {
             level.addParticle(
                     new CoolingTowerParticleOptions.Builder()
                             .setLift(0.5F)

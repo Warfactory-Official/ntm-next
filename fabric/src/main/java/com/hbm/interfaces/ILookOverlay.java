@@ -3,6 +3,7 @@
 
 package com.hbm.interfaces;
 
+import com.hbm.util.BobMathUtil;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -53,8 +54,12 @@ public interface ILookOverlay {
         }
 
         public LookInfo titleOnly(Component title, int titleColor, int bgColor, int offset) {
-            title(title, titleColor, bgColor);
             titleOffset = offset;
+            return titleOnly(title, titleColor, bgColor);
+        }
+
+        public LookInfo titleOnly(Component title, int titleColor, int bgColor) {
+            title(title, titleColor, bgColor);
             titleOnly = true;
             return this;
         }
@@ -101,6 +106,18 @@ public interface ILookOverlay {
             lines.add(text);
             colors.add(rgb);
             return this;
+        }
+
+        public LookInfo charge(long power, long maxPower) {
+            line(
+                    Component.translatable(
+                            "overlay.hbm.charge",
+                            BobMathUtil.getShortNumber(power),
+                            BobMathUtil.getShortNumber(maxPower)));
+            double percent = (double) power / (double) maxPower;
+            int charge = (int) Math.floor(percent * 10_000D);
+            int color = ((int) (0xFF - 0xFF * percent)) << 16 | ((int) (0xFF * percent) << 8);
+            return line((charge / 100D) + "%", color);
         }
 
         public @Nullable Component getTitle() {

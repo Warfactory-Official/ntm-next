@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/dura_steel"
     }
   ],
-  "order": 10,
+  "order": 2560,
   "output_items": [
     "hbm:plate_dura_steel"
   ],

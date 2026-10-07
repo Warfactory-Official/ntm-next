@@ -9,7 +9,7 @@
       "ingredient": "#c:ingots/arsenic_bronze"
     }
   ],
-  "order": 5,
+  "order": 1280,
   "output_items": [
     "hbm:anvil_arsenic_bronze"
   ]

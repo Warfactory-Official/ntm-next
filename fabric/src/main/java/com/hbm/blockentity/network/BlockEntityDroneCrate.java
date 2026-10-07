@@ -22,6 +22,7 @@ import com.hbm.particle.helper.ParticleCreators;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.InventoryUtil;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -239,6 +240,21 @@ public class BlockEntityDroneCrate extends BlockEntityMachineBase
     @Override
     public FluidTankNTM[] getAllTanks() {
         return new FluidTankNTM[] {tank};
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return tank.joins(type);
+    }
+
+    @Override
+    public boolean canProvideFluid(Fluid type) {
+        return tank.joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        visitor.accept(tank);
     }
 
     @Override

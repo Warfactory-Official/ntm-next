@@ -3,6 +3,8 @@
 
 package com.hbm.client;
 
+import com.hbm.api.environment.Environment;
+import com.hbm.api.environment.EnvironmentProvider;
 import com.hbm.extprop.HbmPlayerProps;
 import com.hbm.items.armor.ArmorDash;
 import com.hbm.items.armor.ArmorFlight;
@@ -53,10 +55,15 @@ public final class ArmorMovementHandler {
     private static void jetpack(LocalPlayer player, Jetpack kind) {
         HbmPlayerProps props = HbmPlayerProps.getData(player);
         Vec3 motion = player.getDeltaMovement();
+        float gravity = Environment.gravity(player);
 
         if (props.isJetpackActive() && !(kind == Jetpack.BRAKE && player.isShiftKeyDown())) {
-            if (motion.y < kind.ceiling)
-                player.setDeltaMovement(motion.x, motion.y + kind.thrust, motion.z);
+            if (gravity == 0F && (kind == Jetpack.FLY || kind == Jetpack.BRAKE)) {
+                player.setDeltaMovement(motion.add(player.getLookAngle().scale(0.05D)));
+            } else if (motion.y < kind.ceiling) {
+                player.setDeltaMovement(
+                        motion.x, motion.y + kind.thrust * kind.lift(gravity), motion.z);
+            }
             if (kind.lookThrust == 0D) player.fallDistance = 0;
             if (kind.lookThrust > 0D && player.getDeltaMovement().length() < kind.speedCap) {
                 Vec3 look = player.getLookAngle();
@@ -73,7 +80,7 @@ public final class ArmorMovementHandler {
         if (player.isFallFlying() && !props.isJetpackActive()) return;
 
         if (kind == Jetpack.BRAKE) {
-            brakeHover(player, motion, props);
+            brakeHover(player, motion, props, gravity);
             return;
         }
 
@@ -107,15 +114,20 @@ public final class ArmorMovementHandler {
         }
     }
 
-    private static void brakeHover(LocalPlayer player, Vec3 motion, HbmPlayerProps props) {
+    private static void brakeHover(
+            LocalPlayer player, Vec3 motion, HbmPlayerProps props, float gravity) {
         if (player.isShiftKeyDown() && !props.isJetpackActive()
                 || player.onGround()
-                || !props.enableBackpack) return;
+                || !props.enableBackpack
+                || !(gravity > 0F)) return;
         player.fallDistance = 0;
+        float thrust = Math.max(gravity / EnvironmentProvider.STANDARD_GRAVITY, 1);
         double dy =
-                motion.y < -1D
-                        ? motion.y + 0.2D
-                        : motion.y < -0.1D ? motion.y + 0.1D : motion.y < 0D ? 0D : motion.y;
+                motion.y < -1 * thrust
+                        ? motion.y + 0.2D * thrust
+                        : motion.y < -0.1 * thrust
+                                ? motion.y + 0.1D * thrust
+                                : motion.y < 0D ? 0D : motion.y;
         player.setDeltaMovement(motion.x * 1.025D, dy, motion.z * 1.025D);
     }
 
@@ -157,6 +169,17 @@ public final class ArmorMovementHandler {
             }
         } else if (props.enableBackpack && !player.isShiftKeyDown()) {
             dy = dy < -1D ? dy + 0.4D : dy < -0.1D ? dy + 0.2D : dy < 0D ? 0D : dy;
+        } else if (props.enableBackpack) {
+            float gravity = Environment.gravity(player);
+            if (gravity > 1.5F) {
+                if (Environment.installed()) return;
+            } else {
+                if (gravity != 0 && gravity < 0.2F) gravity = 0.2F;
+                dy /= 0.98F;
+                dy += gravity / 20F;
+                dy -= EnvironmentProvider.STANDARD_GRAVITY / 20F;
+                dy *= 0.98F;
+            }
         }
 
         double dx = motion.x;

@@ -39,6 +39,7 @@ import com.hbm.packet.SyncUnitSchema;
 import com.hbm.saveddata.TomSaveData;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentGetter;
@@ -383,7 +384,22 @@ public class BlockEntityBarrel extends BlockEntityMachineBase
     }
 
     public boolean acceptsFluid(Fluid type, Direction dir) {
-        return tank.accepts(type);
+        return tank.joins(type);
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return tank.joins(type);
+    }
+
+    @Override
+    public boolean canProvideFluid(Fluid type) {
+        return tank.joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        visitor.accept(tank);
     }
 
     @Override

@@ -4,8 +4,9 @@
 package com.hbm.blockentity;
 
 import com.hbm.blocks.ModBlockEntities;
-import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.generic.BlockBobble.Bobble;
 import com.hbm.blocks.generic.BlockBobble.BobbleType;
+import com.hbm.blocks.generic.BlockBobble;
 import com.hbm.items.block.ItemBlockTrinket;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
@@ -20,21 +21,19 @@ import net.minecraft.world.level.storage.ValueOutput;
 public class BlockEntityBobble extends BlockEntity implements Synced, SyncUnitSchema {
 
     @SyncField(units = 1L)
-    public BobbleType type = BobbleType.NONE;
+    public Bobble type = BobbleType.NONE;
 
     public BlockEntityBobble(BlockPos pos, BlockState state) {
         super(ModBlockEntities.NTM_BOBBLEHEAD.get(), pos, state);
     }
 
-    public static ItemStack stackOf(BobbleType type) {
-        return type == BobbleType.NONE
-                ? new ItemStack(ModBlocks.BOBBLEHEAD)
-                : ModBlocks.BOBBLEHEADS.stack(type);
+    public static ItemStack stackOf(Bobble type) {
+        return type.stack();
     }
 
-    public static BobbleType typeOf(ItemStack stack) {
+    public static Bobble typeOf(ItemStack stack) {
         return stack.getItem() instanceof ItemBlockTrinket<?> trinket
-                        && trinket.type instanceof BobbleType type
+                        && trinket.type instanceof Bobble type
                 ? type
                 : BobbleType.NONE;
     }
@@ -42,13 +41,13 @@ public class BlockEntityBobble extends BlockEntity implements Synced, SyncUnitSc
     @Override
     protected void saveAdditional(ValueOutput out) {
         super.saveAdditional(out);
-        out.putByte("type", (byte) type.ordinal());
+        out.putString("type", type.id());
     }
 
     @Override
     protected void loadAdditional(ValueInput in) {
         super.loadAdditional(in);
-        type = BobbleType.byOrdinal(in.getByteOr("type", (byte) 0));
+        type = BlockBobble.TYPES.byName(in.getStringOr("type", ""), BobbleType.NONE);
     }
 
     @Override
@@ -59,12 +58,12 @@ public class BlockEntityBobble extends BlockEntity implements Synced, SyncUnitSc
     @Override
     public void writeSyncUnit(int unit, ByteBuf output) {
         if (unit != 0) throw new IllegalArgumentException();
-        output.writeByte(type.ordinal());
+        output.writeByte(BlockBobble.TYPES.index(type));
     }
 
     @Override
     public void readSyncUnit(int unit, ByteBuf input) {
         if (unit != 0) throw new IllegalArgumentException();
-        type = BobbleType.byOrdinal(input.readByte());
+        type = BlockBobble.TYPES.byWrappedIndex(input.readByte());
     }
 }

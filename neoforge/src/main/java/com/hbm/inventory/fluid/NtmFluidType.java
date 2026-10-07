@@ -3,8 +3,8 @@
 
 package com.hbm.inventory.fluid;
 
-import com.hbm.lib.Library;
 import java.util.function.Supplier;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidType;
 
@@ -12,10 +12,8 @@ public final class NtmFluidType extends FluidType {
 
     private final Supplier<Fluid> fluid;
 
-    public NtmFluidType(Supplier<Fluid> fluid, String path) {
-        super(
-                FluidType.Properties.create()
-                        .descriptionId(NTMFluidProperties.nameKey(Library.id(path))));
+    public NtmFluidType(Supplier<Fluid> fluid, Identifier id) {
+        super(FluidType.Properties.create().descriptionId(NTMFluidProperties.nameKey(id)));
         this.fluid = fluid;
     }
 

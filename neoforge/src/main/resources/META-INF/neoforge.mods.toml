@@ -43,7 +43,7 @@ side = "BOTH"
 [[dependencies.hbm]]
 modId = "crankshaft"
 type = "required"
-versionRange = "[1.5.5+mc26.2,)"
+versionRange = "[1.5.9+mc26.2,)"
 ordering = "AFTER"
 side = "CLIENT"
 
@@ -52,6 +52,13 @@ modId = "ctm"
 type = "optional"
 versionRange = "[26.2.0.1]"
 ordering = "AFTER"
+side = "CLIENT"
+
+[[dependencies.hbm]]
+modId = "fusion"
+type = "optional"
+versionRange = "[1.3.13,)"
+ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.hbm]]
@@ -72,6 +79,13 @@ side = "BOTH"
 modId = "lithium"
 type = "optional"
 versionRange = "[0.25.3,0.26)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hbm]]
+modId = "sophisticatedcore"
+type = "optional"
+versionRange = "[1.5.0,)"
 ordering = "NONE"
 side = "BOTH"
 

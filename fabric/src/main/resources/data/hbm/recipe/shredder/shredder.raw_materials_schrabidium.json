@@ -5,9 +5,10 @@
       "ingredient": "#c:raw_materials/schrabidium"
     }
   ],
-  "order": 299,
+  "order": 76544,
   "output_items": [
     {
+      "chance": 0.667,
       "count": 2,
       "id": "hbm:powder_schrabidium"
     }

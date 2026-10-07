@@ -72,6 +72,7 @@ public class BlockEntityCharge extends BlockEntity
         }
         timer -= PING_TICKS;
         if (timer <= 0) {
+            markChanged();
             if (state.getBlock() instanceof BlockChargeBase charge)
                 charge.explode(level, worldPosition, null);
             return;

@@ -432,7 +432,7 @@ public class CannerySILEX extends CanneryBase {
                             (partPose, buffer) -> MODEL.render(partPose, buffer, 0xF000F0, -1));
             pose.translate(0, 1.5, -1.5);
             if (mode > 0 && mode < 6) {
-                int color = EnumWavelengths.values()[mode].guiColor;
+                int color = EnumWavelengths.legacy(mode).guiColor;
                 long time = GameTime.ticks();
                 if (color == 0) color = Color.HSBtoRGB(time / 50.0F, 0.5F, 0.1F) & 0xFFFFFF;
                 Vec3 beam = new Vec3(0, 0, -length - 1);

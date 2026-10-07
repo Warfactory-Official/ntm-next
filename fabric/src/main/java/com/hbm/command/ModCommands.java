@@ -104,9 +104,7 @@ public final class ModCommands {
     private static CompletableFuture<Suggestions> suggestFrequencies(
             CommandContext<CommandSourceStack> ctx, SuggestionsBuilder builder) {
         return SharedSuggestionProvider.suggest(
-                SatelliteSavedData.get(ctx.getSource().getLevel()).sats.keySet().stream()
-                        .map(String::valueOf),
-                builder);
+                satellites(ctx.getSource()).sats.keySet().stream().map(String::valueOf), builder);
     }
 
     private static int orbitSatellite(CommandContext<CommandSourceStack> ctx) {
@@ -142,8 +140,7 @@ public final class ModCommands {
         CommandSourceStack source = ctx.getSource();
         if (!(source.getEntity() instanceof ServerPlayer)) return notAPlayer(source);
 
-        if (!SatelliteSavedData.get(source.getLevel())
-                .descend(IntegerArgumentType.getInteger(ctx, "frequency"))) {
+        if (!satellites(source).descend(IntegerArgumentType.getInteger(ctx, "frequency"))) {
             source.sendFailure(
                     Component.translatable("commands.satellite.no_satellite")
                             .withStyle(ChatFormatting.RED));
@@ -161,7 +158,7 @@ public final class ModCommands {
         CommandSourceStack source = ctx.getSource();
         if (!(source.getEntity() instanceof ServerPlayer)) return notAPlayer(source);
 
-        Map<Integer, Satellite> sats = SatelliteSavedData.get(source.getLevel()).sats;
+        Map<Integer, Satellite> sats = satellites(source).sats;
         if (sats.isEmpty()) {
             source.sendFailure(
                     Component.translatable("commands.satellite.no_active_satellites")
@@ -179,6 +176,11 @@ public final class ModCommands {
                                                 .withStyle(ChatFormatting.GREEN),
                                 false));
         return sats.size();
+    }
+
+    private static SatelliteSavedData satellites(CommandSourceStack source) {
+        BlockPos pos = BlockPos.containing(source.getPosition());
+        return SatelliteSavedData.at(source.getLevel(), pos.getX(), pos.getZ());
     }
 
     private static int notAPlayer(CommandSourceStack source) {

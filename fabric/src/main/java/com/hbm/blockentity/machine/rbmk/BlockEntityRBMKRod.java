@@ -120,6 +120,7 @@ public class BlockEntityRBMKRod extends BlockEntityRBMKBase
 
             rod.updateHeat(level, fuel, 1.0D);
             this.heat += rod.provideHeat(level, fuel, heat, 1.0D);
+            this.markChanged();
 
             if (!this.hasLid()) {
                 RadiationSystemNT.incrementRad(
@@ -162,6 +163,7 @@ public class BlockEntityRBMKRod extends BlockEntityRBMKBase
             hasRod = true;
 
         } else {
+            if (hasRod || this.lastFluxQuantity != 0 || this.lastFluxRatio != 0) this.markChanged();
             this.lastFluxRatio = 0;
             this.lastFluxQuantity = 0;
             this.lastFluxOut = 0;

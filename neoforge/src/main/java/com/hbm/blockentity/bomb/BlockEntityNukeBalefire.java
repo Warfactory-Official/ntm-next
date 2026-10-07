@@ -62,10 +62,14 @@ public class BlockEntityNukeBalefire extends BlockEntityMachineBase
     @Override
     public void tickServer() {
         loaded = isLoaded();
-        if (!loaded) started = false;
+        if (!loaded && started) {
+            started = false;
+            markChanged();
+        }
 
         if (started) {
             timer--;
+            markChanged();
             if (timer % PING_PERIOD == 0) {
                 level.playSound(
                         null,

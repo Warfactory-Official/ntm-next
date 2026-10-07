@@ -12,7 +12,7 @@
       "ingredient": "hbm:thruster_small"
     }
   ],
-  "order": 25,
+  "order": 6400,
   "output_items": [
     "hbm:missile_generic"
   ],

@@ -54,6 +54,7 @@ import com.hbm.sound.ModSounds;
 import io.netty.buffer.ByteBuf;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -200,6 +201,8 @@ public abstract class BlockEntityLaunchPadBase extends BlockEntityMachineBase
     }
 
     protected void setFuelTankTypes(ItemMissile.MissileFuel fuel) {
+        Fluid fuelType = fuelTank.getTankType();
+        Fluid oxidizerType = oxidizerTank.getTankType();
         switch (fuel) {
             case ETHANOL_PEROXIDE -> {
                 fuelTank.setTankType(NTMFluids.ETHANOL);
@@ -219,6 +222,8 @@ public abstract class BlockEntityLaunchPadBase extends BlockEntityMachineBase
             }
             case SOLID -> {}
         }
+        if (fuelTank.getTankType() != fuelType || oxidizerTank.getTankType() != oxidizerType)
+            markChanged();
     }
 
     public boolean isMissileValid(ItemStack stack) {
@@ -356,6 +361,19 @@ public abstract class BlockEntityLaunchPadBase extends BlockEntityMachineBase
     }
 
     @Override
+    public boolean canReceiveFluid(Fluid type) {
+        for (FluidTankNTM tank : tanks) {
+            if (tank.joins(type)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
+    }
+
+    @Override
     public long getDemand(Fluid type, int pressure) {
         if (pressure != 0) return 0;
         long headroom = 0;
@@ -374,6 +392,7 @@ public abstract class BlockEntityLaunchPadBase extends BlockEntityMachineBase
                 remaining -= tank.fill(type, (int) Math.min(remaining, Integer.MAX_VALUE), true);
             }
         }
+        if (remaining != amount) markChanged();
         return remaining;
     }
 

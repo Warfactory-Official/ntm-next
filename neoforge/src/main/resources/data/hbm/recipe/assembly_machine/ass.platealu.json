@@ -10,7 +10,7 @@
       "ingredient": "#c:ingots/aluminum"
     }
   ],
-  "order": 3,
+  "order": 768,
   "output_items": [
     "hbm:plate_aluminium"
   ],

@@ -20,6 +20,7 @@ import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import com.hbm.sound.ModSounds;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -70,7 +71,9 @@ public class BlockEntityPneumoTube extends BlockEntityMachineBase
     private boolean powered;
 
     public void refreshRedstone() {
+        boolean was = powered;
         powered = level.hasNeighborSignal(worldPosition);
+        if (powered != was) this.markChanged();
     }
 
     @SyncField(units = 1L << 4)
@@ -138,6 +141,7 @@ public class BlockEntityPneumoTube extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
+
         if (!this.isCompressor() && !this.isEndpoint()) return;
 
         if (this.soundDelay > 0) this.soundDelay--;
@@ -183,6 +187,7 @@ public class BlockEntityPneumoTube extends BlockEntityMachineBase
                     }
 
                     this.sendCounter++;
+                    this.markChanged();
                 }
             }
         }
@@ -193,6 +198,16 @@ public class BlockEntityPneumoTube extends BlockEntityMachineBase
     @Override
     public long getReceiverSpeed(Fluid type, int pressure) {
         return Mth.clamp((this.compair.getMaxFill() - this.compair.getFill()) / 25, 1, 100);
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return compair.joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        visitor.accept(compair);
     }
 
     @Override
@@ -217,7 +232,7 @@ public class BlockEntityPneumoTube extends BlockEntityMachineBase
     public boolean acceptsFluid(Fluid type, Direction dir) {
         return dir != this.insertionDir
                 && dir != this.ejectionDir
-                && compair.accepts(type)
+                && compair.joins(type)
                 && this.isCompressor();
     }
 
@@ -271,6 +286,7 @@ public class BlockEntityPneumoTube extends BlockEntityMachineBase
     @Override
     public void nextMode(int index) {
         this.pattern.nextMode(level, inventory.get(index), index);
+        this.markChanged();
     }
 
     public void initPattern(ItemStack stack, int index) {

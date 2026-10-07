@@ -5,6 +5,7 @@ package com.hbm.blocks.generic;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -75,8 +76,8 @@ public class BlockForgottenLock extends Block {
         if (cracked) stack.shrink(1);
         if (level instanceof ServerLevel) {
             generate(level, pos, side);
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),

@@ -24,13 +24,17 @@ public class Stratum3DFeature extends Feature<Stratum3DConfig> {
 
     @Override
     public boolean place(FeaturePlaceContext<Stratum3DConfig> ctx) {
-        WorldGenLevel level = ctx.level();
-        Stratum3DConfig cfg = ctx.config();
-        RandomSource rand = ctx.random();
+        place(
+                ctx.level(),
+                ctx.random(),
+                ctx.config(),
+                ctx.origin().getX() & ~15,
+                ctx.origin().getZ() & ~15);
+        return true;
+    }
 
-        int cx = ctx.origin().getX() & ~15;
-        int cz = ctx.origin().getZ() & ~15;
-
+    public static void place(
+            WorldGenLevel level, RandomSource rand, Stratum3DConfig cfg, int x0, int z0) {
         NtmWorldgenFields fields = NtmWorldgenFields.get(level);
         FractalSimplexNoise noiseX = fields.fractal(cfg.domainX(), 4);
         FractalSimplexNoise noiseY = fields.fractal(cfg.domainY(), 4);
@@ -43,16 +47,16 @@ public class Stratum3DFeature extends Feature<Stratum3DConfig> {
         double[] cacheX = scratch.cacheX;
         double[] cacheY = scratch.cacheY;
         double[] cacheZ = scratch.cacheZ;
-        noiseX.getGrid(MIN_Y, cz, SPAN, SIZE, sv, sh, cacheX);
-        noiseY.getGrid(cx, cz, SIZE, SIZE, sh, sh, cacheY);
-        noiseZ.getGrid(cx, MIN_Y, SIZE, SPAN, sh, sv, cacheZ);
+        noiseX.getGrid(MIN_Y, z0, SPAN, SIZE, sv, sh, cacheX);
+        noiseY.getGrid(x0, z0, SIZE, SIZE, sh, sh, cacheY);
+        noiseZ.getGrid(x0, MIN_Y, SIZE, SPAN, sh, sv, cacheZ);
 
         BlockPos.MutableBlockPos pos = scratch.pos;
 
         for (int ox = 0; ox < SIZE; ox++) {
-            int x = cx + ox;
+            int x = x0 + ox;
             for (int oz = 0; oz < SIZE; oz++) {
-                int z = cz + oz;
+                int z = z0 + oz;
                 double ny = cacheY[ox * SIZE + oz];
 
                 for (int y = MIN_Y; y <= MAX_Y; y++) {
@@ -67,7 +71,6 @@ public class Stratum3DFeature extends Feature<Stratum3DConfig> {
                 }
             }
         }
-        return true;
     }
 
     private static final class Scratch {

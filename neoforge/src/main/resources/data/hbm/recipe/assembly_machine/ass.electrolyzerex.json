@@ -34,7 +34,7 @@
     }
   ],
   "name": "ass.electrolyzerEx",
-  "order": 106,
+  "order": 27136,
   "output_items": [
     "hbm:machine_electrolyser"
   ],

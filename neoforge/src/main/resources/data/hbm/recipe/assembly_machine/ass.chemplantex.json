@@ -34,7 +34,7 @@
     }
   ],
   "name": "ass.chemplantEx",
-  "order": 88,
+  "order": 22528,
   "output_items": [
     "hbm:machine_chemical_plant"
   ],

@@ -10,6 +10,7 @@ import com.hbm.inventory.container.MenuTurretBase;
 import com.hbm.items.weapon.sedna.BulletConfig;
 import com.hbm.items.weapon.sedna.factory.XFactory9mm;
 import com.hbm.packet.SyncField;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import io.netty.buffer.ByteBuf;
 import java.util.List;
@@ -208,8 +209,8 @@ public class BlockEntityTurretSentry extends BlockEntityTurretBaseNT {
         super.seekNewTarget();
 
         if (lastTarget != target && target != null) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    target,
                     target.getX(),
                     target.getY(),
                     target.getZ(),

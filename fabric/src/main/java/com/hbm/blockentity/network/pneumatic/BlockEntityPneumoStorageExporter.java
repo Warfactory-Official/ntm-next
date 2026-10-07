@@ -60,7 +60,9 @@ public class BlockEntityPneumoStorageExporter extends BlockEntityPneumaticMachin
     private boolean powered;
 
     public void refreshRedstone() {
+        boolean was = powered;
         powered = level.hasNeighborSignal(worldPosition);
+        if (powered != was) this.markChanged();
     }
 
     public BlockEntityPneumoStorageExporter(BlockPos pos, BlockState state) {
@@ -87,8 +89,12 @@ public class BlockEntityPneumoStorageExporter extends BlockEntityPneumaticMachin
     public void tickServer() {
         super.tickServer();
 
+        boolean changed = false;
         for (int i = 0; i < 9; i++) {
-            if (slotDelay[i] > 0) slotDelay[i]--;
+            if (slotDelay[i] > 0) {
+                slotDelay[i]--;
+                changed = true;
+            }
         }
 
         boolean redstone = powered;
@@ -99,7 +105,9 @@ public class BlockEntityPneumoStorageExporter extends BlockEntityPneumaticMachin
             if (redstone && !lastRedstone) this.doRequest(true);
         }
 
+        if (this.lastRedstone != redstone) changed = true;
         this.lastRedstone = redstone;
+        if (changed) this.markChanged();
 
         this.networkPackNT(15);
     }
@@ -107,7 +115,12 @@ public class BlockEntityPneumoStorageExporter extends BlockEntityPneumaticMachin
     public void doRequest(boolean force) {
 
         if (this.requestMode != MODE_FULL_REQUEST) {
-            for (int i = 0; i < 9; i++) if (!requestSlot(i, force)) this.slotDelay[i] = SLOT_DELAY;
+            for (int i = 0; i < 9; i++) {
+                if (!requestSlot(i, force)) {
+                    this.slotDelay[i] = SLOT_DELAY;
+                    this.markChanged();
+                }
+            }
         } else {
 
             PneumaticNetwork net = net();
@@ -131,6 +144,7 @@ public class BlockEntityPneumoStorageExporter extends BlockEntityPneumaticMachin
                         existingSize = existingStack.getCount();
                     } else {
                         this.slotDelay[i] = SLOT_DELAY;
+                        this.markChanged();
                         return;
                     }
                 }
@@ -139,6 +153,7 @@ public class BlockEntityPneumoStorageExporter extends BlockEntityPneumaticMachin
 
                 if (capacityLeft < requestSize || getAvailability(filter) < requestSize) {
                     this.slotDelay[i] = SLOT_DELAY;
+                    this.markChanged();
                     return;
                 }
             }
@@ -399,7 +414,10 @@ public class BlockEntityPneumoStorageExporter extends BlockEntityPneumaticMachin
 
         if ((PREFIX_FUNCTION + "requestslot").equals(name) && params.length == 1) {
             int slot = IRORInteractive.parseInt(params[0], 1, 9) - 1;
-            if (!this.requestSlot(slot, true)) this.slotDelay[slot] = SLOT_DELAY;
+            if (!this.requestSlot(slot, true)) {
+                this.slotDelay[slot] = SLOT_DELAY;
+                this.markChanged();
+            }
             return null;
         }
 

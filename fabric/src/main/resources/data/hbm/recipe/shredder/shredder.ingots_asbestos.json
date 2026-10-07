@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/asbestos"
     }
   ],
-  "order": 384,
+  "order": 98304,
   "output_items": [
     "hbm:powder_asbestos"
   ]

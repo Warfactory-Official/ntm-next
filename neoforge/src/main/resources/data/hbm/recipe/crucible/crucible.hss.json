@@ -18,7 +18,7 @@
       "material": "cobalt"
     }
   ],
-  "order": 4,
+  "order": 1024,
   "output_materials": [
     {
       "amount": 72,

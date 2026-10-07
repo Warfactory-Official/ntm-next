@@ -22,7 +22,7 @@
     }
   ],
   "name": "soldering.upgrade_afterburn_2Lbsm",
-  "order": 40,
+  "order": 10240,
   "output_items": [
     "hbm:upgrade_afterburn_2"
   ],

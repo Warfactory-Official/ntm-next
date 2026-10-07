@@ -6,6 +6,7 @@ package com.hbm.handler;
 import com.hbm.hazard.HazardClass;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.armor.ModArmorItem;
+import com.hbm.sound.EntitySounds;
 import com.hbm.tags.HbmItemTags;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public final class ArmorUtil {
         EquipmentSlot.FEET, EquipmentSlot.LEGS, EquipmentSlot.CHEST, EquipmentSlot.HEAD
     };
 
-    private static final String FILTER_ID = "filter_stack";
+    public static final String FILTER_ID = "filter_stack";
 
     private ArmorUtil() {}
 
@@ -186,8 +187,8 @@ public final class ArmorUtil {
         if (socketed) ArmorModHandler.applyMod(helmet, target);
         if (current.isEmpty()) filter.shrink(1);
         else player.setItemInHand(hand, current);
-        level.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.blockPosition(),
                 com.hbm.sound.ModSounds.GASMASK_SCREW.get(),
                 net.minecraft.sounds.SoundSource.PLAYERS,

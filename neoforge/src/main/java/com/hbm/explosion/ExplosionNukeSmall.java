@@ -4,6 +4,7 @@
 
 package com.hbm.explosion;
 
+import com.hbm.api.explosion.NukeDetonations;
 import com.hbm.data.ExplosionData;
 import com.hbm.entity.logic.EntityNukeExplosionMK5;
 import com.hbm.explosion.vanillant.ExplosionVNT;
@@ -66,6 +67,7 @@ public class ExplosionNukeSmall {
                     EntityNukeExplosionMK5.statFac(
                             level, (int) params.blastRadius, posX, posY, posZ));
         }
+        if (params.miniNuke) NukeDetonations.detonated(level, posX, posZ, params.blastRadius);
 
         if (params.miniNuke) {
             float radMod = params.radiationLevel / 3F;

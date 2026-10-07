@@ -6,6 +6,7 @@ package com.hbm.items.food;
 
 import com.hbm.entity.effect.EntityVortex;
 import com.hbm.items.ModItems;
+import com.hbm.sound.EntitySounds;
 import com.hbm.util.TooltipStyle;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
@@ -45,8 +46,8 @@ public class ItemConserve extends Item {
             return rest;
 
         player.getFoodData().eat(type.foodLevel, type.saturation);
-        server.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.getX(),
                 player.getY(),
                 player.getZ(),

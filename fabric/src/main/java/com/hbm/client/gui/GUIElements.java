@@ -3,12 +3,13 @@
 
 package com.hbm.client.gui;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import org.joml.Matrix3x2f;
 import org.jspecify.annotations.Nullable;
 
 public final class GUIElements {
@@ -23,6 +24,18 @@ public final class GUIElements {
     public static final int STACK_COLOR_LINE = 0x505000FF;
 
     private GUIElements() {}
+
+    public static void defer(GuiGraphicsExtractor graphics, Consumer<GuiGraphicsExtractor> draw) {
+        Matrix3x2f pose = new Matrix3x2f(graphics.pose());
+        ((DeferredGuiDraws) graphics)
+                .hbm$defer(
+                        deferred -> {
+                            deferred.pose().pushMatrix();
+                            deferred.pose().set(pose);
+                            draw.accept(deferred);
+                            deferred.pose().popMatrix();
+                        });
+    }
 
     public static void drawHoveringTextRecipe(
             GuiGraphicsExtractor graphics,
@@ -63,7 +76,39 @@ public final class GUIElements {
             int colLine0,
             int colLine1) {
         if (lines.isEmpty()) return;
+        defer(
+                graphics,
+                deferred ->
+                        hoveringText(
+                                deferred,
+                                font,
+                                lines,
+                                x,
+                                y,
+                                guiWidth,
+                                guiHeight,
+                                headerOffset,
+                                lineDist,
+                                colBG0,
+                                colBG1,
+                                colLine0,
+                                colLine1));
+    }
 
+    private static void hoveringText(
+            GuiGraphicsExtractor graphics,
+            Font font,
+            List<Component> lines,
+            int x,
+            int y,
+            int guiWidth,
+            int guiHeight,
+            int headerOffset,
+            int lineDist,
+            int colBG0,
+            int colBG1,
+            int colLine0,
+            int colLine1) {
         int width = 0;
         for (Component line : lines) width = Math.max(width, font.width(line));
 
@@ -141,34 +186,63 @@ public final class GUIElements {
             int screenWidth,
             int screenHeight) {
         if (stacks.isEmpty()) return;
-        List<ItemStack> list = new ArrayList<>(stacks);
+        defer(
+                graphics,
+                deferred ->
+                        cyclingStackText(
+                                deferred, font, header, stacks, x, y, screenWidth, screenHeight));
+    }
 
-        ItemStack selected = list.get(0);
-        ItemStack highlight = null;
-        if (list.size() > 1) {
-            int cycle = (int) ((System.currentTimeMillis() % (1000L * list.size())) / 1000L);
-            selected = list.get(cycle).copy();
-            highlight = selected;
-            list.set(cycle, selected);
+    private static void cyclingStackText(
+            GuiGraphicsExtractor graphics,
+            Font font,
+            @Nullable Component header,
+            List<ItemStack> stacks,
+            int x,
+            int y,
+            int screenWidth,
+            int screenHeight) {
+        int count = stacks.size();
+        int highlight =
+                count > 1 ? (int) (System.currentTimeMillis() % (1000L * count) / 1000L) : -1;
+        Component name = stacks.get(Math.max(highlight, 0)).getHoverName();
+        int rows = count < 10 ? 1 : count < 24 ? 2 : 3;
+
+        int longest = font.width(name);
+        for (int row = 0; row < rows; row++)
+            longest =
+                    Math.max(
+                            longest,
+                            18 * (rowStart(row + 1, rows, count) - rowStart(row, rows, count)));
+        int height = 18 * rows + 10;
+        if (header != null) {
+            longest = Math.max(longest, font.width(header));
+            height += 10;
         }
 
-        List<Object[]> lines = new ArrayList<>();
-        if (header != null) lines.add(new Object[] {header});
-        if (list.size() < 10) {
-            lines.add(list.toArray());
-        } else if (list.size() < 24) {
-            lines.add(list.subList(0, list.size() / 2).toArray());
-            lines.add(list.subList(list.size() / 2, list.size()).toArray());
-        } else {
-            int bound0 = (int) Math.ceil(list.size() / 3D);
-            int bound1 = (int) Math.ceil(list.size() / 3D * 2D);
-            lines.add(list.subList(0, bound0).toArray());
-            lines.add(list.subList(bound0, bound1).toArray());
-            lines.add(list.subList(bound1, list.size()).toArray());
-        }
-        lines.add(new Object[] {selected.getHoverName()});
+        int minX = boxX(x, longest, screenWidth);
+        int lineY = boxY(y, height, screenHeight);
+        drawStackBox(graphics, minX, lineY, longest, height);
 
-        drawStackText(graphics, font, lines, x, y, screenWidth, screenHeight, highlight);
+        if (header != null) {
+            graphics.text(font, header, minX, lineY, -1, true);
+            lineY += 12;
+        }
+        for (int row = 0; row < rows; row++) {
+            int indent = minX;
+            for (int i = rowStart(row, rows, count), end = rowStart(row + 1, rows, count);
+                    i < end;
+                    i++) {
+                drawStackCell(graphics, font, stacks.get(i), indent, lineY, i == highlight);
+                indent += 18;
+            }
+            lineY += header == null && row == 0 ? 20 : 18;
+        }
+        graphics.text(font, name, minX, lineY, -1, true);
+    }
+
+    private static int rowStart(int row, int rows, int count) {
+        return rows == 3 ? (row * count + 2) / 3 : row * count / rows;
     }
 
     public static void drawStackText(
@@ -178,10 +252,21 @@ public final class GUIElements {
             int x,
             int y,
             int screenWidth,
-            int screenHeight,
-            @Nullable ItemStack highlight) {
+            int screenHeight) {
         if (lines.isEmpty()) return;
+        defer(
+                graphics,
+                deferred -> stackText(deferred, font, lines, x, y, screenWidth, screenHeight));
+    }
 
+    private static void stackText(
+            GuiGraphicsExtractor graphics,
+            Font font,
+            List<Object[]> lines,
+            int x,
+            int y,
+            int screenWidth,
+            int screenHeight) {
         int height = 0;
         int longest = 0;
 
@@ -200,11 +285,47 @@ public final class GUIElements {
             longest = Math.max(longest, lineWidth);
         }
 
-        int minX = x + 12;
-        int minY = y - 12;
-        if (minX + longest > screenWidth) minX -= 28 + longest;
-        if (minY + height + 6 > screenHeight) minY = screenHeight - height - 6;
+        int minX = boxX(x, longest, screenWidth);
+        int minY = boxY(y, height, screenHeight);
+        drawStackBox(graphics, minX, minY, longest, height);
 
+        for (int index = 0; index < lines.size(); index++) {
+            Object[] line = lines.get(index);
+            int indent = 0;
+            boolean hasStack = false;
+            for (Object cell : line)
+                if (!(cell instanceof Component)) {
+                    hasStack = true;
+                    break;
+                }
+
+            for (Object cell : line) {
+                if (cell instanceof Component s) {
+                    graphics.text(font, s, minX + indent, minY + (hasStack ? 4 : 0), -1, true);
+                    indent += font.width(s) + 2;
+                } else {
+                    drawStackCell(graphics, font, (ItemStack) cell, minX + indent, minY, false);
+                    indent += 18;
+                }
+            }
+
+            if (index == 0) minY += 2;
+            minY += hasStack ? 18 : 10;
+        }
+    }
+
+    private static int boxX(int x, int longest, int screenWidth) {
+        int minX = x + 12;
+        return minX + longest > screenWidth ? minX - 28 - longest : minX;
+    }
+
+    private static int boxY(int y, int height, int screenHeight) {
+        int minY = y - 12;
+        return minY + height + 6 > screenHeight ? screenHeight - height - 6 : minY;
+    }
+
+    private static void drawStackBox(
+            GuiGraphicsExtractor graphics, int minX, int minY, int longest, int height) {
         int colBG = STACK_COLOR_BACKGROUND;
         int colLine0 = STACK_COLOR_LINE;
         int colLine1 = (colLine0 & 0xFEFEFE) >> 1 | colLine0 & 0xFF000000;
@@ -234,41 +355,20 @@ public final class GUIElements {
                 minY + height + 3,
                 colLine1,
                 colLine1);
+    }
 
-        for (int index = 0; index < lines.size(); index++) {
-            Object[] line = lines.get(index);
-            int indent = 0;
-            boolean hasStack = false;
-            for (Object cell : line)
-                if (!(cell instanceof Component)) {
-                    hasStack = true;
-                    break;
-                }
-
-            for (Object cell : line) {
-                if (cell instanceof Component s) {
-                    graphics.text(font, s, minX + indent, minY + (hasStack ? 4 : 0), -1, true);
-                    indent += font.width(s) + 2;
-                } else {
-                    ItemStack stack = (ItemStack) cell;
-                    if (stack == highlight) {
-                        graphics.fill(
-                                minX + indent - 1,
-                                minY - 1,
-                                minX + indent + 17,
-                                minY + 17,
-                                0xFFFF0000);
-                        graphics.fill(
-                                minX + indent, minY, minX + indent + 16, minY + 16, 0xFFB0B0B0);
-                    }
-                    graphics.item(stack, minX + indent, minY);
-                    graphics.itemDecorations(font, stack, minX + indent, minY);
-                    indent += 18;
-                }
-            }
-
-            if (index == 0) minY += 2;
-            minY += hasStack ? 18 : 10;
+    private static void drawStackCell(
+            GuiGraphicsExtractor graphics,
+            Font font,
+            ItemStack stack,
+            int x,
+            int y,
+            boolean highlight) {
+        if (highlight) {
+            graphics.fill(x - 1, y - 1, x + 17, y + 17, 0xFFFF0000);
+            graphics.fill(x, y, x + 16, y + 16, 0xFFB0B0B0);
         }
+        graphics.item(stack, x, y);
+        graphics.itemDecorations(font, stack, x, y);
     }
 }

@@ -16,7 +16,7 @@
       "ingredient": "#c:dusts/chlorocalcite"
     }
   ],
-  "order": 41,
+  "order": 10496,
   "output_fluids": [
     {
       "type": "hbm:chlorocalcite_solution",

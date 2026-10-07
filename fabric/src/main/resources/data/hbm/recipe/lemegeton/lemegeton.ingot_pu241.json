@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/plutonium_240"
     }
   ],
-  "order": 20,
+  "order": 5120,
   "output_items": [
     "hbm:ingot_pu241"
   ]

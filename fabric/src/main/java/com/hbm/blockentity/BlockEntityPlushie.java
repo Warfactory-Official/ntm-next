@@ -3,9 +3,12 @@
 
 package com.hbm.blockentity;
 
+import com.hbm.blockentity.machine.BlockEntityMachineEPress;
+import com.hbm.blockentity.machine.BlockEntityMachinePress;
 import com.hbm.blocks.ModBlockEntities;
-import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.generic.BlockPlushie.Plushie;
 import com.hbm.blocks.generic.BlockPlushie.PlushieType;
+import com.hbm.blocks.generic.BlockPlushie;
 import com.hbm.items.block.ItemBlockTrinket;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
@@ -20,25 +23,25 @@ import net.minecraft.world.level.storage.ValueOutput;
 public class BlockEntityPlushie extends BlockEntity implements Synced, SyncUnitSchema {
 
     @SyncField(units = 1L)
-    public PlushieType type = PlushieType.NONE;
+    public Plushie type = PlushieType.NONE;
 
     private static final int SQUISH_TICKS = 11;
 
     private long squishUntil;
+    public float miseryFactor;
+    public float lastMiseryFactor;
 
     public BlockEntityPlushie(BlockPos pos, BlockState state) {
         super(ModBlockEntities.NTM_PLUSHIE.get(), pos, state);
     }
 
-    public static ItemStack stackOf(PlushieType type) {
-        return type == PlushieType.NONE
-                ? new ItemStack(ModBlocks.PLUSHIE)
-                : ModBlocks.PLUSHIES.stack(type);
+    public static ItemStack stackOf(Plushie type) {
+        return type.stack();
     }
 
-    public static PlushieType typeOf(ItemStack stack) {
+    public static Plushie typeOf(ItemStack stack) {
         return stack.getItem() instanceof ItemBlockTrinket<?> trinket
-                        && trinket.type instanceof PlushieType type
+                        && trinket.type instanceof Plushie type
                 ? type
                 : PlushieType.NONE;
     }
@@ -51,16 +54,25 @@ public class BlockEntityPlushie extends BlockEntity implements Synced, SyncUnitS
         return Math.max(0L, squishUntil - level.getGameTime());
     }
 
+    public void tickClient() {
+        lastMiseryFactor = miseryFactor;
+        BlockEntity below = level.getBlockEntity(worldPosition.below());
+        if (!(below instanceof BlockEntityMachinePress
+                || below instanceof BlockEntityMachineEPress)) {
+            miseryFactor = 0F;
+        }
+    }
+
     @Override
     protected void saveAdditional(ValueOutput out) {
         super.saveAdditional(out);
-        out.putByte("type", (byte) type.ordinal());
+        out.putString("type", type.id());
     }
 
     @Override
     protected void loadAdditional(ValueInput in) {
         super.loadAdditional(in);
-        type = PlushieType.byOrdinal(in.getByteOr("type", (byte) 0));
+        type = BlockPlushie.TYPES.byName(in.getStringOr("type", ""), PlushieType.NONE);
     }
 
     @Override
@@ -71,12 +83,12 @@ public class BlockEntityPlushie extends BlockEntity implements Synced, SyncUnitS
     @Override
     public void writeSyncUnit(int unit, ByteBuf output) {
         if (unit != 0) throw new IllegalArgumentException();
-        output.writeByte(type.ordinal());
+        output.writeByte(BlockPlushie.TYPES.index(type));
     }
 
     @Override
     public void readSyncUnit(int unit, ByteBuf input) {
         if (unit != 0) throw new IllegalArgumentException();
-        type = PlushieType.byOrdinal(input.readByte());
+        type = BlockPlushie.TYPES.byWrappedIndex(input.readByte());
     }
 }

@@ -52,7 +52,7 @@ public final class ShredderPage extends TablePage<ShredderRecipe> {
     @Override
     public void layout(ShredderRecipe recipe, PageLayout page) {
         page.input(39, 24).items(claimedInputs(recipe));
-        page.output(129, 24).item(recipe.output());
+        GenericMachinePage.outputSlot(page.output(129, 24), recipe.outputItems()[0]);
         List<ItemStack> blades =
                 List.of(
                         new ItemStack(ModItems.BLADES_STEEL.get()),

@@ -24,7 +24,7 @@
     }
   ],
   "name": "soldering.circuit_advancedLbsm",
-  "order": 3,
+  "order": 768,
   "output_items": [
     "hbm:circuit_advanced"
   ],

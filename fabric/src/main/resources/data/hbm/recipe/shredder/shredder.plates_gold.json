@@ -5,7 +5,7 @@
       "ingredient": "#c:plates/gold"
     }
   ],
-  "order": 255,
+  "order": 65280,
   "output_items": [
     "hbm:powder_gold"
   ]

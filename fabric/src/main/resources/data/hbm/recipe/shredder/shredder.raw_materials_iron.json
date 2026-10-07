@@ -5,9 +5,10 @@
       "ingredient": "#c:raw_materials/iron"
     }
   ],
-  "order": 251,
+  "order": 64256,
   "output_items": [
     {
+      "chance": 0.667,
       "count": 2,
       "id": "hbm:powder_iron"
     }

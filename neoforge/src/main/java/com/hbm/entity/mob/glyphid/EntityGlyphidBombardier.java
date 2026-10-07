@@ -37,7 +37,6 @@ public class EntityGlyphidBombardier extends EntityGlyphid {
                                 EntityType.Builder.<EntityGlyphidBombardier>of(
                                                 EntityGlyphidBombardier::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .sized(1.75F, 1F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)

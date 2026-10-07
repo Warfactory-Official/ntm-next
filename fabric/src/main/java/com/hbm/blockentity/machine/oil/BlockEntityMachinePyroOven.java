@@ -149,7 +149,7 @@ public class BlockEntityMachinePyroOven extends BlockEntityMachinePolluting
     public void tickServer() {
         ServerLevel server = (ServerLevel) level;
         power += ItemEnergyTransfer.extract(this, SLOT_BATTERY, MAX_POWER - power, false);
-        tanks[0].setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory);
+        if (tanks[0].setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory)) markChanged();
 
         flush.provide(server, this);
 
@@ -171,6 +171,7 @@ public class BlockEntityMachinePyroOven extends BlockEntityMachinePolluting
                                     1);
             this.isProgressing = true;
             this.power -= getConsumption(speed + overdrive * 2, powerSaving);
+            markChanged();
 
             if (progress >= 1F) {
                 this.progress = 0F;
@@ -180,6 +181,7 @@ public class BlockEntityMachinePyroOven extends BlockEntityMachinePolluting
 
             pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND);
         } else {
+            if (this.progress != 0F) markChanged();
             this.progress = 0F;
         }
 
@@ -321,6 +323,7 @@ public class BlockEntityMachinePyroOven extends BlockEntityMachinePolluting
                         : type == PollutionType.HEAVYMETAL ? smokeLeaded : smokePoison;
         int fluidAmount = (int) Math.ceil(amount * 100);
         int accepted = tank.fill(tank.getTankType(), fluidAmount, true);
+        if (accepted > 0) markChanged();
         int overflow = fluidAmount - accepted;
         if (overflow > 0) {
             PollutionHandler.incrementPollution(level, worldPosition, type, overflow / 100F);

@@ -40,7 +40,7 @@ public class ItemSatelliteInterface extends ItemSatelliteChip implements IItemCo
                     player.level(),
                     player,
                     data.getIntOr("x", 0),
-                    data.getIntOr("y", -1),
+                    data.getIntOr("y", Satellite.AUTOMATIC_Y),
                     data.getIntOr("z", 0));
         }
     }

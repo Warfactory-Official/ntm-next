@@ -30,7 +30,7 @@
       "ingredient": "hbm:circuit_atomic_clock"
     }
   ],
-  "order": 11,
+  "order": 2816,
   "output_items": [
     "hbm:circuit_controller_advanced"
   ],

@@ -6,7 +6,8 @@ package com.hbm.handler;
 import com.hbm.blockentity.BlockEntityPlushie;
 import com.hbm.blockentity.BlockEntitySnowglobe;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.BlockPlushie.PlushieType;
+import com.hbm.blocks.generic.BlockPlushie.Plushie;
+import com.hbm.blocks.generic.BlockPlushie;
 import com.hbm.blocks.generic.BlockSnowglobe.SnowglobeType;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
@@ -18,8 +19,14 @@ import com.hbm.items.machine.ItemBlueprintFolder;
 import com.hbm.items.special.ItemKitCustom;
 import com.hbm.items.special.ItemKitNBT;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
+import com.hbm.registration.FabricRegistrar;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -38,6 +45,9 @@ public final class BobmazonOffers {
 
     private static @Nullable List<BobmazonOffer> standard;
     private static @Nullable List<BobmazonOffer> special;
+    private static final List<Insert> SPECIAL_ADDONS = new ArrayList<>();
+
+    private record Insert(Predicate<ItemStack> after, Supplier<BobmazonOffer> offer) {}
 
     private BobmazonOffers() {}
 
@@ -49,6 +59,12 @@ public final class BobmazonOffers {
     public static synchronized List<BobmazonOffer> special() {
         if (special == null) special = buildSpecial();
         return special;
+    }
+
+    public static synchronized void addonSpecial(
+            Predicate<ItemStack> after, Supplier<BobmazonOffer> offer) {
+        FabricRegistrar.assertOpen("BobmazonOffers.addonSpecial");
+        SPECIAL_ADDONS.add(new Insert(after, offer));
     }
 
     public static synchronized void invalidate() {
@@ -116,10 +132,11 @@ public final class BobmazonOffers {
         for (SnowglobeType globe : SnowglobeType.values()) {
             out.add(new BobmazonOffer(BlockEntitySnowglobe.stackOf(globe), CHEMICS, 128));
         }
-        for (int ordinal = 1; ordinal < PlushieType.count(); ordinal++) {
+        List<Plushie> plushies = BlockPlushie.TYPES.values();
+        for (int ordinal = 1; ordinal < plushies.size(); ordinal++) {
             out.add(
                     new BobmazonOffer(
-                            BlockEntityPlushie.stackOf(PlushieType.byOrdinal(ordinal)),
+                            BlockEntityPlushie.stackOf(plushies.get(ordinal)),
                             OIL,
                             16,
                             ordinal < 3 ? 10 : 0));
@@ -268,6 +285,19 @@ public final class BobmazonOffers {
                         HIDDEN,
                         32));
 
+        Set<BobmazonOffer> added = Collections.newSetFromMap(new IdentityHashMap<>());
+        for (Insert insert : SPECIAL_ADDONS) {
+            int at = -1;
+            for (int i = 0; i < out.size() && at < 0; i++) {
+                if (!added.contains(out.get(i)) && insert.after().test(out.get(i).offer())) at = i;
+            }
+            if (at < 0)
+                throw new IllegalStateException("no special offer to list an addon offer after");
+            while (at + 1 < out.size() && added.contains(out.get(at + 1))) at++;
+            BobmazonOffer offer = insert.offer().get();
+            out.add(at + 1, offer);
+            added.add(offer);
+        }
         return out;
     }
 

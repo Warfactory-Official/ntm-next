@@ -13,17 +13,17 @@ public record ConfigEntry<T>(
         double min,
         double max) {
 
-    static ConfigEntry<Boolean> bool(
+    public static ConfigEntry<Boolean> bool(
             Domain domain, String section, String key, boolean def, String comment) {
         return new ConfigEntry<>(domain, section, Kind.BOOL, key, comment, def, 0, 0);
     }
 
-    static ConfigEntry<Integer> integer(
+    public static ConfigEntry<Integer> integer(
             Domain domain, String section, String key, int def, int min, int max, String comment) {
         return new ConfigEntry<>(domain, section, Kind.INT, key, comment, def, min, max);
     }
 
-    static ConfigEntry<Double> real(
+    public static ConfigEntry<Double> real(
             Domain domain,
             String section,
             String key,
@@ -34,7 +34,7 @@ public record ConfigEntry<T>(
         return new ConfigEntry<>(domain, section, Kind.DOUBLE, key, comment, def, min, max);
     }
 
-    static ConfigEntry<String> text(
+    public static ConfigEntry<String> text(
             Domain domain, String section, String key, String def, String comment) {
         return new ConfigEntry<>(domain, section, Kind.STRING, key, comment, def, 0, 0);
     }

@@ -12,7 +12,7 @@
       "ingredient": "hbm:drive_flash_empty"
     }
   ],
-  "order": 2,
+  "order": 512,
   "output_items": [
     [
       {

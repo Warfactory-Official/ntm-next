@@ -14,7 +14,7 @@
     }
   ],
   "laser_strength": "ir",
-  "order": 120,
+  "order": 30720,
   "output_items": [
     [
       {

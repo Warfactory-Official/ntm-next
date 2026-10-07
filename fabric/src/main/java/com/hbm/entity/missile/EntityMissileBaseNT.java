@@ -4,6 +4,7 @@
 package com.hbm.entity.missile;
 
 import com.hbm.api.entity.IRadarDetectableNT;
+import com.hbm.api.environment.Environment;
 import com.hbm.client.ClientEffects;
 import com.hbm.explosion.ExplosionLarge;
 import com.hbm.explosion.vanillant.ExplosionVNT;
@@ -120,6 +121,10 @@ public abstract class EntityMissileBaseNT extends Projectile implements IRadarDe
             return;
         }
 
+        fly();
+    }
+
+    protected void fly() {
         double mult = velocity;
         Vec3 from = position();
         Vec3 to = from.add(getDeltaMovement().scale(mult));
@@ -198,9 +203,10 @@ public abstract class EntityMissileBaseNT extends Projectile implements IRadarDe
         Vec3 back = step.lengthSqr() < 1.0e-8 ? Vec3.ZERO : step.normalize().scale(-1);
         Vec3 thrust = noseAxis();
         int count = (int) Math.max(Math.min(len, 10), 1);
+        double pressure = Environment.particlePressure(level());
         for (int i = 0; i < count; i++) {
             double d = len - i;
-            ClientEffects.spawnRocketFlame(
+            ClientEffects.spawnRocketFlameInAir(
                     level(),
                     getX() + back.x * d + offsetX,
                     getY() + back.y * d + offsetY,
@@ -209,7 +215,8 @@ public abstract class EntityMissileBaseNT extends Projectile implements IRadarDe
                     -thrust.x,
                     -thrust.y,
                     -thrust.z,
-                    60 + random.nextInt(20));
+                    60 + random.nextInt(20),
+                    pressure);
         }
     }
 

@@ -4,8 +4,10 @@
 package com.hbm.blockentity.bomb;
 
 import com.hbm.lib.Library;
+import com.hbm.registration.OverridePoint;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
@@ -13,6 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
 public final class CustomNukeEntries {
+    public static final OverridePoint<Consumer<Map<Item, Entry>>> EDITS =
+            OverridePoint.of(Library.id("custom_nuke_entries"), table -> {});
 
     private static @Nullable Map<Item, Entry> entries;
 
@@ -92,6 +96,7 @@ public final class CustomNukeEntries {
         mult(built, "nuclear_waste", Stage.DIRTY, 1.025F);
         mult(built, "block_waste", Stage.DIRTY, 1.25F);
         mult(built, "yellow_barrel", Stage.DIRTY, 1.2F);
+        EDITS.get().accept(built);
 
         entries = built;
         return built;

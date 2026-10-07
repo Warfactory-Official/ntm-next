@@ -30,7 +30,7 @@
     }
   ],
   "name": "ass.hpcondenserEx",
-  "order": 193,
+  "order": 49408,
   "output_items": [
     "hbm:machine_condenser_powered"
   ],

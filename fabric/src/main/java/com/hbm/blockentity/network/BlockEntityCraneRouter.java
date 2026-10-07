@@ -68,6 +68,7 @@ public class BlockEntityCraneRouter extends BlockEntityMachineBase
     public void nextMode(int index) {
         patterns[index / FILTERS_PER_SIDE].nextMode(
                 level, getItem(index), index % FILTERS_PER_SIDE);
+        markChanged();
         networkPackNT(15);
     }
 
@@ -168,7 +169,10 @@ public class BlockEntityCraneRouter extends BlockEntityMachineBase
         }
 
         int[] loaded = nbt.getIntArray("modes").orElse(null);
-        if (loaded != null && loaded.length == SIDES) modes = loaded;
+        if (loaded != null && loaded.length == SIDES) {
+            modes = loaded;
+            markChanged();
+        }
         networkPackNT(15);
     }
 

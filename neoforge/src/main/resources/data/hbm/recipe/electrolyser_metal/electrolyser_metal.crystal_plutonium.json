@@ -6,7 +6,7 @@
       "ingredient": "hbm:crystal_plutonium"
     }
   ],
-  "order": 4,
+  "order": 1024,
   "output_items": [
     {
       "count": 3,

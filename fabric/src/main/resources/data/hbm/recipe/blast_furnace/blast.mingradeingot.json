@@ -10,7 +10,7 @@
     }
   ],
   "name": "blast.mingradeIngot",
-  "order": 6,
+  "order": 2048,
   "output_items": [
     {
       "count": 2,

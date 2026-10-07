@@ -29,7 +29,7 @@
       "ingredient": "hbm:powder_chlorophyte"
     }
   ],
-  "order": 42,
+  "order": 10752,
   "output_items": [
     "hbm:dfc_core"
   ],

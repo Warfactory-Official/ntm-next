@@ -3,6 +3,8 @@
 
 package com.hbm.items.armor;
 
+import com.hbm.api.environment.Environment;
+import com.hbm.api.environment.EnvironmentProvider;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.extprop.HbmPlayerProps;
 import com.hbm.handler.ArmorModHandler;
@@ -16,6 +18,7 @@ import com.hbm.lib.ModDamageTypes;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.JetpackParticlePayload;
 import com.hbm.platform.NeoForgeServerEvents;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.TickPhase;
@@ -153,16 +156,15 @@ public final class ArmorSuitEffects {
 
     private static void playAt(ServerPlayer player, @Nullable SoundEvent sound, float volume) {
         if (sound == null) return;
-        player.level()
-                .playSound(
-                        null,
-                        player.getX(),
-                        player.getY(),
-                        player.getZ(),
-                        sound,
-                        SoundSource.PLAYERS,
-                        volume,
-                        1.0F);
+        EntitySounds.play(
+                player,
+                player.getX(),
+                player.getY(),
+                player.getZ(),
+                sound,
+                SoundSource.PLAYERS,
+                volume,
+                1.0F);
     }
 
     private static void geigerClick(ServerPlayer player) {
@@ -172,16 +174,15 @@ public final class ArmorSuitEffects {
         double rads = ContaminationUtil.getNoNeutronPlayerRads(player);
         int idx = ItemGeigerCounter.pickGeiger(rads, player.level().getRandom());
         if (idx > 0) {
-            player.level()
-                    .playSound(
-                            null,
-                            player.getX(),
-                            player.getY(),
-                            player.getZ(),
-                            ModSounds.GEIGER[idx - 1].get(),
-                            SoundSource.PLAYERS,
-                            1.0F,
-                            1.0F);
+            EntitySounds.play(
+                    player,
+                    player.getX(),
+                    player.getY(),
+                    player.getZ(),
+                    ModSounds.GEIGER[idx - 1].get(),
+                    SoundSource.PLAYERS,
+                    1.0F,
+                    1.0F);
         }
     }
 
@@ -217,16 +218,15 @@ public final class ArmorSuitEffects {
     private static void lamp(ServerPlayer player, ItemStack helmet) {
         boolean on = HbmPlayerProps.getData(player).enableHUD;
         if (on == helmet.getOrDefault(ModDataComponents.NO9_LAMP.get(), false)) return;
-        player.level()
-                .playSound(
-                        null,
-                        player.getX(),
-                        player.getY(),
-                        player.getZ(),
-                        on ? SoundEvents.FLINTANDSTEEL_USE : SoundEvents.FIRE_EXTINGUISH,
-                        SoundSource.PLAYERS,
-                        on ? 1F : .5F,
-                        on ? 1.5F : 2F);
+        EntitySounds.play(
+                player,
+                player.getX(),
+                player.getY(),
+                player.getZ(),
+                on ? SoundEvents.FLINTANDSTEEL_USE : SoundEvents.FIRE_EXTINGUISH,
+                SoundSource.PLAYERS,
+                on ? 1F : .5F,
+                on ? 1.5F : 2F);
         helmet.set(ModDataComponents.NO9_LAMP.get(), on);
     }
 
@@ -379,6 +379,14 @@ public final class ArmorSuitEffects {
         public boolean isMod() {
             return burnRate > 0;
         }
+
+        public float lift(float gravity) {
+            return switch (this) {
+                case FLY, BRAKE -> Math.max(gravity / EnvironmentProvider.STANDARD_GRAVITY, 1);
+                case VECTOR, BOOST -> Math.min(gravity / EnvironmentProvider.STANDARD_GRAVITY, 1);
+                case DNS, BJ -> 1F;
+            };
+        }
     }
 
     public static boolean hasEnvsuitSwim(Player player) {
@@ -398,17 +406,21 @@ public final class ArmorSuitEffects {
                 && !(kind == Jetpack.BRAKE && player.isShiftKeyDown());
     }
 
+    private static boolean gliding(
+            ServerPlayer player, Jetpack kind, HbmPlayerProps props, boolean thrusting) {
+        return (kind == Jetpack.DNS || kind == Jetpack.BRAKE)
+                && !thrusting
+                && (!player.isShiftKeyDown() || kind == Jetpack.BRAKE && props.isJetpackActive())
+                && !player.onGround()
+                && props.enableBackpack
+                && (!player.isFallFlying() || props.isJetpackActive())
+                && (kind != Jetpack.BRAKE || Environment.gravity(player) > 0F);
+    }
+
     private static void jetpackServerTick(ServerPlayer player, Jetpack kind) {
         HbmPlayerProps props = HbmPlayerProps.getData(player);
         boolean thrusting = thrusting(player, kind);
-        boolean gliding =
-                (kind == Jetpack.DNS || kind == Jetpack.BRAKE)
-                        && !thrusting
-                        && (!player.isShiftKeyDown()
-                                || kind == Jetpack.BRAKE && props.isJetpackActive())
-                        && !player.onGround()
-                        && props.enableBackpack
-                        && (!player.isFallFlying() || props.isJetpackActive());
+        boolean gliding = gliding(player, kind, props, thrusting);
 
         if (thrusting || gliding) {
             int plume =
@@ -437,28 +449,26 @@ public final class ArmorSuitEffects {
                         pack, player.tickCount, thrusting ? kind.burnRate : kind.hoverBurnRate);
                 storeWornPack(player, pack);
             }
-            player.level()
-                    .playSound(
-                            null,
-                            player.getX(),
-                            player.getY(),
-                            player.getZ(),
-                            ModSounds.FLAMETHROWER_SHOOT.get(),
-                            SoundSource.PLAYERS,
-                            0.25F,
-                            kind.pitch);
+            EntitySounds.play(
+                    player,
+                    player.getX(),
+                    player.getY(),
+                    player.getZ(),
+                    ModSounds.FLAMETHROWER_SHOOT.get(),
+                    SoundSource.PLAYERS,
+                    0.25F,
+                    kind.pitch);
             return;
         }
-        player.level()
-                .playSound(
-                        null,
-                        player.getX(),
-                        player.getY(),
-                        player.getZ(),
-                        ModSounds.JETPACK_THRUST.get(),
-                        SoundSource.PLAYERS,
-                        0.125F,
-                        1.5F);
+        EntitySounds.play(
+                player,
+                player.getX(),
+                player.getY(),
+                player.getZ(),
+                ModSounds.JETPACK_THRUST.get(),
+                SoundSource.PLAYERS,
+                0.125F,
+                1.5F);
     }
 
     private static void wingsServerTick(ServerPlayer player) {

@@ -15,15 +15,16 @@ import com.hbm.items.weapon.sedna.mags.IMagazine;
 import com.hbm.items.weapon.sedna.mods.XWeaponModManager;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.packet.PacketWire;
+import com.hbm.packet.toclient.GunSoundPayload;
 import com.hbm.packet.toclient.MuzzleFlashPayload;
 import com.hbm.packet.toclient.PlasmaBlastPayload;
 import com.hbm.particle.SpentCasing;
 import com.hbm.particle.helper.CasingCreator;
-import com.hbm.platform.NeoForgePlatform;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.HbmAnimations;
 import com.hbm.sound.AudioSystem;
 import com.hbm.sound.AudioWrapper;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.EntityDamageUtil;
 import java.util.function.BiConsumer;
@@ -347,16 +348,15 @@ public class Orchestras {
                                             damage);
                                 }
                                 hit.setDeltaMovement(hit.getDeltaMovement().multiply(2, 1, 2));
-                                hit.level()
-                                        .playSound(
-                                                null,
-                                                hit.getX(),
-                                                hit.getY(),
-                                                hit.getZ(),
-                                                ModSounds.GUN_SMACK.get(),
-                                                SoundSource.PLAYERS,
-                                                1F,
-                                                0.9F + entity.getRandom().nextFloat() * 0.2F);
+                                EntitySounds.play(
+                                        hit,
+                                        hit.getX(),
+                                        hit.getY(),
+                                        hit.getZ(),
+                                        ModSounds.GUN_SMACK.get(),
+                                        SoundSource.PLAYERS,
+                                        1F,
+                                        0.9F + entity.getRandom().nextFloat() * 0.2F);
                             }
                             if (mop instanceof BlockHitResult blockHit) {
                                 BlockState b = entity.level().getBlockState(blockHit.getBlockPos());
@@ -1381,26 +1381,24 @@ public class Orchestras {
                                         ItemGunBaseNT.getWear(stack, ctx.configIndex()) + 10_000F,
                                         ctx.config().getDurability(stack)));
 
-                        entity.level()
-                                .playSound(
-                                        null,
-                                        entity.getX(),
-                                        entity.getY() + entity.getEyeHeight(),
-                                        entity.getZ(),
-                                        ModSounds.UFO_BLAST.get(),
-                                        SoundSource.PLAYERS,
-                                        5.0F,
-                                        0.9F);
-                        entity.level()
-                                .playSound(
-                                        null,
-                                        entity.getX(),
-                                        entity.getY() + entity.getEyeHeight(),
-                                        entity.getZ(),
-                                        SoundEvents.FIREWORK_ROCKET_BLAST,
-                                        SoundSource.PLAYERS,
-                                        5.0F,
-                                        0.5F);
+                        EntitySounds.play(
+                                entity,
+                                entity.getX(),
+                                entity.getY() + entity.getEyeHeight(),
+                                entity.getZ(),
+                                ModSounds.UFO_BLAST.get(),
+                                SoundSource.PLAYERS,
+                                5.0F,
+                                0.9F);
+                        EntitySounds.play(
+                                entity,
+                                entity.getX(),
+                                entity.getY() + entity.getEyeHeight(),
+                                entity.getZ(),
+                                SoundEvents.FIREWORK_ROCKET_BLAST,
+                                SoundSource.PLAYERS,
+                                5.0F,
+                                0.5F);
 
                         float yaw = entity.getRandom().nextFloat() * 180F;
                         for (int i = 0; i < 3; i++) {
@@ -2382,20 +2380,19 @@ public class Orchestras {
 
     private static void play(
             LivingEntity entity, SoundEvent sound, float volume, float pitch, boolean legacy) {
-        NeoForgePlatform.playGunAnimationSound(entity, sound, volume, pitch, legacy);
+        GunSoundPayload.send(entity, legacy, sound, volume, pitch);
     }
 
     private static void play(LivingEntity entity, SoundEvent sound, float volume, float pitch) {
-        entity.level()
-                .playSound(
-                        null,
-                        entity.getX(),
-                        entity.getY(),
-                        entity.getZ(),
-                        sound,
-                        SoundSource.PLAYERS,
-                        volume,
-                        pitch);
+        EntitySounds.play(
+                entity,
+                entity.getX(),
+                entity.getY(),
+                entity.getZ(),
+                sound,
+                SoundSource.PLAYERS,
+                volume,
+                pitch);
     }
 
     private static void muzzleFlash(LambdaContext ctx) {

@@ -45,7 +45,9 @@ public class BlockEntityLogicBlock extends BlockEntity implements Synced, SyncUn
     }
 
     public void refreshRedstone() {
+        boolean wasPowered = powered;
         powered = level.hasNeighborSignal(worldPosition);
+        if (powered != wasPowered) markChanged();
     }
 
     public boolean isPowered() {
@@ -66,8 +68,10 @@ public class BlockEntityLogicBlock extends BlockEntity implements Synced, SyncUn
         if (condition.test(this)) {
             phase++;
             timer = 0;
+            markChanged();
         } else {
             timer++;
+            if (timer <= 60) markChanged();
         }
         if (!isRemoved()) networkPackNTTracking();
     }

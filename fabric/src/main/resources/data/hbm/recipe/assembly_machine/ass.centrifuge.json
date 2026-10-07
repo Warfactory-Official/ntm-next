@@ -27,7 +27,7 @@
       "ingredient": "hbm:circuit_analog"
     }
   ],
-  "order": 97,
+  "order": 24832,
   "output_items": [
     "hbm:machine_centrifuge"
   ],

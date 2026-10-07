@@ -89,6 +89,7 @@ public final class RadioTelexPeripheral extends SnapshotPeripheral<BlockEntityRa
                             ? line.substring(0, BlockEntityRadioTelex.LINE_WIDTH)
                             : line;
         }
+        machine.markChanged();
         return new Object[] {true};
     }
 

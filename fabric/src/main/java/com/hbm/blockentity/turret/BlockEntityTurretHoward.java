@@ -180,6 +180,7 @@ public class BlockEntityTurretHoward extends BlockEntityTurretBaseNT {
 
             if (timer % 2 == 0) {
                 loaded--;
+                markChanged();
 
                 if (level.getRandom().nextInt(100) + 1 <= CIWS_HITRATE && target != null) {
                     EntityDamageUtil.attackEntityFromIgnoreIFrame(

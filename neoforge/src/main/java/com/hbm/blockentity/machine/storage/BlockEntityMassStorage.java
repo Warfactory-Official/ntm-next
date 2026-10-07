@@ -201,10 +201,16 @@ public class BlockEntityMassStorage extends BlockEntityLockableBase
         }
 
         ItemStack in = inventory.get(SLOT_INPUT);
-        if (in.is(ModItems.FLUID_BARREL_INFINITE.get())) setStockpile(getCapacity());
+        if (in.is(ModItems.FLUID_BARREL_INFINITE.get()) && stockpile != getCapacity()) {
+            setStockpile(getCapacity());
+            markChanged();
+        }
 
         ItemStack type = inventory.get(SLOT_TYPE);
-        if (type.isEmpty() && stockpile != 0) setStockpile(0);
+        if (type.isEmpty() && stockpile != 0) {
+            setStockpile(0);
+            markChanged();
+        }
 
         if (canInsert(in)) {
             int toRemove = Math.min(getCapacity() - stockpile, in.getCount());

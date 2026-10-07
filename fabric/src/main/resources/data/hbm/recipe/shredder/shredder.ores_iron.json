@@ -5,7 +5,7 @@
       "ingredient": "#c:ores/iron"
     }
   ],
-  "order": 250,
+  "order": 64000,
   "output_items": [
     {
       "count": 2,

@@ -3,10 +3,9 @@
 
 package com.hbm.client.render.flywheel;
 
+import com.hbm.api.fluidmk2.FluidPipeTintData;
 import com.hbm.blockentity.machine.BlockEntityRefueler;
 import com.hbm.blocks.machine.BlockMachineHorizontal;
-import com.hbm.inventory.fluid.NTMFluidProperties;
-import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
@@ -25,9 +24,9 @@ import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.model.SingleMeshModel;
 import java.util.function.Consumer;
 import net.minecraft.core.Direction;
-import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
@@ -80,9 +79,7 @@ public final class RefuelerVisual extends HbmDynamicBlockEntityVisual<BlockEntit
     public static void initModels() {}
 
     private static int fluidColor(@Nullable Fluid fluid) {
-        if (fluid == null) return CommonColors.WHITE;
-        NTMFluidProperty property = NTMFluidProperties.get(fluid);
-        return property.colorARGB();
+        return FluidPipeTintData.colorFor(fluid == null ? Fluids.EMPTY : fluid);
     }
 
     @Override

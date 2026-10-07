@@ -42,7 +42,11 @@ public class BlockEntityRBMKGauge extends BlockEntity
 
     public static void tickServer(
             Level level, BlockPos pos, BlockState state, BlockEntityRBMKGauge gauge) {
-        for (GaugeUnit unit : gauge.gauges) unit.update(level);
+        for (GaugeUnit unit : gauge.gauges) {
+            long value = unit.value;
+            unit.update(level);
+            if (unit.value != value) gauge.markChanged();
+        }
         gauge.networkPackNT(50);
     }
 

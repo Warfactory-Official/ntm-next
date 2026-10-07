@@ -17,7 +17,7 @@
       "ingredient": "hbm:arc_electrode_graphite"
     }
   ],
-  "order": 78,
+  "order": 19968,
   "output_items": [
     "hbm:machine_arc_welder"
   ],

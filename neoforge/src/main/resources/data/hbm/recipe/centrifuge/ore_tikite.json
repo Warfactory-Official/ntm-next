@@ -6,7 +6,7 @@
       "ingredient": "hbm:ore_tikite"
     }
   ],
-  "order": 30,
+  "order": 12288,
   "output_items": [
     "hbm:powder_plutonium",
     {

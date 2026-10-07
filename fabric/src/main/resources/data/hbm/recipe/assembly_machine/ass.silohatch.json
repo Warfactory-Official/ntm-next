@@ -23,7 +23,7 @@
       "ingredient": "#c:dyes/green"
     }
   ],
-  "order": 75,
+  "order": 19200,
   "output_items": [
     "hbm:silo_hatch"
   ],

@@ -46,6 +46,11 @@ public class BlockEntityCondenserPowered extends BlockEntityCondenser implements
     }
 
     @Override
+    protected boolean vacuumProof() {
+        return true;
+    }
+
+    @Override
     public void tickClient() {
         prevSpin = spin;
 

@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/zirconium"
     }
   ],
-  "order": 20,
+  "order": 5120,
   "output_items": [
     {
       "count": 8,

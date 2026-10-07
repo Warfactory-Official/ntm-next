@@ -27,7 +27,7 @@
       "ingredient": "hbm:circuit_atomic_clock"
     }
   ],
-  "order": 7,
+  "order": 1792,
   "output_items": [
     "hbm:circuit_quantum"
   ],

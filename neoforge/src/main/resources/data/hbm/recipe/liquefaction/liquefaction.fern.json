@@ -5,7 +5,7 @@
       "ingredient": "minecraft:fern"
     }
   ],
-  "order": 32,
+  "order": 8192,
   "output_fluids": [
     {
       "type": "hbm:seedslurry",

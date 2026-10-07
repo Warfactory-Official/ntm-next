@@ -12,7 +12,7 @@
       "ingredient": "hbm:scrap_plastic_cpu_cache"
     }
   ],
-  "order": 300,
+  "order": 80384,
   "output_items": [
     "hbm:circuit_star_piece_cpu_cache"
   ]

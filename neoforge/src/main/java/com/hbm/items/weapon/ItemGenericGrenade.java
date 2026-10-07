@@ -4,6 +4,7 @@
 package com.hbm.items.weapon;
 
 import com.hbm.entity.grenade.EntityGrenadeBouncyGeneric;
+import com.hbm.sound.EntitySounds;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -31,8 +32,8 @@ public class ItemGenericGrenade extends ItemGrenade implements ProjectileItem {
         ItemStack stack = player.getItemInHand(hand);
 
         if (!level.isClientSide()) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),

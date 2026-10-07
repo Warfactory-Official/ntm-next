@@ -26,7 +26,7 @@
     }
   ],
   "neutron_flux": 10000.0,
-  "order": 9,
+  "order": 2304,
   "output_items": [
     "hbm:powder_gold"
   ],

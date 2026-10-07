@@ -22,7 +22,7 @@
     }
   ],
   "name_wrapper": "purex.recycle",
-  "order": 10,
+  "order": 2560,
   "output_items": [
     "hbm:nugget_pu_mix",
     "hbm:nugget_technetium",

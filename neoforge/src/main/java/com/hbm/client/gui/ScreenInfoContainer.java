@@ -11,6 +11,7 @@ import com.hbm.inventory.fluid.trait.FluidTraitTooltip;
 import com.hbm.items.machine.ItemRTGPellet;
 import com.hbm.items.machine.upgrade.UpgradeType;
 import com.hbm.lib.Library;
+import com.hbm.module.ModulePatternMatcher;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.TooltipStyle;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -32,6 +34,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.level.material.Fluid;
 import org.joml.Quaternionfc;
 import org.joml.Vector3fc;
@@ -45,6 +48,7 @@ public abstract class ScreenInfoContainer<T extends AbstractContainerMenu>
             Library.id("textures/gui/gauges/small_round.png");
     private static final int GAUGE_ROUND_SMALL_FRAMES = 13;
     private static final int GAUGE_ROUND_SMALL_SIZE = 18;
+    private static final int SLOT_TOOLTIP_LIFT = 30;
 
     public ScreenInfoContainer(T menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
@@ -197,6 +201,40 @@ public abstract class ScreenInfoContainer<T extends AbstractContainerMenu>
         if (checkClick(mouseX, mouseY, x, y, width, height)) {
             graphics.setComponentTooltipForNextFrame(font, lines, leftPos + tPosX, topPos + tPosY);
         }
+    }
+
+    @Override
+    protected void extractTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        super.extractTooltip(graphics, mouseX, mouseY);
+        if (hoveredSlot == null || !menu.getCarried().isEmpty()) return;
+        List<Component> lines = slotTooltip(hoveredSlot);
+        if (lines.isEmpty()) return;
+        List<ClientTooltipComponent> components =
+                lines.stream()
+                        .map(line -> ClientTooltipComponent.create(line.getVisualOrderText()))
+                        .toList();
+        GUIElements.defer(
+                graphics,
+                deferred ->
+                        deferred.tooltip(
+                                font,
+                                components,
+                                mouseX,
+                                mouseY - SLOT_TOOLTIP_LIFT,
+                                DefaultTooltipPositioner.INSTANCE,
+                                null));
+    }
+
+    protected List<Component> slotTooltip(Slot slot) {
+        return List.of();
+    }
+
+    protected static List<Component> patternModeLines(@Nullable String mode) {
+        if (mode == null) return List.of();
+        return List.of(
+                Component.translatable("desc.shared.rightClickToChange")
+                        .withStyle(ChatFormatting.RED),
+                ModulePatternMatcher.getLabel(mode));
     }
 
     protected List<Component> upgradeInfo(IUpgradeInfoProvider provider, UpgradeType... shown) {

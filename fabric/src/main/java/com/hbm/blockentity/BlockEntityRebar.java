@@ -61,6 +61,11 @@ public class BlockEntityRebar extends BlockEntity
     }
 
     @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return type == NTMFluids.LIQUID_CONCRETE;
+    }
+
+    @Override
     public long getDemand(Fluid type, int pressure) {
         return type == NTMFluids.LIQUID_CONCRETE && pressure == 0 ? 10_000L : 0L;
     }

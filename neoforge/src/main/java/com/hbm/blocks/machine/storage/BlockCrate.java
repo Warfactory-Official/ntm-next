@@ -9,9 +9,11 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.machine.BlockMachineBase;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
+import com.hbm.interfaces.ILookOverlay;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemLock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
-public class BlockCrate extends BlockMachineBase implements ICapabilityBlock {
+public class BlockCrate extends BlockMachineBase implements ICapabilityBlock, ILookOverlay {
 
     private final CrateType crateType;
 
@@ -89,5 +91,12 @@ public class BlockCrate extends BlockMachineBase implements ICapabilityBlock {
     @Override
     protected boolean hasAnalogOutputSignal(BlockState state) {
         return true;
+    }
+
+    @Override
+    public void buildLookOverlay(Level level, BlockPos pos, ILookOverlay.LookInfo info) {
+        if (!(level.getBlockEntity(pos) instanceof BlockEntityCrate crate)) return;
+        Component name = crate.getCustomName();
+        if (name != null) info.titleOnly(name, 0xffff00, 0x404000);
     }
 }

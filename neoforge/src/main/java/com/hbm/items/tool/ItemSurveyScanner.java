@@ -6,8 +6,15 @@ package com.hbm.items.tool;
 import com.hbm.blockentity.BlockEntityBedrockOre;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
+import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,7 +30,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.EndPlatformFeature;
 import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
@@ -51,14 +57,27 @@ public class ItemSurveyScanner extends Item {
         }
     }
 
-    public record Survey(Set<Deposit> deposits, ItemStack bedrockOre) {}
+    public record Survey(Set<Deposit> deposits, ItemStack bedrockOre, List<Component> lines) {}
+
+    private record Line(Component message, List<Supplier<? extends Block>> blocks) {}
+
+    private static final List<Line> LINES = new ArrayList<>();
+    private static final Map<Supplier<? extends Block>, Deposit> ALIASES = new LinkedHashMap<>();
 
     public ItemSurveyScanner(Properties props) {
         super(props);
     }
 
-    private static @Nullable Deposit classify(BlockState state) {
-        Block block = state.getBlock();
+    public static void alias(Supplier<? extends Block> block, Deposit deposit) {
+        ALIASES.put(block, deposit);
+    }
+
+    public static void addLine(
+            String key, ChatFormatting color, List<Supplier<? extends Block>> blocks) {
+        LINES.add(new Line(Component.translatable(key).withStyle(color), List.copyOf(blocks)));
+    }
+
+    private static @Nullable Deposit classify(Block block) {
         if (block == ModBlocks.ORE_OIL.get()) return Deposit.OIL;
         if (block == ModBlocks.ORE_COLTAN.get()) return Deposit.COLTAN;
         if (block == ModBlocks.ORE_BEDROCK_OIL.get()) return Deposit.BEDROCK_OIL;
@@ -67,25 +86,29 @@ public class ItemSurveyScanner extends Item {
         }
         if (block == ModBlocks.STONE_GNEISS.get()) return Deposit.SCHIST;
         if (block == ModBlocks.ORE_AUSTRALIUM.get()) return Deposit.AUSTRALIUM;
-        return null;
+        return Resolved.ALIASES.get(block);
     }
 
     public static Survey scan(Level level, BlockPos origin) {
         EnumSet<Deposit> deposits = EnumSet.noneOf(Deposit.class);
+        BitSet lines = new BitSet();
         ItemStack bedrockOre = ItemStack.EMPTY;
         int floor = level.getMinY();
 
         for (int a = -5; a <= 5; a++) {
             for (int b = -5; b <= 5; b++) {
                 for (int y = origin.getY() + 15; y > floor + 1; y -= 2) {
-                    Deposit hit =
-                            classify(
-                                    level.getBlockState(
+                    Block block =
+                            level.getBlockState(
                                             new BlockPos(
                                                     origin.getX() + a * 5,
                                                     y,
-                                                    origin.getZ() + b * 5)));
+                                                    origin.getZ() + b * 5))
+                                    .getBlock();
+                    Deposit hit = classify(block);
                     if (hit != null) deposits.add(hit);
+                    Integer line = Resolved.LINES.get(block);
+                    if (line != null) lines.set(line);
                 }
 
                 BlockPos node = new BlockPos(origin.getX() + a * 2, floor, origin.getZ() + b * 2);
@@ -97,15 +120,21 @@ public class ItemSurveyScanner extends Item {
                 }
             }
         }
-        return new Survey(deposits, bedrockOre);
+        List<Component> found = new ArrayList<>();
+        for (int line = lines.nextSetBit(0); line >= 0; line = lines.nextSetBit(line + 1)) {
+            found.add(LINES.get(line).message());
+        }
+        return new Survey(deposits, bedrockOre, found);
     }
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (player instanceof ServerPlayer serverPlayer) {
             Survey survey = scan(level, player.blockPosition());
-            for (Deposit deposit : survey.deposits())
-                serverPlayer.sendSystemMessage(deposit.message());
+            List<Component> messages = new ArrayList<>();
+            for (Deposit deposit : survey.deposits()) messages.add(deposit.message());
+            messages.addAll(survey.deposits().contains(Deposit.OIL) ? 1 : 0, survey.lines());
+            for (Component message : messages) serverPlayer.sendSystemMessage(message);
             if (!survey.bedrockOre().isEmpty()) {
                 serverPlayer.sendSystemMessage(
                         Component.translatable(
@@ -154,5 +183,20 @@ public class ItemSurveyScanner extends Item {
                         Relative.union(Relative.DELTA, Set.of(Relative.X_ROT)),
                         TeleportTransition.PLAY_PORTAL_SOUND.then(
                                 TeleportTransition.PLACE_PORTAL_TICKET)));
+    }
+
+    private static final class Resolved {
+        static final Map<Block, Deposit> ALIASES = new HashMap<>();
+        static final Map<Block, Integer> LINES = new HashMap<>();
+
+        static {
+            ItemSurveyScanner.ALIASES.forEach(
+                    (block, deposit) -> ALIASES.put(block.get(), deposit));
+            for (int i = 0; i < ItemSurveyScanner.LINES.size(); i++) {
+                for (Supplier<? extends Block> block : ItemSurveyScanner.LINES.get(i).blocks()) {
+                    LINES.put(block.get(), i);
+                }
+            }
+        }
     }
 }

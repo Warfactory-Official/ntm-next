@@ -33,7 +33,7 @@
       "ingredient": "hbm:circuit_analog"
     }
   ],
-  "order": 116,
+  "order": 29696,
   "output_items": [
     "hbm:machine_refinery"
   ],

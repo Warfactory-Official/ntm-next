@@ -16,6 +16,7 @@ import com.hbm.packet.SyncField;
 import com.hbm.particle.ParticleGiblet;
 import com.hbm.particle.helper.ParticleCreators;
 import com.hbm.potion.HbmPotion;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.EntityDamageUtil;
 import io.netty.buffer.ByteBuf;
@@ -208,8 +209,8 @@ public class BlockEntityTurretMaxwell extends BlockEntityTurretBaseNT
         if (!target.isAlive() && target instanceof LivingEntity living) {
             ParticleCreators.giblets(server, living, ParticleGiblet.TYPE_MEAT, 0);
             if (screm) {
-                server.playSound(
-                        null,
+                EntitySounds.play(
+                        living,
                         living.getX(),
                         living.getY(),
                         living.getZ(),
@@ -218,8 +219,8 @@ public class BlockEntityTurretMaxwell extends BlockEntityTurretBaseNT
                         20F,
                         1F);
             } else {
-                server.playSound(
-                        null,
+                EntitySounds.play(
+                        living,
                         living.getX(),
                         living.getY(),
                         living.getZ(),

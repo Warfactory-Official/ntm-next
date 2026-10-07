@@ -6,6 +6,7 @@ package com.hbm.items.weapon;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.items.weapon.sedna.factory.GunFactory;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.TooltipStyle;
 import java.util.ArrayList;
@@ -58,8 +59,8 @@ public class ItemAmmoContainer extends Item {
             player.getInventory().placeItemBackInInventory(ammo);
         }
 
-        serverLevel.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.getX(),
                 player.getY(),
                 player.getZ(),

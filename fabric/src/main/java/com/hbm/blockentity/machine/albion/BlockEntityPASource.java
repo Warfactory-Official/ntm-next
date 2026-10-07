@@ -126,6 +126,7 @@ public class BlockEntityPASource extends BlockEntityCooledBase
             this.state = PAState.PAUSE_UNLOADED;
             return;
         }
+        markChanged();
 
         BlockPos core = componentCore(level.getBlockState(p.pos), p.pos);
         if (core == null) {

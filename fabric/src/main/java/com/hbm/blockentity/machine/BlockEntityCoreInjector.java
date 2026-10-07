@@ -53,8 +53,8 @@ public class BlockEntityCoreInjector extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
-        tanks[0].setType(SLOT_FILL_A, SLOT_DRAIN_A, inventory);
-        tanks[1].setType(SLOT_FILL_B, SLOT_DRAIN_B, inventory);
+        boolean changed = tanks[0].setType(SLOT_FILL_A, SLOT_DRAIN_A, inventory);
+        changed |= tanks[1].setType(SLOT_FILL_B, SLOT_DRAIN_B, inventory);
 
         beam = 0;
         Direction dir = getBlockState().getValue(CoreComponent.FACING);
@@ -69,12 +69,16 @@ public class BlockEntityCoreInjector extends BlockEntityMachineBase
                     if (target.getTankType() != tanks[t].getTankType()) {
                         if (target.getFill() != 0) continue;
                         target.setTankType(tanks[t].getTankType());
+                        core.markChanged();
                     }
                     if (target.accepts(tanks[t].getFluid())) {
                         int moved = target.receive(tanks[t].getFluid(), tanks[t].getFill());
                         tanks[t].setFill(tanks[t].getFill() - moved);
+                        if (moved != 0) {
+                            core.markChanged();
+                            changed = true;
+                        }
                     }
-                    core.setChanged();
                 }
                 beam = i;
                 break;
@@ -83,7 +87,7 @@ public class BlockEntityCoreInjector extends BlockEntityMachineBase
             if (!level.getBlockState(pos).isAir()) break;
         }
 
-        setChanged();
+        if (changed) markChanged();
         networkPackNT(250);
     }
 

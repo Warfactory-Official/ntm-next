@@ -30,8 +30,7 @@ import com.hbm.inventory.fluid.trait.FT_Heatable.HeatingStep;
 import com.hbm.inventory.fluid.trait.FT_Heatable;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
-import com.hbm.items.ModItems;
-import com.hbm.items.machine.ItemWatzPellet.EnumWatzType;
+import com.hbm.items.machine.ItemWatzPellet.WatzFuel;
 import com.hbm.items.machine.ItemWatzPellet;
 import com.hbm.items.special.Autogen;
 import com.hbm.packet.SyncField;
@@ -42,6 +41,7 @@ import com.hbm.util.function.Function;
 import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -238,6 +238,11 @@ public class BlockEntityWatz extends BlockEntityMachineBase
     }
 
     @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
+    }
+
+    @Override
     public FluidTankNTM[] getSendingTanks() {
         return sendingBottom;
     }
@@ -285,13 +290,13 @@ public class BlockEntityWatz extends BlockEntityMachineBase
 
             for (int i = 0; i < SLOT_COUNT; i++) {
                 ItemStack stack = inventory.get(i);
-                if (ModItems.WATZ_PELLET.typeOf(stack) != null) pellets.add(stack);
+                if (ItemWatzPellet.isFresh(stack)) pellets.add(stack);
             }
 
             double baseFlux = 0D;
 
             for (ItemStack stack : pellets) {
-                baseFlux += ItemWatzPellet.typeOf(stack).passive;
+                baseFlux += ItemWatzPellet.typeOf(stack).passive();
             }
 
             double inputFlux = baseFlux + fluxLastReaction;
@@ -299,29 +304,29 @@ public class BlockEntityWatz extends BlockEntityMachineBase
             double addedHeat = 0D;
 
             for (ItemStack stack : pellets) {
-                EnumWatzType type = ItemWatzPellet.typeOf(stack);
-                Function burnFunc = type.burnFunc;
-                Function heatDiv = type.heatDiv;
+                WatzFuel type = ItemWatzPellet.typeOf(stack);
+                Function burnFunc = type.burnFunc();
+                Function heatDiv = type.heatDiv();
 
                 if (burnFunc != null) {
                     double div = heatDiv != null ? heatDiv.effonix(heat) : 1D;
                     double burn = burnFunc.effonix(inputFlux) / div;
                     ItemWatzPellet.setYield(stack, ItemWatzPellet.getYield(stack) - burn);
                     addedFlux += burn;
-                    addedHeat += type.heatEmission * burn;
-                    addMud(tanks[2], (int) Math.round(type.mudContent * burn), mudOverflow);
+                    addedHeat += type.heatEmission() * burn;
+                    addMud(tanks[2], (int) Math.round(type.mudContent() * burn), mudOverflow);
                 }
             }
 
             for (ItemStack stack : pellets) {
-                EnumWatzType type = ItemWatzPellet.typeOf(stack);
-                Function absorbFunc = type.absorbFunc;
+                WatzFuel type = ItemWatzPellet.typeOf(stack);
+                Function absorbFunc = type.absorbFunc();
 
                 if (absorbFunc != null) {
                     double absorb = absorbFunc.effonix(baseFlux + fluxLastReaction);
                     addedHeat += absorb;
                     ItemWatzPellet.setYield(stack, ItemWatzPellet.getYield(stack) - absorb);
-                    addMud(tanks[2], (int) Math.round(type.mudContent * absorb), mudOverflow);
+                    addMud(tanks[2], (int) Math.round(type.mudContent() * absorb), mudOverflow);
                 }
             }
 
@@ -337,9 +342,8 @@ public class BlockEntityWatz extends BlockEntityMachineBase
         for (int i = 0; i < SLOT_COUNT; i++) {
             ItemStack stack = inventory.get(i);
 
-            if (ModItems.WATZ_PELLET.typeOf(stack) != null
-                    && ItemWatzPellet.getEnrichment(stack) <= 0) {
-                inventory.set(i, ModItems.WATZ_PELLET_DEPLETED.stack(ItemWatzPellet.typeOf(stack)));
+            if (ItemWatzPellet.isFresh(stack) && ItemWatzPellet.getEnrichment(stack) <= 0) {
+                inventory.set(i, ItemWatzPellet.typeOf(stack).depletedStack());
             }
         }
 
@@ -353,8 +357,7 @@ public class BlockEntityWatz extends BlockEntityMachineBase
                     above.inventory.set(i, ItemStack.EMPTY);
                 }
 
-                if (ModItems.WATZ_PELLET.typeOf(stackBottom) != null
-                        && ModItems.WATZ_PELLET_DEPLETED.typeOf(stackTop) != null) {
+                if (ItemWatzPellet.isFresh(stackBottom) && ItemWatzPellet.isDepleted(stackTop)) {
                     ItemStack buf = stackTop.copy();
                     above.inventory.set(i, stackBottom.copy());
                     inventory.set(i, buf);
@@ -521,7 +524,7 @@ public class BlockEntityWatz extends BlockEntityMachineBase
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        if (ModItems.WATZ_PELLET.typeOf(stack) == null) return false;
+        if (!ItemWatzPellet.isFresh(stack)) return false;
         if (!this.isLocked) return true;
         ItemStack lock = locks.get(slot);
         return !lock.isEmpty() && lock.getItem() == stack.getItem();
@@ -529,7 +532,7 @@ public class BlockEntityWatz extends BlockEntityMachineBase
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
-        return ModItems.WATZ_PELLET.typeOf(stack) == null;
+        return !ItemWatzPellet.isFresh(stack);
     }
 
     @Override

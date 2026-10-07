@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/beryllium"
     }
   ],
-  "order": 32,
+  "order": 8192,
   "output_items": [
     {
       "count": 4,

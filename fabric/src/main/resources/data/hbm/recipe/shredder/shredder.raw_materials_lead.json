@@ -5,9 +5,10 @@
       "ingredient": "#c:raw_materials/lead"
     }
   ],
-  "order": 279,
+  "order": 71424,
   "output_items": [
     {
+      "chance": 0.667,
       "count": 2,
       "id": "hbm:powder_lead"
     }

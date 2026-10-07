@@ -139,6 +139,7 @@ public class BlockEntityMachineMixer extends BlockEntityMachineBase
         if (wasOn) {
             progress++;
             power -= consumption;
+            markChanged();
 
             processTime -= processTime * speedLevel / 4;
             processTime /= (overLevel + 1);
@@ -149,6 +150,7 @@ public class BlockEntityMachineMixer extends BlockEntityMachineBase
                 progress = 0;
             }
         } else {
+            if (progress != 0) markChanged();
             progress = 0;
         }
 

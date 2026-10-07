@@ -33,8 +33,10 @@ public class BlockEntityLaunchPad extends BlockEntityLaunchPadBase {
 
     @Override
     public void tickServer() {
+        int prevReloadDelay = reloadDelay;
         if (reloadDelay > 0) reloadDelay--;
         if (!isMissileValid(getItem(SLOT_MISSILE)) || !hasFuel()) reloadDelay = RELOAD_TICKS;
+        if (reloadDelay != prevReloadDelay) markChanged();
 
         if (!hasFuel() || !isMissileValid(getItem(SLOT_MISSILE))) {
             state = STATE_MISSING;
@@ -85,6 +87,7 @@ public class BlockEntityLaunchPad extends BlockEntityLaunchPadBase {
                 if (getLevel().hasNeighborSignal(core.offset(dx, 0, dz))) powered = true;
             }
         }
+        if (redstone != powered) markChanged();
         redstone = powered;
     }
 

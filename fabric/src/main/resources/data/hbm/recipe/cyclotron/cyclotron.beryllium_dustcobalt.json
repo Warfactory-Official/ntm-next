@@ -9,7 +9,7 @@
       "ingredient": "#c:dusts/cobalt"
     }
   ],
-  "order": 16,
+  "order": 4096,
   "output_items": [
     "hbm:powder_copper"
   ]

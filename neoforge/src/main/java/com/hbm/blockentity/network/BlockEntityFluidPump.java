@@ -10,6 +10,7 @@ import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
+import com.hbm.blocks.network.ChunkDuctNodes;
 import com.hbm.blocks.network.FluidPumpBlock;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
@@ -48,6 +49,14 @@ public class BlockEntityFluidPump extends BlockEntity
     @SyncField(units = 1L << 0)
     public @Nullable Fluid type;
 
+    public boolean setFluidType(@Nullable Fluid fluid) {
+        if (fluid == Fluids.EMPTY) fluid = null;
+        if (type == fluid) return false;
+        type = fluid;
+        ChunkDuctNodes.schedule(this);
+        return true;
+    }
+
     public boolean carries(@Nullable Fluid fluid) {
         return fluid == null || fluid == type;
     }
@@ -71,7 +80,9 @@ public class BlockEntityFluidPump extends BlockEntity
     private boolean redstone;
 
     public void refreshRedstone() {
+        boolean was = redstone;
         redstone = level.hasNeighborSignal(worldPosition);
+        if (redstone != was) markChanged();
     }
 
     private @Nullable BlockLookupCache<IFluidHandlerMK2> outputReceiver;
@@ -97,6 +108,16 @@ public class BlockEntityFluidPump extends BlockEntity
 
     public Direction output() {
         return intake().getOpposite();
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid fluid) {
+        return fluid != Fluids.EMPTY && fluid == type;
+    }
+
+    @Override
+    public boolean canProvideFluid(Fluid fluid) {
+        return fluid != Fluids.EMPTY && fluid == type;
     }
 
     @Override
@@ -263,7 +284,7 @@ public class BlockEntityFluidPump extends BlockEntity
         String id = input.getStringOr("type", "");
         if (!id.isEmpty()) {
             Fluid decoded = BuiltInRegistries.FLUID.getValue(Identifier.parse(id));
-            type = decoded == Fluids.EMPTY ? null : decoded;
+            setFluidType(decoded);
         }
         pressure = Math.clamp(input.getIntOr("pressure", pressure), 0, 5);
         rate = Math.clamp(input.getIntOr("rate", rate), 0, MAX_RATE);

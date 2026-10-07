@@ -25,6 +25,7 @@ import net.minecraft.world.level.material.Fluid;
 
 public abstract class BlockEntityChimneyBase extends BlockEntity
         implements Synced, GraphResident, FoldedCoreResident, IFluidHandlerMK2, SyncUnitSchema {
+
     private static final long DEMAND = 1_000_000L;
 
     public static Consumer<BlockEntityChimneyBase> CLIENT_TOWER = be -> {};
@@ -75,6 +76,11 @@ public abstract class BlockEntityChimneyBase extends BlockEntity
     }
 
     public abstract double getPollutionMod();
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return FluidPipeGraph.isSmoke(type);
+    }
 
     @Override
     public long getDemand(Fluid type, int pressure) {

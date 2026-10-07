@@ -4,17 +4,23 @@
 package com.hbm.items.machine;
 
 import net.minecraft.world.item.Item;
+import org.jspecify.annotations.Nullable;
 
 public class ItemRTGPelletDepleted extends Item {
 
-    private final DepletedRTGMaterial material;
+    private final @Nullable DepletedRTGMaterial material;
 
     public ItemRTGPelletDepleted(Properties props, DepletedRTGMaterial material) {
         super(props);
         this.material = material;
     }
 
-    public DepletedRTGMaterial getMaterial() {
+    public ItemRTGPelletDepleted(Properties props) {
+        super(props);
+        this.material = null;
+    }
+
+    public @Nullable DepletedRTGMaterial getMaterial() {
         return material;
     }
 }

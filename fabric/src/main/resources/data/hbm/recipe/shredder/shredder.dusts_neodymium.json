@@ -5,7 +5,7 @@
       "ingredient": "#c:dusts/neodymium"
     }
   ],
-  "order": 240,
+  "order": 61440,
   "output_items": [
     "hbm:dust"
   ]

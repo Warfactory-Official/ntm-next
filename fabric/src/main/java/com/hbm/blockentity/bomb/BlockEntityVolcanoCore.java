@@ -42,6 +42,7 @@ public class BlockEntityVolcanoCore extends BlockEntity {
     private void serverTick(ServerLevel level, BlockState state) {
         BlockVolcano.Mode mode = state.getValue(BlockVolcano.MODE);
         this.volcanoTimer++;
+        if (getUpdateRate(mode) > CYCLE) level.blockEntityChanged(worldPosition);
 
         if (this.volcanoTimer % CYCLE == 0) {
             if (hasVerticalChannel(mode)) {

@@ -10,6 +10,7 @@ import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.ItemBattery;
 import com.hbm.items.machine.ItemICFPellet;
 import com.hbm.items.machine.ItemScraps;
+import com.hbm.items.special.ItemBedrockOreBase;
 import com.hbm.items.weapon.ItemCustomMissile;
 import com.hbm.items.weapon.grenade.ItemGrenadeUniversal;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -97,6 +98,12 @@ public enum ItemSubtype {
             return parts == null
                     ? null
                     : new MissileSubtype(parts, stack.get(ModDataComponents.MISSILE_CHIP.get()));
+        }
+    },
+    BEDROCK_ORE_SET {
+        @Override
+        public Object getSubtypeData(ItemStack stack) {
+            return ItemBedrockOreBase.sample(stack).set().id();
         }
     };
 

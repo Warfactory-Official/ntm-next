@@ -5,9 +5,10 @@
       "ingredient": "#c:raw_materials/aluminum"
     }
   ],
-  "order": 86,
+  "order": 22016,
   "output_items": [
     {
+      "chance": 0.667,
       "count": 2,
       "id": "hbm:chunk_ore_cryolite"
     }

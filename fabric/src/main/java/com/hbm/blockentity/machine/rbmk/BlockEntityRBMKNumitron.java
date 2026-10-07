@@ -41,7 +41,11 @@ public class BlockEntityRBMKNumitron extends BlockEntity
 
     public static void tickServer(
             Level level, BlockPos pos, BlockState state, BlockEntityRBMKNumitron numitron) {
-        for (DisplayUnit unit : numitron.displays) unit.update(level);
+        for (DisplayUnit unit : numitron.displays) {
+            long value = unit.value;
+            unit.update(level);
+            if (unit.value != value) numitron.markChanged();
+        }
         numitron.networkPackNT(50);
     }
 

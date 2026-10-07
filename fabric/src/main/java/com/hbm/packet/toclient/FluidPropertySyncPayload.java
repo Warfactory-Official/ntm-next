@@ -3,6 +3,7 @@
 
 package com.hbm.packet.toclient;
 
+import com.hbm.blocks.network.ChunkDuctNodes;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.inventory.fluid.NTMFluidPropertyCodec;
@@ -50,6 +51,7 @@ public final class FluidPropertySyncPayload extends ThreadedPayload {
 
     public static void resendIfPending(MinecraftServer server) {
         if (!NTMFluidProperties.takeResyncPending()) return;
+        ChunkDuctNodes.scheduleReload(server);
         List<ServerPlayer> remote = new ArrayList<>();
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             if (!sharesTheServerMap(player)) remote.add(player);

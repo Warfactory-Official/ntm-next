@@ -614,7 +614,39 @@ final class Peripherals {
                             HimarsPeripheral::new,
                             ModBlocks.TURRET_HIMARS));
 
+    private static final List<Row<?>> ADDON_ROWS = new ArrayList<>();
+    private static final Map<Class<?>, List<RegistryHandle<? extends Block>>> EXTENDED =
+            new IdentityHashMap<>();
+
     private Peripherals() {}
+
+    static <BE extends BlockEntity> void addon(
+            Class<BE> type,
+            Function<? super BE, ? extends SnapshotPeripheral<?>> factory,
+            boolean proxied,
+            List<RegistryHandle<? extends Block>> blocks) {
+        ADDON_ROWS.add(new Row<>(type, factory, proxied ? PROXY_CELLS : null, null, blocks));
+    }
+
+    static void extend(
+            Class<? extends BlockEntity> type, List<RegistryHandle<? extends Block>> blocks) {
+        EXTENDED.computeIfAbsent(type, ignored -> new ArrayList<>()).addAll(blocks);
+    }
+
+    static List<Row<?>> rows() {
+        List<Row<?>> rows = new ArrayList<>(ROWS.size() + ADDON_ROWS.size());
+        for (Row<?> row : ROWS) rows.add(extended(row));
+        for (Row<?> row : ADDON_ROWS) rows.add(extended(row));
+        return rows;
+    }
+
+    private static <BE extends BlockEntity> Row<BE> extended(Row<BE> row) {
+        List<RegistryHandle<? extends Block>> more = EXTENDED.get(row.type);
+        if (more == null) return row;
+        List<RegistryHandle<? extends Block>> blocks = new ArrayList<>(row.blocks);
+        blocks.addAll(more);
+        return new Row<>(row.type, row.factory, row.proxies, row.faces, List.copyOf(blocks));
+    }
 
     @SafeVarargs
     private static <BE extends BlockEntity> Row<BE> block(
@@ -652,7 +684,7 @@ final class Peripherals {
 
     static void declare(List<RegistryHandle<? extends Block>> roster) {
         Map<Class<?>, Row<?>> byType = new IdentityHashMap<>();
-        for (Row<?> row : ROWS) {
+        for (Row<?> row : rows()) {
             if (byType.put(row.type, row) != null) {
                 throw new IllegalStateException(row.type.getName() + " has two peripheral rows");
             }
@@ -663,6 +695,11 @@ final class Peripherals {
                                 (Supplier<? extends Block>) block,
                                 (level, pos, state, be, side) ->
                                         atBlock(row, level, pos, state, be, side)));
+            }
+        }
+        for (Class<?> type : EXTENDED.keySet()) {
+            if (!byType.containsKey(type)) {
+                throw new IllegalStateException(type.getName() + " extends no peripheral row");
             }
         }
         for (RegistryHandle<? extends Block> cell : ModBlocks.cellHandles()) {

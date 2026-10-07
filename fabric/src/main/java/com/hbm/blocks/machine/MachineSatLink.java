@@ -8,6 +8,7 @@ import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.items.ISatChip;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -70,8 +71,8 @@ public final class MachineSatLink extends BlockMultiblockCore
             player.sendSystemMessage(
                     Component.translatable("chat.machineSatLink.frequencySet", link.freq)
                             .withStyle(ChatFormatting.YELLOW));
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.blockPosition(),
                     ModSounds.TECH_BLEEP.get(),
                     SoundSource.PLAYERS,

@@ -12,7 +12,7 @@
       "ingredient": "hbm:scrap_plastic_bridge_north"
     }
   ],
-  "order": 290,
+  "order": 77824,
   "output_items": [
     "hbm:circuit_star_piece_bridge_north"
   ]

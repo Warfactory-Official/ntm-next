@@ -184,6 +184,7 @@ public final class PacketWire {
             ByteBuf wire = payload.getCompiledBuffer();
             if (!payload.compiledIncludesWirePrefix()) return;
             for (ServerPlayer p : recipients) {
+                if (p.connection.connection.channel == null) continue;
                 OutboundBatch batch = OutboundBatch.take(p);
                 try {
                     batch.add(payload);

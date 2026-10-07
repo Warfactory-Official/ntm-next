@@ -9,7 +9,7 @@
       "ingredient": "#c:dusts/iron"
     }
   ],
-  "order": 5,
+  "order": 1280,
   "output_items": [
     "hbm:powder_cobalt"
   ]

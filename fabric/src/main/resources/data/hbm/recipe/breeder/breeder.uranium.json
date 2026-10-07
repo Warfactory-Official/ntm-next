@@ -6,7 +6,7 @@
       "ingredient": "hbm:rod_uranium"
     }
   ],
-  "order": 24,
+  "order": 6144,
   "output_items": [
     "hbm:rod_rgp"
   ]

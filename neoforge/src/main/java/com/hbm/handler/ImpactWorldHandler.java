@@ -5,9 +5,11 @@ package com.hbm.handler;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.interfaces.injected.IClientImpactState;
+import com.hbm.lib.Library;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.ImpactSyncPayload;
 import com.hbm.platform.NeoForgeServerEvents;
+import com.hbm.registration.OverridePoint;
 import com.hbm.saveddata.TomSaveData;
 import com.hbm.util.ChunkUtil;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.MinecraftServer;
@@ -41,6 +44,10 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 public final class ImpactWorldHandler {
+    public static final OverridePoint<Predicate<ServerLevel>> EXTINCTION_LEVELS =
+            OverridePoint.of(
+                    Library.id("impact_extinction_levels"),
+                    level -> level.dimension() == Level.OVERWORLD);
 
     private static final float SETTLE = 1F / 14400000F;
     private static final float COOL = 1F / 24000F;
@@ -91,7 +98,7 @@ public final class ImpactWorldHandler {
     }
 
     public static void livingTick(ServerLevel level, LivingEntity entity) {
-        if (level.dimension() != Level.OVERWORLD) return;
+        if (!EXTINCTION_LEVELS.get().test(level)) return;
         TomSaveData data = TomSaveData.published(level);
         if (data != null && data.fire > 0 && data.dust < 0.75F) burnIfExposed(level, entity);
     }
@@ -186,7 +193,7 @@ public final class ImpactWorldHandler {
         TomSaveData data = TomSaveData.getExisting(level);
         if (data == null || !data.impact) return false;
         boolean water = mob instanceof WaterAnimal || mob instanceof AgeableWaterCreature;
-        if (level.dimension() == Level.OVERWORLD
+        if (EXTINCTION_LEVELS.get().test(level)
                 && (mob.getBbHeight() >= 0.85F
                         || mob.getBbWidth() >= 0.85F && !water && !mob.isBaby())) {
             return true;

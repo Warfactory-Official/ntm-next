@@ -35,6 +35,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -304,6 +305,21 @@ public abstract class RBMKBase extends BlockMultiblockCore
                         return;
                     }
                     setLid(level, pos.immutable(), cell, lid);
+                });
+    }
+
+    @Override
+    public void assembled(LevelAccessor level, BlockPos core, BlockState coreState) {
+        Lid lid = lidOf(coreState);
+        if (!lid.present()) return;
+        visitPlacedCells(
+                level,
+                core,
+                coreState.getValue(FACING),
+                (pos, mask) -> {
+                    BlockState cell = level.getBlockState(pos);
+                    if (cell.getBlock() == this && isCellState(cell))
+                        level.setBlock(pos, cell.setValue(LID, lid), 3);
                 });
     }
 

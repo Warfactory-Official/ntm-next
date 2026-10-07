@@ -5,7 +5,7 @@
       "ingredient": "#minecraft:saplings"
     }
   ],
-  "order": 15,
+  "order": 3840,
   "output_fluids": [
     {
       "type": "hbm:woodoil",

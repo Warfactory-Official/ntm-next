@@ -14,7 +14,7 @@
       "ingredient": "hbm:thruster_small"
     }
   ],
-  "order": 24,
+  "order": 6144,
   "output_items": [
     "hbm:missile_anti_ballistic"
   ],

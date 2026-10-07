@@ -6,17 +6,19 @@ package com.hbm.config;
 import java.util.function.Predicate;
 
 public enum ForeignModChange {
-    MEKANISM("mekanism", "mekanism_changes", ContentConfig::enableMekanismChanges),
-    TECHREBORN("techreborn", "techreborn_changes", ContentConfig::enableTechRebornChanges);
+    MEKANISM("mekanism", "mekanism_changes", ContentConfig::enableMekanismChanges, true),
+    TECHREBORN("techreborn", "techreborn_changes", ContentConfig::enableTechRebornChanges, false);
 
     public final String modId;
     public final String pack;
+    public final boolean neoForge;
     private final Predicate<ContentConfig> entry;
 
-    ForeignModChange(String modId, String pack, Predicate<ContentConfig> entry) {
+    ForeignModChange(String modId, String pack, Predicate<ContentConfig> entry, boolean neoForge) {
         this.modId = modId;
         this.pack = pack;
         this.entry = entry;
+        this.neoForge = neoForge;
     }
 
     public boolean enabled() {

@@ -415,7 +415,6 @@ public final class ModEntities {
                                 EntityType.Builder.<EntityCreeperGold>of(
                                                 EntityCreeperGold::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .sized(0.6F, 1.7F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
@@ -437,7 +436,6 @@ public final class ModEntities {
                                 EntityType.Builder.<EntityCreeperVolatile>of(
                                                 EntityCreeperVolatile::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .sized(0.6F, 1.7F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
@@ -460,7 +458,6 @@ public final class ModEntities {
                                 EntityType.Builder.<EntityCreeperPhosgene>of(
                                                 EntityCreeperPhosgene::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .sized(0.6F, 1.7F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
@@ -483,7 +480,6 @@ public final class ModEntities {
                                 EntityType.Builder.<EntityCreeperTainted>of(
                                                 EntityCreeperTainted::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .sized(0.6F, 1.7F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
@@ -501,7 +497,6 @@ public final class ModEntities {
                                 EntityType.Builder.<EntityCreeperNuclear>of(
                                                 EntityCreeperNuclear::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .sized(0.6F, 1.7F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
@@ -536,7 +531,6 @@ public final class ModEntities {
                                 EntityType.Builder.<EntityTeslaCrab>of(
                                                 EntityTeslaCrab::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .sized(0.75F, 1.25F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
@@ -553,7 +547,6 @@ public final class ModEntities {
                                 EntityType.Builder.<EntityTaintCrab>of(
                                                 EntityTaintCrab::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .sized(1.25F, 1.25F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
@@ -569,7 +562,6 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityDuck>of(
                                                 EntityDuck::new, MobCategory.CREATURE)
-                                        .noLootTable()
                                         .sized(0.4F, 0.7F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
@@ -671,7 +663,6 @@ public final class ModEntities {
                         () ->
                                 EntityType.Builder.<EntityPigeon>of(
                                                 EntityPigeon::new, MobCategory.CREATURE)
-                                        .noLootTable()
                                         .sized(0.5F, 1.0F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
@@ -704,7 +695,6 @@ public final class ModEntities {
                                 EntityType.Builder.<EntityGlyphid>of(
                                                 EntityGlyphid::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .sized(1.75F, 1F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
@@ -726,7 +716,6 @@ public final class ModEntities {
                                 EntityType.Builder.<EntityGlyphidBehemoth>of(
                                                 EntityGlyphidBehemoth::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .sized(2.5F, 1.5F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
@@ -744,7 +733,6 @@ public final class ModEntities {
                                 EntityType.Builder.<EntityGlyphidBrenda>of(
                                                 EntityGlyphidBrenda::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .sized(2.5F, 1.75F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
@@ -768,7 +756,6 @@ public final class ModEntities {
                                 EntityType.Builder.<EntityGlyphidScout>of(
                                                 EntityGlyphidScout::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .sized(1.25F, 0.75F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
@@ -786,7 +773,6 @@ public final class ModEntities {
                                 EntityType.Builder.<EntityGlyphidNuclear>of(
                                                 EntityGlyphidNuclear::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .sized(2.5F, 1.75F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
@@ -1444,7 +1430,6 @@ public final class ModEntities {
                                 EntityType.Builder.<EntityRADBeast>of(
                                                 EntityRADBeast::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .fireImmune()
                                         .sized(0.6F, 1.8F)
                                         .clientTrackingRange(5)
@@ -1461,7 +1446,6 @@ public final class ModEntities {
                                 EntityType.Builder.<EntityMaskMan>of(
                                                 EntityMaskMan::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .fireImmune()
                                         .sized(2.0F, 5.0F)
                                         .clientTrackingRange(5)

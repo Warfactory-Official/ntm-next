@@ -12,7 +12,7 @@
       "ingredient": "hbm:scrap_plastic_cpu_ext"
     }
   ],
-  "order": 301,
+  "order": 80640,
   "output_items": [
     "hbm:circuit_star_piece_cpu_ext"
   ]

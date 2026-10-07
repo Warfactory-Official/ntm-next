@@ -4,9 +4,16 @@
 
 package com.hbm.items.weapon;
 
+import com.hbm.client.ClientEffects;
 import com.hbm.entity.missile.EntityMissileCustom;
 import com.hbm.items.special.ItemLootCrate;
+import com.hbm.lib.Library;
+import com.hbm.registration.OpenRegistry;
+import com.hbm.registration.OverridePoint;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -25,6 +32,7 @@ public class ItemCustomMissilePart extends Item {
     public float health;
 
     public float height;
+    public float guiHeight;
     public @Nullable Identifier mesh;
     public @Nullable Identifier skin;
 
@@ -46,118 +54,196 @@ public class ItemCustomMissilePart extends Item {
         THRUSTER
     }
 
-    public enum PartSize {
-        ANY,
-        NONE,
-        SIZE_10,
-        SIZE_15,
-        SIZE_20;
+    public static final class PartSize {
+
+        private static final OpenRegistry<PartSize> REGISTRY =
+                new OpenRegistry<>("missile part size", PartSize::name);
+
+        public static final PartSize ANY =
+                register("ANY", () -> Component.translatable("item.hbm.missile.part.size.any"));
+        public static final PartSize NONE =
+                register("NONE", () -> Component.translatable("item.hbm.missile.part.size.none"));
+        public static final PartSize SIZE_10 = register("SIZE_10", () -> Component.literal("1.0m"));
+        public static final PartSize SIZE_15 = register("SIZE_15", () -> Component.literal("1.5m"));
+        public static final PartSize SIZE_20 = register("SIZE_20", () -> Component.literal("2.0m"));
+
+        private final String name;
+        private final Supplier<Component> display;
+
+        private PartSize(String name, Supplier<Component> display) {
+            this.name = name;
+            this.display = display;
+        }
+
+        public static PartSize register(String name, Supplier<Component> display) {
+            return REGISTRY.add(new PartSize(name, display));
+        }
+
+        public static List<PartSize> values() {
+            return REGISTRY.values();
+        }
+
+        public static PartSize byName(String name, PartSize fallback) {
+            return REGISTRY.byName(name, fallback);
+        }
+
+        public String name() {
+            return name;
+        }
+
+        public int ordinal() {
+            return REGISTRY.index(this);
+        }
 
         public Component getDisplay() {
-            switch (this) {
-                case ANY:
-                    return Component.translatable("item.hbm.missile.part.size.any");
-                case SIZE_10:
-                    return Component.literal("1.0m");
-                case SIZE_15:
-                    return Component.literal("1.5m");
-                case SIZE_20:
-                    return Component.literal("2.0m");
-                default:
-                    return Component.translatable("item.hbm.missile.part.size.none");
-            }
+            return display.get();
+        }
+
+        @Override
+        public String toString() {
+            return name;
         }
     }
 
-    public enum WarheadType {
-        HE,
-        INC,
-        BUSTER,
-        CLUSTER,
-        NUCLEAR,
-        TX,
-        N2,
-        BALEFIRE,
-        SCHRAB,
-        TAINT,
-        CLOUD,
-        TURBINE,
+    public static final class WarheadType {
 
-        CUSTOM0,
-        CUSTOM1,
-        CUSTOM2,
-        CUSTOM3,
-        CUSTOM4,
-        CUSTOM5,
-        CUSTOM6,
-        CUSTOM7,
-        CUSTOM8,
-        CUSTOM9;
+        public static final WarheadType HE =
+                new WarheadType("HE", () -> key("he", ChatFormatting.YELLOW));
+        public static final WarheadType INC =
+                new WarheadType("INC", () -> key("incendiary", ChatFormatting.GOLD));
+        public static final WarheadType BUSTER =
+                new WarheadType("BUSTER", () -> key("bunker_buster", ChatFormatting.WHITE));
+        public static final WarheadType CLUSTER =
+                new WarheadType("CLUSTER", () -> key("cluster", ChatFormatting.GRAY));
+        public static final WarheadType NUCLEAR =
+                new WarheadType("NUCLEAR", () -> key("nuclear", ChatFormatting.DARK_GREEN));
+        public static final WarheadType TX =
+                new WarheadType("TX", () -> key("thermonuclear", ChatFormatting.DARK_PURPLE));
+        public static final WarheadType N2 =
+                new WarheadType("N2", () -> key("n2", ChatFormatting.RED));
+        public static final WarheadType BALEFIRE =
+                new WarheadType("BALEFIRE", () -> key("balefire", ChatFormatting.GREEN));
+        public static final WarheadType SCHRAB =
+                new WarheadType("SCHRAB", () -> key("schrabidium", ChatFormatting.AQUA));
+        public static final WarheadType TAINT =
+                new WarheadType("TAINT", () -> key("taint", ChatFormatting.DARK_PURPLE));
+        public static final WarheadType CLOUD =
+                new WarheadType("CLOUD", () -> key("cloud", ChatFormatting.LIGHT_PURPLE));
+        public static final WarheadType TURBINE =
+                new WarheadType(
+                        "TURBINE",
+                        () ->
+                                key(
+                                        "turbine",
+                                        System.currentTimeMillis() % 1000 < 500
+                                                ? ChatFormatting.RED
+                                                : ChatFormatting.LIGHT_PURPLE));
+
+        public static final WarheadType CUSTOM0 = custom("CUSTOM0");
+        public static final WarheadType CUSTOM1 = custom("CUSTOM1");
+        public static final WarheadType CUSTOM2 = custom("CUSTOM2");
+        public static final WarheadType CUSTOM3 = custom("CUSTOM3");
+        public static final WarheadType CUSTOM4 = custom("CUSTOM4");
+        public static final WarheadType CUSTOM5 = custom("CUSTOM5");
+        public static final WarheadType CUSTOM6 = custom("CUSTOM6");
+        public static final WarheadType CUSTOM7 = custom("CUSTOM7");
+        public static final WarheadType CUSTOM8 = custom("CUSTOM8");
+        public static final WarheadType CUSTOM9 = custom("CUSTOM9");
 
         public Consumer<EntityMissileCustom> impactCustom = null;
         public Consumer<EntityMissileCustom> updateCustom = null;
         public String labelCustom = null;
 
+        private final String name;
+        private final Supplier<Component> display;
+
+        public WarheadType(String name, Supplier<Component> display) {
+            this.name = name;
+            this.display = display;
+        }
+
+        private static WarheadType custom(String name) {
+            return new WarheadType(
+                    name,
+                    () -> Component.translatable("general.na").withStyle(ChatFormatting.BOLD));
+        }
+
+        public String name() {
+            return name;
+        }
+
         public Component getDisplay() {
-
             if (this.labelCustom != null) return Component.literal(this.labelCustom);
-
-            switch (this) {
-                case HE:
-                    return key("he", ChatFormatting.YELLOW);
-                case INC:
-                    return key("incendiary", ChatFormatting.GOLD);
-                case CLUSTER:
-                    return key("cluster", ChatFormatting.GRAY);
-                case BUSTER:
-                    return key("bunker_buster", ChatFormatting.WHITE);
-                case NUCLEAR:
-                    return key("nuclear", ChatFormatting.DARK_GREEN);
-                case TX:
-                    return key("thermonuclear", ChatFormatting.DARK_PURPLE);
-                case N2:
-                    return key("n2", ChatFormatting.RED);
-                case BALEFIRE:
-                    return key("balefire", ChatFormatting.GREEN);
-                case SCHRAB:
-                    return key("schrabidium", ChatFormatting.AQUA);
-                case TAINT:
-                    return key("taint", ChatFormatting.DARK_PURPLE);
-                case CLOUD:
-                    return key("cloud", ChatFormatting.LIGHT_PURPLE);
-                case TURBINE:
-                    return key(
-                            "turbine",
-                            System.currentTimeMillis() % 1000 < 500
-                                    ? ChatFormatting.RED
-                                    : ChatFormatting.LIGHT_PURPLE);
-                default:
-                    return Component.translatable("general.na").withStyle(ChatFormatting.BOLD);
-            }
+            return display.get();
         }
 
         private static Component key(String name, ChatFormatting color) {
             return Component.translatable("item.hbm.warhead.desc." + name).withStyle(color);
         }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 
-    public enum FuelType {
-        KEROSENE("kerosene_peroxide", ChatFormatting.LIGHT_PURPLE),
-        SOLID("solid", ChatFormatting.GOLD),
-        HYDROGEN("hydrogen", ChatFormatting.DARK_AQUA),
-        XENON("xenon", ChatFormatting.DARK_PURPLE),
-        BALEFIRE("balefire", ChatFormatting.GREEN);
+    public static final class FuelType {
 
+        public static final FuelType KEROSENE =
+                new FuelType(
+                        "KEROSENE",
+                        "item.hbm.missile.fuel.kerosene_peroxide",
+                        ChatFormatting.LIGHT_PURPLE,
+                        ClientEffects.Contrail.KEROSENE);
+        public static final FuelType SOLID =
+                new FuelType(
+                        "SOLID",
+                        "item.hbm.missile.fuel.solid",
+                        ChatFormatting.GOLD,
+                        ClientEffects.Contrail.SOLID);
+        public static final FuelType HYDROGEN =
+                new FuelType(
+                        "HYDROGEN",
+                        "item.hbm.missile.fuel.hydrogen",
+                        ChatFormatting.DARK_AQUA,
+                        ClientEffects.Contrail.HYDROGEN);
+        public static final FuelType XENON =
+                new FuelType(
+                        "XENON", "item.hbm.missile.fuel.xenon", ChatFormatting.DARK_PURPLE, null);
+        public static final FuelType BALEFIRE =
+                new FuelType(
+                        "BALEFIRE",
+                        "item.hbm.missile.fuel.balefire",
+                        ChatFormatting.GREEN,
+                        ClientEffects.Contrail.BALEFIRE);
+
+        private final String name;
         private final String key;
         private final ChatFormatting color;
+        public final ClientEffects.@Nullable Contrail contrail;
 
-        FuelType(String key, ChatFormatting color) {
+        public FuelType(
+                String name,
+                String key,
+                ChatFormatting color,
+                ClientEffects.@Nullable Contrail contrail) {
+            this.name = name;
             this.key = key;
             this.color = color;
+            this.contrail = contrail;
+        }
+
+        public String name() {
+            return name;
         }
 
         public Component getDisplay() {
-            return Component.translatable("item.hbm.missile.fuel." + key).withStyle(color);
+            return Component.translatable(key).withStyle(color);
+        }
+
+        @Override
+        public String toString() {
+            return name;
         }
     }
 
@@ -225,8 +311,10 @@ public class ItemCustomMissilePart extends Item {
         return this;
     }
 
-    public ItemCustomMissilePart setAssembly(float height, Identifier mesh, Identifier skin) {
+    public ItemCustomMissilePart setAssembly(
+            float height, float guiHeight, Identifier mesh, Identifier skin) {
         this.height = height;
+        this.guiHeight = guiHeight;
         this.mesh = mesh;
         this.skin = skin;
         return this;
@@ -297,6 +385,29 @@ public class ItemCustomMissilePart extends Item {
         return stack != null && stack.getItem() instanceof ItemCustomMissilePart part ? part : null;
     }
 
+    public static final OverridePoint<Set<Identifier>> VERTEX_NORMAL_MESHES =
+            OverridePoint.of(Library.id("missile_part_vertex_normal_meshes"), Set.of());
+
+    public static final OverridePoint<Describer> DESCRIBE =
+            OverridePoint.of(Library.id("missile_part_describe"), ItemCustomMissilePart::describe);
+
+    @FunctionalInterface
+    public interface Describer {
+        void describe(ItemCustomMissilePart part, Consumer<Component> adder);
+    }
+
+    public @Nullable String title() {
+        return title;
+    }
+
+    public @Nullable String author() {
+        return author;
+    }
+
+    public @Nullable String witty() {
+        return witty;
+    }
+
     @Override
     public void appendHoverText(
             ItemStack stack,
@@ -304,7 +415,10 @@ public class ItemCustomMissilePart extends Item {
             TooltipDisplay display,
             Consumer<Component> adder,
             TooltipFlag flag) {
+        DESCRIBE.get().describe(this, adder);
+    }
 
+    public void describe(Consumer<Component> adder) {
         if (this.title != null) {
             adder.accept(
                     Component.literal("\"" + this.title + "\"")
@@ -362,7 +476,7 @@ public class ItemCustomMissilePart extends Item {
         }
     }
 
-    private static Component stat(String key, Component value) {
+    public static Component stat(String key, Component value) {
         return Component.translatable("item.hbm.missile.part." + key)
                 .withStyle(ChatFormatting.BOLD)
                 .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))

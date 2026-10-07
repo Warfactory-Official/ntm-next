@@ -22,7 +22,7 @@
       "ingredient": "hbm:powder_magic"
     }
   },
-  "order": 8,
+  "order": 2048,
   "output_items": [
     "hbm:gun_minigun_lacunae"
   ],

@@ -12,7 +12,7 @@
       "ingredient": "#hbm:gems/any_coke"
     }
   ],
-  "order": 60,
+  "order": 15360,
   "output_fluids": [
     {
       "type": "hbm:syngas",

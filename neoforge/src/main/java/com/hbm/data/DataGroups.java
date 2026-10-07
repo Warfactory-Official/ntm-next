@@ -11,12 +11,14 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.Identifier;
@@ -24,17 +26,29 @@ import net.minecraft.resources.ResourceKey;
 
 public final class DataGroups {
 
+    @SuppressWarnings("unchecked")
+    private static Consumer<RegistryAccess>[] addons = new Consumer[0];
+
     private DataGroups() {}
 
     public static Group group(List<Group> into, String legacyName) {
-        Group group =
-                new Group(
-                        Library.id(
-                                legacyName
-                                        .replaceAll("([a-z0-9])([A-Z])", "$1_$2")
-                                        .toLowerCase(Locale.ROOT)));
+        return group(
+                into,
+                Library.id(
+                        legacyName
+                                .replaceAll("([a-z0-9])([A-Z])", "$1_$2")
+                                .toLowerCase(Locale.ROOT)));
+    }
+
+    public static Group group(List<Group> into, Identifier id) {
+        Group group = new Group(id);
         into.add(group);
         return group;
+    }
+
+    public static void addon(Consumer<RegistryAccess> apply) {
+        addons = Arrays.copyOf(addons, addons.length + 1);
+        addons[addons.length - 1] = apply;
     }
 
     public static void applyAll(RegistryAccess registries) {
@@ -45,6 +59,7 @@ public final class DataGroups {
         ItemData.applyDataPack(registries);
         EnergyData.applyDataPack(registries);
         RadiationData.applyDataPack(registries);
+        for (Consumer<RegistryAccess> addon : addons) addon.accept(registries);
     }
 
     public static <T extends DataValues> void apply(

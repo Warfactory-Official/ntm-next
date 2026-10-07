@@ -16,7 +16,7 @@
       "ingredient": "hbm:powder_flux"
     }
   ],
-  "order": 7,
+  "order": 1792,
   "output_material": {
     "amount": 72,
     "material": "weapon_steel"

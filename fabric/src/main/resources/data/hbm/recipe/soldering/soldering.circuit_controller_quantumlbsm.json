@@ -31,7 +31,7 @@
     }
   ],
   "name": "soldering.circuit_controller_quantumLbsm",
-  "order": 14,
+  "order": 3584,
   "output_items": [
     "hbm:circuit_controller_quantum"
   ],

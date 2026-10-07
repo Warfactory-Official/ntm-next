@@ -20,6 +20,7 @@ import net.minecraft.util.random.Weighted;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
@@ -83,17 +84,27 @@ public class ModuleMachineBase implements SyncSource {
         return power == 1D ? recipe.power : (long) (recipe.power * power);
     }
 
-    protected static void sizeTanks(FluidTankNTM[] tanks, FluidStackNTM[] fluids, int floor) {
+    protected void sizeTanks(FluidTankNTM[] tanks, FluidStackNTM[] fluids, int floor) {
         for (int i = 0; i < tanks.length && i < fluids.length; i++) {
+            int size = tanks[i].getMaxFill();
             tanks[i].changeTankSize(
                     (int) Math.max(Math.max(tanks[i].getFill(), fluids[i].amount() * 2L), floor));
+            if (tanks[i].getMaxFill() != size) markDirty = true;
         }
     }
 
-    private static void conform(FluidTankNTM[] tanks, FluidStackNTM @Nullable [] fluids) {
+    private void conform(FluidTankNTM[] tanks, FluidStackNTM @Nullable [] fluids) {
         for (int i = 0; i < tanks.length; i++) {
+            Fluid type = tanks[i].getTankType();
+            int pressure = tanks[i].getPressure();
+            int fill = tanks[i].getFill();
             if (fluids != null && fluids.length > i) tanks[i].conform(fluids[i]);
             else tanks[i].resetTank();
+            if (tanks[i].getTankType() != type
+                    || tanks[i].getPressure() != pressure
+                    || tanks[i].getFill() != fill) {
+                markDirty = true;
+            }
         }
     }
 
@@ -131,20 +142,22 @@ public class ModuleMachineBase implements SyncSource {
             didProcess = false;
             progress = 0D;
             recipe = "";
+            markDirty = true;
             return;
         }
 
-        setupTanks(selected);
-
         didProcess = false;
         markDirty = false;
+
+        setupTanks(selected);
 
         Match match = extraCondition ? canProcess(selected, power) : null;
         if (match != null) {
             process(match, speed, power);
             didProcess = true;
-        } else {
+        } else if (progress != 0D) {
             progress = 0D;
+            markDirty = true;
         }
     }
 
@@ -160,6 +173,7 @@ public class ModuleMachineBase implements SyncSource {
         String switched = autoSwitchTarget(recipe, this.recipe);
         if (switched != null) {
             this.recipe = switched;
+            markDirty = true;
             return null;
         }
 

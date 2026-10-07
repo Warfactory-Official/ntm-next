@@ -10,6 +10,7 @@ import com.hbm.entity.logic.EntityNukeExplosionMK3;
 import com.hbm.entity.projectile.EntityB92Beam;
 import com.hbm.items.ModDataComponents;
 import com.hbm.main.Polaroid;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.KeyHints;
 import java.util.function.Consumer;
@@ -63,8 +64,8 @@ public class GunB92 extends Item {
                 }
                 server.addFreshEntity(beam);
             }
-            server.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),
@@ -87,8 +88,8 @@ public class GunB92 extends Item {
         setAnimation(stack, frame < ANIMATION_END ? frame + 1 : 0);
         if (frame != RELOAD_FRAME) return;
 
-        level.playSound(
-                null,
+        EntitySounds.play(
+                entity,
                 entity.getX(),
                 entity.getY(),
                 entity.getZ(),
@@ -104,8 +105,8 @@ public class GunB92 extends Item {
                 EntityNukeExplosionMK3.statFacFleija(
                         level, entity.getX(), entity.getY(), entity.getZ(), 50);
         if (blast.isRemoved()) return;
-        level.playSound(
-                null,
+        EntitySounds.play(
+                entity,
                 entity.getX(),
                 entity.getY(),
                 entity.getZ(),

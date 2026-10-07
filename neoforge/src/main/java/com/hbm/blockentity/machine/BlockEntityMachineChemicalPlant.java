@@ -221,6 +221,7 @@ public class BlockEntityMachineChemicalPlant extends BlockEntityMachineBase
     @Override
     public void tickServer() {
         long prevPower = power;
+        long prevMaxPower = maxPower;
 
         GenericRecipe selected = module.getRecipe();
         if (selected != null) maxPower = selected.power * 100L;
@@ -246,6 +247,7 @@ public class BlockEntityMachineChemicalPlant extends BlockEntityMachineBase
                             SLOT_FLUID_OUT_START + i, SLOT_FLUID_OUT_RESULT + i, inventory);
         }
 
+        double prevProgress = module.progress;
         module.update(speed, pow, true, inventory.get(SLOT_SCHEMATIC));
         isProgressing = module.didProcess;
         if (module.didProcess) {
@@ -257,6 +259,8 @@ public class BlockEntityMachineChemicalPlant extends BlockEntityMachineBase
         }
 
         if (changed || module.markDirty || power != prevPower) setChanged();
+        else if (module.didProcess || module.progress != prevProgress || maxPower != prevMaxPower)
+            markChanged();
         flush.provide((ServerLevel) level, this);
         networkPackNT(100);
     }

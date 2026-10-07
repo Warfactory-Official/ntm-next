@@ -1,0 +1,54 @@
+{
+  "type": "hbm:rock_mill",
+  "auto_switch_group": "autoswitch.crushing",
+  "duration": 200,
+  "icon_from_input": true,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "minecraft:calcite"
+    }
+  ],
+  "name_wrapper": "rock.crushing",
+  "order": 3328,
+  "output_fluids": [
+    {
+      "type": "hbm:colloid",
+      "amount": 250
+    }
+  ],
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:powder_limestone"
+        },
+        "weight": 60
+      },
+      {
+        "data": {
+          "id": "hbm:powder_calcium"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "hbm:fluorite"
+        },
+        "weight": 15
+      },
+      {
+        "data": {
+          "id": "hbm:powder_strontium"
+        },
+        "weight": 5
+      }
+    ]
+  ],
+  "power": 25
+}

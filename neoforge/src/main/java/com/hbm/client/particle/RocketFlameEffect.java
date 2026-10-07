@@ -3,6 +3,7 @@
 
 package com.hbm.client.particle;
 
+import com.hbm.particle.RocketFlameColor;
 import dev.engine_room.flywheel.api.visual.Effect;
 import dev.engine_room.flywheel.api.visual.EffectVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
@@ -15,6 +16,7 @@ public final class RocketFlameEffect implements Effect {
     final double spawnX, spawnY, spawnZ;
     final float baseScale;
     final int maxAge;
+    final RocketFlameColor color;
     private final Level level;
     private double x, y, z;
     private double prevX, prevY, prevZ;
@@ -30,7 +32,8 @@ public final class RocketFlameEffect implements Effect {
             double vx,
             double vy,
             double vz,
-            int maxAge) {
+            int maxAge,
+            RocketFlameColor color) {
         this.level = level;
         this.spawnX = x;
         this.spawnY = y;
@@ -43,6 +46,7 @@ public final class RocketFlameEffect implements Effect {
         this.vz = vz;
         this.baseScale = baseScale;
         this.maxAge = maxAge;
+        this.color = color;
     }
 
     @Override

@@ -16,7 +16,7 @@
       "ingredient": "hbm:pellet_charged"
     }
   ],
-  "order": 62,
+  "order": 15872,
   "output_fluids": [
     {
       "type": "hbm:schrabidic",

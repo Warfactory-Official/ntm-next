@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/polonium_210"
     }
   ],
-  "order": 24,
+  "order": 6144,
   "output_items": [
     "hbm:ingot_technetium"
   ]

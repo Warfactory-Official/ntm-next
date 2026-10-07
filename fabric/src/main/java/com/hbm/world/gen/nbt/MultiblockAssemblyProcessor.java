@@ -30,6 +30,7 @@ public class MultiblockAssemblyProcessor implements StructureProcessor {
             BlockMultiblockCore block) {
         level.setBlock(pos, coreState, 3);
         block.fillSpace(level, pos, coreState.getValue(BlockMultiblockCore.FACING));
+        block.assembled(level, pos, coreState);
     }
 
     @Override

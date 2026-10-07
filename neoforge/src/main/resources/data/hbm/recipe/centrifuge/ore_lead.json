@@ -9,10 +9,10 @@
   "duration": 200,
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/lead"
+      "ingredient": "#c:ores/lead"
     }
   ],
-  "order": 20,
+  "order": 7680,
   "output_items": [
     "hbm:powder_lead",
     "hbm:powder_lead",

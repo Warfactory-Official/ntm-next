@@ -3,6 +3,7 @@
 
 package com.hbm.blocks.machine;
 
+import com.hbm.api.block.BlockPlacements;
 import com.hbm.blocks.BlockDirectionalBase;
 import com.hbm.blocks.ModBlocks;
 import com.mojang.serialization.MapCodec;
@@ -242,6 +243,7 @@ public class BlockSpotlight extends BlockDirectionalBase
         BlockState state = level.getBlockState(pos);
         if (!state.is(this) || !state.getValue(BROKEN)) return;
         level.setBlock(pos, state.setValue(BROKEN, false).setValue(LIT, true), Block.UPDATE_ALL);
+        BlockPlacements.repaired(level, pos);
         propagateBeam(level, pos, state.getValue(FACING), beamLength);
         for (Direction dir : Direction.VALUES) repair(level, pos.relative(dir));
     }

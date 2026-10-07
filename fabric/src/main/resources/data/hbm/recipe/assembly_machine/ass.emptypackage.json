@@ -11,7 +11,7 @@
       "ingredient": "#hbm:ingots/any_plastic"
     }
   ],
-  "order": 432,
+  "order": 110592,
   "output_items": [
     "hbm:fluid_pack"
   ],

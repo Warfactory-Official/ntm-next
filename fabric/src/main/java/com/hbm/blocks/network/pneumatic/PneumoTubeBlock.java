@@ -9,13 +9,17 @@ import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTube;
 import com.hbm.blocks.CapabilityDependentShape;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
+import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.IToolable;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.lib.Library;
+import com.hbm.uninos.graph.EndpointRegistry;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.AutoRotate;
+import com.hbm.util.ChunkUtil;
 import com.hbm.util.InventoryUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -125,18 +129,76 @@ public class PneumoTubeBlock extends Block
     }
 
     public static boolean canConnectTo(BlockGetter level, BlockPos pos, Direction dir) {
-        BlockPos npos = pos.relative(dir);
-        if (level.getBlockState(npos).getBlock() instanceof PneumoTubeBlock) return true;
-        return level.getBlockState(npos).getBlock() instanceof IPneumaticConnector;
+        return canConnectTo(level.getBlockState(pos.relative(dir)));
+    }
+
+    private static boolean canConnectTo(BlockState state) {
+        return state.getBlock() instanceof PneumoTubeBlock
+                || state.getBlock() instanceof IPneumaticConnector;
     }
 
     public static boolean canConnectToAir(LevelReader level, BlockPos pos, Direction dir) {
-        if (!(level.getBlockEntity(pos) instanceof BlockEntityPneumoTube tube)) return false;
-        if (!tube.isCompressor()) return false;
-        if (tube.ejectionDir == dir || tube.insertionDir == dir) return false;
+        if (!(level.getBlockEntity(pos) instanceof BlockEntityPneumoTube tube)
+                || !isAirFace(tube, dir)) return false;
         BlockPos npos = pos.relative(dir);
-        if (level.getBlockState(npos).getBlock() instanceof PneumoTubeBlock) return false;
-        return Library.canConnectFluid(level, pos.relative(dir), dir.getOpposite(), NTMFluids.AIR);
+        return canConnectToAir(level, npos, dir.getOpposite(), level.getBlockState(npos));
+    }
+
+    private static boolean isAirFace(BlockEntityPneumoTube tube, Direction dir) {
+        return tube.isCompressor() && tube.ejectionDir != dir && tube.insertionDir != dir;
+    }
+
+    private static boolean canConnectToAir(
+            LevelReader level, BlockPos pos, Direction side, @Nullable BlockState state) {
+        return (state == null || !(state.getBlock() instanceof PneumoTubeBlock))
+                && Library.canConnectFluid(level, pos, side, NTMFluids.AIR);
+    }
+
+    private static boolean unresolvedAirPeer(
+            ServerLevel level, BlockPos pos, @Nullable BlockState state) {
+        if (state == null) return true;
+        if (state.getBlock() instanceof PneumoTubeBlock) return false;
+        long owner =
+                MultiblockSurface.recordedCorePacked(level, pos.getX(), pos.getY(), pos.getZ());
+        if (owner == MultiblockSurface.NO_CORE) {
+            EndpointRegistry.Endpoint endpoint = level.hbm$endpoints().declared(pos.asLong());
+            if (endpoint == null
+                    || (endpoint.domains() & (MachineCaps.FLUID_IN | MachineCaps.FLUID_OUT)) == 0) {
+                return false;
+            }
+            owner = endpoint.owner();
+        }
+        return BlockMultiblockCore.readableChunk(level, BlockPos.getX(owner), BlockPos.getZ(owner))
+                == null;
+    }
+
+    public static void refreshAirConnections(ServerLevel level, BlockPos pos) {
+        BlockState state = ChunkUtil.blockStateIfLoaded(level, pos);
+        if (state == null || !(state.getBlock() instanceof PneumoTubeBlock)) return;
+        BlockEntityPneumoTube tube =
+                ChunkUtil.blockEntityIfLoaded(BlockEntityPneumoTube.class, level, pos);
+        if (tube == null) return;
+        BlockState updated = state;
+        int air = 0;
+        for (Direction dir : Direction.VALUES) {
+            BlockPos neighbour = pos.relative(dir);
+            BlockState neighbourState = ChunkUtil.blockStateIfLoaded(level, neighbour);
+            int bit = 1 << dir.ordinal();
+            boolean joinsAir =
+                    isAirFace(tube, dir)
+                            && (canConnectToAir(level, neighbour, dir.getOpposite(), neighbourState)
+                                    || (tube.airMask & bit) != 0
+                                            && unresolvedAirPeer(level, neighbour, neighbourState));
+            if (joinsAir) air |= bit;
+            boolean pneumatic =
+                    neighbourState != null
+                            ? canConnectTo(neighbourState)
+                            : state.getValue(faceProperty(dir));
+            updated = updated.setValue(faceProperty(dir), pneumatic || joinsAir);
+        }
+        if (updated != state)
+            level.setBlock(pos, updated, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+        tube.setAirMask(air);
     }
 
     public static void refreshConnections(Level level, BlockPos pos) {

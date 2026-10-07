@@ -98,6 +98,7 @@ public abstract class BlockEntityHeatBoilerBase extends BlockEntityMachineBase
             return;
         }
 
+        int prevHeat = heat;
         setupTanks();
         tryPullHeat();
         syncHeat = heat;
@@ -111,6 +112,7 @@ public abstract class BlockEntityHeatBoilerBase extends BlockEntityMachineBase
         isOn = false;
         syncInputFill = tanks[0].getFill();
         tryConvert();
+        if (heat != prevHeat) markChanged();
 
         flush.provide((ServerLevel) level, this);
 
@@ -171,6 +173,7 @@ public abstract class BlockEntityHeatBoilerBase extends BlockEntityMachineBase
         tanks[0].setFill(tanks[0].getFill() - entry.amountReq * ops);
         tanks[1].setFill(tanks[1].getFill() + entry.amountProduced * ops);
         heat -= heatReq * ops;
+        if (ops > 0) markChanged();
 
         if (ops > 0 && level.getRandom().nextInt(400) == 0) {
             level.playSound(
@@ -191,6 +194,7 @@ public abstract class BlockEntityHeatBoilerBase extends BlockEntityMachineBase
 
     private void explode() {
         hasExploded = true;
+        markChanged();
 
         BlockMultiblockCore.setBusy(true);
         for (int dx = -1; dx <= 1; dx++) {
@@ -227,6 +231,16 @@ public abstract class BlockEntityHeatBoilerBase extends BlockEntityMachineBase
                 10F,
                 1.0F,
                 20);
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return tanks[0].joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
     }
 
     @Override

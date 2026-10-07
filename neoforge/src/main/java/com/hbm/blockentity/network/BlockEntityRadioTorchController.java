@@ -103,7 +103,7 @@ public final class BlockEntityRadioTorchController extends BlockEntityRadioTorch
 
     @Override
     public long syncUnitMask() {
-        return super.syncUnitMask() & ~0xcL;
+        return super.syncUnitMask() & ~(0xcL | SIGNAL_MASK);
     }
 
     @Override

@@ -9,10 +9,10 @@
   ],
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/uranium"
+      "ingredient": "#c:ores/uranium"
     }
   ],
-  "order": 238,
+  "order": 62464,
   "output_items": [
     "hbm:crystal_uranium"
   ],

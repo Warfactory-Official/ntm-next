@@ -4,6 +4,7 @@
 package com.hbm.handler;
 
 import com.hbm.advancement.HbmCriteria;
+import com.hbm.api.environment.Environment;
 import com.hbm.data.ItemData;
 import com.hbm.data.RadiationData;
 import com.hbm.explosion.ExplosionNukeSmall;
@@ -24,6 +25,7 @@ import com.hbm.packet.toclient.VomitPayload;
 import com.hbm.particle.helper.FlameCreator;
 import com.hbm.particle.helper.ParticleCreators;
 import com.hbm.potion.HbmPotion;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ArmorRegistry;
 import com.hbm.util.BiomeUtil;
@@ -100,6 +102,7 @@ public final class EntityEffectHandler {
             handleContamination(entity, props);
         }
         handleBiomeRadiation(entity);
+        Environment.tickLiving(entity);
         handleRadiation(entity);
         if (props != null) {
             handleRadiationEffect(entity, props);
@@ -205,7 +208,8 @@ public final class EntityEffectHandler {
     private static void handleRadiation(LivingEntity entity) {
         if (ContaminationUtil.isRadImmune(entity)) return;
         if (!(entity.level() instanceof ServerLevel server)) return;
-        double rad = RadiationSystemNT.doseAt(server, entity.blockPosition());
+        BlockPos pos = entity.blockPosition();
+        double rad = Environment.skyRadiation(server, pos, RadiationSystemNT.doseAt(server, pos));
         if (rad > 0D) {
             ContaminationUtil.contaminate(
                     entity,
@@ -217,6 +221,7 @@ public final class EntityEffectHandler {
 
     private static void handleRadiationEffect(LivingEntity entity, HbmLivingProps props) {
         if (!RadiationData.ENABLE_CONTAMINATION.get()) return;
+        if (ContaminationUtil.isRadImmune(entity)) return;
         if (entity.isDeadOrDying()) return;
         if (!(entity.level() instanceof ServerLevel world)) return;
         if (entity instanceof Player p && (p.isCreative() || p.isSpectator())) return;
@@ -228,7 +233,7 @@ public final class EntityEffectHandler {
 
         if (IrradiationTransformations.apply(entity, eRad)) return;
 
-        if (eRad < 200D || ContaminationUtil.isRadImmune(entity)) return;
+        if (eRad < 200D) return;
 
         if (eRad >= 1000D) {
             entity.hurtServer(world, radSource, 1000F);
@@ -428,8 +433,8 @@ public final class EntityEffectHandler {
     }
 
     private static void playVomit(ServerLevel world, LivingEntity entity) {
-        world.playSound(
-                null,
+        EntitySounds.play(
+                entity,
                 entity.getX(),
                 entity.getY(),
                 entity.getZ(),
@@ -480,16 +485,15 @@ public final class EntityEffectHandler {
         total = 1D - (blacklungDelta * asbestosDelta * sootDelta);
         int freq = Math.max((int) (1000 - 950 * total), 20);
         if (entity.level().getGameTime() % freq == entity.getId() % freq) {
-            entity.level()
-                    .playSound(
-                            null,
-                            entity.getX(),
-                            entity.getY(),
-                            entity.getZ(),
-                            ModSounds.PLAYER_COUGH.get(),
-                            SoundSource.PLAYERS,
-                            1.0F,
-                            1.0F);
+            EntitySounds.play(
+                    entity,
+                    entity.getX(),
+                    entity.getY(),
+                    entity.getZ(),
+                    ModSounds.PLAYER_COUGH.get(),
+                    SoundSource.PLAYERS,
+                    1.0F,
+                    1.0F);
             double blacklungShare = blacklung / HbmLivingProps.maxBlacklung;
             if (asbestos / HbmLivingProps.maxAsbestos > 0.75D || blacklungShare > 0.75D) {
                 ParticleCreators.vomit(entity.level(), entity, VomitPayload.MODE_BLOOD, 5);
@@ -555,8 +559,8 @@ public final class EntityEffectHandler {
 
     private static void fizz(ServerLevel server, LivingEntity entity) {
         float pitch = 1.5F + entity.getRandom().nextFloat() * 0.5F;
-        server.playSound(
-                null,
+        EntitySounds.play(
+                entity,
                 entity.getX(),
                 entity.getY() + entity.getBbHeight() / 2D,
                 entity.getZ(),

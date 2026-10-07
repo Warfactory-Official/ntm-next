@@ -10,7 +10,7 @@
       "ingredient": "#c:dusts/diamond"
     }
   ],
-  "order": 150,
+  "order": 38400,
   "output_items": [
     "hbm:drillbit_hss_diamond"
   ],

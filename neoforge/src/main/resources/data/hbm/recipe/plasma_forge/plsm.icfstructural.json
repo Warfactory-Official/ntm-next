@@ -24,7 +24,7 @@
       "ingredient": "#hbm:plates_cast/any_bismoid_bronze"
     }
   ],
-  "order": 32,
+  "order": 8192,
   "output_items": [
     "hbm:icf_component_structure"
   ],

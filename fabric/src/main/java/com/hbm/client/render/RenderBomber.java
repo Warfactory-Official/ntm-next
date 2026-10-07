@@ -65,9 +65,17 @@ public final class RenderBomber extends EntityRenderer<EntityBomber, RenderBombe
         pose.mulPose(Axis.ZP.rotationDegrees(90F));
         pose.mulPose(Axis.ZP.rotationDegrees(state.pitch));
         pose.mulPose(Axis.XP.rotationDegrees(state.wobble));
-        Identifier texture = texture(state.style);
+        BomberStyles.Style addon = BomberStyles.get(state.style);
+        Identifier texture = addon != null ? addon.texture() : texture(state.style);
         RenderType type = WorldRenderPipeline.oneSidedCutout(texture);
-        if (state.style >= 0 && state.style <= 4) {
+        if (addon != null) {
+            pose.scale(addon.scale(), addon.scale(), addon.scale());
+            pose.mulPose(Axis.YP.rotationDegrees(addon.yaw()));
+            collector.submitCustomGeometry(
+                    pose,
+                    type,
+                    (p, buffer) -> addon.mesh().get().render(p, buffer, state.light, -1));
+        } else if (state.style >= 0 && state.style <= 4) {
             pose.scale(5F, 5F, 5F);
             pose.mulPose(Axis.YP.rotationDegrees(-90F));
             collector.submitCustomGeometry(

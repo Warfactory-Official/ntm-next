@@ -33,7 +33,7 @@
     }
   ],
   "name": "ass.exposurechamberEx",
-  "order": 224,
+  "order": 57344,
   "output_items": [
     "hbm:machine_exposure_chamber"
   ],

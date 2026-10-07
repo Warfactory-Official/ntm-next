@@ -43,6 +43,7 @@ import com.hbm.util.CrucibleUtil;
 import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -164,10 +165,10 @@ public class BlockEntityMachineElectrolyser extends BlockEntityMachineBase
         this.rightPourColor = -1;
 
         power += ItemEnergyTransfer.extract(this, 0, MAX_POWER - power, false);
-        tanks[0].setType(3, 4, inventory);
-        tanks[0].loadTank(5, 6, inventory);
-        tanks[1].unloadTank(7, 8, inventory);
-        tanks[2].unloadTank(9, 10, inventory);
+        boolean changed = tanks[0].setType(3, 4, inventory);
+        changed |= tanks[0].loadTank(5, 6, inventory);
+        changed |= tanks[1].unloadTank(7, 8, inventory);
+        changed |= tanks[2].unloadTank(9, 10, inventory);
 
         upgradeManager.scan(this, 1, 2);
         int speedLevel = upgradeManager.getLevel(UpgradeType.SPEED);
@@ -180,6 +181,7 @@ public class BlockEntityMachineElectrolyser extends BlockEntityMachineBase
             if (canProcessFluid()) {
                 progressFluid++;
                 power -= usageFluid;
+                changed = true;
                 if (progressFluid >= getDurationFluid()) {
                     processFluids();
                     progressFluid = 0;
@@ -190,6 +192,7 @@ public class BlockEntityMachineElectrolyser extends BlockEntityMachineBase
             if (canProcessMetal()) {
                 progressOre++;
                 power -= usageOre;
+                changed = true;
                 if (progressOre >= getDurationMetal()) {
                     processMetal();
                     progressOre = 0;
@@ -197,6 +200,7 @@ public class BlockEntityMachineElectrolyser extends BlockEntityMachineBase
                 }
             }
         }
+        if (changed) markChanged();
 
         Direction facing = getBlockState().getValue(BlockMultiblockCore.FACING);
         if (leftStack != null) pour(facing.getOpposite(), true, speedLevel);
@@ -222,6 +226,7 @@ public class BlockEntityMachineElectrolyser extends BlockEntityMachineBase
                 CrucibleUtil.pourFullStack(level, px, py, pz, 6, true, toCast, rate, impact);
 
         if (didPour != null) {
+            markChanged();
             float len =
                     Math.max(1F, worldPosition.getY() - (float) (Math.ceil(impact.y) - 0.875) + 2);
             if (left) {
@@ -394,6 +399,16 @@ public class BlockEntityMachineElectrolyser extends BlockEntityMachineBase
     }
 
     @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return tanks[0].joins(type) || tanks[3].joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
+    }
+
+    @Override
     public long getDemand(Fluid type, int pressure) {
         if (pressure != 0) return 0;
         long headroom = 0;
@@ -412,6 +427,7 @@ public class BlockEntityMachineElectrolyser extends BlockEntityMachineBase
         if (remaining > 0 && tanks[3].accepts(type)) {
             remaining -= tanks[3].fill(type, (int) Math.min(remaining, Integer.MAX_VALUE), true);
         }
+        if (remaining != amount) markChanged();
         return remaining;
     }
 
@@ -443,8 +459,9 @@ public class BlockEntityMachineElectrolyser extends BlockEntityMachineBase
             remaining -= tanks[1].drain((int) Math.min(remaining, Integer.MAX_VALUE), true);
         }
         if (remaining > 0 && tanks[2].provides(type) && tanks[2].getPressure() == pressure) {
-            tanks[2].drain((int) Math.min(remaining, Integer.MAX_VALUE), true);
+            remaining -= tanks[2].drain((int) Math.min(remaining, Integer.MAX_VALUE), true);
         }
+        if (remaining != amount) markChanged();
     }
 
     @Override

@@ -12,7 +12,7 @@
       "ingredient": "#c:dusts/coal"
     }
   ],
-  "order": 64,
+  "order": 16384,
   "output_fluids": [
     {
       "type": "hbm:heavyoil",

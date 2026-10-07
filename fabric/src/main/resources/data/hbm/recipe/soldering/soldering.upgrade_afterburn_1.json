@@ -10,7 +10,7 @@
       "ingredient": "hbm:circuit_capacitor"
     }
   ],
-  "order": 20,
+  "order": 5120,
   "output_items": [
     "hbm:upgrade_afterburn_1"
   ],

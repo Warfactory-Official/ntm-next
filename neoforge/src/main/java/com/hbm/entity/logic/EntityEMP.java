@@ -110,6 +110,7 @@ public class EntityEMP extends Entity {
         if (be instanceof IEnergyHandlerMK2 handler) {
 
             handler.setPower(0);
+            level().blockEntityChanged(pos);
             flag = true;
         }
 

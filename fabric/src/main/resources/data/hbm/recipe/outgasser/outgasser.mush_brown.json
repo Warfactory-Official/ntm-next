@@ -6,7 +6,7 @@
       "ingredient": "minecraft:brown_mushroom"
     }
   ],
-  "order": 10,
+  "order": 2560,
   "output_items": [
     "hbm:mush"
   ]

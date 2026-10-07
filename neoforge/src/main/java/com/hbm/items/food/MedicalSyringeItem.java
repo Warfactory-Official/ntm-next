@@ -8,6 +8,7 @@ import com.hbm.items.ModItems;
 import com.hbm.items.special.ItemCustomLore;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.potion.HbmPotion;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.InventoryUtil;
 import java.util.function.Supplier;
@@ -60,8 +61,8 @@ public final class MedicalSyringeItem extends ItemCustomLore {
     }
 
     private static void play(ServerLevel level, LivingEntity entity) {
-        level.playSound(
-                null,
+        EntitySounds.play(
+                entity,
                 entity.getX(),
                 entity.getY(),
                 entity.getZ(),
@@ -135,8 +136,8 @@ public final class MedicalSyringeItem extends ItemCustomLore {
             case CBT -> {
                 player.addEffect(new MobEffectInstance(HbmPotion.bang(), BANG_TICKS, 0));
                 stack.shrink(1);
-                server.playSound(
-                        null,
+                EntitySounds.play(
+                        player,
                         player.getX(),
                         player.getY(),
                         player.getZ(),

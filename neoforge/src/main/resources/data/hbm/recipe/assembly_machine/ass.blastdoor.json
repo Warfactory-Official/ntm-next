@@ -22,7 +22,7 @@
       "ingredient": "hbm:motor"
     }
   ],
-  "order": 64,
+  "order": 16384,
   "output_items": [
     "hbm:blast_door"
   ],

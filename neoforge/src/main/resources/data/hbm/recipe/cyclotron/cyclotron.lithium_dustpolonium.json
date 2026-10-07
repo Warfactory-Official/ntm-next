@@ -9,7 +9,7 @@
       "ingredient": "#c:dusts/polonium_210"
     }
   ],
-  "order": 8,
+  "order": 2048,
   "output_items": [
     "hbm:powder_astatine"
   ]

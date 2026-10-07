@@ -44,6 +44,7 @@ import com.hbm.neoforge.client.ctm.CtmLibModelDefinition;
 import com.hbm.packet.toserver.CrateOpenHeldPayload;
 import com.hbm.particle.HbmParticleGroups;
 import com.hbm.particle.HbmParticles;
+import com.hbm.registration.Reg;
 import com.hbm.render.loader.ObjMeshCache;
 import com.hbm.wiaj.CanneryClient;
 import com.hbm.wiaj.JarRenderState;
@@ -67,6 +68,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
@@ -109,14 +111,30 @@ public final class NuclearTechNeoForgeClient {
         CtmEngine ctm = CtmEngine.selected();
         if (ctm != CtmEngine.NONE) {
             modBus.addListener(
-                    (AddPackFindersEvent event) ->
-                            event.addPackFinders(
-                                    Library.id(ctm.directory()),
-                                    PackType.CLIENT_RESOURCES,
-                                    ctm.title(),
-                                    PackSource.BUILT_IN,
-                                    true,
-                                    Pack.Position.TOP));
+                    (AddPackFindersEvent event) -> {
+                        event.addPackFinders(
+                                Library.id(ctm.directory()),
+                                PackType.CLIENT_RESOURCES,
+                                ctm.title(),
+                                PackSource.BUILT_IN,
+                                true,
+                                Pack.Position.TOP);
+                        for (String namespace : Reg.addonNamespaces()) {
+                            if (ModList.get()
+                                    .getModFileById(namespace)
+                                    .getFile()
+                                    .getContents()
+                                    .containsFile(ctm.directory() + "/pack.mcmeta")) {
+                                event.addPackFinders(
+                                        Identifier.fromNamespaceAndPath(namespace, ctm.directory()),
+                                        PackType.CLIENT_RESOURCES,
+                                        ctm.title(),
+                                        PackSource.BUILT_IN,
+                                        true,
+                                        Pack.Position.TOP);
+                            }
+                        }
+                    });
         }
         if (ctm == CtmEngine.CONTINUITY) {
             HbmCtmLoader.register();
@@ -183,9 +201,6 @@ public final class NuclearTechNeoForgeClient {
                 (ClientPlayerNetworkEvent.LoggingOut event) -> QMAWClient.disconnected());
         NeoForge.EVENT_BUS.addListener(
                 (ClientPlayerNetworkEvent.LoggingOut event) -> CanneryClient.disconnected());
-        NeoForge.EVENT_BUS.addListener(
-                (ClientPlayerNetworkEvent.LoggingOut event) ->
-                        NTMFluidProperties.onClientDisconnect());
         NeoForge.EVENT_BUS.addListener(
                 (ClientPlayerNetworkEvent.LoggingOut event) -> OreGeneration.disconnect());
         NeoForge.EVENT_BUS.addListener(
@@ -288,9 +303,10 @@ public final class NuclearTechNeoForgeClient {
                                 .filter(NTMTokenFluidBase.class::isInstance)
                                 .forEach(
                                         fluid -> {
-                                            String path = NTMFluids.spritePath(fluid);
                                             Material material =
-                                                    new Material(Library.id("block/fluid/" + path));
+                                                    new Material(
+                                                            NTMFluids.sprite(
+                                                                    fluid, "block/fluid/", ""));
                                             event.register(
                                                     new FluidModel.Unbaked(
                                                             material, material, null, null, null),

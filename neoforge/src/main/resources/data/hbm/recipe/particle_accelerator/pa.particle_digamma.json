@@ -9,7 +9,7 @@
     }
   ],
   "momentum": 70000,
-  "order": 8,
+  "order": 2048,
   "output_items": [
     "hbm:particle_digamma"
   ]

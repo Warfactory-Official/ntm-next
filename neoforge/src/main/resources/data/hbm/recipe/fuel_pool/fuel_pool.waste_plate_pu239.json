@@ -8,7 +8,7 @@
       "ingredient": "hbm:waste_plate_pu239"
     }
   ],
-  "order": 12,
+  "order": 3072,
   "output_items": [
     "hbm:waste_plate_pu239"
   ]

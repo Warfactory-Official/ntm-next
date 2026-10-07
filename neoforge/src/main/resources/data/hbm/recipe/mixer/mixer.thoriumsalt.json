@@ -12,7 +12,7 @@
       "ingredient": "#c:dusts/thorium"
     }
   ],
-  "order": 31,
+  "order": 7936,
   "output_fluids": [
     {
       "type": "hbm:thorium_salt",

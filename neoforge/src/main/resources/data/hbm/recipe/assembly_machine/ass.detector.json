@@ -32,7 +32,7 @@
       "ingredient": "hbm:circuit_quantum"
     }
   ],
-  "order": 217,
+  "order": 55552,
   "output_items": [
     "hbm:pa_detector"
   ],

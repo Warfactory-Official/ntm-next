@@ -8,7 +8,7 @@
       "ingredient": "hbm:waste_thorium"
     }
   ],
-  "order": 2,
+  "order": 512,
   "output_items": [
     "hbm:waste_thorium"
   ]

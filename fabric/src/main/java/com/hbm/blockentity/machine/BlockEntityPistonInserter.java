@@ -62,8 +62,10 @@ public class BlockEntityPistonInserter extends BlockEntityMachineBase implements
 
             if (this.isRetracting && this.extend > 0) {
                 this.extend--;
+                this.markChanged();
             } else if (!this.isRetracting) {
                 this.extend++;
+                this.markChanged();
 
                 if (this.extend >= MAX_EXTEND) {
                     level.playSound(

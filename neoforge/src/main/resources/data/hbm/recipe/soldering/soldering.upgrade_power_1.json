@@ -10,7 +10,7 @@
       "ingredient": "hbm:circuit_capacitor"
     }
   ],
-  "order": 18,
+  "order": 4608,
   "output_items": [
     "hbm:upgrade_power_1"
   ],

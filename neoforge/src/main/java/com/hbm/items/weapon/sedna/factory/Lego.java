@@ -24,6 +24,7 @@ import com.hbm.particle.helper.ParticleCreators;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationSequence;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.stats.ModStats;
 import com.hbm.util.GameTime;
@@ -97,27 +98,25 @@ public class Lego {
                     int mode = ItemGunBaseNT.getMode(stack, 0);
                     ItemGunBaseNT.setMode(stack, index, 1 - mode);
                     if (mode == 0)
-                        entity.level()
-                                .playSound(
-                                        null,
-                                        entity.getX(),
-                                        entity.getY(),
-                                        entity.getZ(),
-                                        ModSounds.WEAPON_SWITCH_MODE_1.get(),
-                                        SoundSource.PLAYERS,
-                                        1F,
-                                        1F);
+                        EntitySounds.play(
+                                entity,
+                                entity.getX(),
+                                entity.getY(),
+                                entity.getZ(),
+                                ModSounds.WEAPON_SWITCH_MODE_1.get(),
+                                SoundSource.PLAYERS,
+                                1F,
+                                1F);
                     else
-                        entity.level()
-                                .playSound(
-                                        null,
-                                        entity.getX(),
-                                        entity.getY(),
-                                        entity.getZ(),
-                                        ModSounds.WEAPON_SWITCH_MODE_2.get(),
-                                        SoundSource.PLAYERS,
-                                        1F,
-                                        1F);
+                        EntitySounds.play(
+                                entity,
+                                entity.getX(),
+                                entity.getY(),
+                                entity.getZ(),
+                                ModSounds.WEAPON_SWITCH_MODE_2.get(),
+                                SoundSource.PLAYERS,
+                                1F,
+                                1F);
                 }
             };
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_STANDARD_SMOKE =
@@ -304,16 +303,15 @@ public class Lego {
                 rec.getOnFire(stack).accept(stack, ctx);
 
                 if (rec.getFireSound(stack) != null)
-                    entity.level()
-                            .playSound(
-                                    null,
-                                    entity.getX(),
-                                    entity.getY(),
-                                    entity.getZ(),
-                                    rec.getFireSound(stack).get(),
-                                    SoundSource.PLAYERS,
-                                    rec.getFireVolume(stack),
-                                    rec.getFirePitch(stack));
+                    EntitySounds.play(
+                            entity,
+                            entity.getX(),
+                            entity.getY(),
+                            entity.getZ(),
+                            rec.getFireSound(stack).get(),
+                            SoundSource.PLAYERS,
+                            rec.getFireVolume(stack),
+                            rec.getFirePitch(stack));
 
                 int remaining = rec.getRoundsPerCycle(stack) - 1;
                 for (int i = 0; i < remaining; i++)

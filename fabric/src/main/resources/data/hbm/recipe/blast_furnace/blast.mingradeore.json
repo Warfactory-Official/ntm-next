@@ -3,7 +3,7 @@
   "duration": 1200,
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/copper"
+      "ingredient": "#c:ores/copper"
     },
     {
       "count": 6,
@@ -11,7 +11,7 @@
     }
   ],
   "name": "blast.mingradeOre",
-  "order": 8,
+  "order": 2560,
   "output_items": [
     {
       "count": 6,

@@ -35,7 +35,7 @@ public class BlockLandmineAP extends BlockLandmine {
         int top =
                 Math.min(
                         level.getHeight(Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ()) - 1,
-                        level.getMaxY() - 1);
+                        level.getMaxY());
         BlockPos.MutableBlockPos scan = new BlockPos.MutableBlockPos(pos.getX(), top, pos.getZ());
         for (int y = top; y >= pos.getY() + 2; y--) {
             scan.setY(y);

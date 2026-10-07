@@ -33,32 +33,24 @@ public record FluidPipeModel() implements BlockModel<HFRWavefrontObject> {
         boolean pY = (mask & POS_Y) != 0, nY = (mask & NEG_Y) != 0;
         boolean pZ = (mask & POS_Z) != 0, nZ = (mask & NEG_Z) != 0;
 
-        return switch (mask) {
-            case 0 -> new String[] {"pX", "nX", "pY", "nY", "pZ", "nZ"};
-            case POS_X, NEG_X, POS_X | NEG_X -> new String[] {"pX", "nX"};
-            case POS_Y, NEG_Y, POS_Y | NEG_Y -> new String[] {"pY", "nY"};
-            case POS_Z, NEG_Z, POS_Z | NEG_Z -> new String[] {"pZ", "nZ"};
-            default -> {
-                String[] parts = new String[14];
-                int i = 0;
-                if (pX) parts[i++] = "pX";
-                if (nX) parts[i++] = "nX";
-                if (pY) parts[i++] = "pY";
-                if (nY) parts[i++] = "nY";
-                if (pZ) parts[i++] = "nZ";
-                if (nZ) parts[i++] = "pZ";
+        String[] parts = new String[14];
+        int i = 0;
+        if (pX) parts[i++] = "pX";
+        if (nX) parts[i++] = "nX";
+        if (pY) parts[i++] = "pY";
+        if (nY) parts[i++] = "nY";
+        if (pZ) parts[i++] = "nZ";
+        if (nZ) parts[i++] = "pZ";
 
-                if (!pX && !pY && !pZ) parts[i++] = "ppn";
-                if (!pX && !pY && !nZ) parts[i++] = "ppp";
-                if (!nX && !pY && !pZ) parts[i++] = "npn";
-                if (!nX && !pY && !nZ) parts[i++] = "npp";
-                if (!pX && !nY && !pZ) parts[i++] = "pnn";
-                if (!pX && !nY && !nZ) parts[i++] = "pnp";
-                if (!nX && !nY && !pZ) parts[i++] = "nnn";
-                if (!nX && !nY && !nZ) parts[i++] = "nnp";
-                yield Arrays.copyOf(parts, i);
-            }
-        };
+        if (!pX && !pY && !pZ) parts[i++] = "ppn";
+        if (!pX && !pY && !nZ) parts[i++] = "ppp";
+        if (!nX && !pY && !pZ) parts[i++] = "npn";
+        if (!nX && !pY && !nZ) parts[i++] = "npp";
+        if (!pX && !nY && !pZ) parts[i++] = "pnn";
+        if (!pX && !nY && !nZ) parts[i++] = "pnp";
+        if (!nX && !nY && !pZ) parts[i++] = "nnn";
+        if (!nX && !nY && !nZ) parts[i++] = "nnp";
+        return Arrays.copyOf(parts, i);
     }
 
     public static String[] partsFor(BlockState state) {

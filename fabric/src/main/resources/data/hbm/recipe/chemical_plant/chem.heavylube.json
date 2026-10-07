@@ -20,7 +20,7 @@
       "amount": 2000
     }
   ],
-  "order": 15,
+  "order": 3840,
   "output_fluids": [
     {
       "type": "hbm:lubricant",

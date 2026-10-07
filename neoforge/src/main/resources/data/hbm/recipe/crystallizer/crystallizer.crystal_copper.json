@@ -9,10 +9,10 @@
   ],
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/copper"
+      "ingredient": "#c:ores/copper"
     }
   ],
-  "order": 233,
+  "order": 60160,
   "output_items": [
     "hbm:crystal_copper"
   ],

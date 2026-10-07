@@ -152,6 +152,7 @@ public class BlockEntityMachineCyclotron extends BlockEntityMachineBase
             int convert = getCoolantConsumption();
             water.setFill(water.getFill() - convert);
             steam.setFill(steam.getFill() + convert);
+            markChanged();
 
             if (progress >= DURATION) {
                 process();
@@ -159,6 +160,7 @@ public class BlockEntityMachineCyclotron extends BlockEntityMachineBase
                 setChanged();
             }
         } else {
+            if (progress != 0) markChanged();
             progress = 0;
         }
 

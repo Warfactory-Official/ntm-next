@@ -90,6 +90,11 @@ public class BlockEntityCoreEmitter extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
+        long priorPower = power;
+        int priorWatts = watts;
+        long priorJoules = joules;
+        long priorPrev = prev;
+        int priorFill = tank.getFill();
         watts = Math.clamp(watts, 1, 100);
         long demand = MAX_POWER * watts / 2000;
 
@@ -117,7 +122,13 @@ public class BlockEntityCoreEmitter extends BlockEntityMachineBase
             prev = 0;
         }
 
-        setChanged();
+        if (power != priorPower
+                || watts != priorWatts
+                || joules != priorJoules
+                || prev != priorPrev
+                || tank.getFill() != priorFill) {
+            markChanged();
+        }
         networkPackNT(250);
     }
 
@@ -181,7 +192,10 @@ public class BlockEntityCoreEmitter extends BlockEntityMachineBase
 
     @Override
     public void addEnergy(Level level, BlockPos pos, long energy, Direction dir) {
-        if (dir.getOpposite() != getBlockState().getValue(CoreComponent.FACING)) joules += energy;
+        if (dir.getOpposite() != getBlockState().getValue(CoreComponent.FACING)) {
+            joules += energy;
+            markChanged();
+        }
     }
 
     @Override

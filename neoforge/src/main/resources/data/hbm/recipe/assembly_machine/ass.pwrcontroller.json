@@ -21,7 +21,7 @@
       "ingredient": "hbm:circuit_basic"
     }
   ],
-  "order": 249,
+  "order": 63744,
   "output_items": [
     "hbm:pwr_controller"
   ],

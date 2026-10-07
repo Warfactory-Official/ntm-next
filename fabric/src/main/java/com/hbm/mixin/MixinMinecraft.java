@@ -4,6 +4,7 @@
 package com.hbm.mixin;
 
 import com.hbm.client.Keybinds;
+import com.hbm.inventory.fluid.NTMFluidProperties;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,6 +14,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Minecraft.class)
 public class MixinMinecraft {
+    @Inject(method = "disconnect(Lnet/minecraft/client/gui/screens/Screen;ZZ)V", at = @At("TAIL"))
+    private void hbm$releaseFluidProperties(CallbackInfo ci) {
+        NTMFluidProperties.onClientDisconnect();
+    }
+
     @Inject(method = "startAttack", at = @At("HEAD"), cancellable = true)
     private void hbm$gunSuppressAttack(CallbackInfoReturnable<Boolean> cir) {
         if (Keybinds.isGunHeld() && Keybinds.isGunKey(Minecraft.getInstance().options.keyAttack)) {

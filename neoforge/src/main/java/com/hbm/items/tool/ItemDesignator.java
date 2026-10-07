@@ -6,6 +6,7 @@ package com.hbm.items.tool;
 import com.hbm.api.item.IDesignatorItem;
 import com.hbm.blocks.bomb.LaunchPad;
 import com.hbm.items.ModDataComponents;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
@@ -39,8 +40,8 @@ public class ItemDesignator extends Item implements IDesignatorItem {
                         IDesignatorItem.pack(pos.getX(), pos.getZ()));
         Player player = context.getPlayer();
         if (player != null) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.getX(),
                     player.getY(),
                     player.getZ(),

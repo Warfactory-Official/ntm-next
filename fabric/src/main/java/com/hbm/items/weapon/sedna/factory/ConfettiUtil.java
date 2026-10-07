@@ -13,6 +13,7 @@ import com.hbm.entity.mob.botprime.EntityBOTPrimeBase;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.particle.ParticleGiblet;
 import com.hbm.particle.helper.ParticleCreators;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -64,8 +65,8 @@ public final class ConfettiUtil {
                         50);
         ParticleCreators.ashes(level, entity, amount, 0.125F);
         ParticleCreators.skeleton(level, entity, brightness);
-        level.playSound(
-                null,
+        EntitySounds.play(
+                entity,
                 entity.getX(),
                 entity.getY(),
                 entity.getZ(),
@@ -84,16 +85,15 @@ public final class ConfettiUtil {
         if (entity instanceof AbstractSkeleton) return;
 
         ParticleCreators.giblets(entity.level(), entity, type, 0);
-        entity.level()
-                .playSound(
-                        null,
-                        entity.getX(),
-                        entity.getY(),
-                        entity.getZ(),
-                        SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR,
-                        SoundSource.HOSTILE,
-                        2.0F,
-                        0.95F + entity.getRandom().nextFloat() * 0.2F);
+        EntitySounds.play(
+                entity,
+                entity.getX(),
+                entity.getY(),
+                entity.getZ(),
+                SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR,
+                SoundSource.HOSTILE,
+                2.0F,
+                0.95F + entity.getRandom().nextFloat() * 0.2F);
     }
 
     private static int gibType(LivingEntity entity) {

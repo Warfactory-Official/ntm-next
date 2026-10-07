@@ -19,7 +19,7 @@
       "ingredient": "#c:dusts/fluorite"
     }
   ],
-  "order": 65,
+  "order": 16640,
   "output_fluids": [
     {
       "type": "hbm:pain",

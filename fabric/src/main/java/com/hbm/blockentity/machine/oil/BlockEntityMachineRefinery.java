@@ -257,6 +257,7 @@ public class BlockEntityMachineRefinery extends BlockEntityMachineBase
                 hasFuel = true;
             }
         }
+        if (hasFuel) markChanged();
         if (!hasFuel || !(level instanceof ServerLevel server)) return;
 
         AABB box =
@@ -365,6 +366,7 @@ public class BlockEntityMachineRefinery extends BlockEntityMachineBase
         }
 
         isOn = true;
+        markChanged();
         tanks[0].setFill(tanks[0].getFill() - 100);
         for (int i = 0; i < outputs.length; i++) {
             tanks[i + 1].setFill((int) (tanks[i + 1].getFill() + outputs[i].amount()));

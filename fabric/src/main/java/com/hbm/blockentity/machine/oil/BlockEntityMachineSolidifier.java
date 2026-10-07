@@ -90,7 +90,7 @@ public class BlockEntityMachineSolidifier extends BlockEntityMachineBase
     @Override
     public void tickServer() {
         power += ItemEnergyTransfer.extract(this, SLOT_BATTERY, MAX_POWER - power, false);
-        tank.setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory);
+        if (tank.setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory)) markChanged();
 
         upgradeManager.scan(this, SLOT_UPGRADE_START, SLOT_UPGRADE_END);
         int speed = upgradeManager.getLevel(UpgradeType.SPEED);

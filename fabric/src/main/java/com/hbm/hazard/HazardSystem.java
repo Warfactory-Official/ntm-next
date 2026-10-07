@@ -14,6 +14,7 @@ import com.hbm.hazard.type.IHazardType;
 import com.hbm.inventory.SlotDeltaBuffer;
 import com.hbm.items.ModDataComponents;
 import com.hbm.platform.FabricServerEvents;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.TickPhase;
 import java.util.*;
@@ -83,6 +84,7 @@ public final class HazardSystem {
     private static final SlotDeltaBuffer inventoryDeltas = new SlotDeltaBuffer();
     private static volatile boolean cachesDirty;
     private static Map<Item, HazardData> codeItems = Map.of();
+    private static final List<Runnable> ADDON_CONTENT = new ArrayList<>();
     private static Map<TagKey<Item>, HazardData> codeTags = Map.of();
     private static final Executor EXECUTOR = ForkJoinPool.commonPool();
     private static volatile CompletableFuture<Void> scanFuture =
@@ -94,9 +96,15 @@ public final class HazardSystem {
         FabricServerEvents.onServerTickPost(HazardSystem::onServerTick);
     }
 
+    public static void addon(Runnable content) {
+        FabricRegistrar.assertOpen("HazardSystem.addon");
+        ADDON_CONTENT.add(content);
+    }
+
     public static void registerContent() {
         HazardRegistry.registerTrafos();
         HazardRegistry.registerItems();
+        ADDON_CONTENT.forEach(Runnable::run);
         codeItems = Map.copyOf(itemMap);
         codeTags = Map.copyOf(tagMap);
     }

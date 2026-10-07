@@ -183,6 +183,7 @@ public final class LogicBlockActions {
                                 Component.translatable("chat.logicBlock.lowPowerWarningLocking")
                                         .withStyle(ChatFormatting.RESET)));
         tile.phase++;
+        tile.markChanged();
 
         for (Direction direction : Direction.VALUES) {
             BlockEntity neighbor = level.getBlockEntity(pos.relative(direction));
@@ -209,18 +210,7 @@ public final class LogicBlockActions {
 
         BlockPos pos = tile.getBlockPos();
         BlockPos chargePos = pos.above();
-        if (tile.phase == 0) {
-            level.setBlockAndUpdate(
-                    chargePos,
-                    ModBlocks.CHARGE_C4
-                            .get()
-                            .defaultBlockState()
-                            .setValue(BlockChargeBase.FACING, Direction.UP));
-            if (level.getBlockEntity(chargePos) instanceof BlockEntityCharge charge) {
-                charge.timer = 1200;
-                charge.changed();
-            }
-        }
+        if (tile.phase == 0) craneCharge(level, chargePos, 1200);
 
         if (tile.phase >= 1) {
             if (level.getBlockEntity(chargePos) instanceof BlockEntityCharge charge) {
@@ -228,6 +218,22 @@ public final class LogicBlockActions {
             }
             level.setBlockAndUpdate(pos, hbmBlock("block_steel").defaultBlockState());
         }
+    }
+
+    static BlockEntityCharge craneCharge(ServerLevel level, BlockPos chargePos, int timer) {
+        BlockState state =
+                ModBlocks.CHARGE_C4
+                        .get()
+                        .defaultBlockState()
+                        .setValue(BlockChargeBase.FACING, Direction.UP);
+        boolean placed = level.getBlockState(chargePos) != state;
+        if (placed) level.setBlockAndUpdate(chargePos, state);
+        BlockEntityCharge charge = (BlockEntityCharge) level.getBlockEntity(chargePos);
+        if (placed) {
+            charge.timer = timer;
+            charge.changed();
+        }
+        return charge;
     }
 
     private static void aberrator(BlockEntityLogicBlock tile) {

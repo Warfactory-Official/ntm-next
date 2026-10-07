@@ -14,7 +14,7 @@
       "ingredient": "hbm:lead_gavel"
     }
   ],
-  "order": 5,
+  "order": 1280,
   "output_items": [
     "hbm:diamond_gavel"
   ]

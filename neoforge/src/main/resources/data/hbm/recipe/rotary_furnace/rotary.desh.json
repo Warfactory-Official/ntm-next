@@ -12,7 +12,7 @@
       "ingredient": "hbm:powder_desh_ready"
     }
   ],
-  "order": 5,
+  "order": 1280,
   "output_material": {
     "amount": 72,
     "material": "workers_alloy"

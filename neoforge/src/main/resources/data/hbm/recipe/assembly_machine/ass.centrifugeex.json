@@ -28,7 +28,7 @@
     }
   ],
   "name": "ass.centrifugeEx",
-  "order": 98,
+  "order": 25088,
   "output_items": [
     "hbm:machine_centrifuge"
   ],

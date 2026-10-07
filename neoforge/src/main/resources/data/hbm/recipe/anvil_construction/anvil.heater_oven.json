@@ -14,7 +14,7 @@
       "ingredient": "#c:ingots/copper"
     }
   ],
-  "order": 63,
+  "order": 16128,
   "output_items": [
     "hbm:heater_oven"
   ],

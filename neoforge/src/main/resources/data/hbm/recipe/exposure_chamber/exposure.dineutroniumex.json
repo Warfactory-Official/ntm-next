@@ -15,7 +15,7 @@
     }
   ],
   "name": "exposure.dineutroniumEx",
-  "order": 4,
+  "order": 1024,
   "output_items": [
     "hbm:ingot_dineutronium"
   ]

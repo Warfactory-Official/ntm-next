@@ -6,64 +6,134 @@ package com.hbm.saveddata.satellites;
 import com.hbm.itempool.ItemPools;
 import com.hbm.items.ModItems;
 import com.hbm.lib.Library;
+import com.hbm.registration.OpenRegistry;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
+import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.util.StringRepresentable;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.Util;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.jspecify.annotations.Nullable;
 
-public enum SatelliteType implements StringRepresentable {
-    MAPPER("mapper", "satellite_spy", SatelliteMapper::new, SatelliteMapper.CODEC, null),
-    SCANNER("scanner", "satellite_scanner", SatelliteScanner::new, SatelliteScanner.CODEC, null),
-    RADAR("radar", "satellite_radar", SatelliteRadar::new, SatelliteRadar.CODEC, null),
-    DEATH_RAY(
-            "death_ray",
-            "satellite_death_ray",
-            SatelliteDeathRay::new,
-            SatelliteDeathRay.CODEC,
-            null),
-    RESONATOR(
-            "resonator",
-            "satellite_xenium_resonator",
-            SatelliteResonator::new,
-            SatelliteResonator.CODEC,
-            null),
-    RELAY("relay", "satellite_relay", SatelliteRelay::new, SatelliteRelay.CODEC, null),
-    MINER(
-            "miner",
-            "satellite_miner_astro",
-            SatelliteMiner::new,
-            SatelliteMiner.CODEC,
-            ItemPools.POOL_SAT_MINER),
-    LUNAR_MINER(
-            "lunar_miner",
-            "satellite_miner_lunar",
-            SatelliteLunarMiner::new,
-            SatelliteLunarMiner.CODEC,
-            ItemPools.POOL_SAT_LUNAR),
-    HORIZONS("horizons", "sat_gerald", SatelliteHorizons::new, SatelliteHorizons.CODEC, null),
-    PRECISION_LASER(
-            "precision_laser",
-            "satellite_precision_laser",
-            SatellitePrecisionLaser::new,
-            SatellitePrecisionLaser.CODEC,
-            null),
-    DETECTOR(
-            "detector",
-            "satellite_detector",
-            SatelliteDetector::new,
-            SatelliteDetector.CODEC,
-            null),
-    RAY_SCAN("ray_scan", "satellite_ray_scan", SatelliteRayScan::new, SatelliteRayScan.CODEC, null),
-    SCIENCE("science", "satellite_science", SatelliteScience::new, SatelliteScience.CODEC, null);
+public final class SatelliteType {
 
-    public static final Codec<SatelliteType> CODEC =
-            StringRepresentable.fromEnum(SatelliteType::values);
+    private static final OpenRegistry<SatelliteType> REGISTRY =
+            new OpenRegistry<>("satellite", SatelliteType::getSerializedName);
+
+    public static final SatelliteType MAPPER =
+            ntm(
+                    "mapper",
+                    "satellite_spy",
+                    "NOT_A_SPY_SATELLITE_:)",
+                    SatelliteMapper::new,
+                    SatelliteMapper.CODEC,
+                    null);
+    public static final SatelliteType SCANNER =
+            ntm(
+                    "scanner",
+                    "satellite_scanner",
+                    "DEPTH_SCANNER",
+                    SatelliteScanner::new,
+                    SatelliteScanner.CODEC,
+                    null);
+    public static final SatelliteType RADAR =
+            ntm(
+                    "radar",
+                    "satellite_radar",
+                    "LEO_RADAR",
+                    SatelliteRadar::new,
+                    SatelliteRadar.CODEC,
+                    null);
+    public static final SatelliteType DEATH_RAY =
+            ntm(
+                    "death_ray",
+                    "satellite_death_ray",
+                    "ORBITAL_FUN_PLATFORM_:)",
+                    SatelliteDeathRay::new,
+                    SatelliteDeathRay.CODEC,
+                    null);
+    public static final SatelliteType RESONATOR =
+            ntm(
+                    "resonator",
+                    "satellite_xenium_resonator",
+                    "XEN_RELAY",
+                    SatelliteResonator::new,
+                    SatelliteResonator.CODEC,
+                    null);
+    public static final SatelliteType RELAY =
+            ntm(
+                    "relay",
+                    "satellite_relay",
+                    "DIMENSIONAL_RELAY",
+                    SatelliteRelay::new,
+                    SatelliteRelay.CODEC,
+                    null);
+    public static final SatelliteType MINER =
+            ntm(
+                    "miner",
+                    "satellite_miner_astro",
+                    "ASTEROID_MINER",
+                    SatelliteMiner::new,
+                    SatelliteMiner.CODEC,
+                    ItemPools.POOL_SAT_MINER);
+    public static final SatelliteType LUNAR_MINER =
+            ntm(
+                    "lunar_miner",
+                    "satellite_miner_lunar",
+                    "LUNAR_MINER",
+                    SatelliteLunarMiner::new,
+                    SatelliteLunarMiner.CODEC,
+                    ItemPools.POOL_SAT_LUNAR);
+    public static final SatelliteType HORIZONS =
+            ntm(
+                    "horizons",
+                    "sat_gerald",
+                    "PAYLOAD_UNKNOWN",
+                    SatelliteHorizons::new,
+                    SatelliteHorizons.CODEC,
+                    null);
+    public static final SatelliteType PRECISION_LASER =
+            ntm(
+                    "precision_laser",
+                    "satellite_precision_laser",
+                    "ORBITAL_TATOO_REMOVER",
+                    SatellitePrecisionLaser::new,
+                    SatellitePrecisionLaser.CODEC,
+                    null);
+    public static final SatelliteType DETECTOR =
+            ntm(
+                    "detector",
+                    "satellite_detector",
+                    "UWB_EMISSION_DETECTOR",
+                    SatelliteDetector::new,
+                    SatelliteDetector.CODEC,
+                    null);
+    public static final SatelliteType RAY_SCAN =
+            ntm(
+                    "ray_scan",
+                    "satellite_ray_scan",
+                    "NB_RAY_SCANNER",
+                    SatelliteRayScan::new,
+                    SatelliteRayScan.CODEC,
+                    null);
+    public static final SatelliteType SCIENCE =
+            ntm(
+                    "science",
+                    "satellite_science",
+                    "SCIENCE_PROBE",
+                    SatelliteScience::new,
+                    SatelliteScience.CODEC,
+                    null);
+
+    public static final Codec<SatelliteType> CODEC = REGISTRY.codec();
+    public static final StreamCodec<ByteBuf, SatelliteType> STREAM_CODEC = REGISTRY.streamCodec();
     public static final Codec<Satellite> DISPATCH_CODEC =
             CODEC.dispatch("type", Satellite::type, SatelliteType::codec);
     public static final Codec<Satellite> PERSISTED_CODEC =
@@ -77,23 +147,50 @@ public enum SatelliteType implements StringRepresentable {
                                     .apply(i, Satellite::restore));
 
     private final String name;
-    private final String itemPath;
+    private final Identifier itemId;
+    private final String orbitName;
     private final Supplier<? extends Satellite> factory;
     private final MapCodec<? extends Satellite> codec;
     private final @Nullable String cargo;
     private @Nullable Item resolved;
 
-    SatelliteType(
+    private SatelliteType(
             String name,
-            String itemPath,
+            Identifier itemId,
+            String orbitName,
             Supplier<? extends Satellite> factory,
             MapCodec<? extends Satellite> codec,
             @Nullable String cargo) {
         this.name = name;
-        this.itemPath = itemPath;
+        this.itemId = itemId;
+        this.orbitName = orbitName;
         this.factory = factory;
         this.codec = codec;
         this.cargo = cargo;
+    }
+
+    private static SatelliteType ntm(
+            String name,
+            String itemPath,
+            String orbitName,
+            Supplier<? extends Satellite> factory,
+            MapCodec<? extends Satellite> codec,
+            @Nullable String cargo) {
+        return register(name, Library.id(itemPath), orbitName, factory, codec, cargo);
+    }
+
+    public static SatelliteType register(
+            String name,
+            Identifier item,
+            String orbitName,
+            Supplier<? extends Satellite> factory,
+            MapCodec<? extends Satellite> codec,
+            @Nullable String cargo) {
+        return REGISTRY.add(new SatelliteType(name, item, orbitName, factory, codec, cargo));
+    }
+
+    public static List<SatelliteType> values() {
+        return REGISTRY.values();
     }
 
     public static @Nullable SatelliteType fromItem(Item item) {
@@ -120,39 +217,11 @@ public enum SatelliteType implements StringRepresentable {
     }
 
     public String orbitName() {
-        return switch (this) {
-            case MAPPER -> "NOT_A_SPY_SATELLITE_:)";
-            case SCANNER -> "DEPTH_SCANNER";
-            case RADAR -> "LEO_RADAR";
-            case DEATH_RAY -> "ORBITAL_FUN_PLATFORM_:)";
-            case RESONATOR -> "XEN_RELAY";
-            case RELAY -> "DIMENSIONAL_RELAY";
-            case MINER -> "ASTEROID_MINER";
-            case LUNAR_MINER -> "LUNAR_MINER";
-            case HORIZONS -> "PAYLOAD_UNKNOWN";
-            case PRECISION_LASER -> "ORBITAL_TATOO_REMOVER";
-            case DETECTOR -> "UWB_EMISSION_DETECTOR";
-            case RAY_SCAN -> "NB_RAY_SCANNER";
-            case SCIENCE -> "SCIENCE_PROBE";
-        };
+        return orbitName;
     }
 
     public String stationNameKey() {
-        return switch (this) {
-            case MAPPER -> "item.hbm.satellite_spy";
-            case SCANNER -> "item.hbm.satellite_scanner";
-            case RADAR -> "item.hbm.satellite_radar";
-            case DEATH_RAY -> "item.hbm.satellite_death_ray";
-            case RESONATOR -> "item.hbm.satellite_xenium_resonator";
-            case RELAY -> "item.hbm.satellite_relay";
-            case MINER -> "item.hbm.satellite_miner_astro";
-            case LUNAR_MINER -> "item.hbm.satellite_miner_lunar";
-            case HORIZONS -> "item.hbm.sat_gerald";
-            case PRECISION_LASER -> "item.hbm.satellite_precision_laser";
-            case DETECTOR -> "item.hbm.satellite_detector";
-            case RAY_SCAN -> "item.hbm.satellite_ray_scan";
-            case SCIENCE -> "item.hbm.satellite_science";
-        };
+        return Util.makeDescriptionId("item", itemId);
     }
 
     public MapCodec<? extends Satellite> codec() {
@@ -166,16 +235,19 @@ public enum SatelliteType implements StringRepresentable {
     public Item item() {
         Item cached = resolved;
         if (cached == null) {
-            cached = BuiltInRegistries.ITEM.getValue(Library.id(itemPath));
-            if (cached == Items.AIR)
-                throw new IllegalStateException(itemPath + " is not registered");
+            cached = BuiltInRegistries.ITEM.getValue(itemId);
+            if (cached == Items.AIR) throw new IllegalStateException(itemId + " is not registered");
             resolved = cached;
         }
         return cached;
     }
 
-    @Override
     public String getSerializedName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
         return name;
     }
 }

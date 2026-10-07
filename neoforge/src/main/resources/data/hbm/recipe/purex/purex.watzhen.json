@@ -19,7 +19,7 @@
     }
   ],
   "name_wrapper": "purex.recycle",
-  "order": 43,
+  "order": 11008,
   "output_fluids": [
     {
       "type": "hbm:watz_mud",

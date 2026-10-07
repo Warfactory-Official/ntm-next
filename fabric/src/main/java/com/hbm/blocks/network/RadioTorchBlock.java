@@ -4,11 +4,19 @@
 package com.hbm.blocks.network;
 
 import com.hbm.blockentity.network.BlockEntityRadioTorch;
+import com.hbm.blockentity.network.BlockEntityRadioTorchController;
+import com.hbm.blockentity.network.BlockEntityRadioTorchCounter;
+import com.hbm.blockentity.network.BlockEntityRadioTorchReader;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.capability.NtmContracts;
+import com.hbm.interfaces.ILookOverlay;
+import com.hbm.inventory.IGUIProvider;
+import com.hbm.util.InventoryUtil;
 import java.util.function.Consumer;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +40,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
-public final class RadioTorchBlock extends Block implements ITickingBlock {
+public final class RadioTorchBlock extends Block implements ITickingBlock, ILookOverlay {
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
@@ -53,7 +61,7 @@ public final class RadioTorchBlock extends Block implements ITickingBlock {
             case CONTROLLER -> NtmContracts.ROR_INTERACTIVE.at(level, support, state) != null;
             case COUNTER ->
                     state.isFaceSturdy(level, support, face)
-                            || NtmContracts.INVENTORY.at(level, support, state) != null;
+                            || InventoryUtil.containerAt(level, support) != null;
             default ->
                     state.isFaceSturdy(level, support, face)
                             || state.hasAnalogOutputSignal()
@@ -140,12 +148,60 @@ public final class RadioTorchBlock extends Block implements ITickingBlock {
         if (player.isShiftKeyDown()) return InteractionResult.PASS;
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (kind == Kind.COUNTER) {
-            if (!level.isClientSide() && blockEntity instanceof MenuProvider provider)
-                player.openMenu(provider);
+            if (!level.isClientSide() && blockEntity instanceof MenuProvider provider) {
+                IGUIProvider.openBlockMenu(player, provider, pos);
+            }
         } else if (level.isClientSide() && blockEntity != null) {
             OPEN_SCREEN.accept(blockEntity);
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public void buildLookOverlay(Level level, BlockPos pos, LookInfo info) {
+        if (!(level.getBlockEntity(pos) instanceof BlockEntityRadioTorch radio)) return;
+        info.titleOnly(getName(), 0xffff00, 0x404000);
+        switch (radio) {
+            case BlockEntityRadioTorchCounter counter -> {
+                for (int i = 0; i < BlockEntityRadioTorchCounter.FILTER_COUNT; i++) {
+                    if (counter.channels[i].isEmpty()) continue;
+                    info.line(
+                            Component.translatable(
+                                            "overlay.hbm.radio.freq_numbered",
+                                            i + 1,
+                                            counter.channels[i])
+                                    .withStyle(ChatFormatting.AQUA));
+                    info.line(
+                            Component.translatable(
+                                            "overlay.hbm.radio.signal_numbered",
+                                            i + 1,
+                                            counter.lastCount[i])
+                                    .withStyle(ChatFormatting.RED));
+                }
+            }
+            case BlockEntityRadioTorchReader reader -> {
+                for (int i = 0; i < reader.channels.length; i++) {
+                    if (reader.channels[i].isEmpty() || reader.names[i].isEmpty()) continue;
+                    info.line(
+                            Component.literal(reader.channels[i] + ": " + reader.names[i])
+                                    .withStyle(ChatFormatting.AQUA));
+                }
+            }
+            case BlockEntityRadioTorchController controller ->
+                    info.line(
+                            Component.translatable("overlay.hbm.radio.freq", controller.channel)
+                                    .withStyle(ChatFormatting.AQUA));
+            default -> {
+                if (!radio.channel.isEmpty()) {
+                    info.line(
+                            Component.translatable("overlay.hbm.radio.freq", radio.channel)
+                                    .withStyle(ChatFormatting.AQUA));
+                }
+                info.line(
+                        Component.translatable("overlay.hbm.radio.signal", radio.lastState)
+                                .withStyle(ChatFormatting.RED));
+            }
+        }
     }
 
     @Override

@@ -5,7 +5,7 @@
       "ingredient": "hbm:powder_lapis"
     }
   ],
-  "order": 90,
+  "order": 23040,
   "output_items": [
     "hbm:powder_cobalt_tiny"
   ]

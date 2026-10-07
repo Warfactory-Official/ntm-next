@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/cmbsteel"
     }
   ],
-  "order": 288,
+  "order": 73728,
   "output_items": [
     "hbm:powder_combine_steel"
   ]

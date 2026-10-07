@@ -146,11 +146,15 @@ public class BlockEntityBatteryREDD extends BlockEntityMachineBattery implements
     @Override
     public void usePower(long power) {
         bigPower = bigPower.subtract(BigInteger.valueOf(power));
+        if (power != 0) markChanged();
     }
 
     @Override
     public long transferPower(long power, boolean simulate) {
-        if (!simulate) bigPower = bigPower.add(BigInteger.valueOf(power));
+        if (!simulate) {
+            bigPower = bigPower.add(BigInteger.valueOf(power));
+            if (power != 0) markChanged();
+        }
         return 0L;
     }
 

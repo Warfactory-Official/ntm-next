@@ -22,13 +22,11 @@ import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
 import java.util.Random;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.ARGB;
-import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 
 public final class RocketFlameVisual
         implements EffectVisual<RocketFlameEffect>, SimpleDynamicVisual {
     private static final int SUBQUADS = 10;
-    private static final int LIGHT = LightCoordsUtil.pack(15, 0);
     private static final Material MATERIAL =
             SimpleMaterial.builder()
                     .transparency(Transparency.ORDER_INDEPENDENT_ADDITIVE)
@@ -69,7 +67,7 @@ public final class RocketFlameVisual
             add[i] = rand.nextFloat() * 0.3F;
             baseScale[i] = rand.nextFloat() * 0.5F + 0.1F;
             instances[i] = instancer.createInstance();
-            instances[i].overlay(OverlayTexture.NO_OVERLAY).light(LIGHT);
+            instances[i].overlay(OverlayTexture.NO_OVERLAY).light(effect.color.light());
         }
         writeFrame(0F);
     }
@@ -98,9 +96,9 @@ public final class RocketFlameVisual
         int a = clamp8(alpha);
         for (int i = 0; i < SUBQUADS; i++) {
             float scale = (baseScale[i] + t * 2F) * effect.baseScale;
-            int r = clamp8(dark + add[i]);
-            int g = clamp8(0.6F * dark + add[i]);
-            int b = clamp8(add[i]);
+            int r = clamp8(effect.color.red(dark, add[i]));
+            int g = clamp8(effect.color.green(dark, add[i]));
+            int b = clamp8(effect.color.blue(dark, add[i]));
             int argb = ARGB.color(a, r, g, b);
             instances[i]
                     .position(px + offX[i] * spread, py + offY[i] * spread, pz + offZ[i] * spread)

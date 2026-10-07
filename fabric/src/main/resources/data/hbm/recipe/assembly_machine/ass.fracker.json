@@ -39,7 +39,7 @@
       "ingredient": "hbm:circuit_capacitor"
     }
   ],
-  "order": 112,
+  "order": 28672,
   "output_items": [
     "hbm:machine_fracking_tower"
   ],

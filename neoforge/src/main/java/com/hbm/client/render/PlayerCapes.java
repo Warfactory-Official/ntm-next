@@ -3,11 +3,14 @@
 
 package com.hbm.client.render;
 
+import com.hbm.lib.CapeRoster;
 import com.hbm.lib.Library;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.ClientAsset;
+import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.Nullable;
 
 public final class PlayerCapes {
@@ -50,6 +53,9 @@ public final class PlayerCapes {
                     entry("0b399a4a-8545-45a1-be3d-ece70d7d48e9", "capealcater"),
                     entry("42ee978c-442a-4cd8-95b6-29e469b6df10", "capejame"));
 
+    private static final Map<Identifier, ClientAsset.ResourceTexture> ADDON_TEXTURES =
+            new ConcurrentHashMap<>();
+
     private PlayerCapes() {}
 
     private static ClientAsset.ResourceTexture cape(String basename) {
@@ -68,6 +74,9 @@ public final class PlayerCapes {
         ClientAsset.ResourceTexture assigned = ASSIGNED.get(uuid);
         if (assigned != null) return assigned;
         if (CONTRIBUTORS.contains(uuid)) return WIKI;
+        Identifier addon = CapeRoster.addon(uuid);
+        if (addon != null)
+            return ADDON_TEXTURES.computeIfAbsent(addon, ClientAsset.ResourceTexture::new);
         return name.startsWith("Player") ? TEST : null;
     }
 }

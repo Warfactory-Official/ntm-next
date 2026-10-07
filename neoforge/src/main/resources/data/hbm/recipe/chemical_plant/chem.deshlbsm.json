@@ -19,7 +19,7 @@
     }
   ],
   "name": "chem.deshLbsm",
-  "order": 35,
+  "order": 8960,
   "output_items": [
     "hbm:ingot_desh"
   ],

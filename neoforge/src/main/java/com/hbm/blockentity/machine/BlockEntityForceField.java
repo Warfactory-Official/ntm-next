@@ -15,6 +15,7 @@ import com.hbm.inventory.container.MenuForceField;
 import com.hbm.items.ModItems;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
@@ -89,6 +90,10 @@ public class BlockEntityForceField extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
+        long prevPower = power;
+        int prevHealth = health;
+        int prevCooldown = cooldown;
+        int prevBlink = blink;
         int radiusStacked = 0;
         int healthStacked = 0;
         radius = MachineData.FORCE_FIELD_BASE_RADIUS.get();
@@ -123,6 +128,11 @@ public class BlockEntityForceField extends BlockEntityMachineBase
         if (runField()) power -= powerCons();
 
         if (power < powerCons()) power = 0;
+
+        if (power != prevPower
+                || health != prevHealth
+                || cooldown != prevCooldown
+                || blink != prevBlink) markChanged();
 
         networkPackNT(500);
     }
@@ -187,8 +197,8 @@ public class BlockEntityForceField extends BlockEntityMachineBase
             } else if (outLegacy.contains(id) && !out) {
                 bounce(entity, rad + 1, -1);
                 if (!isMuffled()) {
-                    level.playSound(
-                            null,
+                    EntitySounds.play(
+                            entity,
                             entity.getX(),
                             entity.getY(),
                             entity.getZ(),
@@ -201,8 +211,8 @@ public class BlockEntityForceField extends BlockEntityMachineBase
                 if (!level.isClientSide()) damage(impact(entity));
             } else if (inLegacy.contains(id) && out) {
                 bounce(entity, rad - 1, 1);
-                level.playSound(
-                        null,
+                EntitySounds.play(
+                        entity,
                         entity.getX(),
                         entity.getY(),
                         entity.getZ(),

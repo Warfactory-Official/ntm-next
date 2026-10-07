@@ -5,6 +5,7 @@
 package com.hbm.items.machine;
 
 import com.hbm.items.ModDataComponents;
+import com.hbm.items.ModItems;
 import com.hbm.util.function.Function.FunctionLinear;
 import com.hbm.util.function.Function.FunctionQuadratic;
 import com.hbm.util.function.Function.FunctionSqrt;
@@ -24,21 +25,21 @@ public class ItemWatzPellet extends Item {
     public static final int SOURCE_LIGHT = 0xD2D2D2;
     public static final int SOURCE_DARK = 0x333333;
     public final boolean depleted;
-    public final EnumWatzType type;
+    public final WatzFuel type;
 
-    public ItemWatzPellet(Properties properties, boolean depleted, EnumWatzType type) {
+    public ItemWatzPellet(Properties properties, boolean depleted, WatzFuel type) {
         super(properties);
         this.depleted = depleted;
         this.type = type;
     }
 
-    public static String spriteName(String item, EnumWatzType type) {
+    public static String spriteName(String item, WatzFuel type) {
         return item + "." + type.name().toLowerCase(Locale.US);
     }
 
     public static double getYield(ItemStack stack) {
         Double stored = stack.get(ModDataComponents.WATZ_YIELD.get());
-        return stored != null ? stored : typeOf(stack).yield;
+        return stored != null ? stored : typeOf(stack).yield();
     }
 
     public static void setYield(ItemStack stack, double yield) {
@@ -46,11 +47,19 @@ public class ItemWatzPellet extends Item {
     }
 
     public static double getEnrichment(ItemStack stack) {
-        return getYield(stack) / typeOf(stack).yield;
+        return getYield(stack) / typeOf(stack).yield();
     }
 
-    public static EnumWatzType typeOf(ItemStack stack) {
+    public static WatzFuel typeOf(ItemStack stack) {
         return ((ItemWatzPellet) stack.getItem()).type;
+    }
+
+    public static boolean isFresh(ItemStack stack) {
+        return stack.getItem() instanceof ItemWatzPellet pellet && !pellet.depleted;
+    }
+
+    public static boolean isDepleted(ItemStack stack) {
+        return stack.getItem() instanceof ItemWatzPellet pellet && pellet.depleted;
     }
 
     public static int desaturate(int color) {
@@ -97,7 +106,7 @@ public class ItemWatzPellet extends Item {
             TooltipFlag flag) {
         if (depleted) return;
 
-        EnumWatzType num = typeOf(stack);
+        WatzFuel num = typeOf(stack);
 
         adder.accept(
                 Component.translatable(
@@ -106,37 +115,62 @@ public class ItemWatzPellet extends Item {
                                         Locale.US, "%.1f", (1D - getEnrichment(stack)) * 100D))
                         .withStyle(ChatFormatting.GREEN));
 
-        if (num.passive > 0) {
+        if (num.passive() > 0) {
             adder.accept(
-                    Component.translatable("desc.item.watzPellet.baseFissionRate", num.passive));
+                    Component.translatable("desc.item.watzPellet.baseFissionRate", num.passive()));
             adder.accept(
                     Component.translatable("desc.item.watzPellet.selfIgniting")
                             .withStyle(ChatFormatting.RED));
         }
-        if (num.heatEmission > 0)
-            adder.accept(Component.translatable("desc.shared.heatPerFlux", num.heatEmission));
-        if (num.burnFunc != null) {
+        if (num.heatEmission() > 0)
+            adder.accept(Component.translatable("desc.shared.heatPerFlux", num.heatEmission()));
+        Function burnFunc = num.burnFunc();
+        if (burnFunc != null) {
             adder.accept(
                     Component.translatable(
-                            "desc.shared.reactionFunction", num.burnFunc.getLabelForFuel()));
+                            "desc.shared.reactionFunction", burnFunc.getLabelForFuel()));
             adder.accept(
-                    Component.translatable(
-                            "desc.shared.fuelType", num.burnFunc.getDangerFromFuel()));
+                    Component.translatable("desc.shared.fuelType", burnFunc.getDangerFromFuel()));
         }
-        if (num.heatDiv != null) {
+        Function heatDiv = num.heatDiv();
+        if (heatDiv != null) {
             adder.accept(
                     Component.translatable(
-                            "desc.item.watzPellet.thermalMultiplier",
-                            num.heatDiv.getLabelForFuel()));
+                            "desc.item.watzPellet.thermalMultiplier", heatDiv.getLabelForFuel()));
         }
-        if (num.absorbFunc != null) {
+        Function absorbFunc = num.absorbFunc();
+        if (absorbFunc != null) {
             adder.accept(
                     Component.translatable(
-                            "desc.item.watzPellet.fluxCapture", num.absorbFunc.getLabelForFuel()));
+                            "desc.item.watzPellet.fluxCapture", absorbFunc.getLabelForFuel()));
         }
     }
 
-    public enum EnumWatzType {
+    public interface WatzFuel {
+        String name();
+
+        double yield();
+
+        int colorLight();
+
+        int colorDark();
+
+        double passive();
+
+        double heatEmission();
+
+        double mudContent();
+
+        @Nullable Function burnFunc();
+
+        @Nullable Function heatDiv();
+
+        @Nullable Function absorbFunc();
+
+        ItemStack depletedStack();
+    }
+
+    public enum EnumWatzType implements WatzFuel {
         SCHRABIDIUM(
                 0x32FFFF,
                 0x005C5C,
@@ -257,6 +291,56 @@ public class ItemWatzPellet extends Item {
             this.burnFunc = burnFunction;
             this.heatDiv = heatDivisor;
             this.absorbFunc = absorbFunction;
+        }
+
+        @Override
+        public double yield() {
+            return yield;
+        }
+
+        @Override
+        public int colorLight() {
+            return colorLight;
+        }
+
+        @Override
+        public int colorDark() {
+            return colorDark;
+        }
+
+        @Override
+        public double passive() {
+            return passive;
+        }
+
+        @Override
+        public double heatEmission() {
+            return heatEmission;
+        }
+
+        @Override
+        public double mudContent() {
+            return mudContent;
+        }
+
+        @Override
+        public @Nullable Function burnFunc() {
+            return burnFunc;
+        }
+
+        @Override
+        public @Nullable Function heatDiv() {
+            return heatDiv;
+        }
+
+        @Override
+        public @Nullable Function absorbFunc() {
+            return absorbFunc;
+        }
+
+        @Override
+        public ItemStack depletedStack() {
+            return ModItems.WATZ_PELLET_DEPLETED.stack(this);
         }
     }
 }

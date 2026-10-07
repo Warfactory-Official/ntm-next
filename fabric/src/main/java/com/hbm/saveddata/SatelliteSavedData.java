@@ -4,6 +4,7 @@
 package com.hbm.saveddata;
 
 import com.hbm.lib.Library;
+import com.hbm.registration.OverridePoint;
 import com.hbm.saveddata.satellites.Satellite;
 import com.hbm.saveddata.satellites.SatelliteType;
 import com.mojang.serialization.Codec;
@@ -46,6 +47,21 @@ public class SatelliteSavedData extends SavedData {
         return level.getDataStorage().computeIfAbsent(TYPE);
     }
 
+    public static final OverridePoint<Locator> AT =
+            OverridePoint.of(Library.id("satellites_at"), (level, x, z) -> get(level));
+
+    public static final OverridePoint<Runnable> CHANGED =
+            OverridePoint.of(Library.id("satellites_changed"), () -> {});
+
+    @FunctionalInterface
+    public interface Locator {
+        SatelliteSavedData at(ServerLevel level, int x, int z);
+    }
+
+    public static SatelliteSavedData at(ServerLevel level, int x, int z) {
+        return AT.get().at(level, x, z);
+    }
+
     private static SatelliteSavedData fromEntries(List<Entry> entries) {
         SatelliteSavedData data = new SatelliteSavedData();
         for (Entry entry : entries) data.sats.put(entry.freq(), entry.sat());
@@ -63,11 +79,13 @@ public class SatelliteSavedData extends SavedData {
     public void put(int freq, Satellite sat) {
         sats.put(freq, sat);
         setDirty();
+        CHANGED.get().run();
     }
 
     public boolean descend(int freq) {
         if (sats.remove(freq) == null) return false;
         setDirty();
+        CHANGED.get().run();
         return true;
     }
 

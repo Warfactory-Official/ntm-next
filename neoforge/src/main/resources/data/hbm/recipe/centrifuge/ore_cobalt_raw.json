@@ -1,0 +1,30 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#c:raw_materials/cobalt"
+    }
+  ],
+  "order": 13056,
+  "output_items": [
+    {
+      "chance": 0.667,
+      "count": 2,
+      "id": "hbm:powder_cobalt"
+    },
+    {
+      "chance": 0.667,
+      "id": "hbm:powder_iron"
+    },
+    {
+      "chance": 0.667,
+      "id": "hbm:powder_copper"
+    },
+    {
+      "chance": 0.667,
+      "id": "minecraft:gravel"
+    }
+  ],
+  "power": 200
+}

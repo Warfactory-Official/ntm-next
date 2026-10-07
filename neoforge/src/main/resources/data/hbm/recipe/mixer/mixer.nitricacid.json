@@ -12,7 +12,7 @@
       "ingredient": "#c:dusts/saltpeter"
     }
   ],
-  "order": 20,
+  "order": 5120,
   "output_fluids": [
     {
       "type": "hbm:nitric_acid",

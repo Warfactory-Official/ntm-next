@@ -17,6 +17,7 @@ import com.hbm.inventory.fluid.trait.FluidTrait;
 import com.hbm.inventory.recipes.BlastFurnaceRecipe;
 import com.hbm.inventory.recipes.BlastFurnaceRecipesNT;
 import com.hbm.inventory.recipes.ingredient.CountIngredient;
+import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.modules.ModuleBurnTime;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
@@ -137,10 +138,12 @@ public class BlockEntityMachineBlastFurnace extends BlockEntityMachineBase
                 && recipe != null
                 && fuel >= FUEL_RATE
                 && hasQuantities(recipe)
-                && canOutput(recipe)) {
+                && canOutput(recipe)
+                && breatheAir(1)) {
             this.speed = Mth.clamp(1F + tanks[0].getFill() * 8F / tanks[0].getMaxFill(), 1F, 5F);
             this.processing = true;
             this.progress += speed / recipe.duration;
+            markChanged();
 
             if (progress >= 1F) {
                 process(recipe);
@@ -169,10 +172,14 @@ public class BlockEntityMachineBlastFurnace extends BlockEntityMachineBase
                         0.5F + level.getRandom().nextFloat() * 0.25F);
             }
         } else {
+            if (this.progress != 0F) markChanged();
             this.progress = 0F;
         }
 
-        if (tanks[0].getFill() > 0) tanks[0].setFill((int) (tanks[0].getFill() * 0.95F));
+        if (tanks[0].getFill() > 0) {
+            tanks[0].setFill((int) (tanks[0].getFill() * 0.95F));
+            markChanged();
+        }
 
         networkPackNT(100);
     }
@@ -221,7 +228,12 @@ public class BlockEntityMachineBlastFurnace extends BlockEntityMachineBase
 
     private void process(BlastFurnaceRecipe recipe) {
         for (int i = 0; i < recipe.outputItems().length; i++) {
-            ItemStack out = fixedOutput(recipe, i).copy();
+            ItemStack out =
+                    recipe.outputItems()[i]
+                            .getRandom(GenericRecipes.RNG)
+                            .orElse(ItemStack.EMPTY)
+                            .copy();
+            if (out.isEmpty()) continue;
             ItemStack slot = inventory.get(SLOT_OUTPUT_1 + i);
             if (!slot.isEmpty()) slot.grow(out.getCount());
             else inventory.set(SLOT_OUTPUT_1 + i, out);
@@ -249,6 +261,16 @@ public class BlockEntityMachineBlastFurnace extends BlockEntityMachineBase
     @Override
     public BlockPos getFloorPosFromIndex(int index) {
         return standardFloor3x3(index);
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return tanks[0].joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
     }
 
     @Override

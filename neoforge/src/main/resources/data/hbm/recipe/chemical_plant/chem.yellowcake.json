@@ -17,7 +17,7 @@
       "ingredient": "#c:dusts/sulfur"
     }
   ],
-  "order": 80,
+  "order": 20480,
   "output_items": [
     "hbm:powder_yellowcake"
   ],

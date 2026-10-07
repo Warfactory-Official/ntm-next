@@ -11,7 +11,11 @@
   ],
   "input_items": [
     {
-      "ingredient": "#c:cobblestones"
+      "ingredient": {
+        "fabric:type": "fabric:difference",
+        "base": "#c:cobblestones",
+        "subtracted": "#c:cobblestones/deepslate"
+      }
     }
   ],
   "name_wrapper": "rock.crushing",

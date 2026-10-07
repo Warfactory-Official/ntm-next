@@ -5,6 +5,7 @@ package com.hbm.blockentity.machine;
 
 import com.hbm.api.energymk2.EnergyCaps;
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
+import com.hbm.api.environment.Environment;
 import com.hbm.api.fluidmk2.FluidCaps;
 import com.hbm.api.fluidmk2.FluidFace;
 import com.hbm.api.fluidmk2.IFluidHandlerMK2;
@@ -24,6 +25,7 @@ import com.hbm.sound.AudioSystem;
 import com.hbm.sound.AudioWrapper;
 import com.hbm.sound.ModSounds;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -69,12 +71,16 @@ public class BlockEntityMachineIntake extends BlockEntity
     }
 
     public void tickServer() {
+        ServerLevel serverLevel = (ServerLevel) level;
         if (power >= POWER_PER_TICK) {
-            compair.setFill(compair.getMaxFill());
+            if (Environment.compressAir(
+                    serverLevel, worldPosition, compair.getMaxFill() - compair.getFill())) {
+                compair.setFill(compair.getMaxFill());
+            }
             power -= POWER_PER_TICK;
+            markChanged();
         }
 
-        ServerLevel serverLevel = (ServerLevel) level;
         bindTargets(serverLevel);
 
         for (int i = 0; i < TARGET_COUNT; i++) poll(i);
@@ -204,14 +210,26 @@ public class BlockEntityMachineIntake extends BlockEntity
     }
 
     @Override
+    public boolean canProvideFluid(Fluid type) {
+        return compair.joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        visitor.accept(compair);
+    }
+
+    @Override
     public long getFluidAvailable(Fluid type, int pressure) {
         return compair.provides(type) && pressure == compair.getPressure() ? compair.getFill() : 0;
     }
 
     @Override
     public void useUpFluid(Fluid type, int pressure, long amount) {
-        if (compair.provides(type) && pressure == compair.getPressure())
+        if (compair.provides(type) && pressure == compair.getPressure()) {
+            if (amount > 0 && compair.getFill() > 0) markChanged();
             compair.setFill((int) Math.max(0, compair.getFill() - amount));
+        }
     }
 
     @Override

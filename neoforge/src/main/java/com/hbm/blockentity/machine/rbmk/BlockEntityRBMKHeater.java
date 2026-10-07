@@ -63,6 +63,7 @@ public class BlockEntityRBMKHeater extends BlockEntityRBMKBase
         FT_Heatable trait = NTMFluidProperties.getTrait(feed.getTankType(), FT_Heatable.class);
         if (trait != null) {
             FT_Heatable.HeatingStep step = trait.getFirstStep();
+            if (steam.getTankType() != step.typeProduced()) markChanged();
             steam.setTankType(step.typeProduced());
             double producedTemp = producedTemperature(steam.getTankType());
             double tempRange = this.heat - producedTemp;
@@ -86,8 +87,10 @@ public class BlockEntityRBMKHeater extends BlockEntityRBMKBase
             if (eff <= 0) {
                 feed.setTankType(NTMFluids.NONE);
                 steam.setTankType(NTMFluids.NONE);
+                markChanged();
             }
         } else {
+            if (feed.getTankType() != null || steam.getTankType() != null) markChanged();
             feed.setTankType(NTMFluids.NONE);
             steam.setTankType(NTMFluids.NONE);
         }

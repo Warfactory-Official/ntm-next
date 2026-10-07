@@ -6,7 +6,7 @@
       "ingredient": "#c:plates/lead"
     }
   ],
-  "order": 48,
+  "order": 12288,
   "output_items": [
     "hbm:pipe_lead"
   ],

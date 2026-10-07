@@ -24,6 +24,7 @@ import com.hbm.packet.SyncUnitSchema;
 import com.hbm.packet.toclient.BlockDustBurstPayload;
 import com.hbm.sound.AudioSystem;
 import com.hbm.sound.AudioWrapper;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.TickPhase;
 import io.netty.buffer.ByteBuf;
@@ -138,7 +139,9 @@ public class BlockEntityThresher extends BlockEntity
             if (tank.getFill() > 0) {
                 tank.setFill(tank.getFill() - 1);
                 isOn = true;
+                markChanged();
             } else {
+                if (isOn) markChanged();
                 isOn = false;
             }
         }
@@ -150,12 +153,14 @@ public class BlockEntityThresher extends BlockEntity
             }
             if (state == 1) {
                 angle += SWING_SPEED;
+                markChanged();
                 if (angle >= SWING_MAX_ANGLE) {
                     angle = SWING_MAX_ANGLE;
                     state = 2;
                 }
             } else if (state == 2) {
                 angle -= SWING_SPEED;
+                markChanged();
                 if (angle <= 0F) {
                     angle = 0F;
                     state = 0;
@@ -245,8 +250,8 @@ public class BlockEntityThresher extends BlockEntity
                             ENTITY_DAMAGE)) {
                 if (e instanceof Enemy && !e.isAlive())
                     dropItem(level, new ItemStack(ModItems.NITRA_SMALL));
-                level.playSound(
-                        null,
+                EntitySounds.play(
+                        e,
                         e.getX(),
                         e.getY(),
                         e.getZ(),

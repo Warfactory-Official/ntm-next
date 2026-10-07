@@ -29,7 +29,7 @@
       "ingredient": "#hbm:pipes/steel"
     }
   ],
-  "order": 144,
+  "order": 36864,
   "output_items": [
     "hbm:machine_silex"
   ],

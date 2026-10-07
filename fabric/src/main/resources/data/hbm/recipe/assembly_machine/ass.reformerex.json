@@ -40,7 +40,7 @@
     }
   ],
   "name": "ass.reformerEx",
-  "order": 127,
+  "order": 32512,
   "output_items": [
     "hbm:machine_catalytic_reformer"
   ],

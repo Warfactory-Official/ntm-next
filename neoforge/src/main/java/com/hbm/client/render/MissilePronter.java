@@ -76,7 +76,7 @@ public final class MissilePronter {
 
         for (Item item : BuiltInRegistries.ITEM) {
             if (!(item instanceof ItemCustomMissilePart part) || part.mesh == null) continue;
-            HFRWavefrontObject mesh = meshes.computeIfAbsent(part.mesh, Meshes::faceNormals);
+            HFRWavefrontObject mesh = meshes.computeIfAbsent(part.mesh, MissilePronter::partMesh);
             parts.put(item, new Drawn(mesh, Objects.requireNonNull(part.skin)));
             box = union(box, mesh.getExtents());
             if (part.type == PartType.THRUSTER) thruster = Math.max(thruster, part.height);
@@ -85,6 +85,12 @@ public final class MissilePronter {
 
         box[4] += thruster + fuselage;
         return new Table(Map.copyOf(parts), box);
+    }
+
+    public static HFRWavefrontObject partMesh(Identifier mesh) {
+        return ItemCustomMissilePart.VERTEX_NORMAL_MESHES.get().contains(mesh)
+                ? Meshes.flatShaded(Meshes.load(mesh))
+                : Meshes.faceNormals(mesh);
     }
 
     private static float[] union(float @Nullable [] box, float[] add) {

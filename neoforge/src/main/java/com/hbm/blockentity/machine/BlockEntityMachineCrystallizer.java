@@ -137,6 +137,7 @@ public class BlockEntityMachineCrystallizer extends BlockEntityMachineBase
         }
 
         if (changed) setChanged();
+        if (isOn) markChanged();
         networkPackNT(25);
     }
 

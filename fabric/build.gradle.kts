@@ -66,7 +66,7 @@ tasks.named<JavaCompile>("compileJava") {
         "-Xplugin:tenon-inject packages=com.hbm.interfaces.injected",
         "-Xplugin:tenon-traits templates=" +
                 layout.projectDirectory.dir("src/main/templates/java/com/hbm/blockentity").asFile.absolutePath,
-        "-Xplugin:hbm-compiler syncTo=com/hbm/inventory/container-sync.idx"
+        "-Xplugin:hbm-compiler syncTo=container-sync.idx"
     ))
     options.compilerArgs.addAll(javacInternalExports)
 }
@@ -130,7 +130,7 @@ repositories {
     }
 }
 
-val crankshaftVersion = "1.5.5+mc26.2"
+val crankshaftVersion = "1.5.9+mc26.2"
 
 val crankshaftJar = configurations.create("crankshaftJar") {
     isCanBeConsumed = false

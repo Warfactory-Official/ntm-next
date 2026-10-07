@@ -149,6 +149,7 @@ public class BlockEntityReactorZirnox extends BlockEntityMachineBase
     }
 
     public void setRedstonePowered(boolean powered) {
+        if (powered != this.redstonePowered) markChanged();
         if (!powered && this.redstonePowered) isOn = false;
         this.redstonePowered = powered;
     }
@@ -189,6 +190,7 @@ public class BlockEntityReactorZirnox extends BlockEntityMachineBase
                                                 / (float) carbonDioxide.getMaxFill()));
 
         if (heat > 0 && heat < maxHeat) {
+            int lastHeat = heat;
             if (water.getFill() > 0
                     && carbonDioxide.getFill() > 0
                     && steam.getFill() < steam.getMaxFill()) {
@@ -197,6 +199,7 @@ public class BlockEntityReactorZirnox extends BlockEntityMachineBase
             } else {
                 heat -= 10;
             }
+            if (heat != lastHeat) markChanged();
             if (level.getGameTime() % 100 == 0) {
                 SatelliteRayEvents.report(
                         (ServerLevel) level,
@@ -232,6 +235,7 @@ public class BlockEntityReactorZirnox extends BlockEntityMachineBase
                                     * 25F
                                     * 5F);
             this.output = cycle;
+            if (cycle != 0) markChanged();
             water.setFill(water.getFill() - cycle);
             steam.setFill(steam.getFill() + cycle);
             if (water.getFill() < 0) water.setFill(0);

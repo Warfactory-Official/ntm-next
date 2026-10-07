@@ -3,7 +3,6 @@
 
 package com.hbm.inventory.recipes.loader;
 
-import com.hbm.NuclearTech;
 import com.hbm.packet.SyncWire;
 import com.hbm.registration.FabricRegistrar;
 import java.util.*;
@@ -166,22 +165,10 @@ public abstract class GenericRecipes<T extends GenericRecipe, I> extends Seriali
                         rows,
                         (recipe, file) -> {
                             if (recipe.inputItem == null || recipe.inputItem.length == 0) return;
-                            int[] filed = {0};
                             recipe.inputItem[0]
                                     .ingredient()
                                     .items()
-                                    .forEach(
-                                            item -> {
-                                                file.accept(item.value());
-                                                filed[0]++;
-                                            });
-                            if (filed[0] == 0) {
-                                NuclearTech.LOGGER.warn(
-                                        "{}: recipe {} has an input ingredient matching no item, so nothing can "
-                                                + "reach it",
-                                        datapackTypeId(),
-                                        recipe.getInternalName());
-                            }
+                                    .forEach(item -> file.accept(item.value()));
                         });
 
         this.generation =

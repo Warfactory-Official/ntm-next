@@ -3,9 +3,10 @@
 
 package com.hbm.entity.mob;
 
+import com.hbm.api.environment.ISuffocationImmune;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.item.EntityItemBuoyant;
-import com.hbm.items.ModItems;
+import com.hbm.util.MobUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
@@ -21,7 +22,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import org.jspecify.annotations.Nullable;
 
-public class EntityPlasticBag extends Squid {
+public class EntityPlasticBag extends Squid implements ISuffocationImmune {
+
+    public static final String POP_LOOT = "pop";
 
     public EntityPlasticBag(EntityType<? extends EntityPlasticBag> type, Level level) {
         super(type, level);
@@ -39,7 +42,8 @@ public class EntityPlasticBag extends Squid {
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         discard();
-        spawnAtLocation(level, new ItemStack(ModItems.PLASTIC_BAG), 0F);
+        dropFromGiftLootTable(
+                level, MobUtil.lootVariant(getType(), POP_LOOT), this::spawnAtLocation);
         return true;
     }
 

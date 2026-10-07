@@ -9,7 +9,7 @@
       "ingredient": "hbm:assembly_nuke"
     }
   },
-  "order": 83,
+  "order": 21248,
   "output_items": [
     "hbm:ammo_standard_nuke_high"
   ],

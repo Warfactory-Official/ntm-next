@@ -6,12 +6,14 @@ package com.hbm.blockentity.machine.oil;
 import com.hbm.api.fluidmk2.IFluidHandlerMK2;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.generic.FluidReserveBlock;
 import com.hbm.data.MachineData;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.packet.SyncField;
 import com.hbm.world.feature.OilSurfaceScarring;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
@@ -68,7 +70,9 @@ public class BlockEntityMachineFrackingTower extends BlockEntityOilDrillBase
 
     @Override
     protected boolean canSuckBlock(Block b) {
-        return super.canSuckBlock(b) || b == ModBlocks.ORE_BEDROCK_OIL.get();
+        return super.canSuckBlock(b)
+                || b == ModBlocks.ORE_BEDROCK_OIL.get()
+                || FluidReserveBlock.of(b) != null;
     }
 
     @Override
@@ -120,8 +124,31 @@ public class BlockEntityMachineFrackingTower extends BlockEntityOilDrillBase
     }
 
     @Override
+    protected void onReserveSuck(BlockPos pos, FluidReserveBlock reserve) {
+        super.onReserveSuck(pos, reserve);
+        frackSolTank.setFill(frackSolTank.getFill() - MachineData.FRACKING_SOLUTION_REQUIRED.get());
+        reserve.scarSurface(
+                level,
+                level.getRandom(),
+                worldPosition.getX(),
+                worldPosition.getZ(),
+                MachineData.FRACKING_DESTRUCTION_RANGE.get());
+    }
+
+    @Override
     public @Nullable FluidTankNTM extraTank() {
         return frackSolTank;
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return frackSolTank.joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        super.forEachTank(visitor);
+        visitor.accept(frackSolTank);
     }
 
     @Override
@@ -134,6 +161,7 @@ public class BlockEntityMachineFrackingTower extends BlockEntityOilDrillBase
     public long transferFluid(Fluid type, int pressure, long amount) {
         if (!frackSolTank.accepts(type) || pressure != frackSolTank.getPressure()) return amount;
         int accepted = frackSolTank.fill(type, (int) Math.min(amount, Integer.MAX_VALUE), true);
+        if (accepted > 0) markChanged();
         return amount - accepted;
     }
 

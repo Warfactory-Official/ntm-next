@@ -19,7 +19,7 @@
       "amount": 20
     }
   ],
-  "order": 4,
+  "order": 1024,
   "output_fluids": [
     {
       "type": "hbm:helium4",

@@ -77,6 +77,8 @@ public class BlockEntityStirling extends BlockEntityMachineBase
     @Override
     public void tickServer() {
         ServerLevel level = (ServerLevel) this.level;
+        long lastBuffer = powerBuffer;
+        int lastOverspeed = overspeed;
 
         if (hasCog) {
             powerBuffer = 0;
@@ -127,6 +129,7 @@ public class BlockEntityStirling extends BlockEntityMachineBase
         networkPackNT(150);
 
         if (!hasCog && powerBuffer > 0) powerBuffer--;
+        if (powerBuffer != lastBuffer || overspeed != lastOverspeed) markChanged();
 
         heat = 0;
     }

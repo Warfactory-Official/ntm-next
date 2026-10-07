@@ -47,6 +47,7 @@ public final class BlockEntityRadioTorchReader extends BlockEntityRadioTorch {
                                 IRORInfo.PREFIX_VALUE + names[i].toLowerCase(Locale.US));
                 if (value != null && (polling || forceUpdate[i] || !value.equals(previous[i]))) {
                     RTTYSystem.broadcast(level, channels[i], value);
+                    if (!value.equals(previous[i])) markChanged();
                     previous[i] = value;
                     forceUpdate[i] = false;
                 }
@@ -112,7 +113,7 @@ public final class BlockEntityRadioTorchReader extends BlockEntityRadioTorch {
 
     @Override
     public long syncUnitMask() {
-        return (super.syncUnitMask() | 0xffff0L) & ~0xeL;
+        return (super.syncUnitMask() | 0xffff0L) & ~(0xeL | SIGNAL_MASK);
     }
 
     @Override

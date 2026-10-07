@@ -252,6 +252,7 @@ public class BlockEntityMachinePWRController extends BlockEntityMachineBase
                 markChanged();
             }
 
+            if (this.rodLevel != this.rodTarget) markChanged();
             double diff = this.rodLevel - this.rodTarget;
             if (diff < 1 && diff > -1) this.rodLevel = this.rodTarget;
             if (this.rodTarget > this.rodLevel) this.rodLevel++;
@@ -278,6 +279,7 @@ public class BlockEntityMachinePWRController extends BlockEntityMachineBase
                 this.coreHeat += totalHeatOutput;
                 newFlux += totalOutput;
 
+                if (totalOutput != 0 || this.processTime != fuel.yield) markChanged();
                 this.processTime = fuel.yield;
                 this.progress += totalOutput;
 
@@ -304,9 +306,14 @@ public class BlockEntityMachinePWRController extends BlockEntityMachineBase
                 }
             }
 
+            if (this.amountLoaded <= 0 && this.typeLoaded != -1) markChanged();
             if (this.amountLoaded <= 0) this.typeLoaded = -1;
-            if (amountLoaded > rodCount) amountLoaded = rodCount;
+            if (amountLoaded > rodCount) {
+                amountLoaded = rodCount;
+                markChanged();
+            }
 
+            if (this.coreHeat != 0 || this.hullHeat != 0) markChanged();
             double coreCoolingApproachNum =
                     getXOverE((double) this.heatexCount * 5 / (double) getRodCountForCoolant(), 2)
                             / 2D;
@@ -319,15 +326,18 @@ public class BlockEntityMachinePWRController extends BlockEntityMachineBase
             this.coreHeat *= 0.999D;
             this.hullHeat *= 0.999D;
 
+            double prevFlux = this.flux;
             this.flux = newFlux;
 
             if (tanks[0].getFill() > 0) this.flux *= multiplier;
+            if (this.flux != prevFlux) markChanged();
 
             if (this.coreHeat > this.coreHeatCapacity) {
                 meltDown();
                 return;
             }
         } else {
+            if (this.hullHeat != 0 || this.coreHeat != 0) markChanged();
             this.hullHeat = 0;
             this.coreHeat = 0;
         }
@@ -355,15 +365,18 @@ public class BlockEntityMachinePWRController extends BlockEntityMachineBase
     }
 
     private void setupTanks() {
-        if (amountLoaded <= 0) tanks[0].setType(2, 2, inventory);
+        if (amountLoaded <= 0 && tanks[0].setType(2, 2, inventory)) markChanged();
 
         FT_Heatable trait = NTMFluidProperties.getTrait(tanks[0].getTankType(), FT_Heatable.class);
         if (trait == null || trait.getEfficiency(HeatingType.PWR) <= 0) {
+            if (tanks[0].getTankType() != null || tanks[1].getTankType() != null) markChanged();
             tanks[0].setTankType(null);
             tanks[1].setTankType(null);
             return;
         }
+        Fluid hotType = tanks[1].getTankType();
         tanks[1].setTankType(trait.getFirstStep().typeProduced());
+        if (tanks[1].getTankType() != hotType) markChanged();
     }
 
     private void updateCoolant() {
@@ -480,6 +493,16 @@ public class BlockEntityMachinePWRController extends BlockEntityMachineBase
         if (!tanks[1].provides(type) || pressure != tanks[1].getPressure()) return;
         tanks[1].drain((int) Math.min(amount, Integer.MAX_VALUE), true);
         markChanged();
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return tanks[0].joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        for (FluidTankNTM tank : tanks) visitor.accept(tank);
     }
 
     @Override

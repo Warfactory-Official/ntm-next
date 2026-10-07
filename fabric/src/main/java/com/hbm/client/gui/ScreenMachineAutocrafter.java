@@ -7,7 +7,6 @@ import com.hbm.blockentity.IControlReceiverFilter;
 import com.hbm.blockentity.machine.BlockEntityMachineAutocrafter;
 import com.hbm.inventory.container.MenuMachineAutocrafter;
 import com.hbm.lib.Library;
-import com.hbm.module.ModulePatternMatcher;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.toserver.NbtControlPayload;
 import java.util.List;
@@ -29,8 +28,6 @@ public class ScreenMachineAutocrafter extends ScreenInfoContainer<MenuMachineAut
 
     private static final int POWER_X = 17, POWER_Y = 45, POWER_W = 16, POWER_H = 52;
     private static final int POWER_U = 176, POWER_BOTTOM = 97;
-
-    private static final int TOOLTIP_LIFT = 30;
 
     public ScreenMachineAutocrafter(
             MenuMachineAutocrafter menu, Inventory inventory, Component title) {
@@ -79,41 +76,21 @@ public class ScreenMachineAutocrafter extends ScreenInfoContainer<MenuMachineAut
                 be.getPower(),
                 be.getMaxPower());
 
-        if (menu.getCarried().isEmpty()) {
-            for (int i = 0; i < BlockEntityMachineAutocrafter.GRID_SIZE; i++) {
-                Slot slot = menu.getSlot(i);
-                String mode = be.matcher.mode(i);
-                if (mode != null && overSlot(slot, mouseX, mouseY)) {
-                    graphics.setComponentTooltipForNextFrame(
-                            font,
-                            List.of(
-                                    Component.translatable("desc.shared.rightClickToChange")
-                                            .withStyle(ChatFormatting.RED),
-                                    ModulePatternMatcher.getLabel(mode)),
-                            mouseX,
-                            mouseY - TOOLTIP_LIFT);
-                }
-            }
-
-            Slot result = menu.getSlot(BlockEntityMachineAutocrafter.SLOT_TEMPLATE_RESULT);
-            if (result.hasItem() && overSlot(result, mouseX, mouseY)) {
-                graphics.setComponentTooltipForNextFrame(
-                        font,
-                        List.of(
-                                Component.translatable("desc.shared.rightClickToChange")
-                                        .withStyle(ChatFormatting.RED),
-                                Component.literal((be.recipeIndex + 1) + " / " + be.recipeCount)
-                                        .withStyle(ChatFormatting.YELLOW)),
-                        mouseX,
-                        mouseY - TOOLTIP_LIFT);
-            }
-        }
-
         super.extractLabels(graphics, mouseX, mouseY);
     }
 
-    private boolean overSlot(Slot slot, int mouseX, int mouseY) {
-        return isHovering(slot.x, slot.y, 16, 16, mouseX, mouseY);
+    @Override
+    protected List<Component> slotTooltip(Slot slot) {
+        BlockEntityMachineAutocrafter be = menu.blockEntity();
+        if (slot.index < BlockEntityMachineAutocrafter.GRID_SIZE)
+            return patternModeLines(be.matcher.mode(slot.index));
+        if (slot.index != BlockEntityMachineAutocrafter.SLOT_TEMPLATE_RESULT || !slot.hasItem())
+            return List.of();
+        return List.of(
+                Component.translatable("desc.shared.rightClickToChange")
+                        .withStyle(ChatFormatting.RED),
+                Component.literal((be.recipeIndex + 1) + " / " + be.recipeCount)
+                        .withStyle(ChatFormatting.YELLOW));
     }
 
     public Rect2i patternArea(int index) {

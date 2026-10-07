@@ -9,7 +9,7 @@
     }
   ],
   "kind": "mold",
-  "order": 50,
+  "order": 12800,
   "output_items": [
     "hbm:mold_pipe"
   ],

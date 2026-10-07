@@ -86,16 +86,16 @@ public final class ScreenWorldInAJar extends Screen {
                     graphics, width, height, script.ticksElapsed, script.interp);
         }
         if (Keybinds.DIAGNOSTICS.isDown()) {
+            Component cursor =
+                    Component.literal((mouseX - width / 2) + " / " + (mouseY - height / 2));
             GUIElements.drawStackText(
                     graphics,
                     font,
-                    List.<Object[]>of(
-                            new Object[] {(mouseX - width / 2) + " / " + (mouseY - height / 2)}),
+                    List.<Object[]>of(new Object[] {cursor}),
                     mouseX,
                     mouseY,
                     width,
-                    height,
-                    null);
+                    height);
         }
 
         int playX = width / 2 - 12;

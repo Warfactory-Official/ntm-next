@@ -17,7 +17,7 @@
     }
   ],
   "name": "ass.pwrcontrollerEx",
-  "order": 250,
+  "order": 64000,
   "output_items": [
     "hbm:pwr_controller"
   ],

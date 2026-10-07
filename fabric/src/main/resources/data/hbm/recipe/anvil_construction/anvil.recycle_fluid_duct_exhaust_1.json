@@ -6,7 +6,7 @@
       "ingredient": "hbm:fluid_duct_exhaust_1"
     }
   ],
-  "order": 118,
+  "order": 30208,
   "output_items": [
     "hbm:plate_iron",
     "hbm:plate_polymer"

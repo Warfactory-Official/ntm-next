@@ -20,7 +20,7 @@
     }
   ],
   "name": "chem.hardplasticPressurized",
-  "order": 45,
+  "order": 11520,
   "output_items": [
     "hbm:ingot_pc"
   ],

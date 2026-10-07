@@ -31,7 +31,7 @@
     }
   ],
   "name": "soldering.circuit_controller_advancedLbsm",
-  "order": 12,
+  "order": 3072,
   "output_items": [
     "hbm:circuit_controller_advanced"
   ],

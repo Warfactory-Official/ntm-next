@@ -4,7 +4,7 @@
 package com.hbm.client.render.flywheel;
 
 import com.hbm.blockentity.BlockEntityBobble;
-import com.hbm.blocks.generic.BlockBobble.BobbleType;
+import com.hbm.blocks.generic.BlockBobble.Bobble;
 import com.hbm.client.render.RenderBobble;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -20,7 +20,7 @@ import org.joml.Matrix4fc;
 import org.jspecify.annotations.Nullable;
 
 public final class BobbleItemVisual extends HbmItemVisual {
-    private final BobbleType type;
+    private final Bobble type;
     private final BobbleDraws draws;
     private final List<TransformedInstance> parts = new ArrayList<>();
     private final @Nullable TransformedInstance prop;
@@ -30,7 +30,7 @@ public final class BobbleItemVisual extends HbmItemVisual {
     private final WorldText.Posing labelPosing =
             (width, out) -> RenderBobble.labelWidth(out.set(labelBase), width);
 
-    public BobbleItemVisual(VisualizationContext ctx, BobbleType type) {
+    public BobbleItemVisual(VisualizationContext ctx, Bobble type) {
         super(ctx);
         this.type = type;
         draws = new BobbleDraws(type, new PoseStack());
@@ -39,7 +39,7 @@ public final class BobbleItemVisual extends HbmItemVisual {
         ItemStack held = RenderBobble.prop(type);
         prop = held.isEmpty() ? null : transformed(PropItem.model(held, ItemDisplayContext.NONE));
         label = new WorldText(instancers, WorldText.Style.NORMAL, true);
-        label.set(Component.literal(type.label), 0F, 0F, RenderBobble.labelColor(type));
+        label.set(Component.literal(type.label()), 0F, 0F, RenderBobble.labelColor(type));
     }
 
     @Override

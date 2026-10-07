@@ -11,7 +11,7 @@
       "ingredient": "hbm:nugget_euphemium"
     }
   ],
-  "order": 1,
+  "order": 256,
   "output_items": [
     "hbm:rod_of_discord"
   ]

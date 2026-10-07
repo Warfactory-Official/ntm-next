@@ -34,6 +34,7 @@ import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
 import com.hbm.render.anim.BusAnimationSequence;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.DamageClass;
@@ -248,16 +249,15 @@ public class XFactory12ga {
                             }
                         }
                         if (rec.getFireSound(stack) != null)
-                            entity.level()
-                                    .playSound(
-                                            null,
-                                            entity.getX(),
-                                            entity.getY(),
-                                            entity.getZ(),
-                                            rec.getFireSound(stack).get(),
-                                            SoundSource.PLAYERS,
-                                            rec.getFireVolume(stack),
-                                            rec.getFirePitch(stack) * (timeFired > 1 ? 0.9F : 1F));
+                            EntitySounds.play(
+                                    entity,
+                                    entity.getX(),
+                                    entity.getY(),
+                                    entity.getZ(),
+                                    rec.getFireSound(stack).get(),
+                                    SoundSource.PLAYERS,
+                                    rec.getFireVolume(stack),
+                                    rec.getFirePitch(stack) * (timeFired > 1 ? 0.9F : 1F));
                         ItemGunBaseNT.setState(stack, index, GunState.COOLDOWN);
                         ItemGunBaseNT.setTimer(stack, index, 20);
                     } else {

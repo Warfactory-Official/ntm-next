@@ -28,7 +28,11 @@ public enum CtmEngine {
     }
 
     public Identifier packId() {
-        return Identifier.fromNamespaceAndPath("hbm", pack);
+        return packId("hbm");
+    }
+
+    public Identifier packId(String namespace) {
+        return Identifier.fromNamespaceAndPath(namespace, pack);
     }
 
     public String directory() {

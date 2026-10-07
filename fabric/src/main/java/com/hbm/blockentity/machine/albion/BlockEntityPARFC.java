@@ -63,6 +63,7 @@ public class BlockEntityPARFC extends BlockEntityCooledBase
         particle.momentum += momentumGain;
         particle.defocus(defocusGain);
         this.power -= usage;
+        markChanged();
     }
 
     @Override

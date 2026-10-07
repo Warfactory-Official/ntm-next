@@ -15,6 +15,7 @@ import com.hbm.interfaces.injected.WorldPipeline;
 import com.mojang.blaze3d.opengl.GlProgram;
 import com.mojang.blaze3d.opengl.GlRenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import dev.engine_room.flywheel.iris.compile.ContractProgram;
 import dev.engine_room.flywheel.iris.compile.ContractProgramSet;
@@ -22,6 +23,7 @@ import dev.engine_room.flywheel.iris.mixin.ProgramFallbackResolverAccessor;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Supplier;
 import net.irisshaders.iris.gl.blending.AlphaTest;
@@ -29,6 +31,7 @@ import net.irisshaders.iris.gl.blending.AlphaTestFunction;
 import net.irisshaders.iris.gl.blending.AlphaTests;
 import net.irisshaders.iris.gl.state.FogMode;
 import net.irisshaders.iris.pipeline.IrisRenderingPipeline;
+import net.irisshaders.iris.pipeline.WorldRenderingPhase;
 import net.irisshaders.iris.pipeline.programs.ShaderCreator;
 import net.irisshaders.iris.pipeline.programs.ShaderKey;
 import net.irisshaders.iris.pipeline.programs.ShaderSupplier;
@@ -47,6 +50,17 @@ import org.spongepowered.asm.mixin.Unique;
 @Pseudo
 @Mixin(value = IrisRenderingPipeline.class, remap = false)
 public abstract class IrisRenderingPipelineMixin implements RibbonPipeline, WorldPipeline {
+    @Unique
+    private static final Set<WorldRenderingPhase> SKY_PHASES =
+            EnumSet.of(
+                    WorldRenderingPhase.CUSTOM_SKY,
+                    WorldRenderingPhase.SKY,
+                    WorldRenderingPhase.SUNSET,
+                    WorldRenderingPhase.SUN,
+                    WorldRenderingPhase.MOON,
+                    WorldRenderingPhase.STARS,
+                    WorldRenderingPhase.VOID);
+
     @Shadow @Final private ProgramFallbackResolver resolver;
     @Shadow @Final private Set<GlProgram> loadedShaders;
     @Shadow @Final private RenderTargets renderTargets;
@@ -159,10 +173,36 @@ public abstract class IrisRenderingPipelineMixin implements RibbonPipeline, Worl
     public GlRenderPipeline hbm$program(WorldRenderPipeline pipeline) {
         var world = (IrisRenderingPipeline) (Object) this;
         int phase = WorldShaderCompiler.phase(world);
+        boolean nativeSky = pipeline.family == WorldRenderPipeline.Family.NATIVE_SKY;
+        if (nativeSky
+                && (phase != 0
+                        || !world.isBeforeTranslucent
+                        || !SKY_PHASES.contains(world.getPhase())
+                        || RenderSystem.outputColorTextureOverride != null
+                        || RenderSystem.outputDepthTextureOverride != null)) {
+            throw new UnsupportedOperationException(
+                    "native sky requires the main Iris sky before translucents: phase="
+                            + phase
+                            + ", worldPhase="
+                            + world.getPhase()
+                            + ", before="
+                            + world.isBeforeTranslucent
+                            + ", colorOverride="
+                            + (RenderSystem.outputColorTextureOverride != null)
+                            + ", depthOverride="
+                            + (RenderSystem.outputDepthTextureOverride != null));
+        }
         int index = pipeline.index * 5 + phase;
         if (index >= hbm$programs.length) hbm$programs = Arrays.copyOf(hbm$programs, index + 160);
         GlRenderPipeline cached = hbm$programs[index];
         if (cached != null) return cached;
+        if (nativeSky) {
+            var target = renderTargets.createGbufferFramebuffer(flippedAfterPrepare, new int[] {0});
+            String name = "hbm_native_sky_" + pipeline.getLocation().getPath().replace('/', '_');
+            GlProgram program = new WorldFallbackShader(name, pipeline, world, target, target);
+            loadedShaders.add(program);
+            return hbm$programs[index] = new GlRenderPipeline(pipeline, program);
+        }
         WorldShaderCompiler.assignShadow(pipeline);
         ShaderKey key = WorldShaderCompiler.key(pipeline, phase);
         ProgramSource source = resolver.resolveNullable(key.getProgram());

@@ -5,7 +5,7 @@
       "ingredient": "#c:dusts/bakelite"
     }
   ],
-  "order": 225,
+  "order": 57600,
   "output_items": [
     "hbm:dust"
   ]

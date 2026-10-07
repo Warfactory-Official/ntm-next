@@ -7,7 +7,7 @@
       "ingredient": "hbm:circuit_chip"
     }
   ],
-  "order": 1,
+  "order": 256,
   "output_items": [
     "hbm:circuit_basic"
   ],

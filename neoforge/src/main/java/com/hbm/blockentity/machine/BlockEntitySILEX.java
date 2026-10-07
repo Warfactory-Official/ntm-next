@@ -17,6 +17,7 @@ import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import com.hbm.util.WeightedRandomObject;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -219,6 +220,16 @@ public class BlockEntitySILEX extends BlockEntityMachineBase
     }
 
     @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return tank.joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        visitor.accept(tank);
+    }
+
+    @Override
     public long getDemand(Fluid type, int pressure) {
         if (!tank.accepts(type) || pressure != tank.getPressure()) return 0L;
         return (long) maxFill - tank.getFill();
@@ -279,7 +290,7 @@ public class BlockEntitySILEX extends BlockEntityMachineBase
         input.child("tank").ifPresent(tank::deserialize);
         currentFill = input.getIntOr("fill", 0);
         recipeIndex = input.getIntOr("recipeIndex", 0);
-        mode = EnumWavelengths.valueOf(input.getStringOr("mode", "NULL"));
+        mode = EnumWavelengths.byName(input.getStringOr("mode", "NULL"));
         current = input.read("current", ItemStack.CODEC).orElse(null);
         currentFluid =
                 input.read("currentFluid", BuiltInRegistries.FLUID.byNameCodec()).orElse(null);
@@ -302,7 +313,7 @@ public class BlockEntitySILEX extends BlockEntityMachineBase
     }
 
     private void readMode(ByteBuf input) {
-        mode = EnumWavelengths.values()[input.readInt()];
+        mode = EnumWavelengths.values().get(input.readInt());
     }
 
     private void writeCurrent(ByteBuf output) {

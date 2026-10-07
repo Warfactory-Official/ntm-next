@@ -22,7 +22,7 @@
       "ingredient": "hbm:circuit_vacuum_tube"
     }
   ],
-  "order": 61,
+  "order": 15616,
   "output_items": [
     "hbm:pump_electric"
   ],

@@ -142,7 +142,10 @@ public class BlockEntityCraneConsole extends BlockEntityMachineBase implements S
             if (progress > 1D) progress = 1D;
         }
 
+        double front = posFront;
+        double left = posLeft;
         readControls(false);
+        if (posFront != front || posLeft != left) markChanged();
 
         ItemStack carried = inventory.get(0);
         if (carried.getItem() instanceof ItemRBMKRod) {

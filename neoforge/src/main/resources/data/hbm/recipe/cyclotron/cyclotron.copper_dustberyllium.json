@@ -9,7 +9,7 @@
       "ingredient": "#c:dusts/beryllium"
     }
   ],
-  "order": 24,
+  "order": 6144,
   "output_items": [
     "hbm:powder_quartz"
   ]

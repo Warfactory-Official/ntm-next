@@ -226,6 +226,8 @@ public class BlockEntityTurretArty extends BlockEntityTurretBaseArtillery {
 
     @Override
     public void tickServer() {
+        long prevPower = power;
+        int prevStattrak = stattrak;
         if (mode == MODE_MANUAL) {
             if (!targetQueue.isEmpty()) tPos = targetQueue.get(0);
         } else {
@@ -274,6 +276,7 @@ public class BlockEntityTurretArty extends BlockEntityTurretBaseArtillery {
         if (aligned) updateFiringTick();
 
         power += ItemEnergyTransfer.extract(this, SLOT_BATTERY, getMaxPower() - power, false);
+        if (power != prevPower || stattrak != prevStattrak) markChanged();
 
         networkPackNT(250);
         didJustShoot = false;

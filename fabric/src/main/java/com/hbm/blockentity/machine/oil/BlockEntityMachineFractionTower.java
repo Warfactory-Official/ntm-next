@@ -63,6 +63,10 @@ public class BlockEntityMachineFractionTower extends BlockEntityMachineBase
             move(tanks[0], above.tanks[0], oil);
             move(above.tanks[1], tanks[1], left);
             move(above.tanks[2], tanks[2], right);
+            if (oil > 0 || left > 0 || right > 0) {
+                markChanged();
+                above.markChanged();
+            }
         }
 
         setupTanks();
@@ -102,6 +106,7 @@ public class BlockEntityMachineFractionTower extends BlockEntityMachineBase
             tanks[0].setFill(tanks[0].getFill() - drain);
             tanks[1].setFill(tanks[1].getFill() + left);
             tanks[2].setFill(tanks[2].getFill() + right);
+            markChanged();
         }
     }
 

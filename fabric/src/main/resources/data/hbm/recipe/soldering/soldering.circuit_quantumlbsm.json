@@ -27,7 +27,7 @@
     }
   ],
   "name": "soldering.circuit_quantumLbsm",
-  "order": 8,
+  "order": 2048,
   "output_items": [
     "hbm:circuit_quantum"
   ],

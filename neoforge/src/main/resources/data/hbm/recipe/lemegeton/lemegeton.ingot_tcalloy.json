@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/dura_steel"
     }
   ],
-  "order": 2,
+  "order": 512,
   "output_items": [
     "hbm:ingot_tcalloy"
   ]

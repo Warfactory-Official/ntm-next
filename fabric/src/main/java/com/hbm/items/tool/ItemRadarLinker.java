@@ -7,6 +7,7 @@ import com.hbm.api.block.IRadarCommandReceiver;
 import com.hbm.blockentity.machine.BlockEntityMachineRadarScreen;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.items.ModDataComponents;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -51,8 +52,8 @@ public class ItemRadarLinker extends Item {
             ctx.getItemInHand().set(ModDataComponents.RADAR_LINKER_TARGET.get(), target.asLong());
             Player player = ctx.getPlayer();
             if (player != null) {
-                level.playSound(
-                        null,
+                EntitySounds.play(
+                        player,
                         player.blockPosition(),
                         ModSounds.TECH_BLEEP.get(),
                         SoundSource.PLAYERS,

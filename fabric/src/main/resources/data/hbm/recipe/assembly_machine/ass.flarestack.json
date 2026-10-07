@@ -28,7 +28,7 @@
       "ingredient": "hbm:thermo_element"
     }
   ],
-  "order": 114,
+  "order": 29184,
   "output_items": [
     "hbm:machine_flare"
   ],

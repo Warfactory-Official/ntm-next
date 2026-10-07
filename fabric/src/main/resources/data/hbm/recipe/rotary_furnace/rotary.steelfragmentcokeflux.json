@@ -13,7 +13,7 @@
       "ingredient": "hbm:powder_flux"
     }
   ],
-  "order": 4,
+  "order": 1024,
   "output_material": {
     "amount": 288,
     "material": "steel"

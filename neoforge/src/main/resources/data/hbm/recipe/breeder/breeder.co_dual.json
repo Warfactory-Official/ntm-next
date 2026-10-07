@@ -6,7 +6,7 @@
       "ingredient": "hbm:rod_dual_co"
     }
   ],
-  "order": 4,
+  "order": 1024,
   "output_items": [
     "hbm:rod_dual_co60"
   ]

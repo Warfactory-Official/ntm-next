@@ -2426,6 +2426,7 @@
   "desc.gui.zirnox.pressure": "§6压力§r\n排放二氧化碳可以降低压力\n然而，压力过低，冷却效率和蒸汽产量将降低\n小心熔毁！",
   "desc.gui.zirnox.warning1": "§c错误：§r反应堆正常运行需要水！",
   "desc.gui.zirnox.warning2": "§c错误：§r二氧化碳是反应堆正常运行所必需的！",
+  "desc.hbm.capacitor": "输入：顶部\n输出：底部，通过电容总线",
   "desc.hbm.capacitor.line1": "输入：顶部",
   "desc.hbm.capacitor.line2": "输出：底部，通过电容总线",
   "desc.hbm.capacitor_bus.line1": "电容器的输出方块",

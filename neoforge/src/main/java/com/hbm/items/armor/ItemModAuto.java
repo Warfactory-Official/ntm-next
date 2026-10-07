@@ -6,6 +6,7 @@ package com.hbm.items.armor;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.potion.HbmPotion;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.List;
 import java.util.function.Consumer;
@@ -49,14 +50,13 @@ public class ItemModAuto extends ItemArmorMod {
         if (entity.level().isClientSide() || HbmLivingProps.getDigamma(entity) < TRIGGER) return;
 
         ArmorModHandler.removeMod(armor, ArmorModHandler.EXTRA);
-        entity.level()
-                .playSound(
-                        null,
-                        entity.blockPosition(),
-                        ModSounds.ITEM_SYRINGE.get(),
-                        SoundSource.PLAYERS,
-                        1.0F,
-                        1.0F);
+        EntitySounds.play(
+                entity,
+                entity.blockPosition(),
+                ModSounds.ITEM_SYRINGE.get(),
+                SoundSource.PLAYERS,
+                1.0F,
+                1.0F);
         HbmLivingProps.setDigamma(entity, HbmLivingProps.getDigamma(entity) - TRIGGER);
         entity.addEffect(new MobEffectInstance(HbmPotion.stability(), STABILITY_DURATION, 0));
         entity.heal(20F);

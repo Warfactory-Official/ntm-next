@@ -11,7 +11,7 @@
       "ingredient": "#c:dusts/gold"
     }
   ],
-  "order": 25,
+  "order": 6400,
   "output_items": [
     "hbm:item_expensive_gold_dust"
   ],

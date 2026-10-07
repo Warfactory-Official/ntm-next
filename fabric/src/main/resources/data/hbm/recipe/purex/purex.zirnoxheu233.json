@@ -22,7 +22,7 @@
     }
   ],
   "name_wrapper": "purex.recycle",
-  "order": 12,
+  "order": 3072,
   "output_items": [
     "hbm:nugget_u235",
     "hbm:nugget_neptunium",

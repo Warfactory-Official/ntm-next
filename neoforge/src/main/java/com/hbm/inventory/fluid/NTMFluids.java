@@ -3,12 +3,15 @@
 
 package com.hbm.inventory.fluid;
 
+import com.hbm.NuclearTech;
 import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.RegistryHandle;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.function.Supplier;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import org.jspecify.annotations.Nullable;
@@ -381,6 +384,13 @@ public final class NTMFluids {
     public static Fluid PHOSGENE;
     public static Fluid MUSTARDGAS;
     private static List<Fluid> displayOrder = List.of();
+    private static List<Fluid> baseDisplayOrder = List.of();
+
+    private record Addition(String name, String after, @Nullable RegistryHandle<Fluid> handle) {}
+
+    private static final List<Addition> ADDED = new ArrayList<>();
+    private static final Map<Fluid, String> ADDON_NAMESPACE = new IdentityHashMap<>();
+    private static final List<Fluid> ADDON_BY_ID = new ArrayList<>();
 
     private NTMFluids() {}
 
@@ -391,6 +401,28 @@ public final class NTMFluids {
             return;
         }
         HANDLES.put(name, NeoForgeRegistrar.registerFluid(name.toLowerCase(Locale.US)));
+    }
+
+    public static void register(String namespace, String name, String after) {
+        ADDED.add(
+                new Addition(
+                        name,
+                        after,
+                        NeoForgeRegistrar.registerFluid(
+                                namespace + ":" + name.toLowerCase(Locale.US))));
+    }
+
+    public static void move(String name, String after) {
+        ADDED.add(new Addition(name, after, null));
+    }
+
+    public static String namespace(Fluid fluid) {
+        return ADDON_NAMESPACE.getOrDefault(fluid, NuclearTech.MOD_ID);
+    }
+
+    public static Identifier sprite(Fluid fluid, String prefix, String suffix) {
+        return Identifier.fromNamespaceAndPath(
+                namespace(fluid), prefix + spritePath(fluid) + suffix);
     }
 
     public static Fluid byName(String name) {
@@ -412,15 +444,21 @@ public final class NTMFluids {
     }
 
     public static Fluid byLegacyId(int id) {
-        return byName(LEGACY_ID_ORDER[id]);
+        return id < LEGACY_ID_ORDER.length
+                ? byName(LEGACY_ID_ORDER[id])
+                : ADDON_BY_ID.get(id - LEGACY_ID_ORDER.length);
     }
 
     public static int legacyIdCount() {
-        return LEGACY_ID_ORDER.length;
+        return LEGACY_ID_ORDER.length + ADDON_BY_ID.size();
     }
 
     public static List<Fluid> displayOrder() {
         return displayOrder;
+    }
+
+    public static List<Fluid> baseDisplayOrder() {
+        return baseDisplayOrder;
     }
 
     public static void init() {
@@ -429,10 +467,31 @@ public final class NTMFluids {
 
     public static void bake() {
         HANDLES.forEach((name, handle) -> BY_NAME.put(name, handle.get()));
+        for (Addition addition : ADDED) {
+            if (addition.handle() == null) continue;
+            Fluid fluid = addition.handle().get();
+            Fluid bound = BY_NAME.putIfAbsent(addition.name(), fluid);
+            if (bound != null && bound != fluid) {
+                throw new IllegalStateException(
+                        addition.handle().id()
+                                + " takes the fluid name "
+                                + addition.name()
+                                + ", which "
+                                + BuiltInRegistries.FLUID.getKey(bound)
+                                + " already holds");
+            }
+            ADDON_NAMESPACE.put(fluid, addition.handle().id().getNamespace());
+            ADDON_BY_ID.add(fluid);
+        }
         BY_NAME.forEach((name, fluid) -> NAME_OF.put(fluid, LEGACY_NAMES.getOrDefault(name, name)));
         for (int id = 1; id < LEGACY_ID_ORDER.length; id++)
             LEGACY_ID.put(byName(LEGACY_ID_ORDER[id]), id);
+        for (int i = 0; i < ADDON_BY_ID.size(); i++)
+            LEGACY_ID.put(ADDON_BY_ID.get(i), LEGACY_ID_ORDER.length + i);
         bindFields();
+        List<Fluid> base = new ArrayList<>(DISPLAY_ORDER.length);
+        for (String name : DISPLAY_ORDER) base.add(byName(name));
+        baseDisplayOrder = List.copyOf(base);
         displayOrder = resolveDisplayOrder();
     }
 
@@ -462,14 +521,32 @@ public final class NTMFluids {
     }
 
     private static List<Fluid> resolveDisplayOrder() {
-        List<Fluid> out = new ArrayList<>(DISPLAY_ORDER.length);
+        Set<String> moved = new HashSet<>();
+        for (Addition addition : ADDED) if (addition.handle() == null) moved.add(addition.name());
+        List<String> names = new ArrayList<>(DISPLAY_ORDER.length + ADDED.size());
+        for (String name : DISPLAY_ORDER) if (!moved.contains(name)) place(name, names);
+        if (names.size() != DISPLAY_ORDER.length + ADDED.size() - moved.size()) {
+            throw new IllegalStateException(
+                    "addon fluids anchored after names the display order never lists: "
+                            + ADDED.stream()
+                                    .filter(a -> !names.contains(a.name()))
+                                    .map(a -> a.name() + " after " + a.after())
+                                    .toList());
+        }
+        List<Fluid> out = new ArrayList<>(names.size());
         Set<Fluid> seen = new HashSet<>();
-        for (String name : DISPLAY_ORDER) {
+        for (String name : names) {
             Fluid fluid = byName(name);
             if (!seen.add(fluid))
                 throw new IllegalStateException("the display order reaches " + name + " twice");
             out.add(fluid);
         }
         return List.copyOf(out);
+    }
+
+    private static void place(String name, List<String> names) {
+        names.add(name);
+        for (Addition addition : ADDED)
+            if (addition.after().equals(name)) place(addition.name(), names);
     }
 }

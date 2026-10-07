@@ -7,7 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.hbm.inventory.BlockMenuContext;
 import com.hbm.inventory.IGUIProvider;
-import com.hbm.packet.toclient.GunSoundPayload;
+import com.hbm.sound.EntitySounds;
 import com.hbm.tags.HbmItemTags;
 import com.hbm.util.ChunkUtil;
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -84,32 +84,19 @@ public final class NeoForgePlatform {
             BlockState state,
             @Nullable BlockEntity blockEntity) {}
 
-    public static void playGunAnimationSound(
-            LivingEntity entity, SoundEvent sound, float volume, float pitch, boolean legacy) {
-        ServerLevel level = (ServerLevel) entity.level();
-        long seed = level.soundSeedGenerator.nextLong();
-        var event =
-                EventHooks.onPlaySoundAtPosition(
-                        level,
-                        entity.getX(),
-                        entity.getY(),
-                        entity.getZ(),
-                        BuiltInRegistries.SOUND_EVENT.wrapAsHolder(sound),
-                        SoundSource.PLAYERS,
-                        volume,
-                        pitch);
-        if (event.isCanceled() || event.getSound() == null) return;
-        GunSoundPayload.send(
-                level,
-                legacy,
-                event.getSound(),
-                event.getSource(),
-                entity.getX(),
-                entity.getY(),
-                entity.getZ(),
-                event.getNewVolume(),
-                event.getNewPitch(),
-                seed);
+    public static EntitySounds.@Nullable Emission soundAtPosition(
+            ServerLevel level,
+            double x,
+            double y,
+            double z,
+            Holder<SoundEvent> sound,
+            SoundSource source,
+            float volume,
+            float pitch) {
+        var event = EventHooks.onPlaySoundAtPosition(level, x, y, z, sound, source, volume, pitch);
+        if (event.isCanceled() || event.getSound() == null) return null;
+        return new EntitySounds.Emission(
+                event.getSound(), event.getSource(), event.getNewVolume(), event.getNewPitch());
     }
 
     public static void openMenu(

@@ -25,6 +25,7 @@ import org.jspecify.annotations.Nullable;
 
 public final class Outputs {
     public static final int RESOLUTION = 1000;
+    public static final float RAW_SHARE = 2F / 3F;
 
     public static final Codec<WeightedList<ItemStack>> CODEC =
             WeightedList.codec(ItemStack.OPTIONAL_CODEC);

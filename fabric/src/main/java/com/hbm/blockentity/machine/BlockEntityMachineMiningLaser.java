@@ -14,6 +14,7 @@ import com.hbm.blockentity.IUpgradeInfoProvider;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.gas.BlockGasBase;
+import com.hbm.blocks.generic.FluidReserveBlock;
 import com.hbm.inventory.container.ContainerSync;
 import com.hbm.inventory.container.MenuMachineMiningLaser;
 import com.hbm.inventory.fluid.NTMFluids;
@@ -48,6 +49,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -153,6 +155,9 @@ public class BlockEntityMachineMiningLaser extends BlockEntityMachineBase
     public BlockEntityMachineMiningLaser(BlockPos pos, BlockState state) {
         super(ModBlockEntities.MINING_LASER.get(), pos, state, SLOT_COUNT);
         sending = new FluidTankNTM[] {tank};
+        targetX = lastTargetX = pos.getX();
+        targetY = lastTargetY = pos.getY() - 2;
+        targetZ = lastTargetZ = pos.getZ();
     }
 
     public void refreshUnloadTargets() {
@@ -215,6 +220,7 @@ public class BlockEntityMachineMiningLaser extends BlockEntityMachineBase
                     break;
                 }
                 power -= draw;
+                markChanged();
 
                 if (!targetArmed || targetY <= level.getMinY()) {
                     targetY = worldPosition.getY() - 2;
@@ -277,7 +283,10 @@ public class BlockEntityMachineMiningLaser extends BlockEntityMachineBase
             int prev = stack.getCount();
             ItemStack left = ForeignItems.insert(level, pos, face, stack);
             inventory.set(i, left);
-            if (left.isEmpty() || left.getCount() < prev) return;
+            if (left.isEmpty() || left.getCount() < prev) {
+                markChanged();
+                return;
+            }
         }
     }
 
@@ -404,6 +413,21 @@ public class BlockEntityMachineMiningLaser extends BlockEntityMachineBase
                 continue;
             }
 
+            FluidReserveBlock reserve =
+                    stack.getItem() instanceof BlockItem blockItem
+                            ? FluidReserveBlock.of(blockItem.getBlock())
+                            : null;
+            if (reserve != null) {
+                if (reserve.blockFluidAmount() > 0) {
+                    tank.setTankType(reserve.primaryFluid());
+                    tank.setFill(
+                            Math.min(
+                                    tank.getFill() + reserve.blockFluidAmount(),
+                                    tank.getMaxFill()));
+                }
+                item.discard();
+                continue;
+            }
             if (stack.getItem() == ModBlocks.ORE_OIL.get().asItem()) {
                 tank.setTankType(NTMFluids.OIL);
                 tank.setFill(Math.min(tank.getFill() + OIL_PER_ORE, tank.getMaxFill()));

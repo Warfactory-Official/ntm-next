@@ -10,7 +10,7 @@
       "ingredient": "minecraft:clay_ball"
     }
   ],
-  "order": 13,
+  "order": 4096,
   "output_items": [
     {
       "count": 8,

@@ -36,6 +36,13 @@ import com.hbm.items.weapon.grenade.ItemGrenadeShell.EnumGrenadeShell;
 import com.hbm.items.weapon.grenade.ItemGrenadeUniversal;
 import com.hbm.lib.Library;
 import com.hbm.main.Polaroid;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -44,6 +51,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -60,9 +68,89 @@ public final class CreativeContents {
     private static final double BEDROCK_ORE_PREVIEW_NON_METAL = 0.16D;
     private static final double BEDROCK_ORE_PREVIEW_CRYSTALLINE = 0.27D;
 
+    private static final Map<Tab, Map<Identifier, List<Supplier<ItemStack>>>> INSERTED =
+            new EnumMap<>(Tab.class);
+    private static final Map<Tab, Map<Identifier, List<Supplier<ItemStack>>>> INSERTED_BEFORE =
+            new EnumMap<>(Tab.class);
+    private static final Map<Tab, Set<Identifier>> REMOVED = new EnumMap<>(Tab.class);
+
     private CreativeContents() {}
 
+    public static void insertAfter(Tab tab, Identifier anchor, Supplier<ItemStack> entry) {
+        INSERTED.computeIfAbsent(tab, ignored -> new LinkedHashMap<>())
+                .computeIfAbsent(anchor, ignored -> new ArrayList<>())
+                .add(entry);
+    }
+
+    public static void insertBefore(Tab tab, Identifier anchor, Supplier<ItemStack> entry) {
+        INSERTED_BEFORE
+                .computeIfAbsent(tab, ignored -> new LinkedHashMap<>())
+                .computeIfAbsent(anchor, ignored -> new ArrayList<>())
+                .add(entry);
+    }
+
+    public static void remove(Tab tab, Identifier item) {
+        REMOVED.computeIfAbsent(tab, ignored -> new HashSet<>()).add(item);
+    }
+
     public static void accept(Tab tab, Consumer<ItemStack> out) {
+        Map<Identifier, List<Supplier<ItemStack>>> inserted = INSERTED.getOrDefault(tab, Map.of());
+        Map<Identifier, List<Supplier<ItemStack>>> before =
+                INSERTED_BEFORE.getOrDefault(tab, Map.of());
+        Set<Identifier> removed = REMOVED.getOrDefault(tab, Set.of());
+        if (inserted.isEmpty() && before.isEmpty() && removed.isEmpty()) {
+            listing(tab, out);
+            return;
+        }
+        Set<Identifier> placed = new HashSet<>();
+        Set<Identifier> placedBefore = new HashSet<>();
+        Set<Identifier> dropped = new HashSet<>();
+        listing(
+                tab,
+                stack -> {
+                    Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
+                    List<Supplier<ItemStack>> ahead = before.get(id);
+                    if (ahead != null && placedBefore.add(id)) {
+                        ahead.forEach(entry -> emitInserted(entry.get(), inserted, placed, out));
+                    }
+                    if (removed.contains(id)) dropped.add(id);
+                    else out.accept(stack);
+                    List<Supplier<ItemStack>> after = inserted.get(id);
+                    if (after != null && placed.add(id))
+                        after.forEach(entry -> emitInserted(entry.get(), inserted, placed, out));
+                });
+        if (placed.size() != inserted.size() || placedBefore.size() != before.size()) {
+            Set<Identifier> missing = new HashSet<>(inserted.keySet());
+            missing.addAll(before.keySet());
+            missing.removeAll(placed);
+            missing.removeAll(placedBefore);
+            throw new IllegalStateException(
+                    tab
+                            + " lists none of the anchors "
+                            + missing
+                            + ", so the entries inserted beside them would be dropped");
+        }
+        if (dropped.size() != removed.size()) {
+            Set<Identifier> missing = new HashSet<>(removed);
+            missing.removeAll(dropped);
+            throw new IllegalStateException(
+                    tab + " lists none of " + missing + ", so removing them removes nothing");
+        }
+    }
+
+    private static void emitInserted(
+            ItemStack stack,
+            Map<Identifier, List<Supplier<ItemStack>>> inserted,
+            Set<Identifier> placed,
+            Consumer<ItemStack> out) {
+        out.accept(stack);
+        Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        List<Supplier<ItemStack>> after = inserted.get(id);
+        if (after != null && placed.add(id))
+            after.forEach(entry -> emitInserted(entry.get(), inserted, placed, out));
+    }
+
+    private static void listing(Tab tab, Consumer<ItemStack> out) {
         switch (tab) {
             case PARTS -> acceptParts(out);
             case CONTROL -> acceptControl(out);
@@ -3757,12 +3845,15 @@ public final class CreativeContents {
         sample.set(
                 ModDataComponents.BEDROCK_ORE_SAMPLE.get(),
                 new BedrockOreSample(
-                        BEDROCK_ORE_PREVIEW_LIGHT_METAL,
-                        BEDROCK_ORE_PREVIEW_HEAVY_METAL,
-                        BEDROCK_ORE_PREVIEW_RARE_EARTH,
-                        BEDROCK_ORE_PREVIEW_ACTINIDE,
-                        BEDROCK_ORE_PREVIEW_NON_METAL,
-                        BEDROCK_ORE_PREVIEW_CRYSTALLINE));
+                        BedrockOreSet.NTM,
+                        new double[] {
+                            BEDROCK_ORE_PREVIEW_LIGHT_METAL,
+                            BEDROCK_ORE_PREVIEW_HEAVY_METAL,
+                            BEDROCK_ORE_PREVIEW_RARE_EARTH,
+                            BEDROCK_ORE_PREVIEW_ACTINIDE,
+                            BEDROCK_ORE_PREVIEW_NON_METAL,
+                            BEDROCK_ORE_PREVIEW_CRYSTALLINE
+                        }));
         out.accept(sample);
     }
 

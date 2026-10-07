@@ -247,6 +247,7 @@ public class BlockEntityCraneExtractor extends BlockEntityCraneBase
     @Override
     public void nextMode(int i) {
         matcher.nextMode(level, getItem(i), i);
+        markChanged();
     }
 
     @Override

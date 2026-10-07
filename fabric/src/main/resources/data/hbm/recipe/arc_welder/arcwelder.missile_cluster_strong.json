@@ -12,7 +12,7 @@
       "ingredient": "hbm:thruster_medium"
     }
   ],
-  "order": 32,
+  "order": 8192,
   "output_items": [
     "hbm:missile_cluster_strong"
   ],

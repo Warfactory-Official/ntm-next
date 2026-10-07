@@ -3,6 +3,7 @@
 
 package com.hbm.blockentity;
 
+import com.hbm.api.environment.Environment;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.BalanceConfig;
 import com.hbm.data.MachineData;
@@ -39,10 +40,11 @@ abstract class TiltTemplate extends BlockEntity implements Tiltable {
 
     public void checkTilt(Tiltable.TiltType cfg, boolean extraHeavy) {
         boolean doesTilt =
-                cfg == Tiltable.TiltType.UNAVOIDABLE
-                        || cfg == Tiltable.TiltType.CONFIG
-                                && (MachineData.ENABLE_MACHINE_GRAVITY.get()
-                                        || BalanceConfig.enable528MachineGravity);
+                (cfg == Tiltable.TiltType.UNAVOIDABLE
+                                || cfg == Tiltable.TiltType.CONFIG
+                                        && (MachineData.ENABLE_MACHINE_GRAVITY.get()
+                                                || BalanceConfig.enable528MachineGravity))
+                        && !Environment.orbital(getLevel());
 
         if (!doesTilt || getFloorCount() <= 0) {
             hbm$settle(false);

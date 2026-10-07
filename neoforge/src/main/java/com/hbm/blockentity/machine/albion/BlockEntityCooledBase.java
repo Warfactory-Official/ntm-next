@@ -62,8 +62,10 @@ public abstract class BlockEntityCooledBase extends BlockEntityMachineBase
     }
 
     protected void tickCooling() {
+        float lastTemperature = temperature;
         temperature += TEMP_PASSIVE_HEATING;
         if (temperature > KELVIN + 20) temperature = KELVIN + 20;
+        if (temperature != lastTemperature) markChanged();
 
         if (temperature <= TEMPERATURE_TARGET) return;
 
@@ -79,6 +81,7 @@ public abstract class BlockEntityCooledBase extends BlockEntityMachineBase
         coolantTanks[0].setFill(coolantTanks[0].getFill() - cycles);
         coolantTanks[1].setFill(coolantTanks[1].getFill() + cycles);
         temperature -= TEMP_CHANGE_PER_MB * cycles;
+        if (cycles > 0) markChanged();
     }
 
     public boolean isCool() {

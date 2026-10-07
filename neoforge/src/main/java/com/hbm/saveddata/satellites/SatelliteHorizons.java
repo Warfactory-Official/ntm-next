@@ -65,7 +65,7 @@ public class SatelliteHorizons extends Satellite {
     @Override
     public void onCoordAction(ServerLevel level, Player player, int x, int y, int z) {
         setTarget(x, z);
-        SatelliteSavedData.get(level).setDirty();
+        SatelliteSavedData.at(level, x, z).setDirty();
         theHorizons(level, x, z);
     }
 
@@ -83,7 +83,7 @@ public class SatelliteHorizons extends Satellite {
         if (used) return;
 
         used = true;
-        SatelliteSavedData.get(level).setDirty();
+        SatelliteSavedData.at(level, x, z).setDirty();
 
         EntityTom tom = new EntityTom(ModEntities.TOM_THE_MOONSTONE.get(), level);
         tom.setPos(x + 0.5D, 600, z + 0.5D);

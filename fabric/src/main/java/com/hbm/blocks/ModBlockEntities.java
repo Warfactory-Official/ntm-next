@@ -304,7 +304,8 @@ public final class ModBlockEntities {
     public static final RegistryHandle<BlockEntityType<BlockEntitySnowglobe>> NTM_SNOWGLOBE =
             be("snowglobe", BlockEntitySnowglobe::new, ModBlocks.SNOWGLOBE);
     public static final RegistryHandle<BlockEntityType<BlockEntityPlushie>> NTM_PLUSHIE =
-            be("plushie", BlockEntityPlushie::new, ModBlocks.PLUSHIE);
+            be("plushie", BlockEntityPlushie::new, ModBlocks.PLUSHIE)
+                    .ticksClient(BlockEntityPlushie::tickClient);
     public static final RegistryHandle<BlockEntityType<BlockEntityFloodlight>> FLOODLIGHT =
             be("floodlight", BlockEntityFloodlight::new, ModBlocks.FLOODLIGHT)
                     .ticksServer(BlockEntityFloodlight::tickServer);
@@ -818,7 +819,8 @@ public final class ModBlockEntities {
                     .ticksServer(BlockEntityBatteryREDD::tickServer)
                     .ticksClient(BlockEntityBatteryREDD::tickClient);
     public static final RegistryHandle<BlockEntityType<BlockEntityMachineCapacitor>> CAPACITOR =
-            be("capacitor", BlockEntityMachineCapacitor::new, ModBlocks.CAPACITOR_COPPER);
+            be("capacitor", BlockEntityMachineCapacitor::new, ModBlocks.CAPACITOR_COPPER)
+                    .ticksServer(BlockEntityMachineCapacitor::tickServer);
     public static final RegistryHandle<BlockEntityType<BlockEntityCharger>> NTM_CHARGER =
             be("charger", BlockEntityCharger::new, ModBlocks.CHARGER)
                     .ticksServerAt(BlockEntityCharger::tick)

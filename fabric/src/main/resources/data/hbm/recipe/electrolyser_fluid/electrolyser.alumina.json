@@ -7,7 +7,7 @@
       "amount": 200
     }
   ],
-  "order": 5,
+  "order": 1280,
   "output_fluids": [
     {
       "type": "hbm:carbondioxide",

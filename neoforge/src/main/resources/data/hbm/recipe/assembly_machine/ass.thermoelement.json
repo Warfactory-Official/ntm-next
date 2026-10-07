@@ -14,7 +14,7 @@
       "ingredient": "#c:dusts/nether_quartz"
     }
   ],
-  "order": 40,
+  "order": 10240,
   "output_items": [
     "hbm:thermo_element"
   ],

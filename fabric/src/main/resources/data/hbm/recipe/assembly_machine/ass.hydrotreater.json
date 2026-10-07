@@ -43,7 +43,7 @@
       "ingredient": "hbm:circuit_bismoid"
     }
   ],
-  "order": 128,
+  "order": 32768,
   "output_items": [
     "hbm:machine_hydrotreater"
   ],

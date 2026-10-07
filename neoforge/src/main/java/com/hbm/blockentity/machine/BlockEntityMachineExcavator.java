@@ -22,12 +22,14 @@ import com.hbm.inventory.container.ContainerSync;
 import com.hbm.inventory.container.MenuMachineExcavator;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
+import com.hbm.inventory.recipes.ShredderRecipe;
 import com.hbm.inventory.recipes.ShredderRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemDrillbit.EnumDrillType;
 import com.hbm.items.machine.ItemDrillbit;
 import com.hbm.items.machine.upgrade.UpgradeManager;
 import com.hbm.items.machine.upgrade.UpgradeType;
+import com.hbm.items.special.BedrockOreSet;
 import com.hbm.items.special.ItemBedrockOreBase;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
@@ -169,7 +171,7 @@ public class BlockEntityMachineExcavator extends BlockEntityMachineBase
     public void tickServer() {
         int speedLevel = scanUpgrades();
 
-        tank.setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory);
+        if (tank.setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory)) markChanged();
 
         if (TickPhase.every(this, 20)) tryEjectBuffer();
         if (chuteTimer > 0) chuteTimer--;
@@ -182,6 +184,7 @@ public class BlockEntityMachineExcavator extends BlockEntityMachineBase
         if (enableDrill && type != null && power >= consumption) {
             operational = true;
             power -= consumption;
+            markChanged();
 
             speed = type.speed * (1 + speedLevel / 2D);
 
@@ -191,6 +194,7 @@ public class BlockEntityMachineExcavator extends BlockEntityMachineBase
                 if (targetDepth > maxDepth) enableDrill = false;
             }
         } else {
+            if (targetDepth != 0) markChanged();
             targetDepth = 0;
         }
 
@@ -335,6 +339,7 @@ public class BlockEntityMachineExcavator extends BlockEntityMachineBase
             ItemBedrockOreBase.setOreAmount(
                     stack,
                     NtmWorldgenFields.get((ServerLevel) level).bedrock(),
+                    BedrockOreSet.OF.get().apply(level),
                     pos.getX(),
                     pos.getZ(),
                     1D + drill.fortune * 0.1D);
@@ -416,6 +421,24 @@ public class BlockEntityMachineExcavator extends BlockEntityMachineBase
             level.setBlockAndUpdate(pos, ModBlocks.BARRICADE.get().defaultBlockState());
     }
 
+    public static List<ItemStack> crush(List<ItemStack> items) {
+        List<ItemStack> crushed = new ArrayList<>();
+        for (ItemStack stack : items) {
+            ShredderRecipe recipe = ShredderRecipes.getRecipe(stack);
+            ItemStack result = recipe == null ? ItemStack.EMPTY : recipe.output();
+            if (result.isEmpty()
+                    || result.is(ModItems.SCRAP.get())
+                    || result.is(ModItems.DUST.get())) {
+                crushed.add(stack);
+                continue;
+            }
+            int count = 0;
+            for (int i = 0; i < stack.getCount(); i++) count += recipe.roll().getCount();
+            if (count > 0) crushed.add(result.copyWithCount(count));
+        }
+        return crushed;
+    }
+
     private void breakSingleBlock(BlockState state, BlockPos pos) {
         List<ItemStack> items =
                 new ArrayList<>(
@@ -427,23 +450,7 @@ public class BlockEntityMachineExcavator extends BlockEntityMachineBase
                                 null,
                                 drillTool()));
 
-        if (enableCrusher) {
-            List<ItemStack> crushedList = new ArrayList<>();
-
-            for (ItemStack stack : items) {
-                ItemStack crushed = ShredderRecipes.getShredderResult(stack).copy();
-
-                if (crushed.getItem() == ModItems.SCRAP.get()
-                        || crushed.getItem() == ModItems.DUST.get()) {
-                    crushedList.add(stack);
-                } else {
-                    crushed.setCount(crushed.getCount() * stack.getCount());
-                    crushedList.add(crushed);
-                }
-            }
-
-            items = crushedList;
-        }
+        if (enableCrusher) items = crush(items);
 
         if (state.is(ModBlocks.BARRICADE.get())) items.clear();
 

@@ -9,7 +9,7 @@
     }
   ],
   "momentum": 6500,
-  "order": 4,
+  "order": 1024,
   "output_items": [
     "hbm:particle_higgs"
   ]

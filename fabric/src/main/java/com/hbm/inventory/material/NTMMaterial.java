@@ -4,6 +4,7 @@
 
 package com.hbm.inventory.material;
 
+import com.hbm.NuclearTech;
 import com.hbm.inventory.OreDictManager.DictFrame;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -61,6 +62,8 @@ public class NTMMaterial {
     public double asbestos;
     public double coal;
 
+    public String namespace = NuclearTech.MOD_ID;
+
     public NTMMaterial(int id, DictFrame dict) {
         this.id = id;
         this.dict = dict;
@@ -75,6 +78,18 @@ public class NTMMaterial {
         if (Mats.matById.put(id, this) != null) {
             throw new IllegalStateException("Duplicate material id " + id + " for " + dict.mat());
         }
+        Mats.bindShapeTags(this);
+    }
+
+    public NTMMaterial namespace(String namespace) {
+        this.namespace = namespace;
+        return this;
+    }
+
+    public NTMMaterial after(NTMMaterial anchor) {
+        Mats.orderedList.remove(this);
+        Mats.orderedList.add(Mats.orderedList.indexOf(anchor) + 1, this);
+        return this;
     }
 
     public String getUnlocalizedName() {

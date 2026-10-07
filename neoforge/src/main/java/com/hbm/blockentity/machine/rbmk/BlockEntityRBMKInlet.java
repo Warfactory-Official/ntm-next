@@ -13,6 +13,7 @@ import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
@@ -49,6 +50,16 @@ public class BlockEntityRBMKInlet extends BlockEntityMachineBase
                 }
             }
         }
+    }
+
+    @Override
+    public boolean canReceiveFluid(Fluid type) {
+        return water.joins(type);
+    }
+
+    @Override
+    public void forEachTank(Consumer<FluidTankNTM> visitor) {
+        visitor.accept(water);
     }
 
     @Override

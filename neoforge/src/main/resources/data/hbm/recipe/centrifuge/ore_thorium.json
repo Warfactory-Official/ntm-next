@@ -3,10 +3,10 @@
   "duration": 200,
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/thorium"
+      "ingredient": "#c:ores/thorium"
     }
   ],
-  "order": 27,
+  "order": 11008,
   "output_items": [
     "hbm:powder_thorium",
     "hbm:powder_thorium",

@@ -126,6 +126,10 @@ public final class ArmorSocketRenderer {
         };
     }
 
+    public static boolean wingsGrounded(HumanoidRenderState state) {
+        return ((MotionRenderState) state).hbm$onGround();
+    }
+
     private static void submitWings(
             PoseStack pose,
             SubmitNodeCollector collector,
@@ -136,12 +140,13 @@ public final class ArmorSocketRenderer {
         MotionRenderState motion = (MotionRenderState) state;
         double rot = Math.sin(state.ageInTicks * 0.2D) * 20;
         double rot2 = Math.sin(state.ageInTicks * 0.2D - Math.PI * 0.5) * 50 + 30;
-        if (kind == ItemWings.Kind.MURK && motion.hbm$onGround()) {
+        boolean grounded = wingsGrounded(state);
+        if (kind == ItemWings.Kind.MURK && grounded) {
             rot = 20;
             rot2 = 160;
         }
         if (kind == ItemWings.Kind.LIMP) {
-            if (motion.hbm$onGround()) {
+            if (grounded) {
                 rot = 30;
                 rot2 = -30;
             } else if (motion.hbm$motionY() < -0.1) {

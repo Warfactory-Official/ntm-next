@@ -74,6 +74,7 @@ public class LevelNodeGraph<D> extends SavedData {
                                     .apply(i, SegmentEntry::new));
     private static final Consumer<Runnable> COMPILER = defaultCompiler();
     private final IGraphProvider<D> provider;
+    private final Consumer<Runnable> compiler;
     private final Long2ObjectOpenHashMap<GraphNode<D>> nodesByPos = new Long2ObjectOpenHashMap<>();
     private final Long2ObjectOpenHashMap<GraphSegment<D>> interiorIndex =
             new Long2ObjectOpenHashMap<>();
@@ -90,7 +91,12 @@ public class LevelNodeGraph<D> extends SavedData {
     private int floodGeneration;
 
     public LevelNodeGraph(IGraphProvider<D> provider) {
+        this(provider, COMPILER);
+    }
+
+    public LevelNodeGraph(IGraphProvider<D> provider, Consumer<Runnable> compiler) {
         this.provider = provider;
+        this.compiler = compiler;
     }
 
     private static <D> void topologyChanged(NodeNetwork<D> net) {
@@ -1791,7 +1797,7 @@ public class LevelNodeGraph<D> extends SavedData {
                         give.endA == v,
                         endAPos,
                         endBPos);
-        COMPILER.accept(
+        compiler.accept(
                 () -> {
                     try {
                         compileFold(job);

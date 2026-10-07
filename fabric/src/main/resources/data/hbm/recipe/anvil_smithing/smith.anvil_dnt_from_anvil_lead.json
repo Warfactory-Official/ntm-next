@@ -9,7 +9,7 @@
       "ingredient": "#c:ingots/dineutronium"
     }
   ],
-  "order": 16,
+  "order": 4096,
   "output_items": [
     "hbm:anvil_dnt"
   ]

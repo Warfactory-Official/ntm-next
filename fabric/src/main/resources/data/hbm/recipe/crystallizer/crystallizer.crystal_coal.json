@@ -12,7 +12,7 @@
       "ingredient": "#c:ores/coal"
     }
   ],
-  "order": 225,
+  "order": 57600,
   "output_items": [
     "hbm:crystal_coal"
   ],

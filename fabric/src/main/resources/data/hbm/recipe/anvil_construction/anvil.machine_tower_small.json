@@ -14,7 +14,7 @@
       "ingredient": "hbm:machine_condenser"
     }
   ],
-  "order": 82,
+  "order": 20992,
   "output_items": [
     "hbm:machine_tower_small"
   ],

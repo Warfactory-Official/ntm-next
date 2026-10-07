@@ -7,6 +7,7 @@ import com.hbm.api.control.IControlReceiver;
 import com.hbm.api.energymk2.IBatteryItem;
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.energymk2.ItemEnergyTransfer;
+import com.hbm.api.environment.Environment;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blockentity.IFluidCopiable;
@@ -139,11 +140,12 @@ public class BlockEntityMachineGasFlare extends BlockEntityMachineBase
                     NTMFluidProperties.hasTrait(type, FT_Gaseous.class)
                             || NTMFluidProperties.hasTrait(type, FT_Gaseous_ART.class);
 
-            if (!doesBurn || !flammable) {
+            if (!doesBurn || !flammable || !breatheAir(Math.min(maxBurn, tank.getFill()))) {
                 if (gaseous) {
                     int eject = Math.min(maxVent, tank.getFill());
                     fluidUsed = eject;
                     tank.setFill(tank.getFill() - eject);
+                    markChanged();
                     if (TickPhase.every(this, 5)) {
                         FluidTrait.onRelease(
                                 level,
@@ -165,6 +167,8 @@ public class BlockEntityMachineGasFlare extends BlockEntityMachineBase
                                 1.5F,
                                 0.5F);
                     }
+
+                    Environment.releaseGas((ServerLevel) level, type, eject);
                 }
             } else {
                 int eject = Math.min(maxBurn, tank.getFill());
@@ -179,6 +183,7 @@ public class BlockEntityMachineGasFlare extends BlockEntityMachineBase
 
                 output = (int) powerProd;
                 power = Math.min(maxPower, power + powerProd);
+                markChanged();
 
                 ServerLevel server = (ServerLevel) level;
                 double px = worldPosition.getX() + 0.5D;

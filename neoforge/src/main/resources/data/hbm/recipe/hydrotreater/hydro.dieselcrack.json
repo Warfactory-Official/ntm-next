@@ -12,7 +12,7 @@
       "pressure": 1
     }
   ],
-  "order": 3,
+  "order": 768,
   "output_fluids": [
     {
       "type": "hbm:diesel",

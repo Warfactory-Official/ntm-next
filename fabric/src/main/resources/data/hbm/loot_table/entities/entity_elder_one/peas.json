@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:entity_interact",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 3.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:spawn_duck"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbm:entities/entity_elder_one/peas"
+}

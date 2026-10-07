@@ -6,10 +6,13 @@ package com.hbm.items.armor;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
+import com.hbm.lib.Library;
+import com.hbm.registration.OverridePoint;
 import com.hbm.util.BobMathUtil;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -110,6 +113,9 @@ public class ModArmorItem extends Item implements IPAWeaponsProvider {
                 : super.getBarColor(stack);
     }
 
+    public static final OverridePoint<BiConsumer<ItemStack, Consumer<Component>>> EXTRA_LINES =
+            OverridePoint.of(Library.id("armor_extra_lines"), (stack, adder) -> {});
+
     @Override
     public void appendHoverText(
             ItemStack stack,
@@ -127,6 +133,7 @@ public class ModArmorItem extends Item implements IPAWeaponsProvider {
                             .withStyle(ChatFormatting.GOLD));
         }
 
+        EXTRA_LINES.get().accept(stack, adder);
         fullSetBonus(stack, adder);
     }
 

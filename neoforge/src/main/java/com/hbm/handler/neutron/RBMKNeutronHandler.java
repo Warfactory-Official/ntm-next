@@ -232,6 +232,7 @@ public class RBMKNeutronHandler {
                 } else if (type == RBMKType.ABSORBER) {
                     nodeBE.heat +=
                             RBMKConfig.getAbsorberHeatConversion(worldObj) * this.fluxQuantity;
+                    nodeBE.markChanged();
                     if (absorberEfficiency == 1) return;
                     this.fluxQuantity *= absorberEfficiency;
                 }

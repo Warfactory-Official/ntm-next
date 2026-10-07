@@ -135,7 +135,7 @@ public class BlockEntityMachineCombustionEngine extends BlockEntityMachinePollut
             EnumPistonType piston = pistons.type;
             double eff = piston.eff[trait.getGrade().ordinal()];
 
-            if (eff > 0) {
+            if (eff > 0 && breatheAir(TickPhase.every(this, 5) ? setting : 0)) {
                 int speed = setting * 2;
                 int toBurn = Math.min(fill, speed);
                 this.power += toBurn * (trait.getCombustionEnergy() / 10_000D) * eff;
@@ -149,6 +149,7 @@ public class BlockEntityMachineCombustionEngine extends BlockEntityMachinePollut
 
                 tank.setFill(fill / 10);
                 tenth = fill % 10;
+                if (toBurn > 0) markChanged();
             }
         }
 

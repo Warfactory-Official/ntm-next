@@ -1,6 +1,8 @@
 {
   "values": [
     "hbm:ore_aluminium",
-    "hbm:ore_aluminium_deepslate"
+    "hbm:ore_aluminium_deepslate",
+    "hbm:ore_meteor_aluminium",
+    "hbm:cluster_aluminium"
   ]
 }

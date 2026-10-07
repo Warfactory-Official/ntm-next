@@ -9,10 +9,10 @@
   "duration": 200,
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/gold"
+      "ingredient": "#c:ores/gold"
     }
   ],
-  "order": 1,
+  "order": 512,
   "output_items": [
     "hbm:powder_gold",
     "hbm:powder_gold",

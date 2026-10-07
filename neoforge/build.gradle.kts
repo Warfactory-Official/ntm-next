@@ -66,7 +66,7 @@ tasks.named<JavaCompile>("compileJava") {
         "-Xplugin:tenon-inject packages=com.hbm.interfaces.injected",
         "-Xplugin:tenon-traits templates=" +
                 layout.projectDirectory.dir("src/main/templates/java/com/hbm/blockentity").asFile.absolutePath,
-        "-Xplugin:hbm-compiler syncTo=com/hbm/inventory/container-sync.idx"
+        "-Xplugin:hbm-compiler syncTo=container-sync.idx"
     ))
     options.compilerArgs.addAll(javacInternalExports)
 }
@@ -117,7 +117,7 @@ repositories {
     }
 }
 
-val crankshaftVersion = "1.5.5+mc26.2"
+val crankshaftVersion = "1.5.9+mc26.2"
 
 val crankshaftJar = configurations.create("crankshaftJar") {
     isCanBeConsumed = false
@@ -173,7 +173,7 @@ dependencies {
     compileOnly("mcp.mobius.waila:wthit-api:neo-20.0.0")
     compileOnly("maven.modrinth:the-one-probe:26.2_neo-15.0.1")
 
-    compileOnly("curse.maven:neocontinuity-1377279:8384811")
+    compileOnly("curse.maven:neocontinuity-1377279:8896544")
     compileOnly("maven.modrinth:ctmlib:26.2.0.1")
 }
 

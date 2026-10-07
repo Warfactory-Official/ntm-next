@@ -31,7 +31,7 @@
       "ingredient": "#c:bolts/steel"
     }
   ],
-  "order": 360,
+  "order": 92160,
   "output_items": [
     "hbm:missile_stealth"
   ],

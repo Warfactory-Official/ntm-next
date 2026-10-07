@@ -5,7 +5,7 @@
       "ingredient": "hbm:steel_scaffold"
     }
   ],
-  "order": 128,
+  "order": 32768,
   "output_items": [
     {
       "count": 4,

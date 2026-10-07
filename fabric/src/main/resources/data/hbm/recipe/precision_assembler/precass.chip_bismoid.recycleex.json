@@ -27,7 +27,7 @@
   ],
   "name": "precass.chip_bismoid.recycleEx",
   "name_wrapper": "precass.recycle",
-  "order": 7,
+  "order": 1792,
   "output_fluids": [
     {
       "type": "hbm:perfluoromethyl",

@@ -31,6 +31,10 @@ public interface RuntimeConfig {
         return store().get(ConfigSchema.UNSTABLE_RECOVERY_SWEEP);
     }
 
+    default boolean enableMOTD() {
+        return store().get(ConfigSchema.ENABLE_MOTD);
+    }
+
     default boolean extendedLogging() {
         return store().get(ConfigSchema.ENABLE_EXTENDED_LOGGING);
     }

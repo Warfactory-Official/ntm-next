@@ -12,7 +12,7 @@
       "ingredient": "hbm:powder_ash_soot"
     }
   ],
-  "order": 14,
+  "order": 3584,
   "output_fluids": [
     {
       "type": "hbm:fullerene",

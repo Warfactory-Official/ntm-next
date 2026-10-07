@@ -27,7 +27,7 @@
     }
   ],
   "name": "ass.gascentEx",
-  "order": 100,
+  "order": 25600,
   "output_items": [
     "hbm:machine_gascent"
   ],

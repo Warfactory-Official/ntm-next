@@ -57,6 +57,7 @@ public class BlockEntityMachineReactorBreeding extends BlockEntityMachineBase
 
         if (canProcess(recipe)) {
             progress += PROGRESS_PER_TICK * (flux / recipe.flux);
+            markChanged();
 
             if (progress >= 1.0F) {
                 progress = 0F;
@@ -64,6 +65,7 @@ public class BlockEntityMachineReactorBreeding extends BlockEntityMachineBase
                 setChanged();
             }
         } else {
+            if (progress != 0.0F) markChanged();
             progress = 0.0F;
         }
 

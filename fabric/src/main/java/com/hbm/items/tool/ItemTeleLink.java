@@ -5,6 +5,7 @@ package com.hbm.items.tool;
 
 import com.hbm.blockentity.machine.BlockEntityMachineTeleporter;
 import com.hbm.items.ModDataComponents;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -40,8 +41,8 @@ public class ItemTeleLink extends Item {
 
         if (!(level.getBlockEntity(pos) instanceof BlockEntityMachineTeleporter tele)) {
             stack.set(ModDataComponents.LINKER_TARGET.get(), GlobalPos.of(level.dimension(), pos));
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.blockPosition(),
                     ModSounds.TECH_BLEEP.get(),
                     SoundSource.PLAYERS,
@@ -57,8 +58,8 @@ public class ItemTeleLink extends Item {
 
         GlobalPos target = stack.get(ModDataComponents.LINKER_TARGET.get());
         if (target == null) {
-            level.playSound(
-                    null,
+            EntitySounds.play(
+                    player,
                     player.blockPosition(),
                     ModSounds.TECH_BOOP.get(),
                     SoundSource.PLAYERS,
@@ -71,8 +72,8 @@ public class ItemTeleLink extends Item {
         }
 
         tele.setTarget(target);
-        level.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.blockPosition(),
                 ModSounds.TECH_BLEEP.get(),
                 SoundSource.PLAYERS,

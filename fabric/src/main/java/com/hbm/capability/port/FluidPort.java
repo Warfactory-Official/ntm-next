@@ -68,6 +68,32 @@ public final class FluidPort implements PortView, IFluidHandlerMK2 {
     }
 
     @Override
+    public boolean canReceiveFluid(Fluid type) {
+        if (!filterAllowsType(type)) return false;
+        for (int slot : receive) {
+            if (tanks[slot].joins(type)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canProvideFluid(Fluid type) {
+        if (!filterAllowsType(type)) return false;
+        for (int slot : provide) {
+            if (tanks[slot].joins(type)) return true;
+        }
+        return false;
+    }
+
+    private boolean filterAllowsType(Fluid type) {
+        if (filter == null) return true;
+        for (int pressure = 0; pressure <= FluidTankEndpoint.HIGHEST_VALID_PRESSURE; pressure++) {
+            if (filter.test(type, pressure)) return true;
+        }
+        return false;
+    }
+
+    @Override
     public long getDemand(Fluid type, int pressure) {
         if (filter != null && !filter.test(type, pressure)) return 0;
         long demand = 0;

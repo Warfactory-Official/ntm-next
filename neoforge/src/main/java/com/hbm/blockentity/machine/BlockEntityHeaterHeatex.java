@@ -82,9 +82,10 @@ public class BlockEntityHeaterHeatex extends BlockEntityMachineBase
 
     @Override
     public void tickServer() {
-        tanks[0].setType(0, 0, inventory);
+        if (tanks[0].setType(0, 0, inventory)) markChanged();
         setupTanks();
 
+        if (heatEnergy != 0) markChanged();
         heatEnergy = (int) (heatEnergy * 0.999D);
 
         syncInputFill = tanks[0].getFill();
@@ -128,7 +129,9 @@ public class BlockEntityHeaterHeatex extends BlockEntityMachineBase
     @Override
     public void useUpHeat(Level level, BlockPos pos, int heat) {
         if (!BlockMultiblockCore.vendsHeatAt(this, pos)) return;
+        int prevHeat = this.heatEnergy;
         this.heatEnergy = Math.max(0, this.heatEnergy - heat);
+        if (this.heatEnergy != prevHeat) markChanged();
     }
 
     @Override
@@ -180,6 +183,7 @@ public class BlockEntityHeaterHeatex extends BlockEntityMachineBase
             CompoundTag nbt, int index, Level level, Player player, BlockPos pos) {
         IFluidCopiable.super.pasteSettings(nbt, index, level, player, pos);
         if (nbt.contains("toCool")) amountToCool = nbt.getIntOr("toCool", amountToCool);
+        markChanged();
     }
 
     @Override

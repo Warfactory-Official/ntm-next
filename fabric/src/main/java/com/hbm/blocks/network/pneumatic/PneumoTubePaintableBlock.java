@@ -85,7 +85,12 @@ public class PneumoTubePaintableBlock extends Block
             }
             return InteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        ToolType tool = ToolType.getType(stack);
+        return tool == ToolType.SCREWDRIVER
+                        || tool == ToolType.HAND_DRILL
+                        || tool == ToolType.DEFUSER
+                ? InteractionResult.PASS
+                : InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     @Override

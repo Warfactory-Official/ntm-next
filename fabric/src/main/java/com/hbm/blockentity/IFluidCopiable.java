@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import org.jspecify.annotations.Nullable;
@@ -62,6 +63,7 @@ public interface IFluidCopiable extends ICopiable {
                         BuiltInRegistries.FLUID.getValue(
                                 Identifier.parse(nbt.getStringOr("fluidID" + index, "")));
                 tank.setTankTypeByIdentifier(type);
+                if (this instanceof BlockEntity be) level.blockEntityChanged(be.getBlockPos());
             }
         }
     }

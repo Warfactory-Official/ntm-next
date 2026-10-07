@@ -503,15 +503,8 @@ final class ClientParticlePayloadHandlers {
             return;
         }
         if (payload.mode == SmokeShockPayload.MODE_SHOCK) {
-            float angle = rand.nextInt(360) * Mth.DEG_TO_RAD;
-            float step = Mth.TWO_PI / count;
-            for (int i = 0; i < count; i++) {
-                ParticleExSmoke fx = new ParticleExSmoke(level, payload.x, payload.y, payload.z);
-                fx.setParticleSpeed(
-                        Math.cos(angle) * payload.strength, 0, Math.sin(angle) * payload.strength);
-                mc.particleEngine.add(fx);
-                angle += step;
-            }
+            ClientEffects.spawnSmokeShock(
+                    level, payload.x, payload.y, payload.z, count, payload.strength);
         } else {
             for (int i = 0; i < count; i++) {
                 ParticleExSmoke fx = new ParticleExSmoke(level, payload.x, payload.y, payload.z);

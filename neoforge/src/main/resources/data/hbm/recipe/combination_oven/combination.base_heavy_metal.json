@@ -10,7 +10,7 @@
       "ingredient": "hbm:bedrock_ore"
     }
   ],
-  "order": 28,
+  "order": 7168,
   "output_fluids": [
     {
       "type": "hbm:vitriol",

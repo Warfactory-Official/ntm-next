@@ -216,6 +216,9 @@ public class BlockEntityMachinePUREX extends BlockEntityMachineBase
     @Override
     public void tickServer() {
         long prevPower = power;
+        long prevMaxPower = maxPower;
+        double prevProgress = module.progress;
+        String prevRecipe = module.getRecipeName();
 
         GenericRecipe selected = module.getRecipe();
         if (selected != null) maxPower = selected.power * 100L;
@@ -235,6 +238,9 @@ public class BlockEntityMachinePUREX extends BlockEntityMachineBase
         isProgressing = module.didProcess;
 
         if (module.markDirty || power != prevPower) setChanged();
+        if (maxPower != prevMaxPower
+                || module.progress != prevProgress
+                || !module.getRecipeName().equals(prevRecipe)) markChanged();
         flush.provide((ServerLevel) level, this);
         networkPackNT(100);
     }

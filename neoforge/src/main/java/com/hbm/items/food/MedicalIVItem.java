@@ -7,6 +7,7 @@ import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.machine.IFluidContainerItem;
 import com.hbm.items.special.ItemCustomLore;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ExperienceUtil;
 import com.hbm.util.InventoryUtil;
@@ -75,8 +76,8 @@ public final class MedicalIVItem extends ItemCustomLore implements IFluidContain
 
     private static void play(
             ServerLevel level, Player player, net.minecraft.sounds.SoundEvent sound) {
-        level.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.getX(),
                 player.getY(),
                 player.getZ(),

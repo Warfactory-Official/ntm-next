@@ -9,6 +9,7 @@ import com.hbm.items.ModItems;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.particle.ParticleGiblet;
 import com.hbm.particle.helper.ParticleCreators;
+import com.hbm.sound.EntitySounds;
 import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -101,8 +102,8 @@ public class EntityCog extends EntityThrowableInterp {
             e.hurtServer(server, damageSources().source(ModDamageTypes.RUBBLE), 1000F);
             if (!e.isAlive() && e instanceof LivingEntity living) {
                 ParticleCreators.giblets(server, living, ParticleGiblet.TYPE_MEAT, 5);
-                server.playSound(
-                        null,
+                EntitySounds.play(
+                        living,
                         living.getX(),
                         living.getY(),
                         living.getZ(),

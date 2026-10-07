@@ -9,10 +9,10 @@
   ],
   "input_items": [
     {
-      "ingredient": "#hbm:ore_processing/plutonium"
+      "ingredient": "#c:ores/plutonium"
     }
   ],
-  "order": 240,
+  "order": 63488,
   "output_items": [
     "hbm:crystal_plutonium"
   ],

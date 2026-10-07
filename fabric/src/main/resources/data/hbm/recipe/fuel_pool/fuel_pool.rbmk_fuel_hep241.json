@@ -13,7 +13,7 @@
       "ingredient": "hbm:rbmk_fuel_hep241"
     }
   ],
-  "order": 40,
+  "order": 10240,
   "output_items": [
     {
       "components": {

@@ -9,7 +9,7 @@
     }
   ],
   "momentum": 12500,
-  "order": 7,
+  "order": 1792,
   "output_items": [
     "hbm:particle_sparkticle",
     "hbm:dust"

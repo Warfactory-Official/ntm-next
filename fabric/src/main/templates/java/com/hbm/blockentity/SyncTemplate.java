@@ -8,6 +8,7 @@ import com.hbm.packet.BeSyncTable;
 import com.hbm.packet.BlobSynced;
 import com.hbm.packet.ChunkTrackerIndex;
 import com.hbm.packet.PacketWire;
+import com.hbm.packet.SyncAudience;
 import com.hbm.packet.SyncBindings;
 import com.hbm.packet.SyncSource;
 import com.hbm.packet.SyncUnitFrame;
@@ -103,7 +104,12 @@ abstract class SyncTemplate extends BlockEntity implements Synced {
         ThreadedPayload payload = hbm$syncGated(server);
         if (payload == null) return;
         hbm$syncedOnce = true;
-        BeSyncTable.refresh(payload, server, getBlockPos(), range);
+        BeSyncTable.refresh(
+                payload,
+                server,
+                getBlockPos(),
+                range,
+                (Object) this instanceof SyncAudience audience ? audience : null);
     }
 
     public void networkPackNTTracking() {

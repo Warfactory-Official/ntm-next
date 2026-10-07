@@ -9,7 +9,7 @@
       "ingredient": "#c:dusts/boron"
     }
   ],
-  "order": 20,
+  "order": 5120,
   "output_items": [
     "hbm:powder_aluminium"
   ]

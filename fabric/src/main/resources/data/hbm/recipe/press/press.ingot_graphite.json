@@ -5,7 +5,7 @@
       "ingredient": "#hbm:gems/any_coke"
     }
   ],
-  "order": 5,
+  "order": 1280,
   "output_items": [
     "hbm:ingot_graphite"
   ],

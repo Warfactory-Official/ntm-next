@@ -127,10 +127,12 @@ public class BlockEntityMachineRadGen extends BlockEntityMachineBase
     public void tickServer() {
         for (int i = 0; i < CHANNELS; i++) load(i);
 
+        boolean wasOn = isOn;
         isOn = false;
         for (int i = 0; i < CHANNELS; i++) burn(i);
 
         if (power > MAX_POWER) power = MAX_POWER;
+        if (isOn || wasOn) markChanged();
 
         networkPackNT(50);
     }

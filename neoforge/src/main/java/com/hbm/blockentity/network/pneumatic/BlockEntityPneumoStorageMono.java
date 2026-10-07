@@ -134,6 +134,7 @@ public class BlockEntityPneumoStorageMono extends BlockEntityPneumaticStorageBas
         if (amounts[index] <= 0) return amount;
         int toRemove = (int) Math.min(amount, amounts[index]);
         amounts[index] -= toRemove;
+        this.markChanged();
         return amount - toRemove;
     }
 
@@ -143,6 +144,7 @@ public class BlockEntityPneumoStorageMono extends BlockEntityPneumaticStorageBas
         if (capacity <= 0) return amount;
         int toAdd = (int) Math.min(amount, capacity);
         amounts[index] += toAdd;
+        this.markChanged();
         return amount - toAdd;
     }
 

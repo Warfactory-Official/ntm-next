@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/titanium"
     }
   ],
-  "order": 5,
+  "order": 1280,
   "output_items": [
     "hbm:ingot_saturnite"
   ]

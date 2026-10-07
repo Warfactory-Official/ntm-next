@@ -44,7 +44,7 @@ public class BlockEntityCrate extends BlockEntityLockableBase
         implements MenuProvider, PersistentDrop {
 
     private static final String[] PERSISTENT_KEYS = {
-        "inventory", "lock", "cheesable", "isLocked", "lockMod", "spiders"
+        "inventory", "lock", "cheesable", "isLocked", "lockMod", "spiders", "customName"
     };
 
     public final CrateType crateType;
@@ -58,6 +58,11 @@ public class BlockEntityCrate extends BlockEntityLockableBase
     @Override
     protected double interactionRangeSq() {
         return 64;
+    }
+
+    @Override
+    protected boolean syncName() {
+        return true;
     }
 
     @Override
@@ -175,6 +180,7 @@ public class BlockEntityCrate extends BlockEntityLockableBase
         LockStateData lockState = components.get(ModDataComponents.LOCK_STATE.get());
         if (lockState != null) applyLockState(lockState);
         hasSpiders = components.get(ModDataComponents.SPIDERS.get()) != null;
+        setCustomName(components.get(DataComponents.CUSTOM_NAME));
     }
 
     @Override
@@ -197,6 +203,7 @@ public class BlockEntityCrate extends BlockEntityLockableBase
         LockStateData lockState = getLockState();
         if (!lockState.isDefault()) components.set(ModDataComponents.LOCK_STATE.get(), lockState);
         if (hasSpiders) components.set(ModDataComponents.SPIDERS.get(), Unit.INSTANCE);
+        components.set(DataComponents.CUSTOM_NAME, getCustomName());
         boolean tagged = contents != ItemContainerContents.EMPTY || isLocked() || hasSpiders;
         components.set(
                 ModDataComponents.STACKLOCK.get(), tagged ? level.getRandom().nextLong() : null);

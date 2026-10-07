@@ -17,6 +17,7 @@ public final class HimarsPeripheral extends ArtilleryPeripheral<BlockEntityTurre
     public final Object[] addCoords(double x, double y, double z) {
         BlockEntityTurretHIMARS machine = machine();
         machine.mode = BlockEntityTurretHIMARS.MODE_MANUAL;
+        machine.markChanged();
         machine.addQueuedTarget(new Vec3(x, y, z));
         return new Object[] {};
     }

@@ -45,10 +45,10 @@ public class BlockEntityMachineSatDock extends BlockEntityMachineBase implements
         if (!TickPhase.every(this, CARGO_REQUEST_PERIOD)
                 || !getItem(SLOT_CHIP).is(ModItems.SAT_CHIP.get())) return;
         ServerLevel server = (ServerLevel) level;
-        SatelliteSavedData data = SatelliteSavedData.get(server);
+        BlockPos pos = getBlockPos();
+        SatelliteSavedData data = SatelliteSavedData.at(server, pos.getX(), pos.getZ());
         Satellite satellite = data.getSatFromFreq(ISatChip.getFreqS(getItem(SLOT_CHIP)));
         if (satellite == null) return;
-        BlockPos pos = getBlockPos();
         satellite.tryRequestItems(server, pos.getX(), pos.getY(), pos.getZ());
     }
 

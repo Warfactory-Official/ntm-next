@@ -9,6 +9,7 @@ import com.hbm.command.ModCommands;
 import com.hbm.config.FabricHbmConfig;
 import com.hbm.config.ForeignModChange;
 import com.hbm.extprop.HbmPlayerProps;
+import com.hbm.fabric.compat.CreateGoggles;
 import com.hbm.fabric.compat.CreateMountedCrates;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.handler.BobmazonSignHandler;
@@ -28,6 +29,8 @@ import com.hbm.platform.FabricCaps;
 import com.hbm.platform.FabricNetwork;
 import com.hbm.platform.FabricServerEvents;
 import com.hbm.qmaw.QMAWLoader;
+import com.hbm.registration.Addon;
+import com.hbm.registration.FabricRegistrar;
 import com.hbm.util.ContagionUtil;
 import com.hbm.world.ore.OreGeneration;
 import net.fabricmc.api.ModInitializer;
@@ -62,6 +65,8 @@ public final class NuclearTechFabric implements ModInitializer {
     public void onInitialize() {
         FabricServerEvents.install();
         NuclearTech.init();
+        FabricLoader.getInstance().invokeEntrypoints("hbm:addon", Addon.class, Addon::register);
+        FabricRegistrar.frozen = true;
         FabricHbmConfig.load();
         NtmCapabilities.declareAll();
         FabricCaps.flush();
@@ -89,7 +94,7 @@ public final class NuclearTechFabric implements ModInitializer {
                 });
         UseBlockCallback.EVENT.register(
                 (player, level, hand, hit) ->
-                        BobmazonSignHandler.onSignUsed(level, hit.getBlockPos())
+                        BobmazonSignHandler.onSignUsed(level, hit.getBlockPos(), player)
                                 ? InteractionResult.SUCCESS
                                 : InteractionResult.PASS);
 
@@ -107,8 +112,9 @@ public final class NuclearTechFabric implements ModInitializer {
                         FluidPropertyReloadListener.ID, new FluidPropertyReloadListener());
         DataResourceLoader.get().registerReloadListener(QMAWLoader.ID, QMAWLoader::new);
         for (ForeignModChange change : ForeignModChange.values()) {
-            if (!FabricLoader.getInstance().isModLoaded(change.modId) || !change.enabled())
-                continue;
+            if (change.neoForge
+                    || !FabricLoader.getInstance().isModLoaded(change.modId)
+                    || !change.enabled()) continue;
             if (!ResourceLoader.registerBuiltinPack(
                     Library.id(change.pack),
                     FabricLoader.getInstance().getModContainer(NuclearTech.MOD_ID).orElseThrow(),
@@ -117,7 +123,10 @@ public final class NuclearTechFabric implements ModInitializer {
                 throw new IllegalStateException("Missing builtin pack: " + change.pack);
             }
         }
-        if (FabricLoader.getInstance().isModLoaded("create")) CreateMountedCrates.register();
+        if (FabricLoader.getInstance().isModLoaded("create")) {
+            CreateMountedCrates.register();
+            CreateGoggles.register();
+        }
         CommonLifecycleEvents.TAGS_LOADED.register(
                 (registries, client) -> {
                     HazardSystem.clearCaches();

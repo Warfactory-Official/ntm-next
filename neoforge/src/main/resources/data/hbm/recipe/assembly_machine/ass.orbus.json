@@ -24,7 +24,7 @@
       "ingredient": "hbm:battery_sc_po210"
     }
   ],
-  "order": 203,
+  "order": 51968,
   "output_items": [
     "hbm:machine_orbus"
   ],

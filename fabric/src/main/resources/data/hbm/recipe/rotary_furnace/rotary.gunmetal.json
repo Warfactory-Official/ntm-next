@@ -10,7 +10,7 @@
       "ingredient": "#c:ingots/aluminum"
     }
   ],
-  "order": 6,
+  "order": 1536,
   "output_material": {
     "amount": 288,
     "material": "gun_metal"

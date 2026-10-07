@@ -14,7 +14,7 @@ import net.minecraft.nbt.NbtOps;
 public final class HbmDataFixers {
 
     public static final String VERSION_KEY = "hbm_data_version";
-    public static final int CURRENT = 5;
+    public static final int CURRENT = 6;
     static final DSL.TypeReference CHUNK = () -> "hbm:chunk";
     private static final DataFixer FIXER = build();
 
@@ -33,6 +33,9 @@ public final class HbmDataFixers {
         builder.addFixer(new GlyphidSpawnerDelayFix(v4));
         Schema v5 = builder.addSchema(5, Schema::new);
         builder.addFixer(new GlyphidSpawnerInitialSpawnFix(v5));
+        Schema v6 = builder.addSchema(6, Schema::new);
+        builder.addFixer(new TrinketTypeNameFix(v6));
+        builder.addFixer(new PadSizeNameFix(v6));
         return builder.build().fixer();
     }
 

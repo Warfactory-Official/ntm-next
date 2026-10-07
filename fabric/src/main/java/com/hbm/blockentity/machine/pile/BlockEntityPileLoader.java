@@ -58,6 +58,10 @@ public class BlockEntityPileLoader extends BlockEntityPileDeviceBase
 
     @Override
     public void tickServer() {
+        boolean priorLoading = loading;
+        double priorExtension = extension;
+        int priorDelay = delay;
+        boolean priorRedstone = wasRedstone;
         PileChannel channel = attachedChannel(BlockPile.Role.FUEL_IN);
         channelStack = ItemStack.EMPTY;
         channelDepletion = 0D;
@@ -95,7 +99,12 @@ public class BlockEntityPileLoader extends BlockEntityPileDeviceBase
         }
 
         networkPackNT(35);
-        setChanged();
+        if (loading != priorLoading
+                || extension != priorExtension
+                || delay != priorDelay
+                || wasRedstone != priorRedstone) {
+            markChanged();
+        }
     }
 
     @Override

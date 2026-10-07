@@ -11,7 +11,7 @@
       "ingredient": "hbm:casing_small"
     }
   },
-  "order": 16,
+  "order": 4096,
   "output_items": [
     {
       "count": 12,

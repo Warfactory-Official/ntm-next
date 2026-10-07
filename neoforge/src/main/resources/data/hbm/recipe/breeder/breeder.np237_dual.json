@@ -6,7 +6,7 @@
       "ingredient": "hbm:rod_dual_np237"
     }
   ],
-  "order": 16,
+  "order": 4096,
   "output_items": [
     "hbm:rod_dual_pu238"
   ]

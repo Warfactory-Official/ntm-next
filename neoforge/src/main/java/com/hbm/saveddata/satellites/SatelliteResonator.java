@@ -3,6 +3,7 @@
 
 package com.hbm.saveddata.satellites;
 
+import com.hbm.sound.EntitySounds;
 import com.hbm.util.ChunkUtil;
 import com.hbm.world.gen.WorldgenHeight;
 import com.mojang.serialization.MapCodec;
@@ -28,8 +29,8 @@ public class SatelliteResonator extends Satellite {
     public void onCoordAction(ServerLevel level, Player player, int x, int y, int z) {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
 
-        level.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.getX(),
                 player.getY(),
                 player.getZ(),
@@ -39,10 +40,11 @@ public class SatelliteResonator extends Satellite {
                 1.0F);
         serverPlayer.stopRiding();
         ChunkUtil.loadForEntity(level, new ChunkPos(x >> 4, z >> 4));
-        if (y < 0) y = WorldgenHeight.lightBlocking(level.getChunk(x >> 4, z >> 4), x, z);
+        if (y == AUTOMATIC_Y)
+            y = WorldgenHeight.lightBlocking(level.getChunk(x >> 4, z >> 4), x, z);
         serverPlayer.connection.teleport(x + 0.5D, y, z + 0.5D, player.getYRot(), player.getXRot());
-        level.playSound(
-                null,
+        EntitySounds.play(
+                player,
                 player.getX(),
                 player.getY(),
                 player.getZ(),

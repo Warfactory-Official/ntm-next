@@ -38,12 +38,12 @@ public final class CapacitorPeripheral extends SnapshotPeripheral<BlockEntityMac
 
     @LuaFunction
     public final Object[] getEnergySent() {
-        return read(s -> new Object[] {s.longAt(RECEIVED)});
+        return read(s -> new Object[] {s.longAt(SENT)});
     }
 
     @LuaFunction
     public final Object[] getEnergyReceived() {
-        return read(s -> new Object[] {s.longAt(SENT)});
+        return read(s -> new Object[] {s.longAt(RECEIVED)});
     }
 
     @LuaFunction

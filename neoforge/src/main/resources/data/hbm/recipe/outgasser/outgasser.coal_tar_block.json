@@ -6,7 +6,7 @@
       "ingredient": "#c:storage_blocks/coal"
     }
   ],
-  "order": 15,
+  "order": 3840,
   "output_fluids": [
     {
       "type": "hbm:syngas",

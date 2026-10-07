@@ -54,6 +54,17 @@ public abstract class FluidTrait {
         traitList.add(clazz);
     }
 
+    public static void registerTrait(String name, Class<? extends FluidTrait> clazz, String after) {
+        Class<? extends FluidTrait> anchor = traitNameMap.get(after);
+        if (anchor == null)
+            throw new IllegalStateException(
+                    name + " is anchored after unregistered trait " + after);
+        if (traitNameMap.putIfAbsent(name, clazz) != null) {
+            throw new IllegalStateException("trait name " + name + " is already registered");
+        }
+        traitList.add(traitList.indexOf(anchor) + 1, clazz);
+    }
+
     public void addInfo(List<Component> info) {}
 
     public void addInfoHidden(List<Component> info) {}

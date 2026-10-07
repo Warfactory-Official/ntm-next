@@ -15,7 +15,7 @@
     }
   ],
   "name_wrapper": "rock.crushing",
-  "order": 4,
+  "order": 1024,
   "output_fluids": [
     {
       "type": "minecraft:lava",

@@ -37,7 +37,7 @@
     }
   ],
   "name": "ass.detectorEx",
-  "order": 218,
+  "order": 55808,
   "output_items": [
     "hbm:pa_detector"
   ],

@@ -44,7 +44,6 @@ public class EntityGlyphidDigger extends EntityGlyphid {
                                 EntityType.Builder.<EntityGlyphidDigger>of(
                                                 EntityGlyphidDigger::new, MobCategory.MONSTER)
                                         .notInPeaceful()
-                                        .noLootTable()
                                         .sized(1.75F, 1F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)

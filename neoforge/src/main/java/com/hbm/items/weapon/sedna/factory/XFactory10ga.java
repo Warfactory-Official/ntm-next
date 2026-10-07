@@ -20,6 +20,7 @@ import com.hbm.render.anim.AnimationEnums.GunAnimation;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
 import com.hbm.render.anim.BusAnimationSequence;
+import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -66,16 +67,15 @@ public class XFactory10ga {
                         rec.getOnFire(stack).accept(stack, ctx);
 
                         if (rec.getFireSound(stack) != null)
-                            entity.level()
-                                    .playSound(
-                                            null,
-                                            entity.getX(),
-                                            entity.getY(),
-                                            entity.getZ(),
-                                            rec.getFireSound(stack).get(),
-                                            SoundSource.PLAYERS,
-                                            rec.getFireVolume(stack),
-                                            rec.getFirePitch(stack));
+                            EntitySounds.play(
+                                    entity,
+                                    entity.getX(),
+                                    entity.getY(),
+                                    entity.getZ(),
+                                    rec.getFireSound(stack).get(),
+                                    SoundSource.PLAYERS,
+                                    rec.getFireVolume(stack),
+                                    rec.getFirePitch(stack));
 
                         ItemGunBaseNT.setState(stack, index, GunState.COOLDOWN);
                         ItemGunBaseNT.setTimer(stack, index, rec.getDelayAfterFire(stack));

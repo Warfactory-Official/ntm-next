@@ -18,7 +18,7 @@
       "ingredient": "#hbm:pipes/lead"
     }
   ],
-  "order": 60,
+  "order": 15360,
   "output_items": [
     "hbm:pump_steam"
   ],

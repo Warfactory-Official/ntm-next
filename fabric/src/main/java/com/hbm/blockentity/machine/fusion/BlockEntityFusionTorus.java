@@ -233,9 +233,11 @@ public class BlockEntityFusionTorus extends BlockEntityCooledBase
         fuelConsumption = 0;
 
         module.preUpdate(factor, collectors * 0.5D);
+        double prevProgress = module.progress;
         module.update(1D, 1D, !isTilted() && isCool() && ignition, inventory.get(SLOT_BLUEPRINT));
         didProcess = module.didProcess;
         if (module.markDirty) setChanged();
+        if (didProcess || module.progress != prevProgress) markChanged();
 
         if (didProcess && recipe != null) {
             plasmaEnergy = (long) Math.ceil(recipe.outputTemp * factor);

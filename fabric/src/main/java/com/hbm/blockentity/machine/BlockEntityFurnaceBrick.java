@@ -13,6 +13,7 @@ import com.hbm.items.ModItems;
 import com.hbm.items.machine.EnumAshType;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
+import com.hbm.util.TickPhase;
 import io.netty.buffer.ByteBuf;
 import java.util.HashMap;
 import java.util.Map;
@@ -91,13 +92,17 @@ public class BlockEntityFurnaceBrick extends BlockEntitySmeltingFurnace
     @Override
     public void tickServer() {
         boolean wasBurning = burnTime > 0;
+        boolean canOperate = breatheAir(wasBurning && TickPhase.every(this, 5) ? 1 : 0);
         boolean markDirty = false;
 
-        if (burnTime > 0) burnTime--;
+        if (burnTime > 0) {
+            burnTime--;
+            markChanged();
+        }
 
         if (burnTime != 0
                 || (!inventory.get(SLOT_FUEL).isEmpty() && !inventory.get(SLOT_INPUT).isEmpty())) {
-            if (burnTime == 0 && canSmelt()) {
+            if (canOperate && burnTime == 0 && canSmelt()) {
                 ItemStack fuel = inventory.get(SLOT_FUEL);
                 maxBurnTime = burnTime = FuelHandler.getBurnTime(level, fuel);
 
@@ -121,7 +126,7 @@ public class BlockEntityFurnaceBrick extends BlockEntitySmeltingFurnace
                 }
             }
 
-            if (burnTime > 0 && canSmelt()) {
+            if (canOperate && burnTime > 0 && canSmelt()) {
                 progress += getBurnSpeed();
                 if (progress >= SMELT_TIME) {
                     progress = 0;
@@ -129,6 +134,7 @@ public class BlockEntityFurnaceBrick extends BlockEntitySmeltingFurnace
                     markDirty = true;
                 }
             } else {
+                if (progress != 0) markChanged();
                 progress = 0;
             }
         }

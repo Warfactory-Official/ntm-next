@@ -13,7 +13,7 @@
       "ingredient": "#c:bolts/steel"
     }
   ],
-  "order": 96,
+  "order": 24576,
   "output_items": [
     "hbm:plate_armor_titanium"
   ],

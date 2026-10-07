@@ -1,0 +1,35 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!lbsm_simple_centrifuge"
+    }
+  ],
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#c:raw_materials/gold"
+    }
+  ],
+  "order": 768,
+  "output_items": [
+    {
+      "chance": 0.667,
+      "id": "hbm:powder_gold"
+    },
+    {
+      "chance": 0.667,
+      "id": "hbm:powder_gold"
+    },
+    {
+      "chance": 0.667,
+      "id": "hbm:powder_gold"
+    },
+    {
+      "chance": 0.667,
+      "id": "minecraft:gravel"
+    }
+  ],
+  "power": 200
+}

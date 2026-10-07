@@ -1,0 +1,29 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#c:raw_materials/thorium"
+    }
+  ],
+  "order": 11264,
+  "output_items": [
+    {
+      "chance": 0.667,
+      "id": "hbm:powder_thorium"
+    },
+    {
+      "chance": 0.667,
+      "id": "hbm:powder_thorium"
+    },
+    {
+      "chance": 0.667,
+      "id": "hbm:powder_uranium"
+    },
+    {
+      "chance": 0.667,
+      "id": "minecraft:gravel"
+    }
+  ],
+  "power": 200
+}
