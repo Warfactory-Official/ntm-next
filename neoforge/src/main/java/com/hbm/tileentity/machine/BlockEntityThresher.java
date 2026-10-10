@@ -60,7 +60,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 
 public class BlockEntityThresher extends BlockEntity
         implements Synced,
