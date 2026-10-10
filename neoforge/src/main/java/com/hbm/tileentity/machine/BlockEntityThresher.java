@@ -60,6 +60,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+
 public class BlockEntityThresher extends BlockEntity
         implements Synced,
                 GraphResident,
@@ -76,6 +78,7 @@ public class BlockEntityThresher extends BlockEntity
     public static final int SCAN_RADIUS = 3;
     public static final float ENTITY_DAMAGE = 100F;
     public static final double AUDIO_RANGE_SQ = 15 * 15;
+    public static final int MAX_BAMBOO_CHECK = 48;
     public static @Nullable Consumer<BlockEntityThresher> CLIENT_SOUND;
 
     @SyncField(units = 1L << 3)
@@ -228,6 +231,11 @@ public class BlockEntityThresher extends BlockEntity
                 continue;
             }
 
+            if (b == Blocks.BAMBOO) {
+                cutBamboo(level, b, hitX, y, hitZ);
+                continue;
+            }
+
             if (canCut(b) && !shouldIgnore(level, hit, bs)) cutCrop(level, hit, bs);
         }
 
@@ -305,6 +313,26 @@ public class BlockEntityThresher extends BlockEntity
     private void cutCane(ServerLevel level, Block target, int x, int y, int z) {
         int offset = level.getBlockState(new BlockPos(x, y - 1, z)).is(target) ? -1 : 0;
         for (int i = 2 + offset; i > offset; i--) {
+            BlockPos pos = new BlockPos(x, y + i, z);
+            BlockState bs = level.getBlockState(pos);
+            spawnBreakFx(level, pos, bs);
+            for (ItemStack drop : Block.getDrops(bs, level, pos, null)) dropItem(level, drop);
+            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+        }
+    }
+
+    private void cutBamboo(ServerLevel level, Block target, int x, int y, int z) {
+        int offset = level.getBlockState(new BlockPos(x, y - 1, z)).is(target) ? -1 : 0;
+        //The only change that seperates this from cutCane is that it looks higher and does it dynamicly.
+        //Im not a mod dev but im running on the assumption this is less laggy.
+        int inc = 1;
+        while(level.getBlockState(new BlockPos(x, y+inc, z)).is(target)) {
+            inc++;
+            if (inc > MAX_BAMBOO_CHECK) break;
+        }
+
+
+        for (int i = inc + offset; i > offset; i--) {
             BlockPos pos = new BlockPos(x, y + i, z);
             BlockState bs = level.getBlockState(pos);
             spawnBreakFx(level, pos, bs);
