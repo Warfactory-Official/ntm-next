@@ -24,8 +24,6 @@ public class PylonLargeBlock extends BlockMultiblockCore implements EntityBlock 
 
     public static final MapCodec<PylonLargeBlock> CODEC = simpleCodec(PylonLargeBlock::new);
 
-    private static final int[] DIMENSIONS = {13, 0, 1, 1, 1, 1};
-
     public PylonLargeBlock(Properties props) {
         super(props);
     }
@@ -36,23 +34,8 @@ public class PylonLargeBlock extends BlockMultiblockCore implements EntityBlock 
     }
 
     @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
-    }
-
-    @Override
     public float placementYawSpan() {
         return 180.0F;
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_NONE;
     }
 
     @Override

@@ -24,7 +24,6 @@ final class NtmCompilerPasses implements TaskListener {
     private final Rotator rotator;
     private final NeighborEdge neighborEdge;
     private final DerivedState derivedState;
-    private final FoldedLifecycle foldedLifecycle;
     private final MutationSync mutationSync;
     private final SyncArrayWrites syncArrayWrites;
     private final SyncIndexer syncIndexer;
@@ -42,7 +41,6 @@ final class NtmCompilerPasses implements TaskListener {
         neighborEdge =
                 new NeighborEdge(context, make, names, trees, task.getElements(), task.getTypes());
         derivedState = new DerivedState(make, names, trees);
-        foldedLifecycle = new FoldedLifecycle(make, names, trees);
         mutationSync = new MutationSync(context, task);
         syncArrayWrites = new SyncArrayWrites(context, trees);
         syncIndexer =
@@ -74,7 +72,6 @@ final class NtmCompilerPasses implements TaskListener {
                 rotator.augment(unit);
                 neighborEdge.scan(unit);
                 derivedState.augment(unit);
-                foldedLifecycle.augment(unit);
                 mutationSync.augment(unit);
             }
             case ANALYZE -> analyze(event.getTypeElement(), unit);

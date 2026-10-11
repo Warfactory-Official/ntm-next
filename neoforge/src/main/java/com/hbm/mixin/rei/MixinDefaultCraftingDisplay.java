@@ -8,20 +8,17 @@ import java.util.List;
 import java.util.Optional;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.plugin.common.displays.crafting.CraftingDisplay;
+import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCraftingDisplay;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomShapedDisplay;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.display.ShapedCraftingRecipeDisplay;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Pseudo
-@Mixin(
-        targets = "me.shedaniel.rei.plugin.common.displays.crafting.DefaultCraftingDisplay",
-        remap = false)
+@Mixin(value = DefaultCraftingDisplay.class, remap = false)
 public abstract class MixinDefaultCraftingDisplay {
     @Inject(method = "of", at = @At("HEAD"), cancellable = true)
     private static void hbm$stateShaped(

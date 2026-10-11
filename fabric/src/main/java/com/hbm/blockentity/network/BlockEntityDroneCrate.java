@@ -15,6 +15,7 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.entity.item.EntityDeliveryDrone;
 import com.hbm.inventory.container.MenuDroneCrate;
 import com.hbm.inventory.fluid.FluidStackNTM;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
@@ -42,7 +43,8 @@ import net.minecraft.world.phys.AABB;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityDroneCrate extends BlockEntityMachineBase
-        implements MenuProvider,
+        implements FluidTankAccess,
+                MenuProvider,
                 IControlReceiver,
                 IDroneLinkable,
                 FluidFlushSender,
@@ -238,8 +240,14 @@ public class BlockEntityDroneCrate extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {tank};
+    public int tankCount() {
+        return 1;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        if (index != 0) throw new IndexOutOfBoundsException(index);
+        return tank;
     }
 
     @Override

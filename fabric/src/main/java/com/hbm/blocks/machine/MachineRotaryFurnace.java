@@ -7,7 +7,6 @@ import com.hbm.blockentity.machine.BlockEntityMachineRotaryFurnace;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
@@ -24,57 +23,8 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineRotaryFurnace extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-    private static final int[] DIMENSIONS = {4, 0, 1, 1, 2, 2};
-
     public MachineRotaryFurnace(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        MultiblockHandlerXR.visitBox(core, DIMENSIONS, facing, visitor);
-
-        Direction rot = facing.getCounterClockWise();
-        BlockPos back = core.relative(facing.getOpposite());
-
-        visitor.cell(back.relative(rot, -2), MASK_NORTH, ROLE_FLUID);
-        visitor.cell(back.relative(rot, -1), MASK_NORTH, ROLE_FLUID);
-
-        visitor.cell(core.relative(facing).relative(rot, 2), MASK_EAST, ROLE_FLUID_IN);
-        visitor.cell(
-                core.relative(facing.getOpposite()).relative(rot, 2), MASK_EAST, ROLE_FLUID_IN);
-
-        visitor.cell(core.relative(rot).above(4), MASK_UP, ROLE_FLUID_OUT);
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_NONE;
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        Direction rot = facing.getCounterClockWise();
-        BlockPos back = core.relative(facing.getOpposite());
-
-        for (int i = -2; i <= 2; i++) {
-            visitor.passiveCell(back.relative(rot, i), MASK_ALL, PASSIVE_FLUID_IN);
-        }
-        visitor.passiveCell(core.relative(facing).relative(rot, 2), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(core.relative(rot).above(4), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(core.relative(facing).relative(rot), MASK_ALL, PASSIVE_ITEMS);
-
-        passiveEverywhere(core, facing, visitor, PASSIVE_ITEMS);
     }
 
     @Override

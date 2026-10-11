@@ -5,46 +5,82 @@
     {
       "entries": [
         {
-          "type": "minecraft:item",
-          "functions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "count": {
-                "type": "minecraft:constant",
-                "value": 4.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:cap_nuka",
-          "weight": 20
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:value_check",
+                  "range": {
+                    "max": 19
+                  },
+                  "value": {
+                    "type": "minecraft:uniform",
+                    "max": 23,
+                    "min": 0
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "count": {
+                    "type": "minecraft:constant",
+                    "value": 4.0
+                  },
+                  "function": "minecraft:set_count"
+                }
+              ],
+              "name": "hbm:cap_nuka",
+              "weight": 20
+            },
             {
-              "count": {
-                "type": "minecraft:constant",
-                "value": 4.0
-              },
-              "function": "minecraft:set_count"
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:item",
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 2
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 3,
+                        "min": 0
+                      }
+                    }
+                  ],
+                  "functions": [
+                    {
+                      "count": {
+                        "type": "minecraft:constant",
+                        "value": 4.0
+                      },
+                      "function": "minecraft:set_count"
+                    }
+                  ],
+                  "name": "hbm:cap_quantum",
+                  "weight": 3
+                },
+                {
+                  "type": "minecraft:item",
+                  "functions": [
+                    {
+                      "count": {
+                        "type": "minecraft:constant",
+                        "value": 4.0
+                      },
+                      "function": "minecraft:set_count"
+                    }
+                  ],
+                  "name": "hbm:cap_sparkle",
+                  "weight": 1
+                }
+              ]
             }
-          ],
-          "name": "hbm:cap_quantum",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:constant",
-                "value": 4.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:cap_sparkle",
-          "weight": 1
+          ]
         }
       ],
       "rolls": 1

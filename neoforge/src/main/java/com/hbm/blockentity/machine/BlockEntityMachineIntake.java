@@ -10,7 +10,6 @@ import com.hbm.api.fluidmk2.FluidCaps;
 import com.hbm.api.fluidmk2.FluidFace;
 import com.hbm.api.fluidmk2.IFluidHandlerMK2;
 import com.hbm.blockentity.AudioLoop;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -41,7 +40,6 @@ import org.jspecify.annotations.Nullable;
 public class BlockEntityMachineIntake extends BlockEntity
         implements Synced,
                 GraphResident,
-                FoldedCoreResident,
                 AudioLoop,
                 IEnergyHandlerMK2,
                 IFluidHandlerMK2,
@@ -129,12 +127,12 @@ public class BlockEntityMachineIntake extends BlockEntity
             BlockPos target = at(dir, rot, df[i], dr[i]);
             Direction side = from[i].getOpposite();
             airTargets[i] =
-                    NeoForgeCaps.createCache(
+                    new NeoForgeCaps.CapCache<>(
                             FluidCaps.RECEIVER,
                             level,
                             target,
                             FluidFace.of(side, compair.getTankType()));
-            powerTargets[i] = NeoForgeCaps.createCache(EnergyCaps.PROVIDER, level, target, side);
+            powerTargets[i] = new NeoForgeCaps.CapCache<>(EnergyCaps.PROVIDER, level, target, side);
         }
     }
 

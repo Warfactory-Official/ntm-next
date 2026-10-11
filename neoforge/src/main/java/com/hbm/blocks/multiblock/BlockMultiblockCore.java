@@ -18,12 +18,11 @@ import com.hbm.interfaces.RigidPistonStructure;
 import com.hbm.inventory.IGUIProvider;
 import com.hbm.platform.NeoForgeCaps;
 import com.hbm.platform.NeoForgePlatform;
-import com.hbm.uninos.graph.LevelNodeGraph;
+import com.hbm.uninos.graph.PhysicalGraph;
 import com.hbm.world.phys.PlacementExtraShape;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -62,9 +61,9 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ImposterProtoChunk;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.redstone.Orientation;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -101,25 +100,25 @@ public abstract class BlockMultiblockCore extends Block
     static final int PASSIVE_DOMAINS = 3;
 
     private static final ThreadLocal<Boolean> BUSY = ThreadLocal.withInitial(() -> Boolean.FALSE);
-    protected final List<AABB> bounding = new ArrayList<>();
-    private final VoxelShape[] boundingShapes = new VoxelShape[4];
-    private final VoxelShape[] boundingCoreShapes = new VoxelShape[4];
+    private static final ThreadLocal<long[]> PLACING = ThreadLocal.withInitial(() -> new long[2]);
+    private long[][] fluidContacts = new long[4][];
+    private final VoxelShape[] coreShapes = new VoxelShape[16];
+    private final @Nullable VoxelShape[] silhouettes = new VoxelShape[4];
     private final VoxelShape[] footprintShapes = new VoxelShape[4];
     private final VoxelShape[] placementShapes = new VoxelShape[4];
     private final VoxelShape[][] placementExtraShapes = new VoxelShape[4][];
-    private static final double[] NO_PLACEMENT_EXTRAS = {};
     private static final VoxelShape[] NO_PLACEMENT_EXTRA_SHAPES = {};
-    private @Nullable MultiblockMaskTable table;
+    private MultiblockMaskTable @Nullable [] tables;
+    private MultiblockLayout.@Nullable Placement placement;
+    private long[][] clearance;
+    private int declaredCaps;
     private MultiblockFootprint.Layout[] footprints;
 
     protected BlockMultiblockCore(Properties properties) {
         super(properties.isValidSpawn((state, level, pos, type) -> false));
         BlockState state = stateDefinition.any().setValue(FACING, Direction.NORTH);
         registerDefaultState(tilts() ? state.setValue(Tiltable.TILTED, false) : state);
-    }
-
-    static boolean busy() {
-        return BUSY.get();
+        Arrays.fill(coreShapes, Shapes.block());
     }
 
     public static void withoutTeardown(Runnable body) {
@@ -132,13 +131,21 @@ public abstract class BlockMultiblockCore extends Block
         }
     }
 
-    static void notifyCell(ServerLevel level, BlockPos pos) {
+    public static void notifyCell(ServerLevel level, BlockPos pos) {
         ((Level) level).invalidateCapabilities(pos);
-        LevelNodeGraph.invalidateEndpointsAround(level, pos);
+        PhysicalGraph.refreshAround(level, pos);
     }
 
     public static boolean isBusy() {
         return BUSY.get();
+    }
+
+    public static boolean claimPlacement(BlockEntity be) {
+        long[] placing = PLACING.get();
+        if (placing[1] != be.getLevel().getGameTime() + 1
+                || placing[0] != be.getBlockPos().asLong()) return false;
+        placing[1] = 0;
+        return true;
     }
 
     public static void setBusy(boolean busy) {
@@ -158,11 +165,10 @@ public abstract class BlockMultiblockCore extends Block
     }
 
     public static void foldedCellRemoved(ServerLevel level, BlockPos pos, boolean movedByPiston) {
-        FoldedOwner owner = movedByPiston || busy() ? null : ownerOf(level, pos);
+        FoldedOwner owner = movedByPiston || isBusy() ? null : ownerOf(level, pos);
 
         unindexCell(level, pos);
-        ((Level) level).invalidateCapabilities(pos);
-        LevelNodeGraph.invalidateEndpointsAround(level, pos);
+        notifyCell(level, pos);
 
         if (owner == null) return;
         demolish(level, owner.pos(), owner.block(), owner.facing(), true);
@@ -204,7 +210,8 @@ public abstract class BlockMultiblockCore extends Block
         return chunk instanceof ImposterProtoChunk imposter ? imposter.getWrapped() : chunk;
     }
 
-    public static void claimCells(LevelAccessor level, BlockPos owner, Collection<BlockPos> cells) {
+    public static void claimCells(
+            LevelAccessor level, BlockPos owner, Collection<BlockPos> cells, int population) {
         Long2ObjectOpenHashMap<LongArrayList> byChunk = new Long2ObjectOpenHashMap<>();
         for (BlockPos cell : cells) {
             byChunk.computeIfAbsent(ChunkPos.pack(cell), k -> new LongArrayList())
@@ -214,7 +221,8 @@ public abstract class BlockMultiblockCore extends Block
                                             level, cell.getX(), cell.getY(), cell.getZ()),
                                     owner.getX() - cell.getX(),
                                     owner.getY() - cell.getY(),
-                                    owner.getZ() - cell.getZ()));
+                                    owner.getZ() - cell.getZ(),
+                                    population));
         }
         for (Long2ObjectMap.Entry<LongArrayList> entry : byChunk.long2ObjectEntrySet()) {
             ChunkAccess chunk =
@@ -261,7 +269,7 @@ public abstract class BlockMultiblockCore extends Block
                     level,
                     core,
                     facing,
-                    (pos, mask) -> {
+                    pos -> {
                         if (!block.isCellOf(level.getBlockState(pos))) return;
                         if (MultiblockSurface.recordedCorePacked(
                                         level, pos.getX(), pos.getY(), pos.getZ())
@@ -319,10 +327,13 @@ public abstract class BlockMultiblockCore extends Block
         int dy = pos.getY() - core.getY();
         int dz = pos.getZ() - core.getZ();
 
-        return block.heatSourceAt(
-                MultiblockMaskTable.localX(dx, dy, dz, facing),
-                MultiblockMaskTable.localY(dx, dy, dz, facing),
-                MultiblockMaskTable.localZ(dx, dy, dz, facing));
+        return (block.maskTable(facing)
+                                .flagsAtLocal(
+                                        MultiblockMaskTable.localX(dx, dy, dz, facing),
+                                        MultiblockMaskTable.localY(dx, dy, dz, facing),
+                                        MultiblockMaskTable.localZ(dx, dy, dz, facing))
+                        & MultiblockMaskTable.FLAG_HEAT)
+                != 0;
     }
 
     public static void renotifyNeighbours(ServerLevel level, BlockPos pos) {
@@ -358,14 +369,6 @@ public abstract class BlockMultiblockCore extends Block
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
-    public abstract int[] getDimensions();
-
-    public abstract int getOffset();
-
-    public int getHeightOffset() {
-        return 0;
-    }
-
     public Direction getDirModified(Direction dir) {
         return dir;
     }
@@ -374,16 +377,12 @@ public abstract class BlockMultiblockCore extends Block
         return 360.0F;
     }
 
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        MultiblockHandlerXR.visitBox(core, getDimensions(), facing, visitor);
-    }
-
-    public void assembled(LevelAccessor level, BlockPos core, BlockState coreState) {}
+    public void assembled(
+            LevelAccessor level, BlockPos core, BlockState coreState, @Nullable BoundingBox clip) {}
 
     protected void visitPlacedCells(
-            LevelAccessor level, BlockPos core, Direction facing, CellVisitor visitor) {
-        if (hasVariableFootprint()) visitCells(core, facing, visitor);
-        else footprint(facing).visit(core, visitor);
+            LevelAccessor level, BlockPos core, Direction facing, FootprintVisitor visitor) {
+        footprint(facing).visit(core, visitor);
     }
 
     public boolean hasVariableFootprint() {
@@ -394,13 +393,12 @@ public abstract class BlockMultiblockCore extends Block
         return footprints[facing.get2DDataValue()];
     }
 
-    protected void visitTeardownCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        if (hasVariableFootprint()) visitCells(core, facing, visitor);
-        else footprint(facing).visit(core, visitor);
+    protected void visitTeardownCells(BlockPos core, Direction facing, FootprintVisitor visitor) {
+        footprint(facing).visit(core, visitor);
     }
 
     protected void visitTeardownCells(
-            LevelAccessor level, BlockPos core, Direction facing, CellVisitor visitor) {
+            LevelAccessor level, BlockPos core, Direction facing, FootprintVisitor visitor) {
         visitTeardownCells(core, facing, visitor);
     }
 
@@ -420,17 +418,6 @@ public abstract class BlockMultiblockCore extends Block
                 != MultiblockMaskTable.NOT_A_CELL;
     }
 
-    public int coreMask() {
-        return MASK_NONE;
-    }
-
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {}
-
-    protected final void passiveEverywhere(
-            BlockPos core, Direction facing, PassiveCellVisitor visitor, int domains) {
-        visitCells(core, facing, (pos, mask) -> visitor.passiveCell(pos, MASK_ALL, domains));
-    }
-
     public int passiveCoreMask() {
         return MASK_ALL;
     }
@@ -443,30 +430,17 @@ public abstract class BlockMultiblockCore extends Block
                         : PASSIVE_NONE);
     }
 
-    public int maskAt(int lx, int ly, int lz) {
-        return maskTable().maskAtLocal(lx, ly, lz);
+    public final int maskAt(int lx, int ly, int lz, Direction facing) {
+        return maskTable(facing).maskAtLocal(lx, ly, lz);
     }
 
-    public int maskAt(int lx, int ly, int lz, Direction facing) {
-        return maskAt(lx, ly, lz);
+    public final int maskAt(int lx, int ly, int lz, Direction facing, @Nullable CapRole role) {
+        MultiblockMaskTable table = maskTable(facing);
+        return role == null ? table.maskAtLocal(lx, ly, lz) : table.maskAtLocal(lx, ly, lz, role);
     }
 
-    public int maskAt(int lx, int ly, int lz, Direction facing, @Nullable CapRole role) {
-        MultiblockMaskTable table = maskTable();
-        if (role == null || !table.hasRolePlanes()) return maskAt(lx, ly, lz, facing);
-        return table.maskAtLocal(lx, ly, lz, role);
-    }
-
-    public int passiveMaskAt(int lx, int ly, int lz, int domains) {
-        return maskTable().passiveMaskAtLocal(lx, ly, lz, domains);
-    }
-
-    public boolean heatSourceAt(int lx, int ly, int lz) {
-        return false;
-    }
-
-    public boolean plantSoilAt(int lx, int ly, int lz) {
-        return false;
+    public final int passiveMaskAt(int lx, int ly, int lz, Direction facing, int domains) {
+        return maskTable(facing).passiveMaskAtLocal(lx, ly, lz, domains);
     }
 
     @Override
@@ -484,38 +458,6 @@ public abstract class BlockMultiblockCore extends Block
         return sustainsPlant(level, soilPosition, state) ? TriState.TRUE : TriState.DEFAULT;
     }
 
-    protected boolean proxyCellAt(int lx, int ly, int lz) {
-        return false;
-    }
-
-    public @Nullable VoxelShape cellShape(
-            int lx, int ly, int lz, Direction facing, boolean open, boolean forCollision) {
-        return boundingShape(lx, ly, lz, facing);
-    }
-
-    public @Nullable AABB climbBox(Direction facing) {
-        return null;
-    }
-
-    private @Nullable VoxelShape boundingShape(int lx, int ly, int lz, Direction facing) {
-        VoxelShape shape = boundingOutline(facing);
-        if (shape == null) return null;
-        int index = facing.get2DDataValue();
-        if (lx == 0 && ly == 0 && lz == 0 && boundingCoreShapes[index] != null)
-            return boundingCoreShapes[index];
-        VoxelShape local =
-                Shapes.joinUnoptimized(
-                                shape.move(
-                                        -MultiblockMaskTable.worldX(lx, ly, lz, facing),
-                                        -ly,
-                                        -MultiblockMaskTable.worldZ(lx, ly, lz, facing)),
-                                Shapes.block(),
-                                BooleanOp.AND)
-                        .optimize();
-        if (lx == 0 && ly == 0 && lz == 0) boundingCoreShapes[index] = local;
-        return local;
-    }
-
     public @Nullable VoxelShape selectionOutline(Direction facing) {
         VoxelShape authored = boundingOutline(facing);
         if (authored != null) return authored;
@@ -526,26 +468,11 @@ public abstract class BlockMultiblockCore extends Block
         return baked == null ? footprintShapes[index] = footprintVolume(facing) : baked;
     }
 
-    protected int[] placementDimensionBoxes() {
-        int[] dimensions = getDimensions();
-        return new int[] {
-            dimensions[0],
-            dimensions[1],
-            dimensions[2],
-            dimensions[3],
-            dimensions[4],
-            dimensions[5],
-            0,
-            0,
-            0
-        };
-    }
-
     public VoxelShape placementOutline(Direction facing) {
         int index = facing.get2DDataValue();
         VoxelShape baked = placementShapes[index];
         if (baked != null) return baked;
-        int[] boxes = placementDimensionBoxes();
+        int[] boxes = placement().previewBoxes();
         assert boxes.length % 9 == 0;
         Direction right = facing.getClockWise();
         VoxelShape shape = Shapes.empty();
@@ -576,12 +503,8 @@ public abstract class BlockMultiblockCore extends Block
         return placementShapes[index] = shape.optimize();
     }
 
-    protected double[] placementExtraBoxes() {
-        return NO_PLACEMENT_EXTRAS;
-    }
-
     public VoxelShape[] placementExtraOutlines(Direction facing) {
-        double[] boxes = placementExtraBoxes();
+        double[] boxes = placement().previewExtras();
         if (boxes.length == 0) return NO_PLACEMENT_EXTRA_SHAPES;
         int index = facing.get2DDataValue();
         VoxelShape[] shapes = placementExtraShapes[index];
@@ -601,76 +524,151 @@ public abstract class BlockMultiblockCore extends Block
     }
 
     private VoxelShape footprintVolume(Direction facing) {
-        VoxelShape[] shape = {Shapes.block()};
-        visitCells(
-                BlockPos.ZERO,
-                facing,
-                (pos, mask) ->
-                        shape[0] =
-                                Shapes.joinUnoptimized(
-                                        shape[0],
-                                        Shapes.block().move(pos.getX(), pos.getY(), pos.getZ()),
-                                        BooleanOp.OR));
-        return shape[0].optimize();
+        VoxelShape shape = Shapes.block();
+        for (long offset : footprint(facing).offsets) {
+            shape =
+                    Shapes.joinUnoptimized(
+                            shape,
+                            Shapes.block()
+                                    .move(
+                                            BlockPos.getX(offset),
+                                            BlockPos.getY(offset),
+                                            BlockPos.getZ(offset)),
+                            BooleanOp.OR);
+        }
+        return shape.optimize();
     }
 
     public @Nullable VoxelShape boundingOutline(Direction facing) {
-        if (bounding.isEmpty()) return null;
-        int index = facing.get2DDataValue();
-        VoxelShape shape = boundingShapes[index];
-        if (shape == null) {
-            shape =
-                    boundingShapes[index] =
-                            MultiblockHandlerXR.boundingSilhouette(
-                                    bounding, facing.getClockWise(), 0, 0, 0);
-        }
-        return shape;
+        return silhouettes[facing.get2DDataValue()];
+    }
+
+    public boolean hasBounding() {
+        return silhouettes[0] != null;
+    }
+
+    protected VoxelShape coreShape(Direction facing, boolean open, boolean forCollision) {
+        return coreShapes[facing.get2DDataValue() << 2 | (open ? 2 : 0) | (forCollision ? 1 : 0)];
     }
 
     @Override
     protected VoxelShape getShape(
             BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        VoxelShape shape = cellShape(0, 0, 0, state.getValue(FACING), false, false);
-        return shape == null ? Shapes.block() : shape;
+        return coreShape(state.getValue(FACING), false, false);
     }
 
     @Override
     protected VoxelShape getCollisionShape(
             BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         if (context.isPlacement() && !level.getBlockState(pos).is(this)) return Shapes.block();
-        VoxelShape shape = cellShape(0, 0, 0, state.getValue(FACING), false, true);
-        return shape == null ? Shapes.block() : shape;
+        return coreShape(state.getValue(FACING), false, true);
     }
 
     public SoundType cellSoundType() {
         return cellSound() == BlockMultiblockCell.SOUND_METAL ? SoundType.METAL : SoundType.STONE;
     }
 
-    public void bakeMaskTable(int declaredCaps) {
-        Arrays.fill(boundingShapes, null);
-        Arrays.fill(boundingCoreShapes, null);
+    public long[][] fluidContactCache() {
+        return fluidContacts;
+    }
+
+    protected @Nullable MultiblockLayout runtimeLayout(int declaredCaps) {
+        return null;
+    }
+
+    public void installBakedLayout(int declaredCaps) {
+        MultiblockLayout layout = runtimeLayout(declaredCaps);
+        if (layout == null) {
+            layout = MultiblockLayouts.of(this);
+            if (layout.declaredCaps() != declaredCaps) {
+                throw new IllegalStateException(
+                        this
+                                + " declares caps 0b"
+                                + Integer.toBinaryString(declaredCaps)
+                                + " but its baked layout carries 0b"
+                                + Integer.toBinaryString(layout.declaredCaps())
+                                + " - run :neoforge:runData / :fabric:runDatagen");
+            }
+        }
+        installLayout(layout);
+    }
+
+    public void installLayout(MultiblockLayout layout) {
+        fluidContacts = new long[4][];
         Arrays.fill(footprintShapes, null);
         Arrays.fill(placementShapes, null);
         Arrays.fill(placementExtraShapes, null);
-        this.table = MultiblockMaskTable.bake(this, declaredCaps);
-        MultiblockCellShapes.bake(this);
+        this.declaredCaps = layout.declaredCaps();
+        this.tables = layout.tables();
+        this.placement = layout.placement();
+        this.clearance = layout.clearance();
+        MultiblockLayout.CellGeometry geometry = layout.geometry();
+        MultiblockCellShapes.install(this, geometry);
+        boolean shapedCore = false;
+        for (int i = 0; i < coreShapes.length; i++) {
+            VoxelShape shape = MultiblockLayout.CellGeometry.shape(geometry.core()[i]);
+            coreShapes[i] = shape == null ? Shapes.block() : shape;
+            shapedCore |= coreShapes[i] != Shapes.block();
+        }
+        if (shapedCore) {
+            for (BlockState state : stateDefinition.getPossibleStates()) {
+                state.initCache();
+                state.initCache();
+            }
+        }
+        for (int f = 0; f < silhouettes.length; f++) {
+            silhouettes[f] = MultiblockLayout.CellGeometry.shape(geometry.silhouettes()[f]);
+        }
         footprints = new MultiblockFootprint.Layout[4];
         for (Direction facing : Direction.Plane.HORIZONTAL) {
-            boundingShape(0, 0, 0, facing);
-            footprints[facing.get2DDataValue()] = MultiblockFootprint.bake(this, facing);
+            int index = facing.get2DDataValue();
+            footprints[index] = MultiblockFootprint.layout(this, facing, layout.offsets()[index]);
+        }
+        if (wantsNeighborUpdates()) {
+            for (MultiblockFootprint.Layout footprint : footprints) {
+                forwardNeighborUpdates(footprint.states);
+                if (footprint.swapped != null) forwardNeighborUpdates(footprint.swapped);
+            }
         }
         MultiblockSurface.invalidateClientCandidates();
     }
 
-    public MultiblockMaskTable maskTable() {
-        MultiblockMaskTable baked = table;
+    private static void forwardNeighborUpdates(@Nullable BlockState[] states) {
+        for (BlockState state : states) {
+            if (state != null && state.getBlock() instanceof BlockMultiblockCell cell)
+                cell.forwardNeighborUpdates();
+        }
+    }
+
+    public MultiblockMaskTable maskTable(Direction facing) {
+        MultiblockMaskTable[] baked = tables;
         if (baked == null) {
             throw new IllegalStateException(
                     "multiblock mask table for "
                             + this
-                            + " was queried before NtmCapabilities.declareAll() baked it");
+                            + " was queried before NtmCapabilities.declareAll() installed it");
+        }
+        return baked[facing.get2DDataValue()];
+    }
+
+    public MultiblockLayout.Placement placement() {
+        MultiblockLayout.Placement baked = placement;
+        if (baked == null) {
+            throw new IllegalStateException(
+                    "multiblock placement for "
+                            + this
+                            + " was queried before NtmCapabilities.declareAll() installed it");
         }
         return baked;
+    }
+
+    public int declaredCaps() {
+        maskTable(Direction.SOUTH);
+        return declaredCaps;
+    }
+
+    public boolean declares(int bits) {
+        return (declaredCaps() & bits) == bits;
     }
 
     public boolean isOpenAt(Direction facing, int dx, int dy, int dz, Direction side) {
@@ -695,10 +693,8 @@ public abstract class BlockMultiblockCore extends Block
         int lz = MultiblockMaskTable.localZ(dx, dy, dz, facing);
         int mask = maskAt(lx, ly, lz, facing, role);
         if (mask == MultiblockMaskTable.NOT_A_CELL) return false;
-        if (passiveDomains != PASSIVE_NONE) {
-            int passive = passiveMaskAt(lx, ly, lz, passiveDomains);
-            if (passive != MultiblockMaskTable.NOT_A_CELL) mask |= passive;
-        }
+        if (passiveDomains != PASSIVE_NONE)
+            mask |= passiveMaskAt(lx, ly, lz, facing, passiveDomains);
         return (mask & (1 << MultiblockMaskTable.toLocal(side, facing).ordinal())) != 0;
     }
 
@@ -707,7 +703,7 @@ public abstract class BlockMultiblockCore extends Block
         int lx = MultiblockMaskTable.localX(dx, dy, dz, facing);
         int ly = MultiblockMaskTable.localY(dx, dy, dz, facing);
         int lz = MultiblockMaskTable.localZ(dx, dy, dz, facing);
-        int mask = passiveMaskAt(lx, ly, lz, passiveDomains);
+        int mask = passiveMaskAt(lx, ly, lz, facing, passiveDomains);
         if (mask == MultiblockMaskTable.NOT_A_CELL) return false;
         return (mask & (1 << MultiblockMaskTable.toLocal(side, facing).ordinal())) != 0;
     }
@@ -734,8 +730,9 @@ public abstract class BlockMultiblockCore extends Block
         }
 
         int i = Mth.floor(placer.getYRot() * 4.0F / placementYawSpan() + 0.5D) & 3;
-        int o = -getOffset();
-        BlockPos placed = pos.offset(0, getHeightOffset(), 0);
+        MultiblockLayout.Placement placement = placement();
+        int o = -placement.offset();
+        BlockPos placed = pos.offset(0, placement.heightOffset(), 0);
 
         Direction dir =
                 getDirModified(
@@ -746,15 +743,14 @@ public abstract class BlockMultiblockCore extends Block
                             default -> Direction.NORTH;
                         });
 
-        if (!checkRequirement(level, placed, dir, o)) {
+        BlockPos core = placed.offset(dir.getStepX() * o, dir.getStepY() * o, dir.getStepZ() * o);
+        if (!placementClear(level, core, dir)) {
             ItemStack refund = stack.copyWithCount(1);
             if (!pl.getAbilities().instabuild) pl.getInventory().placeItemBackInInventory(refund);
             return;
         }
 
         if (!level.isClientSide()) {
-            BlockPos core =
-                    placed.offset(dir.getStepX() * o, dir.getStepY() * o, dir.getStepZ() * o);
             level.setBlock(
                     core, takeWater(defaultBlockState().setValue(FACING, dir), level, core), 3);
             BlockEntity placedCore = level.getBlockEntity(core);
@@ -763,7 +759,7 @@ public abstract class BlockMultiblockCore extends Block
                 placedCore.applyComponentsFromItemStack(stack);
                 placedCore.setChanged();
             }
-            if (hasVariableFootprint() && !checkRestoredCells(level, core, dir)) {
+            if (hasVariableFootprint() && !cellsClear(level, core, dir)) {
                 withoutTeardown(
                         () -> {
                             detachGraphs(level, core);
@@ -789,46 +785,63 @@ public abstract class BlockMultiblockCore extends Block
         }
     }
 
-    private boolean checkRestoredCells(Level level, BlockPos core, Direction dir) {
+    public boolean placementClear(Level level, BlockPos core, Direction dir) {
+        if (level.isOutsideBuildHeight(core) || !level.getBlockState(core).canBeReplaced())
+            return false;
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        for (long offset : clearance[dir.get2DDataValue()]) {
+            pos.setWithOffset(
+                    core, BlockPos.getX(offset), BlockPos.getY(offset), BlockPos.getZ(offset));
+            if (!level.getBlockState(pos).canBeReplaced()) return false;
+        }
+        return hasVariableFootprint() || cellsClear(level, core, dir);
+    }
+
+    private boolean cellsClear(Level level, BlockPos core, Direction dir) {
         try {
             visitPlacedCells(
                     level,
                     core,
                     dir,
-                    (pos, mask) -> {
+                    pos -> {
                         if (level.isOutsideBuildHeight(pos)
                                 || !level.getBlockState(pos).canBeReplaced()) {
-                            throw RestoredPlacementRefusal.INSTANCE;
+                            throw PlacementRefusal.INSTANCE;
                         }
                     });
             return true;
-        } catch (RestoredPlacementRefusal refused) {
+        } catch (PlacementRefusal refused) {
             return false;
         }
     }
 
-    private static final class RestoredPlacementRefusal extends RuntimeException {
-        private static final RestoredPlacementRefusal INSTANCE = new RestoredPlacementRefusal();
+    private static final class PlacementRefusal extends RuntimeException {
+        private static final PlacementRefusal INSTANCE = new PlacementRefusal();
 
-        private RestoredPlacementRefusal() {
+        private PlacementRefusal() {
             super(null, null, false, false);
         }
     }
 
-    public boolean checkRequirement(Level level, BlockPos placed, Direction dir, int o) {
-        BlockPos origin = placed.offset(dir.getStepX() * o, dir.getStepY() * o, dir.getStepZ() * o);
-        return MultiblockHandlerXR.checkSpace(level, origin, getDimensions(), placed, dir);
+    public final void fillSpace(LevelAccessor level, BlockPos core, Direction dir) {
+        fillSpace(level, core, dir, null);
     }
 
-    public final void fillSpace(LevelAccessor level, BlockPos core, Direction dir) {
+    public final void fillSpace(
+            LevelAccessor level, BlockPos core, Direction dir, @Nullable BoundingBox clip) {
         boolean prev = BUSY.get();
         BUSY.set(true);
+        int flags =
+                level instanceof ServerLevel
+                        ? Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE
+                        : Block.UPDATE_ALL;
         try {
             visitPlacedCells(
                     level,
                     core,
                     dir,
-                    (pos, mask) -> {
+                    pos -> {
+                        if (clip != null && !clip.isInside(pos)) return;
                         int lx =
                                 MultiblockMaskTable.localX(
                                         pos.getX() - core.getX(),
@@ -846,20 +859,30 @@ public abstract class BlockMultiblockCore extends Block
                         level.setBlock(
                                 pos,
                                 takeWater(cellStateFor(lx, ly, lz, dir, shape), level, pos),
-                                3);
+                                flags);
                     });
         } finally {
             BUSY.set(prev);
         }
-        indexCells(level, core, dir);
+        indexCells(level, core, dir, clip);
         if (level instanceof ServerLevel server) {
-            renotifyNeighbours(server, core);
+            if (clip == null || clip.isInside(core)) renotifyNeighbours(server, core);
             visitPlacedCells(
-                    level, core, dir, (pos, mask) -> renotifyNeighbours(server, pos.immutable()));
+                    level,
+                    core,
+                    dir,
+                    pos -> {
+                        if (clip == null || clip.isInside(pos))
+                            renotifyNeighbours(server, pos.immutable());
+                    });
         }
     }
 
     protected BlockState cellStateFor(int lx, int ly, int lz, Direction facing, int shapeId) {
+        return cellStateOfKind(maskTable(facing).kindAtLocal(lx, ly, lz), facing, shapeId);
+    }
+
+    protected BlockState cellStateOfKind(int kind, Direction facing, int shapeId) {
         BlockState state;
         if (shapeId == MultiblockCellShapes.PLAIN) {
             state =
@@ -878,6 +901,10 @@ public abstract class BlockMultiblockCore extends Block
     }
 
     protected @Nullable BlockState swappedCellStateFor(int lx, int ly, int lz, Direction facing) {
+        return swappedStateOfKind(maskTable(facing).kindAtLocal(lx, ly, lz), facing);
+    }
+
+    protected @Nullable BlockState swappedStateOfKind(int kind, Direction facing) {
         return null;
     }
 
@@ -903,7 +930,7 @@ public abstract class BlockMultiblockCore extends Block
 
     public final void updateComparatorOutput(ServerLevel level, BlockPos core) {
         Direction facing = level.getBlockState(core).getValue(FACING);
-        maskTable()
+        maskTable(facing)
                 .forEachLocalCell(
                         (lx, ly, lz) -> {
                             if (!comparatorCellAt(lx, ly, lz)) return;
@@ -949,11 +976,18 @@ public abstract class BlockMultiblockCore extends Block
         return BlockMultiblockCell.SOUND_STONE;
     }
 
-    private void indexCells(LevelAccessor level, BlockPos core, Direction dir) {
+    private void indexCells(
+            LevelAccessor level, BlockPos core, Direction dir, @Nullable BoundingBox clip) {
         CoreIndexScratch scratch = CoreIndexScratch.borrow();
         try {
             MultiblockCoreIndex.checkDimension(level);
-            visitPlacedCells(level, core, dir, (pos, mask) -> scratch.addCell(pos));
+            visitPlacedCells(
+                    level,
+                    core,
+                    dir,
+                    pos -> {
+                        if (clip == null || clip.isInside(pos)) scratch.addCell(pos);
+                    });
             flushIndex(level, core, scratch, this);
         } finally {
             scratch.release();
@@ -981,6 +1015,11 @@ public abstract class BlockMultiblockCore extends Block
             boolean movedByPiston) {
         super.onPlace(state, level, pos, oldState, movedByPiston);
         level.invalidateCapabilities(pos);
+        if (!BUSY.get() && !oldState.is(this) && level instanceof ServerLevel) {
+            long[] placing = PLACING.get();
+            placing[0] = pos.asLong();
+            placing[1] = level.getGameTime() + 1;
+        }
         if (wantsNeighborUpdates() && level instanceof ServerLevel server)
             cellNeighborChanged(server, pos, pos);
     }
@@ -1013,24 +1052,27 @@ public abstract class BlockMultiblockCore extends Block
 
     protected void removedAt(
             BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-        ((Level) level).invalidateCapabilities(pos);
-        LevelNodeGraph.invalidateEndpointsAround(level, pos);
+        notifyCell(level, pos);
         if (movedByPiston || BUSY.get()) return;
         demolish(level, pos, this, state.getValue(FACING), false);
     }
 
+    @Override
+    public void hbm$blockEntityLoaded(ServerLevel level, BlockEntity be) {
+        if (!claimPlacement(be)) reindexLoadedCells(level, be.getBlockPos());
+    }
+
+    @Override
+    public void hbm$declareEndpoint(ServerLevel level, BlockEntity be) {}
+
+    @Override
+    public void hbm$blockEntityRemoved(ServerLevel level, BlockEntity be) {
+        invalidateCellCaps(level, be.getBlockPos(), coreFacing(be.getBlockState()));
+    }
+
     public void invalidateCellCaps(ServerLevel level, BlockPos core, Direction facing) {
         BlockPos.MutableBlockPos notify = new BlockPos.MutableBlockPos();
-        if (hasVariableFootprint())
-            visitCells(
-                    core,
-                    facing,
-                    (pos, mask) -> NeoForgeCaps.invalidateCaps(level, notify.set(pos)));
-        else
-            footprint(facing)
-                    .visit(
-                            core,
-                            (pos, mask) -> NeoForgeCaps.invalidateCaps(level, notify.set(pos)));
+        footprint(facing).visit(core, pos -> NeoForgeCaps.invalidateCaps(level, notify.set(pos)));
     }
 
     public void reindexLoadedCells(ServerLevel level, BlockPos core) {
@@ -1044,17 +1086,15 @@ public abstract class BlockMultiblockCore extends Block
                     level,
                     core,
                     facing,
-                    (pos, mask) -> {
+                    pos -> {
                         long recorded =
                                 MultiblockSurface.recordedCorePacked(
                                         level, pos.getX(), pos.getY(), pos.getZ());
                         if (recorded != MultiblockSurface.NO_CORE && recorded != corePacked) return;
-                        NeoForgeCaps.invalidateCaps(level, notify.set(pos));
-                        LevelNodeGraph.invalidateEndpointsAround(level, notify);
+                        notifyCell(level, notify.set(pos));
                         scratch.addCell(pos);
                     });
-            ((Level) level).invalidateCapabilities(core);
-            LevelNodeGraph.invalidateEndpointsAround(level, core);
+            notifyCell(level, core);
             flushIndex(level, core, scratch, this);
             if (ConveyorNeighbors.isReceiver(this)) {
                 for (int i = 0; i < scratch.cellCount; i++)
@@ -1162,21 +1202,8 @@ public abstract class BlockMultiblockCore extends Block
     }
 
     @FunctionalInterface
-    public interface PassiveCellVisitor {
-        void passiveCell(BlockPos pos, int faces, int domains);
-    }
-
-    public interface CellVisitor extends MultiblockHandlerXR.BoxVisitor {
-        void cell(BlockPos pos, int mask);
-
-        default void cell(BlockPos pos, int mask, int roles) {
-            cell(pos, mask);
-        }
-
-        @Override
-        default void cell(BlockPos pos, Direction facingCore) {
-            cell(pos, MASK_NONE);
-        }
+    public interface FootprintVisitor {
+        void cell(BlockPos pos);
     }
 
     public record FoldedOwner(

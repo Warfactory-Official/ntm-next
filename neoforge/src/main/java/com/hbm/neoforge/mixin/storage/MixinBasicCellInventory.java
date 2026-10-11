@@ -12,12 +12,10 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Pseudo
-@Mixin(targets = "appeng.me.cells.BasicCellInventory", remap = false)
+@Mixin(value = BasicCellInventory.class, remap = false)
 public abstract class MixinBasicCellInventory {
     @Shadow @Final private ItemStack i;
 

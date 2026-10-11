@@ -9,6 +9,7 @@ import com.hbm.items.ModItems;
 import com.hbm.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,16 +30,6 @@ public class BlockVendingMachine extends BlockMultiblockCore {
     }
 
     @Override
-    public int[] getDimensions() {
-        return new int[] {1, 0, 0, 0, 0, 0};
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
-    }
-
-    @Override
     protected InteractionResult useItemOnAtCore(
             ItemStack held,
             BlockState state,
@@ -53,7 +44,10 @@ public class BlockVendingMachine extends BlockMultiblockCore {
         if (held.isEmpty()) player.setItemInHand(hand, ItemStack.EMPTY);
         if (level.isClientSide()) return InteractionResult.SUCCESS;
 
-        ItemStack reward = ItemPool.getStack(ItemPool.POOLS.get(pool).pool, level.getRandom());
+        ItemStack reward =
+                ItemPool.POOLS
+                        .get(pool)
+                        .getStack(ItemPool.context((ServerLevel) level, level.getRandom()));
         BlockPos clicked = hit.getBlockPos();
         Direction facing = state.getValue(FACING);
         if (!reward.isEmpty()) {

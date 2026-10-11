@@ -4,7 +4,6 @@
 package com.hbm.blockentity.machine;
 
 import com.hbm.api.control.IControlReceiver;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blockentity.network.RTTYSystem.RTTYChannel;
@@ -30,7 +29,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntityRadioRec extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, IControlReceiver, SyncUnitSchema {
+        implements Synced, GraphResident, IControlReceiver, SyncUnitSchema {
 
     @SyncField(units = 1L << 0)
     public String channel = "";

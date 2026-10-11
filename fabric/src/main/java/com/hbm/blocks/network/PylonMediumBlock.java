@@ -5,6 +5,7 @@ package com.hbm.blocks.network;
 
 import com.hbm.blockentity.network.BlockEntityPylonMedium;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.capability.PhysicalConnector;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,10 +22,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
-public class PylonMediumBlock extends BlockMultiblockCore implements EntityBlock {
-
-    private static final int[] DIMENSIONS = {6, 0, 0, 0, 0, 0};
-
+public class PylonMediumBlock extends BlockMultiblockCore
+        implements EntityBlock, PhysicalConnector {
     private final boolean transformer;
     private final MapCodec<PylonMediumBlock> ownCodec;
 
@@ -39,26 +38,12 @@ public class PylonMediumBlock extends BlockMultiblockCore implements EntityBlock
         return ownCodec;
     }
 
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_NONE;
-    }
-
     private int nodeMask(BlockState state) {
         return transformer ? 1 << state.getValue(FACING).getOpposite().ordinal() : 0;
     }
 
-    public boolean canConnectCable(BlockState state, Direction side) {
+    @Override
+    public boolean hasPowerContact(Level level, BlockPos pos, BlockState state, Direction side) {
         return (nodeMask(state) & (1 << side.ordinal())) != 0;
     }
 

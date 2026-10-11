@@ -16,33 +16,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class MachineGasCent extends BlockMultiblockCore implements ITickingBlock, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {3, 0, 0, 0, 0, 0};
-
     public MachineGasCent(Properties props) {
         super(props);
-        this.bounding.add(new AABB(-0.5D, 0D, -0.5D, 0.5D, 1D, 0.5D));
-        this.bounding.add(new AABB(-0.4375D, 1D, -0.4375D, 0.4375D, 4D, 0.4375D));
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_HORIZONTAL | MASK_DOWN;
     }
 
     @Override

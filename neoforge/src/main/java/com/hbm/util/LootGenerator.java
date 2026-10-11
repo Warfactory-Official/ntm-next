@@ -12,10 +12,12 @@ import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.storage.loot.LootContext;
 
 public final class LootGenerator {
 
@@ -34,8 +36,9 @@ public final class LootGenerator {
     public static final String LOOT_GEAR = "LOOT_GEAR";
     public static final String LOOT_SUPPLIES = "LOOT_SUPPLIES";
 
-    public static List<Entry> roll(String name, RandomSource rand, long worldSeed) {
-        Pile pile = new Pile(rand);
+    public static List<Entry> roll(
+            String name, ServerLevel level, RandomSource rand, long worldSeed) {
+        Pile pile = new Pile(level, rand);
         switch (name) {
             case LOOT_BOOKLET:
                 lootBooklet(pile);
@@ -107,10 +110,14 @@ public final class LootGenerator {
 
     private LootGenerator() {}
 
-    private record Pile(RandomSource rand, List<Entry> items) {
+    private record Pile(LootContext context, List<Entry> items) {
 
-        Pile(RandomSource rand) {
-            this(rand, new ArrayList<>());
+        Pile(ServerLevel level, RandomSource rand) {
+            this(ItemPool.context(level, rand), new ArrayList<>());
+        }
+
+        RandomSource rand() {
+            return context.getRandom();
         }
 
         void add(ItemStack stack, double x, double y, double z) {
@@ -118,7 +125,7 @@ public final class LootGenerator {
         }
 
         void deviated(ItemStack stack, double x, double y, double z) {
-            add(stack, x + rand.nextGaussian() * 0.02, y, z + rand.nextGaussian() * 0.02);
+            add(stack, x + rand().nextGaussian() * 0.02, y, z + rand().nextGaussian() * 0.02);
         }
     }
 
@@ -157,12 +164,13 @@ public final class LootGenerator {
         RandomSource rand = pile.rand();
         for (int i = 0; i < 4; i++) {
             pile.deviated(
-                    ItemPool.getStack(ItemPools.POOL_PILE_MED_SYRINGE, rand),
+                    ItemPool.getStack(ItemPools.POOL_PILE_MED_SYRINGE, pile.context()),
                     0.125,
                     i * 0.03125,
                     0.25);
         }
-        pile.deviated(ItemPool.getStack(ItemPools.POOL_PILE_MED_PILLS, rand), -0.25, 0, -0.125);
+        pile.deviated(
+                ItemPool.getStack(ItemPools.POOL_PILE_MED_PILLS, pile.context()), -0.25, 0, -0.125);
     }
 
     private static void lootCapStash(Pile pile) {
@@ -172,7 +180,7 @@ public final class LootGenerator {
                 int count = rand.nextInt(5) + 3;
                 for (int k = 0; k < count; k++) {
                     pile.deviated(
-                            ItemPool.getStack(ItemPools.POOL_PILE_CAPS, rand),
+                            ItemPool.getStack(ItemPools.POOL_PILE_CAPS, pile.context()),
                             i * 0.3125,
                             k * 0.03125,
                             j * 0.3125);
@@ -186,11 +194,14 @@ public final class LootGenerator {
         boolean r = rand.nextBoolean();
         if (r) {
             pile.deviated(
-                    ItemPool.getStack(ItemPools.POOL_PILE_MAKESHIFT_GUN, rand), 0.125, 0.025, 0.25);
+                    ItemPool.getStack(ItemPools.POOL_PILE_MAKESHIFT_GUN, pile.context()),
+                    0.125,
+                    0.025,
+                    0.25);
         }
         if (!r || rand.nextBoolean()) {
             pile.deviated(
-                    ItemPool.getStack(ItemPools.POOL_PILE_MAKESHIFT_WRENCH, rand),
+                    ItemPool.getStack(ItemPools.POOL_PILE_MAKESHIFT_WRENCH, pile.context()),
                     -0.25,
                     0,
                     -0.28125);
@@ -199,7 +210,7 @@ public final class LootGenerator {
         int count = rand.nextInt(2) + 1;
         for (int i = 0; i < count; i++) {
             pile.deviated(
-                    ItemPool.getStack(ItemPools.POOL_PILE_MAKESHIFT_PLATES, rand),
+                    ItemPool.getStack(ItemPools.POOL_PILE_MAKESHIFT_PLATES, pile.context()),
                     -0.25,
                     i * 0.03125,
                     0.3125);
@@ -208,7 +219,7 @@ public final class LootGenerator {
         count = rand.nextInt(2) + 2;
         for (int i = 0; i < count; i++) {
             pile.deviated(
-                    ItemPool.getStack(ItemPools.POOL_PILE_MAKESHIFT_WIRE, rand),
+                    ItemPool.getStack(ItemPools.POOL_PILE_MAKESHIFT_WIRE, pile.context()),
                     0.25,
                     i * 0.03125,
                     0.1875);
@@ -221,7 +232,7 @@ public final class LootGenerator {
             for (int j = 0; j < 4; j++) {
                 if (rand.nextBoolean()) {
                     pile.add(
-                            ItemPool.getStack(ItemPools.POOL_PILE_NUKE_STORAGE, rand),
+                            ItemPool.getStack(ItemPools.POOL_PILE_NUKE_STORAGE, pile.context()),
                             -0.375 + i * 0.25,
                             0,
                             -0.375 + j * 0.25);
@@ -235,7 +246,7 @@ public final class LootGenerator {
         int limit = rand.nextInt(3) + 3;
         for (int i = 0; i < limit; i++) {
             pile.deviated(
-                    ItemPool.getStack(ItemPools.POOL_PILE_BONES, rand),
+                    ItemPool.getStack(ItemPools.POOL_PILE_BONES, pile.context()),
                     rand.nextDouble() - 0.5,
                     i * 0.03125,
                     rand.nextDouble() - 0.5);
@@ -247,7 +258,7 @@ public final class LootGenerator {
         int limit = rand.nextInt(3) + 3;
         for (int i = 0; i < limit; i++) {
             pile.deviated(
-                    ItemPool.getStack(ItemPools.POOL_PILE_HIVE, rand),
+                    ItemPool.getStack(ItemPools.POOL_PILE_HIVE, pile.context()),
                     rand.nextDouble() - 0.5,
                     i * 0.03125,
                     rand.nextDouble() - 0.5);
@@ -262,8 +273,8 @@ public final class LootGenerator {
         pile.deviated(book, 0, 0, -0.25);
     }
 
-    public static List<Entry> lootBookLore(ItemStack book, RandomSource rand) {
-        Pile pile = new Pile(rand);
+    public static List<Entry> lootBookLore(ItemStack book, ServerLevel level, RandomSource rand) {
+        Pile pile = new Pile(level, rand);
         pile.deviated(book, 0, 0, -0.25);
 
         int count = rand.nextInt(3) + 2;
@@ -304,7 +315,7 @@ public final class LootGenerator {
         int limit = rand.nextInt(3) + 3;
         for (int i = 0; i < limit; i++) {
             pile.deviated(
-                    ItemPool.getStack(ItemPools.POOL_PILE_OF_GARBAGE, rand),
+                    ItemPool.getStack(ItemPools.POOL_PILE_OF_GARBAGE, pile.context()),
                     rand.nextDouble() - 0.5,
                     i * 0.03125,
                     rand.nextDouble() - 0.5);
@@ -316,7 +327,7 @@ public final class LootGenerator {
         int limit = rand.nextInt(6) + 1;
         for (int i = 0; i < limit; i++) {
             pile.deviated(
-                    ItemPool.getStack(ItemPools.POOL_PILE_MECHANICAL, rand),
+                    ItemPool.getStack(ItemPools.POOL_PILE_MECHANICAL, pile.context()),
                     rand.nextDouble() - 0.5,
                     i * 0.03125,
                     rand.nextDouble() - 0.5);
@@ -328,7 +339,7 @@ public final class LootGenerator {
         int limit = rand.nextInt(6) + 1;
         for (int i = 0; i < limit; i++) {
             pile.deviated(
-                    ItemPool.getStack(ItemPools.POOL_PILE_GEAR, rand),
+                    ItemPool.getStack(ItemPools.POOL_PILE_GEAR, pile.context()),
                     rand.nextDouble() - 0.5,
                     i * 0.03125,
                     rand.nextDouble() - 0.5);
@@ -340,7 +351,7 @@ public final class LootGenerator {
         int limit = rand.nextInt(3) + 4;
         for (int i = 0; i < limit; i++) {
             pile.deviated(
-                    ItemPool.getStack(ItemPools.POOL_PILE_SUPPLIES, rand),
+                    ItemPool.getStack(ItemPools.POOL_PILE_SUPPLIES, pile.context()),
                     rand.nextDouble() - 0.5,
                     i * 0.03125,
                     rand.nextDouble() - 0.5);

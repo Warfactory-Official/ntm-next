@@ -10,7 +10,7 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.inventory.IGUIProvider;
-import com.hbm.lib.Library;
+import com.hbm.uninos.graph.PhysicalGraph;
 import com.hbm.util.AutoRotate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -45,7 +45,7 @@ public class MachineRTG extends Block
     public static final BooleanProperty WEST = BlockStateProperties.WEST;
 
     public MachineRTG(BlockBehaviour.Properties props) {
-        super(props);
+        super(CapabilityDependentShape.deferShapeToFullChunk(props));
         registerDefaultState(
                 stateDefinition
                         .any()
@@ -80,7 +80,7 @@ public class MachineRTG extends Block
             state =
                     state.setValue(
                             propertyFor(dir),
-                            Library.canConnect(ctx.getLevel(), npos, dir.getOpposite()));
+                            PhysicalGraph.powerContact(ctx.getLevel(), npos, dir.getOpposite()));
         }
         return state;
     }
@@ -96,9 +96,9 @@ public class MachineRTG extends Block
             BlockState neighbourState,
             RandomSource random) {
         if (dir.getAxis() == Direction.Axis.Y) return state;
-        boolean joins = Library.canConnect(level, pos.relative(dir), dir.getOpposite());
+        boolean joins = PhysicalGraph.powerContact(level, pos.relative(dir), dir.getOpposite());
         if (level.isClientSide())
-            return Library.predictArm(state, propertyFor(dir), neighbourState, joins);
+            return PhysicalGraph.predictArm(state, propertyFor(dir), neighbourState, joins);
         return state.setValue(propertyFor(dir), joins);
     }
 
@@ -112,7 +112,7 @@ public class MachineRTG extends Block
             boolean movedByPiston) {
         super.neighborChanged(state, level, pos, block, orientation, movedByPiston);
         if (level instanceof ServerLevel sl) {
-            Library.redrawArms(state, sl, pos);
+            PhysicalGraph.redraw(state, sl, pos);
         }
     }
 

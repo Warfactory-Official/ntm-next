@@ -5,8 +5,11 @@ package com.hbm.client.sound;
 
 import com.hbm.sound.AudioSystem;
 import com.hbm.sound.AudioWrapper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import org.jspecify.annotations.Nullable;
 
 public final class ClientAudioFactory implements AudioSystem.Factory {
@@ -14,6 +17,24 @@ public final class ClientAudioFactory implements AudioSystem.Factory {
     public static final ClientAudioFactory INSTANCE = new ClientAudioFactory();
 
     private ClientAudioFactory() {}
+
+    @Override
+    public void playMachineSound(
+            BlockPos owner,
+            SoundEvent sound,
+            SoundSource category,
+            float volume,
+            float pitch,
+            RandomSource random,
+            double x,
+            double y,
+            double z) {
+        Minecraft.getInstance()
+                .getSoundManager()
+                .play(
+                        new MachineSoundInstance(
+                                owner, sound, category, volume, pitch, random, x, y, z));
+    }
 
     @Deprecated
     @Override

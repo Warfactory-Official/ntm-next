@@ -73,7 +73,6 @@ public interface RandomSlotLoot {
         assert size > 0;
         for (int index = 0; index < modified.size(); index++) {
             ItemStack stack = modified.get(index);
-            if (stack.isEmpty()) continue;
             if (stack.getCount() > stack.getMaxStackSize()) {
                 for (int unit = 0; unit < stack.getCount(); unit++) {
                     container.setItem(context.getRandom().nextInt(size), stack.copyWithCount(1));

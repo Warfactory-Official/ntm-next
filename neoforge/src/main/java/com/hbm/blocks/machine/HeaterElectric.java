@@ -7,7 +7,6 @@ import com.hbm.blockentity.machine.BlockEntityHeaterElectric;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.RefreshesNeighborState;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
@@ -26,37 +25,8 @@ import org.jspecify.annotations.Nullable;
 @RefreshesNeighborState(be = BlockEntityHeaterElectric.class, calling = "refreshHeatBelow")
 public class HeaterElectric extends BlockMultiblockCore
         implements ITickingBlock, IToolable, ILookOverlay, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {0, 0, 1, 2, 1, 1};
-
     public HeaterElectric(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 2;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        MultiblockHandlerXR.visitBox(core, DIMENSIONS, facing, visitor);
-        visitor.cell(core.relative(facing, 2), MASK_SOUTH);
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_NONE;
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        visitor.passiveCell(core.relative(facing, 2), MASK_ALL, PASSIVE_POWER_IN);
     }
 
     @Override

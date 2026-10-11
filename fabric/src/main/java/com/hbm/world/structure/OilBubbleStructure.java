@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 
-public class OilBubbleStructure extends Structure {
+public class OilBubbleStructure extends Structure implements ColumnBiome.SelfTested {
 
     public static final MapCodec<OilBubbleStructure> CODEC =
             RecordCodecBuilder.<OilBubbleStructure>mapCodec(
@@ -89,6 +89,7 @@ public class OilBubbleStructure extends Structure {
                         chunkPos.getMinBlockX() + random.nextInt(16),
                         minY + random.nextInt(rangeY),
                         chunkPos.getMinBlockZ() + random.nextInt(16));
+        if (!ColumnBiome.valid(context, centre.getX(), centre.getZ())) return Optional.empty();
         int radius = minSize + random.nextInt(maxSize - minSize);
         long scarSeed = random.nextLong();
 

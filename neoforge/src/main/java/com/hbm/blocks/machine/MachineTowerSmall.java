@@ -14,7 +14,6 @@ import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -23,10 +22,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineTowerSmall extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {18, 0, 2, 2, 2, 2};
-    private static final int PORT_REACH = 2;
-
     public MachineTowerSmall(Properties props) {
         super(props);
     }
@@ -59,39 +54,6 @@ public class MachineTowerSmall extends BlockMultiblockCore
                         + "/"
                         + out.getMaxFill()
                         + "mB");
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return PORT_REACH;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-
-        visitor.cell(core.offset(PORT_REACH, 0, 0), MASK_EAST, ROLE_FLUID);
-        visitor.cell(core.offset(-PORT_REACH, 0, 0), MASK_WEST, ROLE_FLUID);
-        visitor.cell(core.offset(0, 0, PORT_REACH), MASK_SOUTH, ROLE_FLUID);
-        visitor.cell(core.offset(0, 0, -PORT_REACH), MASK_NORTH, ROLE_FLUID);
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        visitor.passiveCell(core.offset(PORT_REACH, 0, 0), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(core.offset(-PORT_REACH, 0, 0), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(core.offset(0, 0, PORT_REACH), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(core.offset(0, 0, -PORT_REACH), MASK_ALL, PASSIVE_FLUID_IN);
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_NONE;
     }
 
     @Override

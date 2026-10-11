@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 
-public class SellafieldCraterStructure extends Structure {
+public class SellafieldCraterStructure extends Structure implements ColumnBiome.SelfTested {
 
     public static final MapCodec<SellafieldCraterStructure> CODEC =
             RecordCodecBuilder.<SellafieldCraterStructure>mapCodec(
@@ -75,6 +75,7 @@ public class SellafieldCraterStructure extends Structure {
         ChunkPos chunkPos = context.chunkPos();
         int blockX = chunkPos.getMiddleBlockX();
         int blockZ = chunkPos.getMiddleBlockZ();
+        if (!ColumnBiome.valid(context, blockX, blockZ)) return Optional.empty();
         BlockPos origin = new BlockPos(blockX, 0, blockZ);
 
         int radius = minSize + context.random().nextInt(maxSize - minSize);
@@ -94,5 +95,9 @@ public class SellafieldCraterStructure extends Structure {
     @Override
     public StructureType<?> type() {
         return HbmStructureTypes.SELLAFIELD_CRATER.get();
+    }
+
+    public int maxRadius() {
+        return maxSize - 1;
     }
 }

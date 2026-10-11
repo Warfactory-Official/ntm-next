@@ -6,7 +6,6 @@ package com.hbm.blockentity.machine;
 
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
 import com.hbm.blockentity.AudioLoop;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.IFluidCopiable;
 import com.hbm.blockentity.Synced;
@@ -14,6 +13,7 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.packet.PacketWire;
@@ -37,7 +37,9 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockItemTags;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -57,9 +59,9 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineAutosaw extends BlockEntity
-        implements Synced,
+        implements FluidTankAccess,
+                Synced,
                 GraphResident,
-                FoldedCoreResident,
                 AudioLoop,
                 FluidTankEndpoint,
                 IFluidCopiable,
@@ -72,6 +74,14 @@ public class BlockEntityMachineAutosaw extends BlockEntity
     private static final int FELL_BFS_RADIUS = MAX_DIST + FELL_HORIZONTAL_RANGE;
     private static final int FELL_VERTICAL_RANGE = 32;
     private static final int FELL_MAX_BASE_DEPTH = FELL_VERTICAL_RANGE / 2;
+    private static final TagKey<Block> SPRUCE_LOGS = BlockItemTags.SPRUCE_LOGS.block();
+    private static final TagKey<Block> BIRCH_LOGS = BlockItemTags.BIRCH_LOGS.block();
+    private static final TagKey<Block> JUNGLE_LOGS = BlockItemTags.JUNGLE_LOGS.block();
+    private static final TagKey<Block> ACACIA_LOGS = BlockItemTags.ACACIA_LOGS.block();
+    private static final TagKey<Block> DARK_OAK_LOGS = BlockItemTags.DARK_OAK_LOGS.block();
+    private static final TagKey<Block> PALE_OAK_LOGS = BlockItemTags.PALE_OAK_LOGS.block();
+    private static final TagKey<Block> CHERRY_LOGS = BlockItemTags.CHERRY_LOGS.block();
+    private static final TagKey<Block> MANGROVE_LOGS = BlockItemTags.MANGROVE_LOGS.block();
     private static final int[][] EIGHTEEN_DIRS = {
         {1, 0, 0},
         {-1, 0, 0},
@@ -138,17 +148,19 @@ public class BlockEntityMachineAutosaw extends BlockEntity
                 && state.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.UPPER;
     }
 
-    private static boolean canSupportSapling(ServerLevel level, int x, int y, int z) {
-        return Blocks.OAK_SAPLING.defaultBlockState().canSurvive(level, new BlockPos(x, y + 1, z));
+    private static boolean canSupportSapling(ServerLevel level, BlockPos pos, Block sapling) {
+        return sapling.defaultBlockState().canSurvive(level, pos);
     }
 
-    private static Block saplingFor(Block log) {
-        if (log == Blocks.SPRUCE_LOG) return Blocks.SPRUCE_SAPLING;
-        if (log == Blocks.BIRCH_LOG) return Blocks.BIRCH_SAPLING;
-        if (log == Blocks.JUNGLE_LOG) return Blocks.JUNGLE_SAPLING;
-        if (log == Blocks.ACACIA_LOG) return Blocks.ACACIA_SAPLING;
-        if (log == Blocks.DARK_OAK_LOG) return Blocks.DARK_OAK_SAPLING;
-        if (log == Blocks.PALE_OAK_LOG) return Blocks.PALE_OAK_SAPLING;
+    private static Block saplingFor(BlockState log) {
+        if (log.is(SPRUCE_LOGS)) return Blocks.SPRUCE_SAPLING;
+        if (log.is(BIRCH_LOGS)) return Blocks.BIRCH_SAPLING;
+        if (log.is(JUNGLE_LOGS)) return Blocks.JUNGLE_SAPLING;
+        if (log.is(ACACIA_LOGS)) return Blocks.ACACIA_SAPLING;
+        if (log.is(DARK_OAK_LOGS)) return Blocks.DARK_OAK_SAPLING;
+        if (log.is(PALE_OAK_LOGS)) return Blocks.PALE_OAK_SAPLING;
+        if (log.is(CHERRY_LOGS)) return Blocks.CHERRY_SAPLING;
+        if (log.is(MANGROVE_LOGS)) return Blocks.MANGROVE_PROPAGULE;
         return Blocks.OAK_SAPLING;
     }
 
@@ -332,8 +344,10 @@ public class BlockEntityMachineAutosaw extends BlockEntity
                 while (sawY - baseY < FELL_MAX_BASE_DEPTH
                         && isWood(level.getBlockState(new BlockPos(colX, baseY - 1, colZ))))
                     baseY--;
-                if (!canSupportSapling(level, colX, baseY - 1, colZ)) continue;
-                trunks.put(new BlockPos(colX, -1, colZ), new BlockPos(colX, baseY, colZ));
+                BlockPos base = new BlockPos(colX, baseY, colZ);
+                if (!canSupportSapling(level, base, saplingFor(level.getBlockState(base))))
+                    continue;
+                trunks.put(new BlockPos(colX, -1, colZ), base);
             }
         }
         if (!trunks.containsKey(hitCol)) {
@@ -389,11 +403,11 @@ public class BlockEntityMachineAutosaw extends BlockEntity
             if (!entry.getValue().equals(hitCol)) continue;
             BlockPos pos = entry.getKey();
             BlockState bs = level.getBlockState(pos);
-            if (isWood(bs)
-                    && isWithinWorkingArea(pos.getX(), pos.getZ())
-                    && canSupportSapling(level, pos.getX(), pos.getY() - 1, pos.getZ())) {
+            if (isWood(bs) && isWithinWorkingArea(pos.getX(), pos.getZ())) {
+                Block sapling = saplingFor(bs);
+                boolean replant = canSupportSapling(level, pos, sapling);
                 level.destroyBlock(pos, true);
-                level.setBlock(pos, saplingFor(bs.getBlock()).defaultBlockState(), 3);
+                if (replant) level.setBlock(pos, sapling.defaultBlockState(), 3);
             } else {
                 level.destroyBlock(pos, true);
             }
@@ -478,8 +492,14 @@ public class BlockEntityMachineAutosaw extends BlockEntity
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {tank};
+    public int tankCount() {
+        return 1;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        if (index != 0) throw new IndexOutOfBoundsException(index);
+        return tank;
     }
 
     @Override

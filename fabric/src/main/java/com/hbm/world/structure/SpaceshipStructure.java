@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
-public class SpaceshipStructure extends Structure {
+public class SpaceshipStructure extends Structure implements ColumnBiome.SelfTested {
 
     public static final MapCodec<SpaceshipStructure> CODEC = simpleCodec(SpaceshipStructure::new);
 
@@ -44,6 +44,7 @@ public class SpaceshipStructure extends Structure {
         ChunkPos chunkPos = context.chunkPos();
         int x = chunkPos.getBlockX(8);
         int z = chunkPos.getBlockZ(8);
+        if (!ColumnBiome.valid(context, x + ANCHOR_DX, z)) return Optional.empty();
         int y =
                 context.chunkGenerator()
                         .getBaseHeight(

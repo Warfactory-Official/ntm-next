@@ -6,7 +6,6 @@ package com.hbm.blocks.network;
 import com.hbm.NuclearTech;
 import com.hbm.api.energymk2.CableData;
 import com.hbm.api.energymk2.PowerGraph;
-import com.hbm.api.energymk2.PowerGraphProvider;
 import com.hbm.platform.NeoForgeAttachments;
 import com.hbm.platform.NeoForgeChunkData;
 import com.hbm.platform.NeoForgeServerEvents;
@@ -154,7 +153,7 @@ public final class GeneratedConductors {
                     state.getBlock() instanceof CableConductorBlockBase conductor
                             ? conductor.nodeMask(state)
                             : CableConductorBlockBase.OPEN_ALL;
-            graph.addNode(pos.asLong(), PowerGraphProvider.INSTANCE.createData(state), mask);
+            graph.addNode(pos.asLong(), CableData.INSTANCE, mask);
         }
     }
 }

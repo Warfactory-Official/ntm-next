@@ -11,12 +11,11 @@ import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 public record WeightedPlaceProcessor(
         BlockState marker, WeightedList<BlockState> options, int seedOffsetY)
-        implements StructureProcessor {
+        implements MarkerProcessor {
 
     public static final MapCodec<WeightedPlaceProcessor> MAP_CODEC =
             RecordCodecBuilder.mapCodec(

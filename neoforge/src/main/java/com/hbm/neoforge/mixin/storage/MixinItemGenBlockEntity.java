@@ -3,6 +3,7 @@
 
 package com.hbm.neoforge.mixin.storage;
 
+import appeng.debug.ItemGenBlockEntity;
 import com.hbm.neoforge.inventory.LazyItemVariants;
 import java.util.Queue;
 import net.minecraft.world.item.Item;
@@ -10,14 +11,12 @@ import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Pseudo
-@Mixin(targets = "appeng.debug.ItemGenBlockEntity", remap = false)
+@Mixin(value = ItemGenBlockEntity.class, remap = false, priority = 500)
 public abstract class MixinItemGenBlockEntity {
     @Shadow @Final @Mutable private static Queue<ItemStack> SHARED_POSSIBLE_ITEMS;
     @Shadow @Final @Mutable private Queue<ItemStack> possibleItems;

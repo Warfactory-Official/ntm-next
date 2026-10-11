@@ -4,7 +4,6 @@
 package com.hbm.blockentity.machine.fusion;
 
 import com.hbm.blockentity.AudioLoop;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -26,7 +25,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityFusionKlystronCreative extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, AudioLoop, SyncUnitSchema {
+        implements Synced, GraphResident, AudioLoop, SyncUnitSchema {
 
     public static final float FAN_ACCELERATION = 0.125F;
     public static Consumer<BlockEntityFusionKlystronCreative> CLIENT_SOUND = be -> {};

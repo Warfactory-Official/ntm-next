@@ -81,10 +81,15 @@ public interface SimplexBatch {
         SimplexGridBatch.Scratch scratch = SimplexGridBatch.scratch();
         for (int base = 0; base < len; base += SimplexGridBatch.TILE) {
             int count = Math.min(SimplexGridBatch.TILE, len - base);
+            int row = base / sizeZ;
+            int column = base % sizeZ;
             for (int i = 0; i < count; i++) {
-                int index = base + i;
-                scratch.xs[i] = (double) (firstX + index / sizeZ) * scaleX;
-                scratch.zs[i] = (double) (firstZ + index % sizeZ) * scaleZ;
+                scratch.xs[i] = (double) (firstX + row) * scaleX;
+                scratch.zs[i] = (double) (firstZ + column) * scaleZ;
+                if (++column == sizeZ) {
+                    column = 0;
+                    row++;
+                }
             }
             fractal(perm, gradX, gradY, scratch.xs, scratch.zs, scratch.out, octaves, count);
             System.arraycopy(scratch.out, 0, out, base, count);

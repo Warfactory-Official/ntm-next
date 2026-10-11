@@ -5,7 +5,6 @@ package com.hbm.blockentity.network;
 
 import com.hbm.api.energymk2.CableData;
 import com.hbm.api.energymk2.PowerGraph;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.network.CableConductorBlockBase;
@@ -26,7 +25,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class BlockEntityPylonBase extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, SyncUnitSchema {
+        implements Synced, GraphResident, SyncUnitSchema {
 
     @SyncField(units = 1L)
     public long[] connections = new long[0];

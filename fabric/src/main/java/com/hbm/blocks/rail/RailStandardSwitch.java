@@ -78,18 +78,6 @@ public class RailStandardSwitch extends BlockRailWaypointSystem {
         return TrackGauge.STANDARD;
     }
 
-    private static final int[] DIMENSIONS = {0, 0, 7, 7, 1, 0};
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 7;
-    }
-
     protected static final int ROUTE_UNKNOWN = -1;
     protected static final int ROUTE_MAIN = 0;
     protected static final int ROUTE_SIDE = 1;
@@ -146,23 +134,5 @@ public class RailStandardSwitch extends BlockRailWaypointSystem {
         }
 
         return InteractionResult.SUCCESS;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        for (int[] off : sideTrack()) {
-            visitor.cell(sideTrackCell(core, facing, off), MASK_NONE);
-        }
-    }
-
-    @Override
-    public boolean checkRequirement(Level level, BlockPos placed, Direction dir, int o) {
-        if (!super.checkRequirement(level, placed, dir, o)) return false;
-        BlockPos core = placed.offset(dir.getStepX() * o, dir.getStepY() * o, dir.getStepZ() * o);
-        for (int[] off : sideTrack()) {
-            if (!level.getBlockState(sideTrackCell(core, dir, off)).canBeReplaced()) return false;
-        }
-        return true;
     }
 }

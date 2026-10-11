@@ -5,7 +5,6 @@ package com.hbm.blockentity.machine;
 
 import com.hbm.api.fluidmk2.FluidPipeGraph;
 import com.hbm.api.fluidmk2.IFluidHandlerMK2;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.handler.pollution.PollutionHandler;
@@ -24,7 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 
 public abstract class BlockEntityChimneyBase extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, IFluidHandlerMK2, SyncUnitSchema {
+        implements Synced, GraphResident, IFluidHandlerMK2, SyncUnitSchema {
 
     private static final long DEMAND = 1_000_000L;
 

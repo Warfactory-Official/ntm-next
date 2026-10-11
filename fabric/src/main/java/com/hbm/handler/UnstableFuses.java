@@ -29,7 +29,6 @@ import com.hbm.platform.FabricServerEvents;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -750,26 +749,11 @@ public final class UnstableFuses {
             y = entity.getY();
             z = entity.getZ();
             if (entity instanceof ServerPlayer player) {
-                int before = mutations;
                 inventory(player.getInventory());
                 inventory(player.getEnderChestInventory());
                 AbstractContainerMenu menu = player.containerMenu;
-                ItemStackContainer lastMirror = null;
                 for (Slot slot : menu.slots) {
-                    if (slot.container instanceof ItemStackContainer view) {
-                        if (view.target().isEmpty()
-                                || view.target().has(DataComponents.CONTAINER)) {
-                            if (mutations != before && view != lastMirror)
-                                afterChanges(
-                                        () -> {
-                                            if (player.containerMenu == menu)
-                                                view.refreshFromTarget();
-                                        });
-                            lastMirror = view;
-                            continue;
-                        }
-                        if (!view.stillValid(player)) continue;
-                    }
+                    if (slot.container instanceof ItemStackContainer) continue;
                     if (!menuOwnedSlot(slot, player)) continue;
                     ItemStack item = slot.getItem();
                     if (stack(item))

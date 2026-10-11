@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "com.hbm.mixin.compat.network",
+  "plugin": "com.hbm.mixin.compat.network.NetworkOptimizerMixinPlugin",
+  "mixins": [
+    "bo.MixinKineticStreamingLayer",
+    "bo.MixinCustomPayloadPacketCompat",
+    "bo.MixinChannelTransportPacketRankSourceResolver",
+    "neb.MixinAggregatedEncodePacket",
+    "neb.MixinNamespaceIndexManager",
+    "neb.MixinConnection",
+    "neb.MixinContext",
+    "neb.MixinZstdHelper",
+    "neb.MixinPacketAggregationPacket"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

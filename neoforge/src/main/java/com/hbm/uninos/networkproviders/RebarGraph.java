@@ -14,15 +14,13 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Unit;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.saveddata.SavedDataType;
 
 public final class RebarGraph implements IGraphProvider<Unit> {
 
     public static final RebarGraph PROVIDER = new RebarGraph();
 
-    public static final SavedDataType<LevelNodeGraph<Unit>> TYPE =
-            LevelNodeGraph.type(PROVIDER, "rebar_graph");
+    public static final LevelNodeGraph.Kind<Unit> TYPE =
+            LevelNodeGraph.kind(PROVIDER, "rebar_graph");
 
     public static final int OPEN_ALL = 0b111111;
 
@@ -42,11 +40,6 @@ public final class RebarGraph implements IGraphProvider<Unit> {
         long[] cells = layer.cells.toLongArray();
         net.attachment = cells;
         return cells;
-    }
-
-    @Override
-    public Unit createData(BlockState state) {
-        return Unit.INSTANCE;
     }
 
     @Override

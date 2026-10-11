@@ -14,7 +14,7 @@ import net.minecraft.nbt.NbtOps;
 public final class HbmDataFixers {
 
     public static final String VERSION_KEY = "hbm_data_version";
-    public static final int CURRENT = 6;
+    public static final int CURRENT = 7;
     static final DSL.TypeReference CHUNK = () -> "hbm:chunk";
     private static final DataFixer FIXER = build();
 
@@ -36,6 +36,8 @@ public final class HbmDataFixers {
         Schema v6 = builder.addSchema(6, Schema::new);
         builder.addFixer(new TrinketTypeNameFix(v6));
         builder.addFixer(new PadSizeNameFix(v6));
+        Schema v7 = builder.addSchema(7, Schema::new);
+        builder.addFixer(new CoreIndexPopulationFix(v7));
         return builder.build().fixer();
     }
 

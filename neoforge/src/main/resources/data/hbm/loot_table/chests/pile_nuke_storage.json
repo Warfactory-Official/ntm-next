@@ -5,17 +5,53 @@
     {
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "hbm:ammo_standard_nuke_standard",
-          "weight": 50
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 10
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 10
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:value_check",
+                  "range": {
+                    "max": 49
+                  },
+                  "value": {
+                    "type": "minecraft:uniform",
+                    "max": 69,
+                    "min": 0
+                  }
+                }
+              ],
+              "name": "hbm:ammo_standard_nuke_standard",
+              "weight": 50
+            },
+            {
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:empty",
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 9
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 19,
+                        "min": 0
+                      }
+                    }
+                  ],
+                  "weight": 10
+                },
+                {
+                  "type": "minecraft:empty",
+                  "weight": 10
+                }
+              ]
+            }
+          ]
         }
       ],
       "rolls": 1

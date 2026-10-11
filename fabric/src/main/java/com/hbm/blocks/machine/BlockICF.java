@@ -79,6 +79,11 @@ public class BlockICF extends Block implements ICapabilityBlock, AssembledMember
     }
 
     @Override
+    public boolean hasPowerContact(Level level, BlockPos pos, BlockState state, Direction side) {
+        return state.getValue(PART) == Part.PORT;
+    }
+
+    @Override
     public MachineCaps caps() {
         return MachineCaps.blockKeyed().powerIn().selfProvided();
     }

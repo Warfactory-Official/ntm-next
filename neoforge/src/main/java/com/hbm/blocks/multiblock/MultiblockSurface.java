@@ -49,7 +49,7 @@ public final class MultiblockSurface {
             Direction facing,
             @Nullable CapRole role,
             ActiveFaceVisitor visitor) {
-        MultiblockMaskTable table = core.maskTable();
+        MultiblockMaskTable table = core.maskTable(facing);
         table.forEachLocalCell(
                 (lx, ly, lz) -> {
                     int mask =
@@ -108,6 +108,25 @@ public final class MultiblockSurface {
     }
 
     public static long indexedCorePacked(ServerLevel level, int x, int y, int z) {
+        return lookup(level, x, y, z, HIT.get());
+    }
+
+    private static final class CoreHit {
+        @Nullable LevelChunk chunk;
+        @Nullable BlockState state;
+        @Nullable BlockMultiblockCore block;
+        int x;
+        int y;
+        int z;
+
+        Direction facing() {
+            return state.getValue(BlockMultiblockCore.FACING);
+        }
+    }
+
+    private static final ThreadLocal<CoreHit> HIT = ThreadLocal.withInitial(CoreHit::new);
+
+    private static long lookup(ServerLevel level, int x, int y, int z, CoreHit hit) {
         LevelChunk chunk = BlockMultiblockCore.readableChunk(level, x, z);
         if (chunk == null) return NO_CORE;
         long entry = MultiblockCoreIndex.lookup(chunk, level, x, y, z);
@@ -129,8 +148,23 @@ public final class MultiblockSurface {
             if (coreChunk == null) return NO_CORE_TRUNCATED;
         }
         BlockState coreState = stateAt(coreChunk, cx, cy, cz);
-        if (coreState == null || foldedCore(coreState) == null) return NO_CORE;
+        BlockMultiblockCore block = coreState == null ? null : foldedCore(coreState);
+        if (block == null) return NO_CORE;
+        hit.chunk = coreChunk;
+        hit.state = coreState;
+        hit.block = block;
+        hit.x = cx;
+        hit.y = cy;
+        hit.z = cz;
         return BlockPos.asLong(cx, cy, cz);
+    }
+
+    private static @Nullable BlockEntity ownerAt(ServerLevel level, CoreHit hit) {
+        if (!level.getServer().isSameThread()) return null;
+        BlockEntity be =
+                hit.chunk.getBlockEntity(
+                        new BlockPos(hit.x, hit.y, hit.z), LevelChunk.EntityCreationType.IMMEDIATE);
+        return be == null || be.isRemoved() ? null : be;
     }
 
     public static long recordedCorePacked(ServerLevel level, int x, int y, int z) {
@@ -192,32 +226,22 @@ public final class MultiblockSurface {
         }
         if (isFoldedCell(state)) {
             if (!(level instanceof ServerLevel server)) return null;
-            long packed = indexedCorePacked(server, pos.getX(), pos.getY(), pos.getZ());
-            if (!hasCore(packed)) return null;
-            BlockPos core = BlockPos.of(packed);
-            BlockState coreState = server.getBlockState(core);
-            BlockMultiblockCore block = foldedCore(coreState);
-            if (block == null) return null;
+            CoreHit hit = HIT.get();
+            if (!hasCore(lookup(server, pos.getX(), pos.getY(), pos.getZ(), hit))) return null;
             if (side != null
-                    && !block.isOpenAt(
-                            coreState.getValue(BlockMultiblockCore.FACING),
-                            pos.getX() - core.getX(),
-                            pos.getY() - core.getY(),
-                            pos.getZ() - core.getZ(),
+                    && !hit.block.isOpenAt(
+                            hit.facing(),
+                            pos.getX() - hit.x,
+                            pos.getY() - hit.y,
+                            pos.getZ() - hit.z,
                             side,
                             passiveDomains,
                             role)) {
                 return null;
             }
-            BlockEntity be = server.getBlockEntity(core);
-            return be == null || be.isRemoved() ? null : be;
+            return ownerAt(server, hit);
         }
         return null;
-    }
-
-    public static @Nullable BlockEntity resolveOwnerForItems(
-            Level level, BlockPos pos, BlockState state) {
-        return resolveOwner(level, pos, state, null);
     }
 
     public static @Nullable BlockEntity resolveOwnerIfOpenForItems(
@@ -238,23 +262,18 @@ public final class MultiblockSurface {
         }
         if (isFoldedCell(state)) {
             if (!(level instanceof ServerLevel server)) return null;
-            long packed = indexedCorePacked(server, pos.getX(), pos.getY(), pos.getZ());
-            if (!hasCore(packed)) return null;
-            BlockPos core = BlockPos.of(packed);
-            BlockState coreState = server.getBlockState(core);
-            BlockMultiblockCore block = foldedCore(coreState);
-            if (block == null) return null;
-            if (!block.isPassiveOnlyOpenAt(
-                    coreState.getValue(BlockMultiblockCore.FACING),
-                    pos.getX() - core.getX(),
-                    pos.getY() - core.getY(),
-                    pos.getZ() - core.getZ(),
+            CoreHit hit = HIT.get();
+            if (!hasCore(lookup(server, pos.getX(), pos.getY(), pos.getZ(), hit))) return null;
+            if (!hit.block.isPassiveOnlyOpenAt(
+                    hit.facing(),
+                    pos.getX() - hit.x,
+                    pos.getY() - hit.y,
+                    pos.getZ() - hit.z,
                     side,
                     NtmCapabilities.ITEM_PLANE)) {
                 return null;
             }
-            BlockEntity be = server.getBlockEntity(core);
-            return be == null || be.isRemoved() ? null : be;
+            return ownerAt(server, hit);
         }
         return null;
     }
@@ -275,9 +294,19 @@ public final class MultiblockSurface {
     private static @Nullable BlockPos proxyCoreOfCell(
             Level level, BlockPos pos, BlockState state, int passiveDomains, boolean proxyCells) {
         if (!isFoldedCell(state)) return null;
-        BlockPos core = coreOfFoldedCell(level, pos, state);
-        if (core == null) return null;
-        BlockState coreState = level.getBlockState(core);
+        BlockPos core;
+        BlockState coreState;
+        if (level instanceof ServerLevel server) {
+            CoreHit hit = HIT.get();
+            long packed = lookup(server, pos.getX(), pos.getY(), pos.getZ(), hit);
+            if (!hasCore(packed)) return null;
+            core = BlockPos.of(packed);
+            coreState = hit.state;
+        } else {
+            core = clientCoreOf(level, pos);
+            if (core == null) return null;
+            coreState = level.getBlockState(core);
+        }
         BlockMultiblockCore block = foldedCore(coreState);
         if (block == null) return null;
         Direction facing = coreState.getValue(BlockMultiblockCore.FACING);
@@ -287,8 +316,13 @@ public final class MultiblockSurface {
         int lx = MultiblockMaskTable.localX(dx, dy, dz, facing);
         int ly = MultiblockMaskTable.localY(dx, dy, dz, facing);
         int lz = MultiblockMaskTable.localZ(dx, dy, dz, facing);
-        if (proxyCells && block.proxyCellAt(lx, ly, lz)) return core;
-        int mask = block.passiveMaskAt(lx, ly, lz, passiveDomains);
+        if (proxyCells
+                && (block.maskTable(facing).flagsAtLocal(lx, ly, lz)
+                                & MultiblockMaskTable.FLAG_PROXY)
+                        != 0) {
+            return core;
+        }
+        int mask = block.passiveMaskAt(lx, ly, lz, facing, passiveDomains);
         if (mask == MultiblockMaskTable.NOT_A_CELL || mask == BlockMultiblockCore.MASK_NONE)
             return null;
         return core;
@@ -340,18 +374,14 @@ public final class MultiblockSurface {
                     role);
         }
         if (isFoldedCell(state) && level instanceof ServerLevel server) {
-            long packed = indexedCorePacked(server, pos.getX(), pos.getY(), pos.getZ());
-            if (!hasCore(packed)) return false;
-            BlockPos core = BlockPos.of(packed);
-            BlockState coreState = server.getBlockState(core);
-            BlockMultiblockCore block = foldedCore(coreState);
-            if (block == null) return false;
+            CoreHit hit = HIT.get();
+            if (!hasCore(lookup(server, pos.getX(), pos.getY(), pos.getZ(), hit))) return false;
             return open(
-                    block,
-                    coreState.getValue(BlockMultiblockCore.FACING),
-                    pos.getX() - core.getX(),
-                    pos.getY() - core.getY(),
-                    pos.getZ() - core.getZ(),
+                    hit.block,
+                    hit.facing(),
+                    pos.getX() - hit.x,
+                    pos.getY() - hit.y,
+                    pos.getZ() - hit.z,
                     side,
                     passiveDomains,
                     passiveOnly,
@@ -378,7 +408,7 @@ public final class MultiblockSurface {
     public static boolean ownerDeclares(BlockEntity owner, int bits) {
         if (!(owner.getBlockState().getBlock() instanceof BlockMultiblockCore core)) return true;
         if (!core.usesSharedCells()) return true;
-        return core.maskTable().declares(bits);
+        return core.declares(bits);
     }
 
     public static @Nullable BlockPos clientCoreOf(BlockGetter level, BlockPos cell) {
@@ -563,10 +593,13 @@ public final class MultiblockSurface {
         int dx = soil.getX() - core.getX(),
                 dy = soil.getY() - core.getY(),
                 dz = soil.getZ() - core.getZ();
-        return block.plantSoilAt(
-                MultiblockMaskTable.localX(dx, dy, dz, facing),
-                MultiblockMaskTable.localY(dx, dy, dz, facing),
-                MultiblockMaskTable.localZ(dx, dy, dz, facing));
+        return (block.maskTable(facing)
+                                .flagsAtLocal(
+                                        MultiblockMaskTable.localX(dx, dy, dz, facing),
+                                        MultiblockMaskTable.localY(dx, dy, dz, facing),
+                                        MultiblockMaskTable.localZ(dx, dy, dz, facing))
+                        & MultiblockMaskTable.FLAG_SOIL)
+                != 0;
     }
 
     public static List<BlockPos> rigidStructureBlocks(Level level, BlockPos core) {
@@ -581,7 +614,7 @@ public final class MultiblockSurface {
                 level,
                 core,
                 state.getValue(BlockMultiblockCore.FACING),
-                (pos, mask) -> {
+                pos -> {
                     if (server != null
                             && recordedCorePacked(server, pos.getX(), pos.getY(), pos.getZ())
                                     != corePacked) {

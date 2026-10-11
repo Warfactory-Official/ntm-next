@@ -49,7 +49,6 @@ public class MachineRefinery extends BlockMultiblockCore
                 IPersistentInfoProvider {
 
     public static final BooleanProperty EXPLODED = BooleanProperty.create("exploded");
-    private static final int[] DIMENSIONS = {8, 0, 1, 1, 1, 1};
 
     public MachineRefinery(Properties props) {
         super(props);
@@ -65,38 +64,6 @@ public class MachineRefinery extends BlockMultiblockCore
     @Override
     protected boolean tilts() {
         return true;
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        for (int dx = -1; dx <= 1; dx += 2) {
-            for (int dz = -1; dz <= 1; dz += 2) {
-                visitor.cell(core.offset(dx, 0, dz), MachineChemicalPlant.ringMask(dx, dz));
-            }
-        }
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        for (int dx = -1; dx <= 1; dx += 2) {
-            for (int dz = -1; dz <= 1; dz += 2) {
-                visitor.passiveCell(
-                        core.offset(dx, 0, dz),
-                        MASK_ALL,
-                        PASSIVE_POWER_IN | PASSIVE_FLUID_IN | PASSIVE_ITEMS);
-            }
-        }
     }
 
     @Override

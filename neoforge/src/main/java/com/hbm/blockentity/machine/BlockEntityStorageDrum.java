@@ -5,6 +5,8 @@ package com.hbm.blockentity.machine;
 
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidFlushSender;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blockentity.IFluidCopiable;
 import com.hbm.blocks.ModBlockEntities;
@@ -14,6 +16,7 @@ import com.hbm.hazard.HazardSystem;
 import com.hbm.inventory.IGUIProvider;
 import com.hbm.inventory.container.MenuStorageDrum;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
@@ -50,7 +53,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityStorageDrum extends BlockEntityMachineBase
-        implements FluidFlushSender, IGUIProvider, IFluidCopiable, SyncUnitSchema {
+        implements FluidTankAccess, FluidFlushSender, IGUIProvider, IFluidCopiable, SyncUnitSchema {
 
     public static final int SLOT_COUNT = 24;
 
@@ -294,6 +297,11 @@ public class BlockEntityStorageDrum extends BlockEntityMachineBase
     }
 
     @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
+    }
+
+    @Override
     public long getFluidAvailable(Fluid type, int pressure) {
         for (FluidTankNTM tank : tanks) {
             if (tank.provides(type) && tank.getPressure() == pressure) return tank.getFill();
@@ -323,8 +331,13 @@ public class BlockEntityStorageDrum extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     @Override

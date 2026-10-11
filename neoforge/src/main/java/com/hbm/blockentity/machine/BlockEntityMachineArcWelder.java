@@ -17,6 +17,7 @@ import com.hbm.capability.port.ItemPort;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.inventory.container.ContainerSync;
 import com.hbm.inventory.container.MenuMachineArcWelder;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.ArcWelderRecipe;
 import com.hbm.inventory.recipes.ArcWelderRecipes;
@@ -47,7 +48,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineArcWelder extends BlockEntityMachineBase
-        implements IEnergyHandlerMK2,
+        implements FluidTankAccess,
+                IEnergyHandlerMK2,
                 FluidTankEndpoint,
                 MenuProvider,
                 IUpgradeInfoProvider,
@@ -291,8 +293,13 @@ public class BlockEntityMachineArcWelder extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return receiving;
+    public int tankCount() {
+        return receiving.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return receiving[index];
     }
 
     @Override

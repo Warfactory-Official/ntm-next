@@ -4,6 +4,7 @@
 package com.hbm.world.feature;
 
 import com.hbm.world.NtmWorldgenFields;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -30,6 +31,7 @@ public class WindowedOreFeature extends Feature<WindowedOreConfig> {
         int minZ = centerZ - lowerHalf;
         int maxX = minX + cfg.windowSize() - 1;
         int maxZ = minZ + cfg.windowSize() - 1;
+        if (cx + 15 < minX || cx > maxX || cz + 15 < minZ || cz > maxZ) return true;
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
         int attemptCount = rand.nextInt(cfg.attempts());
@@ -38,7 +40,14 @@ public class WindowedOreFeature extends Feature<WindowedOreConfig> {
             int y = cfg.minY() + rand.nextInt(cfg.yRange());
             int z = cz + rand.nextInt(16);
             if (x >= minX && x <= maxX && z >= minZ && z <= maxZ) {
-                RegionOre.placeVein(ctx.level(), rand, pos.set(x, y, z), cfg.vein());
+                Feature.ORE.place(
+                        new FeaturePlaceContext<>(
+                                Optional.empty(),
+                                ctx.level(),
+                                ctx.chunkGenerator(),
+                                rand,
+                                pos.set(x, y, z),
+                                cfg.vein()));
             }
         }
         return true;

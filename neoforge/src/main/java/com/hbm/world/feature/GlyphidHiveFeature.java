@@ -199,6 +199,7 @@ public class GlyphidHiveFeature extends Feature<NoneFeatureConfiguration> {
 
     private static void placeLootPile(
             WorldGenLevel level, RandomSource rand, BlockPos pos, String pool) {
-        BlockLoot.place(level, pos, LootGenerator.roll(pool, rand, level.getSeed()));
+        BlockLoot.place(
+                level, pos, LootGenerator.roll(pool, level.getLevel(), rand, level.getSeed()));
     }
 }

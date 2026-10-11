@@ -5,68 +5,140 @@
     {
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "hbm:oil_detector",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "components": {
-                "hbm:fluid_content": {
-                  "type": "hbm:oil",
-                  "amount": 1000
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:item",
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 0
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 5,
+                        "min": 0
+                      }
+                    }
+                  ],
+                  "name": "hbm:oil_detector",
+                  "weight": 1
+                },
+                {
+                  "type": "minecraft:item",
+                  "functions": [
+                    {
+                      "components": {
+                        "hbm:fluid_content": {
+                          "type": "hbm:oil",
+                          "amount": 1000
+                        }
+                      },
+                      "function": "minecraft:set_components"
+                    },
+                    {
+                      "count": {
+                        "type": "minecraft:uniform",
+                        "max": 4.0,
+                        "min": 1.0
+                      },
+                      "function": "minecraft:set_count"
+                    }
+                  ],
+                  "name": "hbm:canister",
+                  "weight": 5
                 }
-              },
-              "function": "minecraft:set_components"
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:value_check",
+                  "range": {
+                    "max": 5
+                  },
+                  "value": {
+                    "type": "minecraft:uniform",
+                    "max": 19,
+                    "min": 0
+                  }
+                }
+              ]
             },
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:item",
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 9
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 13,
+                        "min": 0
+                      }
+                    }
+                  ],
+                  "functions": [
+                    {
+                      "count": {
+                        "type": "minecraft:uniform",
+                        "max": 16.0,
+                        "min": 4.0
+                      },
+                      "function": "minecraft:set_count"
+                    }
+                  ],
+                  "name": "hbm:canister",
+                  "weight": 10
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 0
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 3,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "functions": [
+                        {
+                          "count": {
+                            "type": "minecraft:uniform",
+                            "max": 4.0,
+                            "min": 1.0
+                          },
+                          "function": "minecraft:set_count"
+                        }
+                      ],
+                      "name": "hbm:circuit_analog",
+                      "weight": 1
+                    },
+                    {
+                      "type": "minecraft:item",
+                      "name": "hbm:circuit_capacitor",
+                      "weight": 3
+                    }
+                  ]
+                }
+              ]
             }
-          ],
-          "name": "hbm:canister",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 16.0,
-                "min": 4.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:canister",
-          "weight": 10
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:circuit_analog",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:circuit_capacitor",
-          "weight": 3
+          ]
         }
       ],
       "rolls": 1

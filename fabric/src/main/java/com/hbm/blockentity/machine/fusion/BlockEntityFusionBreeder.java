@@ -5,6 +5,8 @@ package com.hbm.blockentity.machine.fusion;
 
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.port.IPortHost;
@@ -225,6 +227,11 @@ public class BlockEntityFusionBreeder extends BlockEntityMachineBase
     @Override
     public FluidTankNTM[] getSendingTanks() {
         return sending;
+    }
+
+    @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
     }
 
     @Override

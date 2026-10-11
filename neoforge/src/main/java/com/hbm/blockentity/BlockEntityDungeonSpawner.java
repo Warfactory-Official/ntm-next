@@ -70,8 +70,7 @@ public final class BlockEntityDungeonSpawner extends BlockEntity {
             for (int i = 0; i < 10; i++) {
                 EntityUndeadSoldier soldier =
                         ModEntities.UNDEAD_SOLDIER.get().create(level, EntitySpawnReason.EVENT);
-                if (soldier == null)
-                    throw new IllegalStateException("Could not construct ABERRATOR soldier");
+                if (soldier == null) break;
                 for (int retry = 0; retry < 7; retry++) {
                     soldier.snapTo(
                             pos.getX() + 0.5D + x,

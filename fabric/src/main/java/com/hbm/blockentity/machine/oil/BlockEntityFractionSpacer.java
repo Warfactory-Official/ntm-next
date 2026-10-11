@@ -3,15 +3,13 @@
 
 package com.hbm.blockentity.machine.oil;
 
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blocks.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BlockEntityFractionSpacer extends BlockEntity
-        implements GraphResident, FoldedCoreResident {
+public class BlockEntityFractionSpacer extends BlockEntity implements GraphResident {
 
     public BlockEntityFractionSpacer(BlockPos pos, BlockState state) {
         super(ModBlockEntities.FRACTION_SPACER.get(), pos, state);

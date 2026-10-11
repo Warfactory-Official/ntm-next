@@ -5,23 +5,14 @@ package com.hbm.uninos.graph;
 
 import com.mojang.serialization.Codec;
 import java.util.List;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.server.level.ServerLevel;
 
 public interface IGraphProvider<D> {
-
-    D createData(BlockState state);
-
     boolean dataCompatible(D a, D b);
 
     Codec<List<D>> dataTableCodec();
 
-    default boolean hasTieredRates() {
-        return false;
-    }
-
     default void onNetsMerged(NodeNetwork<D> keep, NodeNetwork<D> drain) {}
 
-    default long rateOf(D data) {
-        return Long.MAX_VALUE;
-    }
+    default void tick(ServerLevel level, LevelNodeGraph<D> graph) {}
 }

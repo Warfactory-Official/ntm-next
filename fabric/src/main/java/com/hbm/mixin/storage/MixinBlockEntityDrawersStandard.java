@@ -4,14 +4,11 @@
 package com.hbm.mixin.storage;
 
 import com.hbm.inventory.TrackedStorage;
+import com.jaquadro.minecraft.storagedrawers.block.tile.BlockEntityDrawersStandard;
 import java.util.function.Consumer;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 
-@Pseudo
-@Mixin(
-        targets = "com.jaquadro.minecraft.storagedrawers.block.tile.BlockEntityDrawersStandard",
-        remap = false)
+@Mixin(value = BlockEntityDrawersStandard.class, remap = false)
 public abstract class MixinBlockEntityDrawersStandard implements TrackedStorage {
     @Override
     public void inventorySources(Consumer<Object> sources) {

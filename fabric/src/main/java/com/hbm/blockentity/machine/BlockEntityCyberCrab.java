@@ -6,7 +6,6 @@ package com.hbm.blockentity.machine;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.mob.EntityCyberCrab;
-import java.util.Objects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySelector;
@@ -40,14 +39,15 @@ public class BlockEntityCyberCrab extends BlockEntity {
                             .size()
                     < 5) {
                 EntityCyberCrab crab =
-                        Objects.requireNonNull(
-                                (level.getRandom().nextInt(5) == 0
-                                                ? ModEntities.TESLA_CRAB
-                                                : ModEntities.CYBER_CRAB)
-                                        .get()
-                                        .create(level, EntitySpawnReason.SPAWNER));
-                crab.setPos(x + 0.5, y + 1, z + 0.5);
-                level.addFreshEntity(crab);
+                        (level.getRandom().nextInt(5) == 0
+                                        ? ModEntities.TESLA_CRAB
+                                        : ModEntities.CYBER_CRAB)
+                                .get()
+                                .create(level, EntitySpawnReason.SPAWNER);
+                if (crab != null) {
+                    crab.setPos(x + 0.5, y + 1, z + 0.5);
+                    level.addFreshEntity(crab);
+                }
             }
             age = 0;
         }

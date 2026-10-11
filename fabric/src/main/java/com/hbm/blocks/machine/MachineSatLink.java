@@ -27,31 +27,13 @@ import org.jspecify.annotations.Nullable;
 
 public final class MachineSatLink extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay {
-
-    private static final int[] DIMENSIONS = {6, 0, 1, 0, 1, 0};
-
     public MachineSatLink(Properties properties) {
         super(properties);
     }
 
     @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
-    }
-
-    @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
-    }
-
-    @Override
-    protected boolean proxyCellAt(int lx, int ly, int lz) {
-        return ly == 0 && (lx == -1 && (lz == 0 || lz == -1) || lx == 0 && lz == -1);
     }
 
     @Override

@@ -18,41 +18,8 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineVacuumDistill extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {8, 0, 1, 1, 1, 1};
-
     public MachineVacuumDistill(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        for (int dx = -1; dx <= 1; dx += 2) {
-            for (int dz = -1; dz <= 1; dz += 2) {
-                visitor.cell(core.offset(dx, 0, dz), MachineChemicalPlant.ringMask(dx, dz));
-            }
-        }
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        for (int dx = -1; dx <= 1; dx += 2) {
-            for (int dz = -1; dz <= 1; dz += 2) {
-                visitor.passiveCell(
-                        core.offset(dx, 0, dz), MASK_ALL, PASSIVE_POWER_IN | PASSIVE_FLUID_IN);
-            }
-        }
     }
 
     @Override

@@ -7,10 +7,12 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.world.LocationIsValidSpawn;
 import com.hbm.world.gen.WorldgenHeight;
 import java.util.List;
+import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
@@ -33,6 +35,25 @@ public final class OilSurfaceScarring {
         addSurfaceSpot(level, rand, xCoord, zCoord, null);
     }
 
+    public static int reach(long seed) {
+        RandomSource rand = RandomSource.create(seed);
+        int reach = 1;
+        for (int i = 0; i < SPOT_COUNT; i++) {
+            Spot spot = spot(rand);
+            reach = Math.max(reach, Math.max(Math.abs(spot.x()), Math.abs(spot.z())));
+        }
+        return reach;
+    }
+
+    private record Spot(int x, int z, boolean seedPlant, BlockState deadPlant) {}
+
+    private static Spot spot(RandomSource rand) {
+        int x = (int) (rand.nextGaussian() * SPOT_WIDTH);
+        int z = (int) (rand.nextGaussian() * SPOT_WIDTH);
+        boolean seedPlant = rand.nextInt(20) == 0;
+        return new Spot(x, z, seedPlant, randomDeadPlant(rand));
+    }
+
     public static void addSurfaceSpot(
             WorldGenLevel level,
             RandomSource rand,
@@ -44,15 +65,20 @@ public final class OilSurfaceScarring {
         BlockPos.MutableBlockPos above = new BlockPos.MutableBlockPos();
 
         for (int i = 0; i < SPOT_COUNT; i++) {
-            int rawX = (int) (rand.nextGaussian() * SPOT_WIDTH);
-            int rawZ = (int) (rand.nextGaussian() * SPOT_WIDTH);
-            int offX = clip == null ? Mth.clamp(rawX, -MAX_SAFE_OFFSET, MAX_SAFE_OFFSET) : rawX;
-            int offZ = clip == null ? Mth.clamp(rawZ, -MAX_SAFE_OFFSET, MAX_SAFE_OFFSET) : rawZ;
+            Spot spot = spot(rand);
+            int offX =
+                    clip == null
+                            ? Mth.clamp(spot.x(), -MAX_SAFE_OFFSET, MAX_SAFE_OFFSET)
+                            : spot.x();
+            int offZ =
+                    clip == null
+                            ? Mth.clamp(spot.z(), -MAX_SAFE_OFFSET, MAX_SAFE_OFFSET)
+                            : spot.z();
             int absX = xCoord + offX;
             int absZ = zCoord + offZ;
             boolean inner = (offX * offX + offZ * offZ) < INNER_RADIUS_SQ;
-            boolean seedPlant = rand.nextInt(20) == 0;
-            BlockState deadPlant = randomDeadPlant(rand);
+            boolean seedPlant = spot.seedPlant();
+            BlockState deadPlant = spot.deadPlant();
             if (clip != null
                     && (absX < clip.minX()
                             || absX > clip.maxX()
@@ -99,7 +125,7 @@ public final class OilSurfaceScarring {
             }
         }
 
-        BlockPos.MutableBlockPos holePos = new BlockPos.MutableBlockPos();
+        BiConsumer<BlockPos, BlockState> write = (at, state) -> level.setBlock(at, state, 2);
         for (int i = 1; i < 6; i++) {
             Direction facing = Direction.from3DDataValue(i);
             int x = xCoord + facing.getStepX();
@@ -107,34 +133,37 @@ public final class OilSurfaceScarring {
             if (clip != null
                     && (x < clip.minX() || x > clip.maxX() || z < clip.minZ() || z > clip.maxZ()))
                 continue;
-            int solids = 0;
-
             int top = WorldgenHeight.highestFilledSectionTop(level, x, z);
             int bottom = level.getMinY();
-            for (int y = top; y >= bottom; y--) {
-                holePos.set(x, y, z);
-                BlockState state = level.getBlockState(holePos);
-                if (state.isAir()) continue;
-                if (!state.getFluidState().isEmpty()) break;
+            cutHoleColumn(level, write, x, z, top, bottom, i > 1);
+        }
+    }
 
-                if (isFullCube(level, holePos, state)) {
-                    solids++;
-
-                    if (i > 1) {
-                        level.setBlock(
-                                holePos, ModBlocks.STONE_CRACKED.get().defaultBlockState(), 2);
-                        if (solids >= 4) break;
-                    } else {
-                        if (solids < 3) level.setBlock(holePos, Blocks.AIR.defaultBlockState(), 2);
-                        if (solids == 3)
-                            level.setBlock(
-                                    holePos, ModBlocks.OIL_SPILL.get().defaultBlockState(), 2);
-                        if (solids > 3 && solids < 7)
-                            level.setBlock(
-                                    holePos, ModBlocks.STONE_CRACKED.get().defaultBlockState(), 2);
-                        if (solids >= 7) break;
-                    }
-                }
+    public static void cutHoleColumn(
+            BlockGetter level,
+            BiConsumer<BlockPos, BlockState> write,
+            int x,
+            int z,
+            int top,
+            int bottom,
+            boolean side) {
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        int solids = 0;
+        for (int y = top; y >= bottom; y--) {
+            BlockState state = level.getBlockState(pos.set(x, y, z));
+            if (state.isAir()) continue;
+            if (!state.getFluidState().isEmpty()) break;
+            if (!state.isSolidRender()) continue;
+            solids++;
+            if (side) {
+                write.accept(pos, ModBlocks.STONE_CRACKED.get().defaultBlockState());
+                if (solids >= 4) break;
+            } else {
+                if (solids < 3) write.accept(pos, Blocks.AIR.defaultBlockState());
+                if (solids == 3) write.accept(pos, ModBlocks.OIL_SPILL.get().defaultBlockState());
+                if (solids > 3 && solids < 7)
+                    write.accept(pos, ModBlocks.STONE_CRACKED.get().defaultBlockState());
+                if (solids >= 7) break;
             }
         }
     }

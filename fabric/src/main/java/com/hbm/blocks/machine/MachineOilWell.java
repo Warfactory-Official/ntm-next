@@ -7,7 +7,6 @@ import com.hbm.blockentity.machine.oil.BlockEntityMachineOilWell;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.explosion.vanillant.ExplosionVNT;
@@ -18,70 +17,16 @@ import com.hbm.explosion.vanillant.standard.PlayerProcessorStandard;
 import com.hbm.particle.helper.ExplosionCreator;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class MachineOilWell extends BlockMultiblockCore implements ITickingBlock, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {9, 0, 1, 1, 1, 1};
-
     public MachineOilWell(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
-    }
-
-    @Override
-    public boolean checkRequirement(Level level, BlockPos placed, Direction dir, int o) {
-        return MultiblockHandlerXR.checkSpace(
-                        level, placed, new int[] {1, -1, 0, 0, 0, 0}, placed, dir)
-                && MultiblockHandlerXR.checkSpace(
-                        level, placed.above(), new int[] {8, 0, 1, 1, 1, 1}, placed, dir)
-                && MultiblockHandlerXR.checkSpace(
-                        level, placed.offset(1, 1, 1), new int[] {-1, 1, 0, 0, 0, 0}, placed, dir)
-                && MultiblockHandlerXR.checkSpace(
-                        level, placed.offset(1, 1, -1), new int[] {-1, 1, 0, 0, 0, 0}, placed, dir)
-                && MultiblockHandlerXR.checkSpace(
-                        level, placed.offset(-1, 1, 1), new int[] {-1, 1, 0, 0, 0, 0}, placed, dir)
-                && MultiblockHandlerXR.checkSpace(
-                        level,
-                        placed.offset(-1, 1, -1),
-                        new int[] {-1, 1, 0, 0, 0, 0},
-                        placed,
-                        dir);
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        MultiblockHandlerXR.visitBox(core, new int[] {1, -1, 0, 0, 0, 0}, facing, visitor);
-        MultiblockHandlerXR.visitBox(core.above(), new int[] {8, 0, 1, 1, 1, 1}, facing, visitor);
-        MultiblockHandlerXR.visitBox(
-                core.offset(1, 1, 1), new int[] {-1, 1, 0, 0, 0, 0}, facing, visitor);
-        MultiblockHandlerXR.visitBox(
-                core.offset(1, 1, -1), new int[] {-1, 1, 0, 0, 0, 0}, facing, visitor);
-        MultiblockHandlerXR.visitBox(
-                core.offset(-1, 1, 1), new int[] {-1, 1, 0, 0, 0, 0}, facing, visitor);
-        MultiblockHandlerXR.visitBox(
-                core.offset(-1, 1, -1), new int[] {-1, 1, 0, 0, 0, 0}, facing, visitor);
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_HORIZONTAL;
     }
 
     @Override

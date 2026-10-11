@@ -6,6 +6,8 @@ package com.hbm.blockentity.machine.fusion;
 
 import com.hbm.api.control.IControlReceiver;
 import com.hbm.api.energymk2.ItemEnergyTransfer;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.api.redstoneoverradio.IRORInteractive;
 import com.hbm.api.redstoneoverradio.IRORValueProvider;
 import com.hbm.blockentity.AudioLoop;
@@ -21,6 +23,7 @@ import com.hbm.inventory.recipes.FusionRecipes;
 import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.modules.machine.ModuleMachineFusion;
 import com.hbm.packet.SyncField;
+import com.hbm.platform.BlockLookupCache;
 import com.hbm.saveddata.satellites.SatelliteRayEvents;
 import com.hbm.sound.AudioSystem;
 import com.hbm.sound.AudioWrapper;
@@ -41,6 +44,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -79,6 +83,9 @@ public class BlockEntityFusionTorus extends BlockEntityCooledBase
     @SyncField(units = 1L << 9)
     public final boolean[] connections = new boolean[PORTS];
 
+    private @Nullable BlockLookupCache<BlockEntity>[] klystronPeers;
+    private @Nullable BlockLookupCache<BlockEntity>[] plasmaPeers;
+    private final @Nullable BlockEntity[] plasmaPeer = new BlockEntity[PORTS];
     private final FusionItemAccessCache itemPorts = new FusionItemAccessCache(OUTPUT_PORT);
 
     @SyncField(units = 1L << 3)
@@ -147,6 +154,16 @@ public class BlockEntityFusionTorus extends BlockEntityCooledBase
         return 0.4375D;
     }
 
+    @SuppressWarnings("unchecked")
+    private void bindPeers(ServerLevel level) {
+        klystronPeers = new BlockLookupCache[PORTS];
+        plasmaPeers = new BlockLookupCache[PORTS];
+        for (int i = 0; i < PORTS; i++) {
+            klystronPeers[i] = FusionPorts.cache(level, klystronLink(i));
+            plasmaPeers[i] = FusionPorts.cache(level, plasmaLink(i));
+        }
+    }
+
     private FusionPorts.Port klystronLink(int port) {
         Direction dir = Direction.from3DDataValue(port + 2);
         return new FusionPorts.Port(
@@ -182,25 +199,19 @@ public class BlockEntityFusionTorus extends BlockEntityCooledBase
         int receiverCount = 0;
         int collectors = 0;
 
+        if (klystronPeers == null) bindPeers(serverLevel);
         for (int i = 0; i < PORTS; i++) {
+            BlockEntity klystron = klystronPeers[i].find();
             connections[i] =
-                    FusionPorts.peer(serverLevel, klystronLink(i), BlockEntityFusionKlystron.class)
-                                    != null
-                            || FusionPorts.peer(
-                                            serverLevel,
-                                            klystronLink(i),
-                                            BlockEntityFusionKlystronCreative.class)
-                                    != null
-                            || FusionPorts.peer(
-                                            serverLevel,
-                                            klystronLink(i),
-                                            BlockEntityFusionCoupler.class)
-                                    != null;
+                    klystron instanceof BlockEntityFusionKlystron
+                            || klystron instanceof BlockEntityFusionKlystronCreative
+                            || klystron instanceof BlockEntityFusionCoupler;
 
+            BlockEntity plasma = plasmaPeer[i] = plasmaPeers[i].find();
             IFusionPowerReceiver first =
-                    FusionPorts.peer(serverLevel, plasmaLink(i), IFusionPowerReceiver.class);
+                    plasma instanceof IFusionPowerReceiver receiver ? receiver : null;
             BlockEntityFusionCollector collector =
-                    FusionPorts.peer(serverLevel, plasmaLink(i), BlockEntityFusionCollector.class);
+                    plasma instanceof BlockEntityFusionCollector c ? c : null;
             if (first != null || collector != null) connections[i] = true;
             if (first != null && first.receivesFusionPower()) receiverCount++;
             if (collector != null) collectors++;
@@ -263,10 +274,9 @@ public class BlockEntityFusionTorus extends BlockEntityCooledBase
             float pg = g;
             float pb = b;
             for (int i = 0; i < PORTS; i++) {
-                IFusionPowerReceiver receiver =
-                        FusionPorts.peer(serverLevel, plasmaLink(i), IFusionPowerReceiver.class);
-                if (receiver != null)
+                if (plasmaPeer[i] instanceof IFusionPowerReceiver receiver) {
                     receiver.receiveFusionPower(powerReceived, outputFlux, pr, pg, pb);
+                }
             }
         }
 
@@ -343,6 +353,11 @@ public class BlockEntityFusionTorus extends BlockEntityCooledBase
     @Override
     public FluidTankNTM[] getSendingTanks() {
         return sending;
+    }
+
+    @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
     }
 
     @Override

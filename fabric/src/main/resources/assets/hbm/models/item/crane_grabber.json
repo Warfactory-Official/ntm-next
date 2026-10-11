@@ -4,8 +4,14 @@
     {
       "faces": {
         "down": {
-          "rotation": 270,
-          "texture": "#down"
+          "rotation": 90,
+          "texture": "#down",
+          "uv": [
+            0,
+            16,
+            16,
+            0
+          ]
         },
         "east": {
           "texture": "#side"
@@ -17,7 +23,7 @@
           "texture": "#side"
         },
         "up": {
-          "rotation": 90,
+          "rotation": 270,
           "texture": "#up"
         },
         "west": {

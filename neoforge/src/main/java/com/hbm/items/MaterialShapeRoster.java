@@ -3,6 +3,7 @@
 
 package com.hbm.items;
 
+import com.hbm.NuclearTech;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
 import com.hbm.inventory.material.NTMMaterial;
@@ -49,7 +50,7 @@ public final class MaterialShapeRoster {
             MaterialShapes shape,
             Set<NTMMaterial> excluded,
             List<RegistryHandle<MaterialShapeItem>> out) {
-        registerNamed(shape, roster(shape, excluded), ignored -> new Item.Properties(), out);
+        registerNamed(shape, namedRoster(shape, excluded), ignored -> new Item.Properties(), out);
     }
 
     public static void registerNamed(
@@ -57,14 +58,13 @@ public final class MaterialShapeRoster {
             List<NTMMaterial> materials,
             Function<NTMMaterial, Item.Properties> properties,
             List<RegistryHandle<MaterialShapeItem>> out) {
-        for (NTMMaterial mat : materials) {
+        for (NTMMaterial mat : namedMaterials(shape, materials)) {
             RegistryHandle<MaterialShapeItem> bespoke = indexed(shape, mat);
             if (bespoke != null) {
                 out.add(bespoke);
                 continue;
             }
             String name = mat.legacyId(shape);
-            String layer = "item/" + mat.legacyArt(shape);
             RegistryHandle<MaterialShapeItem> handle =
                     Reg.item(
                             name,
@@ -101,7 +101,7 @@ public final class MaterialShapeRoster {
             NTMMaterial mat,
             Supplier<Item.Properties> props) {
         String name = mat.legacyId(shape);
-        String layer = "item/" + mat.legacyArt(shape);
+        List.of(mat);
         RegistryHandle<MaterialShapeItem> handle =
                 Reg.in(namespace)
                         .item(
@@ -153,6 +153,20 @@ public final class MaterialShapeRoster {
             if (mat.autogen.contains(shape) || mat.tagOnly.contains(shape)) list.add(mat);
         }
         return list;
+    }
+
+    public static List<NTMMaterial> namedRoster(MaterialShapes shape, Set<NTMMaterial> excluded) {
+        List<NTMMaterial> candidates =
+                roster(shape, excluded).stream()
+                        .filter(mat -> mat.namespace.equals(NuclearTech.MOD_ID))
+                        .toList();
+        return namedMaterials(shape, candidates);
+    }
+
+    private static List<NTMMaterial> namedMaterials(
+            MaterialShapes shape, List<NTMMaterial> candidates) {
+
+        return candidates.stream().filter(mat -> mat.legacyId(shape) != null).toList();
     }
 
     private static final Map<MaterialShapes, Map<NTMMaterial, RegistryHandle<MaterialShapeItem>>>

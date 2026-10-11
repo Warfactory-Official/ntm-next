@@ -4,7 +4,6 @@
 package com.hbm.blockentity.machine;
 
 import com.hbm.api.environment.Environment;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -26,8 +25,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 
-public class BlockEntityFan extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, SyncUnitSchema {
+public class BlockEntityFan extends BlockEntity implements Synced, GraphResident, SyncUnitSchema {
 
     public float spin;
     public float prevSpin;

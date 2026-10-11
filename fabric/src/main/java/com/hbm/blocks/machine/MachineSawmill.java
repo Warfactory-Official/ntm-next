@@ -15,7 +15,6 @@ import com.hbm.items.ModItems;
 import com.hbm.sound.ModSounds;
 import java.util.Locale;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,44 +24,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 @RefreshesNeighborState(be = BlockEntitySawmill.class, calling = "refreshHeatBelow")
 public class MachineSawmill extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {1, 0, 1, 1, 1, 1};
-
     public MachineSawmill(Properties props) {
         super(props);
-        this.bounding.add(new AABB(-1.5D, 0D, -1.5D, 1.5D, 1D, 1.5D));
-        this.bounding.add(new AABB(-1.25D, 1D, -0.5D, -0.625D, 1.875D, 0.5D));
-        this.bounding.add(new AABB(-0.625D, 1D, -1D, 1.375D, 2D, 1D));
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
     }
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        visitor.passiveCell(core.offset(1, 0, 0), MASK_ALL, PASSIVE_ITEMS);
-        visitor.passiveCell(core.offset(-1, 0, 0), MASK_ALL, PASSIVE_ITEMS);
-        visitor.passiveCell(core.offset(0, 0, 1), MASK_ALL, PASSIVE_ITEMS);
-        visitor.passiveCell(core.offset(0, 0, -1), MASK_ALL, PASSIVE_ITEMS);
     }
 
     @Override

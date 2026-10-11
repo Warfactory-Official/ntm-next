@@ -4,10 +4,7 @@
 package com.hbm.processor;
 
 import com.sun.source.util.Trees;
-import com.sun.tools.javac.code.ClassFinder;
 import com.sun.tools.javac.code.Flags;
-import com.sun.tools.javac.code.Symbol;
-import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.TypeTag;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.TreeMaker;
@@ -16,6 +13,11 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.lang.classfile.ClassFile;
+import java.lang.classfile.constantpool.ClassEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
@@ -25,6 +27,9 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
+import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardLocation;
 
 final class NeighborEdge {
 
@@ -55,8 +60,7 @@ final class NeighborEdge {
     private final Trees trees;
     private final Elements elements;
     private final Types types;
-    private final ClassFinder classes;
-    private final Symtab symbols;
+    private final JavaFileManager files;
 
     private final Name marker;
     private final Name foldedBase;
@@ -80,8 +84,7 @@ final class NeighborEdge {
         this.trees = trees;
         this.elements = elements;
         this.types = types;
-        this.classes = ClassFinder.instance(context);
-        this.symbols = Symtab.instance(context);
+        this.files = context.get(JavaFileManager.class);
         this.marker = names.fromString(ANNOTATION);
         this.foldedBase = names.fromString(FOLDED_BASE);
     }
@@ -330,66 +333,85 @@ final class NeighborEdge {
 
     private boolean reachesFoldedBase(JCTree.JCClassDecl clazz, JCTree.JCCompilationUnit cu) {
         SuperRef current = new SuperRef(clazz.extending, cu);
-        for (int hop = 0; current.type() != null && hop < MAX_CHAIN; hop++) {
-            Name name = superName(current.type());
-            if (name == null) return false;
-            if (name == foldedBase) return true;
-            SuperRef parsed = supers.get(name);
-            if (parsed != null) {
+        String compiled = null;
+        for (int hop = 0; hop < MAX_CHAIN; hop++) {
+            if (compiled == null) {
+                if (current.type() == null) return false;
+                Name name = superName(current.type());
+                if (name == null) return false;
+                if (name == foldedBase) return true;
+                SuperRef parsed = supers.get(name);
+                if (parsed != null) {
+                    current = parsed;
+                    continue;
+                }
+                compiled = resolveSuper(current);
+                if (compiled == null) return false;
+            }
+            if (compiled.equals(FOLDED_FQN)) return true;
+            JavaFileObject file = classFile(compiled);
+            if (file == null) {
+                SuperRef parsed =
+                        supers.get(
+                                names.fromString(
+                                        compiled.substring(compiled.lastIndexOf('.') + 1)));
+                if (parsed == null) return false;
                 current = parsed;
+                compiled = null;
                 continue;
             }
-            TypeElement compiled = resolveSuper(current);
-            return compiled != null && reachesFoldedBase(compiled, MAX_CHAIN - hop - 1);
+            compiled = superclassOf(file);
+            if (compiled == null) return false;
         }
         return false;
     }
 
-    private boolean reachesFoldedBase(TypeElement type, int remaining) {
-        for (int hop = 0; type != null && hop < remaining; hop++) {
-            if (type.getQualifiedName().contentEquals(FOLDED_FQN)) return true;
-            var parent = types.asElement(type.getSuperclass());
-            type = parent instanceof TypeElement element ? element : null;
-        }
-        return false;
-    }
-
-    private TypeElement resolveSuper(SuperRef ref) {
+    private String resolveSuper(SuperRef ref) {
         JCTree.JCExpression raw =
                 ref.type() instanceof JCTree.JCTypeApply apply ? apply.clazz : ref.type();
         String name = raw.toString();
-        TypeElement found = loadClass(name);
-        if (found != null) return found;
+        if (classFile(name) != null) return name;
 
         String packageName =
                 ref.cu().getPackageName() == null ? "" : ref.cu().getPackageName().toString();
-        if (!packageName.isEmpty()) {
-            found = loadClass(packageName + "." + name);
-            if (found != null) return found;
-        }
+        if (!packageName.isEmpty() && classFile(packageName + "." + name) != null)
+            return packageName + "." + name;
 
         int dot = name.indexOf('.');
         String head = dot < 0 ? name : name.substring(0, dot);
         for (JCTree def : ref.cu().defs) {
             if (!(def instanceof JCTree.JCImport imported) || imported.isStatic()) continue;
             String qualified = imported.getQualifiedIdentifier().toString();
-            if (qualified.endsWith("." + head)) {
-                found = loadClass(qualified + name.substring(head.length()));
-            } else if (qualified.endsWith(".*")) {
-                found = loadClass(qualified.substring(0, qualified.length() - 1) + name);
-            }
-            if (found != null) return found;
+            String candidate =
+                    qualified.endsWith("." + head)
+                            ? qualified + name.substring(head.length())
+                            : qualified.endsWith(".*")
+                                    ? qualified.substring(0, qualified.length() - 1) + name
+                                    : null;
+            if (candidate != null && classFile(candidate) != null) return candidate;
         }
-        return loadClass("java.lang." + name);
+        return null;
     }
 
-    private TypeElement loadClass(String name) {
+    private JavaFileObject classFile(String binaryName) {
         try {
-            Symbol.ClassSymbol found =
-                    classes.loadClass(symbols.unnamedModule, names.fromString(name));
-            return found == symbols.errSymbol ? null : found;
-        } catch (Symbol.CompletionFailure ignored) {
-            return null;
+            return files.getJavaFileForInput(
+                    StandardLocation.CLASS_PATH, binaryName, JavaFileObject.Kind.CLASS);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private static String superclassOf(JavaFileObject file) {
+        try (InputStream in = file.openInputStream()) {
+            return ClassFile.of()
+                    .parse(in.readAllBytes())
+                    .superclass()
+                    .map(ClassEntry::asInternalName)
+                    .map(internal -> internal.replace('/', '.'))
+                    .orElse(null);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 

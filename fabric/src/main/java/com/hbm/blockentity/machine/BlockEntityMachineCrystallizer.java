@@ -15,6 +15,7 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.inventory.container.ContainerSync;
 import com.hbm.inventory.container.MenuMachineCrystallizer;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.CrystallizerRecipe;
 import com.hbm.inventory.recipes.CrystallizerRecipes;
@@ -49,7 +50,8 @@ import net.minecraft.world.level.storage.ValueOutput;
         value = {0},
         units = 1L << 0)
 public class BlockEntityMachineCrystallizer extends BlockEntityMachineBase
-        implements AudioLoop,
+        implements FluidTankAccess,
+                AudioLoop,
                 IEnergyHandlerMK2,
                 FluidTankEndpoint,
                 IFluidCopiable,
@@ -263,8 +265,13 @@ public class BlockEntityMachineCrystallizer extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return allTanks;
+    public int tankCount() {
+        return allTanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return allTanks[index];
     }
 
     @Override

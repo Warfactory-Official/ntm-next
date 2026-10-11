@@ -6,7 +6,6 @@ package com.hbm.blockentity.machine;
 import com.hbm.api.energymk2.IBatteryItem;
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.energymk2.ItemEnergyTransfer;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -34,7 +33,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class BlockEntityCharger extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, IEnergyHandlerMK2, SyncUnitSchema {
+        implements Synced, GraphResident, IEnergyHandlerMK2, SyncUnitSchema {
 
     public static final int DELAY = 20;
     private static final EquipmentSlot[] SLOTS = {

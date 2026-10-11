@@ -5,89 +5,197 @@
     {
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "hbm:defuser",
-          "weight": 30
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:screwdriver",
-          "weight": 30
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 12.0,
-                "min": 8.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:wire_fine_copper",
-          "weight": 120
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:item",
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 29
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 179,
+                        "min": 0
+                      }
+                    }
+                  ],
+                  "name": "hbm:defuser",
+                  "weight": 30
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 29
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 149,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "name": "hbm:screwdriver",
+                      "weight": 30
+                    },
+                    {
+                      "type": "minecraft:item",
+                      "functions": [
+                        {
+                          "count": {
+                            "type": "minecraft:uniform",
+                            "max": 12.0,
+                            "min": 8.0
+                          },
+                          "function": "minecraft:set_count"
+                        }
+                      ],
+                      "name": "hbm:wire_fine_copper",
+                      "weight": 120
+                    }
+                  ]
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:value_check",
+                  "range": {
+                    "max": 179
+                  },
+                  "value": {
+                    "type": "minecraft:uniform",
+                    "max": 339,
+                    "min": 0
+                  }
+                }
+              ]
+            },
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 8.0,
-                "min": 3.0
-              },
-              "function": "minecraft:set_count"
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 39
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 79,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "functions": [
+                        {
+                          "count": {
+                            "type": "minecraft:uniform",
+                            "max": 8.0,
+                            "min": 3.0
+                          },
+                          "function": "minecraft:set_count"
+                        }
+                      ],
+                      "name": "hbm:plate_steel",
+                      "weight": 40
+                    },
+                    {
+                      "type": "minecraft:item",
+                      "functions": [
+                        {
+                          "count": {
+                            "type": "minecraft:uniform",
+                            "max": 5.0,
+                            "min": 2.0
+                          },
+                          "function": "minecraft:set_count"
+                        }
+                      ],
+                      "name": "hbm:plate_copper",
+                      "weight": 40
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 79
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 159,
+                        "min": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 39
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 79,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "functions": [
+                        {
+                          "count": {
+                            "type": "minecraft:uniform",
+                            "max": 5.0,
+                            "min": 2.0
+                          },
+                          "function": "minecraft:set_count"
+                        }
+                      ],
+                      "name": "hbm:coil_copper",
+                      "weight": 40
+                    },
+                    {
+                      "type": "minecraft:item",
+                      "functions": [
+                        {
+                          "count": {
+                            "type": "minecraft:uniform",
+                            "max": 5.0,
+                            "min": 2.0
+                          },
+                          "function": "minecraft:set_count"
+                        }
+                      ],
+                      "name": "hbm:coil_tungsten",
+                      "weight": 40
+                    }
+                  ]
+                }
+              ]
             }
-          ],
-          "name": "hbm:plate_steel",
-          "weight": 40
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 2.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:plate_copper",
-          "weight": 40
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 2.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:coil_copper",
-          "weight": 40
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 2.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:coil_tungsten",
-          "weight": 40
+          ]
         }
       ],
       "rolls": 1

@@ -19,6 +19,10 @@ public interface RuntimeConfig {
         return store().get(ConfigSchema.ULTRA_LARP_MODE);
     }
 
+    default int farTrackingRange() {
+        return store().get(ConfigSchema.FAR_TRACKING_RANGE);
+    }
+
     default boolean damageCompatibilityMode() {
         return store().get(ConfigSchema.DAMAGE_COMPATIBILITY_MODE);
     }

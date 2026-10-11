@@ -9,11 +9,10 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
+import reborncore.api.items.InventoryBase;
 
-@Pseudo
-@Mixin(targets = "reborncore.api.items.InventoryBase", remap = false)
+@Mixin(value = InventoryBase.class, remap = false, priority = 500)
 public abstract class MixinInventoryBase implements ListSlotSource {
     @Shadow private NonNullList<ItemStack> stacks;
 

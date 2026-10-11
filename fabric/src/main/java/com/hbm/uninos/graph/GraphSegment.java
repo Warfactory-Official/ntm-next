@@ -23,7 +23,8 @@ public final class GraphSegment<D> {
     int ownedFrom;
     int ownedTo;
     long[] probedBits;
-    int unprobedSideFaces;
+    int dirtyLo;
+    int dirtyHi;
     @Nullable GraphSegment<D> pendingPeel;
     @Nullable GraphSegment<D> peelOrigin;
     @Nullable GraphSegment<D> peelNext;
@@ -46,7 +47,7 @@ public final class GraphSegment<D> {
         this.ownedFrom = 0;
         this.ownedTo = interior.length;
         this.probedBits = new long[bitWords(interior.length)];
-        this.unprobedSideFaces = interior.length * 4;
+        this.dirtyHi = interior.length;
     }
 
     private GraphSegment(GraphNode<D> endA, GraphNode<D> endB, int dirA, int dirB, D data) {
@@ -66,8 +67,7 @@ public final class GraphSegment<D> {
             int viewFrom,
             int viewTo,
             int ownedFrom,
-            int ownedTo,
-            int inheritedUnprobed) {
+            int ownedTo) {
         GraphSegment<D> s = new GraphSegment<>(endA, endB, dirA, dirB, host.data);
         s.backing = host.backing;
         s.probedBits = host.probedBits;
@@ -75,22 +75,9 @@ public final class GraphSegment<D> {
         s.to = viewTo;
         s.ownedFrom = ownedFrom;
         s.ownedTo = ownedTo;
-        s.unprobedSideFaces = Math.min(inheritedUnprobed, (viewTo - viewFrom) * 4);
-        return s;
-    }
-
-    static <D> GraphSegment<D> compiled(
-            GraphNode<D> endA,
-            GraphNode<D> endB,
-            int dirA,
-            int dirB,
-            long[] cells,
-            long[] bits,
-            int unprobedSideFaces,
-            D data) {
-        GraphSegment<D> s = new GraphSegment<>(endA, endB, dirA, dirB, cells, data);
-        s.probedBits = bits;
-        s.unprobedSideFaces = unprobedSideFaces;
+        s.dirtyLo = host.dirtyLo;
+        s.dirtyHi = host.dirtyHi;
+        s.clampDirty();
         return s;
     }
 
@@ -107,6 +94,31 @@ public final class GraphSegment<D> {
         }
     }
 
+    void adoptCompiled(
+            GraphNode<D> endA,
+            GraphNode<D> endB,
+            int dirA,
+            int dirB,
+            long[] cells,
+            long[] bits,
+            int dirtyLo,
+            int dirtyHi) {
+        structMod++;
+        this.endA = endA;
+        this.endB = endB;
+        this.dirA = dirA;
+        this.dirB = dirB;
+        this.backing = cells;
+        this.probedBits = bits;
+        this.from = 0;
+        this.to = cells.length;
+        this.ownedFrom = 0;
+        this.ownedTo = cells.length;
+        this.dirtyLo = dirtyLo;
+        this.dirtyHi = dirtyHi;
+        this.offsets = null;
+    }
+
     void dropArrays() {
         backing = EMPTY_CELLS;
         probedBits = EMPTY_BITS;
@@ -114,6 +126,8 @@ public final class GraphSegment<D> {
         to = 0;
         ownedFrom = 0;
         ownedTo = 0;
+        dirtyLo = 0;
+        dirtyHi = 0;
         offsets = null;
     }
 
@@ -139,12 +153,7 @@ public final class GraphSegment<D> {
 
     public void markProbed(int i, int faceOrdinal) {
         int b = (from + i) * 6 + faceOrdinal;
-        long word = probedBits[b >> 6];
-        long mask = 1L << (b & 63);
-        if ((word & mask) == 0) {
-            probedBits[b >> 6] = word | mask;
-            if (unprobedSideFaces > 0) unprobedSideFaces--;
-        }
+        probedBits[b >> 6] |= 1L << (b & 63);
     }
 
     public void clearProbed(int i, int faceOrdinal) {
@@ -153,17 +162,54 @@ public final class GraphSegment<D> {
         long mask = 1L << (b & 63);
         if ((word & mask) != 0) {
             probedBits[b >> 6] = word & ~mask;
-            unprobedSideFaces++;
             structMod++;
+            markDirty(from + i);
         }
     }
 
     public boolean hasUnprobed() {
-        return unprobedSideFaces > 0;
+        return dirtyFrom() < dirtyTo();
     }
 
-    void rebaseUnprobed(int exact) {
-        unprobedSideFaces = exact;
+    public int dirtySpan() {
+        return Math.max(0, dirtyTo() - dirtyFrom());
+    }
+
+    public boolean dirtyCovers(int i) {
+        return i >= dirtyFrom() && i < dirtyTo();
+    }
+
+    int dirtyFrom() {
+        return Math.max(dirtyLo, from) - from;
+    }
+
+    int dirtyTo() {
+        return Math.min(dirtyHi, to) - from;
+    }
+
+    void settleDirty(int lo, int hi) {
+        if (lo >= hi) {
+            dirtyLo = dirtyHi = 0;
+        } else {
+            dirtyLo = from + lo;
+            dirtyHi = from + hi;
+        }
+    }
+
+    private void markDirty(int abs) {
+        if (dirtyLo >= dirtyHi) {
+            dirtyLo = abs;
+            dirtyHi = abs + 1;
+        } else {
+            if (abs < dirtyLo) dirtyLo = abs;
+            if (abs >= dirtyHi) dirtyHi = abs + 1;
+        }
+    }
+
+    private void clampDirty() {
+        if (dirtyLo < from) dirtyLo = from;
+        if (dirtyHi > to) dirtyHi = to;
+        if (dirtyLo >= dirtyHi) dirtyLo = dirtyHi = 0;
     }
 
     private boolean bit(int abs, int f) {
@@ -184,7 +230,7 @@ public final class GraphSegment<D> {
         backing[to] = cell;
         writeGroup(to, group);
         to++;
-        unprobedSideFaces += unprobedSides;
+        if (unprobedSides > 0) markDirty(to - 1);
         if (offsets != null) offsets.put(cell, to - 1);
     }
 
@@ -194,27 +240,25 @@ public final class GraphSegment<D> {
         from--;
         backing[from] = cell;
         writeGroup(from, group);
-        unprobedSideFaces += unprobedSides;
+        if (unprobedSides > 0) markDirty(from);
         if (offsets != null) offsets.put(cell, from);
     }
 
-    long shrinkAtB(int runA, int runB) {
+    long shrinkAtB() {
         structMod++;
         to--;
         long cell = backing[to];
-        unprobedSideFaces -= 4 - probedSideCountAbs(to, runA, runB);
-        if (unprobedSideFaces < 0) unprobedSideFaces = 0;
+        clampDirty();
         if (offsets != null) offsets.remove(cell);
         return cell;
     }
 
-    long shrinkAtA(int runA, int runB) {
+    long shrinkAtA() {
         structMod++;
         long cell = backing[from];
-        unprobedSideFaces -= 4 - probedSideCountAbs(from, runA, runB);
-        if (unprobedSideFaces < 0) unprobedSideFaces = 0;
         if (offsets != null) offsets.remove(cell);
         from++;
+        clampDirty();
         return cell;
     }
 
@@ -224,13 +268,7 @@ public final class GraphSegment<D> {
         this.to = newTo;
         this.ownedFrom = newOwnedFrom;
         this.ownedTo = newOwnedTo;
-        this.unprobedSideFaces = Math.min(unprobedSideFaces, (newTo - newFrom) * 4);
-    }
-
-    private int probedSideCountAbs(int abs, int runA, int runB) {
-        int g = 0;
-        for (int f = 0; f < 6; f++) if (bit(abs, f)) g |= 1 << f;
-        return Integer.bitCount(g & ~((1 << runA) | (1 << runB)));
+        clampDirty();
     }
 
     private void writeGroup(int abs, int group) {
@@ -251,6 +289,10 @@ public final class GraphSegment<D> {
         int slackA = side < 0 ? slackTotal - (slackTotal >> 2) : slackTotal >> 2;
         System.arraycopy(backing, from, cells, slackA, len);
         for (int i = 0; i < len; i++) copyGroup(probedBits, from + i, bits, slackA + i);
+        if (dirtyLo < dirtyHi) {
+            dirtyLo += slackA - from;
+            dirtyHi += slackA - from;
+        }
         this.backing = cells;
         this.probedBits = bits;
         this.from = slackA;
@@ -258,6 +300,7 @@ public final class GraphSegment<D> {
         this.ownedFrom = 0;
         this.ownedTo = cap;
         this.offsets = null;
+        clampDirty();
     }
 
     public int offsetOf(long posKey) {

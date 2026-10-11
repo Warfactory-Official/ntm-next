@@ -3,6 +3,7 @@
 
 package com.hbm.entity.projectile;
 
+import com.hbm.entity.FarVisible;
 import com.hbm.entity.ModEntities;
 import com.hbm.items.ModItems;
 import com.hbm.lib.ModDamageTypes;
@@ -34,7 +35,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class EntitySawblade extends EntityThrowableInterp {
+public class EntitySawblade extends EntityThrowableInterp implements FarVisible {
 
     private static final EntityDataAccessor<Integer> ORIENTATION =
             SynchedEntityData.defineId(EntitySawblade.class, EntityDataSerializers.INT);

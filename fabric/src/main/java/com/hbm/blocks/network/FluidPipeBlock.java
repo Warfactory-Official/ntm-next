@@ -10,15 +10,14 @@ import com.hbm.capability.MachineCaps;
 import com.hbm.capability.NtmCapabilities.CapRole;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.items.ModDataComponents;
-import com.hbm.lib.Library;
 import com.hbm.uninos.graph.GraphNode;
 import com.hbm.uninos.graph.LevelNodeGraph;
+import com.hbm.uninos.graph.PhysicalGraph;
 import com.hbm.util.AutoRotate;
 import com.hbm.util.ChunkUtil;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
-import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -61,8 +60,6 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
     public static final BooleanProperty DOWN = BlockStateProperties.DOWN;
 
     private static final VoxelShape[] SHAPES = buildShapes();
-    private static final Reference2ObjectOpenHashMap<BlockMultiblockCore, long[][]> FLUID_CONTACTS =
-            new Reference2ObjectOpenHashMap<>();
 
     public FluidPipeBlock(BlockBehaviour.Properties props) {
         super(props);
@@ -97,7 +94,7 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
         for (int mask = 0; mask < 64; mask++) {
             VoxelShape shape = core;
             for (int o = 0; o < 6; o++) {
-                if ((mask & (1 << o)) != 0) shape = Shapes.or(shape, arm[o]);
+                if (mask == 0 || (mask & (1 << o)) != 0) shape = Shapes.or(shape, arm[o]);
             }
             shapes[mask] = shape;
         }
@@ -124,37 +121,38 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
         return Fluids.EMPTY;
     }
 
-    public static void retypeNode(ServerLevel level, long key, Fluid fluid) {
+    public static boolean retypeNode(ServerLevel level, long key, Fluid fluid) {
         if (retypeNodeNoSync(level, key, fluid)) {
             FluidPipeTintData.sync(level, BlockPos.of(key), fluid);
+            return true;
         }
+        return false;
     }
 
     public static boolean retypeNodeNoSync(ServerLevel level, long key, Fluid fluid) {
-        LevelNodeGraph<PipeData> from = FluidPipeGraph.graphAt(level, key);
-        if (from == null) return false;
-        GraphNode<PipeData> node = from.firstClass(key);
-        if (node.machineOwned) return false;
-        if (node.data.fluid() == fluid) return false;
-        PipeData newData = new PipeData(fluid);
-        LevelNodeGraph<PipeData> to = FluidPipeGraph.get(level, fluid);
-        if (from == to) {
-            from.replaceNodeData(key, newData);
-        } else {
-            int mask = node.openConnections;
-            boolean device = node.device;
-            long[] links = from.removeNodeKeepingLinks(key);
-            to.addNode(key, newData, mask);
-            if (device) to.firstClass(key).device = true;
-            for (long peer : links) {
-                if (to.containsCell(peer)) to.addRemoteLink(key, peer);
-                else to.addDormantLink(key, peer);
+        try (var batch = PhysicalGraph.begin(level)) {
+            LevelNodeGraph<PipeData> from = FluidPipeGraph.graphAt(level, key);
+            if (from == null) return false;
+            GraphNode<PipeData> node = from.firstClass(key);
+            if (node.machineOwned) return false;
+            if (node.data.fluid() == fluid) return false;
+            PipeData newData = new PipeData(fluid);
+            LevelNodeGraph<PipeData> to = FluidPipeGraph.get(level, fluid);
+            if (from == to) {
+                from.replaceNodeData(key, newData);
+            } else {
+                int mask = node.openConnections;
+                boolean device = node.device;
+                long[] links = from.removeNodeKeepingLinks(key);
+                to.addNode(key, newData, mask);
+                if (device) to.firstClass(key).device = true;
+                for (long peer : links) {
+                    if (to.containsCell(peer)) to.addRemoteLink(key, peer);
+                    else to.addDormantLink(key, peer);
+                }
             }
+            return true;
         }
-        BlockPos pos = BlockPos.of(key);
-        ChunkDuctNodes.schedule(level, pos);
-        for (Direction dir : Direction.VALUES) ChunkDuctNodes.schedule(level, pos.relative(dir));
-        return true;
     }
 
     public static void refreshAround(ServerLevel level, BlockPos pos) {
@@ -163,6 +161,8 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
     }
 
     public static void scheduleConnections(BlockEntity owner) {
+        if (owner.getLevel() instanceof ServerLevel level)
+            LevelNodeGraph.invalidateTransportAround(level, owner.getBlockPos());
         ChunkDuctNodes.schedule(owner);
     }
 
@@ -174,12 +174,13 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
                 && owner.getBlockState().getBlock() instanceof BlockMultiblockCore core) {
             Direction facing = owner.getBlockState().getValue(BlockMultiblockCore.FACING);
             for (long contact : fluidContacts(core, facing, domains)) {
-                ChunkDuctNodes.schedule(
-                        level,
+                BlockPos position =
                         origin.offset(
                                 BlockPos.getX(contact),
                                 BlockPos.getY(contact),
-                                BlockPos.getZ(contact)));
+                                BlockPos.getZ(contact));
+                LevelNodeGraph.invalidateEndpointsAt(level, position);
+                ChunkDuctNodes.schedule(level, position);
             }
         } else if ((domains & (MachineCaps.FLUID_IN | MachineCaps.FLUID_OUT)) != 0) {
             for (Direction side : Direction.VALUES)
@@ -191,6 +192,7 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
                         MachineCaps.FLUID_IN | MachineCaps.FLUID_OUT,
                         (cellKey, faceMask) -> {
                             BlockPos cell = BlockPos.of(cellKey);
+                            LevelNodeGraph.invalidateTransportAround(level, cell);
                             for (Direction side : Direction.VALUES) {
                                 if ((faceMask & (1 << side.ordinal())) != 0) {
                                     ChunkDuctNodes.schedule(level, cell.relative(side));
@@ -200,11 +202,11 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
     }
 
     private static long[] fluidContacts(BlockMultiblockCore core, Direction facing, int domains) {
-        long[][] byFacing = FLUID_CONTACTS.computeIfAbsent(core, ignored -> new long[4][]);
+        long[][] byFacing = core.fluidContactCache();
         long[] contacts = byFacing[facing.get2DDataValue()];
         if (contacts != null) return contacts;
         LongLinkedOpenHashSet out = new LongLinkedOpenHashSet();
-        core.maskTable()
+        core.maskTable(facing)
                 .forEachLocalCell(
                         (lx, ly, lz) -> {
                             int dx = MultiblockMaskTable.worldX(lx, ly, lz, facing);
@@ -245,49 +247,50 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
     }
 
     public static void retypeRun(ServerLevel level, long key, Fluid fluid) {
-        LevelNodeGraph<PipeData> fromGraph = FluidPipeGraph.graphAt(level, key);
-        PipeData keyData = fromGraph == null ? null : fromGraph.dataAt(key);
-        if (keyData == null) return;
-        Fluid original = keyData.fluid();
-        LongOpenHashSet visited = new LongOpenHashSet();
-        LongArrayList frontier = new LongArrayList();
-        LongArrayList retyped = new LongArrayList();
-        frontier.add(key);
-        visited.add(key);
-        for (int depth = 0; depth <= 64 && !frontier.isEmpty(); depth++) {
-            LongArrayList next = new LongArrayList();
-            for (int i = 0; i < frontier.size(); i++) {
-                long cur = frontier.getLong(i);
-                LevelNodeGraph<PipeData> graph = FluidPipeGraph.graphAt(level, cur);
-                if (graph == null) continue;
-                PipeData curData = graph.dataAt(cur);
-                GraphNode<PipeData> node = graph.getNode(cur);
-                if (curData == null || curData.fluid() != original) continue;
-                if (node != null && (node.machineOwned || node.selfEndpoint)) continue;
-                long[] links =
-                        node != null && node.hasRemoteLinks()
-                                ? node.remoteLinks.toLongArray()
-                                : null;
-                retypeNodeNoSync(level, cur, fluid);
-                retyped.add(cur);
-                BlockPos p = BlockPos.of(cur);
-                for (Direction d : Direction.VALUES) {
-                    long n = p.relative(d).asLong();
-                    if (visited.add(n)) next.add(n);
-                }
-                if (links != null) {
-                    for (long peer : links) {
-                        if (visited.add(peer)) next.add(peer);
+        try (var batch = PhysicalGraph.begin(level)) {
+            LevelNodeGraph<PipeData> fromGraph = FluidPipeGraph.graphAt(level, key);
+            PipeData keyData = fromGraph == null ? null : fromGraph.dataAt(key);
+            if (keyData == null) return;
+            Fluid original = keyData.fluid();
+            LongOpenHashSet visited = new LongOpenHashSet();
+            LongArrayList frontier = new LongArrayList();
+            LongArrayList retyped = new LongArrayList();
+            frontier.add(key);
+            visited.add(key);
+            for (int depth = 0; depth <= 64 && !frontier.isEmpty(); depth++) {
+                LongArrayList next = new LongArrayList();
+                for (int i = 0; i < frontier.size(); i++) {
+                    long cur = frontier.getLong(i);
+                    LevelNodeGraph<PipeData> graph = FluidPipeGraph.graphAt(level, cur);
+                    if (graph == null) continue;
+                    PipeData curData = graph.dataAt(cur);
+                    GraphNode<PipeData> node = graph.getNode(cur);
+                    if (curData == null || curData.fluid() != original) continue;
+                    if (node != null && (node.machineOwned || node.selfEndpoint)) continue;
+                    long[] links =
+                            node != null && node.hasRemoteLinks()
+                                    ? node.remoteLinks.toLongArray()
+                                    : null;
+                    retypeNodeNoSync(level, cur, fluid);
+                    retyped.add(cur);
+                    BlockPos p = BlockPos.of(cur);
+                    for (Direction d : Direction.VALUES) {
+                        long n = p.relative(d).asLong();
+                        if (visited.add(n)) next.add(n);
+                    }
+                    if (links != null) {
+                        for (long peer : links) {
+                            if (visited.add(peer)) next.add(peer);
+                        }
                     }
                 }
+                frontier = next;
             }
-            frontier = next;
+            long[] touched = retyped.toLongArray();
+            FluidPipeGraph.get(level, fluid).compactAround(touched);
+            fromGraph.compactAround(touched);
+            FluidPipeTintData.sync(level, retyped.toLongArray(), fluid);
         }
-        FluidPipeGraph.get(level, fluid).compact();
-        fromGraph.compact();
-        FluidPipeTintData.sync(level, retyped.toLongArray(), fluid);
-        for (int i = 0; i < retyped.size(); i++)
-            refreshAround(level, BlockPos.of(retyped.getLong(i)));
     }
 
     public static void refreshConnections(ServerLevel level, BlockPos pos) {
@@ -311,7 +314,7 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
 
     protected boolean connectsVisually(
             LevelReader level, BlockPos pos, Direction dir, Fluid selfFluid) {
-        return Library.canConnectFluid(level, pos.relative(dir), dir.getOpposite(), selfFluid);
+        return PhysicalGraph.fluidContact(level, pos.relative(dir), dir.getOpposite(), selfFluid);
     }
 
     @Override
@@ -345,7 +348,7 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
             ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         boolean joins = connectsVisually(level, pos, dir, pipeFluidAt(level, pos));
         if (level.isClientSide())
-            return Library.predictArm(state, propertyFor(dir), neighbourState, joins);
+            return PhysicalGraph.predictArm(state, propertyFor(dir), neighbourState, joins);
         return state.setValue(propertyFor(dir), joins);
     }
 
@@ -358,7 +361,7 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
             @Nullable Orientation orientation,
             boolean movedByPiston) {
         super.neighborChanged(state, level, pos, block, orientation, movedByPiston);
-        if (level instanceof ServerLevel sl) Library.redrawArms(state, sl, pos);
+        if (level instanceof ServerLevel sl) PhysicalGraph.redraw(state, sl, pos);
     }
 
     @Override
@@ -383,9 +386,10 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
         Fluid fluid = stampedFluid(stack);
         if (fluid == Fluids.EMPTY) return;
         createNodes(sl, pos, state);
-        retypeNode(sl, pos.asLong(), fluid);
-        refreshConnections(sl, pos);
-        for (Direction dir : Direction.VALUES) refreshConnections(sl, pos.relative(dir));
+        if (!retypeNode(sl, pos.asLong(), fluid)) {
+            PhysicalGraph.redraw(sl.getBlockState(pos), sl, pos);
+            PhysicalGraph.refreshAround(sl, pos);
+        }
     }
 
     @Override

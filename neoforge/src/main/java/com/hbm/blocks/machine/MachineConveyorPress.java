@@ -37,7 +37,6 @@ public class MachineConveyorPress extends BlockMultiblockCore
     public static final MapCodec<MachineConveyorPress> CODEC =
             simpleCodec(MachineConveyorPress::new);
 
-    private static final int[] DIMENSIONS = {2, 0, 0, 0, 0, 0};
     private static final int RED = 0xFF5555;
 
     public MachineConveyorPress(Properties props) {
@@ -50,26 +49,11 @@ public class MachineConveyorPress extends BlockMultiblockCore
     }
 
     @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
-    }
-
-    @Override
     public MachineCaps caps() {
         return MachineCaps.of(ModBlockEntities.CONVEYOR_PRESS)
                 .powerIn()
                 .fe()
                 .faces(BlockEntityConveyorPress.class, (be, side) -> side != Direction.DOWN);
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_HORIZONTAL;
     }
 
     private @Nullable BlockEntityConveyorPress pressUnder(Level level, BlockPos beltPos) {

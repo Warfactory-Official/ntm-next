@@ -123,7 +123,6 @@ public final class HbmModelJson {
         return new ObjUnbakedGeometry(
                 objId,
                 skins,
-                hidden(json),
                 offsetX,
                 offsetY,
                 offsetZ,
@@ -134,11 +133,6 @@ public final class HbmModelJson {
                         emissive, strings(json, "tiled"), blackout, strings(json, "double_sided")),
                 smooth,
                 uvScales(json));
-    }
-
-    private static String[] hidden(JsonObject json) {
-        String[] declared = strings(json, "hidden");
-        return declared == null ? new String[0] : declared;
     }
 
     private static Map<String, float[]> uvScales(JsonObject json) {
@@ -221,10 +215,8 @@ public final class HbmModelJson {
         float offsetY = json.has("offset_y") ? json.get("offset_y").getAsFloat() : 0.0F;
         float offsetZ = json.has("offset_z") ? json.get("offset_z").getAsFloat() : 0.0F;
         return new ObjUnbakedGeometry(
-                fallback,
                 specs,
                 boxes(json),
-                hidden(json),
                 offsetX,
                 offsetY,
                 offsetZ,

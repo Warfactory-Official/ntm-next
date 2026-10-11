@@ -4,14 +4,19 @@
 package com.hbm.api.fluidmk2;
 
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
+import com.hbm.util.ChunkUtil;
 import java.util.function.Consumer;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
 public interface FluidTankEndpoint extends FluidFlushSender {
 
     int HIGHEST_VALID_PRESSURE = 5;
+
+    @Override
+    default void declareFlush(FlushLanes out) {}
 
     @Nullable Level getLevel();
 
@@ -75,8 +80,8 @@ public interface FluidTankEndpoint extends FluidFlushSender {
     }
 
     @Override
-    default int[] getReceivingPressureRange(Fluid type) {
-        return range(getReceivingTanks(), type, true);
+    default int receivingPressureMask(Fluid type) {
+        return pressureMask(getReceivingTanks(), type, true);
     }
 
     @Override
@@ -119,13 +124,12 @@ public interface FluidTankEndpoint extends FluidFlushSender {
     }
 
     @Override
-    default int[] getProvidingPressureRange(Fluid type) {
-        return range(getSendingTanks(), type, false);
+    default int providingPressureMask(Fluid type) {
+        return pressureMask(getSendingTanks(), type, false);
     }
 
     private void fluidChanged() {
-        Level level = getLevel();
-        if (level != null) level.blockEntityChanged(getBlockPos());
+        if (this instanceof BlockEntity be) ChunkUtil.markUnsaved(be);
     }
 
     private static boolean takes(FluidTankNTM tank, Fluid type, int pressure) {
@@ -136,14 +140,12 @@ public interface FluidTankEndpoint extends FluidFlushSender {
         return tank.getPressure() == pressure && tank.provides(type);
     }
 
-    private static int[] range(FluidTankNTM[] tanks, Fluid type, boolean receiving) {
-        int lowest = HIGHEST_VALID_PRESSURE;
-        int highest = 0;
+    private static int pressureMask(FluidTankNTM[] tanks, Fluid type, boolean receiving) {
+        int mask = 0;
         for (FluidTankNTM tank : tanks) {
             if (receiving ? !tank.accepts(type) : !tank.provides(type)) continue;
-            if (tank.getPressure() < lowest) lowest = tank.getPressure();
-            if (tank.getPressure() > highest) highest = tank.getPressure();
+            mask |= 1 << tank.getPressure();
         }
-        return lowest <= highest ? new int[] {lowest, highest} : DEFAULT_PRESSURE_RANGE;
+        return mask;
     }
 }

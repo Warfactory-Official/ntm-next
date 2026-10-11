@@ -3,7 +3,6 @@
 
 package com.hbm.blockentity.machine.albion;
 
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blockentity.machine.albion.BlockEntityPASource.Particle;
@@ -19,7 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityPABeamline extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, IParticleUser, SyncUnitSchema {
+        implements Synced, GraphResident, IParticleUser, SyncUnitSchema {
 
     private long flashTick = Long.MIN_VALUE / 2;
 

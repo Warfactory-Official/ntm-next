@@ -9,6 +9,7 @@ import com.hbm.api.ntl.PneumaticNetwork;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.inventory.IGUIProvider;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.packet.SyncField;
 import com.hbm.tags.HbmItemTags;
@@ -32,7 +33,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class BlockEntityPneumaticStorageBase extends BlockEntityMachineBase
-        implements IFluidHandlerMK2, IControlReceiver, IGUIProvider {
+        implements FluidTankAccess, IFluidHandlerMK2, IControlReceiver, IGUIProvider {
 
     @SyncField(units = 1L << 0)
     public final FluidTankNTM compair;
@@ -135,13 +136,19 @@ public abstract class BlockEntityPneumaticStorageBase extends BlockEntityMachine
     }
 
     @Override
-    public int[] getReceivingPressureRange(Fluid type) {
-        return new int[] {compair.getPressure(), compair.getPressure()};
+    public int receivingPressureMask(Fluid type) {
+        return 1 << compair.getPressure();
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {compair};
+    public int tankCount() {
+        return 1;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        if (index != 0) throw new IndexOutOfBoundsException(index);
+        return compair;
     }
 
     public ItemStack getSlotAt(int index) {

@@ -1,7 +1,7 @@
 plugins {
     java
     `maven-publish`
-    id("net.neoforged.moddev") version "2.0.147"
+    id("net.neoforged.moddev") version "2.0.148"
 }
 
 version = property("mod_version")!!
@@ -117,7 +117,7 @@ repositories {
     }
 }
 
-val crankshaftVersion = "1.5.9+mc26.2"
+val crankshaftVersion = "1.6.0+mc26.2"
 
 val crankshaftJar = configurations.create("crankshaftJar") {
     isCanBeConsumed = false
@@ -136,18 +136,25 @@ val crankshaftIris = tasks.register<Sync>("crankshaftIris") {
 dependencies {
     compileOnly("org.appliedenergistics:appliedenergistics2:26.2.1-alpha") { isTransitive = false }
     compileOnly("cc.tweaked:cc-tweaked-26.2-forge-api:1.120.2")
-    compileOnly("maven.modrinth:sophisticated-core:HJLJBWYT")
-    compileOnly("maven.modrinth:sophisticated-storage:9jOzQdN5")
-    compileOnly("maven.modrinth:sophisticated-backpacks:LPnOSNVg")
+    compileOnly("maven.modrinth:sophisticated-core:nj5gRTWv")
+    compileOnly("maven.modrinth:sophisticated-storage:eS0i3crP")
+    compileOnly("maven.modrinth:sophisticated-backpacks:QfSnSqMl")
     compileOnly("maven.modrinth:compact-storage:nIOL2PLd")
-    compileOnly("maven.modrinth:travelersbackpack:wxBR2pcr")
-    compileOnly("maven.modrinth:balm:lGba52SO")
-    compileOnly("maven.modrinth:trinkets-updated:jhbhwQFz")
+    compileOnly("maven.modrinth:travelersbackpack:EMeTJkWH")
+    compileOnly("maven.modrinth:balm:5wreNQrF")
+    compileOnly("maven.modrinth:trinkets-updated:YH8OYfzQ")
     compileOnly("maven.modrinth:curios:BI7D0sbK")
     compileOnly("maven.modrinth:iris:k55HdONq")
     compileOnly("net.caffeinemc:sodium-neoforge-mod:0.9.2+mc26.2")
     compileOnly("io.github.douira:glsl-transformer:3.0.0-pre3")
     compileOnly("org.antlr:antlr4-runtime:4.13.1")
+    compileOnly("maven.modrinth:toms-storage:UdGowO79") { isTransitive = false }
+    compileOnly("maven.modrinth:storagedrawers:egaJwbqD") { isTransitive = false }
+    compileOnly("maven.modrinth:sound-physics-remastered:T2rk5I7r") { isTransitive = false }
+    compileOnly("maven.modrinth:entity-model-features:pR1lBt4h") { isTransitive = false }
+    compileOnly("maven.modrinth:punchy-fpa:obRINkQu") { isTransitive = false }
+    compileOnly("maven.modrinth:notenoughbandwidthfabric:hkfDkuqG") { isTransitive = false }
+    compileOnly("maven.modrinth:bandwidthoptimizer:R6HJYW0a") { isTransitive = false }
     compileOnly("io.github.llamalad7:mixinextras-common:0.5.5")
     compileOnly("org.jspecify:jspecify:1.0.0")
     compileOnly("maven.modrinth:scalablelux:0.3.0-alpha.0.16+26.2")
@@ -163,7 +170,7 @@ dependencies {
     crankshaftJar("dev.engine_room:crankshaft-neoforge:${crankshaftVersion}")
     compileOnly(files(layout.buildDirectory.file("crankshaft-iris/crankshaft-iris.jar")).builtBy(crankshaftIris))
 
-    compileOnly("mezz.jei:jei-26.2-common-api:30.35.0.224")
+    compileOnly("mezz.jei:jei-26.2-common-api:30.39.0.233")
 
     compileOnly("me.shedaniel:RoughlyEnoughItems-api:${property("rei_version")}")
     compileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin:${property("rei_version")}")
@@ -174,6 +181,7 @@ dependencies {
     compileOnly("maven.modrinth:the-one-probe:26.2_neo-15.0.1")
 
     compileOnly("curse.maven:neocontinuity-1377279:8896544")
+    compileOnly("maven.modrinth:fusion-connected-textures:1.3.16-neoforge-mc26.2")
     compileOnly("maven.modrinth:ctmlib:26.2.0.1")
 }
 

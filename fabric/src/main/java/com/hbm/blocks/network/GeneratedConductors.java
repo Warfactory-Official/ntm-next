@@ -5,7 +5,6 @@ package com.hbm.blocks.network;
 
 import com.hbm.api.energymk2.CableData;
 import com.hbm.api.energymk2.PowerGraph;
-import com.hbm.api.energymk2.PowerGraphProvider;
 import com.hbm.lib.Library;
 import com.hbm.platform.FabricChunkData;
 import com.hbm.platform.FabricServerEvents;
@@ -148,7 +147,7 @@ public final class GeneratedConductors {
                     state.getBlock() instanceof CableConductorBlockBase conductor
                             ? conductor.nodeMask(state)
                             : CableConductorBlockBase.OPEN_ALL;
-            graph.addNode(pos.asLong(), PowerGraphProvider.INSTANCE.createData(state), mask);
+            graph.addNode(pos.asLong(), CableData.INSTANCE, mask);
         }
     }
 }

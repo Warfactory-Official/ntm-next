@@ -5,7 +5,6 @@ package com.hbm.blocks.machine.fusion;
 
 import com.hbm.blockentity.machine.fusion.BlockEntityFusionMHDT;
 import com.hbm.blockentity.machine.fusion.FusionPorts;
-import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.data.MachineData;
@@ -24,108 +23,8 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineFusionMHDT extends BlockFusionMachine
         implements ILookOverlay, ICapabilityBlock {
-    private static final int[] PLACEMENT_DIMENSIONS = {
-        2, 0, 6, 7, 2, 2, 0, 0, 0,
-        3, -2, 6, 2, 1, 1, 0, 0, 0,
-        3, -2, -6, 7, 1, 1, 0, 0, 0,
-        3, -2, -3, 5, 2, 2, 0, 0, 0,
-        4, -3, -3, 5, 1, 1, 0, 0, 0,
-        1, 0, 0, 1, 3, 3, 3, 0, 0,
-    };
-
-    @Override
-    protected int[] placementDimensionBoxes() {
-        return PLACEMENT_DIMENSIONS;
-    }
-
-    private static final double[] PLACEMENT_EXTRAS = {1.5, 3.5, -6.5, -6.5, 1, -1};
-
-    @Override
-    protected double[] placementExtraBoxes() {
-        return PLACEMENT_EXTRAS;
-    }
-
-    private static final int[] DIMENSIONS = {2, 0, 6, 7, 2, 2};
-
-    private static final int[][] EXTRA_BOXES = {
-        {3, -2, 6, 2, 1, 1},
-        {3, -2, -6, 7, 1, 1},
-        {3, -2, -3, 5, 2, 2},
-        {4, -3, -3, 5, 1, 1}
-    };
-    private static final int[] NOZZLE_BOX = {1, 0, 0, 1, 3, 3};
-
     public MachineFusionMHDT(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 7;
-    }
-
-    @Override
-    public boolean checkRequirement(Level level, BlockPos placed, Direction dir, int o) {
-        if (!super.checkRequirement(level, placed, dir, o)) return false;
-        BlockPos origin = placed.offset(dir.getStepX() * o, dir.getStepY() * o, dir.getStepZ() * o);
-        for (int[] box : EXTRA_BOXES) {
-            if (!MultiblockHandlerXR.checkSpace(level, origin, box, placed, dir)) return false;
-        }
-        BlockPos nozzle = placed.offset(dir.getStepX() * (o + 3), 0, dir.getStepZ() * (o + 3));
-        return MultiblockHandlerXR.checkSpace(level, nozzle, NOZZLE_BOX, placed, dir);
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        for (int[] box : EXTRA_BOXES) MultiblockHandlerXR.visitBox(core, box, facing, visitor);
-        MultiblockHandlerXR.visitBox(
-                core.offset(facing.getStepX() * 3, 0, facing.getStepZ() * 3),
-                NOZZLE_BOX,
-                facing,
-                visitor);
-
-        Direction rot = facing.getClockWise();
-        visitor.cell(
-                core.offset(
-                        facing.getStepX() * 4 + rot.getStepX() * 3,
-                        0,
-                        facing.getStepZ() * 4 + rot.getStepZ() * 3),
-                MASK_WEST);
-        visitor.cell(
-                core.offset(
-                        facing.getStepX() * 4 - rot.getStepX() * 3,
-                        0,
-                        facing.getStepZ() * 4 - rot.getStepZ() * 3),
-                MASK_EAST);
-        visitor.cell(core.offset(facing.getStepX() * 7, 1, facing.getStepZ() * 7), MASK_SOUTH);
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        Direction rot = facing.getClockWise();
-        int domains = PASSIVE_POWER_IN | PASSIVE_FLUID_IN;
-        visitor.passiveCell(
-                core.offset(
-                        facing.getStepX() * 4 + rot.getStepX() * 3,
-                        0,
-                        facing.getStepZ() * 4 + rot.getStepZ() * 3),
-                MASK_ALL,
-                domains);
-        visitor.passiveCell(
-                core.offset(
-                        facing.getStepX() * 4 - rot.getStepX() * 3,
-                        0,
-                        facing.getStepZ() * 4 - rot.getStepZ() * 3),
-                MASK_ALL,
-                domains);
-        visitor.passiveCell(
-                core.offset(facing.getStepX() * 7, 1, facing.getStepZ() * 7), MASK_ALL, domains);
     }
 
     @Override

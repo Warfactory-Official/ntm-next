@@ -3,16 +3,15 @@
 
 package com.hbm.neoforge.mixin.ae2;
 
+import appeng.api.stacks.KeyCounter;
 import com.hbm.integration.ae2.AE2StorageQueries;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Pseudo
-@Mixin(targets = "appeng.api.stacks.KeyCounter", remap = false)
+@Mixin(value = KeyCounter.class, remap = false)
 public abstract class MixinKeyCounter implements AE2StorageQueries.CounterMetadata {
     @Unique private AE2StorageQueries.Origins hbm$origins;
 

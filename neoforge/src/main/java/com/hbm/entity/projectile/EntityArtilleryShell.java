@@ -5,6 +5,7 @@
 package com.hbm.entity.projectile;
 
 import com.hbm.api.entity.IRadarDetectable;
+import com.hbm.entity.FarVisible;
 import com.hbm.handler.UnstableFuses;
 import com.hbm.interfaces.StoredItems;
 import com.hbm.items.weapon.ItemAmmoArty;
@@ -31,7 +32,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityArtilleryShell extends EntityThrowableInterp
-        implements IRadarDetectable, StoredItems {
+        implements IRadarDetectable, StoredItems, FarVisible {
 
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {

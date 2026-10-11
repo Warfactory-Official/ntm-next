@@ -4,6 +4,7 @@
 package com.hbm.blocks.network;
 
 import com.hbm.api.fluidmk2.FluidPipeGraph;
+import com.hbm.api.fluidmk2.FlushIndex;
 import com.hbm.api.fluidmk2.PipeData;
 import com.hbm.api.ntl.PneumaticNetwork;
 import com.hbm.blocks.network.pneumatic.PneumoTubeBlock;
@@ -80,6 +81,7 @@ public final class ChunkDuctNodes {
 
     public static void scheduleReload(MinecraftServer server) {
         for (ServerLevel level : server.getAllLevels()) {
+            FlushIndex.invalidateAll(level);
             for (LevelNodeGraph<PipeData> graph : FluidPipeGraph.all(level))
                 scheduleReload(level, graph);
             scheduleReload(level, PneumaticNetwork.get(level));
@@ -88,10 +90,13 @@ public final class ChunkDuctNodes {
 
     private static <D> void scheduleReload(ServerLevel level, LevelNodeGraph<D> graph) {
         for (NodeNetwork<D> net : graph.networks()) {
-            for (GraphNode<D> node : graph.edgeFaces(net))
+            for (GraphNode<D> node : graph.edgeFaces(net)) {
+                graph.invalidateNode(node.posKey);
                 schedule(level, BlockPos.of(node.posKey));
+            }
             for (GraphSegment<D> segment : net.segments) {
                 for (int i = 0; i < segment.cellCount(); i++) {
+                    graph.invalidateNode(segment.cellAt(i));
                     schedule(level, BlockPos.of(segment.cellAt(i)));
                 }
             }
@@ -110,7 +115,6 @@ public final class ChunkDuctNodes {
         Fluid fluid = take(chunk, pos);
         if (fluid == null || !duct.retypable()) return;
         FluidPipeBlock.retypeNode(level, pos.asLong(), fluid);
-        FluidPipeBlock.refreshAround(level, pos);
     }
 
     public static void onChunkLoad(ServerLevel level, LevelChunk chunk) {

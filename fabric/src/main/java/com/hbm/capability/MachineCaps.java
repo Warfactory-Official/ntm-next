@@ -4,16 +4,20 @@
 package com.hbm.capability;
 
 import com.hbm.api.fluidmk2.FluidFace;
+import com.hbm.capability.NtmCapabilities.CapRole;
+import com.hbm.interfaces.injected.MachineCapsHolder;
+import com.hbm.platform.FacedContext;
 import com.hbm.registration.RegistryHandle;
 import java.util.function.BiPredicate;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.jspecify.annotations.Nullable;
 
 public final class MachineCaps {
 
-    private static final BiPredicate<BlockEntity, Direction> ALL = (be, side) -> true;
+    private static final FaceGate ALL = (be, side, role) -> true;
     private static final BiPredicate<BlockEntity, FluidFace> ALL_FLUID = (be, face) -> true;
     public static final MachineCaps NONE = new MachineCaps(null);
     public static final int POWER_IN = 1;
@@ -25,7 +29,8 @@ public final class MachineCaps {
     public static final int FE = 1 << 6;
     final boolean powerIn, powerOut, fluidIn, fluidOut, items, itemsAtCells, fe;
     final boolean selfProvided;
-    private final BiPredicate<BlockEntity, Direction> faces;
+    private final int declaredBits;
+    private final FaceGate faces;
     private final BiPredicate<BlockEntity, FluidFace> fluidFaces;
     private final @Nullable RegistryHandle<? extends BlockEntityType<?>> beType;
 
@@ -43,7 +48,7 @@ public final class MachineCaps {
             boolean itemsAtCells,
             boolean fe,
             boolean selfProvided,
-            BiPredicate<BlockEntity, Direction> faces,
+            FaceGate faces,
             BiPredicate<BlockEntity, FluidFace> fluidFaces) {
         this.beType = beType;
         this.powerIn = powerIn;
@@ -56,6 +61,14 @@ public final class MachineCaps {
         this.selfProvided = selfProvided;
         this.faces = faces;
         this.fluidFaces = fluidFaces;
+        this.declaredBits =
+                (powerIn ? POWER_IN : 0)
+                        | (powerOut ? POWER_OUT : 0)
+                        | (fluidIn ? FLUID_IN : 0)
+                        | (fluidOut ? FLUID_OUT : 0)
+                        | (items ? ITEMS : 0)
+                        | (itemsAtCells ? ITEMS_AT_CELLS : 0)
+                        | (fe ? FE : 0);
     }
 
     public static MachineCaps of(RegistryHandle<? extends BlockEntityType<?>> beType) {
@@ -64,6 +77,14 @@ public final class MachineCaps {
 
     public static MachineCaps blockKeyed() {
         return new MachineCaps(null);
+    }
+
+    public static @Nullable MachineCaps declared(Block block) {
+        if (!(block instanceof ICapabilityBlock declaring)) return null;
+        MachineCapsHolder holder = (MachineCapsHolder) block;
+        MachineCaps caps = holder.hbm$machineCaps();
+        if (caps == null) holder.hbm$machineCaps(caps = declaring.caps());
+        return caps;
     }
 
     public MachineCaps powerIn() {
@@ -198,7 +219,22 @@ public final class MachineCaps {
                 itemsAtCells,
                 fe,
                 selfProvided,
-                (be, side) -> gate.test(type.cast(be), side),
+                (be, side, role) -> gate.test(type.cast(be), side),
+                fluidFaces);
+    }
+
+    public <BE extends BlockEntity> MachineCaps roleFaces(Class<BE> type, RoleGate<BE> gate) {
+        return new MachineCaps(
+                beType,
+                powerIn,
+                powerOut,
+                fluidIn,
+                fluidOut,
+                items,
+                itemsAtCells,
+                fe,
+                selfProvided,
+                (be, side, role) -> gate.test(type.cast(be), side, role),
                 fluidFaces);
     }
 
@@ -218,34 +254,35 @@ public final class MachineCaps {
                 (be, face) -> gate.test(type.cast(be), face));
     }
 
-    BiPredicate<BlockEntity, Direction> faceGate() {
+    public static boolean accepts(BlockEntity owner, @Nullable Object context, CapRole role) {
+        if (context == null) return true;
+        MachineCaps caps = declared(owner.getBlockState().getBlock());
+        if (caps == null) return true;
+        if (role.fluid) {
+            return caps.fluidFaces.test(
+                    owner,
+                    context instanceof FluidFace face ? face : FluidFace.any((Direction) context));
+        }
+        Direction side = FacedContext.sideOf(context);
+        return side == null || caps.faces.test(owner, side, role);
+    }
+
+    public static int declaredDomains(@Nullable BlockEntity owner) {
+        if (owner == null) return 0;
+        MachineCaps caps = declared(owner.getBlockState().getBlock());
+        return caps == null ? 0 : caps.declaredBits;
+    }
+
+    public int declaredBits() {
+        return declaredBits;
+    }
+
+    FaceGate faceGate() {
         return faces;
     }
 
     BiPredicate<BlockEntity, FluidFace> fluidGate() {
         return fluidFaces;
-    }
-
-    public static boolean acceptsFace(BlockEntity owner, Direction side) {
-        return !(owner.getBlockState().getBlock() instanceof ICapabilityBlock declaring)
-                || declaring.caps().faces.test(owner, side);
-    }
-
-    public static int declaredDomains(@Nullable BlockEntity owner) {
-        if (owner == null) return 0;
-        return owner.getBlockState().getBlock() instanceof ICapabilityBlock declaring
-                ? declaring.caps().declaredBits()
-                : 0;
-    }
-
-    public int declaredBits() {
-        return (powerIn ? POWER_IN : 0)
-                | (powerOut ? POWER_OUT : 0)
-                | (fluidIn ? FLUID_IN : 0)
-                | (fluidOut ? FLUID_OUT : 0)
-                | (items ? ITEMS : 0)
-                | (itemsAtCells ? ITEMS_AT_CELLS : 0)
-                | (fe ? FE : 0);
     }
 
     RegistryHandle<? extends BlockEntityType<?>> beType() {
@@ -258,5 +295,15 @@ public final class MachineCaps {
 
     @Nullable RegistryHandle<? extends BlockEntityType<?>> beTypeOrNull() {
         return beType;
+    }
+
+    @FunctionalInterface
+    interface FaceGate {
+        boolean test(BlockEntity be, Direction side, CapRole role);
+    }
+
+    @FunctionalInterface
+    public interface RoleGate<BE extends BlockEntity> {
+        boolean test(BE be, Direction side, CapRole role);
     }
 }

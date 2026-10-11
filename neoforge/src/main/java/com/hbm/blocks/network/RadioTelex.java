@@ -17,23 +17,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class RadioTelex extends BlockMultiblockCore implements ITickingBlock {
-
-    private static final int[] DIMENSIONS = {0, 0, 0, 0, 1, 0};
-
     public static Consumer<BlockEntityRadioTelex> OPEN_GUI = telex -> {};
 
     public RadioTelex(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
     }
 
     @Override

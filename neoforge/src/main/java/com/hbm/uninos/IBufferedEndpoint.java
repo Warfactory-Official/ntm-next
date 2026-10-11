@@ -8,4 +8,8 @@ public interface IBufferedEndpoint {
     default boolean bufferedEndpoint() {
         return false;
     }
+
+    default boolean passThrough() {
+        return false;
+    }
 }

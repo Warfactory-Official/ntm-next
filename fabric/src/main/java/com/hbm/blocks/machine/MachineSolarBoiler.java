@@ -14,7 +14,6 @@ import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.util.BobMathUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -23,41 +22,13 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineSolarBoiler extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-    private static final int[] DIMENSIONS = {2, 0, 1, 1, 1, 1};
-
     public MachineSolarBoiler(Properties props) {
         super(props);
     }
 
     @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        visitor.cell(core.above(2), MASK_UP);
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_DOWN;
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        visitor.passiveCell(core.above(2), MASK_ALL, PASSIVE_FLUID_IN);
     }
 
     @Override

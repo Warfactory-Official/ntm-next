@@ -6,13 +6,12 @@ package com.hbm.mixin.punchy;
 import com.hbm.render.item.weapon.sedna.ItemRenderWeaponBase;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import punchy.config.PunchyConfig;
 
-@Pseudo
-@Mixin(targets = "punchy.config.PunchyConfig", remap = false)
+@Mixin(value = PunchyConfig.class, remap = false)
 public abstract class MixinPunchyConfig {
     @Inject(
             method = {"isItemBlacklisted", "isItemBlacklistDualHanded"},

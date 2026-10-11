@@ -29,7 +29,8 @@ public class FluidDuctPaintableExhaustBlock extends FluidDuctPaintableBlock {
     }
 
     @Override
-    public boolean canConnectFluid(Level level, BlockPos pos, Direction side, Fluid fluid) {
+    public boolean hasFluidContact(
+            Level level, BlockPos pos, BlockState state, Direction side, Fluid fluid) {
         return FluidPipeGraph.isSmoke(fluid);
     }
 

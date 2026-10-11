@@ -6,9 +6,8 @@ package com.hbm;
 import com.hbm.advancement.HbmCriteria;
 import com.hbm.api.energymk2.PowerNetwork;
 import com.hbm.api.fluidmk2.FluidNetwork;
-import com.hbm.api.ntl.PneumaticNetwork;
 import com.hbm.blockentity.BlockEntityPedestal;
-import com.hbm.blockentity.PendingCoreInvalidation;
+import com.hbm.blockentity.ChunkPublication;
 import com.hbm.blockentity.machine.BlockEntityMachineRadar;
 import com.hbm.blockentity.network.RTTYSystem;
 import com.hbm.blockentity.network.RequestNetwork;
@@ -73,6 +72,7 @@ import com.hbm.saveddata.satellites.SatelliteRayEvents;
 import com.hbm.sound.ModSounds;
 import com.hbm.stats.ModStats;
 import com.hbm.uninos.graph.EndpointRegistry;
+import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.ChunkUtil;
 import com.hbm.util.DamageResistanceHandler;
 import com.hbm.world.HbmFeatures;
@@ -161,9 +161,9 @@ public final class NuclearTech {
                 FalloutConfigJSON.REGISTRY, FalloutConfigJSON.CODEC);
         NtmCapabilities.registerTokens();
         NTMFluids.init();
+        LevelNodeGraph.init();
         PowerNetwork.init();
         FluidNetwork.init();
-        PneumaticNetwork.init();
         HazardSystem.init();
         RadiationSystemNT.init();
         RadVisServer.init();
@@ -176,7 +176,7 @@ public final class NuclearTech {
         BlockEntityPedestal.init();
         ArmorSuitEffects.init();
         ChunkUtil.init();
-        PendingCoreInvalidation.init();
+        ChunkPublication.init();
         AssembledMembers.init();
         ResolvedCapCache.init();
         EndpointRegistry.init();
@@ -269,6 +269,7 @@ public final class NuclearTech {
         HudConfig.loadFrom(client);
         GunVisualConfig.loadFrom(client);
         InteractionConfig.loadFrom(client);
+        AudioConfig.loadFrom(client);
         ConfigSchema.loadAddonClientFacades(client);
         clientFacades = true;
     }

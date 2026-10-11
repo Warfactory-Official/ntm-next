@@ -29,6 +29,7 @@ public record FluidPipeModel() implements BlockModel<HFRWavefrontObject> {
             BlockModel.partsByMask(FluidPipeModel::selectParts);
 
     private static String[] selectParts(int mask) {
+        if (mask == 0) return new String[] {"pX", "nX", "pY", "nY", "pZ", "nZ"};
         boolean pX = (mask & POS_X) != 0, nX = (mask & NEG_X) != 0;
         boolean pY = (mask & POS_Y) != 0, nY = (mask & NEG_Y) != 0;
         boolean pZ = (mask & POS_Z) != 0, nZ = (mask & NEG_Z) != 0;

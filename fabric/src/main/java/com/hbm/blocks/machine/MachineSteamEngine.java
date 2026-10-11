@@ -13,7 +13,6 @@ import com.hbm.inventory.fluid.NTMFluidProperties;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
@@ -23,54 +22,13 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineSteamEngine extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {1, 0, 5, 1, 1, 1};
-
     public MachineSteamEngine(Properties props) {
         super(props);
     }
 
     @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        Direction rot = facing.getClockWise();
-        for (int i = -1; i <= 1; i++) {
-            visitor.cell(
-                    core.offset(
-                            rot.getStepX() + facing.getStepX() * i,
-                            1,
-                            rot.getStepZ() + facing.getStepZ() * i),
-                    MASK_WEST);
-        }
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        Direction rot = facing.getClockWise();
-        for (int i = -1; i <= 1; i++) {
-            visitor.passiveCell(
-                    core.offset(
-                            rot.getStepX() + facing.getStepX() * i,
-                            1,
-                            rot.getStepZ() + facing.getStepZ() * i),
-                    MASK_ALL,
-                    PASSIVE_POWER_IN | PASSIVE_FLUID_IN);
-        }
     }
 
     @Override

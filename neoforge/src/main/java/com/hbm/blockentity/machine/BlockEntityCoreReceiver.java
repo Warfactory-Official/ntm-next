@@ -39,6 +39,8 @@ public class BlockEntityCoreReceiver extends BlockEntityMachineBase
     @SyncField(units = 1L << 1)
     public final FluidTankNTM tank = new FluidTankNTM(NTMFluids.CRYOGEL, TANK_CAPACITY);
 
+    private final FluidTankNTM[] tanks = {tank};
+
     public long power;
 
     @SyncField(units = 1L << 0)
@@ -101,7 +103,7 @@ public class BlockEntityCoreReceiver extends BlockEntityMachineBase
 
     @Override
     public FluidTankNTM[] getReceivingTanks() {
-        return new FluidTankNTM[] {tank};
+        return tanks;
     }
 
     @Override

@@ -24,55 +24,13 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineTurbineGas extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-    private static final int[] DIMENSIONS = {2, 0, 1, 1, 4, 5};
-
     public MachineTurbineGas(Properties props) {
         super(props);
     }
 
     @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        Direction rot = facing.getClockWise();
-        int dx = facing.getStepX(), dz = facing.getStepZ();
-        int rx = rot.getStepX(), rz = rot.getStepZ();
-
-        visitor.cell(core.offset(-dx + rx, 0, -dz + rz), MASK_NORTH);
-        visitor.cell(core.offset(dx + rx, 0, dz + rz), MASK_SOUTH);
-        visitor.cell(core.offset(-dx + rx * -4, 0, -dz + rz * -4), MASK_NORTH);
-        visitor.cell(core.offset(dx + rx * -4, 0, dz + rz * -4), MASK_SOUTH);
-        visitor.cell(core.offset(rx * 4, 1, rz * 4), MASK_WEST);
-        visitor.cell(core.offset(rx * -5, 1, rz * -5), MASK_EAST);
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        Direction rot = facing.getClockWise();
-        int dx = facing.getStepX(), dz = facing.getStepZ();
-        int rx = rot.getStepX(), rz = rot.getStepZ();
-        int domains = PASSIVE_POWER_IN | PASSIVE_FLUID_IN;
-
-        visitor.passiveCell(core.offset(-dx + rx, 0, -dz + rz), MASK_ALL, domains);
-        visitor.passiveCell(core.offset(dx + rx, 0, dz + rz), MASK_ALL, domains);
-        visitor.passiveCell(core.offset(-dx + rx * -4, 0, -dz + rz * -4), MASK_ALL, domains);
-        visitor.passiveCell(core.offset(dx + rx * -4, 0, dz + rz * -4), MASK_ALL, domains);
-        visitor.passiveCell(core.offset(rx * 4, 1, rz * 4), MASK_ALL, domains);
-        visitor.passiveCell(core.offset(rx * -5, 1, rz * -5), MASK_ALL, domains);
     }
 
     @Override

@@ -242,7 +242,12 @@ public final class RedRoom {
                 loot.addItem(new ItemStack(ModItems.TRENCHMASTER_BOOTS.get()), 0, 0, 0);
             }
         } else {
-            pedestal(level, x, y + 1, z, ItemPool.getUnit(ItemPools.POOL_RED_PEDESTAL, random));
+            pedestal(
+                    level,
+                    x,
+                    y + 1,
+                    z,
+                    ItemPool.getUnit(ItemPools.POOL_RED_PEDESTAL, ItemPool.context(level, random)));
         }
 
         clearItems(level, x, y, z);
@@ -292,15 +297,16 @@ public final class RedRoom {
             }
         }
 
-        pedestal(level, x, y + 1, z, ItemPool.getStack(ItemPools.POOL_BLACK_SLAB, random));
+        var loot = ItemPool.context(level, random);
+        pedestal(level, x, y + 1, z, ItemPool.getStack(ItemPools.POOL_BLACK_SLAB, loot));
         if (random.nextBoolean())
-            pedestal(level, x + 2, y + 1, z, ItemPool.getStack(ItemPools.POOL_BLACK_PART, random));
+            pedestal(level, x + 2, y + 1, z, ItemPool.getStack(ItemPools.POOL_BLACK_PART, loot));
         if (random.nextBoolean())
-            pedestal(level, x - 2, y + 1, z, ItemPool.getStack(ItemPools.POOL_BLACK_PART, random));
+            pedestal(level, x - 2, y + 1, z, ItemPool.getStack(ItemPools.POOL_BLACK_PART, loot));
         if (random.nextBoolean())
-            pedestal(level, x, y + 1, z + 2, ItemPool.getStack(ItemPools.POOL_BLACK_PART, random));
+            pedestal(level, x, y + 1, z + 2, ItemPool.getStack(ItemPools.POOL_BLACK_PART, loot));
         if (random.nextBoolean())
-            pedestal(level, x, y + 1, z - 2, ItemPool.getStack(ItemPools.POOL_BLACK_PART, random));
+            pedestal(level, x, y + 1, z - 2, ItemPool.getStack(ItemPools.POOL_BLACK_PART, loot));
 
         clearItems(level, x, y, z);
     }

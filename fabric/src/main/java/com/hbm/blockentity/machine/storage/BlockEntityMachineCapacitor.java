@@ -5,7 +5,6 @@ package com.hbm.blockentity.machine.storage;
 
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.redstoneoverradio.IRORValueProvider;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.PersistentDrop;
 import com.hbm.blockentity.Synced;
@@ -30,7 +29,6 @@ public class BlockEntityMachineCapacitor extends BlockEntity
         implements Synced,
                 SyncUnitSchema,
                 GraphResident,
-                FoldedCoreResident,
                 IEnergyHandlerMK2,
                 PersistentDrop,
                 IRORValueProvider {

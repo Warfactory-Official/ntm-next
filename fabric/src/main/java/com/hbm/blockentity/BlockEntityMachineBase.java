@@ -41,7 +41,6 @@ import org.jspecify.annotations.Nullable;
 public abstract class BlockEntityMachineBase extends BlockEntity
         implements Synced,
                 GraphResident,
-                FoldedCoreResident,
                 WorldlyContainer,
                 Nameable,
                 RandomizableContainer,

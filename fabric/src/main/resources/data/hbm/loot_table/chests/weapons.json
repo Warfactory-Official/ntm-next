@@ -5,49 +5,193 @@
     {
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "hbm:gun_light_revolver",
-          "weight": 100
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:gun_henry",
-          "weight": 100
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:gun_maresleg",
-          "weight": 100
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:gun_greasegun",
-          "weight": 100
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:gun_carbine",
-          "weight": 50
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:gun_heavy_revolver",
-          "weight": 50
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:gun_panzerschreck",
-          "weight": 20
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:gun_double_barrel",
-          "weight": 10
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:gun_n_i_4_n_i",
-          "weight": 1
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 99
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 199,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "name": "hbm:gun_light_revolver",
+                      "weight": 100
+                    },
+                    {
+                      "type": "minecraft:item",
+                      "name": "hbm:gun_henry",
+                      "weight": 100
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 199
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 399,
+                        "min": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 99
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 199,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "name": "hbm:gun_maresleg",
+                      "weight": 100
+                    },
+                    {
+                      "type": "minecraft:item",
+                      "name": "hbm:gun_greasegun",
+                      "weight": 100
+                    }
+                  ]
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:value_check",
+                  "range": {
+                    "max": 399
+                  },
+                  "value": {
+                    "type": "minecraft:uniform",
+                    "max": 530,
+                    "min": 0
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 49
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 99,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "name": "hbm:gun_carbine",
+                      "weight": 50
+                    },
+                    {
+                      "type": "minecraft:item",
+                      "name": "hbm:gun_heavy_revolver",
+                      "weight": 50
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 99
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 130,
+                        "min": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 19
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 30,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "name": "hbm:gun_panzerschreck",
+                      "weight": 20
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 9
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 10,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:gun_double_barrel",
+                          "weight": 10
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:gun_n_i_4_n_i",
+                          "weight": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       ],
       "rolls": 1

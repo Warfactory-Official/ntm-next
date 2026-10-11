@@ -15,9 +15,10 @@ import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.IToolable;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.lib.Library;
+import com.hbm.platform.FabricCaps;
 import com.hbm.uninos.graph.EndpointRegistry;
 import com.hbm.uninos.graph.LevelNodeGraph;
+import com.hbm.uninos.graph.PhysicalGraph;
 import com.hbm.util.AutoRotate;
 import com.hbm.util.ChunkUtil;
 import com.hbm.util.InventoryUtil;
@@ -75,7 +76,7 @@ public class PneumoTubeBlock extends Block
     private static final BooleanProperty[] ARM_BY_DIRECTION = armByDirection();
 
     public PneumoTubeBlock(Properties props) {
-        super(props);
+        super(CapabilityDependentShape.deferShapeToFullChunk(props));
         registerDefaultState(
                 stateDefinition
                         .any()
@@ -151,7 +152,7 @@ public class PneumoTubeBlock extends Block
     private static boolean canConnectToAir(
             LevelReader level, BlockPos pos, Direction side, @Nullable BlockState state) {
         return (state == null || !(state.getBlock() instanceof PneumoTubeBlock))
-                && Library.canConnectFluid(level, pos, side, NTMFluids.AIR);
+                && PhysicalGraph.fluidContact(level, pos, side, NTMFluids.AIR);
     }
 
     private static boolean unresolvedAirPeer(
@@ -256,6 +257,7 @@ public class PneumoTubeBlock extends Block
         else tube.insertionDir = rot;
 
         tube.setChanged();
+        if (level instanceof ServerLevel server) FabricCaps.invalidateCaps(server, pos);
         level.sendBlockUpdated(
                 pos, level.getBlockState(pos), level.getBlockState(pos), Block.UPDATE_ALL);
         refreshConnections(level, pos);
@@ -300,7 +302,7 @@ public class PneumoTubeBlock extends Block
         if (state.getValue(WATERLOGGED))
             ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         if (level.isClientSide()) {
-            return Library.predictArm(
+            return PhysicalGraph.predictArm(
                     state, faceProperty(dir), neighbourState, canConnectTo(level, pos, dir));
         }
         boolean air = canConnectToAir(level, pos, dir);
@@ -411,7 +413,8 @@ public class PneumoTubeBlock extends Block
         if (level instanceof ServerLevel sl) LevelNodeGraph.invalidateEndpointsAt(sl, pos);
         if (level.getBlockEntity(pos) instanceof BlockEntityPneumoTube be) be.refreshRedstone();
         refreshAir(level, pos);
-        if (level instanceof ServerLevel sl) Library.redrawArms(level.getBlockState(pos), sl, pos);
+        if (level instanceof ServerLevel sl)
+            PhysicalGraph.redraw(level.getBlockState(pos), sl, pos);
     }
 
     @Override

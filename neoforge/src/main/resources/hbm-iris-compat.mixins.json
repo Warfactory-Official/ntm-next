@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "com.hbm.mixin.compat",
+  "plugin": "com.hbm.mixin.compat.IrisCompatMixinPlugin",
+  "client": [
+    "iris.MixinChunkVertexConsumer",
+    "iris.MixinVertex",
+    "iris.MixinGlDevice",
+    "iris.MixinRenderPipeline"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

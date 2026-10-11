@@ -10,7 +10,6 @@ import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,41 +17,8 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineSolderingStation extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {0, 0, 1, 0, 1, 0};
-
     public MachineSolderingStation(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        Direction rot = facing.getClockWise();
-        visitor.cell(core.relative(facing.getOpposite()), MASK_NORTH | MASK_EAST);
-        visitor.cell(core.relative(rot), MASK_SOUTH | MASK_WEST);
-        visitor.cell(core.relative(facing.getOpposite()).relative(rot), MASK_NORTH | MASK_WEST);
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_SOUTH | MASK_EAST;
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        passiveEverywhere(
-                core, facing, visitor, PASSIVE_POWER_IN | PASSIVE_FLUID_IN | PASSIVE_ITEMS);
     }
 
     @Override

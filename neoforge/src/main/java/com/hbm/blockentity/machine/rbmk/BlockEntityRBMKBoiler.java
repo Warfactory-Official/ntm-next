@@ -6,8 +6,10 @@ package com.hbm.blockentity.machine.rbmk;
 
 import com.hbm.api.control.IControlReceiver;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
+import com.hbm.api.fluidmk2.FluidPipeGraph;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
 import com.hbm.api.fluidmk2.FlushLanes;
+import com.hbm.api.fluidmk2.PipeData;
 import com.hbm.api.redstoneoverradio.IRORValueProvider;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.entity.projectile.EntityRBMKDebris;
@@ -20,6 +22,8 @@ import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import com.hbm.packet.toclient.RbmkJetPayload;
 import com.hbm.sound.ModSounds;
+import com.hbm.uninos.graph.LevelNodeGraph;
+import com.hbm.uninos.graph.NodeNetwork;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -164,6 +168,22 @@ public class BlockEntityRBMKBoiler extends BlockEntityRBMKBase
     public void onMelt(int reduce) {
         int count = 1 + level.getRandom().nextInt(2);
         for (int i = 0; i < count; i++) spawnDebris(EntityRBMKDebris.DebrisType.BLANK);
+        if (RBMKConfig.getOverpressure(level)) {
+            ServerLevel server = (ServerLevel) level;
+            Fluid type = steam.getTankType();
+            LevelNodeGraph<PipeData> graph = FluidPipeGraph.get(server, type);
+            collectColumnOutputs(
+                    server,
+                    worldPosition,
+                    (at, side) -> {
+                        PipeData data = graph.dataAt(at.asLong());
+                        NodeNetwork<PipeData> net =
+                                data != null && data.fluid() == type
+                                        ? graph.networkAt(at.asLong())
+                                        : null;
+                        if (net != null) pipes.add(net);
+                    });
+        }
         super.onMelt(reduce);
     }
 

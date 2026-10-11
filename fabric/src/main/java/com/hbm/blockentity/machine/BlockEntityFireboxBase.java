@@ -6,6 +6,8 @@ package com.hbm.blockentity.machine;
 
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.api.tile.IHeatSource;
 import com.hbm.blockentity.Audible;
 import com.hbm.blockentity.BlockEntityMachinePolluting;
@@ -294,6 +296,11 @@ public abstract class BlockEntityFireboxBase extends BlockEntityMachinePolluting
     @Override
     public FluidTankNTM[] getSendingTanks() {
         return getSmokeTanks();
+    }
+
+    @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
     }
 
     @Override

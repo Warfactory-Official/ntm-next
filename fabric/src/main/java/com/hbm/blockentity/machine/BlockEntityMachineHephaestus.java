@@ -5,6 +5,8 @@ package com.hbm.blockentity.machine;
 
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.blockentity.AudioLoop;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blockentity.IFluidCopiable;
@@ -12,6 +14,7 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Heatable.HeatingStep;
 import com.hbm.inventory.fluid.trait.FT_Heatable.HeatingType;
@@ -32,7 +35,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntityMachineHephaestus extends BlockEntityMachineBase
-        implements AudioLoop, FluidTankEndpoint, IFluidCopiable, SyncUnitSchema {
+        implements FluidTankAccess, AudioLoop, FluidTankEndpoint, IFluidCopiable, SyncUnitSchema {
 
     public static final int TANK_CAPACITY = 24_000;
 
@@ -192,8 +195,22 @@ public class BlockEntityMachineHephaestus extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {input, output};
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
+    }
+
+    @Override
+    public int tankCount() {
+        return 2;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return switch (index) {
+            case 0 -> input;
+            case 1 -> output;
+            default -> throw new IndexOutOfBoundsException(index);
+        };
     }
 
     private void writeHeat(ByteBuf output) {

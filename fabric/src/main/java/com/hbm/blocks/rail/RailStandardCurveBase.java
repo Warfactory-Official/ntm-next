@@ -158,16 +158,6 @@ public class RailStandardCurveBase extends BlockRailNTM {
         return TrackGauge.STANDARD;
     }
 
-    @Override
-    public int[] getDimensions() {
-        return new int[] {0, 0, width, 0, width, 0};
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
-    }
-
     public static BlockPos staircaseCell(BlockPos core, Direction facing, int[] off) {
         Direction dir = facing.getOpposite();
         Direction rot = facing.getClockWise();
@@ -175,21 +165,5 @@ public class RailStandardCurveBase extends BlockRailNTM {
                 dir.getStepX() * off[0] + rot.getStepX() * off[1],
                 0,
                 dir.getStepZ() * off[0] + rot.getStepZ() * off[1]);
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        for (int[] off : staircase()) {
-            visitor.cell(staircaseCell(core, facing, off), MASK_NONE);
-        }
-    }
-
-    @Override
-    public boolean checkRequirement(Level level, BlockPos placed, Direction dir, int o) {
-        BlockPos core = placed.offset(dir.getStepX() * o, dir.getStepY() * o, dir.getStepZ() * o);
-        for (int[] off : staircase()) {
-            if (!level.getBlockState(staircaseCell(core, dir, off)).canBeReplaced()) return false;
-        }
-        return true;
     }
 }

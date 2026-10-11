@@ -5,6 +5,8 @@ package com.hbm.blockentity.machine;
 
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidFlushSender;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.blockentity.Audible;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blockentity.IFluidCopiable;
@@ -12,6 +14,7 @@ import com.hbm.blockentity.Tiltable;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.inventory.container.MenuMachineBlastFurnace;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FluidTrait;
 import com.hbm.inventory.recipes.BlastFurnaceRecipe;
@@ -46,7 +49,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntityMachineBlastFurnace extends BlockEntityMachineBase
-        implements Audible,
+        implements FluidTankAccess,
+                Audible,
                 Tiltable,
                 FluidFlushSender,
                 MenuProvider,
@@ -306,6 +310,11 @@ public class BlockEntityMachineBlastFurnace extends BlockEntityMachineBase
     }
 
     @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
+    }
+
+    @Override
     public long getProviderSpeed(Fluid type, int pressure) {
         return Math.max(tanks[1].getFill() * 50L / tanks[1].getMaxFill(), 8L);
     }
@@ -353,8 +362,13 @@ public class BlockEntityMachineBlastFurnace extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     private void writeTanks(ByteBuf output) {

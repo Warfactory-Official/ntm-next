@@ -5,6 +5,7 @@ package com.hbm.world.feature;
 
 import com.hbm.world.NtmWorldgenFields;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -36,20 +37,16 @@ public class Stratum3DFeature extends Feature<Stratum3DConfig> {
     public static void place(
             WorldGenLevel level, RandomSource rand, Stratum3DConfig cfg, int x0, int z0) {
         NtmWorldgenFields fields = NtmWorldgenFields.get(level);
-        FractalSimplexNoise noiseX = fields.fractal(cfg.domainX(), 4);
-        FractalSimplexNoise noiseY = fields.fractal(cfg.domainY(), 4);
-        FractalSimplexNoise noiseZ = fields.fractal(cfg.domainZ(), 4);
-
         double sh = cfg.scaleH();
         double sv = cfg.scaleV();
         double threshold = cfg.threshold();
+        Stratum3DRows.Row rowX = rowX(fields, cfg.domainX(), z0, sv, sh);
+        Stratum3DRows.Row rowZ = rowZ(fields, cfg.domainZ(), x0, sh, sv);
         Scratch scratch = SCRATCH.get();
-        double[] cacheX = scratch.cacheX;
         double[] cacheY = scratch.cacheY;
-        double[] cacheZ = scratch.cacheZ;
-        noiseX.getGrid(MIN_Y, z0, SPAN, SIZE, sv, sh, cacheX);
-        noiseY.getGrid(x0, z0, SIZE, SIZE, sh, sh, cacheY);
-        noiseZ.getGrid(x0, MIN_Y, SIZE, SPAN, sh, sv, cacheZ);
+        fields.fractal(cfg.domainY(), 4).getGrid(x0, z0, SIZE, SIZE, sh, sh, cacheY);
+        double[] cacheX = rowX.values();
+        double[] cacheZ = rowZ.values();
 
         BlockPos.MutableBlockPos pos = scratch.pos;
 
@@ -58,6 +55,7 @@ public class Stratum3DFeature extends Feature<Stratum3DConfig> {
             for (int oz = 0; oz < SIZE; oz++) {
                 int z = z0 + oz;
                 double ny = cacheY[ox * SIZE + oz];
+                if (rowX.maxAbs()[oz] * Math.abs(ny) * rowZ.maxAbs()[ox] <= threshold) continue;
 
                 for (int y = MIN_Y; y <= MAX_Y; y++) {
                     int oy = y - MIN_Y;
@@ -73,10 +71,42 @@ public class Stratum3DFeature extends Feature<Stratum3DConfig> {
         }
     }
 
+    private static Stratum3DRows.Row rowX(
+            NtmWorldgenFields fields, Identifier domain, int z0, double sv, double sh) {
+        Stratum3DRows rows = fields.stratumRows(domain, sv, sh);
+        Stratum3DRows.Row row = rows.get(z0);
+        if (row != null) return row;
+        double[] values = new double[SPAN * SIZE];
+        fields.fractal(domain, 4).getGrid(MIN_Y, z0, SPAN, SIZE, sv, sh, values);
+        double[] maxAbs = new double[SIZE];
+        for (int oy = 0; oy < SPAN; oy++) {
+            for (int oz = 0; oz < SIZE; oz++)
+                maxAbs[oz] = Math.max(maxAbs[oz], Math.abs(values[oy * SIZE + oz]));
+        }
+        row = new Stratum3DRows.Row(z0, values, maxAbs);
+        rows.put(row);
+        return row;
+    }
+
+    private static Stratum3DRows.Row rowZ(
+            NtmWorldgenFields fields, Identifier domain, int x0, double sh, double sv) {
+        Stratum3DRows rows = fields.stratumRows(domain, sh, sv);
+        Stratum3DRows.Row row = rows.get(x0);
+        if (row != null) return row;
+        double[] values = new double[SIZE * SPAN];
+        fields.fractal(domain, 4).getGrid(x0, MIN_Y, SIZE, SPAN, sh, sv, values);
+        double[] maxAbs = new double[SIZE];
+        for (int ox = 0; ox < SIZE; ox++) {
+            for (int oy = 0; oy < SPAN; oy++)
+                maxAbs[ox] = Math.max(maxAbs[ox], Math.abs(values[ox * SPAN + oy]));
+        }
+        row = new Stratum3DRows.Row(x0, values, maxAbs);
+        rows.put(row);
+        return row;
+    }
+
     private static final class Scratch {
-        private final double[] cacheX = new double[SPAN * SIZE];
         private final double[] cacheY = new double[SIZE * SIZE];
-        private final double[] cacheZ = new double[SIZE * SPAN];
         private final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
     }
 }

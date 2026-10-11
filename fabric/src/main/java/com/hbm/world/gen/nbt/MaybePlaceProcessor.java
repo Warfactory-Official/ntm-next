@@ -10,12 +10,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jspecify.annotations.Nullable;
 
 public record MaybePlaceProcessor(BlockState marker, BlockState result, float probability)
-        implements StructureProcessor {
+        implements MarkerProcessor {
 
     public static final MapCodec<MaybePlaceProcessor> MAP_CODEC =
             RecordCodecBuilder.mapCodec(

@@ -5,115 +5,385 @@
     {
       "entries": [
         {
-          "type": "minecraft:item",
-          "functions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "components": {
-                "hbm:fluid_content": {
-                  "type": "hbm:gas",
-                  "amount": 0
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 3
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 18,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "components": {
+                                "hbm:fluid_content": {
+                                  "type": "hbm:gas",
+                                  "amount": 0
+                                }
+                              },
+                              "function": "minecraft:set_components"
+                            }
+                          ],
+                          "name": "hbm:blowtorch",
+                          "weight": 4
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:chemistry_set",
+                          "weight": 15
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 18
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 31,
+                            "min": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 9
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 12,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:screwdriver",
+                          "weight": 10
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:nugget_mercury_tiny",
+                          "weight": 3
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 31
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 77,
+                        "min": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 0
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 5,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:morning_glory",
+                          "weight": 1
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:filter_coal",
+                          "weight": 5
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 5
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 45,
+                            "min": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 24
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 39,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 3.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:dust",
+                          "weight": 25
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 2.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "minecraft:paper",
+                          "weight": 15
+                        }
+                      ]
+                    }
+                  ]
                 }
-              },
-              "function": "minecraft:set_components"
-            }
-          ],
-          "name": "hbm:blowtorch",
-          "weight": 4
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:chemistry_set",
-          "weight": 15
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:screwdriver",
-          "weight": 10
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:nugget_mercury_tiny",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:morning_glory",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:filter_coal",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:value_check",
+                  "range": {
+                    "max": 77
+                  },
+                  "value": {
+                    "type": "minecraft:uniform",
+                    "max": 93,
+                    "min": 0
+                  }
+                }
+              ]
+            },
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 4
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 9,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:cell_empty",
+                          "weight": 5
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "minecraft:glass_bottle",
+                          "weight": 5
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 9
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 11,
+                            "min": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 0
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 1,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:powder_iodine",
+                          "weight": 1
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:powder_bromine",
+                          "weight": 1
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 11
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 15,
+                        "min": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 0
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 1,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:powder_cobalt",
+                          "weight": 1
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:powder_neodymium",
+                          "weight": 1
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 1
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 3,
+                            "min": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 0
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 1,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:powder_boron",
+                          "weight": 1
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:blueprint_folder_discover",
+                          "weight": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
-          ],
-          "name": "hbm:dust",
-          "weight": 25
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:paper",
-          "weight": 15
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:cell_empty",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:glass_bottle",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:powder_iodine",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:powder_bromine",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:powder_cobalt",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:powder_neodymium",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:powder_boron",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:blueprint_folder_discover",
-          "weight": 1
+          ]
         }
       ],
       "rolls": 1

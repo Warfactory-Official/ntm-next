@@ -6,17 +6,16 @@ package com.hbm.neoforge.mixin.ae2;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.KeyCounter;
 import appeng.api.storage.MEStorage;
+import appeng.me.storage.MEInventoryHandler;
 import com.hbm.integration.ae2.AE2StorageQueries;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Pseudo
-@Mixin(targets = "appeng.me.storage.MEInventoryHandler", remap = false)
+@Mixin(value = MEInventoryHandler.class, remap = false)
 public abstract class MixinMEInventoryHandler {
     public KeyCounter getAvailableStacks() {
         MEStorage storage = (MEStorage) (Object) this;

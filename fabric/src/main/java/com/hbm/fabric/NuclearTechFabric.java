@@ -68,7 +68,7 @@ public final class NuclearTechFabric implements ModInitializer {
         FabricLoader.getInstance().invokeEntrypoints("hbm:addon", Addon.class, Addon::register);
         FabricRegistrar.frozen = true;
         FabricHbmConfig.load();
-        NtmCapabilities.declareAll();
+        NtmCapabilities.declareAll(System.getProperty("fabric-api.datagen") == null);
         FabricCaps.flush();
         NuclearTech.commonSetup();
         NuclearTech.registerFlammability();

@@ -6,7 +6,6 @@ package com.hbm.blockentity.network;
 import com.hbm.api.energymk2.CableData;
 import com.hbm.api.energymk2.PowerGraph;
 import com.hbm.api.redstoneoverradio.IRORValueProvider;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -24,7 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityCableGauge extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, IRORValueProvider, SyncUnitSchema {
+        implements Synced, GraphResident, IRORValueProvider, SyncUnitSchema {
 
     @SyncField(units = 1L << 0)
     private long deltaTick;

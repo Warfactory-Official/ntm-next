@@ -10,6 +10,7 @@ import com.hbm.client.render.CullableRenderer;
 import com.hbm.client.render.MultiblockCrumbling;
 import com.hbm.client.render.MultiblockOutline;
 import com.hbm.client.render.flywheel.FalloutRainVisuals;
+import com.hbm.entity.FarVisible;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -137,7 +138,7 @@ public class MixinLevelExtractor {
             BlockPos pos,
             Operation<Boolean> original,
             @Local(argsOnly = true) Entity entity) {
-        if (original.call(renderer, pos)) return true;
+        if (original.call(renderer, pos) || entity instanceof FarVisible) return true;
         return NuclearTech.MOD_ID.equals(
                         BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getNamespace())
                 && !((CullableRenderer) renderer.entityRenderDispatcher().getRenderer(entity))

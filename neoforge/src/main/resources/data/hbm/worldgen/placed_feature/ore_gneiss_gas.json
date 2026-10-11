@@ -8,6 +8,12 @@
       ]
     },
     {
+      "type": "hbm:ore_host",
+      "host": "hbm:stone_gneiss",
+      "max_y": 39,
+      "min_y": 30
+    },
+    {
       "type": "minecraft:count",
       "count": 15
     },

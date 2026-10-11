@@ -3,7 +3,6 @@
 
 package com.hbm.inventory.recipes.crafting;
 
-import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.network.FluidPipeBlock;
 import com.hbm.blocks.network.FluidPipeBlockItem;
 import com.hbm.inventory.recipes.ingredient.RecipeInputState;
@@ -47,7 +46,7 @@ public class DuctUntypeRecipe extends HbmCustomRecipe {
 
     @Override
     public ItemStack assemble(CraftingInput input) {
-        return new ItemStack(ModBlocks.FLUID_PIPE);
+        return new ItemStack(input.getItem(0).getItem());
     }
 
     @Override

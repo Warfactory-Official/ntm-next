@@ -6,11 +6,15 @@
 package com.hbm.entity.effect;
 
 import com.hbm.client.TorexClientFX;
+import com.hbm.entity.FarVisible;
 import com.hbm.entity.ModEntities;
+import com.hbm.handler.FarTracking;
+import com.hbm.util.ChunkUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.minecraft.SharedConstants;
@@ -30,7 +34,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class EntityNukeTorex extends Entity {
+public class EntityNukeTorex extends Entity implements FarVisible {
 
     public static final int firstCondenseHeight = 130;
     public static final int secondCondenseHeight = 170;
@@ -59,6 +63,7 @@ public class EntityNukeTorex extends Entity {
 
     public boolean didPlaySound = false;
     public boolean didShake = false;
+    public @Nullable CompletableFuture<?> lodSurface;
 
     public int lastRenderSortTick = -1;
 
@@ -128,6 +133,7 @@ public class EntityNukeTorex extends Entity {
         if (this.entityData.get(BIRTH) == Long.MIN_VALUE) {
             this.entityData.set(BIRTH, level().getGameTime() - this.tickCount);
         }
+        if (FarTracking.anyFarViewer(this)) ChunkUtil.holdOwnChunk(this);
         if (age() > maxAge) this.discard();
     }
 
@@ -177,6 +183,12 @@ public class EntityNukeTorex extends Entity {
         }
     }
 
+    private int surface(int x, int z) {
+        return level().getChunkSource().getChunk(x >> 4, z >> 4, false) != null
+                ? level().getHeight(Heightmap.Types.MOTION_BLOCKING, x, z)
+                : TorexClientFX.lodSurface(this, x, z);
+    }
+
     private int simulateTick(int age, boolean live) {
         double s = this.getScaleVal();
         double cs = 1.5;
@@ -189,13 +201,7 @@ public class EntityNukeTorex extends Entity {
         if (lastSpawnY == -1) lastSpawnY = getY() - 3;
 
         int spawnTarget =
-                Math.max(
-                        level().getHeight(
-                                                Heightmap.Types.MOTION_BLOCKING,
-                                                (int) Math.floor(getX()),
-                                                (int) Math.floor(getZ()))
-                                - 3,
-                        1);
+                Math.max(surface((int) Math.floor(getX()), (int) Math.floor(getZ())) - 3, 1);
         double moveSpeed = 0.5D;
         if (Math.abs(spawnTarget - lastSpawnY) < moveSpeed) {
             lastSpawnY = spawnTarget;
@@ -246,11 +252,7 @@ public class EntityNukeTorex extends Entity {
                 double radius = (age + rand.nextDouble() * 2) * 1.5;
                 float rot = (float) (Math.PI * 2 * rand.nextDouble());
                 Vec3 vec = new Vec3(radius, 0, 0).yRot(rot);
-                int gh =
-                        level().getHeight(
-                                        Heightmap.Types.MOTION_BLOCKING,
-                                        (int) (vec.x + getX()) + 1,
-                                        (int) (vec.z + getZ()));
+                int gh = surface((int) (vec.x + getX()) + 1, (int) (vec.z + getZ()));
                 cloudlets.add(
                         new Cloudlet(
                                         vec.x + getX(),

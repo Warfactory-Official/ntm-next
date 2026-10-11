@@ -3,10 +3,13 @@
 
 package com.hbm.blockentity.machine;
 
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.api.fluidmk2.IFluidHandlerMK2;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.data.MachineData;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.packet.SyncField;
 import io.netty.buffer.ByteBuf;
@@ -18,7 +21,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntityMachinePumpSteam extends BlockEntityMachinePumpBase
-        implements IFluidHandlerMK2 {
+        implements FluidTankAccess, IFluidHandlerMK2 {
 
     private static final int STEAM_PER_OP = 100;
 
@@ -42,6 +45,11 @@ public class BlockEntityMachinePumpSteam extends BlockEntityMachinePumpBase
     @Override
     public FluidTankNTM[] getSendingTanks() {
         return sending;
+    }
+
+    @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
     }
 
     @Override
@@ -105,8 +113,18 @@ public class BlockEntityMachinePumpSteam extends BlockEntityMachinePumpBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {water, steam, lps};
+    public int tankCount() {
+        return 3;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return switch (index) {
+            case 0 -> water;
+            case 1 -> steam;
+            case 2 -> lps;
+            default -> throw new IndexOutOfBoundsException(index);
+        };
     }
 
     @Override

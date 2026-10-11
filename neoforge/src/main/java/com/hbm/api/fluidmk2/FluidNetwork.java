@@ -4,37 +4,36 @@
 package com.hbm.api.fluidmk2;
 
 import com.hbm.api.energymk2.IEnergyHandlerMK2.ConnectionPriority;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.blocks.multiblock.MultiblockSurface;
-import com.hbm.capability.MachineCaps;
+import com.hbm.capability.NtmCapabilities.CapRole;
 import com.hbm.capability.NtmCapabilities;
 import com.hbm.platform.BlockLookupCache;
-import com.hbm.platform.IFluidHandlerView;
 import com.hbm.platform.NeoForgeCaps;
-import com.hbm.platform.NeoForgeServerEvents;
 import com.hbm.uninos.graph.*;
+import com.hbm.uninos.graph.Distribution.Bucket;
+import com.hbm.uninos.graph.Distribution.IdentitySet;
+import com.hbm.uninos.graph.Distribution.Total;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.FullChunkStatus;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import org.jspecify.annotations.Nullable;
 
 public final class FluidNetwork {
-    private static final LevelNodeGraph.FaceProbe<PipeData> FACE_PROBE =
-            FluidNetwork::faceHasEndpoint;
 
-    private static final Direction[] DIRS = Direction.VALUES;
+    private static final Domain DOMAIN = new Domain();
+
     private static final int PRIO = ConnectionPriority.VALUES.length;
     private static final int PRESSURES = 6;
     private static final int FOREIGN_PRIO = ConnectionPriority.NORMAL.ordinal();
@@ -46,332 +45,107 @@ public final class FluidNetwork {
     public static void init() {
         FluidCaps.register();
         FlushIndex.init();
-        NeoForgeServerEvents.onServerTickPost(FluidNetwork::onServerTick);
     }
 
-    private static void onServerTick(MinecraftServer server) {
-        for (ServerLevel level : server.getAllLevels()) {
-            for (LevelNodeGraph<PipeData> graph : FluidPipeGraph.all(level)) {
-                graph.applyCompiledSwaps();
-                for (NodeNetwork<PipeData> net : graph.networks()) {
-                    distribute(level, graph, net);
-                }
-            }
-        }
+    static void tick(ServerLevel level, LevelNodeGraph<PipeData> graph) {
+        for (NodeNetwork<PipeData> net : graph.networks()) distribute(level, graph, net);
     }
 
-    static long settleLane(@Nullable List<Supply> provs, Fluid fluid, int lane) {
-        if (provs == null) return 0L;
-        long live = 0L;
-        for (int i = 0; i < provs.size(); i++) {
-            Supply s = provs.get(i);
+    static long settleLane(@Nullable Bucket<IFluidHandlerMK2> providers, Fluid fluid, int lane) {
+        if (providers == null) return 0;
+        for (int i = 0; i < providers.size(); i++) {
+            IFluidHandlerMK2 provider = providers.endpoint(i);
             long now =
                     Math.min(
-                            s.amount,
+                            providers.amount(i),
                             Math.min(
-                                    s.provider.getFluidAvailable(fluid, lane),
-                                    s.provider.getProviderSpeed(fluid, lane)));
-            s.amount = Math.max(now, 0L);
-            live += s.amount;
+                                    provider.getFluidAvailable(fluid, lane),
+                                    provider.getProviderSpeed(fluid, lane)));
+            providers.amount(i, Math.max(now, 0));
         }
-        return live;
+        return providers.total.limit();
     }
 
     public static NetCensus census(
             ServerLevel level, LevelNodeGraph<PipeData> graph, NodeNetwork<PipeData> net) {
-        ReferenceOpenHashSet<IFluidHandlerMK2> provs = new ReferenceOpenHashSet<>();
-        ReferenceOpenHashSet<IFluidHandlerMK2> recs = new ReferenceOpenHashSet<>();
-        for (GraphNode<PipeData> fe : graph.activeFaces(net)) {
-            EdgeFaces ef = fe.ef;
-            if (ef == null) continue;
-            for (int d = 0; d <= EdgeFaces.SELF; d++) {
-                int bit = 1 << d;
-                if ((ef.activeMask & bit) == 0) continue;
-                FaceCache fc = (FaceCache) ef.attachments[d];
-                if (fc == null) continue;
-                boolean roles = (ef.probedMask & bit) != 0;
-                if (!roles || (ef.roleA & bit) != 0) {
-                    IFluidHandlerMK2 prov = fc.provider.find();
-                    if (prov != null) provs.add(prov);
-                }
-                if (!roles || (ef.roleB & bit) != 0) {
-                    IFluidHandlerMK2 rec = fc.receiver.find();
-                    if (rec != null) recs.add(rec);
-                }
-            }
-        }
-        return new NetCensus(net.nodeCount(), net.size(), provs.size(), recs.size(), net.tracker);
+        return DOMAIN.census(graph, net);
     }
 
-    @SuppressWarnings("unchecked")
     public static void distribute(
             ServerLevel level, LevelNodeGraph<PipeData> graph, NodeNetwork<PipeData> net) {
         net.tracker = 0;
         Fluid fluid = componentFluid(graph, net);
         if (fluid == Fluids.EMPTY) return;
-        ReferenceOpenHashSet<GraphNode<PipeData>> faces = graph.drainProbes(net, level, FACE_PROBE);
+        ReferenceOpenHashSet<GraphNode<PipeData>> faces = graph.drainProbes(net, level, DOMAIN);
         if (faces.isEmpty()) return;
-
-        FluidGather pooled = net.fluidGather instanceof FluidGather g ? g : new FluidGather();
-        net.fluidGather = pooled;
-        FluidGather scratch = pooled.inUse ? new FluidGather() : pooled;
-        scratch.reset();
-        scratch.inUse = true;
+        FluidGather scratch = gather(net);
         try {
-            List<Supply>[] providers = scratch.providers;
-            long[] available = scratch.available;
-            List<Demand>[][] receivers = scratch.receivers;
-            long[][] demand = scratch.demand;
-            List<Supply>[][] bufferProviders = scratch.bufferProviders;
-            long[][] bufferSupply = scratch.bufferSupply;
-            List<Demand>[][] bufferReceivers = scratch.bufferReceivers;
-            long[][] bufferHeadroom = scratch.bufferHeadroom;
+            scratch.fluid = fluid;
+            DOMAIN.gather(level, graph, net, faces, scratch);
 
-            ReferenceOpenHashSet<Object> seenForeign = null;
-
-            ReferenceOpenHashSet<IFluidHandlerMK2> seenProviders = null;
-            ReferenceOpenHashSet<IFluidHandlerMK2> seenReceivers = null;
-
-            for (GraphNode<PipeData> fe : faces) {
-                EdgeFaces ef = fe.ef;
-                if (ef == null) continue;
-                for (int d = 0; d <= EdgeFaces.SELF; d++) {
-                    if ((ef.activeMask & (1 << d)) == 0) continue;
-                    FaceCache fc = (FaceCache) ef.attachments[d];
-                    if (fc == null) {
-                        ef.attachments[d] =
-                                fc =
-                                        d == EdgeFaces.SELF
-                                                ? FaceCache.self(level, fe.posKey)
-                                                : FaceCache.face(level, fe.posKey, DIRS[d]);
-                    }
-
-                    int bit = 1 << d;
-                    boolean roles = (ef.probedMask & bit) != 0;
-                    boolean memo = fc.memoLive();
-
-                    IFluidHandlerMK2 prov =
-                            !roles || (ef.roleA & bit) != 0
-                                    ? (memo ? fc.memoProvider : fc.provider.find())
-                                    : null;
-                    if (prov != null) {
-                        if (seenProviders == null) seenProviders = scratch.seenProviders;
-                        if (seenProviders.add(prov)) {
-                            int buffered = prov.bufferedEndpoint() ? bufferTier(prov) : -1;
-                            int[] range = prov.getProvidingPressureRange(fluid);
-                            int lo = clamp(range[0]), hi = clamp(range[1]);
-                            for (int p = lo; p <= hi; p++) {
-                                long avail =
-                                        Math.min(
-                                                prov.getFluidAvailable(fluid, p),
-                                                prov.getProviderSpeed(fluid, p));
-                                if (avail <= 0) continue;
-                                if (buffered >= 0) {
-                                    if (bufferProviders[p][buffered] == null) {
-                                        bufferProviders[p][buffered] =
-                                                scratch.bufferSupplyBucket(p, buffered);
-                                    }
-                                    bufferProviders[p][buffered].add(new Supply(prov, avail));
-                                    bufferSupply[p][buffered] += avail;
-                                    scratch.pool(p)
-                                            .add(
-                                                    prov,
-                                                    buffered,
-                                                    prov.getFluidAvailable(fluid, p),
-                                                    prov.getProviderSpeed(fluid, p),
-                                                    prov.getReceiverSpeed(fluid, p));
-                                } else {
-                                    if (providers[p] == null)
-                                        providers[p] = scratch.supplyBucket(p);
-                                    providers[p].add(new Supply(prov, avail));
-                                    available[p] += avail;
-                                }
-                            }
-                        }
-                    }
-
-                    IFluidHandlerMK2 rec =
-                            !roles || (ef.roleB & bit) != 0
-                                    ? (memo ? fc.memoReceiver : fc.receiver.find())
-                                    : null;
-                    if (rec != null) {
-                        if (seenReceivers == null) seenReceivers = scratch.seenReceivers;
-                        if (seenReceivers.add(rec) && rec.netSubscribed()) {
-                            int pr = rec.getFluidPriority().ordinal();
-                            boolean buffered = rec.bufferedEndpoint();
-                            int[] range = rec.getReceivingPressureRange(fluid);
-                            int lo = clamp(range[0]), hi = clamp(range[1]);
-                            for (int p = lo; p <= hi; p++) {
-                                long dem =
-                                        Math.min(
-                                                rec.getDemand(fluid, p),
-                                                rec.getReceiverSpeed(fluid, p));
-                                if (dem <= 0) continue;
-                                if (buffered) {
-                                    if (bufferReceivers[p][pr] == null) {
-                                        bufferReceivers[p][pr] = scratch.bufferDemandBucket(p, pr);
-                                    }
-                                    bufferReceivers[p][pr].add(new Demand(rec, dem));
-                                    bufferHeadroom[p][pr] += dem;
-                                    scratch.pool(p)
-                                            .add(
-                                                    rec,
-                                                    pr,
-                                                    rec.getFluidAvailable(fluid, p),
-                                                    rec.getProviderSpeed(fluid, p),
-                                                    rec.getReceiverSpeed(fluid, p));
-                                } else {
-                                    if (receivers[p][pr] == null)
-                                        receivers[p][pr] = scratch.demandBucket(p, pr);
-                                    receivers[p][pr].add(new Demand(rec, dem));
-                                    demand[p][pr] += dem;
-                                }
-                            }
-                        }
-                    }
-
-                    if (prov == null && rec == null) {
-                        IFluidHandlerView view = fc.side != null ? fc.foreignView(level) : null;
-                        if (view == null) {
-                            graph.markFaceStale(net, fe, ef, d);
-                        } else {
-                            if (seenForeign == null) seenForeign = scratch.seenForeign;
-                            if (seenForeign.add(view.handlerIdentity())) {
-                                ForeignFluidEndpoint ep = fc.endpointFor(view);
-                                long avail = view.extractable(fluid);
-                                if (avail > 0) {
-                                    if (providers[0] == null)
-                                        providers[0] = scratch.supplyBucket(0);
-                                    providers[0].add(new Supply(ep, avail));
-                                    available[0] += avail;
-                                }
-                                long dem = view.insertable(fluid);
-                                if (dem > 0) {
-                                    if (receivers[0][FOREIGN_PRIO] == null)
-                                        receivers[0][FOREIGN_PRIO] =
-                                                scratch.demandBucket(0, FOREIGN_PRIO);
-                                    receivers[0][FOREIGN_PRIO].add(new Demand(ep, dem));
-                                    demand[0][FOREIGN_PRIO] += dem;
-                                }
-                            }
-                        }
-                    }
+            NetState state = state(net);
+            int[] recCursor = state.receiverCursors;
+            int[] provCursor = state.providerCursors;
+            int lanes = scratch.activeLanes;
+            boolean drained = false;
+            while (lanes != 0) {
+                int p = Integer.numberOfTrailingZeros(lanes);
+                lanes &= lanes - 1;
+                LanePort port = scratch.lanePort(fluid, p);
+                Bucket<IFluidHandlerMK2> providers = scratch.providers[p];
+                Bucket<IFluidHandlerMK2> pass = scratch.passProviders[p];
+                if (drained) {
+                    settleLane(providers, fluid, p);
+                    settleLane(pass, fluid, p);
                 }
-            }
-
-            int[] recCursor = net.receiverCursors;
-            if (recCursor == null) recCursor = net.receiverCursors = new int[PRESSURES * PRIO];
-            int[] provCursor = net.providerCursors;
-            if (provCursor == null)
-                provCursor = net.providerCursors = new int[PRESSURES * (1 + PRIO)];
-
-            long remainingCap = graph.throughputCap(net);
-
-            for (int p = 0; p < PRESSURES; p++) {
-                long bufAvail = 0;
+                Total supply = scratch.supply.set(0);
+                if (providers != null) supply.add(providers.total);
+                if (pass != null) supply.add(pass.total);
+                Total demand = scratch.demand.set(0);
+                Total bufferDemand = scratch.bufferDemand.set(0);
                 for (int t = 0; t < PRIO; t++) {
-                    if (bufferSupply[p][t] <= 0) continue;
-                    bufAvail += bufferSupply[p][t] = settleLane(bufferProviders[p][t], fluid, p);
+                    Bucket<IFluidHandlerMK2> buffered = scratch.bufferProviders[p][t];
+                    if (drained) settleLane(buffered, fluid, p);
+                    if (buffered != null) supply.add(buffered.total);
+                    Bucket<IFluidHandlerMK2> receiver = scratch.receivers[p][t];
+                    if (receiver != null) demand.add(receiver.total);
+                    receiver = scratch.bufferReceivers[p][t];
+                    if (receiver != null) bufferDemand.add(receiver.total);
                 }
-                long avail =
-                        available[p] > 0 ? available[p] = settleLane(providers[p], fluid, p) : 0;
-                if (avail <= 0 && bufAvail <= 0) continue;
-                long totalDemand = 0;
-                for (int pr = 0; pr < PRIO; pr++) totalDemand += demand[p][pr];
-                long bufferDemand = 0;
-                for (int pr = 0; pr < PRIO; pr++) bufferDemand += bufferHeadroom[p][pr];
-                if (totalDemand <= 0 && bufferDemand <= 0) continue;
-
-                long toTransfer = Math.min(avail + bufAvail, totalDemand);
-                if (remainingCap != Long.MAX_VALUE) {
-                    if (remainingCap <= 0) break;
-                    toTransfer = Math.min(toTransfer, remainingCap);
-                }
-                long fluidUsed = 0;
-                for (int pr = PRIO - 1; pr >= 0; pr--) {
-                    List<Demand> list = receivers[p][pr];
-                    long priorityDemand = demand[p][pr];
-                    if (priorityDemand <= 0 || list == null || list.isEmpty() || toTransfer <= 0)
-                        continue;
-
-                    long priorityTransfer = Math.min(toTransfer, priorityDemand);
-                    long priorityUsed = 0;
-                    long remainingDemand = priorityDemand;
-                    int count = list.size();
-                    int cIdx = p * PRIO + pr;
-                    int start = Distribution.normalizedCursor(recCursor[cIdx], count);
-                    for (int step = 0; step < count && priorityUsed < priorityTransfer; step++) {
-                        Demand d = list.get((start + step) % count);
-                        long recDemand = d.amount();
-                        long remainingBudget = priorityTransfer - priorityUsed;
-                        long maxForReceiver = Math.min(recDemand, remainingBudget);
-                        if (maxForReceiver <= 0) {
-                            remainingDemand -= recDemand;
-                            continue;
-                        }
-                        long toSend =
-                                (step == count - 1)
-                                        ? maxForReceiver
-                                        : Distribution.weightedShare(
-                                                remainingBudget,
-                                                recDemand,
-                                                remainingDemand,
-                                                maxForReceiver);
-                        if (toSend <= 0) {
-                            remainingDemand -= recDemand;
-                            continue;
-                        }
-                        long accepted = toSend - d.receiver().transferFluid(fluid, p, toSend);
-                        if (accepted > 0) priorityUsed += Math.min(accepted, toSend);
-                        remainingDemand -= recDemand;
-                    }
-                    recCursor[cIdx] = (start + 1) % count;
-                    fluidUsed += priorityUsed;
-                    toTransfer -= priorityUsed;
-                }
-
-                long owed = fluidUsed;
-                long untaken = avail - Math.min(owed, avail);
-                if (untaken > 0 && bufferDemand > 0) {
-                    long absorbed =
-                            serveTiers(bufferReceivers[p], bufferHeadroom[p], fluid, p, untaken);
-                    fluidUsed += absorbed;
-                    owed += absorbed;
-                }
-
-                net.tracker += fluidUsed;
-                if (remainingCap != Long.MAX_VALUE) remainingCap -= fluidUsed;
-                if (owed > 0) {
-                    long charged =
-                            debitLane(
-                                    providers[p],
-                                    fluid,
-                                    p,
-                                    Math.min(owed, avail),
-                                    available[p],
-                                    provCursor,
-                                    p);
-                    long remainingOwed = owed - charged;
-                    for (int t = 0; t < PRIO && remainingOwed > 0; t++) {
-                        long tierSupply = bufferSupply[p][t];
-                        if (tierSupply <= 0) continue;
-                        remainingOwed -=
-                                debitLane(
-                                        bufferProviders[p][t],
-                                        fluid,
-                                        p,
-                                        Math.min(remainingOwed, tierSupply),
-                                        tierSupply,
-                                        provCursor,
-                                        PRESSURES + p * PRIO + t);
-                    }
-                }
-
+                if (supply.isZero() || (demand.isZero() && bufferDemand.isZero())) continue;
+                drained = true;
+                Delivery delivery = scratch.delivery.at(fluid, p);
+                Total used = scratch.used.set(0);
+                Distribution.serve(
+                        scratch.receivers[p],
+                        supply,
+                        demand,
+                        scratch.settlement,
+                        used,
+                        recCursor,
+                        p * PRIO,
+                        delivery);
+                Total owed = scratch.owed.set(used);
+                used.add(
+                        Distribution.absorbAndDebit(
+                                pass,
+                                providers,
+                                scratch.bufferProviders[p],
+                                scratch.bufferReceivers[p],
+                                bufferDemand,
+                                owed,
+                                scratch.settlement,
+                                delivery,
+                                port,
+                                provCursor,
+                                PRESSURES * (1 + PRIO) + p,
+                                p,
+                                PRESSURES + p * PRIO));
+                meter(net, used.limit());
                 BufferPool<IFluidHandlerMK2> pool = scratch.pools[p];
                 if (pool != null) {
-                    long moved = pool.exchange(scratch.lanePort(fluid, p), PRIO, remainingCap);
-                    net.tracker += moved;
-                    if (remainingCap != Long.MAX_VALUE) remainingCap -= moved;
+                    pool.exchange(port, PRIO, scratch.work.set(0));
+                    meter(net, scratch.work.limit());
                 }
             }
         } finally {
@@ -379,101 +153,33 @@ public final class FluidNetwork {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public static long injectDiode(
-            ServerLevel level,
-            LevelNodeGraph<PipeData> graph,
-            NodeNetwork<PipeData> net,
-            Fluid fluid,
-            int pressure,
-            long amount) {
-        if (amount <= 0 || fluid == Fluids.EMPTY) return amount;
-        int lane = clamp(pressure);
-        ReferenceOpenHashSet<GraphNode<PipeData>> faces = graph.drainProbes(net, level, FACE_PROBE);
-        if (faces.isEmpty()) return amount;
-
-        List<Demand>[] receivers = new List[PRIO];
-        long[] demand = new long[PRIO];
-        long totalDemand = 0;
-        ReferenceOpenHashSet<IFluidHandlerMK2> seen = null;
-        ReferenceOpenHashSet<Object> seenForeign = null;
-
-        for (GraphNode<PipeData> fe : faces) {
-            EdgeFaces ef = fe.ef;
-            if (ef == null) continue;
-            for (int d = 0; d <= EdgeFaces.SELF; d++) {
-                if ((ef.activeMask & (1 << d)) == 0) continue;
-                FaceCache fc = (FaceCache) ef.attachments[d];
-                if (fc == null) {
-                    ef.attachments[d] =
-                            fc =
-                                    d == EdgeFaces.SELF
-                                            ? FaceCache.self(level, fe.posKey)
-                                            : FaceCache.face(level, fe.posKey, DIRS[d]);
-                }
-
-                int bit = 1 << d;
-                boolean roles = (ef.probedMask & bit) != 0;
-                boolean memo = fc.memoLive();
-
-                IFluidHandlerMK2 rec =
-                        !roles || (ef.roleB & bit) != 0
-                                ? (memo ? fc.memoReceiver : fc.receiver.find())
-                                : null;
-                if (rec != null) {
-                    if (seen == null) seen = new ReferenceOpenHashSet<>();
-                    if (seen.add(rec) && rec.netSubscribed()) {
-                        int[] range = rec.getReceivingPressureRange(fluid);
-                        if (lane >= clamp(range[0]) && lane <= clamp(range[1])) {
-                            long dem =
-                                    Math.min(
-                                            rec.getDemand(fluid, lane),
-                                            rec.getReceiverSpeed(fluid, lane));
-                            if (dem > 0) {
-                                int pr = rec.getFluidPriority().ordinal();
-                                if (receivers[pr] == null) receivers[pr] = new ArrayList<>();
-                                receivers[pr].add(new Demand(rec, dem));
-                                demand[pr] += dem;
-                                totalDemand += dem;
-                            }
-                        }
-                    }
-                    continue;
-                }
-
-                if (lane == 0
-                        && rec == null
-                        && fc.side != null
-                        && (roles
-                                ? (ef.roleA & bit) == 0
-                                : (memo ? fc.memoProvider : fc.provider.find()) == null)) {
-                    IFluidHandlerView view = fc.foreignView(level);
-                    if (view != null) {
-                        if (seenForeign == null) seenForeign = new ReferenceOpenHashSet<>();
-                        if (seenForeign.add(view.handlerIdentity())) {
-                            long dem = view.insertable(fluid);
-                            if (dem > 0) {
-                                if (receivers[FOREIGN_PRIO] == null)
-                                    receivers[FOREIGN_PRIO] = new ArrayList<>();
-                                receivers[FOREIGN_PRIO].add(new Demand(fc.endpointFor(view), dem));
-                                demand[FOREIGN_PRIO] += dem;
-                                totalDemand += dem;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (totalDemand <= 0) return amount;
-
-        long fluidUsed = serveTiers(receivers, demand, fluid, lane, Math.min(amount, totalDemand));
-
-        net.tracker += fluidUsed;
-        return amount - fluidUsed;
+    private static final class NetState {
+        @Nullable FluidGather gather;
+        final int[] receiverCursors = new int[PRESSURES * PRIO];
+        final int[] providerCursors = new int[PRESSURES * (2 + PRIO)];
     }
 
-    @SuppressWarnings("unchecked")
+    private static NetState state(NodeNetwork<PipeData> net) {
+        if (net.distributor instanceof NetState state) return state;
+        NetState state = new NetState();
+        net.distributor = state;
+        return state;
+    }
+
+    private static FluidGather gather(NodeNetwork<PipeData> net) {
+        NetState state = state(net);
+        FluidGather pooled = state.gather;
+        if (pooled == null) state.gather = pooled = new FluidGather();
+        FluidGather scratch = pooled.inUse ? new FluidGather() : pooled;
+        scratch.reset();
+        scratch.inUse = true;
+        return scratch;
+    }
+
+    private static void meter(NodeNetwork<PipeData> net, long amount) {
+        net.tracker = Long.MAX_VALUE - net.tracker < amount ? Long.MAX_VALUE : net.tracker + amount;
+    }
+
     public static long provideDirect(
             IFluidHandlerMK2 provider, Fluid fluid, int pressure, List<IFluidHandlerMK2> flush) {
         if (fluid == Fluids.EMPTY || flush.isEmpty()) return 0;
@@ -483,31 +189,28 @@ public final class FluidNetwork {
                         provider.getFluidAvailable(fluid, lane),
                         provider.getProviderSpeed(fluid, lane));
         if (available <= 0) return 0;
-
-        DirectGather pooled = DIRECT;
-        DirectGather scratch = pooled.inUse ? new DirectGather() : pooled;
+        DirectGather scratch = DIRECT.inUse ? new DirectGather() : DIRECT;
         scratch.inUse = true;
         try {
             scratch.reset();
-            List<Demand>[] receivers = scratch.receivers;
-            long[] demand = scratch.demand;
-            long totalDemand = 0;
             for (int i = 0, size = flush.size(); i < size; i++) {
-                IFluidHandlerMK2 rec = flush.get(i);
-                int[] range = rec.getReceivingPressureRange(fluid);
-                if (lane < clamp(range[0]) || lane > clamp(range[1])) continue;
-                long dem = Math.min(rec.getDemand(fluid, lane), rec.getReceiverSpeed(fluid, lane));
-                if (dem <= 0) continue;
-                int pr = rec.getFluidPriority().ordinal();
-                if (receivers[pr] == null) receivers[pr] = scratch.bucket(pr);
-                receivers[pr].add(new Demand(rec, dem));
-                demand[pr] += dem;
-                totalDemand += dem;
+                IFluidHandlerMK2 receiver = flush.get(i);
+                if ((receiver.receivingPressureMask(fluid) & 1 << lane) == 0) continue;
+                long amount =
+                        Math.min(
+                                receiver.getDemand(fluid, lane),
+                                receiver.getReceiverSpeed(fluid, lane));
+                if (amount > 0)
+                    scratch.bucket(receiver.getFluidPriority().ordinal()).add(receiver, amount);
             }
-            if (totalDemand <= 0) return 0;
-
-            long delivered =
-                    serveTiers(receivers, demand, fluid, lane, Math.min(available, totalDemand));
+            Distribution.serveTiers(
+                    scratch.receivers,
+                    scratch.budget.set(available),
+                    scratch.used.set(0),
+                    null,
+                    0,
+                    scratch.delivery.at(fluid, lane));
+            long delivered = scratch.used.limit();
             if (delivered > 0) provider.useUpFluid(fluid, lane, delivered);
             return delivered;
         } finally {
@@ -515,90 +218,24 @@ public final class FluidNetwork {
         }
     }
 
-    private static long debitLane(
-            @Nullable List<Supply> provs,
-            Fluid fluid,
-            int lane,
-            long owed,
-            long supplyTotal,
-            int[] cursor,
-            int cursorIndex) {
-        if (owed <= 0 || provs == null) return 0;
-        int count = provs.size();
-        if (count == 0) return 0;
-        long remainingToDebit = owed;
-        long remainingSupply = supplyTotal;
-        int start = Distribution.normalizedCursor(cursor[cursorIndex], count);
-        for (int step = 0; step < count && remainingToDebit > 0; step++) {
-            Supply s = provs.get((start + step) % count);
-            long supply = s.amount();
-            long maxForProvider = Math.min(supply, remainingToDebit);
-            if (maxForProvider <= 0) {
-                remainingSupply -= supply;
-                continue;
-            }
-            long toUse =
-                    (step == count - 1)
-                            ? maxForProvider
-                            : Distribution.weightedShare(
-                                    remainingToDebit, supply, remainingSupply, maxForProvider);
-            if (toUse <= 0) {
-                remainingSupply -= supply;
-                continue;
-            }
-            s.provider().useUpFluid(fluid, lane, toUse);
-            remainingToDebit -= toUse;
-            remainingSupply -= supply;
-        }
-        cursor[cursorIndex] = (start + 1) % count;
-        return owed - remainingToDebit;
-    }
-
     private static int bufferTier(IFluidHandlerMK2 provider) {
         return provider.getFluidPriority().ordinal();
     }
 
-    private static long serveTiers(
-            List<Demand>[] receivers, long[] demand, Fluid fluid, int lane, long budget) {
-        long fluidUsed = 0;
-        for (int i = PRIO - 1; i >= 0 && budget > 0; i--) {
-            List<Demand> list = receivers[i];
-            long priorityDemand = demand[i];
-            if (priorityDemand <= 0 || list == null || list.isEmpty()) continue;
+    private static final class Delivery implements Distribution.Apply<IFluidHandlerMK2> {
+        private Fluid fluid = Fluids.EMPTY;
+        private int lane;
 
-            long priorityTransfer = Math.min(budget, priorityDemand);
-            long priorityUsed = 0;
-            long remainingDemand = priorityDemand;
-            int count = list.size();
-            for (int step = 0; step < count && priorityUsed < priorityTransfer; step++) {
-                Demand d = list.get(step);
-                long recDemand = d.amount();
-                long remainingBudget = priorityTransfer - priorityUsed;
-                long maxForReceiver = Math.min(recDemand, remainingBudget);
-                if (maxForReceiver <= 0) {
-                    remainingDemand -= recDemand;
-                    continue;
-                }
-                long toSend =
-                        (step == count - 1)
-                                ? maxForReceiver
-                                : Distribution.weightedShare(
-                                        remainingBudget,
-                                        recDemand,
-                                        remainingDemand,
-                                        maxForReceiver);
-                if (toSend <= 0) {
-                    remainingDemand -= recDemand;
-                    continue;
-                }
-                long accepted = toSend - d.receiver().transferFluid(fluid, lane, toSend);
-                if (accepted > 0) priorityUsed += Math.min(accepted, toSend);
-                remainingDemand -= recDemand;
-            }
-            fluidUsed += priorityUsed;
-            budget -= priorityUsed;
+        Delivery at(Fluid fluid, int lane) {
+            this.fluid = fluid;
+            this.lane = lane;
+            return this;
         }
-        return fluidUsed;
+
+        @Override
+        public long give(IFluidHandlerMK2 receiver, long amount) {
+            return amount - receiver.transferFluid(fluid, lane, amount);
+        }
     }
 
     private static int clamp(int p) {
@@ -611,293 +248,225 @@ public final class FluidNetwork {
         return Fluids.EMPTY;
     }
 
-    private static LevelNodeGraph.Probe faceHasEndpoint(
-            ServerLevel level,
-            LevelNodeGraph<PipeData> graph,
-            long cellPos,
-            LevelChunk cellChunk,
-            @Nullable EdgeFaces ef,
-            int faceIndex) {
-        boolean self = faceIndex == EdgeFaces.SELF;
-        long posKey = self ? cellPos : LevelNodeGraph.offset(cellPos, DIRS[faceIndex]);
-        Direction side = self ? null : DIRS[faceIndex].getOpposite();
-        FaceCache fc = ef == null ? null : (FaceCache) ef.attachments[faceIndex];
-        if (fc != null) fc.disarm();
-        int faceX = BlockPos.getX(posKey);
-        int faceZ = BlockPos.getZ(posKey);
-        LevelChunk faceChunk =
-                self ? null : BlockMultiblockCore.readableChunk(level, faceX, faceZ, cellChunk);
-        if (!self && faceChunk == null) {
-            graph.probeBlocker = LevelNodeGraph.chunkOf(posKey);
-            return LevelNodeGraph.Probe.UNKNOWN;
-        }
-        if (!self && graph.containsCell(posKey)) return LevelNodeGraph.Probe.ABSENT;
-        int bit = 1 << faceIndex;
-
-        boolean p = false;
-        boolean r = false;
-        BlockPos npos = BlockPos.of(posKey);
-        BlockEntity owner = null;
-        if (!self) {
-            owner =
-                    level.hbm$endpoints()
-                            .resolve(
-                                    level,
-                                    posKey,
-                                    side,
-                                    MachineCaps.FLUID_IN | MachineCaps.FLUID_OUT);
-            int declaredBits = owner == null ? 0 : level.hbm$endpoints().declared(posKey).domains();
-            p = (declaredBits & MachineCaps.FLUID_OUT) != 0;
-            r = (declaredBits & MachineCaps.FLUID_IN) != 0;
-        }
-        if (!p && !r) {
-            if (!self && level.hbm$endpoints().declared(posKey) != null) {
-                owner = null;
-                if (ef != null) ef.attachments[faceIndex] = null;
-                return LevelNodeGraph.Probe.ABSENT;
-            }
-            owner = null;
-            LevelChunk nchunk = faceChunk;
-            if (!self && !nchunk.getFullStatus().isOrAfter(FullChunkStatus.FULL)) {
-                graph.probeBlocker = LevelNodeGraph.chunkOf(posKey);
-                return LevelNodeGraph.Probe.UNKNOWN;
-            }
-            BlockState nstate = nchunk == null ? null : nchunk.getBlockState(npos);
-            if (nstate != null && MultiblockSurface.isSurface(nstate)) {
-                p =
-                        NtmCapabilities.coreCap(
-                                        level,
-                                        npos,
-                                        nstate,
-                                        side,
-                                        IFluidHandlerMK2.class,
-                                        NtmCapabilities.CapRole.FLUID_OUT)
-                                != null;
-                r =
-                        NtmCapabilities.coreCap(
-                                        level,
-                                        npos,
-                                        nstate,
-                                        side,
-                                        IFluidHandlerMK2.class,
-                                        NtmCapabilities.CapRole.FLUID_IN)
-                                != null;
-                if (p || r) {
-                    owner = MultiblockSurface.resolveOwner(level, npos, nstate, side);
-                }
-            } else {
-                p = NeoForgeCaps.find(FluidCaps.PROVIDER, level, npos, FluidFace.any(side)) != null;
-                r = NeoForgeCaps.find(FluidCaps.RECEIVER, level, npos, FluidFace.any(side)) != null;
-                assert self || !(p || r);
-            }
-            boolean foreign =
-                    !self
-                            && (nstate == null || !NtmCapabilities.ownsFluidExposure(nstate))
-                            && NeoForgeCaps.findFluidHandler(level, npos, side) != null;
-            if (!p && !r && !foreign) {
-                long blocker =
-                        self
-                                ? LevelNodeGraph.NO_BLOCKER
-                                : MultiblockSurface.coreBlockingChunk(level, npos);
-                if (blocker != LevelNodeGraph.NO_BLOCKER) {
-                    graph.probeBlocker = blocker;
-                    return LevelNodeGraph.Probe.UNKNOWN;
-                }
-                if (ef != null) ef.attachments[faceIndex] = null;
-                return LevelNodeGraph.Probe.ABSENT;
-            }
-        }
-        if (ef == null) return LevelNodeGraph.Probe.PRESENT;
-        if (fc == null) {
-            ef.attachments[faceIndex] =
-                    fc =
-                            self
-                                    ? FaceCache.self(level, cellPos)
-                                    : FaceCache.face(level, cellPos, DIRS[faceIndex]);
-        }
-        fc.memoise(level, owner);
-        return role(ef, bit, p, r);
-    }
-
-    private static LevelNodeGraph.Probe role(
-            EdgeFaces ef, int bit, boolean provider, boolean receiver) {
-        if (provider) ef.roleA |= bit;
-        else ef.roleA &= ~bit;
-        if (receiver) ef.roleB |= bit;
-        else ef.roleB &= ~bit;
-        return LevelNodeGraph.Probe.PRESENT;
-    }
-
-    static final class Supply {
-        final IFluidHandlerMK2 provider;
-        long amount;
-
-        Supply(IFluidHandlerMK2 provider, long amount) {
-            this.provider = provider;
-            this.amount = amount;
-        }
-
-        IFluidHandlerMK2 provider() {
-            return provider;
-        }
-
-        long amount() {
-            return amount;
-        }
-    }
-
-    private record Demand(IFluidHandlerMK2 receiver, long amount) {}
-
     private static final class DirectGather {
         @SuppressWarnings("unchecked")
-        final List<Demand>[] receivers = new List[PRIO];
+        final Bucket<IFluidHandlerMK2>[] receivers = new Bucket[PRIO];
 
-        @SuppressWarnings("unchecked")
-        final ArrayList<Demand>[] pool = new ArrayList[PRIO];
-
-        final long[] demand = new long[PRIO];
+        final Delivery delivery = new Delivery();
+        final Total budget = new Total();
+        final Total used = new Total();
+        int populated;
         boolean inUse;
 
-        List<Demand> bucket(int prio) {
-            ArrayList<Demand> l = pool[prio];
-            if (l == null) l = pool[prio] = new ArrayList<>();
-            return l;
+        Bucket<IFluidHandlerMK2> bucket(int priority) {
+            populated |= 1 << priority;
+            Bucket<IFluidHandlerMK2> bucket = receivers[priority];
+            if (bucket == null) receivers[priority] = bucket = new Bucket<>();
+            return bucket;
         }
 
         void reset() {
-            Arrays.fill(receivers, null);
-            Arrays.fill(demand, 0L);
-            for (ArrayList<Demand> l : pool) {
-                if (l != null) l.clear();
+            while (populated != 0) {
+                int priority = Integer.numberOfTrailingZeros(populated);
+                populated &= populated - 1;
+                receivers[priority].clear();
             }
         }
     }
 
-    private static final class FaceCache {
-        final long posKey;
-        final BlockPos npos;
-        final @Nullable Direction side;
-        final BlockLookupCache<IFluidHandlerMK2> provider;
-        final BlockLookupCache<IFluidHandlerMK2> receiver;
-        @Nullable BlockLookupCache<IFluidHandlerView> foreign;
-        @Nullable IFluidHandlerView lastView;
-        @Nullable ForeignFluidEndpoint endpoint;
-        @Nullable IFluidHandlerMK2 memoProvider;
-        @Nullable IFluidHandlerMK2 memoReceiver;
-        private @Nullable BlockEntity anchor;
-        private @Nullable LevelChunk anchorChunk;
+    private static final class Domain
+            extends EndpointDomain<
+                    PipeData, IFluidHandlerMK2, ForeignFluidEndpoint, FluidFace, FaceCache> {
 
-        private FaceCache(ServerLevel level, long posKey, @Nullable Direction side) {
-            this.posKey = posKey;
-            npos = BlockPos.of(posKey);
-            this.side = side;
-            provider =
-                    NeoForgeCaps.createCache(FluidCaps.PROVIDER, level, npos, FluidFace.any(side));
-            receiver =
-                    NeoForgeCaps.createCache(FluidCaps.RECEIVER, level, npos, FluidFace.any(side));
+        Domain() {
+            super(IFluidHandlerMK2.class, CapRole.FLUID_IN, CapRole.FLUID_OUT);
         }
 
-        static FaceCache face(ServerLevel level, long nodeKey, Direction dir) {
-            return new FaceCache(level, LevelNodeGraph.offset(nodeKey, dir), dir.getOpposite());
+        @Override
+        protected BlockCapability<IFluidHandlerMK2, FluidFace> providerToken() {
+            return FluidCaps.PROVIDER;
         }
 
-        static FaceCache self(ServerLevel level, long nodeKey) {
-            return new FaceCache(level, nodeKey, null);
+        @Override
+        protected BlockCapability<IFluidHandlerMK2, FluidFace> receiverToken() {
+            return FluidCaps.RECEIVER;
         }
 
-        @Nullable IFluidHandlerView foreignView(ServerLevel level) {
-            if (foreign == null) foreign = NeoForgeCaps.createFluidHandlerCache(level, npos, side);
-            return foreign.find();
+        @Override
+        protected FluidFace context(
+                LevelNodeGraph<PipeData> graph, long cellPos, @Nullable Direction side) {
+            return FluidFace.of(side, graph.dataAt(cellPos).fluid());
         }
 
-        ForeignFluidEndpoint endpointFor(IFluidHandlerView view) {
-            if (view != lastView) {
-                lastView = view;
-                endpoint = new ForeignFluidEndpoint(view);
-            }
-            return endpoint;
+        @Override
+        protected FaceCache newFace(
+                ServerLevel level, long posKey, @Nullable Direction side, FluidFace context) {
+            return new FaceCache(level, posKey, side, context);
         }
 
-        boolean memoLive() {
-            BlockEntity be = anchor;
-            if (be == null) return false;
-            if (!be.isRemoved() && anchorChunk.getFullStatus().isOrAfter(FullChunkStatus.FULL))
-                return true;
-            disarm();
-            return false;
+        @Override
+        protected boolean fits(FaceCache face, FluidFace context) {
+            return face.fluid == context.fluid();
         }
 
-        void disarm() {
-            anchor = null;
-            anchorChunk = null;
-            memoProvider = null;
-            memoReceiver = null;
-        }
-
-        void memoise(ServerLevel level, @Nullable BlockEntity owner) {
-            if (owner == null) return;
-            IFluidHandlerMK2 p = provider.find();
-            IFluidHandlerMK2 r = receiver.find();
-            BlockEntity pa = p == null ? null : p instanceof BlockEntity be ? be : owner;
-            BlockEntity ra = r == null ? null : r instanceof BlockEntity be ? be : owner;
-            BlockEntity be = pa != null ? pa : ra;
-            if (be == null || (pa != null && ra != null && pa != ra) || be.isRemoved()) return;
-            LevelChunk chunk =
-                    BlockMultiblockCore.readableChunk(
-                            level, be.getBlockPos().getX(), be.getBlockPos().getZ());
-            if (chunk == null) return;
-            anchor = be;
-            anchorChunk = chunk;
-            memoProvider = p;
-            memoReceiver = r;
+        @Override
+        protected boolean foreign(
+                ServerLevel level, BlockPos pos, Direction side, BlockState state) {
+            return !NtmCapabilities.ownsFluidExposure(state)
+                    && Capabilities.Fluid.BLOCK.getCapability((Level) level, pos, null, null, side)
+                            != null;
         }
     }
 
-    private static final class FluidGather {
+    private static final class FaceCache
+            extends GatherFace<
+                    IFluidHandlerMK2, ResourceHandler<FluidResource>, ForeignFluidEndpoint> {
+        final @Nullable Fluid fluid;
+
+        FaceCache(ServerLevel level, long posKey, @Nullable Direction side, FluidFace context) {
+            super(
+                    posKey,
+                    side,
+                    NeoForgeCaps.createCache(
+                            FluidCaps.PROVIDER, level, BlockPos.of(posKey), context),
+                    NeoForgeCaps.createCache(
+                            FluidCaps.RECEIVER, level, BlockPos.of(posKey), context));
+            this.fluid = context.fluid();
+        }
+
+        @Override
+        protected BlockLookupCache<ResourceHandler<FluidResource>> foreignCache(
+                ServerLevel level, BlockPos pos, @Nullable Direction side) {
+            return new NeoForgeCaps.NativeCache<>(
+                    BlockCapabilityCache.create(Capabilities.Fluid.BLOCK, level, pos, side));
+        }
+
+        @Override
+        protected ForeignFluidEndpoint newEndpoint(ResourceHandler<FluidResource> store) {
+            return new ForeignFluidEndpoint(store);
+        }
+
+        @Override
+        protected void rebind(ForeignFluidEndpoint endpoint, ResourceHandler<FluidResource> store) {
+            endpoint.store = store;
+        }
+    }
+
+    private static final class FluidGather
+            implements EndpointDomain.Gatherer<IFluidHandlerMK2, ForeignFluidEndpoint, FaceCache> {
         @SuppressWarnings("unchecked")
-        final List<Supply>[] providers = new List[PRESSURES];
+        final Bucket<IFluidHandlerMK2>[] providers = new Bucket[PRESSURES];
 
         @SuppressWarnings("unchecked")
-        final ArrayList<Supply>[] supplyPool = new ArrayList[PRESSURES];
-
-        final long[] available = new long[PRESSURES];
+        final Bucket<IFluidHandlerMK2>[] passProviders = new Bucket[PRESSURES];
 
         @SuppressWarnings("unchecked")
-        final List<Demand>[][] receivers = new List[PRESSURES][PRIO];
+        final Bucket<IFluidHandlerMK2>[][] receivers = new Bucket[PRESSURES][PRIO];
 
         @SuppressWarnings("unchecked")
-        final ArrayList<Demand>[][] demandPool = new ArrayList[PRESSURES][PRIO];
-
-        final long[][] demand = new long[PRESSURES][PRIO];
+        final Bucket<IFluidHandlerMK2>[][] bufferProviders = new Bucket[PRESSURES][PRIO];
 
         @SuppressWarnings("unchecked")
-        final List<Supply>[][] bufferProviders = new List[PRESSURES][PRIO];
+        final Bucket<IFluidHandlerMK2>[][] bufferReceivers = new Bucket[PRESSURES][PRIO];
 
         @SuppressWarnings("unchecked")
-        final ArrayList<Supply>[][] bufferSupplyPool = new ArrayList[PRESSURES][PRIO];
+        final Bucket<IFluidHandlerMK2>[] populated = new Bucket[PRESSURES * (2 + 3 * PRIO)];
 
-        final long[][] bufferSupply = new long[PRESSURES][PRIO];
-
-        @SuppressWarnings("unchecked")
-        final List<Demand>[][] bufferReceivers = new List[PRESSURES][PRIO];
-
-        @SuppressWarnings("unchecked")
-        final ArrayList<Demand>[][] bufferDemandPool = new ArrayList[PRESSURES][PRIO];
-
-        final long[][] bufferHeadroom = new long[PRESSURES][PRIO];
-        final ReferenceOpenHashSet<IFluidHandlerMK2> seenProviders = new ReferenceOpenHashSet<>();
-        final ReferenceOpenHashSet<IFluidHandlerMK2> seenReceivers = new ReferenceOpenHashSet<>();
-        final ReferenceOpenHashSet<Object> seenForeign = new ReferenceOpenHashSet<>();
+        int populatedCount;
+        int activeLanes;
+        final IdentitySet<IFluidHandlerMK2> seenProviders = new IdentitySet<>();
+        final IdentitySet<IFluidHandlerMK2> seenReceivers = new IdentitySet<>();
+        final IdentitySet<Object> seenForeign = new IdentitySet<>();
+        private long[] foreignPositions = new long[4];
+        private int foreignCount;
 
         @SuppressWarnings("unchecked")
         final BufferPool<IFluidHandlerMK2>[] pools = new BufferPool[PRESSURES];
 
         final LanePort lanePort = new LanePort();
+        final Delivery delivery = new Delivery();
+        final Total supply = new Total();
+        final Total demand = new Total();
+        final Total bufferDemand = new Total();
+        final Total used = new Total();
+        final Total owed = new Total();
+        final Total work = new Total();
+        final Distribution.Settlement settlement = new Distribution.Settlement();
+        Fluid fluid = Fluids.EMPTY;
         boolean inUse;
 
-        BufferPool<IFluidHandlerMK2> pool(int p) {
-            BufferPool<IFluidHandlerMK2> pool = pools[p];
-            if (pool == null) pool = pools[p] = new BufferPool<>();
+        @Override
+        public void provider(IFluidHandlerMK2 prov) {
+            if (!seenProviders.add(prov)) return;
+            int buffered = prov.bufferedEndpoint() ? bufferTier(prov) : -1;
+            int lanes = prov.providingPressureMask(fluid);
+            while (lanes != 0) {
+                int p = Integer.numberOfTrailingZeros(lanes);
+                lanes &= lanes - 1;
+                long avail =
+                        Math.min(prov.getFluidAvailable(fluid, p), prov.getProviderSpeed(fluid, p));
+                if (avail <= 0) continue;
+                if (buffered >= 0) {
+                    bufferSupplyBucket(p, buffered).add(prov, avail);
+                    pool(p).add(
+                                    prov,
+                                    buffered,
+                                    prov.getFluidAvailable(fluid, p),
+                                    prov.getProviderSpeed(fluid, p),
+                                    prov.getReceiverSpeed(fluid, p));
+                } else if (prov.passThrough()) {
+                    passBucket(p).add(prov, avail);
+                } else {
+                    supplyBucket(p).add(prov, avail);
+                }
+            }
+        }
+
+        @Override
+        public void receiver(IFluidHandlerMK2 rec) {
+            if (!seenReceivers.add(rec) || !rec.netSubscribed()) return;
+            int pr = rec.getFluidPriority().ordinal();
+            boolean buffered = rec.bufferedEndpoint();
+            int lanes = rec.receivingPressureMask(fluid);
+            while (lanes != 0) {
+                int p = Integer.numberOfTrailingZeros(lanes);
+                lanes &= lanes - 1;
+                long dem = Math.min(rec.getDemand(fluid, p), rec.getReceiverSpeed(fluid, p));
+                if (dem <= 0) continue;
+                if (buffered) {
+                    bufferDemandBucket(p, pr).add(rec, dem);
+                    pool(p).add(
+                                    rec,
+                                    pr,
+                                    rec.getFluidAvailable(fluid, p),
+                                    rec.getProviderSpeed(fluid, p),
+                                    rec.getReceiverSpeed(fluid, p));
+                } else {
+                    demandBucket(p, pr).add(rec, dem);
+                }
+            }
+        }
+
+        @Override
+        public void foreign(FaceCache fc, ForeignFluidEndpoint ep) {
+            boolean newPos = foreignAt(fc.posKey);
+            if (!seenForeign.add(ep.store) || !newPos) return;
+            long avail = ep.extractable(fluid);
+            long dem = ep.insertable(fluid);
+            if (avail > 0 && dem > 0) {
+                bufferSupplyBucket(0, FOREIGN_PRIO).add(ep, avail);
+                bufferDemandBucket(0, FOREIGN_PRIO).add(ep, dem);
+                pool(0).add(ep, FOREIGN_PRIO, avail, avail, dem);
+            } else if (avail > 0) {
+                supplyBucket(0).add(ep, avail);
+            } else if (dem > 0) {
+                demandBucket(0, FOREIGN_PRIO).add(ep, dem);
+            }
+        }
+
+        BufferPool<IFluidHandlerMK2> pool(int lane) {
+            BufferPool<IFluidHandlerMK2> pool = pools[lane];
+            if (pool == null) pools[lane] = pool = new BufferPool<>();
             return pool;
         }
 
@@ -907,67 +476,56 @@ public final class FluidNetwork {
             return lanePort;
         }
 
-        List<Supply> supplyBucket(int p) {
-            ArrayList<Supply> l = supplyPool[p];
-            if (l == null) l = supplyPool[p] = new ArrayList<>();
-            return l;
+        Bucket<IFluidHandlerMK2> bucket(Bucket<IFluidHandlerMK2>[] row, int index, int lane) {
+            Bucket<IFluidHandlerMK2> bucket = row[index];
+            if (bucket == null) row[index] = bucket = new Bucket<>();
+            if (bucket.isEmpty()) populated[populatedCount++] = bucket;
+            activeLanes |= 1 << lane;
+            return bucket;
         }
 
-        List<Demand> demandBucket(int p, int prio) {
-            ArrayList<Demand> l = demandPool[p][prio];
-            if (l == null) l = demandPool[p][prio] = new ArrayList<>();
-            return l;
+        Bucket<IFluidHandlerMK2> supplyBucket(int lane) {
+            return bucket(providers, lane, lane);
         }
 
-        List<Supply> bufferSupplyBucket(int p, int prio) {
-            ArrayList<Supply> l = bufferSupplyPool[p][prio];
-            if (l == null) l = bufferSupplyPool[p][prio] = new ArrayList<>();
-            return l;
+        Bucket<IFluidHandlerMK2> passBucket(int lane) {
+            return bucket(passProviders, lane, lane);
         }
 
-        List<Demand> bufferDemandBucket(int p, int prio) {
-            ArrayList<Demand> l = bufferDemandPool[p][prio];
-            if (l == null) l = bufferDemandPool[p][prio] = new ArrayList<>();
-            return l;
+        Bucket<IFluidHandlerMK2> demandBucket(int lane, int priority) {
+            return bucket(receivers[lane], priority, lane);
+        }
+
+        Bucket<IFluidHandlerMK2> bufferSupplyBucket(int lane, int priority) {
+            return bucket(bufferProviders[lane], priority, lane);
+        }
+
+        Bucket<IFluidHandlerMK2> bufferDemandBucket(int lane, int priority) {
+            return bucket(bufferReceivers[lane], priority, lane);
+        }
+
+        boolean foreignAt(long posKey) {
+            for (int i = 0; i < foreignCount; i++) if (foreignPositions[i] == posKey) return false;
+            if (foreignCount == foreignPositions.length)
+                foreignPositions = Arrays.copyOf(foreignPositions, foreignCount * 2);
+            foreignPositions[foreignCount++] = posKey;
+            return true;
         }
 
         void reset() {
-            Arrays.fill(providers, null);
-            Arrays.fill(available, 0L);
-            for (List<Demand>[] row : receivers) Arrays.fill(row, null);
-            for (long[] row : demand) Arrays.fill(row, 0L);
-            for (List<Supply>[] row : bufferProviders) Arrays.fill(row, null);
-            for (long[] row : bufferSupply) Arrays.fill(row, 0L);
-            for (List<Demand>[] row : bufferReceivers) Arrays.fill(row, null);
-            for (long[] row : bufferHeadroom) Arrays.fill(row, 0L);
-            for (ArrayList<Supply> l : supplyPool) {
-                if (l != null) l.clear();
-            }
-            for (ArrayList<Demand>[] row : demandPool) {
-                for (ArrayList<Demand> l : row) {
-                    if (l != null) l.clear();
-                }
-            }
-            for (ArrayList<Supply>[] row : bufferSupplyPool) {
-                for (ArrayList<Supply> l : row) {
-                    if (l != null) l.clear();
-                }
-            }
-            for (ArrayList<Demand>[] row : bufferDemandPool) {
-                for (ArrayList<Demand> l : row) {
-                    if (l != null) l.clear();
-                }
-            }
+            for (int i = 0; i < populatedCount; i++) populated[i].clear();
+            populatedCount = 0;
+            activeLanes = 0;
+            foreignCount = 0;
             seenProviders.clear();
             seenReceivers.clear();
             seenForeign.clear();
-            for (BufferPool<IFluidHandlerMK2> pool : pools) {
-                if (pool != null) pool.reset();
-            }
+            for (BufferPool<IFluidHandlerMK2> pool : pools) if (pool != null) pool.reset();
         }
     }
 
-    private static final class LanePort implements BufferPool.Port<IFluidHandlerMK2> {
+    private static final class LanePort
+            implements BufferPool.Port<IFluidHandlerMK2>, Distribution.Apply<IFluidHandlerMK2> {
         Fluid fluid = Fluids.EMPTY;
         int lane;
 
@@ -989,6 +547,12 @@ public final class FluidNetwork {
         @Override
         public void debit(IFluidHandlerMK2 handler, long amount) {
             handler.useUpFluid(fluid, lane, amount);
+        }
+
+        @Override
+        public long give(IFluidHandlerMK2 handler, long amount) {
+            handler.useUpFluid(fluid, lane, amount);
+            return amount;
         }
     }
 }

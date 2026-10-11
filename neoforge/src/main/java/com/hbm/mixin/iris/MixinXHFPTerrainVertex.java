@@ -14,13 +14,11 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Slice;
 
-@Pseudo
 @Mixin(XHFPTerrainVertex.class)
 public abstract class MixinXHFPTerrainVertex {
     @Unique private final Vector3f hbm$normal = new Vector3f();

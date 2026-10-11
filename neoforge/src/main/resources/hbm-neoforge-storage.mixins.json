@@ -1,8 +1,0 @@
-{
-  "required": true,
-  "minVersion": "0.8.5",
-  "package": "com.hbm.neoforge.mixin.storage",
-  "mixins": ["MixinSophisticatedInventory", "MixinSophisticatedStorage", "MixinSophisticatedBackpack",
-    "MixinUpgradeHandler", "MixinBackpackStorage", "MixinItemContentsStorage"],
-  "injectors": { "defaultRequire": 1 }
-}

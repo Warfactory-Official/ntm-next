@@ -3,7 +3,6 @@
 
 package com.hbm.blockentity.bomb;
 
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -21,7 +20,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntityCharge extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, SyncUnitSchema {
+        implements Synced, GraphResident, SyncUnitSchema {
 
     @SyncField(units = 1L << 1)
     public boolean started;

@@ -33,43 +33,8 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineHephaestus extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {11, 0, 1, 1, 1, 1};
-
     public MachineHephaestus(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-
-        for (int dy : new int[] {0, 11}) {
-            visitor.cell(core.offset(1, dy, 0), MASK_EAST);
-            visitor.cell(core.offset(-1, dy, 0), MASK_WEST);
-            visitor.cell(core.offset(0, dy, 1), MASK_SOUTH);
-            visitor.cell(core.offset(0, dy, -1), MASK_NORTH);
-        }
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        for (int dy : new int[] {0, 11}) {
-            visitor.passiveCell(core.offset(1, dy, 0), MASK_ALL, PASSIVE_FLUID_IN);
-            visitor.passiveCell(core.offset(-1, dy, 0), MASK_ALL, PASSIVE_FLUID_IN);
-            visitor.passiveCell(core.offset(0, dy, 1), MASK_ALL, PASSIVE_FLUID_IN);
-            visitor.passiveCell(core.offset(0, dy, -1), MASK_ALL, PASSIVE_FLUID_IN);
-        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.hbm.interfaces.injected.IServerLevelExtension;
 import com.hbm.lib.Library;
 import com.hbm.world.feature.BedrockOreField;
 import com.hbm.world.feature.FractalSimplexNoise;
+import com.hbm.world.feature.Stratum3DRows;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
@@ -22,6 +23,8 @@ public final class NtmWorldgenFields {
     private final long worldDimensionSeed;
     private final long bedrockSeed;
     private final ConcurrentHashMap<Identifier, NoiseEntry> fractals = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Identifier, Stratum3DRows> stratumRows =
+            new ConcurrentHashMap<>();
     private volatile BedrockOreField bedrock;
     private final double coltanX;
     private final double coltanZ;
@@ -92,6 +95,29 @@ public final class NtmWorldgenFields {
                             + octaveCount);
         }
         return entry.noise;
+    }
+
+    public Stratum3DRows stratumRows(Identifier domain, double scaleAlong, double scaleAcross) {
+        Stratum3DRows rows = this.stratumRows.get(domain);
+        if (rows == null) {
+            rows =
+                    this.stratumRows.computeIfAbsent(
+                            domain, key -> new Stratum3DRows(scaleAlong, scaleAcross));
+        }
+        if (rows.scaleAlong != scaleAlong || rows.scaleAcross != scaleAcross) {
+            throw new IllegalArgumentException(
+                    "stratum noise domain "
+                            + domain
+                            + " already samples at "
+                            + rows.scaleAlong
+                            + " x "
+                            + rows.scaleAcross
+                            + ", not "
+                            + scaleAlong
+                            + " x "
+                            + scaleAcross);
+        }
+        return rows;
     }
 
     public int coltanX(double spread) {

@@ -29,6 +29,7 @@ import com.hbm.inventory.container.MenuMachineFluidTank;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Corrosive;
 import com.hbm.inventory.fluid.trait.FT_Flammable;
@@ -77,7 +78,8 @@ import net.minecraft.world.phys.AABB;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineFluidTank extends BlockEntityMachineBase
-        implements FluidFlushSender,
+        implements FluidTankAccess,
+                FluidFlushSender,
                 MenuProvider,
                 IControlReceiver,
                 PersistentDrop,
@@ -115,6 +117,8 @@ public class BlockEntityMachineFluidTank extends BlockEntityMachineBase
 
     @SyncField(units = 1L << 1)
     public final FluidTankNTM tank = new FluidTankNTM(CAPACITY);
+
+    private final FluidTankNTM[] tanks = {tank};
 
     @SyncField(units = 1L << 0)
     public int mode = MODE_RECEIVE;
@@ -397,9 +401,7 @@ public class BlockEntityMachineFluidTank extends BlockEntityMachineBase
 
     @Override
     public FluidTankNTM[] getSendingTanks() {
-        return !isDamaged() && (mode == MODE_SEND || mode == MODE_BUFFER)
-                ? new FluidTankNTM[] {tank}
-                : NO_TANKS;
+        return !isDamaged() && (mode == MODE_SEND || mode == MODE_BUFFER) ? tanks : NO_TANKS;
     }
 
     @Override
@@ -525,8 +527,14 @@ public class BlockEntityMachineFluidTank extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {tank};
+    public int tankCount() {
+        return 1;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        if (index != 0) throw new IndexOutOfBoundsException(index);
+        return tank;
     }
 
     @Override

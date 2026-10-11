@@ -44,6 +44,7 @@ public record BoxDuctModel() implements SimpleBlockModel {
 
         float l = 2 + size, u = 14 - size;
         float jl = hub + size, ju = 16 - hub - size;
+        boolean cable = hub == BoxConduitShapes.CABLE_HUB;
 
         int[] rot = new int[6];
         if ((mask & 0b001111) == 0 && mask > 0) {
@@ -51,13 +52,13 @@ public record BoxDuctModel() implements SimpleBlockModel {
             rot[Direction.DOWN.ordinal()] = 1;
             rot[Direction.NORTH.ordinal()] = 2;
             rot[Direction.SOUTH.ordinal()] = 1;
-            box(b, baker, base, slots, tinted, mask, rot, 0, l, l, 16, u, u);
+            box(b, baker, base, slots, tinted, cable, mask, rot, 0, l, l, 16, u, u);
         } else if ((mask & 0b111100) == 0 && mask > 0) {
             rot[Direction.WEST.ordinal()] = 1;
             rot[Direction.EAST.ordinal()] = 2;
-            box(b, baker, base, slots, tinted, mask, rot, l, l, 0, u, u, 16);
+            box(b, baker, base, slots, tinted, cable, mask, rot, l, l, 0, u, u, 16);
         } else if ((mask & 0b110011) == 0 && mask > 0) {
-            box(b, baker, base, slots, tinted, mask, rot, l, 0, l, u, 16, u);
+            box(b, baker, base, slots, tinted, cable, mask, rot, l, 0, l, u, 16, u);
         } else if (count == 2) {
             if ((nY || pY) && (pX || nX)) {
                 rot[Direction.UP.ordinal()] = 1;
@@ -69,21 +70,21 @@ public record BoxDuctModel() implements SimpleBlockModel {
                 rot[Direction.NORTH.ordinal()] = 2;
                 rot[Direction.SOUTH.ordinal()] = 1;
             }
-            box(b, baker, base, slots, tinted, mask, rot, l, l, l, u, u, u);
-            if (nY) box(b, baker, base, slots, tinted, mask, rot, l, 0, l, u, l, u);
-            if (pY) box(b, baker, base, slots, tinted, mask, rot, l, u, l, u, 16, u);
-            if (nX) box(b, baker, base, slots, tinted, mask, rot, 0, l, l, l, u, u);
-            if (pX) box(b, baker, base, slots, tinted, mask, rot, u, l, l, 16, u, u);
-            if (nZ) box(b, baker, base, slots, tinted, mask, rot, l, l, 0, u, u, l);
-            if (pZ) box(b, baker, base, slots, tinted, mask, rot, l, l, u, u, u, 16);
+            box(b, baker, base, slots, tinted, cable, mask, rot, l, l, l, u, u, u);
+            if (nY) box(b, baker, base, slots, tinted, cable, mask, rot, l, 0, l, u, l, u);
+            if (pY) box(b, baker, base, slots, tinted, cable, mask, rot, l, u, l, u, 16, u);
+            if (nX) box(b, baker, base, slots, tinted, cable, mask, rot, 0, l, l, l, u, u);
+            if (pX) box(b, baker, base, slots, tinted, cable, mask, rot, u, l, l, 16, u, u);
+            if (nZ) box(b, baker, base, slots, tinted, cable, mask, rot, l, l, 0, u, u, l);
+            if (pZ) box(b, baker, base, slots, tinted, cable, mask, rot, l, l, u, u, u, 16);
         } else {
-            box(b, baker, base, slots, tinted, mask, rot, jl, jl, jl, ju, ju, ju);
-            if (nY) box(b, baker, base, slots, tinted, mask, rot, l, 0, l, u, jl, u);
-            if (pY) box(b, baker, base, slots, tinted, mask, rot, l, ju, l, u, 16, u);
-            if (nX) box(b, baker, base, slots, tinted, mask, rot, 0, l, l, jl, u, u);
-            if (pX) box(b, baker, base, slots, tinted, mask, rot, ju, l, l, 16, u, u);
-            if (nZ) box(b, baker, base, slots, tinted, mask, rot, l, l, 0, u, u, jl);
-            if (pZ) box(b, baker, base, slots, tinted, mask, rot, l, l, ju, u, u, 16);
+            box(b, baker, base, slots, tinted, cable, mask, rot, jl, jl, jl, ju, ju, ju);
+            if (nY) box(b, baker, base, slots, tinted, cable, mask, rot, l, 0, l, u, jl, u);
+            if (pY) box(b, baker, base, slots, tinted, cable, mask, rot, l, ju, l, u, 16, u);
+            if (nX) box(b, baker, base, slots, tinted, cable, mask, rot, 0, l, l, jl, u, u);
+            if (pX) box(b, baker, base, slots, tinted, cable, mask, rot, ju, l, l, 16, u, u);
+            if (nZ) box(b, baker, base, slots, tinted, cable, mask, rot, l, l, 0, u, u, jl);
+            if (pZ) box(b, baker, base, slots, tinted, cable, mask, rot, l, l, ju, u, u, 16);
         }
 
         return b.build();
@@ -95,6 +96,7 @@ public record BoxDuctModel() implements SimpleBlockModel {
             ResolvedModel base,
             TextureSlots slots,
             boolean tinted,
+            boolean cable,
             int mask,
             int[] rot,
             float x0,
@@ -270,7 +272,8 @@ public record BoxDuctModel() implements SimpleBlockModel {
                     }
                 });
         for (Direction dir : DIRS) {
-            Material.Baked material = BlockModel.slot(baker, base, slots, slotFor(mask, dir));
+            Material.Baked material =
+                    BlockModel.slot(baker, base, slots, slotFor(mask, dir, cable));
             UvRotation uv = uvs[dir.ordinal()];
             b.addUnculledFace(
                     Boxes.face(
@@ -286,7 +289,7 @@ public record BoxDuctModel() implements SimpleBlockModel {
         }
     }
 
-    private static String slotFor(int mask, Direction side) {
+    private static String slotFor(int mask, Direction side, boolean cable) {
         boolean pX = BoxConduitShapes.maskHas(mask, Direction.EAST);
         boolean nX = BoxConduitShapes.maskHas(mask, Direction.WEST);
         boolean pY = BoxConduitShapes.maskHas(mask, Direction.UP);
@@ -332,7 +335,7 @@ public record BoxDuctModel() implements SimpleBlockModel {
             return "junction";
         }
 
-        return "junction";
+        return cable && BoxConduitShapes.maskHas(mask, side) ? "end" : "junction";
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -40,13 +39,8 @@ public class RBMKOutgasser extends RBMKBase implements ICapabilityBlock {
     }
 
     @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        visitCells(
-                core,
-                facing,
-                (pos, mask) -> {
-                    if (mask == MASK_UP) visitor.passiveCell(pos, MASK_ALL, PASSIVE_ITEMS);
-                });
+    protected int topPassive() {
+        return PASSIVE_ITEMS;
     }
 
     @Override

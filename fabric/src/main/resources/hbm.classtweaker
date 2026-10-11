@@ -69,6 +69,7 @@ transitive-accessible field net/minecraft/client/color/item/ItemTintSources ID_M
 
 transitive-accessible field net/minecraft/server/level/ChunkMap visibleChunkMap Lit/unimi/dsi/fastutil/longs/Long2ObjectLinkedOpenHashMap;
 transitive-accessible method net/minecraft/server/level/ServerChunkCache runDistanceManagerUpdates ()Z
+transitive-accessible method net/minecraft/server/level/ServerChunkCache clearCache ()V
 transitive-accessible class net/minecraft/server/level/ThreadedLevelLightEngine$TaskType
 transitive-accessible method net/minecraft/server/level/ThreadedLevelLightEngine addTask (IILnet/minecraft/server/level/ThreadedLevelLightEngine$TaskType;Ljava/lang/Runnable;)V
 transitive-accessible method net/minecraft/server/level/ThreadedLevelLightEngine addTask (IILjava/util/function/IntSupplier;Lnet/minecraft/server/level/ThreadedLevelLightEngine$TaskType;Ljava/lang/Runnable;)V
@@ -146,6 +147,7 @@ transitive-inject-interface	net/minecraft/client/renderer/entity/state/AvatarRen
 transitive-inject-interface	net/minecraft/world/level/block/piston/PistonMovingBlockEntity	com/hbm/interfaces/injected/MovedBlockEntityData
 transitive-inject-interface	net/minecraft/client/resources/model/geometry/BakedQuad$MaterialInfo	com/hbm/interfaces/injected/IQuadLightOrigin
 transitive-inject-interface	net/minecraft/server/level/ServerLevel	com/hbm/interfaces/injected/CapCacheHost
+transitive-inject-interface	net/minecraft/world/level/block/Block	com/hbm/interfaces/injected/BlockEntityLifecycle
 
 transitive-accessible field net/minecraft/client/renderer/item/ItemStackRenderState layers [Lnet/minecraft/client/renderer/item/ItemStackRenderState$LayerRenderState;
 transitive-accessible field net/minecraft/client/renderer/item/ItemStackRenderState activeLayerCount I
@@ -183,3 +185,18 @@ transitive-accessible field net/minecraft/client/particle/SingleQuadParticle oRo
 transitive-accessible field net/minecraft/client/particle/ParticleGroup particles Ljava/util/Queue;
 transitive-accessible field net/minecraft/core/component/DataComponentExactPredicate expectedComponents Ljava/util/List;
 transitive-accessible field net/minecraft/world/item/component/CustomData tag Lnet/minecraft/nbt/CompoundTag;
+accessible field net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator globalFluidPicker Ljava/util/function/Supplier;
+accessible method net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator doFill (Lnet/minecraft/world/level/levelgen/blending/Blender;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/chunk/ChunkAccess;II)Lnet/minecraft/world/level/chunk/ChunkAccess;
+accessible class net/minecraft/world/level/levelgen/DensityFunctions$BeardifierMarker
+accessible method net/minecraft/world/level/levelgen/NoiseChunk getInterpolatedState ()Lnet/minecraft/world/level/block/state/BlockState;
+accessible field net/minecraft/world/level/levelgen/XoroshiroRandomSource$XoroshiroPositionalRandomFactory seedLo J
+accessible field net/minecraft/world/level/levelgen/XoroshiroRandomSource$XoroshiroPositionalRandomFactory seedHi J
+accessible field net/minecraft/world/level/levelgen/synth/PerlinNoise noiseLevels [Lnet/minecraft/world/level/levelgen/synth/ImprovedNoise;
+accessible field net/minecraft/world/level/levelgen/synth/PerlinNoise amplitudes Lit/unimi/dsi/fastutil/doubles/DoubleList;
+accessible field net/minecraft/world/level/levelgen/synth/PerlinNoise lowestFreqValueFactor D
+accessible field net/minecraft/world/level/levelgen/synth/PerlinNoise lowestFreqInputFactor D
+accessible field net/minecraft/world/level/levelgen/synth/ImprovedNoise p [B
+
+transitive-accessible field net/minecraft/client/renderer/fog/FogRenderer fogEnabled Z
+transitive-accessible method net/minecraft/world/item/BlockItem canPlace (Lnet/minecraft/world/item/context/BlockPlaceContext;Lnet/minecraft/world/level/block/state/BlockState;)Z
+transitive-accessible field net/minecraft/resources/RegistryLoadTask registry Lnet/minecraft/core/WritableRegistry;

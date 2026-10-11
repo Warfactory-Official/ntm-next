@@ -3,7 +3,6 @@
 
 package com.hbm.blockentity.machine.rbmk;
 
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -21,7 +20,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntityRBMKDisplay extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, SyncUnitSchema {
+        implements Synced, GraphResident, SyncUnitSchema {
 
     public static final int SIZE = 7;
     public static final int SCAN_PERIOD = 10;

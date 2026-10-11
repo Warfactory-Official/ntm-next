@@ -5,6 +5,8 @@ package com.hbm.blockentity.machine;
 
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidFlushSender;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.api.redstoneoverradio.IRORValueProvider;
 import com.hbm.api.tile.IHeatSource;
 import com.hbm.blockentity.AudioLoop;
@@ -20,6 +22,7 @@ import com.hbm.explosion.vanillant.standard.ExplosionEffectStandard;
 import com.hbm.explosion.vanillant.standard.PlayerProcessorStandard;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Heatable.HeatingStep;
 import com.hbm.inventory.fluid.trait.FT_Heatable.HeatingType;
@@ -44,7 +47,12 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public abstract class BlockEntityHeatBoilerBase extends BlockEntityMachineBase
-        implements AudioLoop, FluidFlushSender, IFluidCopiable, IRORValueProvider, SyncUnitSchema {
+        implements FluidTankAccess,
+                AudioLoop,
+                FluidFlushSender,
+                IFluidCopiable,
+                IRORValueProvider,
+                SyncUnitSchema {
 
     public static final String[] ROR =
             new String[] {PREFIX_VALUE + "input", PREFIX_VALUE + "output"};
@@ -265,6 +273,11 @@ public abstract class BlockEntityHeatBoilerBase extends BlockEntityMachineBase
     }
 
     @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
+    }
+
+    @Override
     public long getFluidAvailable(Fluid type, int pressure) {
         if (!tanks[1].provides(type) || tanks[1].getPressure() != pressure) return 0L;
         return tanks[1].getFill();
@@ -277,8 +290,13 @@ public abstract class BlockEntityHeatBoilerBase extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     @Override

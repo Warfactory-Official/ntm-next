@@ -17,42 +17,8 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineHydrotreater extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {6, 0, 1, 1, 1, 1};
-
     public MachineHydrotreater(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-
-        for (int i = -1; i <= 1; i += 2) {
-            for (int j = -1; j <= 1; j += 2) {
-                visitor.cell(core.offset(i, 0, j), MachineChemicalPlant.ringMask(i, j));
-            }
-        }
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        for (int i = -1; i <= 1; i += 2) {
-            for (int j = -1; j <= 1; j += 2) {
-                visitor.passiveCell(
-                        core.offset(i, 0, j), MASK_ALL, PASSIVE_POWER_IN | PASSIVE_FLUID_IN);
-            }
-        }
     }
 
     @Override

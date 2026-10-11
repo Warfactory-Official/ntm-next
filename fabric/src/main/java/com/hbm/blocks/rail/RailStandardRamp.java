@@ -3,39 +3,13 @@
 
 package com.hbm.blocks.rail;
 
-import com.hbm.blocks.multiblock.MultiblockHandlerXR;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jspecify.annotations.Nullable;
 
 public class RailStandardRamp extends BlockRailNTM {
-
-    private static final int[] DIMENSIONS = {0, 0, 2, 2, 1, 0};
-    private static final double[] STEP_HEIGHTS = {0.9D, 0.7D, 0.5D, 0.3D, 0.1D};
-
     public RailStandardRamp(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 2;
-    }
-
-    @Override
-    public @Nullable VoxelShape cellShape(
-            int lx, int ly, int lz, Direction facing, boolean open, boolean forCollision) {
-        if (ly > 0) return Shapes.empty();
-        return Shapes.box(0, 0, 0, 1, STEP_HEIGHTS[lz + 2], 1);
     }
 
     @Override
@@ -106,19 +80,5 @@ public class RailStandardRamp extends BlockRailNTM {
     @Override
     public TrackGauge getGauge(Level level, int x, int y, int z) {
         return TrackGauge.STANDARD;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        MultiblockHandlerXR.visitBox(core.above(), getDimensions(), facing, visitor);
-    }
-
-    @Override
-    public boolean checkRequirement(Level level, BlockPos placed, Direction dir, int o) {
-        BlockPos origin = placed.offset(dir.getStepX() * o, dir.getStepY() * o, dir.getStepZ() * o);
-        return MultiblockHandlerXR.checkSpace(level, origin, getDimensions(), placed, dir)
-                && MultiblockHandlerXR.checkSpace(
-                        level, origin.above(), getDimensions(), placed, dir);
     }
 }

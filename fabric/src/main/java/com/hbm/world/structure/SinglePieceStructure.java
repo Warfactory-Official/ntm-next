@@ -3,6 +3,7 @@
 
 package com.hbm.world.structure;
 
+import com.hbm.world.gen.WorldgenHeight;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
@@ -21,7 +22,7 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 
-public final class SinglePieceStructure extends JigsawStructure {
+public final class SinglePieceStructure extends JigsawStructure implements ColumnBiome.SelfTested {
     public static final MapCodec<SinglePieceStructure> CODEC =
             RecordCodecBuilder.<SinglePieceStructure>mapCodec(
                             instance ->
@@ -92,6 +93,7 @@ public final class SinglePieceStructure extends JigsawStructure {
     @Override
     public Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
         return super.findGenerationPoint(context)
+                .filter(stub -> ColumnBiome.valid(stub, context))
                 .flatMap(
                         stub -> {
                             var pieces = stub.getPiecesBuilder().build().pieces();
@@ -119,7 +121,7 @@ public final class SinglePieceStructure extends JigsawStructure {
                                             stub.position(),
                                             output -> {
                                                 int y =
-                                                        averageGround(
+                                                        WorldgenHeight.averageBaseHeight(
                                                                         context,
                                                                         piece.getBoundingBox())
                                                                 + heightOffset;
@@ -130,23 +132,6 @@ public final class SinglePieceStructure extends JigsawStructure {
                                                 output.addPiece(piece);
                                             }));
                         });
-    }
-
-    private static int averageGround(GenerationContext context, BoundingBox footprint) {
-        long total = 0;
-        for (int z = footprint.minZ(); z <= footprint.maxZ(); z++) {
-            for (int x = footprint.minX(); x <= footprint.maxX(); x++) {
-                total +=
-                        context.chunkGenerator()
-                                .getBaseHeight(
-                                        x,
-                                        z,
-                                        Heightmap.Types.OCEAN_FLOOR_WG,
-                                        context.heightAccessor(),
-                                        context.randomState());
-            }
-        }
-        return (int) (total / ((long) footprint.getXSpan() * footprint.getZSpan()));
     }
 
     @Override

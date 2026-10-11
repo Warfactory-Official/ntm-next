@@ -3,7 +3,6 @@
 
 package com.hbm.blockentity.network;
 
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -25,7 +24,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityPipePaintable extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, ICopiable, SyncUnitSchema {
+        implements Synced, GraphResident, ICopiable, SyncUnitSchema {
 
     @SyncField(units = 1L)
     private @Nullable BlockState camo;

@@ -20,6 +20,7 @@ import com.hbm.handler.pollution.PollutionType;
 import com.hbm.inventory.container.MenuMachineRotaryFurnace;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats.MaterialStack;
@@ -57,7 +58,12 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineRotaryFurnace extends BlockEntityMachinePolluting
-        implements FluidTankEndpoint, MenuProvider, IPortHost, IFluidCopiable, SyncUnitSchema {
+        implements FluidTankAccess,
+                FluidTankEndpoint,
+                MenuProvider,
+                IPortHost,
+                IFluidCopiable,
+                SyncUnitSchema {
 
     public static final int SLOT_COUNT = 5;
     public static final int SLOT_FUEL = 4;
@@ -386,8 +392,19 @@ public class BlockEntityMachineRotaryFurnace extends BlockEntityMachinePolluting
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {tanks[0], tanks[1], tanks[2], smoke};
+    public int tankCount() {
+        return 4;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return switch (index) {
+            case 0 -> tanks[0];
+            case 1 -> tanks[1];
+            case 2 -> tanks[2];
+            case 3 -> smoke;
+            default -> throw new IndexOutOfBoundsException(index);
+        };
     }
 
     @Override

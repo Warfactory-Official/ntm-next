@@ -90,6 +90,7 @@ public final class ArmorSocketRenderer {
             ItemJetpack jetpack,
             ItemStack mod,
             int outlineColor) {
+        if (!ArmorWorldRenderer.visible(body, state)) return;
         pose.pushPose();
         ArmorWorldRenderer.enterFrame(pose, body, ArmorWorldRenderer.Bone.BODY, state);
         collector.submitModelPart(
@@ -137,6 +138,7 @@ public final class ArmorSocketRenderer {
             ModelPart body,
             HumanoidRenderState state,
             ItemWings.Kind kind) {
+        if (!ArmorWorldRenderer.visible(body, state)) return;
         MotionRenderState motion = (MotionRenderState) state;
         double rot = Math.sin(state.ageInTicks * 0.2D) * 20;
         double rot2 = Math.sin(state.ageInTicks * 0.2D - Math.PI * 0.5) * 50 + 30;

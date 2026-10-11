@@ -14,6 +14,7 @@ import com.hbm.blocks.network.pneumatic.PneumoTubePaintableBlock;
 import com.hbm.inventory.IGUIProvider;
 import com.hbm.inventory.container.MenuPneumoTube;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.module.ModulePatternMatcher;
 import com.hbm.packet.SyncField;
@@ -43,7 +44,12 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityPneumoTube extends BlockEntityMachineBase
-        implements Audible, IGUIProvider, IFluidHandlerMK2, IControlReceiverFilter, SyncUnitSchema {
+        implements FluidTankAccess,
+                Audible,
+                IGUIProvider,
+                IFluidHandlerMK2,
+                IControlReceiverFilter,
+                SyncUnitSchema {
 
     public static final int SLOT_COUNT = 15;
 
@@ -225,8 +231,8 @@ public class BlockEntityPneumoTube extends BlockEntityMachineBase
     }
 
     @Override
-    public int[] getReceivingPressureRange(Fluid type) {
-        return new int[] {compair.getPressure(), compair.getPressure()};
+    public int receivingPressureMask(Fluid type) {
+        return 1 << compair.getPressure();
     }
 
     public boolean acceptsFluid(Fluid type, Direction dir) {
@@ -384,8 +390,14 @@ public class BlockEntityPneumoTube extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {compair};
+    public int tankCount() {
+        return 1;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        if (index != 0) throw new IndexOutOfBoundsException(index);
+        return compair;
     }
 
     @Override

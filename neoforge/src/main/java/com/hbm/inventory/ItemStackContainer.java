@@ -13,6 +13,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.ContainerUser;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
@@ -23,6 +24,7 @@ public class ItemStackContainer extends SimpleContainer {
     private final @Nullable Player owner;
     private final ItemStack target;
     private final Store store;
+    private boolean writing;
 
     public ItemStackContainer(@Nullable Player owner, ItemStack target, int size) {
         this(owner, target, size, Store.CONTAINER);
@@ -35,6 +37,16 @@ public class ItemStackContainer extends SimpleContainer {
         this.store = store;
 
         store.read(target).copyInto(getItems());
+        if (owner != null) {
+            Inventory inventory = owner.getInventory();
+            int slot;
+            if (owner.getMainHandItem() == target) slot = inventory.getSelectedSlot();
+            else if (owner.getOffhandItem() == target) slot = Inventory.SLOT_OFFHAND;
+            else
+                throw new IllegalArgumentException(
+                        "Item-backed menu target must be held by its owner");
+            InventorySlotBinding.bind(target, inventory, slot);
+        }
     }
 
     public ItemStack target() {
@@ -54,18 +66,24 @@ public class ItemStackContainer extends SimpleContainer {
 
     @Override
     public void setChanged() {
-        store.write(target, ItemContainerContents.fromItems(getItems()));
+        writing = true;
+        try {
+            store.write(target, ItemContainerContents.fromItems(getItems()));
+        } finally {
+            writing = false;
+        }
         if (owner != null && !InventorySlotBinding.isBound(target)) UnstableFuses.changed(owner);
     }
 
     public void refreshFromTarget() {
-        target.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY)
-                .copyInto(getItems());
+        if (writing) return;
+        store.read(target).copyInto(getItems());
     }
 
     @Override
     public boolean stillValid(Player player) {
-        return player == owner
+        return !target.isEmpty()
+                && player == owner
                 && (player.getMainHandItem() == target || player.getOffhandItem() == target);
     }
 

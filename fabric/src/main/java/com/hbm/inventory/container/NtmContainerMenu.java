@@ -28,6 +28,11 @@ public abstract class NtmContainerMenu extends AbstractContainerMenu {
         return Objects.requireNonNull(container, "this menu has no container");
     }
 
+    public final void refreshItemContents(ItemStack target) {
+        if (container instanceof ItemStackContainer view && view.target() == target)
+            view.refreshFromTarget();
+    }
+
     @Override
     public boolean stillValid(Player player) {
         return container == null || container.stillValid(player);

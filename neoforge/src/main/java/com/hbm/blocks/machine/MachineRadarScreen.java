@@ -19,21 +19,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class MachineRadarScreen extends BlockMultiblockCore implements ITickingBlock {
-
-    private static final int[] DIMENSIONS = {1, 0, 0, 0, 1, 0};
-
     public MachineRadarScreen(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
     }
 
     @Override

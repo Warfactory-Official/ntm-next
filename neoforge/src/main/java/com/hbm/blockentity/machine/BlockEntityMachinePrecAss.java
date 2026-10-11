@@ -9,6 +9,8 @@ import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.energymk2.ItemEnergyTransfer;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.blockentity.AudioLoop;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blockentity.IUpgradeInfoProvider;
@@ -307,6 +309,11 @@ public class BlockEntityMachinePrecAss extends BlockEntityMachineBase
     @Override
     public FluidTankNTM[] getSendingTanks() {
         return sending;
+    }
+
+    @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
     }
 
     @Override

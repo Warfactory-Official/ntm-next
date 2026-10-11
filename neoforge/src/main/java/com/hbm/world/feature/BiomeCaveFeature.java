@@ -124,11 +124,9 @@ public class BiomeCaveFeature extends Feature<NoneFeatureConfiguration> {
                 BlockState type = typeFor(biome);
                 if (type == null) continue;
 
-                double n = noise.get(x * SCALE, z * SCALE);
-                if (n <= THRESHOLD) continue;
-
-                int range = (int) ((n - THRESHOLD) * RANGE_MULT);
-                if (range > MAX_RANGE) range = MAX_RANGE * 2 - range;
+                int range =
+                        NoiseBand.halfHeight(
+                                noise.get(x * SCALE, z * SCALE), THRESHOLD, RANGE_MULT, MAX_RANGE);
                 if (range < 0) continue;
 
                 for (int y = Y_LEVEL - range; y <= Y_LEVEL + range; y++) {

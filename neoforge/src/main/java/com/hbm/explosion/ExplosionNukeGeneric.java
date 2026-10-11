@@ -13,7 +13,6 @@ import com.hbm.entity.projectile.EntityB92Beam;
 import com.hbm.entity.projectile.EntityBulletBaseMK4;
 import com.hbm.items.weapon.sedna.factory.ConfettiUtil;
 import com.hbm.lib.ModDamageTypes;
-import com.hbm.platform.IEnergyHandlerView;
 import com.hbm.platform.NeoForgeCaps;
 import com.hbm.util.EntityDamageUtil;
 import java.util.List;
@@ -38,6 +37,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
 
 public final class ExplosionNukeGeneric {
 
@@ -267,10 +268,12 @@ public final class ExplosionNukeGeneric {
     public static boolean drainForeignEnergy(Level world, BlockPos pos) {
         boolean drained = false;
         for (Direction side : Direction.values()) {
-            IEnergyHandlerView view = NeoForgeCaps.findEnergyHandler(world, pos, side);
-            if (view == null) continue;
-            long stored = view.amount();
-            if (stored > 0 && view.extract(stored, 1L, false) > 0) drained = true;
+            EnergyHandler store =
+                    Capabilities.Energy.BLOCK.getCapability(world, pos, null, null, side);
+            if (store == null) continue;
+            long stored = store.getAmountAsLong();
+            if (stored > 0 && NeoForgeCaps.transfer(store, stored, 1L, false, false) > 0)
+                drained = true;
         }
         return drained;
     }
@@ -278,7 +281,8 @@ public final class ExplosionNukeGeneric {
     public static boolean hasDrainableEnergy(Level world, BlockPos pos) {
         if (world.getBlockEntity(pos) instanceof IEnergyHandlerMK2) return true;
         for (Direction side : Direction.values()) {
-            if (NeoForgeCaps.findEnergyHandler(world, pos, side) != null) return true;
+            if (Capabilities.Energy.BLOCK.getCapability(world, pos, null, null, side) != null)
+                return true;
         }
         return false;
     }

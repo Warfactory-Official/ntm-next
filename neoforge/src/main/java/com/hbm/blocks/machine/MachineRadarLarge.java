@@ -23,47 +23,13 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineRadarLarge extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {4, 0, 1, 1, 1, 1};
-
     public MachineRadarLarge(Properties props) {
         super(props);
     }
 
-    private static boolean isConnector(int lx, int ly, int lz) {
-        return ly == 0 && Math.abs(lx) + Math.abs(lz) == 1;
-    }
-
     @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        visitor.cell(core.east(), MASK_EAST, ROLE_POWER_IN);
-        visitor.cell(core.west(), MASK_WEST, ROLE_POWER_IN);
-        visitor.cell(core.south(), MASK_SOUTH, ROLE_POWER_IN);
-        visitor.cell(core.north(), MASK_NORTH, ROLE_POWER_IN);
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        visitor.passiveCell(core.east(), MASK_ALL, PASSIVE_POWER_IN);
-        visitor.passiveCell(core.west(), MASK_ALL, PASSIVE_POWER_IN);
-        visitor.passiveCell(core.south(), MASK_ALL, PASSIVE_POWER_IN);
-        visitor.passiveCell(core.north(), MASK_ALL, PASSIVE_POWER_IN);
-    }
-
-    @Override
-    protected BlockState cellStateFor(int lx, int ly, int lz, Direction facing, int shapeId) {
-        if (!isConnector(lx, ly, lz)) return super.cellStateFor(lx, ly, lz, facing, shapeId);
+    protected BlockState cellStateOfKind(int kind, Direction facing, int shapeId) {
+        if (kind == 0) return super.cellStateOfKind(kind, facing, shapeId);
         return ModBlocks.RADAR_MAST_CELL
                 .get()
                 .defaultBlockState()

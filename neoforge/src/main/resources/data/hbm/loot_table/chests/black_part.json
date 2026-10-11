@@ -5,33 +5,87 @@
     {
       "entries": [
         {
-          "type": "minecraft:item",
-          "functions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "count": {
-                "type": "minecraft:constant",
-                "value": 4.0
-              },
-              "function": "minecraft:set_count"
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:item",
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 9
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 19,
+                        "min": 0
+                      }
+                    }
+                  ],
+                  "functions": [
+                    {
+                      "count": {
+                        "type": "minecraft:constant",
+                        "value": 4.0
+                      },
+                      "function": "minecraft:set_count"
+                    }
+                  ],
+                  "name": "hbm:item_secret_selenium_steel",
+                  "weight": 10
+                },
+                {
+                  "type": "minecraft:item",
+                  "name": "hbm:item_secret_controller",
+                  "weight": 10
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:value_check",
+                  "range": {
+                    "max": 19
+                  },
+                  "value": {
+                    "type": "minecraft:uniform",
+                    "max": 30,
+                    "min": 0
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:item",
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 9
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 10,
+                        "min": 0
+                      }
+                    }
+                  ],
+                  "name": "hbm:item_secret_canister",
+                  "weight": 10
+                },
+                {
+                  "type": "minecraft:item",
+                  "name": "hbm:blueprint_folder_secret",
+                  "weight": 1
+                }
+              ]
             }
-          ],
-          "name": "hbm:item_secret_selenium_steel",
-          "weight": 10
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:item_secret_controller",
-          "weight": 10
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:item_secret_canister",
-          "weight": 10
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:blueprint_folder_secret",
-          "weight": 1
+          ]
         }
       ],
       "rolls": 1

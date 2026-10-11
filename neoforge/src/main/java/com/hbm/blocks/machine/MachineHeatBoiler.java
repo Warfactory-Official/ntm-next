@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -41,44 +40,8 @@ import org.jspecify.annotations.Nullable;
 @RefreshesNeighborState(be = BlockEntityHeatBoiler.class, calling = "refreshHeatBelow")
 public class MachineHeatBoiler extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {3, 0, 1, 1, 1, 1};
-
     public MachineHeatBoiler(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-
-        Direction rot = facing.getClockWise();
-        visitor.cell(core.relative(rot), MASK_WEST);
-        visitor.cell(core.relative(rot.getOpposite()), MASK_EAST);
-        visitor.cell(core.above(3), MASK_UP);
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        Direction rot = facing.getClockWise();
-        visitor.passiveCell(core.relative(rot), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(core.relative(rot.getOpposite()), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(core.above(3), MASK_ALL, PASSIVE_FLUID_IN);
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_NONE;
     }
 
     @Override

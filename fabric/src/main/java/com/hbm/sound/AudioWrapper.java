@@ -4,6 +4,7 @@
 
 package com.hbm.sound;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 
 public class AudioWrapper {
@@ -41,6 +42,10 @@ public class AudioWrapper {
     }
 
     public void startSound() {}
+
+    public void startSound(BlockPos owner) {
+        startSound();
+    }
 
     public void stopSound() {}
 

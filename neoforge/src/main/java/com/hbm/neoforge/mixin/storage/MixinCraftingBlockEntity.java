@@ -4,6 +4,7 @@
 package com.hbm.neoforge.mixin.storage;
 
 import appeng.api.config.Settings;
+import appeng.blockentity.crafting.CraftingBlockEntity;
 import appeng.crafting.inv.ListCraftingInventory;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
 import com.hbm.inventory.InventoryChanges;
@@ -19,15 +20,13 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Pseudo
-@Mixin(targets = "appeng.blockentity.crafting.CraftingBlockEntity", remap = false)
+@Mixin(value = CraftingBlockEntity.class, remap = false, priority = 500)
 public abstract class MixinCraftingBlockEntity implements AE2CraftingSlotSource {
     @Shadow private @Nullable ValueInput previousState;
 

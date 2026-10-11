@@ -4,6 +4,7 @@
 package com.hbm.client.render;
 
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockLayout;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -41,9 +42,10 @@ public final class MachinePlacementOutline {
                             case 3 -> Direction.WEST;
                             default -> Direction.NORTH;
                         });
-        int offset = -block.getOffset();
+        MultiblockLayout.Placement placement = block.placement();
+        int offset = -placement.offset();
         BlockPos placed =
-                hit.getBlockPos().relative(hit.getDirection()).above(block.getHeightOffset());
+                hit.getBlockPos().relative(hit.getDirection()).above(placement.heightOffset());
         BlockPos core =
                 placed.offset(
                         direction.getStepX() * offset,
@@ -53,7 +55,7 @@ public final class MachinePlacementOutline {
                 core,
                 block.placementOutline(direction),
                 block.placementExtraOutlines(direction),
-                block.checkRequirement(level, placed, direction, offset));
+                block.placementClear(level, core, direction));
     }
 
     public static void submit(

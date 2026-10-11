@@ -3,6 +3,7 @@
 
 package com.hbm.packet;
 
+import com.hbm.handler.FarTracking;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.packet.threading.ThreadedPayload;
 import com.hbm.packet.toclient.UnitPayload;
@@ -107,7 +108,7 @@ public final class PacketWire {
     }
 
     public static void sendToAllAround(ThreadedPayload payload, TargetPoint tp) {
-        sendToPlayers(payload, playersAround(tp));
+        sendToPlayers(payload, audience(payload, tp));
     }
 
     public static void sendToAllTracking(ThreadedPayload payload, TargetPoint tp) {
@@ -171,6 +172,19 @@ public final class PacketWire {
         for (ServerPlayer p : all) {
             double dx = tp.x() - p.getX(), dy = tp.y() - p.getY(), dz = tp.z() - p.getZ();
             if (dx * dx + dy * dy + dz * dz < r2) filtered.add(p);
+        }
+        return filtered;
+    }
+
+    public static List<ServerPlayer> audience(ThreadedPayload payload, TargetPoint tp) {
+        if (!(payload instanceof FarAudience)) return playersAround(tp);
+        List<ServerPlayer> all = tp.level().players();
+        List<ServerPlayer> filtered = new ArrayList<>(all.size());
+        double r2 = tp.radius() * tp.radius();
+        for (ServerPlayer p : all) {
+            double dx = tp.x() - p.getX(), dy = tp.y() - p.getY(), dz = tp.z() - p.getZ();
+            double far = FarTracking.range(p);
+            if (dx * dx + dy * dy + dz * dz < r2 || dx * dx + dz * dz < far * far) filtered.add(p);
         }
         return filtered;
     }

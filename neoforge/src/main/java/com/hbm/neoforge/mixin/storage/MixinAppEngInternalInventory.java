@@ -3,6 +3,7 @@
 
 package com.hbm.neoforge.mixin.storage;
 
+import appeng.util.inv.AppEngInternalInventory;
 import com.hbm.inventory.ListSlotSource;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -10,11 +11,9 @@ import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Pseudo
-@Mixin(targets = "appeng.util.inv.AppEngInternalInventory", remap = false)
+@Mixin(value = AppEngInternalInventory.class, remap = false, priority = 500)
 public abstract class MixinAppEngInternalInventory implements ListSlotSource {
     @Shadow @Final @Mutable private NonNullList<ItemStack> stacks;
     @Shadow private boolean inTransactionalCode;

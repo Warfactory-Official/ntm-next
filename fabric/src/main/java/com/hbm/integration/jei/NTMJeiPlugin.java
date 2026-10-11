@@ -102,7 +102,6 @@ public class NTMJeiPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         for (RecipePage<?> page : pages()) addRows(registration, page);
-        registration.addRecipes(RecipeTypes.CRAFTING, CraftingRows.rows());
     }
 
     private <T> void addRows(IRecipeRegistration registration, RecipePage<T> page) {
@@ -116,6 +115,8 @@ public class NTMJeiPlugin implements IModPlugin {
         for (JeiLookupPlugin<?> plugin : lookupPlugins.values())
             addLookupPlugin(registration, plugin);
         registration.addSimpleRecipeManagerPlugin(RecipeTypes.CRAFTING, identifierLookup);
+        registration.addSimpleRecipeManagerPlugin(
+                RecipeTypes.CRAFTING, new CraftingRowsLookup(new CraftingRows()));
     }
 
     @Override
@@ -193,6 +194,34 @@ public class NTMJeiPlugin implements IModPlugin {
             }
             RecipeHolder<CraftingRecipe> current = recipe;
             return current == null ? List.of() : List.of(current);
+        }
+
+        @Override
+        public List<RecipeHolder<CraftingRecipe>> getAllRecipes() {
+            return List.of();
+        }
+    }
+
+    private record CraftingRowsLookup(CraftingRows rows)
+            implements ISimpleRecipeManagerPlugin<RecipeHolder<CraftingRecipe>> {
+        @Override
+        public boolean isHandledInput(ITypedIngredient<?> input) {
+            return !getRecipesForInput(input).isEmpty();
+        }
+
+        @Override
+        public boolean isHandledOutput(ITypedIngredient<?> output) {
+            return !getRecipesForOutput(output).isEmpty();
+        }
+
+        @Override
+        public List<RecipeHolder<CraftingRecipe>> getRecipesForInput(ITypedIngredient<?> input) {
+            return input.getItemStack().map(rows::usesOf).orElse(List.of());
+        }
+
+        @Override
+        public List<RecipeHolder<CraftingRecipe>> getRecipesForOutput(ITypedIngredient<?> output) {
+            return output.getItemStack().map(rows::recipesFor).orElse(List.of());
         }
 
         @Override

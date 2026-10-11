@@ -4,6 +4,7 @@
 package com.hbm.client;
 
 import com.hbm.blockentity.machine.BlockEntityMachinePumpBase;
+import com.hbm.sound.AudioSystem;
 import com.hbm.sound.ModSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -19,16 +20,17 @@ public final class PumpSound {
         if (mc.level == null) return;
         BlockPos pos = be.getBlockPos();
         double x = pos.getX() + 0.5, y = pos.getY() + 0.5, z = pos.getZ() + 0.5;
-        mc.level.playLocalSound(
+        AudioSystem.playMachineSound(
+                mc.level,
+                pos,
                 x,
                 y,
                 z,
                 ModSounds.STEAM_ENGINE_OPERATE.get(),
                 SoundSource.BLOCKS,
                 0.5F,
-                0.75F,
-                false);
-        mc.level.playLocalSound(
-                x, y, z, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS, 1.0F, 0.5F, false);
+                0.75F);
+        AudioSystem.playMachineSound(
+                mc.level, pos, x, y, z, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS, 1.0F, 0.5F);
     }
 }

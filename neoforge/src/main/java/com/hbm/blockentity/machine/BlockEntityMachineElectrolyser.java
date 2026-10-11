@@ -23,6 +23,7 @@ import com.hbm.inventory.container.MenuMachineElectrolyserMetal;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats.MaterialStack;
@@ -65,7 +66,8 @@ import org.jspecify.annotations.Nullable;
         value = {14},
         units = 1L << 2)
 public class BlockEntityMachineElectrolyser extends BlockEntityMachineBase
-        implements IEnergyHandlerMK2,
+        implements FluidTankAccess,
+                IEnergyHandlerMK2,
                 FluidFlushSender,
                 IGUIProvider,
                 IControlReceiver,
@@ -394,8 +396,13 @@ public class BlockEntityMachineElectrolyser extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     @Override

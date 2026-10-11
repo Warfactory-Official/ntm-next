@@ -297,12 +297,12 @@ public class BlockEntityDoorGeneric extends BlockEntityLockableBase implements A
             DoorDecl decl) {
         if (audio != null) audio.stopSound();
         audio = loop == null ? null : loop(door, loop);
-        if (audio != null) audio.startSound();
+        if (audio != null) audio.startSound(getBlockPos());
         playOneShot(door, oneShot);
         if (decl.getSoundLoop2() != null) {
             if (audio2 != null) audio2.stopSound();
             audio2 = loop(door, decl.getSoundLoop2());
-            if (audio2 != null) audio2.startSound();
+            if (audio2 != null) audio2.startSound(getBlockPos());
         }
     }
 
@@ -320,15 +320,16 @@ public class BlockEntityDoorGeneric extends BlockEntityLockableBase implements A
 
     private void playOneShot(DoorDecl door, @Nullable RegistryHandle<SoundEvent> sound) {
         if (sound == null) return;
-        level.playLocalSound(
+        AudioSystem.playMachineSound(
+                level,
+                worldPosition,
                 worldPosition.getX(),
                 worldPosition.getY(),
                 worldPosition.getZ(),
                 sound.get(),
                 SoundSource.BLOCKS,
                 getVolume(door.getSoundVolume()),
-                1F,
-                false);
+                1F);
     }
 
     private void stopAudio() {

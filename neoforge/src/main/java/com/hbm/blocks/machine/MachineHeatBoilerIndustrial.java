@@ -19,7 +19,6 @@ import com.hbm.items.machine.FluidIdentifierItem;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -37,46 +36,13 @@ import org.jspecify.annotations.Nullable;
 @RefreshesNeighborState(be = BlockEntityHeatBoilerIndustrial.class, calling = "refreshHeatBelow")
 public class MachineHeatBoilerIndustrial extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {4, 0, 1, 1, 1, 1};
-
     public MachineHeatBoilerIndustrial(Properties props) {
         super(props);
     }
 
     @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-
-        visitor.cell(core.offset(1, 0, 0), MASK_EAST);
-        visitor.cell(core.offset(-1, 0, 0), MASK_WEST);
-        visitor.cell(core.offset(0, 0, 1), MASK_SOUTH);
-        visitor.cell(core.offset(0, 0, -1), MASK_NORTH);
-        visitor.cell(core.above(4), MASK_UP);
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        visitor.passiveCell(core.offset(1, 0, 0), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(core.offset(-1, 0, 0), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(core.offset(0, 0, 1), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(core.offset(0, 0, -1), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(core.above(4), MASK_ALL, PASSIVE_FLUID_IN);
     }
 
     @Override

@@ -19,6 +19,7 @@ import com.hbm.blocks.multiblock.AssembledMembers;
 import com.hbm.inventory.container.MenuPWR;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Heatable.HeatingStep;
 import com.hbm.inventory.fluid.trait.FT_Heatable.HeatingType;
@@ -62,7 +63,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachinePWRController extends BlockEntityMachineBase
-        implements AudioLoop,
+        implements FluidTankAccess,
+                AudioLoop,
                 IControlReceiver,
                 MenuProvider,
                 FluidFlushSender,
@@ -519,8 +521,13 @@ public class BlockEntityMachinePWRController extends BlockEntityMachineBase
         return amount - accepted;
     }
 
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     @Override

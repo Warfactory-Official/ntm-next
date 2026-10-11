@@ -3,8 +3,11 @@
 
 package com.hbm.sound;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
 
 public final class AudioSystem {
@@ -15,6 +18,29 @@ public final class AudioSystem {
 
     public static void installClientFactory(Factory clientFactory) {
         factory = clientFactory;
+    }
+
+    public static void playMachineSound(
+            Level level,
+            BlockPos owner,
+            double x,
+            double y,
+            double z,
+            SoundEvent sound,
+            SoundSource category,
+            float volume,
+            float pitch) {
+        if (!level.isClientSide()) return;
+        factory.playMachineSound(
+                owner,
+                sound,
+                category,
+                volume,
+                pitch,
+                RandomSource.create(level.getRandom().nextLong()),
+                x,
+                y,
+                z);
     }
 
     @Deprecated
@@ -45,6 +71,17 @@ public final class AudioSystem {
 
     public interface Factory {
         Factory SERVER = new Factory() {};
+
+        default void playMachineSound(
+                BlockPos owner,
+                SoundEvent sound,
+                SoundSource category,
+                float volume,
+                float pitch,
+                RandomSource random,
+                double x,
+                double y,
+                double z) {}
 
         default @Nullable AudioWrapper getLoopedSound(
                 @Nullable SoundEvent sound,

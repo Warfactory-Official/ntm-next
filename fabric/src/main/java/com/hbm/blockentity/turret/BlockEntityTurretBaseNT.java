@@ -21,13 +21,13 @@ import com.hbm.inventory.IGUIProvider;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemTurretBiometry;
 import com.hbm.items.weapon.sedna.BulletConfig;
-import com.hbm.lib.Library;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import com.hbm.particle.SpentCasing;
 import com.hbm.particle.helper.CasingCreator;
 import com.hbm.platform.FabricCaps;
 import com.hbm.sound.ModSounds;
+import com.hbm.uninos.graph.PhysicalGraph;
 import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -779,8 +779,8 @@ public abstract class BlockEntityTurretBaseNT extends BlockEntityMachineBase
     private static int plugBit(
             ServerLevel world, BlockPos cell, Direction side, @Nullable Fluid fluid) {
         boolean connects =
-                Library.canConnect(world, cell, side)
-                        || (fluid != null && Library.canConnectFluid(world, cell, side, fluid));
+                PhysicalGraph.powerContact(world, cell, side)
+                        || (fluid != null && PhysicalGraph.fluidContact(world, cell, side, fluid));
         return connects ? 1 : 0;
     }
 

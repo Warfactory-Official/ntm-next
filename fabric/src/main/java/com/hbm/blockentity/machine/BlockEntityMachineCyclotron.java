@@ -8,6 +8,8 @@ import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.energymk2.ItemEnergyTransfer;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blockentity.IFluidCopiable;
 import com.hbm.blockentity.IUpgradeInfoProvider;
@@ -17,6 +19,7 @@ import com.hbm.capability.port.ItemPort;
 import com.hbm.inventory.container.ContainerSync;
 import com.hbm.inventory.container.MenuMachineCyclotron;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.CyclotronRecipe;
 import com.hbm.inventory.recipes.CyclotronRecipes;
@@ -43,7 +46,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineCyclotron extends BlockEntityMachineBase
-        implements IEnergyHandlerMK2,
+        implements FluidTankAccess,
+                IEnergyHandlerMK2,
                 FluidTankEndpoint,
                 MenuProvider,
                 IUpgradeInfoProvider,
@@ -273,6 +277,11 @@ public class BlockEntityMachineCyclotron extends BlockEntityMachineBase
     }
 
     @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
+    }
+
+    @Override
     public int[] getValidUpgrades() {
         return VALID_UPGRADES;
     }
@@ -335,8 +344,18 @@ public class BlockEntityMachineCyclotron extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {water, steam, amat};
+    public int tankCount() {
+        return 3;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return switch (index) {
+            case 0 -> water;
+            case 1 -> steam;
+            case 2 -> amat;
+            default -> throw new IndexOutOfBoundsException(index);
+        };
     }
 
     @Override

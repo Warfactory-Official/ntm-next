@@ -9,6 +9,7 @@ import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blockentity.IFluidCopiable;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.CrackingRecipe;
 import com.hbm.inventory.recipes.CrackingRecipes;
@@ -24,7 +25,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntityMachineCrackingTower extends BlockEntityMachineBase
-        implements IFluidHandlerMK2, IFluidCopiable, SyncUnitSchema {
+        implements FluidTankAccess, IFluidHandlerMK2, IFluidCopiable, SyncUnitSchema {
 
     public static final int TANK_COUNT = 5;
     public static final int CRACK_PERIOD = 5;
@@ -155,8 +156,13 @@ public class BlockEntityMachineCrackingTower extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     @Override

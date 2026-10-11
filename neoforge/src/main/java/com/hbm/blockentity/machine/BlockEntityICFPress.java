@@ -9,6 +9,7 @@ import com.hbm.blockentity.IFluidCopiable;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.inventory.container.MenuICFPress;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats.MaterialStack;
@@ -37,7 +38,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityICFPress extends BlockEntityMachineBase
-        implements IFluidHandlerMK2, MenuProvider, IFluidCopiable, SyncUnitSchema {
+        implements FluidTankAccess, IFluidHandlerMK2, MenuProvider, IFluidCopiable, SyncUnitSchema {
 
     public static final int SLOT_EMPTY_PELLET = 0;
     public static final int SLOT_OUTPUT = 1;
@@ -156,8 +157,13 @@ public class BlockEntityICFPress extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     @Override

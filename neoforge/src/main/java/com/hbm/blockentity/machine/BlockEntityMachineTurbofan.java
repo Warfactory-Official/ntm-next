@@ -8,6 +8,8 @@ import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.energymk2.ItemEnergyTransfer;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.blockentity.AudioLoop;
 import com.hbm.blockentity.BlockEntityMachinePolluting;
 import com.hbm.blockentity.IFluidCopiable;
@@ -18,6 +20,7 @@ import com.hbm.handler.threading.TargetPoint;
 import com.hbm.inventory.container.MenuMachineTurbofan;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Combustible.FuelGrade;
 import com.hbm.inventory.fluid.trait.FT_Combustible;
@@ -66,7 +69,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineTurbofan extends BlockEntityMachinePolluting
-        implements AudioLoop,
+        implements FluidTankAccess,
+                AudioLoop,
                 IEnergyHandlerMK2,
                 FluidTankEndpoint,
                 MenuProvider,
@@ -382,8 +386,18 @@ public class BlockEntityMachineTurbofan extends BlockEntityMachinePolluting
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return all;
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
+    }
+
+    @Override
+    public int tankCount() {
+        return all.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return all[index];
     }
 
     @Override

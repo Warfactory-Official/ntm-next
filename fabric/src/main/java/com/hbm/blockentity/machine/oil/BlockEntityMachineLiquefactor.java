@@ -8,6 +8,8 @@ import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.energymk2.ItemEnergyTransfer;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blockentity.IFluidCopiable;
 import com.hbm.blockentity.IUpgradeInfoProvider;
@@ -15,6 +17,7 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.inventory.container.MenuMachineLiquefactor;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.LiquefactionRecipes;
 import com.hbm.items.machine.upgrade.ItemMachineUpgrade;
@@ -38,7 +41,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineLiquefactor extends BlockEntityMachineBase
-        implements IEnergyHandlerMK2,
+        implements FluidTankAccess,
+                IEnergyHandlerMK2,
                 FluidTankEndpoint,
                 MenuProvider,
                 IUpgradeInfoProvider,
@@ -159,6 +163,11 @@ public class BlockEntityMachineLiquefactor extends BlockEntityMachineBase
     }
 
     @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
+    }
+
+    @Override
     public int[] getSlotsForFace(Direction side) {
         return ACCESSIBLE_SLOTS;
     }
@@ -195,8 +204,14 @@ public class BlockEntityMachineLiquefactor extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {tank};
+    public int tankCount() {
+        return 1;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        if (index != 0) throw new IndexOutOfBoundsException(index);
+        return tank;
     }
 
     @Override

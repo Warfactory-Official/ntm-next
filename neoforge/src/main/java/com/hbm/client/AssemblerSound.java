@@ -4,11 +4,11 @@
 package com.hbm.client;
 
 import com.hbm.blockentity.machine.BlockEntityMachineAssemblyMachine;
+import com.hbm.client.sound.MachineSoundInstance;
 import com.hbm.sound.ModSounds;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -58,7 +58,8 @@ public final class AssemblerSound {
         Minecraft.getInstance()
                 .getSoundManager()
                 .play(
-                        new SimpleSoundInstance(
+                        new MachineSoundInstance(
+                                pos,
                                 sound,
                                 SoundSource.BLOCKS,
                                 volume,

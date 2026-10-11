@@ -3,7 +3,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -171,7 +170,7 @@ public class BlockDynamicSlag extends Block implements EntityBlock {
     }
 
     public static class BlockEntitySlag extends BlockEntity
-            implements Synced, SyncUnitSchema, GraphResident, FoldedCoreResident {
+            implements Synced, SyncUnitSchema, GraphResident {
 
         public static final int MAX_AMOUNT = MaterialShapes.BLOCK.q(16);
 

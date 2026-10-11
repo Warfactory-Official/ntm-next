@@ -4,6 +4,7 @@
 package com.hbm.entity.logic;
 
 import com.hbm.client.ClientEffects;
+import com.hbm.entity.FarVisible;
 import com.hbm.explosion.vanillant.ExplosionVNT;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.particle.helper.ExplosionSmallCreator;
@@ -23,7 +24,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class EntityPlaneBase extends Entity {
+public abstract class EntityPlaneBase extends Entity implements FarVisible {
 
     private static final EntityDataAccessor<Float> DATA_HEALTH =
             SynchedEntityData.defineId(EntityPlaneBase.class, EntityDataSerializers.FLOAT);

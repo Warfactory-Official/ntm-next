@@ -3,6 +3,7 @@
 
 package com.hbm.world.structure;
 
+import com.hbm.world.gen.WorldgenHeight;
 import com.hbm.world.gen.nbt.LegacyPlacement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -12,10 +13,8 @@ import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.levelgen.FlatLevelSource;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -23,7 +22,7 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 
-public final class LegacyJigsawStructure extends JigsawStructure {
+public final class LegacyJigsawStructure extends JigsawStructure implements ColumnBiome.SelfTested {
     public static final MapCodec<LegacyJigsawStructure> CODEC =
             RecordCodecBuilder.<LegacyJigsawStructure>mapCodec(
                             instance ->
@@ -86,41 +85,54 @@ public final class LegacyJigsawStructure extends JigsawStructure {
 
     @Override
     public Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
-        return super.findGenerationPoint(context)
-                .map(
-                        stub ->
-                                new GenerationStub(
-                                        stub.position(),
-                                        output -> {
-                                            List<StructurePiece> pieces =
-                                                    stub.getPiecesBuilder().build().pieces();
-                                            PoolElementStructurePiece anchor = null;
-                                            for (StructurePiece piece : pieces) {
-                                                if (!placement(piece).alignToTerrain()) {
-                                                    anchor = (PoolElementStructurePiece) piece;
-                                                    break;
-                                                }
-                                            }
-                                            if (anchor != null) {
-                                                int dy =
-                                                        grounded(context, anchor)
-                                                                - anchor.getBoundingBox().minY();
-                                                for (StructurePiece piece : pieces) {
-                                                    if (!placement(piece).alignToTerrain())
-                                                        piece.move(0, dy, 0);
-                                                }
-                                            }
-                                            for (StructurePiece piece : pieces) {
-                                                if (placement(piece).alignToTerrain()) {
-                                                    piece.move(
-                                                            0,
-                                                            grounded(context, piece)
-                                                                    - piece.getBoundingBox().minY(),
-                                                            0);
-                                                }
-                                            }
-                                            pieces.forEach(output::addPiece);
-                                        }));
+        Optional<GenerationStub> point =
+                super.findGenerationPoint(context).filter(stub -> ColumnBiome.valid(stub, context));
+        return point.map(
+                stub ->
+                        new GenerationStub(
+                                stub.position(),
+                                output -> {
+                                    List<StructurePiece> pieces =
+                                            stub.getPiecesBuilder().build().pieces();
+                                    int[] averages =
+                                            context.chunkGenerator()
+                                                                    instanceof
+                                                                    StructureGrounding grounding
+                                                            && grounding.modifiesGround(
+                                                                    this, context)
+                                                    ? grounding.groundAverages(context, pieces)
+                                                    : null;
+                                    PoolElementStructurePiece anchor = null;
+                                    int anchorIndex = 0;
+                                    for (int i = 0; i < pieces.size(); i++) {
+                                        StructurePiece piece = pieces.get(i);
+                                        if (!placement(piece).alignToTerrain()) {
+                                            anchor = (PoolElementStructurePiece) piece;
+                                            anchorIndex = i;
+                                            break;
+                                        }
+                                    }
+                                    if (anchor != null) {
+                                        int dy =
+                                                grounded(context, anchor, averages, anchorIndex)
+                                                        - anchor.getBoundingBox().minY();
+                                        for (StructurePiece piece : pieces) {
+                                            if (!placement(piece).alignToTerrain())
+                                                piece.move(0, dy, 0);
+                                        }
+                                    }
+                                    for (int i = 0; i < pieces.size(); i++) {
+                                        StructurePiece piece = pieces.get(i);
+                                        if (placement(piece).alignToTerrain()) {
+                                            piece.move(
+                                                    0,
+                                                    grounded(context, piece, averages, i)
+                                                            - piece.getBoundingBox().minY(),
+                                                    0);
+                                        }
+                                    }
+                                    pieces.forEach(output::addPiece);
+                                }));
     }
 
     private static LegacyPlacement placement(StructurePiece piece) {
@@ -132,28 +144,18 @@ public final class LegacyJigsawStructure extends JigsawStructure {
                         + " declares no legacy placement");
     }
 
-    private int grounded(GenerationContext context, StructurePiece piece) {
-        int y = averageGround(context, piece.getBoundingBox()) + placement(piece).heightOffset();
-        return context.chunkGenerator() instanceof FlatLevelSource
-                ? y
-                : Math.clamp(y, minHeight, maxHeight);
+    private int grounded(
+            GenerationContext context, StructurePiece piece, int[] averages, int index) {
+        int y =
+                (averages == null
+                                ? WorldgenHeight.averageBaseHeight(context, piece.getBoundingBox())
+                                : averages[index])
+                        + placement(piece).heightOffset();
+        return context.chunkGenerator() instanceof FlatLevelSource ? y : clampHeight(y);
     }
 
-    private static int averageGround(GenerationContext context, BoundingBox footprint) {
-        long total = 0;
-        for (int z = footprint.minZ(); z <= footprint.maxZ(); z++) {
-            for (int x = footprint.minX(); x <= footprint.maxX(); x++) {
-                total +=
-                        context.chunkGenerator()
-                                .getBaseHeight(
-                                        x,
-                                        z,
-                                        Heightmap.Types.OCEAN_FLOOR_WG,
-                                        context.heightAccessor(),
-                                        context.randomState());
-            }
-        }
-        return (int) (total / ((long) footprint.getXSpan() * footprint.getZSpan()));
+    public int clampHeight(int height) {
+        return Math.clamp(height, minHeight, maxHeight);
     }
 
     @Override

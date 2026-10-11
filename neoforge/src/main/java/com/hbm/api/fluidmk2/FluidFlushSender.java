@@ -27,7 +27,5 @@ public interface FluidFlushSender extends IFluidHandlerMK2 {
         for (FluidTankNTM tank : getSendingTanks()) visitor.accept(tank);
     }
 
-    default void declareFlush(FlushLanes out) {
-        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
-    }
+    void declareFlush(FlushLanes out);
 }

@@ -3,7 +3,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -92,7 +91,7 @@ public class BlockLoot extends Block implements EntityBlock {
     }
 
     public static class BlockEntityLoot extends BlockEntity
-            implements Synced, SyncUnitSchema, GraphResident, FoldedCoreResident {
+            implements Synced, SyncUnitSchema, GraphResident {
 
         private static final String ITEMS = "items";
 

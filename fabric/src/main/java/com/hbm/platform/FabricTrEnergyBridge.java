@@ -21,103 +21,53 @@ public final class FabricTrEnergyBridge {
 
     private FabricTrEnergyBridge() {}
 
-    public static @Nullable IEnergyHandlerView find(
+    public static @Nullable EnergyStorage find(
             Level level, BlockPos pos, @Nullable Direction side) {
-        EnergyStorage storage = EnergyStorage.SIDED.find(level, pos, side);
-        return storage == null ? null : new FabricEnergyHandlerView(storage);
+        return FabricTrEnergy.AVAILABLE ? EnergyStorage.SIDED.find(level, pos, side) : null;
     }
 
-    public static BlockLookupCache<IEnergyHandlerView> createCache(
+    public static BlockLookupCache<EnergyStorage> createCache(
             ServerLevel level, BlockPos pos, @Nullable Direction side) {
-        BlockApiCache<EnergyStorage, @Nullable Direction> cache =
-                BlockApiCache.create(EnergyStorage.SIDED, level, pos);
-        return new BlockLookupCache<>() {
-            private @Nullable EnergyStorage last;
-            private @Nullable IEnergyHandlerView view;
-
-            @Override
-            public @Nullable IEnergyHandlerView find() {
-                if (!level.isLoaded(pos)) return null;
-                EnergyStorage storage = cache.find(side);
-                if (storage == null) return null;
-                if (storage != last) {
-                    last = storage;
-                    view = new FabricEnergyHandlerView(storage);
-                }
-                return view;
-            }
-        };
+        return new FabricCaps.ApiCache<>(
+                level, pos, side, BlockApiCache.create(EnergyStorage.SIDED, level, pos));
     }
 
-    private record FabricEnergyHandlerView(EnergyStorage storage) implements IEnergyHandlerView {
-
-        @Override
-        public Object handlerIdentity() {
-            return storage;
-        }
-
-        @Override
-        public long amount() {
-            return storage.getAmount();
-        }
-
-        @Override
-        public long capacity() {
-            return storage.getCapacity();
-        }
-
-        @Override
-        public long insertable() {
-            try (Transaction tx = Transaction.openOuter()) {
-                return storage.insert(Integer.MAX_VALUE, tx);
-            }
-        }
-
-        @Override
-        public long extractable() {
-            try (Transaction tx = Transaction.openOuter()) {
-                return storage.extract(Integer.MAX_VALUE, tx);
-            }
-        }
-
-        @Override
-        public long insert(long maxFe, long feQuantum, boolean simulate) {
-            return transfer(maxFe, feQuantum, simulate, true);
-        }
-
-        @Override
-        public long extract(long maxFe, long feQuantum, boolean simulate) {
-            return transfer(maxFe, feQuantum, simulate, false);
-        }
-
-        private long transfer(long maxFe, long feQuantum, boolean simulate, boolean insert) {
-            assert feQuantum > 0;
-            long request = Math.min(maxFe, Integer.MAX_VALUE);
-            request -= request % feQuantum;
-            if (request <= 0) return 0;
-
-            try (Transaction outer = Transaction.openOuter()) {
-                long available;
-                try (Transaction probe = outer.openNested()) {
-                    available =
-                            insert
-                                    ? storage.insert(request, probe)
-                                    : storage.extract(request, probe);
-                }
-                long exact = available - available % feQuantum;
-                if (exact <= 0) return 0;
-
-                long moved = insert ? storage.insert(exact, outer) : storage.extract(exact, outer);
-                if (moved != exact) return 0;
-                if (!simulate) outer.commit();
-                return exact;
-            }
-        }
-    }
-
-    public static @Nullable IEnergyHandlerView findItem(Container container, int slot) {
+    public static @Nullable EnergyStorage findItem(Container container, int slot) {
         SingleSlotStorage<ItemVariant> backing = ContainerStorage.of(container, null).getSlot(slot);
-        EnergyStorage storage = ContainerItemContext.ofSingleSlot(backing).find(EnergyStorage.ITEM);
-        return storage == null ? null : new FabricEnergyHandlerView(storage);
+        return ContainerItemContext.ofSingleSlot(backing).find(EnergyStorage.ITEM);
+    }
+
+    public static long insertable(EnergyStorage store) {
+        try (Transaction tx = Transaction.openOuter()) {
+            return store.insert(Integer.MAX_VALUE, tx);
+        }
+    }
+
+    public static long extractable(EnergyStorage store) {
+        try (Transaction tx = Transaction.openOuter()) {
+            return store.extract(Integer.MAX_VALUE, tx);
+        }
+    }
+
+    public static long transfer(
+            EnergyStorage store, long maxFe, long feQuantum, boolean simulate, boolean insert) {
+        assert feQuantum > 0;
+        long request = Math.min(maxFe, Integer.MAX_VALUE);
+        request -= request % feQuantum;
+        if (request <= 0) return 0;
+
+        try (Transaction outer = Transaction.openOuter()) {
+            long available;
+            try (Transaction probe = outer.openNested()) {
+                available = insert ? store.insert(request, probe) : store.extract(request, probe);
+            }
+            long exact = available - available % feQuantum;
+            if (exact <= 0) return 0;
+
+            long moved = insert ? store.insert(exact, outer) : store.extract(exact, outer);
+            if (moved != exact) return 0;
+            if (!simulate) outer.commit();
+            return exact;
+        }
     }
 }

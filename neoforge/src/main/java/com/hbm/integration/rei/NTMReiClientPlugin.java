@@ -98,17 +98,6 @@ public class NTMReiClientPlugin implements REIClientPlugin {
     public void registerDisplays(DisplayRegistry registry) {
         identifierRecipe = null;
         for (RecipePage<?> page : pages()) addRows(registry, page);
-        for (RecipeHolder<CraftingRecipe> row : CraftingRows.rows()) {
-            ShapelessCraftingRecipeDisplay display =
-                    (ShapelessCraftingRecipeDisplay) row.value().display().getFirst();
-            registry.add(
-                    new DefaultCustomShapelessDisplay(
-                            display.ingredients().stream()
-                                    .map(EntryIngredients::ofSlotDisplay)
-                                    .toList(),
-                            List.of(EntryIngredients.ofSlotDisplay(display.result())),
-                            Optional.of(row.id().identifier())));
-        }
         registry.registerVisibilityPredicate(
                 (category, display) ->
                         display instanceof ReiPageDisplay page
@@ -143,6 +132,41 @@ public class NTMReiClientPlugin implements REIClientPlugin {
                         return recipe == null ? Optional.empty() : Optional.of(List.of(recipe));
                     }
                 });
+        registry.registerDisplayGenerator(
+                BuiltinPlugin.CRAFTING, new CraftingRowsGenerator(new CraftingRows()));
+    }
+
+    private record CraftingRowsGenerator(CraftingRows rows)
+            implements DynamicDisplayGenerator<CraftingDisplay> {
+        @Override
+        public Optional<List<CraftingDisplay>> getRecipeFor(EntryStack<?> entry) {
+            return entry.getValue() instanceof ItemStack stack
+                    ? displays(rows.recipesFor(stack))
+                    : Optional.empty();
+        }
+
+        @Override
+        public Optional<List<CraftingDisplay>> getUsageFor(EntryStack<?> entry) {
+            return entry.getValue() instanceof ItemStack stack
+                    ? displays(rows.usesOf(stack))
+                    : Optional.empty();
+        }
+
+        private static Optional<List<CraftingDisplay>> displays(
+                List<RecipeHolder<CraftingRecipe>> found) {
+            return found.isEmpty()
+                    ? Optional.empty()
+                    : Optional.of(found.stream().map(CraftingRowsGenerator::display).toList());
+        }
+
+        private static CraftingDisplay display(RecipeHolder<CraftingRecipe> row) {
+            ShapelessCraftingRecipeDisplay display =
+                    (ShapelessCraftingRecipeDisplay) row.value().display().getFirst();
+            return new DefaultCustomShapelessDisplay(
+                    display.ingredients().stream().map(EntryIngredients::ofSlotDisplay).toList(),
+                    List.of(EntryIngredients.ofSlotDisplay(display.result())),
+                    Optional.of(row.id().identifier()));
+        }
     }
 
     private static boolean produces(Display display, EntryStack<?> output) {

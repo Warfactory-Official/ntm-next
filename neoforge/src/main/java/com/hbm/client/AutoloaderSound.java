@@ -4,11 +4,11 @@
 package com.hbm.client;
 
 import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKAutoloader;
+import com.hbm.client.sound.MachineSoundInstance;
 import com.hbm.particle.CoolingTowerParticleOptions;
 import com.hbm.sound.AudioSystem;
 import com.hbm.sound.ModSounds;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -36,7 +36,7 @@ public final class AutoloaderSound {
                                 25F,
                                 1.0F,
                                 5);
-                if (be.audioLift != null) be.audioLift.startSound();
+                if (be.audioLift != null) be.audioLift.startSound(pos);
             }
             if (be.audioLift != null) {
                 be.audioLift.updateVolume(be.getVolume(VOLUME));
@@ -48,7 +48,8 @@ public final class AutoloaderSound {
             Minecraft.getInstance()
                     .getSoundManager()
                     .play(
-                            new SimpleSoundInstance(
+                            new MachineSoundInstance(
+                                    pos,
                                     ModSounds.DOOR_WGH_STOP.get(),
                                     SoundSource.BLOCKS,
                                     be.getVolume(2F),

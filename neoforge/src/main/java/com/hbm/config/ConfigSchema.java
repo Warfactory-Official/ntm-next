@@ -44,6 +44,16 @@ public final class ConfigSchema {
                     "bomber_short_approach",
                     false,
                     "Has bomber planes spawn closer to their target for smaller render distances.");
+    public static final ConfigEntry<Integer> FAR_TRACKING_RANGE =
+            integer(
+                    Domain.RUNTIME,
+                    "entities",
+                    "far_tracking_range",
+                    4096,
+                    0,
+                    65536,
+                    "Blocks within which missiles, mushroom clouds and meteors stay tracked to players whose Distant "
+                            + "Horizons or Voxy terrain reaches that far, past the view distance. 0 = view distance only.");
 
     public static final ConfigEntry<Boolean> ENABLE_LBSM =
             bool(
@@ -391,6 +401,14 @@ public final class ConfigSchema {
                     "crate_opens_held",
                     true,
                     "Right-click with a held crate opens it; sneak to place it.");
+    public static final ConfigEntry<Boolean> ORIGINAL_STEREO_EXPLOSIONS =
+            bool(
+                    Domain.CLIENT,
+                    "audio",
+                    "original_stereo_explosions",
+                    false,
+                    "Preserve stereo explosion recordings instead of positioning them in the world, with distance falloff. "
+                            + "Mono recordings remain positional. Applies to newly played sounds.");
     public static final ConfigEntry<Boolean> COOLING_TOWER_PARTICLES =
             bool(Domain.CLIENT, "render", "cooling_tower_particles", true, "");
     public static final ConfigEntry<Boolean> JEI_HIDE_SECRETS =
@@ -482,13 +500,6 @@ public final class ConfigSchema {
                     Integer.MIN_VALUE,
                     Integer.MAX_VALUE,
                     "");
-    public static final ConfigEntry<Boolean> TOOLTIP_ORE_DICT =
-            bool(
-                    Domain.CLIENT,
-                    "hud",
-                    "tooltip_ore_dict",
-                    true,
-                    "List an item's tags in advanced tooltips.");
     public static final ConfigEntry<Boolean> TOOLTIP_CUSTOM_NUKE =
             bool(
                     Domain.CLIENT,
@@ -516,6 +527,7 @@ public final class ConfigSchema {
                     CONVEYOR_CRAM_EXPLODE,
                     ULTRA_LARP_MODE,
                     ENABLE_BOMBER_SHORT_MODE,
+                    FAR_TRACKING_RANGE,
                     ENABLE_LBSM,
                     ENABLE_LBSM_FULL_SCHRAB,
                     ENABLE_LBSM_SHORTER_DECAY,
@@ -559,6 +571,7 @@ public final class ConfigSchema {
                     TOOL_HUD_INDICATOR_X,
                     TOOL_HUD_INDICATOR_Y,
                     CRATE_OPEN_HELD,
+                    ORIGINAL_STEREO_EXPLOSIONS,
                     COOLING_TOWER_PARTICLES,
                     JEI_HIDE_SECRETS,
                     GUN_MODEL_FOV,
@@ -574,7 +587,6 @@ public final class ConfigSchema {
                     INFO_POSITION,
                     INFO_OFFSET_HORIZONTAL,
                     INFO_OFFSET_VERTICAL,
-                    TOOLTIP_ORE_DICT,
                     TOOLTIP_CUSTOM_NUKE,
                     DODD_RBMK_DIAGNOSTIC);
 

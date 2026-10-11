@@ -47,21 +47,6 @@ public final class ItemTooltipEvents {
                 shift || Minecraft.getInstance().gui.screen() instanceof ScreenArmorTable);
         HazardSystem.addHazardInfo(stack, player, tooltip, flag);
 
-        if (flag.isAdvanced() && HudConfig.tooltipOreDict) {
-            List<String> tags =
-                    stack.typeHolder()
-                            .tags()
-                            .map(tag -> tag.location().toString())
-                            .sorted()
-                            .toList();
-            if (!tags.isEmpty()) {
-                tooltip.add(
-                        Component.translatable("desc.item.oreDict").withStyle(ChatFormatting.BLUE));
-                for (String tag : tags)
-                    tooltip.add(Component.literal(" -" + tag).withStyle(ChatFormatting.AQUA));
-            }
-        }
-
         CustomNukeEntries.Entry nuke =
                 HudConfig.tooltipCustomNuke ? CustomNukeEntries.of(stack) : null;
         if (nuke != null) {

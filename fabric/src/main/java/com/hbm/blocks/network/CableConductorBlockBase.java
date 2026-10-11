@@ -5,8 +5,8 @@ package com.hbm.blocks.network;
 
 import com.hbm.api.energymk2.CableData;
 import com.hbm.api.energymk2.PowerGraph;
-import com.hbm.api.energymk2.PowerGraphProvider;
 import com.hbm.blockentity.network.BlockEntityPylonBase;
+import com.hbm.capability.PhysicalConnector;
 import com.hbm.uninos.graph.GraphNode;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import net.minecraft.core.BlockPos;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Orientation;
 import org.jspecify.annotations.Nullable;
 
-public abstract class CableConductorBlockBase extends Block {
+public abstract class CableConductorBlockBase extends Block implements PhysicalConnector {
 
     public static final int OPEN_ALL = 0x3F;
 
@@ -30,13 +30,13 @@ public abstract class CableConductorBlockBase extends Block {
         return OPEN_ALL;
     }
 
-    public boolean canConnectCable(BlockState state, Direction side) {
+    @Override
+    public boolean hasPowerContact(Level level, BlockPos pos, BlockState state, Direction side) {
         return (nodeMask(state) & (1 << side.ordinal())) != 0;
     }
 
     public static void mintNode(ServerLevel level, BlockPos pos, BlockState state, int mask) {
-        PowerGraph.get(level)
-                .addNode(pos.asLong(), PowerGraphProvider.INSTANCE.createData(state), mask);
+        PowerGraph.get(level).addNode(pos.asLong(), CableData.INSTANCE, mask);
     }
 
     public static void restoreNode(ServerLevel level, BlockPos pos, BlockState state) {

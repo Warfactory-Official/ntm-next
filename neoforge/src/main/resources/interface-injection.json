@@ -4,6 +4,7 @@
   "net/minecraft/server/MinecraftServer": ["com/hbm/interfaces/injected/UnstableFuseSchedule"],
   "net/minecraft/client/multiplayer/ClientLevel": ["com/hbm/interfaces/injected/IClientLevelExtension"],
   "net/minecraft/server/level/ServerLevel": ["com/hbm/interfaces/injected/IServerLevelExtension"],
+  "net/minecraft/world/level/block/Block": ["com/hbm/interfaces/injected/BlockEntityLifecycle"],
   "net/minecraft/world/level/chunk/ChunkAccess": ["com/hbm/interfaces/injected/IChunkExtension"],
   "net/minecraft/world/level/chunk/storage/SerializableChunkData": ["com/hbm/interfaces/injected/IChunkExtension"],
   "net/minecraft/world/entity/player/Player": ["com/hbm/interfaces/injected/PlayerAppearance"],

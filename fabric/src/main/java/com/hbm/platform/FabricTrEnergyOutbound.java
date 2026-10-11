@@ -7,6 +7,8 @@ import com.hbm.api.energymk2.*;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.blocks.network.CableBlock;
 import com.hbm.blocks.network.CableConductorBlockBase;
+import com.hbm.capability.ForeignBridges;
+import com.hbm.capability.ForeignEnergyStaging;
 import com.hbm.capability.MachineCaps;
 import com.hbm.capability.NtmCapabilities;
 import com.hbm.registration.FabricRegistrar;
@@ -15,12 +17,10 @@ import it.unimi.dsi.fastutil.longs.Long2LongMap;
 import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.WeakHashMap;
 import java.util.function.Supplier;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
@@ -86,12 +86,20 @@ public final class FabricTrEnergyOutbound {
         BlockEntityType<BlockEntity> type = (BlockEntityType<BlockEntity>) typeSupplier.get();
         FabricCaps.registerForBlockEntity(
                 EnergyStorage.SIDED,
-                (be, side) ->
-                        side != null
-                                        && be instanceof IEnergyHandlerMK2 e
-                                        && MachineCaps.acceptsFace(be, side)
-                                ? MachineStaging.of(be, e).face(side, halfIn(be, e), halfOut(be, e))
-                                : null,
+                (be, side) -> {
+                    if (side == null || !(be instanceof IEnergyHandlerMK2 e)) return null;
+                    IEnergyHandlerMK2 in =
+                            MachineCaps.accepts(be, side, NtmCapabilities.CapRole.POWER_IN)
+                                    ? halfIn(be, e)
+                                    : null;
+                    IEnergyHandlerMK2 out =
+                            MachineCaps.accepts(be, side, NtmCapabilities.CapRole.POWER_OUT)
+                                    ? halfOut(be, e)
+                                    : null;
+                    return in == null && out == null
+                            ? null
+                            : MachineStaging.of(be, e).face(side, in, out);
+                },
                 type);
     }
 
@@ -126,8 +134,6 @@ public final class FabricTrEnergyOutbound {
 
     private static final class NetStaging extends SnapshotParticipant<NetStaging.Staged> {
 
-        private static final Map<ForeignEnergyBridge, WeakReference<NetStaging>> ALL =
-                new WeakHashMap<>();
         private final ForeignEnergyBridge bridge;
         private final ServerLevel level;
         private final Long2LongOpenHashMap insertsByPeer = new Long2LongOpenHashMap();
@@ -141,11 +147,9 @@ public final class FabricTrEnergyOutbound {
             this.level = level;
         }
 
-        static synchronized NetStaging of(ForeignEnergyBridge bridge, ServerLevel level) {
-            WeakReference<NetStaging> ref = ALL.get(bridge);
-            NetStaging staging = ref == null ? null : ref.get();
-            if (staging == null)
-                ALL.put(bridge, new WeakReference<>(staging = new NetStaging(bridge, level)));
+        static NetStaging of(ForeignEnergyBridge bridge, ServerLevel level) {
+            NetStaging staging = bridge.loaderStaging instanceof NetStaging held ? held : null;
+            if (staging == null) bridge.loaderStaging = staging = new NetStaging(bridge, level);
             return staging;
         }
 
@@ -252,25 +256,18 @@ public final class FabricTrEnergyOutbound {
 
     private static final class MachineStaging extends SnapshotParticipant<long[]> {
 
-        private static final Map<BlockEntity, WeakReference<MachineStaging>> ALL =
-                new WeakHashMap<>();
-
-        private final BlockEntity be;
-        private final IEnergyHandlerMK2 machine;
+        private final ForeignEnergyStaging staging;
         private final Map<Direction, MachineFace> faces = new EnumMap<>(Direction.class);
-        private long insertFe;
-        private long extractFe;
 
         private MachineStaging(BlockEntity be, IEnergyHandlerMK2 machine) {
-            this.be = be;
-            this.machine = machine;
+            this.staging = new ForeignEnergyStaging(be, machine);
         }
 
-        static synchronized MachineStaging of(BlockEntity be, IEnergyHandlerMK2 machine) {
-            WeakReference<MachineStaging> ref = ALL.get(be);
-            MachineStaging staging = ref == null ? null : ref.get();
-            if (staging == null)
-                ALL.put(be, new WeakReference<>(staging = new MachineStaging(be, machine)));
+        static MachineStaging of(BlockEntity be, IEnergyHandlerMK2 machine) {
+            ForeignBridges bridges = ForeignBridges.of(be);
+            MachineStaging staging =
+                    bridges.energy(machine) instanceof MachineStaging held ? held : null;
+            if (staging == null) bridges.energy(machine, staging = new MachineStaging(be, machine));
             return staging;
         }
 
@@ -287,61 +284,41 @@ public final class FabricTrEnergyOutbound {
 
         @Override
         protected long[] createSnapshot() {
-            return new long[] {insertFe, extractFe};
+            return staging.save();
         }
 
         @Override
         protected void readSnapshot(long[] snapshot) {
-            insertFe = snapshot[0];
-            extractFe = snapshot[1];
+            staging.restore(snapshot);
         }
 
         @Override
         protected void onFinalCommit() {
-            if (insertFe > 0) machine.transferPower(EnergyConversion.heFromFe(insertFe), false);
-            if (extractFe > 0) machine.usePower(EnergyConversion.heFromFe(extractFe));
-            insertFe = 0;
-            extractFe = 0;
-            be.setChanged();
+            staging.commit();
         }
 
         long stageInsert(long maxFe, IEnergyHandlerMK2 receiver, TransactionContext transaction) {
-            if (be.isRemoved()) return 0;
-            long room = receiver.getMaxPower() - receiver.getPower();
-            long offered = Math.min(room, receiver.getReceiverSpeed());
-            long quantum = EnergyConversion.feQuantum();
-            long fits =
-                    Math.min(maxFe, EnergyConversion.feFromHe(offered) - insertFe)
-                            / quantum
-                            * quantum;
+            long fits = staging.insertableFe(maxFe, receiver);
             if (fits <= 0) return 0;
             updateSnapshots(transaction);
-            insertFe += fits;
+            staging.stageInsert(fits);
             return fits;
         }
 
         long stageExtract(long maxFe, IEnergyHandlerMK2 provider, TransactionContext transaction) {
-            if (be.isRemoved()) return 0;
-            long available = Math.min(provider.getPower(), provider.getProviderSpeed());
-            long quantum = EnergyConversion.feQuantum();
-            long gives =
-                    Math.min(maxFe, EnergyConversion.feFromHe(available) - extractFe)
-                            / quantum
-                            * quantum;
+            long gives = staging.extractableFe(maxFe, provider);
             if (gives <= 0) return 0;
             updateSnapshots(transaction);
-            extractFe += gives;
+            staging.stageExtract(gives);
             return gives;
         }
 
         long amountFe() {
-            if (be.isRemoved()) return 0;
-            return Math.max(
-                    0, EnergyConversion.feFromHe(machine.getPower()) + insertFe - extractFe);
+            return staging.amountFe();
         }
 
         long capacityFe() {
-            return be.isRemoved() ? 0 : EnergyConversion.feFromHe(machine.getMaxPower());
+            return staging.capacityFe();
         }
     }
 

@@ -18,7 +18,6 @@ import com.hbm.util.BobMathUtil;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,43 +25,8 @@ import org.jspecify.annotations.Nullable;
 
 public class MachinePump extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {3, 0, 1, 1, 1, 1};
-
     public MachinePump(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        visitor.cell(core.east(), MASK_EAST);
-        visitor.cell(core.west(), MASK_WEST);
-        visitor.cell(core.south(), MASK_SOUTH);
-        visitor.cell(core.north(), MASK_NORTH);
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        int domains =
-                this == ModBlocks.PUMP_ELECTRIC.get()
-                        ? PASSIVE_POWER_IN | PASSIVE_FLUID_IN
-                        : PASSIVE_FLUID_IN;
-
-        visitor.passiveCell(core.east(), MASK_ALL, domains);
-        visitor.passiveCell(core.west(), MASK_ALL, domains);
-        visitor.passiveCell(core.south(), MASK_ALL, domains);
-        visitor.passiveCell(core.north(), MASK_ALL, domains);
     }
 
     @Override

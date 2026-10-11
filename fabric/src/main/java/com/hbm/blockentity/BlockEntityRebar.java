@@ -7,6 +7,7 @@ import com.hbm.api.fluidmk2.IFluidHandlerMK2;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.items.tool.ItemRebarPlacer;
 import com.hbm.packet.SyncField;
@@ -28,7 +29,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityRebar extends BlockEntity
-        implements Synced, GraphResident, IFluidHandlerMK2, SyncUnitSchema {
+        implements FluidTankAccess, Synced, GraphResident, IFluidHandlerMK2, SyncUnitSchema {
 
     public static final int FULL = 1_000;
     private static final int MAX_SPEED = 50;
@@ -113,10 +114,16 @@ public class BlockEntityRebar extends BlockEntity
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
+    public int tankCount() {
+        return 1;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        if (index != 0) throw new IndexOutOfBoundsException(index);
         FluidTankNTM tank = new FluidTankNTM(NTMFluids.LIQUID_CONCRETE, FULL);
         tank.setFill(progress);
-        return new FluidTankNTM[] {tank};
+        return tank;
     }
 
     @Override

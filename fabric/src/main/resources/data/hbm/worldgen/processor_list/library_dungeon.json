@@ -1,50 +1,55 @@
 {
   "processors": [
     {
-      "marker": {
-        "Name": "minecraft:stone_bricks"
-      },
-      "options": [
+      "processor_type": "hbm:marker_table",
+      "processors": [
         {
-          "data": {
+          "marker": {
             "Name": "minecraft:stone_bricks"
           },
-          "weight": 1
+          "options": [
+            {
+              "data": {
+                "Name": "minecraft:stone_bricks"
+              },
+              "weight": 1
+            },
+            {
+              "data": {
+                "Name": "minecraft:mossy_stone_bricks"
+              },
+              "weight": 1
+            },
+            {
+              "data": {
+                "Name": "minecraft:cracked_stone_bricks"
+              },
+              "weight": 1
+            }
+          ],
+          "processor_type": "hbm:weighted_place"
         },
         {
-          "data": {
-            "Name": "minecraft:mossy_stone_bricks"
-          },
-          "weight": 1
-        },
-        {
-          "data": {
-            "Name": "minecraft:cracked_stone_bricks"
-          },
-          "weight": 1
-        }
-      ],
-      "processor_type": "hbm:weighted_place"
-    },
-    {
-      "marker": {
-        "Name": "minecraft:oak_planks"
-      },
-      "options": [
-        {
-          "data": {
+          "marker": {
             "Name": "minecraft:oak_planks"
           },
-          "weight": 1
-        },
-        {
-          "data": {
-            "Name": "minecraft:bookshelf"
-          },
-          "weight": 1
+          "options": [
+            {
+              "data": {
+                "Name": "minecraft:oak_planks"
+              },
+              "weight": 1
+            },
+            {
+              "data": {
+                "Name": "minecraft:bookshelf"
+              },
+              "weight": 1
+            }
+          ],
+          "processor_type": "hbm:weighted_place"
         }
-      ],
-      "processor_type": "hbm:weighted_place"
+      ]
     },
     {
       "mobs": [

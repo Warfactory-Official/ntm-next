@@ -464,5 +464,11 @@ public final class PacketDispatcher {
                         CrateOpenHeldPayload.STREAM_CODEC,
                         CrateOpenHeldPayload::handleServer,
                         PayloadHandlerThread.MAIN));
+        FabricNetwork.serverbound.add(
+                new FabricNetwork.Registration<>(
+                        FarViewPayload.TYPE,
+                        FarViewPayload.STREAM_CODEC,
+                        FarViewPayload::handleServer,
+                        PayloadHandlerThread.MAIN));
     }
 }

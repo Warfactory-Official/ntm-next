@@ -3,7 +3,9 @@
 
 package com.hbm.mixin;
 
+import com.hbm.capability.ForeignBridges;
 import com.hbm.handler.UnstableFuses;
+import com.hbm.interfaces.injected.ForeignBridgeHost;
 import com.hbm.inventory.BlockItemContents;
 import com.hbm.inventory.InventoryChanges;
 import com.hbm.items.ModDataComponents;
@@ -16,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,8 +26,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BlockEntity.class)
-public abstract class MixinBlockEntity {
+public abstract class MixinBlockEntity implements ForeignBridgeHost {
     @Unique public Object hbm$inventorySources;
+    @Unique private @Nullable ForeignBridges hbm$bridges;
+
+    @Override
+    public ForeignBridges hbm$bridges() {
+        ForeignBridges bridges = hbm$bridges;
+        if (bridges == null) hbm$bridges = bridges = new ForeignBridges();
+        return bridges;
+    }
 
     @Inject(method = "collectImplicitComponents", at = @At("TAIL"))
     private void hbm$collectPackedInventory(DataComponentMap.Builder components, CallbackInfo ci) {
@@ -43,12 +54,11 @@ public abstract class MixinBlockEntity {
     }
 
     @Inject(method = "setRemoved", at = @At("TAIL"))
-    private void hbm$forgetStorageOwner(CallbackInfo ci) {
+    private void hbm$retire(CallbackInfo ci) {
         BlockEntity self = (BlockEntity) (Object) this;
-        if (!UnstableFuses.isStorageOwner(self)) return;
-        if (self.getLevel() instanceof ServerLevel level) {
-            UnstableFuses.removed(level, self);
-        }
+        if (!(self.getLevel() instanceof ServerLevel level)) return;
+        self.getBlockState().getBlock().hbm$blockEntityRemoved(level, self);
+        if (UnstableFuses.isStorageOwner(self)) UnstableFuses.removed(level, self);
     }
 
     @Inject(

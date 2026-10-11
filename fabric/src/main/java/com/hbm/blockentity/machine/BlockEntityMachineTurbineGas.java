@@ -23,6 +23,7 @@ import com.hbm.handler.pollution.PollutionType;
 import com.hbm.inventory.container.MenuMachineTurbineGas;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Combustible.FuelGrade;
 import com.hbm.inventory.fluid.trait.FT_Combustible;
@@ -58,7 +59,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineTurbineGas extends BlockEntityMachineBase
-        implements AudioLoop,
+        implements FluidTankAccess,
+                AudioLoop,
                 IEnergyHandlerMK2,
                 FluidFlushSender,
                 IControlReceiver,
@@ -582,8 +584,13 @@ public class BlockEntityMachineTurbineGas extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     private void writePower(ByteBuf output) {

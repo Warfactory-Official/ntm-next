@@ -4,6 +4,7 @@
 package com.hbm.world.feature;
 
 import com.hbm.world.NtmWorldgenFields;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -27,6 +28,13 @@ public class ColtanDepositFeature extends Feature<ColtanDepositConfig> {
         NtmWorldgenFields fields = NtmWorldgenFields.get(level);
         int centerX = fields.coltanX(cfg.spread());
         int centerZ = fields.coltanZ(cfg.spread());
+        int reach = cfg.baseRange();
+        if (cx + 15 < centerX - reach
+                || cx > centerX + reach
+                || cz + 15 < centerZ - reach
+                || cz > centerZ + reach) {
+            return true;
+        }
         BlockPos.MutableBlockPos veinPos = new BlockPos.MutableBlockPos();
 
         for (int k = 0; k < cfg.outerAttempts(); k++) {
@@ -39,7 +47,14 @@ public class ColtanDepositFeature extends Feature<ColtanDepositConfig> {
                         && x >= centerX - range
                         && z <= centerZ + range
                         && z >= centerZ - range) {
-                    RegionOre.placeVein(level, rand, veinPos.set(x, y, z), cfg.vein());
+                    Feature.ORE.place(
+                            new FeaturePlaceContext<>(
+                                    Optional.empty(),
+                                    level,
+                                    ctx.chunkGenerator(),
+                                    rand,
+                                    veinPos.set(x, y, z),
+                                    cfg.vein()));
                 }
             }
         }

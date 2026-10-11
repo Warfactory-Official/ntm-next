@@ -76,6 +76,7 @@ public final class No9Flashlight {
                                 player));
         if (hit.getType() != HitResult.Type.BLOCK) return;
 
+        level.getLightEngine().runLightUpdates();
         int light = (int) (25D - eye.distanceTo(hit.getLocation()) * 25D / RANGE);
         spread(level, hit.getBlockPos().relative(hit.getDirection()), Math.min(15, light));
         visited.clear();
@@ -122,6 +123,7 @@ public final class No9Flashlight {
             level.setSectionDirtyWithNeighbors(section.x(), section.y(), section.z());
         }
         patched.clear();
+        engine.runLightUpdates();
     }
 
     private static void expire(ClientLevel level) {

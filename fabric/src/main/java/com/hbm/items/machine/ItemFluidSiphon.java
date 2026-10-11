@@ -11,7 +11,8 @@ import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Unsiphonable;
 import com.hbm.items.tool.ItemPipette;
 import com.hbm.platform.FabricCaps;
-import com.hbm.platform.IFluidHandlerView;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
@@ -103,12 +104,12 @@ public class ItemFluidSiphon extends Item {
             return FluidContainerRows.filled(stack, type);
         }
         SimpleContainer scratch = new SimpleContainer(stack.copyWithCount(1));
-        IFluidHandlerView view = FabricCaps.findFluidHandler(scratch, 0);
-        if (view == null) return null;
+        Storage<FluidVariant> store = FabricCaps.findFluidStore(scratch, 0);
+        if (store == null) return null;
 
-        long room = view.insertable(type);
+        long room = FabricCaps.insertable(store, type);
         if (room <= 0 || room > tank.getFill()) return null;
-        long given = view.insert(type, room);
+        long given = FabricCaps.moveWholeMb(store, FluidVariant.of(type), room, true);
         if (given <= 0) return null;
 
         tank.setFill(tank.getFill() - given);

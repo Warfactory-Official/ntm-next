@@ -9,6 +9,7 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.client.ClientEffects;
 import com.hbm.client.ClientPlayerAccess;
 import com.hbm.data.WorldData;
+import com.hbm.entity.FarVisible;
 import com.hbm.entity.ModEntities;
 import com.hbm.explosion.ExplosionLarge;
 import com.hbm.sound.AudioSystem;
@@ -34,7 +35,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityMeteor extends Entity implements IRadarDetectableNT {
+public class EntityMeteor extends Entity implements IRadarDetectableNT, FarVisible {
 
     public boolean safe = false;
     private AudioWrapper audioFly;

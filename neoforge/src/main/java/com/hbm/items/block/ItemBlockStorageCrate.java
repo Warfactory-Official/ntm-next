@@ -125,15 +125,14 @@ public class ItemBlockStorageCrate extends BlockItem {
 
     private static ItemStackContainer.@Nullable Store store(ServerLevel level, ItemStack stack) {
         LockedContents locked = stack.get(ModDataComponents.LOCKED_CONTENTS.get());
-        ItemContainerContents opened =
-                locked == null
-                        ? stack.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY)
-                        : locked.open(level);
-        if (opened == null) return null;
+        if (locked != null && locked.open(level) == null) return null;
         return new ItemStackContainer.Store() {
             @Override
             public ItemContainerContents read(ItemStack target) {
-                return opened;
+                LockedContents current = target.get(ModDataComponents.LOCKED_CONTENTS.get());
+                return current == null
+                        ? target.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY)
+                        : current.open(level);
             }
 
             @Override

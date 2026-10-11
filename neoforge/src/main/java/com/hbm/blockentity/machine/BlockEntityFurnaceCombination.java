@@ -17,6 +17,7 @@ import com.hbm.capability.NtmContracts;
 import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.handler.pollution.PollutionType;
 import com.hbm.inventory.container.MenuFurnaceCombination;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.CombinationRecipe;
 import com.hbm.inventory.recipes.CombinationRecipes;
@@ -47,7 +48,11 @@ import net.minecraft.world.phys.AABB;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityFurnaceCombination extends BlockEntityMachinePolluting
-        implements FluidTankEndpoint, IFluidCopiable, MenuProvider, SyncUnitSchema {
+        implements FluidTankAccess,
+                FluidTankEndpoint,
+                IFluidCopiable,
+                MenuProvider,
+                SyncUnitSchema {
 
     public static final int SLOT_INPUT = 0;
     public static final int SLOT_OUTPUT = 1;
@@ -219,8 +224,14 @@ public class BlockEntityFurnaceCombination extends BlockEntityMachinePolluting
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {tank};
+    public int tankCount() {
+        return 1;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        if (index != 0) throw new IndexOutOfBoundsException(index);
+        return tank;
     }
 
     @Override

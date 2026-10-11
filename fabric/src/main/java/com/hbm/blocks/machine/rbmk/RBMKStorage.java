@@ -10,7 +10,6 @@ import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.handler.BossSpawnHandler;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -40,8 +39,8 @@ public class RBMKStorage extends RBMKBase implements ICapabilityBlock {
     }
 
     @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        passiveEverywhere(core, facing, visitor, PASSIVE_ITEMS);
+    protected int columnPassive() {
+        return PASSIVE_ITEMS;
     }
 
     @Override

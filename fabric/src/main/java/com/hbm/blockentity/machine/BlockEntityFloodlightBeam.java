@@ -3,6 +3,7 @@
 
 package com.hbm.blockentity.machine;
 
+import com.hbm.blockentity.ChunkPublication;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blocks.ModBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -30,6 +31,10 @@ public class BlockEntityFloodlightBeam extends BlockEntity implements GraphResid
 
     @Override
     public void onGraphLoad(ServerLevel server) {
+        if (ChunkPublication.publishing(server, worldPosition)) {
+            check(server);
+            return;
+        }
         MinecraftServer host = server.getServer();
         host.schedule(host.wrapRunnable(() -> check(server)));
     }

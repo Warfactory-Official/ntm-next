@@ -8,6 +8,8 @@ import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.energymk2.ItemEnergyTransfer;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidFlushSender;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blockentity.IFluidCopiable;
 import com.hbm.blocks.ModBlockEntities;
@@ -15,6 +17,7 @@ import com.hbm.data.MachineData;
 import com.hbm.inventory.container.MenuMachineTurbine;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Coolable.CoolingType;
 import com.hbm.inventory.fluid.trait.FT_Coolable;
@@ -38,7 +41,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntityMachineTurbine extends BlockEntityMachineBase
-        implements IEnergyHandlerMK2,
+        implements FluidTankAccess,
+                IEnergyHandlerMK2,
                 FluidFlushSender,
                 MenuProvider,
                 IFluidCopiable,
@@ -178,6 +182,11 @@ public class BlockEntityMachineTurbine extends BlockEntityMachineBase
     }
 
     @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
+    }
+
+    @Override
     public long getFluidAvailable(Fluid type, int pressure) {
         if (!tank1.provides(type) || tank1.getPressure() != pressure) return 0L;
         return tank1.getFill();
@@ -215,8 +224,17 @@ public class BlockEntityMachineTurbine extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {tank0, tank1};
+    public int tankCount() {
+        return 2;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return switch (index) {
+            case 0 -> tank0;
+            case 1 -> tank1;
+            default -> throw new IndexOutOfBoundsException(index);
+        };
     }
 
     @Override

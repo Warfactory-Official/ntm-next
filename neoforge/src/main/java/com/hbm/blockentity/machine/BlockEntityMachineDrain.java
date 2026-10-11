@@ -6,7 +6,6 @@ package com.hbm.blockentity.machine;
 import com.hbm.api.energymk2.IEnergyHandlerMK2.ConnectionPriority;
 import com.hbm.api.environment.Environment;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.IFluidCopiable;
 import com.hbm.blockentity.Synced;
@@ -14,6 +13,7 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.inventory.fluid.NTMFluidProperties;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Flammable;
 import com.hbm.inventory.fluid.trait.FluidTrait.FluidReleaseType;
@@ -43,9 +43,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 
 public class BlockEntityMachineDrain extends BlockEntity
-        implements Synced,
+        implements FluidTankAccess,
+                Synced,
                 GraphResident,
-                FoldedCoreResident,
                 FluidTankEndpoint,
                 IFluidCopiable,
                 SyncUnitSchema {
@@ -172,8 +172,13 @@ public class BlockEntityMachineDrain extends BlockEntity
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return receiving;
+    public int tankCount() {
+        return receiving.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return receiving[index];
     }
 
     @Override

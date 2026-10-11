@@ -5,74 +5,272 @@
     {
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "hbm:missile_generic",
-          "weight": 4
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:missile_incendiary",
-          "weight": 4
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:gas_mask_m65",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:battery_pack_battery_lead",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:designator",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:thruster_small",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:thruster_medium",
-          "weight": 4
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:fuel_tank_small",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:fuel_tank_medium",
-          "weight": 4
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:bomb_caller_carpet_bombing",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:bomb_caller_agent_orange",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 3
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 12,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "name": "hbm:missile_generic",
+                      "weight": 4
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 3
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 8,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:missile_incendiary",
+                          "weight": 4
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:gas_mask_m65",
+                          "weight": 5
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 12
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 25,
+                        "min": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 2
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 12,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "name": "hbm:battery_pack_battery_lead",
+                      "weight": 3
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 4
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 9,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:designator",
+                          "weight": 5
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:thruster_small",
+                          "weight": 5
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:value_check",
+                  "range": {
+                    "max": 25
+                  },
+                  "value": {
+                    "type": "minecraft:uniform",
+                    "max": 50,
+                    "min": 0
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 3
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 12,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "name": "hbm:thruster_medium",
+                      "weight": 4
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 4
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 8,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:fuel_tank_small",
+                          "weight": 5
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:fuel_tank_medium",
+                          "weight": 4
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 12
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 24,
+                        "min": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 0
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 11,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "name": "hbm:bomb_caller_carpet_bombing",
+                      "weight": 1
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 0
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 10,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:bomb_caller_agent_orange",
+                          "weight": 1
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 3.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:bottle_nuka",
+                          "weight": 10
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
-          ],
-          "name": "hbm:bottle_nuka",
-          "weight": 10
+          ]
         }
       ],
       "rolls": 1

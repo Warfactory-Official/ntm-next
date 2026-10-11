@@ -13,6 +13,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 
 public class OilBubblePiece extends StructurePiece {
     private static final double H_EXTENT = 0.8165D;
-    private static final int SCAR_MARGIN = 28;
 
     private final int centreX;
     private final int centreY;
@@ -38,7 +38,7 @@ public class OilBubblePiece extends StructurePiece {
             BlockState core,
             RuleTest replaceable,
             long scarSeed) {
-        super(HbmStructureTypes.OIL_BUBBLE_PIECE.get(), 0, box(centre, radius));
+        super(HbmStructureTypes.OIL_BUBBLE_PIECE.get(), 0, box(centre, radius, scarSeed));
         this.setOrientation(null);
         this.centreX = centre.getX();
         this.centreY = centre.getY();
@@ -62,8 +62,8 @@ public class OilBubblePiece extends StructurePiece {
         this.scarSeed = tag.getLongOr("ScarSeed", 0L);
     }
 
-    private static BoundingBox box(BlockPos centre, int radius) {
-        int h = (int) Math.ceil(radius * H_EXTENT) + SCAR_MARGIN;
+    private static BoundingBox box(BlockPos centre, int radius, long scarSeed) {
+        int h = Math.max((int) Math.ceil(radius * H_EXTENT), OilSurfaceScarring.reach(scarSeed));
         int v = (int) Math.ceil(radius * Math.sqrt(2.0D) / 3.0D);
         return new BoundingBox(
                 centre.getX() - h,
@@ -145,5 +145,26 @@ public class OilBubblePiece extends StructurePiece {
 
         OilSurfaceScarring.addSurfaceSpot(
                 level, RandomSource.create(scarSeed), centreX, centreZ, chunkBB);
+    }
+
+    public int scarX() {
+        return centreX;
+    }
+
+    public int scarZ() {
+        return centreZ;
+    }
+
+    public void projectHole(ProtoChunk chunk) {
+        if (!core.blocksMotion())
+            throw new IllegalStateException("Surface projection requires a solid bubble core");
+        OilSurfaceScarring.cutHoleColumn(
+                chunk,
+                (pos, state) -> chunk.setBlockState(pos, state),
+                centreX,
+                centreZ,
+                chunk.getMaxY(),
+                chunk.getMinY(),
+                false);
     }
 }

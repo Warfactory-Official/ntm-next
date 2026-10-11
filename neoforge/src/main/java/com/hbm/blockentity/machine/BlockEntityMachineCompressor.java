@@ -9,12 +9,15 @@ import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.energymk2.ItemEnergyTransfer;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidFlushSender;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.blockentity.Audible;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blockentity.IFluidCopiable;
 import com.hbm.blockentity.IUpgradeInfoProvider;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.inventory.container.MenuMachineCompressor;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.CompressorRecipe;
 import com.hbm.inventory.recipes.CompressorRecipes;
@@ -24,6 +27,7 @@ import com.hbm.items.machine.upgrade.UpgradeManager;
 import com.hbm.items.machine.upgrade.UpgradeType;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
+import com.hbm.sound.AudioSystem;
 import com.hbm.sound.ModSounds;
 import io.netty.buffer.ByteBuf;
 import java.util.function.Consumer;
@@ -47,7 +51,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineCompressor extends BlockEntityMachineBase
-        implements Audible,
+        implements FluidTankAccess,
+                Audible,
                 IEnergyHandlerMK2,
                 FluidFlushSender,
                 MenuProvider,
@@ -178,9 +183,12 @@ public class BlockEntityMachineCompressor extends BlockEntityMachineBase
         if (pistonDir) {
             piston -= randSpeed;
             if (piston <= 0) {
-                level.playSound(
-                        null,
+                AudioSystem.playMachineSound(
+                        level,
                         worldPosition,
+                        worldPosition.getX(),
+                        worldPosition.getY(),
+                        worldPosition.getZ(),
                         ModSounds.COMPRESSOR_PISTON.get(),
                         SoundSource.BLOCKS,
                         getVolume(0.5F),
@@ -254,8 +262,13 @@ public class BlockEntityMachineCompressor extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     @Override
@@ -293,9 +306,9 @@ public class BlockEntityMachineCompressor extends BlockEntityMachineBase
     }
 
     @Override
-    public int[] getReceivingPressureRange(Fluid type) {
+    public int receivingPressureMask(Fluid type) {
         int p = tanks[0].getPressure();
-        return new int[] {p, p};
+        return 1 << p;
     }
 
     @Override
@@ -324,14 +337,19 @@ public class BlockEntityMachineCompressor extends BlockEntityMachineBase
     }
 
     @Override
-    public int[] getProvidingPressureRange(Fluid type) {
+    public int providingPressureMask(Fluid type) {
         int p = tanks[1].getPressure();
-        return new int[] {p, p};
+        return 1 << p;
     }
 
     @Override
     public FluidTankNTM[] getSendingTanks() {
         return sending;
+    }
+
+    @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
     }
 
     @Override

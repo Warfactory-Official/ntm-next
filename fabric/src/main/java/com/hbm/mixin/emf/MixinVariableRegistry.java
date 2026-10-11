@@ -9,13 +9,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
+import traben.entity_model_features.models.animation.math.variables.VariableRegistry;
 
-@Pseudo
-@Mixin(
-        targets = "traben.entity_model_features.models.animation.math.variables.VariableRegistry",
-        remap = false)
+@Mixin(value = VariableRegistry.class, remap = false)
 public abstract class MixinVariableRegistry {
     @WrapOperation(
             method = "*",

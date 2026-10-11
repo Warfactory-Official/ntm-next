@@ -5,6 +5,7 @@ package com.hbm.blocks.network;
 
 import com.hbm.blockentity.network.BlockEntityPylon;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.capability.PhysicalConnector;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -23,10 +24,9 @@ import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
-public class PylonBlock extends BlockMultiblockCore implements EntityBlock {
+public class PylonBlock extends BlockMultiblockCore implements EntityBlock, PhysicalConnector {
 
     public static final MapCodec<PylonBlock> CODEC = simpleCodec(PylonBlock::new);
-    private static final int[] DIMENSIONS = {4, 0, 0, 0, 0, 0};
     private static final int HORIZONTAL_MASK =
             (1 << Direction.NORTH.ordinal())
                     | (1 << Direction.SOUTH.ordinal())
@@ -43,21 +43,7 @@ public class PylonBlock extends BlockMultiblockCore implements EntityBlock {
     }
 
     @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_NONE;
-    }
-
-    public boolean canConnectCable(BlockState state, Direction side) {
+    public boolean hasPowerContact(Level level, BlockPos pos, BlockState state, Direction side) {
         return (HORIZONTAL_MASK & (1 << side.ordinal())) != 0;
     }
 

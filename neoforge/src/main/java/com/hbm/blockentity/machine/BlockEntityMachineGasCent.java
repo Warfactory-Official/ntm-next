@@ -15,6 +15,7 @@ import com.hbm.inventory.container.ContainerSync;
 import com.hbm.inventory.container.MenuMachineGasCent;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.GasCentrifugeRecipe;
 import com.hbm.inventory.recipes.GasCentrifugeRecipes;
@@ -55,7 +56,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineGasCent extends BlockEntityMachineBase
-        implements AudioLoop,
+        implements FluidTankAccess,
+                AudioLoop,
                 IEnergyHandlerMK2,
                 FluidTankEndpoint,
                 MenuProvider,
@@ -357,8 +359,14 @@ public class BlockEntityMachineGasCent extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {tank};
+    public int tankCount() {
+        return 1;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        if (index != 0) throw new IndexOutOfBoundsException(index);
+        return tank;
     }
 
     @Override

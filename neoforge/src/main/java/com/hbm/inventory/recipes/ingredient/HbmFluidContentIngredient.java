@@ -10,7 +10,6 @@ import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.IFluidContainerItem;
 import com.hbm.lib.Library;
-import com.hbm.platform.IFluidHandlerView;
 import com.hbm.platform.NeoForgeCaps;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -33,6 +32,8 @@ import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 public record HbmFluidContentIngredient(Fluid fluid, int amount)
         implements IngredientState, ICustomIngredient {
@@ -73,8 +74,8 @@ public record HbmFluidContentIngredient(Fluid fluid, int amount)
                     && content.amount() == amount;
         }
 
-        IFluidHandlerView view = NeoForgeCaps.findFluidHandler(stack);
-        return view != null && view.extractable(fluid) == amount;
+        ResourceHandler<FluidResource> store = NeoForgeCaps.findFluidStore(stack);
+        return store != null && NeoForgeCaps.extractable(store, fluid) == amount;
     }
 
     @Override

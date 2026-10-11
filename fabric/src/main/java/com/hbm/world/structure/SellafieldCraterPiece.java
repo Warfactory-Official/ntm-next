@@ -4,6 +4,7 @@
 package com.hbm.world.structure;
 
 import com.hbm.lib.Library;
+import com.hbm.world.gen.WorldgenHeight;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -75,8 +76,47 @@ public class SellafieldCraterPiece extends StructurePiece {
         return -Math.pow(r, exponent) / Math.pow(radius, exponent) * depth + depth;
     }
 
+    public boolean intersectsHorizontal(BoundingBox box) {
+        return affectsColumn(
+                Math.clamp(originX, box.minX(), box.maxX()),
+                Math.clamp(originZ, box.minZ(), box.maxZ()));
+    }
+
+    public boolean affectsColumn(int x, int z) {
+        long dx = (long) x - originX;
+        long dz = (long) z - originZ;
+        long reach = radius + 2L;
+        return dx * dx + dz * dz <= reach * reach;
+    }
+
+    public boolean intersectsCarving(BoundingBox box) {
+        long dx = (long) Math.clamp(originX, box.minX(), box.maxX()) - originX;
+        long dz = (long) Math.clamp(originZ, box.minZ(), box.maxZ()) - originZ;
+        double distance = Math.sqrt((double) dx * dx + (double) dz * dz);
+        return depthFunc(distance, radius * 0.35D) >= 1.0D;
+    }
+
+    public boolean hasSolidFill() {
+        BlockState outer = rock.orElseGet(SellafieldCraterPiece::sellafieldSlaked);
+        return outer.blocksMotion() && regolith.orElse(outer).blocksMotion();
+    }
+
+    public int groundHeight(int firstFree, int x, int z, int minBuild) {
+        if (firstFree <= minBuild + 1) return firstFree;
+        double dx = (double) x - originX, dz = (double) z - originZ;
+        int depth =
+                (int)
+                        Mth.clamp(
+                                depthFunc(Math.sqrt(dx * dx + dz * dz), radius * 0.35D),
+                                0,
+                                firstFree - minBuild - 2);
+        return firstFree - depth;
+    }
+
     private static int findSurface(WorldGenLevel level, int x, int z, int minBuild) {
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(x, level.getMaxY(), z);
+        BlockPos.MutableBlockPos pos =
+                new BlockPos.MutableBlockPos(
+                        x, WorldgenHeight.highestFilledSectionTop(level, x, z), z);
         while (pos.getY() > minBuild) {
             if (Heightmap.Types.MOTION_BLOCKING.isOpaque().test(level.getBlockState(pos))) {
                 return pos.getY();

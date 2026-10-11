@@ -14,16 +14,6 @@ public abstract class BlockPACooled extends BlockMultiblockCore implements ITick
     }
 
     @Override
-    public int getOffset() {
-        return 0;
-    }
-
-    @Override
-    public int getHeightOffset() {
-        return 1;
-    }
-
-    @Override
     public int cellSound() {
         return BlockMultiblockCell.SOUND_METAL;
     }

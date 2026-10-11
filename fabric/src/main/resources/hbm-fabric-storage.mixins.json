@@ -1,7 +1,0 @@
-{
-  "required": true,
-  "minVersion": "0.8.5",
-  "package": "com.hbm.fabric.mixin.storage",
-  "mixins": ["MixinRebornMachine", "MixinRebornStorageUnit", "MixinInventoryBase"],
-  "injectors": { "defaultRequire": 1 }
-}

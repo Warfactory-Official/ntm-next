@@ -166,6 +166,21 @@ public class BlockEntityMachineFrackingTower extends BlockEntityOilDrillBase
     }
 
     @Override
+    public int tankCount() {
+        return 3;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return switch (index) {
+            case 0 -> tanks[0];
+            case 1 -> tanks[1];
+            case 2 -> frackSolTank;
+            default -> throw new IndexOutOfBoundsException(index);
+        };
+    }
+
+    @Override
     protected FluidTankNTM[] drillTanks() {
         return new FluidTankNTM[] {tanks[0], tanks[1], frackSolTank};
     }

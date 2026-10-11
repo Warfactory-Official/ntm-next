@@ -5,7 +5,6 @@
 package com.hbm.blockentity.machine.rbmk;
 
 import com.hbm.api.control.IControlReceiver;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blockentity.network.RTTYSystem;
@@ -29,7 +28,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntityRBMKKeyPad extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, IControlReceiver, SyncUnitSchema {
+        implements Synced, GraphResident, IControlReceiver, SyncUnitSchema {
 
     public static final int KEYS = 4;
     public static final int CLICK_TICKS = 7;

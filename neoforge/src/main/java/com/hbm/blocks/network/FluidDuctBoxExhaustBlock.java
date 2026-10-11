@@ -7,7 +7,7 @@ import com.hbm.api.fluidmk2.FluidPipeGraph;
 import com.hbm.api.fluidmk2.PipeData;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.inventory.fluid.NTMFluidProperties;
-import com.hbm.lib.Library;
+import com.hbm.uninos.graph.PhysicalGraph;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -32,7 +32,8 @@ public class FluidDuctBoxExhaustBlock extends FluidDuctBoxBlock {
     }
 
     @Override
-    public boolean canConnectFluid(Level level, BlockPos pos, Direction side, Fluid fluid) {
+    public boolean hasFluidContact(
+            Level level, BlockPos pos, BlockState state, Direction side, Fluid fluid) {
         return FluidPipeGraph.isSmoke(fluid);
     }
 
@@ -40,7 +41,7 @@ public class FluidDuctBoxExhaustBlock extends FluidDuctBoxBlock {
     protected boolean connectsVisually(
             LevelReader level, BlockPos pos, Direction dir, Fluid selfFluid) {
         for (Fluid smoke : FluidPipeGraph.smokes()) {
-            if (Library.canConnectFluid(level, pos.relative(dir), dir.getOpposite(), smoke))
+            if (PhysicalGraph.fluidContact(level, pos.relative(dir), dir.getOpposite(), smoke))
                 return true;
         }
         return false;

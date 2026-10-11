@@ -40,10 +40,8 @@ public class StratumFeature extends Feature<StratumConfig> {
             for (int z = cz; z < cz + SIZE; z++) {
 
                 double n = noiseValues[index++];
-                if (n <= cfg.threshold()) continue;
-
-                int range = (int) ((n - cfg.threshold()) * cfg.rangeMult());
-                if (range > cfg.maxRange()) range = cfg.maxRange() * 2 - range;
+                int range =
+                        NoiseBand.halfHeight(n, cfg.threshold(), cfg.rangeMult(), cfg.maxRange());
                 if (range < 0) continue;
 
                 for (int y = cfg.yLevel() - range; y <= cfg.yLevel() + range; y++) {

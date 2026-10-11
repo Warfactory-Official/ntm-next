@@ -498,7 +498,8 @@ public final class ModItems {
     public static final List<RegistryHandle<MaterialShapeItem>> NUGGETS = new ArrayList<>();
     public static final List<RegistryHandle<MaterialShapeItem>> BILLETS = new ArrayList<>();
     public static final NTMMaterial[] BILLET_MATERIALS =
-            MaterialShapeRoster.roster(MaterialShapes.BILLET, Set.of()).toArray(new NTMMaterial[0]);
+            MaterialShapeRoster.namedRoster(MaterialShapes.BILLET, Set.of())
+                    .toArray(new NTMMaterial[0]);
     public static final List<RegistryHandle<? extends Item>> MISC_ALL = new ArrayList<>();
     public static final List<RegistryHandle<? extends Item>> ARMOR_MOD_ALL = new ArrayList<>();
     public static final List<RegistryHandle<? extends Item>> MISSILE_ALL = new ArrayList<>();
@@ -5213,11 +5214,6 @@ public final class ModItems {
                                     25.0F,
                                     0,
                                     MaterialShapes.INGOT.tagFor("starmetal")));
-    private static final float[] TTP_HIGH = {0.125F, 0.625F, 0};
-    private static final float[] TTP_LOW = {0, 0.75F, 0};
-    private static final float[] TTP_METEORITE = {0.2F, 0.55F, 0};
-    private static final float[] SFP_SWORD = {1.36F, 1.36F, 0.68F};
-    private static final float[] SFP_DEFAULT = {1, 1, 1};
 
     private static final long ELEC_CHARGE = 500_000L;
     private static final long ELEC_CHARGE_RATE = 1_000L;
@@ -7999,10 +7995,10 @@ public final class ModItems {
             material("alloy", 40, 3, 8, 6, 3, 12, armorRepair("alloy"));
     public static final RegistryHandle<ItemHat> NOSSY_HAT =
             Reg.item("nossy_hat", ItemHat::new, () -> bespokeHeadArmor(ALLOY_MAT)).addTo(ARMOR_ALL);
-    public static final RegistryHandle<ModArmorItem> NO9 =
+    public static final RegistryHandle<ItemNo9> NO9 =
             Reg.item(
                             "no9",
-                            p -> new ModArmorItem(p, Suit.NONE),
+                            ItemNo9::new,
                             () -> undamageableArmor(STEEL_MAT, ArmorType.HELMET, Suit.NONE))
                     .addTo(ARMOR_ALL);
     public static final RegistryHandle<ItemBetaFeatures> BETA =
@@ -8306,15 +8302,16 @@ public final class ModItems {
     private static final Set<NTMMaterial> EXCLUDED =
             union(union(AUTOGEN_RAW, VANILLA), DUPLICATE_INGOT);
     public static final NTMMaterial[] INGOT_MATERIALS =
-            MaterialShapeRoster.roster(MaterialShapes.INGOT, EXCLUDED).toArray(new NTMMaterial[0]);
+            MaterialShapeRoster.namedRoster(MaterialShapes.INGOT, EXCLUDED)
+                    .toArray(new NTMMaterial[0]);
     private static final Set<NTMMaterial> MP_EXCLUDED =
             Set.of(Mats.MAT_FLUORITE, Mats.MAT_STAR, Mats.MAT_FLUX);
     public static final NTMMaterial[] DUST_MATERIALS =
-            MaterialShapeRoster.roster(MaterialShapes.DUST, MP_EXCLUDED)
+            MaterialShapeRoster.namedRoster(MaterialShapes.DUST, MP_EXCLUDED)
                     .toArray(new NTMMaterial[0]);
     private static final Set<NTMMaterial> MN_EXCLUDED = Set.of(Mats.MAT_IRON, Mats.MAT_GOLD);
     public static final NTMMaterial[] NUGGET_MATERIALS =
-            MaterialShapeRoster.roster(MaterialShapes.NUGGET, MN_EXCLUDED)
+            MaterialShapeRoster.namedRoster(MaterialShapes.NUGGET, MN_EXCLUDED)
                     .toArray(new NTMMaterial[0]);
     public static final RegistryHandle<ModArmorItem> STEEL_HELMET =
             trimmableArmor("steel_helmet", STEEL_MAT, ArmorType.HELMET, Suit.STEEL);
@@ -9192,7 +9189,7 @@ public final class ModItems {
     static {
         MaterialShapeRoster.registerNamed(
                 MaterialShapes.DUST,
-                MaterialShapeRoster.roster(MaterialShapes.DUST, MP_EXCLUDED),
+                MaterialShapeRoster.namedRoster(MaterialShapes.DUST, MP_EXCLUDED),
                 ModItems::properties,
                 POWDERS);
     }

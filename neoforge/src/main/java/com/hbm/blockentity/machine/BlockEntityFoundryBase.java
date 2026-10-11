@@ -5,7 +5,6 @@
 package com.hbm.blockentity.machine;
 
 import com.hbm.api.block.ICrucibleAcceptor;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.capability.NtmContracts;
@@ -34,12 +33,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public abstract class BlockEntityFoundryBase extends BlockEntity
-        implements Synced,
-                GraphResident,
-                FoldedCoreResident,
-                ICrucibleAcceptor,
-                ICopiable,
-                SyncUnitSchema {
+        implements Synced, GraphResident, ICrucibleAcceptor, ICopiable, SyncUnitSchema {
 
     @SyncField(units = 1L << 0)
     public @Nullable NTMMaterial type;

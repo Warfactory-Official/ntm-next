@@ -4,8 +4,8 @@
 package com.hbm.integration.top;
 
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
-import com.hbm.api.fluidmk2.IFluidHandlerMK2;
 import com.hbm.blocks.multiblock.MultiblockSurface;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.lib.Library;
 import java.util.function.Function;
@@ -79,8 +79,9 @@ public final class NTMTopPlugin
         }
         if (Tools.show(mode, config.getShowTankSetting())
                 && config.getTankMode() > 0
-                && owner instanceof IFluidHandlerMK2 machine) {
-            for (FluidTankNTM tank : machine.getAllTanks()) {
+                && owner instanceof FluidTankAccess tanks) {
+            for (int i = 0; i < tanks.tankCount(); i++) {
+                FluidTankNTM tank = tanks.tank(i);
                 Fluid fluid = tank.getFluid();
                 if (fluid == null || tank.getFill() <= 0) continue;
                 tank(

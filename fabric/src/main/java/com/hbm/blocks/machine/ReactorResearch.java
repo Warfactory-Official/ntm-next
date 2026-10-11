@@ -22,26 +22,8 @@ import org.jspecify.annotations.Nullable;
 
 public class ReactorResearch extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {2, 0, 0, 0, 0, 0};
-
     public ReactorResearch(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_ALL;
     }
 
     @Override

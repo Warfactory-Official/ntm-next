@@ -3,15 +3,14 @@
 
 package com.hbm.neoforge.mixin.storage;
 
+import appeng.blockentity.AEBaseBlockEntity;
 import com.hbm.inventory.TrackedStorage;
 import com.hbm.neoforge.inventory.AE2Inventories;
 import java.util.function.Consumer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 
-@Pseudo
-@Mixin(targets = "appeng.blockentity.AEBaseBlockEntity", remap = false)
+@Mixin(value = AEBaseBlockEntity.class, remap = false)
 public abstract class MixinAEBaseBlockEntity implements TrackedStorage {
     @Override
     public void inventorySources(Consumer<Object> sources) {

@@ -18,6 +18,7 @@ import com.hbm.packet.SyncWire;
 import com.hbm.packet.WireReplayServer;
 import com.hbm.packet.threading.ThreadedPayload;
 import com.hbm.packet.toclient.UnitPayload;
+import com.hbm.util.ChunkUtil;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -133,8 +134,7 @@ abstract class SyncTemplate extends BlockEntity implements Synced {
     }
 
     public void markChanged() {
-        Level level = getLevel();
-        if (level != null) level.blockEntityChanged(getBlockPos());
+        ChunkUtil.markUnsaved(this);
     }
 
     private UnitPayload hbm$syncUnitSnapshot(SyncUnitSchema schema) {

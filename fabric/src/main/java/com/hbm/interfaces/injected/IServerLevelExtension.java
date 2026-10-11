@@ -3,22 +3,37 @@
 
 package com.hbm.interfaces.injected;
 
+import com.hbm.api.fluidmk2.FlushIndex;
 import com.hbm.capability.ResolvedCapCache;
 import com.hbm.uninos.graph.EndpointRegistry;
 import com.hbm.uninos.graph.LevelNodeGraph;
+import com.hbm.uninos.graph.PhysicalGraph;
 import com.hbm.world.NtmWorldgenFields;
-import java.util.List;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import java.util.Set;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import org.jspecify.annotations.Nullable;
 
 public interface IServerLevelExtension {
 
     EndpointRegistry hbm$endpoints();
 
-    List<LevelNodeGraph<?>> hbm$graphs();
+    LevelNodeGraph<?>[] hbm$graphs();
+
+    void hbm$graphs(LevelNodeGraph<?>[] graphs);
 
     ResolvedCapCache hbm$resolvedCaps();
+
+    LongOpenHashSet hbm$publishedChunks();
+
+    PhysicalGraph.@Nullable Batch hbm$physicalBatch();
+
+    void hbm$physicalBatch(PhysicalGraph.@Nullable Batch batch);
+
+    @Nullable FlushIndex hbm$flushIndex();
+
+    void hbm$flushIndex(FlushIndex index);
 
     NtmWorldgenFields hbm$worldgenFields();
 

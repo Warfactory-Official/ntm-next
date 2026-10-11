@@ -5,98 +5,278 @@
     {
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "hbm:defuser",
-          "weight": 40
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:screwdriver",
-          "weight": 30
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 40
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:casing_small_steel",
-          "weight": 30
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 39
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 69,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "name": "hbm:defuser",
+                      "weight": 40
+                    },
+                    {
+                      "type": "minecraft:item",
+                      "name": "hbm:screwdriver",
+                      "weight": 30
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 69
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 179,
+                        "min": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:empty",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 39
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 109,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "weight": 40
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 29
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 69,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 4.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:casing_small_steel",
+                          "weight": 30
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 8.0,
+                                "min": 3.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:casing_small",
+                          "weight": 40
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:value_check",
+                  "range": {
+                    "max": 179
+                  },
+                  "value": {
+                    "type": "minecraft:uniform",
+                    "max": 339,
+                    "min": 0
+                  }
+                }
+              ]
+            },
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 8.0,
-                "min": 3.0
-              },
-              "function": "minecraft:set_count"
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 39
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 99,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "functions": [
+                        {
+                          "count": {
+                            "type": "minecraft:uniform",
+                            "max": 8.0,
+                            "min": 3.0
+                          },
+                          "function": "minecraft:set_count"
+                        }
+                      ],
+                      "name": "hbm:casing_buckshot",
+                      "weight": 40
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 39
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 59,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 5.0,
+                                "min": 2.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:canned_beef",
+                          "weight": 40
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:taurun_helmet",
+                          "weight": 20
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 99
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 159,
+                        "min": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 19
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 59,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "name": "hbm:taurun_plate",
+                      "weight": 20
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 19
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 39,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:taurun_legs",
+                          "weight": 20
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:taurun_boots",
+                          "weight": 20
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
-          ],
-          "name": "hbm:casing_small",
-          "weight": 40
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 8.0,
-                "min": 3.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:casing_buckshot",
-          "weight": 40
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 2.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:canned_beef",
-          "weight": 40
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:taurun_helmet",
-          "weight": 20
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:taurun_plate",
-          "weight": 20
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:taurun_legs",
-          "weight": 20
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:taurun_boots",
-          "weight": 20
+          ]
         }
       ],
       "rolls": 1

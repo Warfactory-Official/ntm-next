@@ -36,6 +36,7 @@ import org.jspecify.annotations.Nullable;
 public final class SectionedModel implements BlockStateModel {
     private static volatile IdentityHashMap<BlockState, SectionedModel> published =
             new IdentityHashMap<>();
+    private static volatile @Nullable Pending pending;
     private static final Object2ObjectLinkedOpenHashMap<LayoutKey, LayoutEntry> LAYOUTS =
             new Object2ObjectLinkedOpenHashMap<>();
     private static final Map<LayoutKey, LayoutEntry> ACTIVE = new HashMap<>();
@@ -54,19 +55,42 @@ public final class SectionedModel implements BlockStateModel {
     private final SectionGeometry.Cells[] cells = new SectionGeometry.Cells[4];
     private int nextCells;
 
-    public static Map<BlockState, BlockStateModel> wrap(
-            Map<BlockState, BlockStateModel> models,
-            Map<BlockStateModel, SectionGeometry.Mesh> captured) {
-        var result = new IdentityHashMap<BlockState, BlockStateModel>(models);
-        var byState = new IdentityHashMap<BlockState, SectionedModel>();
-        var shared = new IdentityHashMap<BlockStateModel, SectionedModel>();
-        var meshes = new HashMap<MeshKey, SectionGeometry.Mesh>();
+    private record Pending(
+            IdentityHashMap<BlockState, SectionedModel> byState,
+            IdentityHashMap<BlockState, OccluderMasks.Mask> masks) {}
+
+    record Wrapped(
+            IdentityHashMap<BlockState, BlockStateModel> models,
+            IdentityHashMap<BlockState, SectionedModel> byState) {}
+
+    public static Map<BlockState, BlockStateModel> prepare(
+            Map<BlockState, BlockStateModel> models) {
+        var derived = OccluderMasks.derive(models);
+        var wrapped = wrap(models, derived.meshes());
+        pending = new Pending(wrapped.byState(), derived.masks());
+        return wrapped.models();
+    }
+
+    public static void publish() {
+        var next = pending;
+        pending = null;
         synchronized (LAYOUTS) {
             LAYOUTS.clear();
             ACTIVE.clear();
             ENTRIES.clear();
             cachedBytes = 0;
         }
+        published = next.byState();
+        OccluderMasks.publish(next.masks());
+    }
+
+    static Wrapped wrap(
+            Map<BlockState, BlockStateModel> models,
+            Map<BlockStateModel, SectionGeometry.Mesh> captured) {
+        var result = new IdentityHashMap<BlockState, BlockStateModel>(models);
+        var byState = new IdentityHashMap<BlockState, SectionedModel>();
+        var shared = new IdentityHashMap<BlockStateModel, SectionedModel>();
+        var meshes = new HashMap<MeshKey, SectionGeometry.Mesh>();
         for (var entry : models.entrySet()) {
             BlockState state = entry.getKey();
             BlockStateModel complete = entry.getValue();
@@ -84,12 +108,7 @@ public final class SectionedModel implements BlockStateModel {
             byState.put(state, sectioned);
             result.put(state, sectioned);
         }
-        published = byState;
-        return result;
-    }
-
-    public static void publish() {
-        SectionGeometry.reload();
+        return new Wrapped(result, byState);
     }
 
     public static @Nullable SectionedModel forState(BlockState state) {

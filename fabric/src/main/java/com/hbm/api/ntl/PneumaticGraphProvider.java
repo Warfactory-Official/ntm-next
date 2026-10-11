@@ -6,18 +6,12 @@ package com.hbm.api.ntl;
 import com.hbm.uninos.graph.IGraphProvider;
 import com.mojang.serialization.Codec;
 import java.util.List;
-import net.minecraft.world.level.block.state.BlockState;
 
 public final class PneumaticGraphProvider implements IGraphProvider<PneumaticData> {
 
     public static final PneumaticGraphProvider INSTANCE = new PneumaticGraphProvider();
 
     private PneumaticGraphProvider() {}
-
-    @Override
-    public PneumaticData createData(BlockState state) {
-        return PneumaticData.INSTANCE;
-    }
 
     @Override
     public boolean dataCompatible(PneumaticData a, PneumaticData b) {

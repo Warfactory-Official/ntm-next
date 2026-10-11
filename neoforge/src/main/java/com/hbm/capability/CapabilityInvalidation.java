@@ -11,7 +11,6 @@ import com.hbm.uninos.graph.LevelNodeGraph;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongIterator;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
-import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -57,15 +56,14 @@ public final class CapabilityInvalidation {
 
     public static int invalidatePosition(
             ServerLevel level,
-            @Nullable List<LevelNodeGraph<?>> graphs,
+            LevelNodeGraph<?>[] graphs,
             @Nullable Long2IntOpenHashMap graphChunks,
             @Nullable EndpointRegistry endpoints,
             long posKey) {
         int neighbours = 0;
-        if (graphs != null && hasGraphBeside(graphChunks, posKey)) {
-            for (int i = 0; i < graphs.size(); i++) {
-                LevelNodeGraph<?> graph = graphs.get(i);
-                if (!graph.hasCellsBeside(posKey)) continue;
+        if (hasGraphBeside(graphChunks, posKey)) {
+            for (LevelNodeGraph<?> graph : graphs) {
+                if (graph == null || !graph.hasCellsBeside(posKey)) continue;
                 if (graph.containsCell(posKey)) graph.invalidateNode(posKey);
                 else neighbours |= graph.invalidateAround(posKey);
             }
@@ -76,7 +74,7 @@ public final class CapabilityInvalidation {
     }
 
     public static void invalidateChunk(
-            @Nullable List<LevelNodeGraph<?>> graphs,
+            LevelNodeGraph<?>[] graphs,
             @Nullable Long2IntOpenHashMap graphChunks,
             @Nullable EndpointRegistry endpoints,
             long chunkKey,
@@ -88,9 +86,9 @@ public final class CapabilityInvalidation {
                     ChunkPos.pack(
                             chunkX + (bucket == 1 ? -1 : bucket == 2 ? 1 : 0),
                             chunkZ + (bucket == 3 ? -1 : bucket == 4 ? 1 : 0));
-            if (graphs != null && graphChunks != null && graphChunks.containsKey(neighbourChunk)) {
-                for (int i = 0; i < graphs.size(); i++) {
-                    LevelNodeGraph<?> graph = graphs.get(i);
+            if (graphChunks != null && graphChunks.containsKey(neighbourChunk)) {
+                for (LevelNodeGraph<?> graph : graphs) {
+                    if (graph == null) continue;
                     LongOpenHashSet cells = graph.cellsInChunk(neighbourChunk);
                     if (cells == null) continue;
                     for (LongIterator iterator = cells.iterator(); iterator.hasNext(); ) {

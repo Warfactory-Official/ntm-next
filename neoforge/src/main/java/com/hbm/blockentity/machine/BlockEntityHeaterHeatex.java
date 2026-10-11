@@ -6,6 +6,8 @@ package com.hbm.blockentity.machine;
 import com.hbm.api.control.IControlReceiver;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.api.redstoneoverradio.IRORValueProvider;
 import com.hbm.api.tile.IHeatSource;
 import com.hbm.blockentity.BlockEntityMachineBase;
@@ -15,6 +17,7 @@ import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.inventory.container.MenuMachineHeatex;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Coolable.CoolingType;
 import com.hbm.inventory.fluid.trait.FT_Coolable;
@@ -39,7 +42,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityHeaterHeatex extends BlockEntityMachineBase
-        implements IHeatSource,
+        implements FluidTankAccess,
+                IHeatSource,
                 FluidTankEndpoint,
                 MenuProvider,
                 IControlReceiver,
@@ -162,8 +166,18 @@ public class BlockEntityHeaterHeatex extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
+    }
+
+    @Override
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     @Override

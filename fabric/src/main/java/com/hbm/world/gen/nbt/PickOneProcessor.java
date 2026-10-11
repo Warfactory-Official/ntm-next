@@ -34,6 +34,11 @@ public record PickOneProcessor(BlockState marker, BlockState result, List<BlockS
                                     .apply(i, PickOneProcessor::new));
 
     @Override
+    public boolean evaluatesEntirePieceState() {
+        return true;
+    }
+
+    @Override
     public List<StructureTemplate.StructureBlockInfo> finalizeProcessing(
             ServerLevelAccessor level,
             BlockPos position,

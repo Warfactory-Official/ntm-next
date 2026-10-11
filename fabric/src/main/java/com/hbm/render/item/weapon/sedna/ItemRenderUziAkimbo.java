@@ -19,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import org.joml.Matrix4f;
 
 public class ItemRenderUziAkimbo extends ItemRenderWeaponBase {
-    private static final String SATURNITE = "textures/models/weapons/uzi_saturnite.png";
     private final RenderType body = RenderTypes.entityCutout(ResourceManager.uzi_tex);
     private final RenderType bodySaturnite =
             RenderTypes.entityCutout(ResourceManager.uzi_saturnite_tex);

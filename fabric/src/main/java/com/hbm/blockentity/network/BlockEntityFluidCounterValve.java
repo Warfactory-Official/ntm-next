@@ -7,7 +7,6 @@ import com.hbm.api.fluidmk2.FluidPipeGraph;
 import com.hbm.api.fluidmk2.PipeData;
 import com.hbm.api.redstoneoverradio.IRORInteractive;
 import com.hbm.api.redstoneoverradio.IRORValueProvider;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -26,12 +25,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntityFluidCounterValve extends BlockEntity
-        implements Synced,
-                GraphResident,
-                FoldedCoreResident,
-                IRORValueProvider,
-                IRORInteractive,
-                SyncUnitSchema {
+        implements Synced, GraphResident, IRORValueProvider, IRORInteractive, SyncUnitSchema {
 
     @SyncField(units = 1L << 0)
     private long counter;

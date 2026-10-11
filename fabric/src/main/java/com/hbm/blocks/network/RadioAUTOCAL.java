@@ -17,23 +17,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class RadioAUTOCAL extends BlockMultiblockCore implements ITickingBlock {
-
-    private static final int[] DIMENSIONS = {1, 0, 0, 0, 0, 0};
-
     public static Consumer<BlockEntityRadioAUTOCAL> OPEN_GUI = autocal -> {};
 
     public RadioAUTOCAL(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
     }
 
     @Override

@@ -5,7 +5,6 @@ package com.hbm.uninos.graph;
 
 import com.hbm.blocks.CapabilityDependentShape;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.platform.NeoForgeServerEvents;
 import com.hbm.util.ChunkPositionIndex;
@@ -62,9 +61,7 @@ public final class EndpointRegistry {
     }
 
     private static int selfDeclaredBits(BlockEntity be) {
-        return be.getBlockState().getBlock() instanceof ICapabilityBlock declaring
-                ? declaring.caps().declaredBits()
-                : 0;
+        return MachineCaps.declaredDomains(be);
     }
 
     private static boolean stillFull(@Nullable WeakReference<LevelChunk> memo) {

@@ -2786,7 +2786,6 @@
   "desc.item.gasMask.installedFilter": "搭載済みのフィルター：",
   "desc.item.gasMask.noFilterInstalled": "フィルター未搭載！",
   "desc.item.grenade.fuse": "起爆: %s",
-  "desc.item.oreDict": "鉱石辞書：",
   "desc.item.radarLinker.noPositionSet": "位置が設定されていない！",
   "desc.item.rbmkPellet.barelyDepleted": "低枯渇度",
   "desc.item.rbmkPellet.brandNew": "新品同様",

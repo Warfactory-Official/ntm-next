@@ -29,7 +29,7 @@ public final class ArcFurnaceSound {
                                 15F,
                                 1.0F,
                                 5);
-                if (be.audioLid != null) be.audioLid.startSound();
+                if (be.audioLid != null) be.audioLid.startSound(pos);
             }
             if (be.audioLid != null) be.audioLid.keepAlive();
         } else if (be.audioLid != null) {
@@ -40,16 +40,16 @@ public final class ArcFurnaceSound {
         if ((be.lid == 1F || be.lid == 0F)
                 && be.lid != be.prevLid
                 && !(be.prevLid == 0F && be.lid == 1F)) {
-            be.getLevel()
-                    .playLocalSound(
-                            pos.getX(),
-                            pos.getY(),
-                            pos.getZ(),
-                            ModSounds.DOOR_WGH_STOP.get(),
-                            SoundSource.BLOCKS,
-                            be.getVolume(1F),
-                            1F,
-                            false);
+            AudioSystem.playMachineSound(
+                    be.getLevel(),
+                    pos,
+                    pos.getX(),
+                    pos.getY(),
+                    pos.getZ(),
+                    ModSounds.DOOR_WGH_STOP.get(),
+                    SoundSource.BLOCKS,
+                    be.getVolume(1F),
+                    1F);
         }
 
         if (be.isProgressing) {
@@ -65,7 +65,7 @@ public final class ArcFurnaceSound {
                                 15F,
                                 0.75F,
                                 5);
-                if (be.audioProgress != null) be.audioProgress.startSound();
+                if (be.audioProgress != null) be.audioProgress.startSound(pos);
             }
             if (be.audioProgress != null) {
                 be.audioProgress.updatePitch(0.75F);

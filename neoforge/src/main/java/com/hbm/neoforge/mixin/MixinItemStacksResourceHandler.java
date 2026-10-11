@@ -11,7 +11,7 @@ import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.spongepowered.asm.mixin.Mixin;
 
-@Mixin(ItemStacksResourceHandler.class)
+@Mixin(value = ItemStacksResourceHandler.class, priority = 500)
 public abstract class MixinItemStacksResourceHandler
         extends StacksResourceHandler<ItemStack, ItemResource> implements ListSlotSource {
     protected MixinItemStacksResourceHandler() {

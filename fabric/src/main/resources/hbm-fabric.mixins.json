@@ -3,36 +3,44 @@
   "minVersion": "0.8.5",
   "package": "com.hbm.fabric.mixin",
   "mixins": [
-    "ChunkMapUnloadMixin",
-    "FurnaceResultSlotMixin",
-    "ItemWasteEntityMixin",
-    "PlayerDropArmorModMixin",
-    "LivingEntityArmorModMixin",
-    "LivingEntityAcceptedDamageMixin",
-    "ServerDamageEventsMixin",
-    "BaseSpawnerImpactMixin",
-    "NaturalSpawnerImpactMixin",
-    "NaturalSpawnerRampantScoutMixin",
-    "ServerLevelCapCacheMixin",
+    "MixinChunkMap",
+    "MixinChunkLoadTricks",
+    "MixinServerChunkCache",
+    "MixinFurnaceResultSlot",
+    "MixinItemEntity",
+    "MixinPlayer",
+    "MixinLivingEntity",
+    "MixinServerLivingEntityEvents",
+    "MixinBaseSpawner",
+    "MixinNaturalSpawner",
+    "MixinServerLevel",
     "MixinServerPlayer",
-    "MixinLootTableBuilder",
+    "MixinBuilder",
     "MixinFabricLootTableBuilder",
-    "MixinCropBlock"
+    "MixinCropBlock",
+    "create.MixinFluidPropagator",
+    "create.MixinFluidHandler",
+    "create.MixinPumpBlockEntity",
+    "storage.MixinMachineBaseBlockEntity",
+    "storage.MixinStorageUnitBaseBlockEntity",
+    "storage.MixinInventoryBase",
+    "replay.MixinRecorder",
+    "replay.MixinReplayServer"
   ],
   "client": [
     "MixinCreativeModeInventoryScreen",
-    "HudShieldMixin",
+    "MixinHud",
     "MixinGuiRenderer",
     "MixinFluidVariantRendering",
-
-    "SectionRegionGeometryMixin",
-    "SectionCompilerGeometryMixin",
-    "AvatarRendererMixin",
-    "IndigoFlatLighterMixin",
-    "IndigoAoLighterMixin",
-    "HumanoidModelMixin"
+    "MixinRenderSectionRegion",
+    "MixinSectionCompiler",
+    "MixinAvatarRenderer",
+    "MixinFlatLighter",
+    "MixinAoCalculator",
+    "MixinHumanoidModel"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "com.hbm.transform.inventory.StorageTrackingMixinPlugin"
 }

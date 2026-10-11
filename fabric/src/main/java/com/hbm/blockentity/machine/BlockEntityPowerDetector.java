@@ -4,7 +4,6 @@
 package com.hbm.blockentity.machine;
 
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.machine.PowerDetectorBlock;
@@ -14,7 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityPowerDetector extends BlockEntity
-        implements GraphResident, FoldedCoreResident, IEnergyHandlerMK2 {
+        implements GraphResident, IEnergyHandlerMK2 {
 
     private long power;
 

@@ -11,7 +11,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 
-public class NullSpawnStructure extends Structure {
+public class NullSpawnStructure extends Structure implements ColumnBiome.SelfTested {
 
     public static final MapCodec<NullSpawnStructure> CODEC = simpleCodec(NullSpawnStructure::new);
 
@@ -24,6 +24,7 @@ public class NullSpawnStructure extends Structure {
             Structure.GenerationContext context) {
         ChunkPos chunkPos = context.chunkPos();
         BlockPos origin = new BlockPos(chunkPos.getBlockX(8), 0, chunkPos.getBlockZ(8));
+        if (!ColumnBiome.valid(context, origin.getX(), origin.getZ())) return Optional.empty();
         return Optional.of(
                 new Structure.GenerationStub(
                         origin, builder -> builder.addPiece(new NullSpawnPiece(origin))));

@@ -5,174 +5,390 @@
     {
       "entries": [
         {
-          "type": "minecraft:item",
-          "functions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 14.0,
-                "min": 3.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:gold_ingot",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:gun_heavy_revolver",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:constant",
-                "value": 8.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:pin",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:gun_am180",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:bottle_quantum",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 12.0,
-                "min": 4.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:ingot_cobalt",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 48.0,
-                "min": 24.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:ammo_standard_bmg50_fmj",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 64.0,
-                "min": 48.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:ammo_standard_p9_jhp",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 6.0,
-                "min": 3.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:circuit_chip",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:gas_mask_m65",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "components": {
-                "hbm:grenade": {
-                  "filling": "he",
-                  "fuze": "s3",
-                  "shell": "frag"
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 0
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 3,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "functions": [
+                        {
+                          "count": {
+                            "type": "minecraft:uniform",
+                            "max": 14.0,
+                            "min": 3.0
+                          },
+                          "function": "minecraft:set_count"
+                        }
+                      ],
+                      "name": "minecraft:gold_ingot",
+                      "weight": 1
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 1
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 2,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:gun_heavy_revolver",
+                          "weight": 2
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:constant",
+                                "value": 8.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:pin",
+                          "weight": 1
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 3
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 6,
+                        "min": 0
+                      }
+                    }
+                  ]
                 },
-                "minecraft:max_stack_size": 4
-              },
-              "function": "minecraft:set_components"
-            }
-          ],
-          "name": "hbm:grenade_universal",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 0
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 2,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "name": "hbm:gun_am180",
+                      "weight": 1
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 0
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 1,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 3.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:bottle_quantum",
+                          "weight": 1
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 12.0,
+                                "min": 4.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:ingot_cobalt",
+                          "weight": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:value_check",
+                  "range": {
+                    "max": 6
+                  },
+                  "value": {
+                    "type": "minecraft:uniform",
+                    "max": 14,
+                    "min": 0
+                  }
+                }
+              ]
+            },
             {
-              "components": {
-                "hbm:grenade": {
-                  "filling": "inc",
-                  "fuze": "s3",
-                  "shell": "frag"
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 0
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 3,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "functions": [
+                        {
+                          "count": {
+                            "type": "minecraft:uniform",
+                            "max": 48.0,
+                            "min": 24.0
+                          },
+                          "function": "minecraft:set_count"
+                        }
+                      ],
+                      "name": "hbm:ammo_standard_bmg50_fmj",
+                      "weight": 1
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 1
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 2,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 64.0,
+                                "min": 48.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:ammo_standard_p9_jhp",
+                          "weight": 2
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 6.0,
+                                "min": 3.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:circuit_chip",
+                          "weight": 1
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 3
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 7,
+                        "min": 0
+                      }
+                    }
+                  ]
                 },
-                "minecraft:max_stack_size": 4
-              },
-              "function": "minecraft:set_components"
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 0
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 1,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:gas_mask_m65",
+                          "weight": 1
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "components": {
+                                "hbm:grenade": {
+                                  "filling": "he",
+                                  "fuze": "s3",
+                                  "shell": "frag"
+                                },
+                                "minecraft:max_stack_size": 4
+                              },
+                              "function": "minecraft:set_components"
+                            }
+                          ],
+                          "name": "hbm:grenade_universal",
+                          "weight": 1
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 1
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 3,
+                            "min": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 0
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 1,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "components": {
+                                "hbm:grenade": {
+                                  "filling": "inc",
+                                  "fuze": "s3",
+                                  "shell": "frag"
+                                },
+                                "minecraft:max_stack_size": 4
+                              },
+                              "function": "minecraft:set_components"
+                            }
+                          ],
+                          "name": "hbm:grenade_universal",
+                          "weight": 1
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 2.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "minecraft:diamond",
+                          "weight": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
-          ],
-          "name": "hbm:grenade_universal",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:diamond",
-          "weight": 1
+          ]
         }
       ],
       "rolls": 1

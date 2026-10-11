@@ -5,179 +5,431 @@
     {
       "entries": [
         {
-          "type": "minecraft:item",
-          "functions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:billet_uranium",
-          "weight": 4
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 3
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 11,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "functions": [
+                        {
+                          "count": {
+                            "type": "minecraft:uniform",
+                            "max": 4.0,
+                            "min": 1.0
+                          },
+                          "function": "minecraft:set_count"
+                        }
+                      ],
+                      "name": "hbm:billet_uranium",
+                      "weight": 4
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 2
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 7,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 3.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:billet_th232",
+                          "weight": 3
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 3.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:billet_uranium_fuel",
+                          "weight": 5
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 11
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 22,
+                        "min": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 4
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 7,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 3.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:billet_mox_fuel",
+                          "weight": 5
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 3.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:billet_thorium_fuel",
+                          "weight": 3
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 7
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 10,
+                            "min": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 1
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 2,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 2.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:billet_ra226be",
+                          "weight": 2
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:billet_beryllium",
+                          "weight": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:value_check",
+                  "range": {
+                    "max": 22
+                  },
+                  "value": {
+                    "type": "minecraft:uniform",
+                    "max": 40,
+                    "min": 0
+                  }
+                }
+              ]
+            },
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 0
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 1,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:nugget_u233",
+                          "weight": 1
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:nugget_uranium_fuel",
+                          "weight": 1
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 1
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 7,
+                            "min": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 2
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 5,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 3.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:rod_zirnox_empty",
+                          "weight": 3
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 4.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:ingot_graphite",
+                          "weight": 3
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 7
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 17,
+                        "min": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 2
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 4,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 5.0,
+                                "min": 2.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:pile_rod_mk2_nu",
+                          "weight": 3
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 2.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:pile_rod_mk2_ra226be",
+                          "weight": 2
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 4
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 9,
+                            "min": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 2
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 4,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:reacher",
+                          "weight": 3
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:screwdriver",
+                          "weight": 2
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
-          ],
-          "name": "hbm:billet_th232",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:billet_uranium_fuel",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:billet_mox_fuel",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:billet_thorium_fuel",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:billet_ra226be",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:billet_beryllium",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:nugget_u233",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:nugget_uranium_fuel",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:rod_zirnox_empty",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:ingot_graphite",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 2.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:pile_rod_uranium",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:pile_rod_source",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:reacher",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:screwdriver",
-          "weight": 2
+          ]
         }
       ],
       "rolls": 1

@@ -6,6 +6,7 @@ package com.hbm.blocks.network;
 import com.hbm.api.fluidmk2.*;
 import com.hbm.blocks.CapabilityDependentShape;
 import com.hbm.blocks.IAnalyzable;
+import com.hbm.capability.PhysicalConnector;
 import com.hbm.extprop.HbmPlayerProps;
 import com.hbm.handler.EnumToolKey;
 import com.hbm.interfaces.ICopiable;
@@ -36,12 +37,16 @@ import net.minecraft.world.level.redstone.Orientation;
 import org.jspecify.annotations.Nullable;
 
 public abstract class FluidDuctBlockBase extends Block
-        implements CapabilityDependentShape, ILookOverlay, IAnalyzable, ICopiable {
+        implements PhysicalConnector,
+                CapabilityDependentShape,
+                ILookOverlay,
+                IAnalyzable,
+                ICopiable {
 
     public static final int OPEN_ALL = 0x3F;
 
     protected FluidDuctBlockBase(Properties props) {
-        super(props);
+        super(CapabilityDependentShape.deferShapeToFullChunk(props));
     }
 
     protected static void addTypeLine(Level level, BlockPos pos, ILookOverlay.LookInfo info) {
@@ -53,7 +58,9 @@ public abstract class FluidDuctBlockBase extends Block
         info.line(name, ARGB.transparent(FluidPipeTintData.colorFor(type)));
     }
 
-    public boolean canConnectFluid(Level level, BlockPos pos, Direction side, Fluid fluid) {
+    @Override
+    public boolean hasFluidContact(
+            Level level, BlockPos pos, BlockState state, Direction side, Fluid fluid) {
         if (level.isClientSide()) {
             return FluidPipeTintData.fluidAtIfKnown(level, pos) == fluid;
         }
@@ -175,7 +182,7 @@ public abstract class FluidDuctBlockBase extends Block
         long key = pos.asLong();
         if (FluidPipeGraph.graphAt(level, key) != null) return;
         LevelNodeGraph<PipeData> graph = FluidPipeGraph.get(level);
-        PipeData data = FluidPipeGraphProvider.INSTANCE.createData(state);
+        PipeData data = PipeData.UNSET;
         graph.addNode(key, data, nodeMask(state));
         FluidPipeTintData.sync(level, pos, data.fluid());
     }

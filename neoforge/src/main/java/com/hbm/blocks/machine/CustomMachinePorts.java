@@ -5,10 +5,10 @@ package com.hbm.blocks.machine;
 
 import com.hbm.blockentity.machine.BlockEntityCustomMachine;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockCoreIndex;
 import com.hbm.blocks.multiblock.MultiblockSurface;
-import com.hbm.capability.ICapabilityBlock;
+import com.hbm.capability.MachineCaps;
 import com.hbm.uninos.graph.EndpointRegistry;
-import com.hbm.uninos.graph.LevelNodeGraph;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -36,16 +36,18 @@ public final class CustomMachinePorts {
     }
 
     public static void index(ServerLevel level, BlockPos core, List<BlockPos> cells) {
-        BlockMultiblockCore.claimCells(level, core, cells);
+        BlockMultiblockCore.claimCells(level, core, cells, MultiblockCoreIndex.PORT);
         EndpointRegistry endpoints = EndpointRegistry.of(level);
         for (BlockPos cell : cells) {
             EndpointRegistry.Endpoint declared = endpoints.declared(cell.asLong());
             if (declared != null && declared.owner() == core.asLong()) continue;
-            ICapabilityBlock block = (ICapabilityBlock) level.getBlockState(cell).getBlock();
+            MachineCaps caps = MachineCaps.declared(level.getBlockState(cell).getBlock());
             endpoints.declare(
-                    cell, core, BlockMultiblockCore.MASK_ALL, block.caps().declaredBits());
-            ((Level) level).invalidateCapabilities(cell);
-            LevelNodeGraph.invalidateEndpointsAround(level, cell);
+                    cell,
+                    core,
+                    BlockMultiblockCore.MASK_ALL,
+                    caps == null ? 0 : caps.declaredBits());
+            BlockMultiblockCore.notifyCell(level, cell);
             BlockMultiblockCore.renotifyNeighbours(level, cell);
         }
     }
@@ -69,8 +71,7 @@ public final class CustomMachinePorts {
             EndpointRegistry.Endpoint declared = endpoints.declared(cell.asLong());
             if (declared != null && declared.owner() != core.asLong()) continue;
             endpoints.withdraw(cell);
-            ((Level) level).invalidateCapabilities(cell);
-            LevelNodeGraph.invalidateEndpointsAround(level, cell);
+            BlockMultiblockCore.notifyCell(level, cell);
         }
     }
 }

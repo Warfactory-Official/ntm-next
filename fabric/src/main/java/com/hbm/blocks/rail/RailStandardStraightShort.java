@@ -8,21 +8,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 
 public class RailStandardStraightShort extends BlockRailNTM {
-
-    private static final int[] DIMENSIONS = {0, 0, 0, 0, 1, 0};
-
     public RailStandardStraightShort(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
     }
 
     @Override

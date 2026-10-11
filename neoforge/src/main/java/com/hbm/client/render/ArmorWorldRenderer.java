@@ -20,6 +20,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.LightCoordsUtil;
@@ -362,6 +363,10 @@ public final class ArmorWorldRenderer {
         return stack.getItem() instanceof ModArmorItem armor && MESH_SETS.containsKey(armor.suit());
     }
 
+    public static boolean visible(ModelPart limb, HumanoidRenderState state) {
+        return limb.visible || !(state instanceof AvatarRenderState);
+    }
+
     public static void submit(
             PoseStack pose,
             SubmitNodeCollector collector,
@@ -587,6 +592,7 @@ public final class ArmorWorldRenderer {
             float xOffset,
             int ownLight,
             int tint) {
+        if (!visible(limb, state)) return;
         pose.pushPose();
         if (xOffset != 0F) pose.translate(xOffset * scale(limb, bone, state), 0F, 0F);
         enterFrame(pose, limb, bone, state);
@@ -608,6 +614,7 @@ public final class ArmorWorldRenderer {
             HumanoidRenderState state,
             Identifier texture,
             int group) {
+        if (!visible(limb, state)) return;
         pose.pushPose();
         enterFrame(pose, limb, bone, state);
         float pivot = 4.875F * 0.0625F;

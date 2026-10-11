@@ -5,8 +5,6 @@ package com.hbm.world.gen.component;
 
 import com.hbm.lib.Library;
 import com.hbm.world.gen.nbt.DungeonProcessorLists;
-import com.hbm.world.gen.nbt.WeightedOption;
-import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -23,7 +21,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -56,7 +53,7 @@ public abstract class NtmComponentPiece extends StructurePiece {
         super(type, tag);
     }
 
-    protected static BlockState hbmState(String path) {
+    public static BlockState hbmState(String path) {
         return BuiltInRegistries.BLOCK
                 .getOptional(Library.id(path))
                 .map(Block::defaultBlockState)
@@ -239,27 +236,5 @@ public abstract class NtmComponentPiece extends StructurePiece {
             }
         }
         container.setItem(slot, book);
-    }
-
-    public static List<WeightedOption> sandstoneTable() {
-        return List.of(
-                new WeightedOption(Blocks.SANDSTONE.defaultBlockState(), 4),
-                new WeightedOption(hbmState("reinforced_sand"), 5),
-                new WeightedOption(Blocks.SAND.defaultBlockState(), 1));
-    }
-
-    public static List<WeightedOption> concreteBricksTable() {
-        return List.of(
-                new WeightedOption(hbmState("brick_concrete"), 4),
-                new WeightedOption(hbmState("brick_concrete_mossy"), 3),
-                new WeightedOption(hbmState("brick_concrete_cracked"), 2),
-                new WeightedOption(hbmState("brick_concrete_broken"), 1));
-    }
-
-    public static List<WeightedOption> labTilesTable() {
-        return List.of(
-                new WeightedOption(hbmState("tile_lab"), 5),
-                new WeightedOption(hbmState("tile_lab_cracked"), 4),
-                new WeightedOption(hbmState("tile_lab_broken"), 1));
     }
 }

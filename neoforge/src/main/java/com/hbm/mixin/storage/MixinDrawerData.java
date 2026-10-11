@@ -4,18 +4,14 @@
 package com.hbm.mixin.storage;
 
 import com.hbm.inventory.SlotSource;
+import com.jaquadro.minecraft.storagedrawers.block.tile.tiledata.StandardDrawerGroup.DrawerData;
 import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-@Pseudo
-@Mixin(
-        targets =
-                "com.jaquadro.minecraft.storagedrawers.block.tile.tiledata.StandardDrawerGroup$DrawerData",
-        remap = false)
+@Mixin(value = DrawerData.class, remap = false, priority = 500)
 public abstract class MixinDrawerData implements SlotSource {
     @Shadow private ItemStack protoStack;
     @Shadow private int count;

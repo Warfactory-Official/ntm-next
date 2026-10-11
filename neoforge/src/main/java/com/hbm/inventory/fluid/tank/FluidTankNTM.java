@@ -14,7 +14,6 @@ import com.hbm.items.ModItems;
 import com.hbm.items.machine.*;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncSource;
-import com.hbm.platform.IFluidHandlerView;
 import com.hbm.platform.NeoForgeCaps;
 import io.netty.buffer.ByteBuf;
 import java.util.Random;
@@ -28,6 +27,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import org.jspecify.annotations.Nullable;
 
 public class FluidTankNTM implements SyncSource {
@@ -361,7 +362,7 @@ public class FluidTankNTM implements SyncSource {
     public static boolean isFluidContainer(ItemStack stack) {
         if (stack.isEmpty()) return false;
         if (stack.getItem() instanceof ItemFluidContainerInfinite) return true;
-        return NeoForgeCaps.findFluidHandler(stack) != null;
+        return NeoForgeCaps.findFluidStore(stack) != null;
     }
 
     public static long containerContent(ItemStack stack, @Nullable Fluid type) {
@@ -370,15 +371,15 @@ public class FluidTankNTM implements SyncSource {
             FluidContainerRows.Row row = FluidContainerRows.full(stack);
             return row != null && row.fluid().get() == type ? row.amount().getAsInt() : 0L;
         }
-        IFluidHandlerView view = NeoForgeCaps.findFluidHandler(stack);
-        return view == null ? 0L : view.extractable(type);
+        ResourceHandler<FluidResource> store = NeoForgeCaps.findFluidStore(stack);
+        return store == null ? 0L : NeoForgeCaps.extractable(store, type);
     }
 
     public static long containerRoom(ItemStack stack, @Nullable Fluid type) {
         if (type == null || stack.isEmpty() || !convertible(stack)) return 0L;
         if (FluidContainerRows.answers(stack)) return FluidContainerRows.fillAmount(stack, type);
-        IFluidHandlerView view = NeoForgeCaps.findFluidHandler(stack);
-        return view == null ? 0L : view.insertable(type);
+        ResourceHandler<FluidResource> store = NeoForgeCaps.findFluidStore(stack);
+        return store == null ? 0L : NeoForgeCaps.insertable(store, type);
     }
 
     public long containerContent(ItemStack stack) {
@@ -422,8 +423,8 @@ public class FluidTankNTM implements SyncSource {
         }
         ItemStack probe = held.copyWithCount(1);
         SimpleContainer scratch = new SimpleContainer(probe.copy());
-        IFluidHandlerView view = NeoForgeCaps.findFluidHandler(scratch, 0);
-        if (view == null) return;
+        ResourceHandler<FluidResource> store = NeoForgeCaps.findFluidStore(scratch, 0);
+        if (store == null) return;
 
         Fluid incoming = null;
         long offered = 0L;
@@ -431,7 +432,7 @@ public class FluidTankNTM implements SyncSource {
         for (int i = -1; i < equivalents.length; i++) {
             Fluid candidate = i < 0 ? type : equivalents[i];
             if (!accepts(candidate)) continue;
-            offered = view.extractable(candidate);
+            offered = NeoForgeCaps.extractable(store, candidate);
             if (offered > 0) {
                 incoming = candidate;
                 break;
@@ -439,12 +440,12 @@ public class FluidTankNTM implements SyncSource {
         }
         if (incoming == null) return;
         long room = (long) capacity - fill;
-        long drawn = view.extract(incoming, Math.min(offered, room));
+        long drawn = NeoForgeCaps.extract(store, incoming, Math.min(offered, room));
         if (drawn <= 0) return;
 
         ItemStack result = scratch.getItem(0);
         if (!changed(probe, result)) return;
-        if (view.extractable(incoming) <= 0) {
+        if (NeoForgeCaps.extractable(store, incoming) <= 0) {
             if (!ejectFits(slots, out, result)) return;
             receive(incoming, (int) drawn);
             eject(slots, in, out, result);
@@ -471,16 +472,16 @@ public class FluidTankNTM implements SyncSource {
         }
         ItemStack probe = held.copyWithCount(1);
         SimpleContainer scratch = new SimpleContainer(probe.copy());
-        IFluidHandlerView view = NeoForgeCaps.findFluidHandler(scratch, 0);
-        if (view == null) return;
+        ResourceHandler<FluidResource> store = NeoForgeCaps.findFluidStore(scratch, 0);
+        if (store == null) return;
 
         Fluid offered = content;
-        long room = view.insertable(content);
+        long room = NeoForgeCaps.insertable(store, content);
         if (room <= 0 && content == type) {
             for (Fluid placed : NTMFluidProperties.equivalents(type)) {
                 if (!(placed instanceof ClassicFluid classic) || classic.spec().kind() == null)
                     break;
-                room = view.insertable(placed);
+                room = NeoForgeCaps.insertable(store, placed);
                 if (room > 0) {
                     offered = placed;
                     break;
@@ -488,12 +489,12 @@ public class FluidTankNTM implements SyncSource {
             }
         }
         if (room <= 0) return;
-        long given = view.insert(offered, Math.min(room, fill));
+        long given = NeoForgeCaps.insert(store, offered, Math.min(room, fill));
         if (given <= 0) return;
 
         ItemStack result = scratch.getItem(0);
         if (!changed(probe, result)) return;
-        if (view.insertable(offered) <= 0) {
+        if (NeoForgeCaps.insertable(store, offered) <= 0) {
             if (!ejectFits(slots, out, result)) return;
             setFill(fill - (int) given);
             eject(slots, in, out, result);

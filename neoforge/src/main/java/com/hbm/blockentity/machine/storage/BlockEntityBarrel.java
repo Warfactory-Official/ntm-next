@@ -27,17 +27,19 @@ import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Corrosive;
 import com.hbm.inventory.fluid.trait.FluidTrait;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Amat;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.lib.Library;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import com.hbm.saveddata.TomSaveData;
 import com.hbm.uninos.graph.LevelNodeGraph;
+import com.hbm.uninos.graph.PhysicalGraph;
+import com.hbm.util.ChunkUtil;
 import io.netty.buffer.ByteBuf;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
@@ -57,8 +59,10 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
@@ -66,7 +70,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityBarrel extends BlockEntityMachineBase
-        implements FluidFlushSender,
+        implements FluidTankAccess,
+                FluidFlushSender,
                 MenuProvider,
                 IControlReceiver,
                 PersistentDrop,
@@ -103,6 +108,8 @@ public class BlockEntityBarrel extends BlockEntityMachineBase
     @SyncField(units = 1L << 1)
     public final FluidTankNTM tank;
 
+    private final FluidTankNTM[] tanks;
+
     @SyncField(units = 1L << 0)
     private int mode = MODE_RECEIVE;
 
@@ -112,12 +119,14 @@ public class BlockEntityBarrel extends BlockEntityMachineBase
     public BlockEntityBarrel(BlockPos pos, BlockState state) {
         super(ModBlockEntities.FLUID_BARREL.get(), pos, state, SLOT_COUNT);
         this.tank = createTank(((BlockFluidBarrel) state.getBlock()).capacity);
+        this.tanks = new FluidTankNTM[] {tank};
     }
 
     protected BlockEntityBarrel(
             BlockEntityType<?> type, BlockPos pos, BlockState state, int capacity) {
         super(type, pos, state, SLOT_COUNT);
         this.tank = createTank(capacity);
+        this.tanks = new FluidTankNTM[] {tank};
     }
 
     private FluidTankNTM createTank(int capacity) {
@@ -127,7 +136,7 @@ public class BlockEntityBarrel extends BlockEntityMachineBase
                 if (!graphReady || isRemoved()) return;
                 ServerLevel server = (ServerLevel) level;
                 changeBufferNodes(server, mode, previous);
-                refreshConnectors(server, true);
+                refreshConnectors(server, true, Block.UPDATE_ALL);
             }
         };
     }
@@ -140,7 +149,7 @@ public class BlockEntityBarrel extends BlockEntityMachineBase
         if (mode == MODE_BUFFER && type != null) {
             addBufferNodes(FluidPipeGraph.get(server, type), new PipeData(type));
         }
-        refreshConnectors(server, false);
+        refreshConnectors(server, false, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
     }
 
     private void changeBufferNodes(
@@ -211,7 +220,8 @@ public class BlockEntityBarrel extends BlockEntityMachineBase
     }
 
     public void refreshConnectors() {
-        if (graphReady && !isRemoved()) refreshConnectors((ServerLevel) level, false);
+        if (graphReady && !isRemoved())
+            refreshConnectors((ServerLevel) level, false, Block.UPDATE_ALL);
     }
 
     @Override
@@ -221,20 +231,20 @@ public class BlockEntityBarrel extends BlockEntityMachineBase
 
     @Override
     public FluidTankNTM[] getSendingTanks() {
-        return mode == MODE_SEND || mode == MODE_BUFFER ? new FluidTankNTM[] {tank} : NO_TANKS;
+        return mode == MODE_SEND || mode == MODE_BUFFER ? tanks : NO_TANKS;
     }
 
-    private void refreshConnectors(ServerLevel server, boolean typeChanged) {
+    private void refreshConnectors(ServerLevel server, boolean typeChanged, int flags) {
         Fluid type = tank.getDeclaredFluid();
         BlockState state = getBlockState();
         if (state.getBlock() instanceof BlockFluidBarrel) {
-            BlockState updated =
-                    state.setValue(BlockFluidBarrel.NORTH, connects(type, Direction.NORTH))
-                            .setValue(BlockFluidBarrel.EAST, connects(type, Direction.EAST))
-                            .setValue(BlockFluidBarrel.SOUTH, connects(type, Direction.SOUTH))
-                            .setValue(BlockFluidBarrel.WEST, connects(type, Direction.WEST));
+            BlockState updated = state;
+            updated = arm(updated, BlockFluidBarrel.NORTH, type, Direction.NORTH);
+            updated = arm(updated, BlockFluidBarrel.EAST, type, Direction.EAST);
+            updated = arm(updated, BlockFluidBarrel.SOUTH, type, Direction.SOUTH);
+            updated = arm(updated, BlockFluidBarrel.WEST, type, Direction.WEST);
             if (updated != state) {
-                server.setBlock(worldPosition, updated, 3);
+                server.setBlock(worldPosition, updated, flags);
                 return;
             }
         }
@@ -246,10 +256,14 @@ public class BlockEntityBarrel extends BlockEntityMachineBase
         }
     }
 
-    private boolean connects(Fluid type, Direction dir) {
-        return type != null
-                && Library.canConnectFluid(
-                        level, worldPosition.relative(dir), dir.getOpposite(), type);
+    private BlockState arm(
+            BlockState state, BooleanProperty arm, @Nullable Fluid type, Direction dir) {
+        BlockPos neighbour = worldPosition.relative(dir);
+        if (ChunkUtil.chunkIfLoaded(level, neighbour) == null) return state;
+        return state.setValue(
+                arm,
+                type != null
+                        && PhysicalGraph.fluidContact(level, neighbour, dir.getOpposite(), type));
     }
 
     protected void checkFluidInteraction() {
@@ -466,8 +480,14 @@ public class BlockEntityBarrel extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {tank};
+    public int tankCount() {
+        return 1;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        if (index != 0) throw new IndexOutOfBoundsException(index);
+        return tank;
     }
 
     @Override
@@ -518,7 +538,8 @@ public class BlockEntityBarrel extends BlockEntityMachineBase
         if (graphReady && !isRemoved()) {
             ServerLevel server = (ServerLevel) level;
             changeBufferNodes(server, previousMode, previousType);
-            if (previousType != tank.getDeclaredFluid()) refreshConnectors(server, true);
+            if (previousType != tank.getDeclaredFluid())
+                refreshConnectors(server, true, Block.UPDATE_ALL);
         }
     }
 

@@ -140,6 +140,7 @@ public abstract class MixinSerializableChunkData implements IChunkExtension {
         ChunkAccess target =
                 (result instanceof ImposterProtoChunk imposter) ? imposter.getWrapped() : result;
         target.hbm$setCoreIndex(this.hbm$coreIndex, this.hbm$coreIndexSize);
+        MultiblockCoreIndex.resolveLegacy(target, level);
     }
 
     @Unique private long @Nullable [] hbm$pendingFallerPositions;

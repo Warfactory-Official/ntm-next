@@ -5,7 +5,6 @@ package com.hbm.blockentity.machine;
 
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
 import com.hbm.blockentity.AudioLoop;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.IFluidCopiable;
 import com.hbm.blockentity.Synced;
@@ -15,6 +14,7 @@ import com.hbm.blocks.generic.BlockTallPlant;
 import com.hbm.blocks.machine.MachineThresher;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.items.ModItems;
 import com.hbm.lib.ModDamageTypes;
@@ -62,9 +62,9 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityThresher extends BlockEntity
-        implements Synced,
+        implements FluidTankAccess,
+                Synced,
                 GraphResident,
-                FoldedCoreResident,
                 AudioLoop,
                 FluidTankEndpoint,
                 IFluidCopiable,
@@ -232,6 +232,10 @@ public class BlockEntityThresher extends BlockEntity
                 cutCane(level, b, hitX, y, hitZ);
                 continue;
             }
+            if (b == Blocks.BAMBOO) {
+                cutBamboo(level, hitX, y, hitZ);
+                continue;
+            }
 
             if (canCut(b) && !shouldIgnore(level, hit, bs)) cutCrop(level, hit, bs);
         }
@@ -302,20 +306,31 @@ public class BlockEntityThresher extends BlockEntity
         if (plant == ModBlocks.PLANT_TALL_CD2.get() || plant == ModBlocks.PLANT_TALL_CD3.get())
             return;
 
-        spawnBreakFx(level, pos, bs);
-        for (ItemStack drop : Block.getDrops(bs, level, pos, null)) dropItem(level, drop);
-        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+        cutBlock(level, pos, bs);
     }
 
     private void cutCane(ServerLevel level, Block target, int x, int y, int z) {
         int offset = level.getBlockState(new BlockPos(x, y - 1, z)).is(target) ? -1 : 0;
         for (int i = 2 + offset; i > offset; i--) {
             BlockPos pos = new BlockPos(x, y + i, z);
-            BlockState bs = level.getBlockState(pos);
-            spawnBreakFx(level, pos, bs);
-            for (ItemStack drop : Block.getDrops(bs, level, pos, null)) dropItem(level, drop);
-            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+            cutBlock(level, pos, level.getBlockState(pos));
         }
+    }
+
+    private void cutBamboo(ServerLevel level, int x, int y, int z) {
+        int bottom = level.getBlockState(new BlockPos(x, y - 1, z)).is(Blocks.BAMBOO) ? y : y + 1;
+        int top = y;
+        while (level.getBlockState(new BlockPos(x, top + 1, z)).is(Blocks.BAMBOO)) top++;
+        for (int cut = top; cut >= bottom; cut--) {
+            BlockPos pos = new BlockPos(x, cut, z);
+            cutBlock(level, pos, level.getBlockState(pos));
+        }
+    }
+
+    private void cutBlock(ServerLevel level, BlockPos pos, BlockState bs) {
+        spawnBreakFx(level, pos, bs);
+        for (ItemStack drop : Block.getDrops(bs, level, pos, null)) dropItem(level, drop);
+        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
     }
 
     private void cutCrop(ServerLevel level, BlockPos pos, BlockState bs) {
@@ -417,8 +432,13 @@ public class BlockEntityThresher extends BlockEntity
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return receiving;
+    public int tankCount() {
+        return receiving.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return receiving[index];
     }
 
     @Override

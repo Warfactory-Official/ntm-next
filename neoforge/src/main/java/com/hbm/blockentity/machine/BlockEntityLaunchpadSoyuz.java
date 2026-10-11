@@ -19,6 +19,7 @@ import com.hbm.entity.missile.EntitySoyuz;
 import com.hbm.inventory.IGUIProvider;
 import com.hbm.inventory.container.MenuLaunchpadSoyuz;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.items.ISatChip;
 import com.hbm.items.ModItems;
@@ -52,7 +53,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 
 public class BlockEntityLaunchpadSoyuz extends BlockEntityMachineBase
-        implements IEnergyHandlerMK2,
+        implements FluidTankAccess,
+                IEnergyHandlerMK2,
                 IFluidHandlerMK2,
                 IGUIProvider,
                 IControlReceiver,
@@ -534,8 +536,13 @@ public class BlockEntityLaunchpadSoyuz extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     @Override

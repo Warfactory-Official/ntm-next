@@ -5,7 +5,6 @@ package com.hbm.blocks.multiblock;
 
 import com.hbm.platform.NeoForgeServerEvents;
 import com.hbm.uninos.graph.EndpointRegistry;
-import com.hbm.uninos.graph.LevelNodeGraph;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
@@ -15,10 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -43,12 +40,11 @@ public final class AssembledMembers {
     }
 
     public static void assemble(ServerLevel level, BlockPos owner, Collection<BlockPos> members) {
-        BlockMultiblockCore.claimCells(level, owner, members);
+        BlockMultiblockCore.claimCells(level, owner, members, MultiblockCoreIndex.MEMBER);
         for (BlockPos member : members) {
             BlockState state = level.getBlockState(member);
             if (!declare(level, member, state, owner)) continue;
-            ((Level) level).invalidateCapabilities(member);
-            LevelNodeGraph.invalidateEndpointsAround(level, member);
+            BlockMultiblockCore.notifyCell(level, member);
             BlockMultiblockCore.renotifyNeighbours(level, member);
         }
     }
@@ -73,8 +69,7 @@ public final class AssembledMembers {
         EndpointRegistry endpoints = EndpointRegistry.of(level);
         if (endpoints.declared(member.asLong()) == null) return;
         endpoints.withdraw(member);
-        ((Level) level).invalidateCapabilities(member);
-        LevelNodeGraph.invalidateEndpointsAround(level, member);
+        BlockMultiblockCore.notifyCell(level, member);
     }
 
     public static List<BlockPos> members(ServerLevel level, BlockPos owner, BoundingBox bounds) {
@@ -99,13 +94,14 @@ public final class AssembledMembers {
         return found;
     }
 
-    public static void onChunkFull(ServerLevel level, LevelChunk chunk) {
+    public static @Nullable LongOpenHashSet declareIn(ServerLevel level, LevelChunk chunk) {
         Long2ObjectMap<LongOpenHashSet> byChunk = WAITING.get(level);
         LongOpenHashSet due = byChunk == null ? null : byChunk.remove(chunk.getPos().pack());
         long[] entries = chunk.hbm$coreIndex();
         for (int i = 0, n = entries == null ? 0 : chunk.hbm$coreIndexSize(); i < n; i++) {
             long entry = entries[i];
-            if (entry < 0) continue;
+            if (entry < 0 || MultiblockCoreIndex.populationOf(entry) != MultiblockCoreIndex.MEMBER)
+                continue;
             long cell = MultiblockCoreIndex.cellPacked(chunk.getPos(), level, entry);
             BlockPos pos = BlockPos.of(cell);
             BlockState state = chunk.getBlockState(pos);
@@ -120,11 +116,11 @@ public final class AssembledMembers {
             if (due == null) due = new LongOpenHashSet();
             due.add(cell);
         }
-        if (due == null) return;
-        LongOpenHashSet checks = due;
-        MinecraftServer server = level.getServer();
-        server.schedule(
-                server.wrapRunnable(() -> checks.forEach(cell -> check(level, BlockPos.of(cell)))));
+        return due;
+    }
+
+    public static void check(ServerLevel level, LongOpenHashSet members) {
+        members.forEach((long cell) -> check(level, BlockPos.of(cell)));
     }
 
     private static void check(ServerLevel level, BlockPos pos) {

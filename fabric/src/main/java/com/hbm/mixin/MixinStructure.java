@@ -26,6 +26,10 @@ public abstract class MixinStructure {
     private void hbm$columnBiome(
             Structure.GenerationContext context,
             CallbackInfoReturnable<Optional<Structure.GenerationStub>> cir) {
+        if ((Object) this instanceof ColumnBiome.SelfTested) {
+            cir.setReturnValue(findGenerationPoint(context));
+            return;
+        }
         Identifier id =
                 context.registryAccess()
                         .lookupOrThrow(Registries.STRUCTURE)

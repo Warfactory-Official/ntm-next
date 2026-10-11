@@ -3,19 +3,26 @@
 
 package com.hbm.api.fluidmk2;
 
+import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockSurface;
+import com.hbm.capability.MachineCaps;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
-import com.hbm.platform.NeoForgeCaps;
+import com.hbm.uninos.graph.Distribution.IdentitySet;
+import com.hbm.uninos.graph.EndpointRegistry;
 import com.hbm.uninos.graph.LevelNodeGraph;
+import com.hbm.util.ChunkUtil;
 import com.hbm.util.TickPhase;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
@@ -27,25 +34,9 @@ public final class FlushRegister {
     private static final int[] NO_ENDS = new int[0];
     private static final long[] NO_WORDS = new long[0];
 
-    private static final ClassValue<Boolean> ADAPTED =
-            new ClassValue<>() {
-                @Override
-                protected Boolean computeValue(Class<?> type) {
-                    for (Class<?> c = type; c != null && c != Object.class; c = c.getSuperclass()) {
-                        for (Method m : c.getDeclaredMethods()) {
-                            if (m.getName().equals("declareFlush")
-                                    && m.getParameterCount() == 1
-                                    && m.getParameterTypes()[0] == FlushLanes.class) {
-                                return Boolean.FALSE;
-                            }
-                        }
-                    }
-                    return Boolean.TRUE;
-                }
-            };
-
     private final FluidFlushSender machine;
     private final List<IFluidHandlerMK2> gather = new ArrayList<>(4);
+    private final IdentitySet<IFluidHandlerMK2> seen = new IdentitySet<>();
 
     private FlushLane[] lanes = NO_LANES;
     private BlockPos[] positions = NO_POSITIONS;
@@ -57,6 +48,11 @@ public final class FlushRegister {
     private long[] parked = NO_WORDS;
     private long[] buckets = NO_WORDS;
 
+    private IFluidHandlerMK2[] receivers = new IFluidHandlerMK2[0];
+    private Fluid[] receiverTypes = new Fluid[0];
+    private BlockEntity[] owners = new BlockEntity[0];
+    private LevelChunk[] ownerChunks = new LevelChunk[0];
+    private BlockState[] ownerStates = new BlockState[0];
     private boolean derived;
     private boolean inUse;
 
@@ -64,31 +60,12 @@ public final class FlushRegister {
         this.machine = machine;
     }
 
-    static boolean adaptsSendingTanks(Class<?> machine) {
-        return ADAPTED.get(machine);
-    }
-
-    private static boolean containsIdentity(
-            List<IFluidHandlerMK2> gather, IFluidHandlerMK2 receiver) {
-        for (int i = 0, size = gather.size(); i < size; i++) {
-            if (gather.get(i) == receiver) return true;
-        }
-        return false;
-    }
-
-    void expectLanes(int count) {
-        if (derived && lanes.length != count) derived = false;
-    }
-
     public void flush(ServerLevel level) {
         if (!derived) derive(level);
         if (positions.length == 0) return;
-
         long gameTime = level.getGameTime();
         BlockPos pos = machine.getBlockPos();
-        if (!anyLaneDue(gameTime, pos)) return;
-        probePending(level);
-
+        boolean probed = false;
         int from = 0;
         for (int i = 0; i < lanes.length; i++) {
             int to = laneEnd[i];
@@ -99,27 +76,15 @@ public final class FlushRegister {
                 FluidTankNTM tank = lane.tank();
                 Fluid type = tank.getFluid();
                 if (tank.getFill() > 0 && type != null && type != Fluids.EMPTY) {
+                    if (!probed) {
+                        probePending(level);
+                        probed = true;
+                    }
                     serve(level, lane, type, tank.getPressure(), from, to);
                 }
             }
             from = to;
         }
-    }
-
-    private boolean anyLaneDue(long gameTime, BlockPos pos) {
-        int from = 0;
-        for (int i = 0; i < lanes.length; i++) {
-            int to = laneEnd[i];
-            FlushLane lane = lanes[i];
-            if (to > from
-                    && TickPhase.every(gameTime, pos, lane.period())
-                    && lane.enabled().getAsBoolean()
-                    && lane.tank().getFill() > 0) {
-                return true;
-            }
-            from = to;
-        }
-        return false;
     }
 
     public void invalidate() {
@@ -129,7 +94,9 @@ public final class FlushRegister {
     void invalidateAt(long posKey) {
         if (posKey == machine.getBlockPos().asLong()) derived = false;
         for (int i = 0; i < contactKeys.length; i++) {
-            if (contactKeys[i] != posKey) continue;
+            if (contactKeys[i] != posKey
+                    && (owners[i] == null || owners[i].getBlockPos().asLong() != posKey)) continue;
+            clearReceiver(i);
             probed[i >>> 6] &= ~(1L << i);
             parked[i >>> 6] &= ~(1L << i);
         }
@@ -138,7 +105,11 @@ public final class FlushRegister {
     void invalidateChunk(long chunkKey) {
         if (LevelNodeGraph.chunkOf(machine.getBlockPos().asLong()) == chunkKey) derived = false;
         for (int i = 0; i < contactKeys.length; i++) {
-            if (LevelNodeGraph.chunkOf(contactKeys[i]) != chunkKey) continue;
+            if (LevelNodeGraph.chunkOf(contactKeys[i]) != chunkKey
+                    && (owners[i] == null
+                            || LevelNodeGraph.chunkOf(owners[i].getBlockPos().asLong())
+                                    != chunkKey)) continue;
+            clearReceiver(i);
             probed[i >>> 6] &= ~(1L << i);
             parked[i >>> 6] &= ~(1L << i);
         }
@@ -197,6 +168,11 @@ public final class FlushRegister {
         laneEnd = ends;
         contactKeys = new long[positions.length];
         for (int i = 0; i < positions.length; i++) contactKeys[i] = positions[i].asLong();
+        receivers = new IFluidHandlerMK2[positions.length];
+        receiverTypes = new Fluid[positions.length];
+        owners = new BlockEntity[positions.length];
+        ownerChunks = new LevelChunk[positions.length];
+        ownerStates = new BlockState[positions.length];
         int words = (positions.length + 63) >>> 6;
         probed = new long[words];
         live = new long[words];
@@ -241,7 +217,9 @@ public final class FlushRegister {
         }
         probed[i >>> 6] |= 1L << i;
         boolean present =
-                NeoForgeCaps.find(FluidCaps.RECEIVER, level, at, FluidFace.any(sides[i])) != null;
+                FluidCaps.RECEIVER.getCapability(
+                                (Level) level, at, null, null, FluidFace.any(sides[i]))
+                        != null;
         if (present) live[i >>> 6] |= 1L << i;
         else live[i >>> 6] &= ~(1L << i);
     }
@@ -251,10 +229,58 @@ public final class FlushRegister {
         FlushIndex.of(level).park(chunkKey, this);
     }
 
+    private void clearReceiver(int index) {
+        receivers[index] = null;
+        receiverTypes[index] = null;
+        owners[index] = null;
+        ownerChunks[index] = null;
+        ownerStates[index] = null;
+    }
+
+    private IFluidHandlerMK2 receiver(ServerLevel level, int index, Fluid type) {
+        BlockEntity owner = owners[index];
+        if (receiverTypes[index] == type
+                && owner != null
+                && owner.getBlockState() == ownerStates[index]
+                && ChunkUtil.resident(owner, ownerChunks[index])) return receivers[index];
+        clearReceiver(index);
+        BlockPos position = positions[index];
+        IFluidHandlerMK2 receiver =
+                FluidCaps.RECEIVER.getCapability(
+                        (Level) level, position, null, null, FluidFace.of(sides[index], type));
+        owner =
+                receiver instanceof BlockEntity be
+                        ? be
+                        : EndpointRegistry.of(level)
+                                .resolve(
+                                        level,
+                                        contactKeys[index],
+                                        sides[index],
+                                        MachineCaps.FLUID_IN);
+        if (owner == null)
+            owner =
+                    MultiblockSurface.resolveOwner(
+                            level, position, level.getBlockState(position), sides[index]);
+        if (owner == null) return receiver;
+        LevelChunk chunk =
+                BlockMultiblockCore.readableChunk(
+                        level, owner.getBlockPos().getX(), owner.getBlockPos().getZ());
+        if (chunk == null) return null;
+        receivers[index] = receiver;
+        receiverTypes[index] = type;
+        owners[index] = owner;
+        ownerChunks[index] = chunk;
+        ownerStates[index] = owner.getBlockState();
+        FlushIndex.of(level).park(chunk.getPos().pack(), this);
+        return receiver;
+    }
+
     private void serve(
             ServerLevel level, FlushLane lane, Fluid type, int pressure, int from, int to) {
         List<IFluidHandlerMK2> out = inUse ? new ArrayList<>(4) : gather;
         boolean pooled = out == gather;
+        IdentitySet<IFluidHandlerMK2> identities = pooled ? seen : new IdentitySet<>();
+        identities.clear();
         if (pooled) {
             gather.clear();
             inUse = true;
@@ -263,14 +289,9 @@ public final class FlushRegister {
             IFluidHandlerMK2 provider = lane.provider();
             for (int i = from; i < to; i++) {
                 if ((live[i >>> 6] & (1L << i)) == 0) continue;
-                IFluidHandlerMK2 receiver =
-                        NeoForgeCaps.find(
-                                FluidCaps.RECEIVER,
-                                level,
-                                positions[i],
-                                FluidFace.of(sides[i], type));
+                IFluidHandlerMK2 receiver = receiver(level, i, type);
                 if (receiver == null || receiver == provider) continue;
-                if (!containsIdentity(out, receiver)) out.add(receiver);
+                if (identities.add(receiver)) out.add(receiver);
             }
             if (out.isEmpty()) return;
             FluidNetwork.provideDirect(provider, type, pressure, out);

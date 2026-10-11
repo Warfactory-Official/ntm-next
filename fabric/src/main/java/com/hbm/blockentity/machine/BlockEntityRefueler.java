@@ -9,6 +9,7 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.machine.BlockMachineHorizontal;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.items.machine.IFluidContainerItem;
 import com.hbm.packet.SyncField;
@@ -30,7 +31,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 
 public class BlockEntityRefueler extends BlockEntityMachineBase
-        implements FluidTankEndpoint, SyncUnitSchema {
+        implements FluidTankAccess, FluidTankEndpoint, SyncUnitSchema {
 
     private static final EquipmentSlot[] EQUIPMENT = {
         EquipmentSlot.MAINHAND,
@@ -142,8 +143,13 @@ public class BlockEntityRefueler extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return receiving;
+    public int tankCount() {
+        return receiving.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return receiving[index];
     }
 
     @Override

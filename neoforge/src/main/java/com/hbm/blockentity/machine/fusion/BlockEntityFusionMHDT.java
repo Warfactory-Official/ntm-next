@@ -6,8 +6,9 @@ package com.hbm.blockentity.machine.fusion;
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.blockentity.AudioLoop;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -35,7 +36,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 public class BlockEntityFusionMHDT extends BlockEntity
         implements Synced,
                 GraphResident,
-                FoldedCoreResident,
                 AudioLoop,
                 IEnergyHandlerMK2,
                 FluidTankEndpoint,
@@ -175,6 +175,11 @@ public class BlockEntityFusionMHDT extends BlockEntity
     @Override
     public FluidTankNTM[] getSendingTanks() {
         return sending;
+    }
+
+    @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
     }
 
     @Override

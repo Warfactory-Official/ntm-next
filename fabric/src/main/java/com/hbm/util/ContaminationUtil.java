@@ -231,7 +231,7 @@ public final class ContaminationUtil {
     }
 
     private static ChatFormatting prefixFromRad(double rads) {
-        if (rads == 0D) return ChatFormatting.GREEN;
+        if (rads < 1.0e-3D) return ChatFormatting.GREEN;
         if (rads < 1D) return ChatFormatting.YELLOW;
         if (rads < 10D) return ChatFormatting.GOLD;
         if (rads < 100D) return ChatFormatting.RED;

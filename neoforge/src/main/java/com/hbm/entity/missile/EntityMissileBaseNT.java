@@ -6,6 +6,7 @@ package com.hbm.entity.missile;
 import com.hbm.api.entity.IRadarDetectableNT;
 import com.hbm.api.environment.Environment;
 import com.hbm.client.ClientEffects;
+import com.hbm.entity.FarVisible;
 import com.hbm.explosion.ExplosionLarge;
 import com.hbm.explosion.vanillant.ExplosionVNT;
 import com.hbm.explosion.vanillant.standard.*;
@@ -34,7 +35,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class EntityMissileBaseNT extends Projectile implements IRadarDetectableNT {
+public abstract class EntityMissileBaseNT extends Projectile
+        implements IRadarDetectableNT, FarVisible {
     private static final EntityDataAccessor<Byte> FACING =
             SynchedEntityData.defineId(EntityMissileBaseNT.class, EntityDataSerializers.BYTE);
     private final InterpolationHandler interpolation = new InterpolationHandler(this);

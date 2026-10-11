@@ -8,6 +8,7 @@ import com.hbm.api.fluidmk2.FluidFace;
 import com.hbm.api.fluidmk2.FlushIndex;
 import com.hbm.api.fluidmk2.IFluidHandlerMK2;
 import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKBase;
+import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.inventory.fluid.NTMFluidProperties;
@@ -15,9 +16,7 @@ import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.trait.FT_Coolable;
 import com.hbm.inventory.fluid.trait.FT_Heatable;
 import com.hbm.platform.FabricCaps;
-import com.hbm.platform.FabricCaps;
 import com.hbm.registration.RegistryHandle;
-import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.ChunkUtil;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
@@ -39,7 +38,9 @@ public class RBMKLoader extends Block implements ICapabilityBlock {
         super(props);
     }
 
-    public static boolean canConnectFluid(Direction side, Fluid fluid) {
+    @Override
+    public boolean hasFluidContact(
+            Level level, BlockPos pos, BlockState state, Direction side, Fluid fluid) {
         if (side == Direction.UP) return NTMFluidProperties.hasTrait(fluid, FT_Heatable.class);
         return NTMFluidProperties.hasTrait(fluid, FT_Coolable.class)
                 || fluid == NTMFluids.PERFLUOROMETHYL;
@@ -132,8 +133,7 @@ public class RBMKLoader extends Block implements ICapabilityBlock {
     }
 
     private static void changed(ServerLevel level, BlockPos pos) {
-        FabricCaps.invalidateCaps(level, pos);
-        LevelNodeGraph.invalidateEndpointsAround(level, pos);
+        BlockMultiblockCore.notifyCell(level, pos);
         FlushIndex.invalidateAt(level, pos.above().asLong());
         FlushIndex.invalidateAt(level, pos.above(2).asLong());
     }

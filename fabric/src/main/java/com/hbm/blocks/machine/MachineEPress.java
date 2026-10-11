@@ -16,26 +16,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class MachineEPress extends BlockMultiblockCore implements ITickingBlock, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {2, 0, 0, 0, 0, 0};
-
     public MachineEPress(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_HORIZONTAL | MASK_DOWN;
     }
 
     @Override

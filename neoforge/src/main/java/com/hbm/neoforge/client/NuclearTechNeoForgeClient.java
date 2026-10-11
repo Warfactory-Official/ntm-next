@@ -7,6 +7,7 @@ import com.hbm.NuclearTech;
 import com.hbm.api.fluidmk2.FluidPipeTintData;
 import com.hbm.blocks.fluid.ClassicFluid;
 import com.hbm.client.ClientRegistry;
+import com.hbm.client.FarView;
 import com.hbm.client.ItemTooltipEvents;
 import com.hbm.client.Keybinds;
 import com.hbm.client.NukeHud;
@@ -170,6 +171,7 @@ public final class NuclearTechNeoForgeClient {
                         DataGroups.applyAll(event.getPlayer().registryAccess());
                     }
                     CrateOpenHeldPayload.report();
+                    FarView.joined();
                 });
         modBus.addListener((FMLClientSetupEvent event) -> NuclearTech.deriveClientConfigFacades());
         modBus.addListener(

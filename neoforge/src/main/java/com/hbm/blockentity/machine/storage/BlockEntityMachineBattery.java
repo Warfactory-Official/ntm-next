@@ -9,6 +9,7 @@ import com.hbm.api.energymk2.ItemEnergyTransfer;
 import com.hbm.api.redstoneoverradio.IRORInteractive;
 import com.hbm.api.redstoneoverradio.IRORValueProvider;
 import com.hbm.blockentity.BlockEntityMachineBase;
+import com.hbm.blockentity.ChunkPublication;
 import com.hbm.blockentity.PersistentDrop;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.machine.storage.MachineBattery;
@@ -37,16 +38,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.SignalGetter;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.status.ChunkStatus;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
@@ -115,6 +110,7 @@ public class BlockEntityMachineBattery extends BlockEntityMachineBase
     public long delta;
 
     private @Nullable BlockLookupCache<IEnergyHandlerMK2>[] neighbourReceivers;
+    private @Nullable ArrayList<IEnergyHandlerMK2> directFlush;
     private boolean poweredCache;
     private boolean graphReady;
     private long prevPower;
@@ -189,51 +185,9 @@ public class BlockEntityMachineBattery extends BlockEntityMachineBase
     @Override
     public void onGraphLoad(ServerLevel server) {
         if (graphReady) return;
-        var holder =
-                server.getChunkSource()
-                        .chunkMap
-                        .getUpdatingChunkIfPresent(ChunkPos.pack(worldPosition));
-        poweredCache = readsSignal(new PublicationSignals(server, holder.getLatestChunk()));
+        poweredCache = readsSignal(ChunkPublication.signals(server, worldPosition));
         graphReady = true;
         if (conducts(getRelevantMode())) addConductorNodes(PowerGraph.get(server));
-    }
-
-    private record PublicationSignals(ServerLevel level, ChunkAccess owner)
-            implements SignalGetter {
-        private @Nullable ChunkAccess chunk(BlockPos pos) {
-            int x = pos.getX() >> 4, z = pos.getZ() >> 4;
-            if (owner.getPos().x() == x && owner.getPos().z() == z) return owner;
-            var holder =
-                    level.getChunkSource().chunkMap.getUpdatingChunkIfPresent(ChunkPos.pack(x, z));
-            return holder == null ? null : holder.getChunkIfPresentUnchecked(ChunkStatus.FEATURES);
-        }
-
-        @Override
-        public BlockState getBlockState(BlockPos pos) {
-            ChunkAccess chunk = chunk(pos);
-            return chunk == null ? Blocks.AIR.defaultBlockState() : chunk.getBlockState(pos);
-        }
-
-        @Override
-        public @Nullable BlockEntity getBlockEntity(BlockPos pos) {
-            ChunkAccess chunk = chunk(pos);
-            return chunk == null ? null : chunk.getBlockEntity(pos);
-        }
-
-        @Override
-        public FluidState getFluidState(BlockPos pos) {
-            return getBlockState(pos).getFluidState();
-        }
-
-        @Override
-        public int getHeight() {
-            return level.getHeight();
-        }
-
-        @Override
-        public int getMinY() {
-            return level.getMinY();
-        }
     }
 
     protected void addConductorNodes(LevelNodeGraph<CableData> graph) {
@@ -334,11 +288,12 @@ public class BlockEntityMachineBattery extends BlockEntityMachineBase
 
     protected void provideToNeighbours(ServerLevel server) {
         if (neighbourReceivers == null) {
+            directFlush = new ArrayList<>(Direction.VALUES.length);
             neighbourReceivers = new BlockLookupCache[Direction.VALUES.length];
             for (int i = 0; i < Direction.VALUES.length; i++) {
                 Direction dir = Direction.VALUES[i];
                 neighbourReceivers[i] =
-                        NeoForgeCaps.createCache(
+                        new NeoForgeCaps.CapCache<>(
                                 EnergyCaps.RECEIVER,
                                 server,
                                 worldPosition.relative(dir),
@@ -346,17 +301,19 @@ public class BlockEntityMachineBattery extends BlockEntityMachineBase
             }
         }
         if (power <= 0) return;
-        List<IEnergyHandlerMK2> flush = null;
+        List<IEnergyHandlerMK2> flush = directFlush;
         for (int i = 0; i < Direction.VALUES.length; i++) {
             IEnergyHandlerMK2 rec = neighbourReceivers[i].find();
             if (rec == null || rec == this) continue;
-            Direction touching = Direction.VALUES[i].getOpposite();
             if (!rec.allowDirectProvision()) continue;
-            if (flush == null) flush = new ArrayList<>(Direction.VALUES.length);
             flush.add(rec);
         }
-        if (flush == null) return;
-        PowerNetwork.provideDirect(this, flush);
+        if (flush.isEmpty()) return;
+        try {
+            PowerNetwork.provideDirect(this, flush);
+        } finally {
+            flush.clear();
+        }
     }
 
     @Override

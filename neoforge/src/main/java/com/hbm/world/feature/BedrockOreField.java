@@ -35,10 +35,6 @@ public final class BedrockOreField {
         return density(sharedRichness, channel(kind).get(x * INPUT_SCALE, z * INPUT_SCALE));
     }
 
-    public double averageOreLevel(int x, int z) {
-        return averageOreLevel(BedrockOreSet.NTM, x, z);
-    }
-
     public double averageOreLevel(BedrockOreSet set, int x, int z) {
         double scaledX = x * INPUT_SCALE;
         double scaledZ = z * INPUT_SCALE;

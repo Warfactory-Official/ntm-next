@@ -24,8 +24,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public abstract class BlockRailNTM extends BlockMultiblockCore
@@ -128,12 +126,6 @@ public abstract class BlockRailNTM extends BlockMultiblockCore
         }
         BlockPos core = MultiblockSurface.clientCoreOf(level, pos);
         return core == null ? MultiblockSurface.NO_CORE : core.asLong();
-    }
-
-    @Override
-    public @Nullable VoxelShape cellShape(
-            int lx, int ly, int lz, Direction facing, boolean open, boolean forCollision) {
-        return Shapes.create(0, 0, 0, 1, 0.125, 1);
     }
 
     @Override

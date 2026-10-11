@@ -14,7 +14,6 @@ public final class HudConfig {
     public static volatile int infoOffsetVertical = 0;
     public static volatile int toolIndicatorX = 0;
     public static volatile int toolIndicatorY = 0;
-    public static volatile boolean tooltipOreDict = true;
     public static volatile boolean tooltipCustomNuke = true;
     public static volatile boolean doddRbmkDiagnostic = true;
 
@@ -30,7 +29,6 @@ public final class HudConfig {
         infoOffsetVertical = c.get(ConfigSchema.INFO_OFFSET_VERTICAL);
         toolIndicatorX = c.get(ConfigSchema.TOOL_HUD_INDICATOR_X);
         toolIndicatorY = c.get(ConfigSchema.TOOL_HUD_INDICATOR_Y);
-        tooltipOreDict = c.get(ConfigSchema.TOOLTIP_ORE_DICT);
         tooltipCustomNuke = c.get(ConfigSchema.TOOLTIP_CUSTOM_NUKE);
         doddRbmkDiagnostic = c.get(ConfigSchema.DODD_RBMK_DIAGNOSTIC);
     }

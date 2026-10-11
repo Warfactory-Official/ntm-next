@@ -6,11 +6,14 @@ package com.hbm.capability.port;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
 import com.hbm.api.fluidmk2.IFluidHandlerMK2;
 import com.hbm.capability.NtmCapabilities;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
-public final class FluidPort implements PortView, IFluidHandlerMK2 {
+public final class FluidPort implements PortView, IFluidHandlerMK2, FluidTankAccess {
 
     private static final FluidTankNTM[] NO_TANKS = new FluidTankNTM[0];
     private static final int[] NO_SLOTS = new int[0];
@@ -20,6 +23,7 @@ public final class FluidPort implements PortView, IFluidHandlerMK2 {
     private final int[] provide;
     private final @Nullable Filter filter;
     private final @Nullable Runnable onChanged;
+    private final int[] exposed;
 
     private FluidPort(
             FluidTankNTM[] tanks,
@@ -32,6 +36,21 @@ public final class FluidPort implements PortView, IFluidHandlerMK2 {
         this.provide = provide;
         this.filter = filter;
         this.onChanged = onChanged;
+        this.exposed =
+                IntStream.concat(Arrays.stream(receive), Arrays.stream(provide))
+                        .distinct()
+                        .sorted()
+                        .toArray();
+    }
+
+    @Override
+    public int tankCount() {
+        return exposed.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[exposed[index]];
     }
 
     public static FluidPort none() {
@@ -119,8 +138,8 @@ public final class FluidPort implements PortView, IFluidHandlerMK2 {
     }
 
     @Override
-    public int[] getReceivingPressureRange(Fluid type) {
-        return range(receive, type, true);
+    public int receivingPressureMask(Fluid type) {
+        return pressureMask(receive, type, true);
     }
 
     @Override
@@ -148,20 +167,18 @@ public final class FluidPort implements PortView, IFluidHandlerMK2 {
     }
 
     @Override
-    public int[] getProvidingPressureRange(Fluid type) {
-        return range(provide, type, false);
+    public int providingPressureMask(Fluid type) {
+        return pressureMask(provide, type, false);
     }
 
-    private int[] range(int[] slots, Fluid type, boolean receiving) {
-        int lowest = FluidTankEndpoint.HIGHEST_VALID_PRESSURE;
-        int highest = 0;
+    private int pressureMask(int[] slots, Fluid type, boolean receiving) {
+        int mask = 0;
         for (int slot : slots) {
             FluidTankNTM tank = tanks[slot];
             if (receiving ? !tank.accepts(type) : !tank.provides(type)) continue;
-            if (tank.getPressure() < lowest) lowest = tank.getPressure();
-            if (tank.getPressure() > highest) highest = tank.getPressure();
+            mask |= 1 << tank.getPressure();
         }
-        return lowest <= highest ? new int[] {lowest, highest} : DEFAULT_PRESSURE_RANGE;
+        return mask;
     }
 
     private void changed() {

@@ -6,7 +6,6 @@ package com.hbm.blocks.machine;
 import com.hbm.blockentity.machine.BlockEntityChungus;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
@@ -31,71 +30,8 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineChungus extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-    private static final int[] PLACEMENT_DIMENSIONS = {
-        3, 0, 0, 3, 2, 2, 0, 0, 0,
-        4, -4, 0, 3, 1, 1, 0, 0, 0,
-        3, 0, 6, -1, 1, 1, 0, 0, 0,
-        2, 0, 10, -7, 1, 1, 0, 0, 0,
-    };
-
-    @Override
-    protected int[] placementDimensionBoxes() {
-        return PLACEMENT_DIMENSIONS;
-    }
-
-    private static final int[] DIMENSIONS = {3, 0, 0, 3, 2, 2};
-    private static final int[] ARM_A = {4, -4, 0, 3, 1, 1};
-    private static final int[] ARM_B = {3, 0, 6, -1, 1, 1};
-    private static final int[] ARM_C = {2, 0, 10, -7, 1, 1};
-
     public MachineChungus(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 3;
-    }
-
-    @Override
-    public boolean checkRequirement(Level level, BlockPos placed, Direction dir, int o) {
-        if (!super.checkRequirement(level, placed, dir, o)) return false;
-        BlockPos origin = placed.offset(dir.getStepX() * o, dir.getStepY() * o, dir.getStepZ() * o);
-        if (!MultiblockHandlerXR.checkSpace(level, origin, ARM_B, placed, dir)) return false;
-        if (!MultiblockHandlerXR.checkSpace(level, origin, ARM_C, placed, dir)) return false;
-        BlockPos top = placed.offset(dir.getStepX(), 2, dir.getStepZ());
-        return level.getBlockState(top).canBeReplaced();
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        MultiblockHandlerXR.visitBox(core, ARM_A, facing, visitor);
-        MultiblockHandlerXR.visitBox(core, ARM_B, facing, visitor);
-        MultiblockHandlerXR.visitBox(core, ARM_C, facing, visitor);
-
-        Direction rot = facing.getClockWise();
-        visitor.cell(core.relative(rot, 2), MASK_WEST, ROLE_FLUID);
-        visitor.cell(core.relative(rot, -2), MASK_EAST, ROLE_FLUID);
-        visitor.cell(core.relative(facing, -10), MASK_NORTH, ROLE_POWER);
-
-        visitor.cell(core.relative(facing, 4).above(2), MASK_SOUTH, ROLE_FLUID);
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        Direction rot = facing.getClockWise();
-        int domains = PASSIVE_POWER_IN | PASSIVE_FLUID_IN;
-
-        visitor.passiveCell(core.relative(facing, 4).above(2), MASK_ALL, domains);
-        visitor.passiveCell(core.relative(facing, -10), MASK_ALL, domains);
-        visitor.passiveCell(core.relative(rot, 2), MASK_ALL, domains);
-        visitor.passiveCell(core.relative(rot, -2), MASK_ALL, domains);
     }
 
     @Override

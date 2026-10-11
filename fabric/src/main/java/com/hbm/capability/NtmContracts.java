@@ -100,7 +100,7 @@ public final class NtmContracts {
                 Level level, BlockPos pos, BlockState state, @Nullable Direction side) {
             Block block = state.getBlock();
             if (type.isInstance(block)) return type.cast(block);
-            return FabricCaps.find(token(), level, pos, side);
+            return token().find(level, pos, side);
         }
 
         public BlockLookupCache<T> cacheAt(ServerLevel level, BlockPos pos) {

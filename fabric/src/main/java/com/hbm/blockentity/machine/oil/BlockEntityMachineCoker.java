@@ -5,6 +5,8 @@ package com.hbm.blockentity.machine.oil;
 
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.api.tile.IHeatSource;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blockentity.IFluidCopiable;
@@ -17,6 +19,7 @@ import com.hbm.handler.pollution.PollutionType;
 import com.hbm.inventory.container.MenuMachineCoker;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.CokerRecipe;
 import com.hbm.inventory.recipes.CokerRecipes;
@@ -41,7 +44,11 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntityMachineCoker extends BlockEntityMachineBase
-        implements FluidTankEndpoint, MenuProvider, IFluidCopiable, SyncUnitSchema {
+        implements FluidTankAccess,
+                FluidTankEndpoint,
+                MenuProvider,
+                IFluidCopiable,
+                SyncUnitSchema {
     public static final int SLOT_FLUID_ID = 0;
     public static final int SLOT_OUTPUT = 1;
     public static final int SLOT_COUNT = 2;
@@ -205,6 +212,11 @@ public class BlockEntityMachineCoker extends BlockEntityMachineBase
     }
 
     @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
+    }
+
+    @Override
     public int[] getSlotsForFace(Direction side) {
         return ACCESSIBLE_SLOTS;
     }
@@ -231,8 +243,13 @@ public class BlockEntityMachineCoker extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     @Override

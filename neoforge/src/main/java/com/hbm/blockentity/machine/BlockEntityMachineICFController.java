@@ -4,7 +4,6 @@
 package com.hbm.blockentity.machine;
 
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -37,7 +36,7 @@ import net.minecraft.world.phys.AABB;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineICFController extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, IEnergyHandlerMK2, SyncUnitSchema {
+        implements Synced, GraphResident, IEnergyHandlerMK2, SyncUnitSchema {
     private static final int MAX_LASER_LENGTH = 50;
     private static final float INDESTRUCTIBLE_RESISTANCE = 6000F;
     private static final float BEAM_DAMAGE = 50F;

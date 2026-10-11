@@ -6,7 +6,6 @@ package com.hbm.blocks.machine;
 import com.hbm.blockentity.machine.BlockEntityHeaterHeatex;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
@@ -16,7 +15,6 @@ import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.FluidIdentifierItem;
 import java.util.Locale;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -33,42 +31,8 @@ import org.jspecify.annotations.Nullable;
 
 public class HeaterHeatex extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {0, 0, 1, 1, 1, 1};
-
     public HeaterHeatex(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        MultiblockHandlerXR.visitBox(core, DIMENSIONS, facing, visitor);
-
-        Direction rot = facing.getClockWise();
-        visitor.cell(core.relative(facing).relative(rot), MASK_SOUTH);
-        visitor.cell(core.relative(facing).relative(rot, -1), MASK_SOUTH);
-        visitor.cell(core.relative(facing, -1).relative(rot), MASK_NORTH);
-        visitor.cell(core.relative(facing, -1).relative(rot, -1), MASK_NORTH);
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        Direction rot = facing.getClockWise();
-        visitor.passiveCell(core.relative(facing).relative(rot), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(core.relative(facing).relative(rot, -1), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(core.relative(facing, -1).relative(rot), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(
-                core.relative(facing, -1).relative(rot, -1), MASK_ALL, PASSIVE_FLUID_IN);
     }
 
     @Override

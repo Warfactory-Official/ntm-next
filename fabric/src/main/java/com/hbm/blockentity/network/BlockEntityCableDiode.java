@@ -5,18 +5,16 @@ package com.hbm.blockentity.network;
 
 import com.hbm.api.control.IControlReceiver;
 import com.hbm.api.energymk2.*;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.network.CableDiodeBlock;
+import com.hbm.capability.NtmCapabilities;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
 import com.hbm.platform.BlockLookupCache;
 import com.hbm.platform.FabricCaps;
-import com.hbm.uninos.graph.GraphNode;
 import com.hbm.uninos.graph.LevelNodeGraph;
-import com.hbm.uninos.graph.NodeNetwork;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,12 +28,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityCableDiode extends BlockEntity
-        implements Synced,
-                GraphResident,
-                FoldedCoreResident,
-                IEnergyHandlerMK2,
-                IControlReceiver,
-                SyncUnitSchema {
+        implements Synced, GraphResident, IEnergyHandlerMK2, IControlReceiver, SyncUnitSchema {
 
     public static final long MAX_LIMIT = 10_000_000_000L;
 
@@ -45,6 +38,8 @@ public class BlockEntityCableDiode extends BlockEntity
     @SyncField(units = 1L << 1)
     public ConnectionPriority priority = ConnectionPriority.NORMAL;
 
+    private long stock;
+    private long arriving;
     private long power;
     private int pulses;
     private long counted = Long.MIN_VALUE;
@@ -55,12 +50,23 @@ public class BlockEntityCableDiode extends BlockEntity
         super(ModBlockEntities.CABLE_DIODE.get(), pos, state);
     }
 
+    @Override
+    public void setBlockState(BlockState state) {
+        if (getBlockState().getValue(CableDiodeBlock.FACING)
+                != state.getValue(CableDiodeBlock.FACING)) {
+            outputReceiver = null;
+        }
+        super.setBlockState(state);
+    }
+
     private void rollover() {
         long now = level.getGameTime();
         if (now == counted) return;
         counted = now;
         pulses = 0;
         power = 0;
+        stock += arriving;
+        arriving = 0;
     }
 
     public void settingsChanged() {
@@ -85,13 +91,28 @@ public class BlockEntityCableDiode extends BlockEntity
         return getBlockState().getValue(CableDiodeBlock.FACING).getOpposite();
     }
 
-    public boolean acceptsFace(Direction dir) {
-        return dir != output();
+    public boolean acceptsFace(Direction dir, NtmCapabilities.CapRole role) {
+        return (role == NtmCapabilities.CapRole.POWER_OUT) == (dir == output());
+    }
+
+    private boolean outputIsNet() {
+        Direction out = output();
+        long outKey = worldPosition.relative(out).asLong();
+        LevelNodeGraph<CableData> graph = PowerGraph.get((ServerLevel) level);
+        return graph.containsCell(outKey) && graph.isOpenAt(outKey, out.getOpposite());
     }
 
     @Override
     public long transferPower(long amount, boolean simulate) {
         if (simulate) return amount - Math.min(amount, getReceiverSpeed());
+        if (outputIsNet()) {
+            long accepted = Math.min(amount, netRoom());
+            if (accepted > 0) {
+                arriving += accepted;
+                energyChanged();
+            }
+            return amount - accepted;
+        }
         if (recursionBrake) return amount;
 
         rollover();
@@ -102,21 +123,6 @@ public class BlockEntityCableDiode extends BlockEntity
         try {
             ServerLevel sl = (ServerLevel) level;
             Direction out = output();
-            long outKey = worldPosition.relative(out).asLong();
-            LevelNodeGraph<CableData> graph = PowerGraph.get(sl);
-            GraphNode<CableData> node = graph.getNode(outKey);
-
-            if (node != null && node.isOpen(out.getOpposite())) {
-                NodeNetwork<CableData> net = graph.networkAt(outKey);
-                if (net != null) {
-                    long toTransfer = Math.min(amount, this.getReceiverSpeed());
-                    long remainder = PowerNetwork.injectDiode(sl, graph, net, toTransfer);
-                    long transferred = toTransfer - remainder;
-                    this.power += transferred;
-                    return amount - transferred;
-                }
-            }
-
             if (outputReceiver == null) {
                 outputReceiver =
                         FabricCaps.createCache(
@@ -137,9 +143,14 @@ public class BlockEntityCableDiode extends BlockEntity
         }
     }
 
+    private long netRoom() {
+        rollover();
+        return Math.max(0, Math.min(limit - arriving, 2 * limit - stock - arriving));
+    }
+
     @Override
     public long getReceiverSpeed() {
-        return this.getMaxPower() - this.getPower();
+        return outputIsNet() ? netRoom() : this.getMaxPower() - this.getPower();
     }
 
     @Override
@@ -150,12 +161,30 @@ public class BlockEntityCableDiode extends BlockEntity
     @Override
     public long getPower() {
         rollover();
-        return Math.min(power, this.getMaxPower());
+        return Math.min(arriving + power, this.getMaxPower());
     }
 
     @Override
     public void setPower(long power) {
         this.power = power;
+    }
+
+    @Override
+    public long getProviderSpeed() {
+        rollover();
+        return Math.min(stock, limit);
+    }
+
+    @Override
+    public void usePower(long amount) {
+        if (amount <= 0) return;
+        stock = Math.max(0, stock - amount);
+        energyChanged();
+    }
+
+    @Override
+    public boolean passThrough() {
+        return true;
     }
 
     @Override
@@ -197,6 +226,7 @@ public class BlockEntityCableDiode extends BlockEntity
                                 input.getByteOr("p", (byte) priority.ordinal()),
                                 0,
                                 ConnectionPriority.VALUES.length - 1)];
+        stock = Math.max(0L, input.getLongOr("stock", 0L));
     }
 
     @Override
@@ -204,6 +234,7 @@ public class BlockEntityCableDiode extends BlockEntity
         super.saveAdditional(output);
         output.putLong("limit", limit);
         output.putByte("p", (byte) priority.ordinal());
+        if (stock + arriving > 0) output.putLong("stock", stock + arriving);
     }
 
     private void writeDiodeLevel(ByteBuf output) {

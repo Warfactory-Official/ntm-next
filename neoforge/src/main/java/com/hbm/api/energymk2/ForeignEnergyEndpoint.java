@@ -3,17 +3,17 @@
 
 package com.hbm.api.energymk2;
 
-import com.hbm.platform.IEnergyHandlerView;
-import com.hbm.uninos.graph.Distribution;
-import java.util.ArrayList;
-import java.util.List;
+import com.hbm.platform.NeoForgeCaps;
+import com.hbm.uninos.graph.Distribution.Bucket;
+import com.hbm.uninos.graph.Distribution.Total;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
 
 final class ForeignEnergyEndpoint implements IEnergyHandlerMK2 {
     static final boolean BIDIRECTIONAL_IS_RECEIVER_ONLY = true;
 
     static final IEnergyHandlerMK2.ConnectionPriority FOREIGN_PRIORITY =
             IEnergyHandlerMK2.ConnectionPriority.LOWEST;
-    private final IEnergyHandlerView view;
+    EnergyHandler store;
     private final EnergyConversion.Carry carry = new EnergyConversion.Carry();
     private long availableHe;
     private long roomHe;
@@ -23,46 +23,46 @@ final class ForeignEnergyEndpoint implements IEnergyHandlerMK2 {
     private boolean bidirectionalSeen;
     private long owedFe;
 
-    ForeignEnergyEndpoint(IEnergyHandlerView view) {
-        this.view = view;
+    ForeignEnergyEndpoint(EnergyHandler store) {
+        this.store = store;
     }
 
-    static long fileForeignDemand(
-            List<Distribution.Share<IEnergyHandlerMK2>> foreign,
-            long powerAvailable,
+    static void fileForeignDemand(
+            Bucket<IEnergyHandlerMK2> foreign,
+            Total powerAvailable,
             double reserve,
-            long nativeDemand,
-            List<Distribution.Share<IEnergyHandlerMK2>>[] receivers,
-            long[] demand) {
-        long reserveBudget = reserve > 0 ? (long) (powerAvailable * Math.min(reserve, 1.0)) : 0;
-        long surplusBudget = Math.max(0L, powerAvailable - nativeDemand);
+            Total nativeDemand,
+            Bucket<IEnergyHandlerMK2>[] receivers,
+            Total reserveBudget,
+            Total surplusBudget,
+            Total added) {
+        reserveBudget.fraction(powerAvailable, Math.clamp(reserve, 0.0, 1.0));
+        surplusBudget.positiveDifference(powerAvailable, nativeDemand);
         int lowest = FOREIGN_PRIORITY.ordinal();
         int normal = ConnectionPriority.NORMAL.ordinal();
-        long added = 0;
-        for (Distribution.Share<IEnergyHandlerMK2> share : foreign) {
-            long atNormal = Math.min(share.amount(), reserveBudget);
-            reserveBudget -= atNormal;
-            long atLowest = Math.min(share.amount() - atNormal, surplusBudget);
-            surplusBudget -= atLowest;
+        added.set(0);
+        for (int i = 0; i < foreign.size(); i++) {
+            long amount = foreign.amount(i);
+            long atNormal = Math.min(amount, reserveBudget.limit());
+            reserveBudget.subtract(atNormal);
+            long atLowest = Math.min(amount - atNormal, surplusBudget.limit());
+            surplusBudget.subtract(atLowest);
             if (atNormal > 0) {
-                if (receivers[normal] == null) receivers[normal] = new ArrayList<>();
-                receivers[normal].add(new Distribution.Share<>(share.endpoint(), atNormal));
-                demand[normal] += atNormal;
-                added += atNormal;
+                if (receivers[normal] == null) receivers[normal] = new Bucket<>();
+                receivers[normal].add(foreign.endpoint(i), atNormal);
+                added.add(atNormal);
             }
             if (atLowest > 0) {
-                if (receivers[lowest] == null) receivers[lowest] = new ArrayList<>();
-                receivers[lowest].add(new Distribution.Share<>(share.endpoint(), atLowest));
-                demand[lowest] += atLowest;
-                added += atLowest;
+                if (receivers[lowest] == null) receivers[lowest] = new Bucket<>();
+                receivers[lowest].add(foreign.endpoint(i), atLowest);
+                added.add(atLowest);
             }
         }
-        return added;
     }
 
     void refresh() {
-        long insertableFe = view.insertable();
-        long extractableFe = view.extractable();
+        long insertableFe = NeoForgeCaps.insertable(store);
+        long extractableFe = NeoForgeCaps.extractable(store);
         boolean canInsert = insertableFe > 0;
         boolean canExtract = extractableFe > 0;
         if (canInsert && canExtract) bidirectionalSeen = true;
@@ -118,11 +118,11 @@ final class ForeignEnergyEndpoint implements IEnergyHandlerMK2 {
     public long transferPower(long power, boolean simulate) {
         if (power <= 0 || !receiver) return power;
         if (simulate) {
-            long fits = Math.min(EnergyConversion.feFromHe(power), view.insertable());
+            long fits = Math.min(EnergyConversion.feFromHe(power), NeoForgeCaps.insertable(store));
             return power - EnergyConversion.heFromFe(fits);
         }
         long fe = carry.feFromHe(power);
-        long acceptedFe = fe > 0 ? view.insert(fe, 1L, false) : 0;
+        long acceptedFe = fe > 0 ? NeoForgeCaps.transfer(store, fe, 1L, false, true) : 0;
         long unplacedHe = acceptedFe < fe ? carry.refundFe(fe - acceptedFe, power) : 0;
         roomHe = Math.max(0, roomHe - (power - unplacedHe));
         return unplacedHe;
@@ -134,7 +134,7 @@ final class ForeignEnergyEndpoint implements IEnergyHandlerMK2 {
         availableHe = Math.max(0, availableHe - power);
         long fe = carry.feFromHe(power) + owedFe;
         if (fe <= 0) return;
-        owedFe = fe - view.extract(fe, 1L, false);
+        owedFe = fe - NeoForgeCaps.transfer(store, fe, 1L, false, false);
     }
 
     EnergyConversion.Carry carry() {

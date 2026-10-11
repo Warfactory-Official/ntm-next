@@ -4,7 +4,6 @@
 package com.hbm.blockentity.machine;
 
 import com.hbm.api.entity.RadarEntry;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -20,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineRadarScreen extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, SyncUnitSchema {
+        implements Synced, GraphResident, SyncUnitSchema {
 
     @SyncField(units = 1L << 5)
     public final List<RadarEntry> entries = new SyncList<>();

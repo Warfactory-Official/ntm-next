@@ -5,99 +5,279 @@
     {
       "entries": [
         {
-          "type": "minecraft:item",
-          "functions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 12.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:paper",
-          "weight": 240
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 239
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 329,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "functions": [
+                        {
+                          "count": {
+                            "type": "minecraft:uniform",
+                            "max": 12.0,
+                            "min": 1.0
+                          },
+                          "function": "minecraft:set_count"
+                        }
+                      ],
+                      "name": "minecraft:paper",
+                      "weight": 240
+                    },
+                    {
+                      "type": "minecraft:item",
+                      "functions": [
+                        {
+                          "count": {
+                            "type": "minecraft:uniform",
+                            "max": 3.0,
+                            "min": 1.0
+                          },
+                          "function": "minecraft:set_count"
+                        }
+                      ],
+                      "name": "minecraft:book",
+                      "weight": 90
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 329
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 429,
+                        "min": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 49
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 99,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "name": "minecraft:map",
+                      "weight": 50
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 29
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 49,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "minecraft:writable_book",
+                          "weight": 30
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 16.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:cigarette",
+                          "weight": 20
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:value_check",
+                  "range": {
+                    "max": 429
+                  },
+                  "value": {
+                    "type": "minecraft:uniform",
+                    "max": 590,
+                    "min": 0
+                  }
+                }
+              ]
+            },
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 39
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 115,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "name": "hbm:dust",
+                      "weight": 40
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 74
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 75,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 3.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:dust_tiny",
+                          "weight": 75
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:ink",
+                          "weight": 1
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 115
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 160,
+                        "min": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 9
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 44,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "name": "hbm:screwdriver",
+                      "weight": 10
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 4
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 34,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:blueprint_folder",
+                          "weight": 5
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:coin_token",
+                          "weight": 30
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
-          ],
-          "name": "minecraft:book",
-          "weight": 90
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:map",
-          "weight": 50
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:writable_book",
-          "weight": 30
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 16.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:cigarette",
-          "weight": 20
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:dust",
-          "weight": 40
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:dust_tiny",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:ink",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:screwdriver",
-          "weight": 10
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:blueprint_folder",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:coin_token",
-          "weight": 30
+          ]
         }
       ],
       "rolls": 1

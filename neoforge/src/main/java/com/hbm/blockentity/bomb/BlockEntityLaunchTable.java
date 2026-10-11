@@ -17,6 +17,7 @@ import com.hbm.handler.MissileStruct;
 import com.hbm.interfaces.IBomb;
 import com.hbm.inventory.container.MenuLaunchTable;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemCustomMissile;
@@ -54,7 +55,8 @@ import org.jspecify.annotations.Nullable;
         value = {BlockEntityLaunchTable.SLOT_MISSILE},
         units = 1L << 6)
 public class BlockEntityLaunchTable extends BlockEntityMachineBase
-        implements IEnergyHandlerMK2,
+        implements FluidTankAccess,
+                IEnergyHandlerMK2,
                 IFluidHandlerMK2,
                 IControlReceiver,
                 IRadarCommandReceiver,
@@ -384,8 +386,13 @@ public class BlockEntityLaunchTable extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     @Override

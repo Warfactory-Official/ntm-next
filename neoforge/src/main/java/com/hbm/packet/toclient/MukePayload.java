@@ -4,13 +4,14 @@
 package com.hbm.packet.toclient;
 
 import com.hbm.lib.Library;
+import com.hbm.packet.FarAudience;
 import com.hbm.packet.IPayloadHandlerContext;
 import com.hbm.packet.threading.ThreadedPayload;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.NotNull;
 
-public final class MukePayload extends ThreadedPayload {
+public final class MukePayload extends ThreadedPayload implements FarAudience {
 
     public static final Type<MukePayload> TYPE = new Type<>(Library.id("muke"));
     public static final StreamCodec<ByteBuf, MukePayload> STREAM_CODEC =

@@ -12,16 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class MachineChimneyBrick extends MachineChimneyBase {
-
-    private static final int[] DIMENSIONS = {12, 0, 1, 1, 1, 1};
-
     public MachineChimneyBrick(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
     }
 
     @Override

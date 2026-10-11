@@ -21,6 +21,7 @@ import com.hbm.handler.pollution.PollutionType;
 import com.hbm.inventory.container.MenuMachinePyroOven;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.PyroOvenRecipe;
 import com.hbm.inventory.recipes.PyroOvenRecipes;
@@ -56,7 +57,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachinePyroOven extends BlockEntityMachinePolluting
-        implements AudioLoop,
+        implements FluidTankAccess,
+                AudioLoop,
                 IEnergyHandlerMK2,
                 FluidTankEndpoint,
                 MenuProvider,
@@ -412,8 +414,18 @@ public class BlockEntityMachinePyroOven extends BlockEntityMachinePolluting
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {tanks[0], tanks[1], smoke};
+    public int tankCount() {
+        return 3;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return switch (index) {
+            case 0 -> tanks[0];
+            case 1 -> tanks[1];
+            case 2 -> smoke;
+            default -> throw new IndexOutOfBoundsException(index);
+        };
     }
 
     @Override

@@ -4,6 +4,7 @@
 package com.hbm.blockentity.machine;
 
 import com.hbm.blockentity.BlockEntityMachineBase;
+import com.hbm.blockentity.ChunkPublication;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.inventory.IGUIProvider;
@@ -21,13 +22,13 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.SignalGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
@@ -74,22 +75,21 @@ public class BlockEntityMachineSiren extends BlockEntityMachineBase
 
     @Override
     public void onGraphLoad(ServerLevel server) {
-        MinecraftServer host = server.getServer();
-        host.schedule(
-                host.wrapRunnable(
-                        () -> {
-                            if (!isRemoved()) refresh();
-                        }));
+        refresh(ChunkPublication.signals(server, worldPosition));
     }
 
     public void refresh() {
+        refresh(level);
+    }
+
+    private void refresh(SignalGetter signals) {
         TrackType track = getCurrentType();
         trackId = track.ordinal();
 
         if (track == TrackType.NULL) {
             active = false;
         } else {
-            boolean powered = level.hasNeighborSignal(worldPosition);
+            boolean powered = signals.hasNeighborSignal(worldPosition);
             if (track.getType() == SoundType.LOOP) {
                 active = powered;
             } else {

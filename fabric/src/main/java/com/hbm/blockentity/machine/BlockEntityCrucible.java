@@ -27,6 +27,7 @@ import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncList;
 import com.hbm.packet.SyncUnitSchema;
 import com.hbm.particle.CoolingTowerParticleOptions;
+import com.hbm.platform.BlockLookupCache;
 import com.hbm.util.CrucibleUtil;
 import com.hbm.util.TickPhase;
 import io.netty.buffer.ByteBuf;
@@ -64,6 +65,7 @@ public class BlockEntityCrucible extends BlockEntityMachineBase
 
     public static final int SLOT_COUNT = 10;
     private static final int[] ACCESSIBLE_SLOTS = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    private @Nullable BlockLookupCache<IHeatSource> heatBelow;
 
     @SyncField(units = 1L << 3)
     public final List<MaterialStack> recipeStack = new SyncList<>();
@@ -391,7 +393,9 @@ public class BlockEntityCrucible extends BlockEntityMachineBase
         if (this.heat >= maxHeat) return;
 
         BlockPos heatPos = worldPosition.below();
-        IHeatSource source = NtmContracts.HEAT_SOURCE.at(level, heatPos);
+        if (heatBelow == null)
+            heatBelow = NtmContracts.HEAT_SOURCE.cacheAt((ServerLevel) level, heatPos);
+        IHeatSource source = heatBelow.find();
         if (source != null) {
             int diff = source.getHeatStored(level, heatPos) - this.heat;
             if (diff == 0) return;

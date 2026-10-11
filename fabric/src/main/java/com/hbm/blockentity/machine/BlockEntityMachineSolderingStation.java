@@ -15,6 +15,7 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.inventory.container.ContainerSync;
 import com.hbm.inventory.container.MenuMachineSolderingStation;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.SolderingRecipe;
 import com.hbm.inventory.recipes.SolderingRecipes;
@@ -47,7 +48,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineSolderingStation extends BlockEntityMachineBase
-        implements IEnergyHandlerMK2,
+        implements FluidTankAccess,
+                IEnergyHandlerMK2,
                 FluidTankEndpoint,
                 MenuProvider,
                 IUpgradeInfoProvider,
@@ -298,8 +300,13 @@ public class BlockEntityMachineSolderingStation extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return receiving;
+    public int tankCount() {
+        return receiving.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return receiving[index];
     }
 
     @Override

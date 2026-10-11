@@ -25,7 +25,7 @@ public interface AudioLoop extends Audible {
         if (audio == null) {
             audio = machine.createAudioLoop();
             if (audio == null) return null;
-            audio.startSound();
+            audio.startSound(machine.getBlockPos());
         } else if (!audio.isPlaying()) {
             audio = machine.rebootAudio(audio);
         }

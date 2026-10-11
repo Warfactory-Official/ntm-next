@@ -12,21 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class MachineLPW2 extends BlockMultiblockCore implements EntityBlock {
-
-    private static final int[] DIMENSIONS = {6, 0, 3, 3, 9, 10};
-
     public MachineLPW2(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 3;
     }
 
     @Override

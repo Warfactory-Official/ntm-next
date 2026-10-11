@@ -28,7 +28,6 @@ public final class BlockLanternBehemoth extends BlockMultiblockCore
         implements ITickingBlock, IToolable, ILookOverlay {
 
     public static final BooleanProperty BROKEN = BooleanProperty.create("broken");
-    private static final int[] DIMENSIONS = {4, 0, 0, 0, 0, 0};
 
     public BlockLanternBehemoth(Properties properties) {
         super(properties);
@@ -39,16 +38,6 @@ public final class BlockLanternBehemoth extends BlockMultiblockCore
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(BROKEN);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
     }
 
     @Override

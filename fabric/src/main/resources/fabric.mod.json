@@ -39,11 +39,8 @@
   },
   "mixins": [
     "hbm-common.mixins.json",
-    "hbm-compat.mixins.json",
-    "hbm-network-compat.mixins.json",
-    "hbm-fabric-createfluid.mixins.json",
-    "hbm-fabric-storage.mixins.json",
-    "hbm-fabric-replay.mixins.json",
+    "hbm-iris-compat.mixins.json",
+    "hbm-network-optimizer.mixins.json",
     "hbm-fabric.mixins.json"
   ],
   "accessWidener": "hbm.classtweaker",

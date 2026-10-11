@@ -3,6 +3,7 @@
 
 package com.hbm.entity.projectile;
 
+import com.hbm.entity.FarVisible;
 import com.hbm.entity.ModEntities;
 import com.hbm.items.EnumGearType;
 import com.hbm.items.ModItems;
@@ -31,7 +32,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityCog extends EntityThrowableInterp {
+public class EntityCog extends EntityThrowableInterp implements FarVisible {
 
     private static final EntityDataAccessor<Integer> ORIENTATION =
             SynchedEntityData.defineId(EntityCog.class, EntityDataSerializers.INT);

@@ -8,6 +8,8 @@ import com.hbm.api.control.IControlReceiver;
 import com.hbm.api.environment.Environment;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.api.redstoneoverradio.IRORInteractive;
 import com.hbm.api.redstoneoverradio.IRORValueProvider;
 import com.hbm.api.tile.IHeatSource;
@@ -18,6 +20,7 @@ import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.inventory.container.MenuMachineOilburner;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Flammable;
 import com.hbm.inventory.fluid.trait.FluidTrait.FluidReleaseType;
@@ -42,7 +45,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityHeaterOilburner extends BlockEntityMachinePolluting
-        implements FluidTankEndpoint,
+        implements FluidTankAccess,
+                FluidTankEndpoint,
                 IHeatSource,
                 IControlReceiver,
                 IFluidCopiable,
@@ -175,8 +179,19 @@ public class BlockEntityHeaterOilburner extends BlockEntityMachinePolluting
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {tank};
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
+    }
+
+    @Override
+    public int tankCount() {
+        return 1;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        if (index != 0) throw new IndexOutOfBoundsException(index);
+        return tank;
     }
 
     @Override

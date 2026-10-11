@@ -3,9 +3,9 @@
 
 package com.hbm.blockentity;
 
-import com.hbm.api.fluidmk2.IFluidHandlerMK2;
 import com.hbm.interfaces.ICopiable;
 import com.hbm.inventory.fluid.NTMFluidProperties;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +21,9 @@ import net.minecraft.world.level.material.Fluids;
 import org.jspecify.annotations.Nullable;
 
 public interface IFluidCopiable extends ICopiable {
+
     default FluidTankNTM[] copiableTanks() {
-        return this instanceof IFluidHandlerMK2 tile
-                ? tile.getAllTanks()
-                : IFluidHandlerMK2.NO_TANKS;
+        return FluidTankAccess.snapshot(this);
     }
 
     default String[] getFluidIDToCopy() {

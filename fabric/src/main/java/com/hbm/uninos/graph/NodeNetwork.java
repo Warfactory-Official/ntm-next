@@ -15,12 +15,7 @@ public final class NodeNetwork<D> {
     public @Nullable ReferenceOpenHashSet<GraphNode<D>> pendingProbe;
     public @Nullable ReferenceOpenHashSet<GraphSegment<D>> pendingSegments;
     public long tracker;
-    public int[] providerCursors;
-    public @Nullable Object energyGather;
-    public @Nullable Object fluidGather;
-    public int[] receiverCursors;
-    public long throughputCap = Long.MAX_VALUE;
-    public boolean throughputCapDirty = true;
+    public @Nullable Object distributor;
     public @Nullable Object attachment;
     int cells;
 

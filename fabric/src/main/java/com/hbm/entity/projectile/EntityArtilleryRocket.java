@@ -6,6 +6,7 @@ package com.hbm.entity.projectile;
 
 import com.hbm.api.entity.IRadarDetectable;
 import com.hbm.client.ClientEffects;
+import com.hbm.entity.FarVisible;
 import com.hbm.entity.projectile.rocketbehavior.IRocketSteeringBehavior;
 import com.hbm.entity.projectile.rocketbehavior.IRocketTargetingBehavior;
 import com.hbm.entity.projectile.rocketbehavior.RocketSteeringBallisticArc;
@@ -28,7 +29,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class EntityArtilleryRocket extends EntityThrowableInterp implements IRadarDetectable {
+public class EntityArtilleryRocket extends EntityThrowableInterp
+        implements IRadarDetectable, FarVisible {
 
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {

@@ -38,8 +38,6 @@ public class MachineFENSU extends BlockMultiblockCore
 
     public static final MapCodec<MachineFENSU> CODEC = simpleCodec(MachineFENSU::new);
 
-    private static final int[] DIMENSIONS = {4, 0, 1, 1, 2, 2};
-
     public MachineFENSU(Properties props) {
         super(props);
     }
@@ -47,21 +45,6 @@ public class MachineFENSU extends BlockMultiblockCore
     @Override
     protected MapCodec<? extends Block> codec() {
         return CODEC;
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_DOWN;
     }
 
     @Override

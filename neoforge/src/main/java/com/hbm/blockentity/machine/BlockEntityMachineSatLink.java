@@ -5,7 +5,6 @@ package com.hbm.blockentity.machine;
 
 import com.hbm.api.redstoneoverradio.IRORInteractive;
 import com.hbm.api.redstoneoverradio.IRORValueProvider;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -29,7 +28,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public final class BlockEntityMachineSatLink extends BlockEntity
-        implements Synced, FoldedCoreResident, IRORValueProvider, IRORInteractive, SyncUnitSchema {
+        implements Synced, IRORValueProvider, IRORInteractive, SyncUnitSchema {
 
     public static final float SPEED = 0.25F;
     public static final float ACTIVE_ROT = -15F;

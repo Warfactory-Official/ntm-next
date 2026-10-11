@@ -12,7 +12,7 @@ import net.minecraft.world.level.material.Fluid;
 public interface IFluidHandlerMK2 extends IBufferedEndpoint {
 
     FluidTankNTM[] NO_TANKS = new FluidTankNTM[0];
-    int[] DEFAULT_PRESSURE_RANGE = {0, 0};
+    int DEFAULT_PRESSURE_MASK = 1;
 
     default boolean canReceiveFluid(Fluid type) {
         return false;
@@ -30,8 +30,8 @@ public interface IFluidHandlerMK2 extends IBufferedEndpoint {
 
     default void useUpFluid(Fluid type, int pressure, long amount) {}
 
-    default int[] getProvidingPressureRange(Fluid type) {
-        return DEFAULT_PRESSURE_RANGE;
+    default int providingPressureMask(Fluid type) {
+        return DEFAULT_PRESSURE_MASK;
     }
 
     default long getProviderSpeed(Fluid type, int pressure) {
@@ -46,8 +46,8 @@ public interface IFluidHandlerMK2 extends IBufferedEndpoint {
         return amount;
     }
 
-    default int[] getReceivingPressureRange(Fluid type) {
-        return DEFAULT_PRESSURE_RANGE;
+    default int receivingPressureMask(Fluid type) {
+        return DEFAULT_PRESSURE_MASK;
     }
 
     default long getReceiverSpeed(Fluid type, int pressure) {
@@ -60,9 +60,5 @@ public interface IFluidHandlerMK2 extends IBufferedEndpoint {
 
     default ConnectionPriority getFluidPriority() {
         return ConnectionPriority.NORMAL;
-    }
-
-    default FluidTankNTM[] getAllTanks() {
-        return NO_TANKS;
     }
 }

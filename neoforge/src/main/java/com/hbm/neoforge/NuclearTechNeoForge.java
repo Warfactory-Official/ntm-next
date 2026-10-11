@@ -62,6 +62,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.data.loading.DatagenModLoader;
 import net.neoforged.neoforge.event.*;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -196,7 +197,7 @@ public final class NuclearTechNeoForge {
                         NeoForgeNetwork.registerConfigurationTasks(event));
         modBus.addListener(
                 (RegisterCapabilitiesEvent event) -> {
-                    NtmCapabilities.declareAll();
+                    NtmCapabilities.declareAll(!DatagenModLoader.isRunningDataGen());
                     NeoForgeCaps.flush(event);
                     if (ModList.get().isLoaded("ae2"))
                         com.hbm.integration.ae2.AE2Capabilities.register(event);

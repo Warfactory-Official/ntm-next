@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 
-public class AncientTombStructure extends Structure {
+public class AncientTombStructure extends Structure implements ColumnBiome.SelfTested {
 
     public static final MapCodec<AncientTombStructure> CODEC =
             simpleCodec(AncientTombStructure::new);
@@ -39,6 +39,7 @@ public class AncientTombStructure extends Structure {
                                 Heightmap.Types.WORLD_SURFACE_WG,
                                 context.heightAccessor(),
                                 context.randomState());
+        if (!ColumnBiome.valid(context, x, height, z)) return Optional.empty();
         int yOff = Math.max(height, 35) - 5;
 
         BlockPos origin = new BlockPos(x, yOff, z);

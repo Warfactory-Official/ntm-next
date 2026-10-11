@@ -5,9 +5,6 @@ package com.hbm.platform;
 
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.blockentity.BlockEntityMachineBase;
-import com.hbm.blocks.machine.BlockICF;
-import com.hbm.blocks.machine.BlockPWR;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.blocks.network.CableBlock;
 import com.hbm.blocks.network.CableConductorBlockBase;
@@ -16,16 +13,17 @@ import com.hbm.capability.port.IPortHost;
 import com.hbm.capability.port.ItemPort;
 import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.RegistryHandle;
+import com.hbm.util.InventoryUtil;
 import java.util.*;
-import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
+import java.util.function.ToIntFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.FullChunkStatus;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -33,12 +31,17 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.capabilities.*;
 import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.energy.EnergyHandler;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jspecify.annotations.Nullable;
 
 public final class NeoForgeCaps {
@@ -52,20 +55,6 @@ public final class NeoForgeCaps {
     public static final List<Supplier<? extends Block>> energyBlockExposures = new ArrayList<>();
     public static final List<Supplier<? extends Block>> fluidExposures = new ArrayList<>();
     public static final CapabilityProviderLedger ledger = new CapabilityProviderLedger();
-
-    public static boolean isRemoteCoreSurface(
-            ServerLevel level, BlockPos pos, @Nullable Direction side) {
-        if (side == null || !level.isLoaded(pos)) return false;
-        var state = level.getBlockState(pos);
-        if (MultiblockSurface.isSurface(state)) {
-            return MultiblockSurface.isOpen(
-                    level, pos, state, side, BlockMultiblockCore.PASSIVE_ANY);
-        }
-        return state.getBlock() instanceof BlockPWR
-                        && state.getValue(BlockPWR.PART) == BlockPWR.Part.PORT
-                || state.getBlock() instanceof BlockICF
-                        && state.getValue(BlockICF.PART) == BlockICF.Part.PORT;
-    }
 
     public static void registerConductorEnergy(RegisterCapabilitiesEvent event) {
         List<Block> conductors = new ArrayList<>();
@@ -164,42 +153,37 @@ public final class NeoForgeCaps {
                 event,
                 Capabilities.Energy.BLOCK,
                 type,
-                (be, side) ->
-                        side != null
-                                        && be instanceof IEnergyHandlerMK2 e
-                                        && MachineCaps.acceptsFace(be, side)
-                                ? new MachineEnergyHandler(e, be, side)
-                                : null);
-    }
-
-    public static <T, C> @Nullable T find(
-            BlockCapability<T, C> token, Level level, BlockPos pos, @Nullable C context) {
-        return level.getCapability(token, pos, context);
+                (be, side) -> {
+                    if (side == null || !(be instanceof IEnergyHandlerMK2 e)) return null;
+                    int bits = MachineCaps.declaredDomains(be);
+                    IEnergyHandlerMK2 in =
+                            (bits & MachineCaps.POWER_IN) != 0
+                                            && MachineCaps.accepts(
+                                                    be, side, NtmCapabilities.CapRole.POWER_IN)
+                                    ? e
+                                    : null;
+                    IEnergyHandlerMK2 out =
+                            (bits & MachineCaps.POWER_OUT) != 0
+                                            && MachineCaps.accepts(
+                                                    be, side, NtmCapabilities.CapRole.POWER_OUT)
+                                    ? e
+                                    : null;
+                    return in == null && out == null
+                            ? null
+                            : new MachineEnergyHandler(e, be, in, out);
+                });
     }
 
     public static <T, C> BlockLookupCache<T> createCache(
             BlockCapability<T, C> cap, ServerLevel level, BlockPos pos, @Nullable C context) {
-        return new CapCache<>(
-                cap, level, pos, context, BlockCapabilityCache.create(cap, level, pos, context));
-    }
-
-    public static BlockLookupCache<IFluidHandlerView> createFluidHandlerCache(
-            ServerLevel level, BlockPos pos, @Nullable Direction side) {
-        return new FluidViewCache(
-                BlockCapabilityCache.create(Capabilities.Fluid.BLOCK, level, pos, side));
-    }
-
-    public static BlockLookupCache<IEnergyHandlerView> createEnergyHandlerCache(
-            ServerLevel level, BlockPos pos, @Nullable Direction side) {
-        return new EnergyViewCache(
-                BlockCapabilityCache.create(Capabilities.Energy.BLOCK, level, pos, side));
+        return new CapCache<>(cap, level, pos, context);
     }
 
     public static <T, C, BE extends BlockEntity> void registerProvider(
             BlockCapability<T, C> token,
             Supplier<? extends BlockEntityType<? extends BE>> beType,
-            BiFunction<? super BE, C, T> mapper) {
-        pending.add(new Registration<>(token, beType, mapper));
+            ICapabilityProvider<? super BE, C, T> provider) {
+        pending.add(new Registration<>(token, beType, provider));
     }
 
     public static void invalidateCaps(Level level, BlockPos pos) {
@@ -213,39 +197,159 @@ public final class NeoForgeCaps {
         return listener;
     }
 
-    public static @Nullable IFluidHandlerView findFluidHandler(
-            Level level, BlockPos pos, @Nullable Direction side) {
-        ResourceHandler<FluidResource> handler =
-                level.getCapability(Capabilities.Fluid.BLOCK, pos, side);
-        return handler == null ? null : new NeoForgeFluidHandlerView(handler);
+    public static long extractable(ResourceHandler<FluidResource> store, Fluid fluid) {
+        try (Transaction tx = Transaction.openRoot()) {
+            return store.extract(FluidResource.of(fluid), Integer.MAX_VALUE, tx);
+        }
     }
 
-    public static @Nullable IFluidHandlerView findFluidHandler(ItemStack stack) {
+    public static long extract(ResourceHandler<FluidResource> store, Fluid fluid, long maxMb) {
+        try (Transaction tx = Transaction.openRoot()) {
+            int out = store.extract(FluidResource.of(fluid), clampInt(maxMb), tx);
+            tx.commit();
+            return out;
+        }
+    }
+
+    public static long insertable(ResourceHandler<FluidResource> store, Fluid fluid) {
+        try (Transaction tx = Transaction.openRoot()) {
+            return store.insert(FluidResource.of(fluid), Integer.MAX_VALUE, tx);
+        }
+    }
+
+    public static long insert(ResourceHandler<FluidResource> store, Fluid fluid, long maxMb) {
+        try (Transaction tx = Transaction.openRoot()) {
+            int in = store.insert(FluidResource.of(fluid), clampInt(maxMb), tx);
+            tx.commit();
+            return in;
+        }
+    }
+
+    private static int clampInt(long amount) {
+        return amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) amount;
+    }
+
+    public static @Nullable ResourceHandler<ItemResource> findItemStore(
+            Level level, BlockPos pos, @Nullable Direction side) {
+        ResourceHandler<ItemResource> handler =
+                level.getCapability(Capabilities.Item.BLOCK, pos, side);
+        return handler != null ? handler : containerHandler(level, pos, side);
+    }
+
+    public static ItemStack insert(ResourceHandler<ItemResource> store, ItemStack stack) {
+        if (stack.isEmpty()) return stack;
+        try (Transaction tx = Transaction.openRoot()) {
+            int moved = store.insert(ItemResource.of(stack), stack.getCount(), tx);
+            tx.commit();
+            return moved >= stack.getCount()
+                    ? ItemStack.EMPTY
+                    : stack.copyWithCount(stack.getCount() - moved);
+        }
+    }
+
+    public static ItemStack extract(
+            ResourceHandler<ItemResource> store, ToIntFunction<ItemStack> request) {
+        for (int index = 0; index < store.size(); index++) {
+            ItemResource resource = store.getResource(index);
+            int amount = store.getAmountAsInt(index);
+            if (resource.isEmpty() || amount <= 0) continue;
+            int wanted = request.applyAsInt(resource.toStack(amount));
+            if (wanted == 0) continue;
+            try (Transaction tx = Transaction.openRoot()) {
+                int moved = store.extract(index, resource, Math.min(wanted, amount), tx);
+                tx.commit();
+                if (moved > 0) return resource.toStack(moved);
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public static List<ItemStack> contents(ResourceHandler<ItemResource> store) {
+        List<ItemStack> out = new ArrayList<>();
+        for (int index = 0; index < store.size(); index++) {
+            ItemResource resource = store.getResource(index);
+            int amount = store.getAmountAsInt(index);
+            if (resource.isEmpty() || amount <= 0) continue;
+            out.add(resource.toStack(amount));
+        }
+        return out;
+    }
+
+    public static int move(
+            ResourceHandler<ItemResource> source,
+            ResourceHandler<ItemResource> dest,
+            ItemStack stack,
+            int amount) {
+        ItemResource resource = ItemResource.of(stack);
+        return ResourceHandlerUtil.move(
+                source, dest, candidate -> candidate.equals(resource), amount, null);
+    }
+
+    private static @Nullable ResourceHandler<ItemResource> containerHandler(
+            Level level, BlockPos pos, @Nullable Direction side) {
+        Container container = InventoryUtil.containerAt(level, pos);
+        if (container == null) return null;
+        return side != null && container instanceof WorldlyContainer worldly
+                ? new WorldlyContainerWrapper(worldly, side)
+                : VanillaContainerWrapper.of(container);
+    }
+
+    public static @Nullable ResourceHandler<FluidResource> findFluidStore(ItemStack stack) {
         if (stack.isEmpty()) return null;
-        return findFluidHandler(new SimpleContainer(stack.copyWithCount(1)), 0);
+        return findFluidStore(new SimpleContainer(stack.copyWithCount(1)), 0);
     }
 
-    public static @Nullable IFluidHandlerView findFluidHandler(Container container, int slot) {
+    public static @Nullable ResourceHandler<FluidResource> findFluidStore(
+            Container container, int slot) {
         ItemStack held = container.getItem(slot);
         if (held.isEmpty()) return null;
         ItemAccess access = ItemAccess.forHandlerIndex(VanillaContainerWrapper.of(container), slot);
-        ResourceHandler<FluidResource> handler =
-                held.getCapability(Capabilities.Fluid.ITEM, access);
-        return handler == null ? null : new NeoForgeFluidHandlerView(handler);
+        return held.getCapability(Capabilities.Fluid.ITEM, access);
     }
 
-    public static @Nullable IEnergyHandlerView findEnergyHandler(
-            Level level, BlockPos pos, @Nullable Direction side) {
-        EnergyHandler handler = level.getCapability(Capabilities.Energy.BLOCK, pos, side);
-        return handler == null ? null : new NeoForgeEnergyHandlerView(handler);
-    }
-
-    public static @Nullable IEnergyHandlerView findEnergyHandler(Container container, int slot) {
+    public static @Nullable EnergyHandler findEnergyStore(Container container, int slot) {
         ItemStack held = container.getItem(slot);
         if (held.isEmpty()) return null;
         ItemAccess access = ItemAccess.forHandlerIndex(VanillaContainerWrapper.of(container), slot);
-        EnergyHandler handler = held.getCapability(Capabilities.Energy.ITEM, access);
-        return handler == null ? null : new NeoForgeEnergyHandlerView(handler);
+        return held.getCapability(Capabilities.Energy.ITEM, access);
+    }
+
+    public static long insertable(EnergyHandler store) {
+        try (Transaction tx = Transaction.openRoot()) {
+            return store.insert(Integer.MAX_VALUE, tx);
+        }
+    }
+
+    public static long extractable(EnergyHandler store) {
+        try (Transaction tx = Transaction.openRoot()) {
+            return store.extract(Integer.MAX_VALUE, tx);
+        }
+    }
+
+    public static long transfer(
+            EnergyHandler store, long maxFe, long feQuantum, boolean simulate, boolean insert) {
+        assert feQuantum > 0;
+        long request = Math.min(maxFe, Integer.MAX_VALUE);
+        request -= request % feQuantum;
+        if (request <= 0) return 0;
+
+        try (Transaction outer = Transaction.openRoot()) {
+            long available;
+            try (Transaction probe = Transaction.open(outer)) {
+                available =
+                        insert
+                                ? store.insert((int) request, probe)
+                                : store.extract((int) request, probe);
+            }
+            long exact = available - available % feQuantum;
+            if (exact <= 0) return 0;
+
+            long moved =
+                    insert ? store.insert((int) exact, outer) : store.extract((int) exact, outer);
+            if (moved != exact) return 0;
+            if (!simulate) outer.commit();
+            return exact;
+        }
     }
 
     public static void exposeItem(Supplier<? extends BlockEntityType<?>> beType) {
@@ -286,7 +390,7 @@ public final class NeoForgeCaps {
                         IEnergyHandlerMK2 machine = receiver != null ? receiver : provider;
                         if (machine == null) return null;
                         return new MachineEnergyHandler(
-                                machine, (BlockEntity) machine, side, receiver, provider);
+                                machine, (BlockEntity) machine, receiver, provider);
                     },
                     ((Supplier<? extends Block>) b).get());
         registerConductorEnergy(event);
@@ -324,115 +428,69 @@ public final class NeoForgeCaps {
                 items.toArray(new Item[0]));
     }
 
-    public static final class CapCache<T, C> implements BlockLookupCache<T> {
+    public static final class CapCache<T, C> extends ResidentLookup<T> {
         private final BlockCapability<T, C> cap;
-        private final ServerLevel level;
         private final BlockPos pos;
         private final @Nullable C context;
         private final BlockCapabilityCache<T, C> cache;
-        private boolean probing;
 
         public CapCache(
-                BlockCapability<T, C> cap,
-                ServerLevel level,
-                BlockPos pos,
-                @Nullable C context,
-                BlockCapabilityCache<T, C> cache) {
+                BlockCapability<T, C> cap, ServerLevel level, BlockPos pos, @Nullable C context) {
+            super(level);
             this.cap = cap;
-            this.level = level;
             this.pos = pos;
             this.context = context;
-            this.cache = cache;
+            this.cache =
+                    BlockCapabilityCache.create(
+                            cap, level, pos, context, () -> true, this::invalidate);
         }
 
+        @Override
+        protected @Nullable T lookup() {
+            return cache.getCapability();
+        }
+
+        @Override
+        protected @Nullable T fresh(T found) {
+            return level.getCapability(cap, pos, context);
+        }
+    }
+
+    public record NativeCache<T>(BlockCapabilityCache<T, @Nullable Direction> cache)
+            implements BlockLookupCache<T> {
+        @Override
         public @Nullable T find() {
-            T result = cache.getCapability();
-            if (result instanceof BlockEntity be) {
-                var chunk =
-                        BlockMultiblockCore.readableChunk(
-                                level, be.getBlockPos().getX(), be.getBlockPos().getZ());
-                if (chunk == null || !chunk.getFullStatus().isOrAfter(FullChunkStatus.FULL)) {
-                    probing = true;
-                    return null;
-                }
-            }
-            if (result != null && !(result instanceof BlockEntity)) {
-                return level.getCapability(cap, pos, context);
-            }
-            if (result instanceof BlockEntity be && be.isRemoved()) probing = true;
-            if (result == null && isRemoteCoreSurface(level, pos, FacedContext.sideOf(context)))
-                probing = true;
-            if (!probing) return result;
-            level.invalidateCapabilities(pos);
-            result = cache.getCapability();
-            if (result == null || (result instanceof BlockEntity be && be.isRemoved())) return null;
-            probing = false;
-            return result;
+            return cache.getCapability();
         }
     }
 
-    public static final class FluidViewCache implements BlockLookupCache<IFluidHandlerView> {
-        private final BlockCapabilityCache<ResourceHandler<FluidResource>, @Nullable Direction>
-                cache;
-        private @Nullable ResourceHandler<FluidResource> last;
-        private @Nullable IFluidHandlerView view;
-
-        public FluidViewCache(
-                BlockCapabilityCache<ResourceHandler<FluidResource>, @Nullable Direction> cache) {
-            this.cache = cache;
-        }
-
-        public @Nullable IFluidHandlerView find() {
-            ResourceHandler<FluidResource> handler = cache.getCapability();
-            if (handler == null) return null;
-            if (handler != last) {
-                last = handler;
-                view = new NeoForgeFluidHandlerView(handler);
-            }
-            return view;
-        }
-    }
-
-    public static final class EnergyViewCache implements BlockLookupCache<IEnergyHandlerView> {
-        private final BlockCapabilityCache<EnergyHandler, @Nullable Direction> cache;
-        private @Nullable EnergyHandler last;
-        private @Nullable IEnergyHandlerView view;
-
-        public EnergyViewCache(BlockCapabilityCache<EnergyHandler, @Nullable Direction> cache) {
-            this.cache = cache;
-        }
-
-        public @Nullable IEnergyHandlerView find() {
-            EnergyHandler handler = cache.getCapability();
-            if (handler == null) return null;
-            if (handler != last) {
-                last = handler;
-                view = new NeoForgeEnergyHandlerView(handler);
-            }
-            return view;
+    public record ItemCache(
+            BlockCapabilityCache<ResourceHandler<ItemResource>, @Nullable Direction> cache)
+            implements BlockLookupCache<ResourceHandler<ItemResource>> {
+        @Override
+        public @Nullable ResourceHandler<ItemResource> find() {
+            ResourceHandler<ItemResource> handler = cache.getCapability();
+            return handler != null
+                    ? handler
+                    : containerHandler(cache.level(), cache.pos(), cache.context());
         }
     }
 
     public record Registration<T, C, BE extends BlockEntity>(
             BlockCapability<T, C> token,
             Supplier<? extends BlockEntityType<? extends BE>> beType,
-            BiFunction<? super BE, C, T> mapper) {
+            ICapabilityProvider<? super BE, C, T> provider) {
         public void register(RegisterCapabilitiesEvent event) {
-            registerBlockEntity(
-                    event, token, beType.get(), (be, context) -> mapper.apply(be, context));
+            registerBlockEntity(event, token, beType.get(), provider);
         }
     }
 
     public record BlockRegistration<T, C>(
             BlockCapability<T, C> token,
             Supplier<? extends Block> block,
-            BlockCapMapper<T, C> mapper) {
+            IBlockCapabilityProvider<T, C> provider) {
         public void register(RegisterCapabilitiesEvent event) {
-            registerBlock(
-                    event,
-                    token,
-                    (level, pos, state, be, context) -> mapper.map(level, pos, state, be, context),
-                    block.get());
+            registerBlock(event, token, provider, block.get());
         }
     }
 }

@@ -19,13 +19,10 @@ enumExtensions = "META-INF/enumextensions.json"
 config = "hbm-common.mixins.json"
 
 [[mixins]]
-config = "hbm-compat.mixins.json"
+config = "hbm-iris-compat.mixins.json"
 
 [[mixins]]
-config = "hbm-network-compat.mixins.json"
-
-[[mixins]]
-config = "hbm-neoforge-storage.mixins.json"
+config = "hbm-network-optimizer.mixins.json"
 
 [[mixins]]
 config = "hbm-neoforge.mixins.json"
@@ -43,7 +40,7 @@ side = "BOTH"
 [[dependencies.hbm]]
 modId = "crankshaft"
 type = "required"
-versionRange = "[1.5.9+mc26.2,)"
+versionRange = "[1.6.0+mc26.2,)"
 ordering = "AFTER"
 side = "CLIENT"
 

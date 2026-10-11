@@ -50,7 +50,7 @@ public final class MultiblockCellCaps {
                             EnergyCaps.RECEIVER,
                             (Supplier<? extends Block>) cell,
                             (level, pos, state, be, side) ->
-                                    NtmCapabilities.fullSurfaceCap(
+                                    NtmCapabilities.surfaceCap(
                                             level,
                                             pos,
                                             state,
@@ -62,7 +62,7 @@ public final class MultiblockCellCaps {
                             EnergyCaps.PROVIDER,
                             (Supplier<? extends Block>) cell,
                             (level, pos, state, be, side) ->
-                                    NtmCapabilities.fullSurfaceCap(
+                                    NtmCapabilities.surfaceCap(
                                             level,
                                             pos,
                                             state,
@@ -74,11 +74,11 @@ public final class MultiblockCellCaps {
                             FluidCaps.RECEIVER,
                             (Supplier<? extends Block>) cell,
                             (level, pos, state, be, face) ->
-                                    NtmCapabilities.fullSurfaceCap(
+                                    NtmCapabilities.surfaceCap(
                                             level,
                                             pos,
                                             state,
-                                            face.side(),
+                                            face,
                                             IFluidHandlerMK2.class,
                                             NtmCapabilities.CapRole.FLUID_IN)));
             NeoForgeCaps.pendingBlocks.add(
@@ -86,11 +86,11 @@ public final class MultiblockCellCaps {
                             FluidCaps.PROVIDER,
                             (Supplier<? extends Block>) cell,
                             (level, pos, state, be, face) ->
-                                    NtmCapabilities.fullSurfaceCap(
+                                    NtmCapabilities.surfaceCap(
                                             level,
                                             pos,
                                             state,
-                                            face.side(),
+                                            face,
                                             IFluidHandlerMK2.class,
                                             NtmCapabilities.CapRole.FLUID_OUT)));
             NeoForgeCaps.itemBlockExposures.add((Supplier<? extends Block>) cell);

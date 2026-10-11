@@ -3,13 +3,8 @@
 
 package com.hbm.world.gen.component;
 
-import com.hbm.blocks.machine.MachineFan;
-import com.hbm.itempool.ComponentLoot;
 import com.hbm.lib.Library;
-import com.hbm.world.gen.nbt.PieceGeometry;
-import com.hbm.world.gen.nbt.WeightedOption;
 import com.hbm.world.structure.HbmStructureTypes;
-import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -89,21 +84,17 @@ public class StartingHubPiece extends NtmBranchingPiece {
 
     public static final Identifier TEMPLATE_ID = Library.id("component/starting_hub");
 
-    public static final List<PieceGeometry.Variant> VARIANTS =
-            PieceGeometry.Variant.flags("path_east", "path_anti_normal", "path_west");
-
     @Override
     protected Identifier templateId() {
-        return Library.id(
-                TEMPLATE_ID.getPath()
-                        + (this.pathEast ? "_path_east" : "_no_path_east")
-                        + (this.pathAntiNormal ? "_path_anti_normal" : "_no_path_anti_normal")
-                        + (this.pathWest ? "_path_west" : "_no_path_west"));
+        return TEMPLATE_ID;
     }
 
     @Override
     protected void buildAfterTemplate(
             WorldGenLevel level, BoundingBox chunkBB, RandomSource random) {
+        if (this.pathEast) this.generateAirBox(level, chunkBB, 7, 1, 2, 7, 2, 3);
+        if (this.pathAntiNormal) this.generateAirBox(level, chunkBB, 3, 1, 0, 4, 2, 0);
+        if (this.pathWest) this.generateAirBox(level, chunkBB, 0, 1, 2, 0, 2, 3);
         BlockState reinforcedStone = hbmState("reinforced_stone");
         BlockState concreteSlab = hbmState("concrete_slab");
         int hpos = this.hatchHeight;
@@ -170,64 +161,4 @@ public class StartingHubPiece extends NtmBranchingPiece {
                 hbmState("ladder_sturdy").setValue(LadderBlock.FACING, Direction.NORTH),
                 false);
     }
-
-    public static final PieceGeometry GEOMETRY =
-            (out, variant) -> {
-                List<WeightedOption> bricks = concreteBricksTable();
-                BlockState reinforcedStone = hbmState("reinforced_stone");
-                BlockState decoTungsten = hbmState("deco_tungsten");
-                BlockState deskComputer =
-                        hbmState("deco_computer")
-                                .setValue(HorizontalDirectionalBlock.FACING, Direction.SOUTH);
-                BlockState chest =
-                        Blocks.CHEST
-                                .defaultBlockState()
-                                .setValue(ChestBlock.FACING, Direction.SOUTH);
-                BlockState vinylTileSmall = hbmState("vinyl_tile_small");
-                BlockState vinylTileLarge = hbmState("vinyl_tile_large");
-
-                out.airBox(1, 1, 1, 6, 3, 6);
-                out.box(1, 0, 1, 6, 0, 6, vinylTileSmall, vinylTileSmall);
-                out.box(1, 4, 1, 6, 4, 6, vinylTileLarge, vinylTileLarge);
-                out.box(1, 4, 4, 3, 4, 6, reinforcedStone, reinforcedStone);
-                out.box(0, 5, 0, 7, 5, 7, reinforcedStone, reinforcedStone);
-                out.selectorBox(0, 0, 0, 0, 4, 7, bricks);
-                out.selectorBox(1, 0, 7, 6, 4, 7, bricks);
-                out.selectorBox(7, 0, 0, 7, 4, 7, bricks);
-                out.selectorBox(1, 0, 0, 6, 4, 0, bricks);
-
-                BlockState lamp = hbmState("reinforced_lamp");
-                out.block(2, 5, 2, lamp);
-                out.block(5, 5, 2, lamp);
-                out.block(5, 5, 5, lamp);
-                BlockState fan = hbmState("fan").setValue(MachineFan.FACING, Direction.DOWN);
-                out.block(2, 4, 2, fan);
-                out.block(5, 4, 2, fan);
-                out.block(5, 4, 5, fan);
-                out.block(3, 1, 6, decoTungsten);
-                out.container(4, 1, 6, chest, ComponentLoot.ANTENNA_5);
-                out.block(5, 1, 6, decoTungsten);
-                out.box(
-                        3,
-                        2,
-                        6,
-                        5,
-                        2,
-                        6,
-                        stair(Direction.SOUTH, true),
-                        stair(Direction.SOUTH, true));
-                BlockState tapeRecorderNorth =
-                        hbmState("tape_recorder")
-                                .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH);
-                out.box(3, 3, 6, 5, 3, 6, tapeRecorderNorth, tapeRecorderNorth);
-
-                out.block(3, 1, 4, stair(Direction.WEST, true));
-                out.block(4, 1, 4, stair(Direction.NORTH, true));
-                out.block(5, 1, 4, stair(Direction.EAST, true));
-                out.block(4, 2, 4, deskComputer);
-
-                if (variant.flag("path_east")) out.airBox(7, 1, 2, 7, 2, 3);
-                if (variant.flag("path_anti_normal")) out.airBox(3, 1, 0, 4, 2, 0);
-                if (variant.flag("path_west")) out.airBox(0, 1, 2, 0, 2, 3);
-            };
 }

@@ -464,5 +464,11 @@ public final class PacketDispatcher {
                         CrateOpenHeldPayload.STREAM_CODEC,
                         CrateOpenHeldPayload::handleServer,
                         PayloadHandlerThread.MAIN));
+        NeoForgeNetwork.serverbound.add(
+                new NeoForgeNetwork.Registration<>(
+                        FarViewPayload.TYPE,
+                        FarViewPayload.STREAM_CODEC,
+                        FarViewPayload::handleServer,
+                        PayloadHandlerThread.MAIN));
     }
 }

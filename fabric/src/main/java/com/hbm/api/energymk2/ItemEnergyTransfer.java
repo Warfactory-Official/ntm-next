@@ -5,9 +5,10 @@ package com.hbm.api.energymk2;
 
 import com.hbm.items.machine.ItemBatteryCreative;
 import com.hbm.platform.FabricCaps;
-import com.hbm.platform.IEnergyHandlerView;
+import com.hbm.platform.FabricTrEnergyBridge;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import team.reborn.energy.api.EnergyStorage;
 
 public final class ItemEnergyTransfer {
 
@@ -34,11 +35,15 @@ public final class ItemEnergyTransfer {
             return accepted;
         }
 
-        IEnergyHandlerView view = FabricCaps.findEnergyHandler(container, slot);
-        if (view == null) return 0;
+        EnergyStorage store = FabricCaps.findEnergyStore(container, slot);
+        if (store == null) return 0;
         long acceptedFe =
-                view.insert(
-                        EnergyConversion.feFromHe(maxHe), EnergyConversion.feQuantum(), simulate);
+                FabricTrEnergyBridge.transfer(
+                        store,
+                        EnergyConversion.feFromHe(maxHe),
+                        EnergyConversion.feQuantum(),
+                        simulate,
+                        true);
         long acceptedHe = EnergyConversion.heFromFe(acceptedFe);
         assert EnergyConversion.feFromHe(acceptedHe) == acceptedFe;
         if (acceptedHe > 0 && !simulate) container.setChanged();
@@ -66,11 +71,15 @@ public final class ItemEnergyTransfer {
             return provided;
         }
 
-        IEnergyHandlerView view = FabricCaps.findEnergyHandler(container, slot);
-        if (view == null) return 0;
+        EnergyStorage store = FabricCaps.findEnergyStore(container, slot);
+        if (store == null) return 0;
         long providedFe =
-                view.extract(
-                        EnergyConversion.feFromHe(maxHe), EnergyConversion.feQuantum(), simulate);
+                FabricTrEnergyBridge.transfer(
+                        store,
+                        EnergyConversion.feFromHe(maxHe),
+                        EnergyConversion.feQuantum(),
+                        simulate,
+                        false);
         long providedHe = EnergyConversion.heFromFe(providedFe);
         assert EnergyConversion.feFromHe(providedHe) == providedFe;
         if (providedHe > 0 && !simulate) container.setChanged();

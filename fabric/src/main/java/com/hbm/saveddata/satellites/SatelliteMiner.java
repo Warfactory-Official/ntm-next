@@ -54,8 +54,8 @@ public class SatelliteMiner extends Satellite {
             progress = 0D;
             int count = 10 + level.getRandom().nextInt(6);
             List<ItemStack> cargo = new ArrayList<>(count);
-            for (int i = 0; i < count; i++)
-                cargo.add(ItemPool.getStack(getCargo(), level.getRandom()));
+            var loot = ItemPool.context(level, level.getRandom());
+            for (int i = 0; i < count; i++) cargo.add(ItemPool.getStack(getCargo(), loot));
             requestableSlots = List.copyOf(cargo);
             SatelliteSavedData.get(level).setDirty();
         }

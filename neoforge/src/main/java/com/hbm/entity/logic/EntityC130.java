@@ -11,6 +11,7 @@ import com.hbm.sound.AudioSystem;
 import com.hbm.sound.AudioWrapper;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.EnumUtil;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -59,24 +60,25 @@ public class EntityC130 extends EntityPlaneBase {
             }
         }
 
-        if (!level().isClientSide()
+        if (level() instanceof ServerLevel server
                 && this.tickCount == this.getLifetime() / 2
                 && this.health > 0) {
             EntityParachuteCrate crate =
                     new EntityParachuteCrate(ModEntities.PARACHUTE_CRATE.get(), level());
             Vec3 motion = getDeltaMovement();
             crate.setPos(getX() - motion.x * 7, getY() - 10, getZ() - motion.z * 7);
+            var loot = ItemPool.context(server, this.random);
 
             if (this.payload == C130PayloadType.SUPPLIES) {
                 for (int i = 0; i < 5; i++)
-                    crate.items.add(ItemPool.getStack(ItemPools.POOL_SUPPLIES, this.random));
+                    crate.items.add(ItemPool.getStack(ItemPools.POOL_SUPPLIES, loot));
             }
             if (this.payload == C130PayloadType.WEAPONS) {
                 int amount = 1 + random.nextInt(2);
                 for (int i = 0; i < amount; i++)
-                    crate.items.add(ItemPool.getStack(ItemPools.POOL_WEAPONS, this.random));
+                    crate.items.add(ItemPool.getStack(ItemPools.POOL_WEAPONS, loot));
                 for (int i = 0; i < 6; i++)
-                    crate.items.add(ItemPool.getStack(ItemPools.POOL_AMMO, this.random));
+                    crate.items.add(ItemPool.getStack(ItemPools.POOL_AMMO, loot));
             }
 
             level().addFreshEntity(crate);

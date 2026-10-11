@@ -4,24 +4,58 @@
     {
       "faces": {
         "down": {
-          "texture": "#belt"
+          "texture": "#belt",
+          "uv": [
+            0,
+            16,
+            16,
+            0
+          ]
         },
         "east": {
-          "texture": "#side"
+          "texture": "#side",
+          "uv": [
+            0,
+            12,
+            16,
+            16
+          ]
         },
         "north": {
-          "texture": "#belt"
+          "texture": "#belt",
+          "uv": [
+            0,
+            12,
+            16,
+            16
+          ]
         },
         "south": {
-          "rotation": 270,
-          "texture": "#belt"
+          "texture": "#belt",
+          "uv": [
+            16,
+            4,
+            0,
+            0
+          ]
         },
         "up": {
-          "rotation": 270,
-          "texture": "#belt"
+          "texture": "#belt",
+          "uv": [
+            16,
+            16,
+            0,
+            0
+          ]
         },
         "west": {
-          "texture": "#side"
+          "texture": "#side",
+          "uv": [
+            0,
+            12,
+            16,
+            16
+          ]
         }
       },
       "from": [

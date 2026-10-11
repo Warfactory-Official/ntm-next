@@ -25,8 +25,6 @@ public class SubstationBlock extends BlockMultiblockCore implements EntityBlock 
 
     public static final MapCodec<SubstationBlock> CODEC = simpleCodec(SubstationBlock::new);
 
-    private static final int[] DIMENSIONS = {4, 0, 1, 1, 2, 2};
-
     public SubstationBlock(Properties props) {
         super(props);
     }
@@ -42,21 +40,6 @@ public class SubstationBlock extends BlockMultiblockCore implements EntityBlock 
     @Override
     protected MapCodec<? extends Block> codec() {
         return CODEC;
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_NONE;
     }
 
     @Override

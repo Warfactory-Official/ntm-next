@@ -1,7 +1,7 @@
 plugins {
     java
     `maven-publish`
-    id("net.fabricmc.fabric-loom") version ("1.18.2")
+    id("net.fabricmc.fabric-loom") version ("1.18.4")
 }
 
 version = property("mod_version")!!
@@ -130,7 +130,7 @@ repositories {
     }
 }
 
-val crankshaftVersion = "1.5.9+mc26.2"
+val crankshaftVersion = "1.6.0+mc26.2"
 
 val crankshaftJar = configurations.create("crankshaftJar") {
     isCanBeConsumed = false
@@ -152,9 +152,9 @@ dependencies {
     compileOnly("maven.modrinth:techreborn:YsPVZIsK")
     compileOnly("maven.modrinth:reborncore:xiERLsCF")
     compileOnly("maven.modrinth:compact-storage:mehMI8pF")
-    compileOnly("maven.modrinth:travelersbackpack:jp51VM8M")
-    compileOnly("maven.modrinth:balm:LcKC6Cxw")
-    compileOnly("maven.modrinth:trinkets-updated:jhbhwQFz")
+    compileOnly("maven.modrinth:travelersbackpack:I6Fg8UrJ")
+    compileOnly("maven.modrinth:balm:qLWYe5p7")
+    compileOnly("maven.modrinth:trinkets-updated:YH8OYfzQ")
     compileOnly("maven.modrinth:iris:gxZWWnKH")
     compileOnly("maven.modrinth:sodium:xJZxADzI")
     compileOnly("io.github.douira:glsl-transformer:3.0.0-pre3")
@@ -163,6 +163,14 @@ dependencies {
     implementation("net.fabricmc:fabric-loader:${property("fabric_loader_version")}")
     implementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api_version")}")
 
+    compileOnly("maven.modrinth:toms-storage:V1KIQDWS") { isTransitive = false }
+    compileOnly("maven.modrinth:storagedrawers:cJA3JdCZ") { isTransitive = false }
+    compileOnly("maven.modrinth:sound-physics-remastered:d8iioMMp") { isTransitive = false }
+    compileOnly("maven.modrinth:entity-model-features:uqpavrXj") { isTransitive = false }
+    compileOnly("maven.modrinth:punchy-fpa:xXVSglFn") { isTransitive = false }
+    compileOnly("maven.modrinth:notenoughbandwidthfabric:hkfDkuqG") { isTransitive = false }
+    compileOnly("maven.modrinth:bandwidthoptimizer:R6HJYW0a") { isTransitive = false }
+    compileOnly("maven.modrinth:flashback:h6FH7iAC") { isTransitive = false }
     compileOnly("io.github.llamalad7:mixinextras-common:0.5.5")
     compileOnly("org.jspecify:jspecify:1.0.0")
     compileOnly("maven.modrinth:scalablelux:0.3.0-alpha.0.3+26.2")
@@ -178,7 +186,7 @@ dependencies {
     crankshaftJar("dev.engine_room:crankshaft-fabric:${crankshaftVersion}")
     compileOnly(files(layout.buildDirectory.file("crankshaft-iris/crankshaft-iris.jar")).builtBy(crankshaftIris))
 
-    compileOnly("mezz.jei:jei-26.2-common-api:30.35.0.224")
+    compileOnly("mezz.jei:jei-26.2-common-api:30.39.0.233")
 
     compileOnly("me.shedaniel:RoughlyEnoughItems-api:${property("rei_version")}")
     compileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin:${property("rei_version")}")
@@ -187,6 +195,7 @@ dependencies {
     compileOnly("mcp.mobius.waila:wthit-api:fabric-20.0.0")
 
     compileOnly("maven.modrinth:continuity:3.0.1+26.2")
+    compileOnly("maven.modrinth:fusion-connected-textures:1.3.16-fabric-mc26.2")
 
     implementation("teamreborn:energy:5.0.0")
 }

@@ -2809,7 +2809,8 @@ public final class ModBlocks {
                                     .noLootTable()
                                     .pushReaction(PushReaction.BLOCK));
     public static final RegistryHandle<Block> PWR_CASING = pwrPart("pwr_casing", 2);
-    public static final RegistryHandle<Block> PWR_PORT = pwrPart("pwr_port", 2);
+    public static final RegistryHandle<Block> PWR_PORT =
+            pwrPart("pwr_port", 2, PhysicalPortBlock::fluid);
     public static final RegistryHandle<Block> PWR_REFLECTOR = pwrPart("pwr_reflector", 3);
     public static final RegistryHandle<Block> PWR_FUEL = pwrPart("pwr_fuel", 2);
     public static final RegistryHandle<Block> PWR_CONTROL = pwrPart("pwr_control", 2);
@@ -2818,7 +2819,8 @@ public final class ModBlocks {
     public static final RegistryHandle<Block> PWR_HEATSINK = pwrPart("pwr_heatsink", 3);
     public static final RegistryHandle<Block> PWR_NEUTRON_SOURCE = pwrPart("pwr_neutron_source", 3);
     public static final RegistryHandle<Block> ICF_CASING = icfPart("icf_casing");
-    public static final RegistryHandle<Block> ICF_PORT = icfPart("icf_port");
+    public static final RegistryHandle<Block> ICF_PORT =
+            icfPart("icf_port", PhysicalPortBlock::power);
     public static final RegistryHandle<Block> ICF_CELL = icfPart("icf_cell");
     public static final RegistryHandle<Block> ICF_EMITTER = icfPart("icf_emitter");
     public static final RegistryHandle<Block> ICF_CAPACITOR =
@@ -8870,10 +8872,7 @@ public final class ModBlocks {
                     Reg.block(
                                     bucket.name(),
                                     props -> BlockMultiblockGeometryCell.create(bucket, props),
-                                    () ->
-                                            cellProperties(bucket.key())
-                                                    .dynamicShape()
-                                                    .forceSolidOn())
+                                    () -> cellProperties(bucket.key()).forceSolidOn())
                             .afterRegistration(
                                     cell -> {
                                         if (!bucket.part().seals()) return;
@@ -8889,7 +8888,10 @@ public final class ModBlocks {
     }
 
     public static RegistryHandle<? extends BlockMultiblockCell> plainCell(CellBuckets.Plain key) {
-        return PLAIN_CELLS.get(key);
+        RegistryHandle<? extends BlockMultiblockCell> cell = PLAIN_CELLS.get(key);
+        if (cell == null)
+            throw new IllegalStateException("no plain cell bucket registered for " + key);
+        return cell;
     }
 
     public static RegistryHandle<BlockMultiblockGeometryCell> geometryCell(
@@ -8930,7 +8932,12 @@ public final class ModBlocks {
     }
 
     private static Reg.Handle<Block> icfPart(String name) {
-        Reg.Handle<Block> block = Reg.block(name, Block::new, ModBlocks::icfProps);
+        return icfPart(name, Block::new);
+    }
+
+    private static Reg.Handle<Block> icfPart(
+            String name, Function<BlockBehaviour.Properties, Block> factory) {
+        Reg.Handle<Block> block = Reg.block(name, factory, ModBlocks::icfProps);
         rbmkItem(name, block);
         return block;
     }
@@ -8940,7 +8947,12 @@ public final class ModBlocks {
     }
 
     private static Reg.Handle<Block> pwrPart(String name, int descLines) {
-        Reg.Handle<Block> block = Reg.block(name, Block::new, ModBlocks::pwrProps);
+        return pwrPart(name, descLines, Block::new);
+    }
+
+    private static Reg.Handle<Block> pwrPart(
+            String name, int descLines, Function<BlockBehaviour.Properties, Block> factory) {
+        Reg.Handle<Block> block = Reg.block(name, factory, ModBlocks::pwrProps);
         Reg.item(
                 name,
                 props -> new DescBlockItem(block.get(), props, descLines),

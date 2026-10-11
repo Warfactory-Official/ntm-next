@@ -19,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import org.joml.Matrix4f;
 
 public class ItemRenderFatMan extends ItemRenderWeaponBase {
-    private static final String BALEFIRE = "ammo_standard_nuke_balefire";
     private final RenderType body = RenderTypes.entityCutout(ResourceManager.fatman_tex);
 
     public static void renderNuke(

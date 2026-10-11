@@ -3,7 +3,9 @@
 
 package com.hbm.client.sound;
 
+import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.sound.AudioWrapper;
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -91,6 +93,7 @@ public class AudioWrapperClient extends AudioWrapper {
     @Override
     public void startSound() {
         if (sound != null) {
+            sound.machineCore = MultiblockSurface.NO_CORE;
             sound.start();
         }
     }
@@ -100,6 +103,14 @@ public class AudioWrapperClient extends AudioWrapper {
         if (sound != null) {
             sound.stopSound();
             sound.setKeepAlive(0);
+        }
+    }
+
+    @Override
+    public void startSound(BlockPos owner) {
+        if (sound != null) {
+            sound.machineCore = owner.asLong();
+            sound.start();
         }
     }
 

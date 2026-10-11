@@ -82,9 +82,7 @@ public final class IrradiationTransformations {
             return true;
         }
         Entity replacement = results[index].create(server, EntitySpawnReason.CONVERSION);
-        if (replacement == null)
-            throw new IllegalStateException(
-                    "Irradiation replacement cannot be created: " + results[index]);
+        if (replacement == null) return false;
         replacement.snapTo(
                 entity.getX(), entity.getY(), entity.getZ(), entity.getYRot(), entity.getXRot());
         if (!server.addFreshEntity(replacement)) return false;

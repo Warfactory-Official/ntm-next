@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 
-public class NtmFeaturesStructure extends Structure {
+public class NtmFeaturesStructure extends Structure implements ColumnBiome.SelfTested {
 
     public static final MapCodec<NtmFeaturesStructure> CODEC =
             simpleCodec(NtmFeaturesStructure::new);
@@ -46,6 +46,7 @@ public class NtmFeaturesStructure extends Structure {
                                 Heightmap.Types.WORLD_SURFACE_WG,
                                 context.heightAccessor(),
                                 context.randomState());
+        if (!ColumnBiome.valid(context, x, centerHeight + 1, z)) return Optional.empty();
         int meanHeight =
                 getMeanFirstOccupiedHeight(
                         context,

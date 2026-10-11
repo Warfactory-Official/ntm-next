@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.entity.FuelValues;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(AbstractFurnaceBlockEntity.class)
+@Mixin(value = AbstractFurnaceBlockEntity.class, priority = 500)
 public abstract class MixinAbstractFurnaceBlockEntity {
     @WrapOperation(
             method = "consumeFuel",

@@ -18,12 +18,21 @@
     "ae2.MixinNetworkStorage",
     "ae2.MixinMEInventoryHandler",
     "ae2.MixinKeyCounter",
-    "ae2.MixinCompositeStorageInventoryCache",
-    "EntityFluidInteractionMixin",
-    "LivingEntityAcceptedDamageMixin",
-    "LivingEntityEarlyDamageMixin"
+    "ae2.MixinInventoryCache",
+    "MixinEntityFluidInteraction",
+    "MixinLivingEntity",
+    "storage.MixinInventoryHandler",
+    "storage.MixinStorageBlockEntity",
+    "storage.MixinBackpackBlockEntity",
+    "storage.MixinUpgradeHandler",
+    "storage.MixinBackpackStorage",
+    "storage.MixinItemContentsStorage"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "MixinEnhancedBlockModelLighter"
+  ],
+  "plugin": "com.hbm.transform.inventory.StorageTrackingMixinPlugin"
 }

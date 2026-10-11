@@ -16,6 +16,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import org.jspecify.annotations.Nullable;
 
 public class NTMMaterial {
     public static final Codec<NTMMaterial> CODEC =
@@ -45,7 +46,6 @@ public class NTMMaterial {
     public final Set<MaterialShapes> autogen = new LinkedHashSet<>();
     public final Set<MaterialShapes> tagOnly = new LinkedHashSet<>();
     private final Map<MaterialShapes, String> legacyIds = new HashMap<>();
-    private final Map<MaterialShapes, String> legacyArt = new HashMap<>();
     public final Set<MatTraits> traits = new LinkedHashSet<>();
     public SmeltingBehavior smeltable = SmeltingBehavior.NOT_SMELTABLE;
     public int solidColorLight = 0xFF4A00;
@@ -124,27 +124,12 @@ public class NTMMaterial {
 
     public NTMMaterial legacy(MaterialShapes shape, String id, String art) {
         legacyIds.put(shape, id);
-        legacyArt.put(shape, art);
+
         return this;
     }
 
-    public String legacyId(MaterialShapes shape) {
-        String id = legacyIds.get(shape);
-        if (id == null) {
-            throw new IllegalStateException(
-                    tagPath
-                            + " reaches the "
-                            + shape.name()
-                            + " roster with no 1.7 item named; either name it or "
-                            + "stop declaring the shape - 1.7 mints no "
-                            + shape.name()
-                            + " for every material");
-        }
-        return id;
-    }
-
-    public String legacyArt(MaterialShapes shape) {
-        return legacyArt.getOrDefault(shape, legacyId(shape));
+    public @Nullable String legacyId(MaterialShapes shape) {
+        return legacyIds.get(shape);
     }
 
     public NTMMaterial setTraits(MatTraits... traits) {

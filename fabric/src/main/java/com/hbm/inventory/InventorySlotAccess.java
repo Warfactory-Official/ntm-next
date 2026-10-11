@@ -4,6 +4,7 @@
 package com.hbm.inventory;
 
 import com.hbm.hazard.HazardSystem;
+import com.hbm.inventory.container.NtmContainerMenu;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -99,8 +100,12 @@ public enum InventorySlotAccess {
         @Override
         public void changed(Object source, int slot) {
             super.changed(source, slot);
-            if (((Inventory) source).player instanceof ServerPlayer player)
+            Inventory inventory = (Inventory) source;
+            if (inventory.player instanceof ServerPlayer player) {
                 HazardSystem.inventorySlotChanged(player, slot);
+                if (slot >= 0 && player.containerMenu instanceof NtmContainerMenu menu)
+                    menu.refreshItemContents(inventory.getItem(slot));
+            }
         }
 
         @Override
@@ -160,12 +165,7 @@ public enum InventorySlotAccess {
 
         @Override
         public boolean physical(Object source, int slot) {
-            ItemStackContainer view = (ItemStackContainer) source;
-            return !view.target().isEmpty()
-                    && !view.target().has(net.minecraft.core.component.DataComponents.CONTAINER)
-                    && view.stillValid(view.inventoryHolder())
-                    && slot >= 0
-                    && slot < view.getContainerSize();
+            return false;
         }
 
         @Override

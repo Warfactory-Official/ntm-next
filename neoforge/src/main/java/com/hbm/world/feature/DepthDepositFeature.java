@@ -36,10 +36,10 @@ public class DepthDepositFeature extends Feature<DepthDepositConfig> {
 
         for (int dx = -size; dx <= size; dx++) {
             for (int dy = -size; dy <= size; dy++) {
+                int y = origin.getY() + dy;
+                if (y <= floor || y >= ceiling) continue;
                 for (int dz = -size; dz <= size; dz++) {
-                    int y = origin.getY() + dy;
-                    if (y <= floor || y >= ceiling) continue;
-
+                    if (dx * dx + dy * dy + dz * dz > size * size) continue;
                     pos.set(origin.getX() + dx, y, origin.getZ() + dz);
                     BlockState cur = level.getBlockState(pos);
                     if (!cfg.replaceable().test(cur, rand) && !cur.is(Blocks.BEDROCK)) continue;

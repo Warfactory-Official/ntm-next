@@ -16,9 +16,12 @@ import com.hbm.items.machine.upgrade.UpgradeType;
 import com.hbm.module.ModulePatternMatcher;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
-import com.hbm.util.InventoryUtil;
+import com.hbm.platform.FabricCaps;
 import io.netty.buffer.ByteBuf;
 import java.util.List;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -148,7 +151,8 @@ public class BlockEntityCraneGrabber extends BlockEntityCraneBase
             return;
         }
 
-        if (!InventoryUtil.inventoryAt(level, outputPos, output.getOpposite())) return;
+        Storage<ItemVariant> dest = ItemStorage.SIDED.find(level, outputPos, output.getOpposite());
+        if (dest == null) return;
 
         for (EntityMovingItem item : riders) {
             ItemStack stack = item.getItemStack();
@@ -158,9 +162,7 @@ public class BlockEntityCraneGrabber extends BlockEntityCraneBase
             markChanged();
 
             int toAdd = Math.min(stack.getCount(), amount);
-            ItemStack left =
-                    InventoryUtil.insertAt(
-                            level, outputPos, output.getOpposite(), stack.copyWithCount(toAdd));
+            ItemStack left = FabricCaps.insert(dest, stack.copyWithCount(toAdd));
             int didAdd = toAdd - left.getCount();
             ItemStack remaining = stack.copyWithCount(stack.getCount() - didAdd);
 

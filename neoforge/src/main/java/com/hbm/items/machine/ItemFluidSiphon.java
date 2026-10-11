@@ -10,7 +10,6 @@ import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Unsiphonable;
 import com.hbm.items.tool.ItemPipette;
-import com.hbm.platform.IFluidHandlerView;
 import com.hbm.platform.NeoForgeCaps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
@@ -23,6 +22,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import org.jspecify.annotations.Nullable;
 
 public class ItemFluidSiphon extends Item {
@@ -103,12 +104,12 @@ public class ItemFluidSiphon extends Item {
             return FluidContainerRows.filled(stack, type);
         }
         SimpleContainer scratch = new SimpleContainer(stack.copyWithCount(1));
-        IFluidHandlerView view = NeoForgeCaps.findFluidHandler(scratch, 0);
-        if (view == null) return null;
+        ResourceHandler<FluidResource> store = NeoForgeCaps.findFluidStore(scratch, 0);
+        if (store == null) return null;
 
-        long room = view.insertable(type);
+        long room = NeoForgeCaps.insertable(store, type);
         if (room <= 0 || room > tank.getFill()) return null;
-        long given = view.insert(type, room);
+        long given = NeoForgeCaps.insert(store, type, room);
         if (given <= 0) return null;
 
         tank.setFill(tank.getFill() - given);

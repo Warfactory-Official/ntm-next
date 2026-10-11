@@ -4,17 +4,16 @@
 package com.hbm.mixin.storage;
 
 import com.hbm.inventory.SlotSource;
+import com.tom.storagemod.util.FilingCabinetContainer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-@Pseudo
-@Mixin(targets = "com.tom.storagemod.util.FilingCabinetContainer", remap = false)
+@Mixin(value = FilingCabinetContainer.class, remap = false)
 public abstract class MixinFilingCabinetContainer implements SlotSource {
     @Shadow private SimpleContainer inv;
     @Unique private @Nullable Object hbm$owner;

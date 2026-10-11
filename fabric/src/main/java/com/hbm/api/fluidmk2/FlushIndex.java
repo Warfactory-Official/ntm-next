@@ -8,14 +8,11 @@ import com.hbm.uninos.graph.LevelNodeGraph;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
-import java.util.Map;
-import java.util.WeakHashMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.jspecify.annotations.Nullable;
 
 public final class FlushIndex {
-    private static final Map<ServerLevel, FlushIndex> BY_LEVEL = new WeakHashMap<>();
 
     private final Long2ObjectMap<ReferenceOpenHashSet<FlushRegister>> byChunk =
             new Long2ObjectOpenHashMap<>();
@@ -23,16 +20,25 @@ public final class FlushIndex {
     private FlushIndex() {}
 
     public static void init() {
-        FabricServerEvents.onServerStopping(server -> BY_LEVEL.clear());
         FabricServerEvents.onChunkUnload(
                 (level, chunk) -> {
-                    FlushIndex index = BY_LEVEL.get(level);
+                    FlushIndex index = level.hbm$flushIndex();
                     if (index != null) index.evict(chunk.getPos().pack());
                 });
     }
 
     static FlushIndex of(ServerLevel level) {
-        return BY_LEVEL.computeIfAbsent(level, l -> new FlushIndex());
+        FlushIndex index = level.hbm$flushIndex();
+        if (index == null) level.hbm$flushIndex(index = new FlushIndex());
+        return index;
+    }
+
+    public static void invalidateAll(ServerLevel level) {
+        FlushIndex index = level.hbm$flushIndex();
+        if (index == null) return;
+        for (ReferenceOpenHashSet<FlushRegister> bucket : index.byChunk.values()) {
+            for (FlushRegister register : bucket) register.invalidate();
+        }
     }
 
     public static void invalidateAt(ServerLevel level, long posKey) {
@@ -55,7 +61,7 @@ public final class FlushIndex {
 
     private static @Nullable ReferenceOpenHashSet<FlushRegister> bucket(
             ServerLevel level, long chunkKey) {
-        FlushIndex index = BY_LEVEL.get(level);
+        FlushIndex index = level.hbm$flushIndex();
         return index == null ? null : index.byChunk.get(chunkKey);
     }
 

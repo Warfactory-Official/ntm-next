@@ -5,6 +5,7 @@ package com.hbm.entity.item;
 
 import com.hbm.blockentity.machine.storage.BlockEntityCrateSupply;
 import com.hbm.blocks.ModBlocks;
+import com.hbm.entity.FarVisible;
 import com.hbm.interfaces.StoredItems;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
-public class EntityParachuteCrate extends Entity implements StoredItems {
+public class EntityParachuteCrate extends Entity implements StoredItems, FarVisible {
 
     private final InterpolationHandler interpolation = new InterpolationHandler(this);
     public List<ItemStack> items = new ArrayList<>();

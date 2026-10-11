@@ -7,6 +7,8 @@ package com.hbm.blockentity.machine;
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidFlushSender;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.blockentity.Audible;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blockentity.IFluidCopiable;
@@ -14,6 +16,7 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.data.MachineData;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Coolable.CoolingType;
 import com.hbm.inventory.fluid.trait.FT_Coolable;
@@ -32,7 +35,12 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntitySteamEngine extends BlockEntityMachineBase
-        implements Audible, IEnergyHandlerMK2, FluidFlushSender, IFluidCopiable, SyncUnitSchema {
+        implements FluidTankAccess,
+                Audible,
+                IEnergyHandlerMK2,
+                FluidFlushSender,
+                IFluidCopiable,
+                SyncUnitSchema {
 
     @SyncField(units = 1L << 0)
     public final FluidTankNTM[] tanks = new FluidTankNTM[2];
@@ -175,6 +183,11 @@ public class BlockEntitySteamEngine extends BlockEntityMachineBase
     }
 
     @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
+    }
+
+    @Override
     public long getFluidAvailable(Fluid type, int pressure) {
         if (type != NTMFluids.SPENTSTEAM || pressure != tanks[1].getPressure()) return 0L;
         return tanks[1].getFill();
@@ -187,8 +200,13 @@ public class BlockEntitySteamEngine extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     @Override

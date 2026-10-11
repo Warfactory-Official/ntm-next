@@ -3,10 +3,6 @@
 
 package com.hbm.inventory;
 
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jspecify.annotations.Nullable;
 
@@ -38,20 +34,5 @@ public final class InventoryPublications {
                             && InventoryOwnerAccess.BLOCK.live(block))
                         InventoryOwnerAccess.BLOCK.publish(block);
                 });
-        if (carrier instanceof ServerPlayer player) {
-            AbstractContainerMenu menu = player.containerMenu;
-            ItemStackContainer previous = null;
-            for (Slot visible : menu.slots)
-                if (visible.container instanceof ItemStackContainer mirror
-                        && mirror != previous
-                        && (mirror.target().isEmpty()
-                                || mirror.target().has(DataComponents.CONTAINER))) {
-                    previous = mirror;
-                    visitor.afterChanges(
-                            () -> {
-                                if (player.containerMenu == menu) mirror.refreshFromTarget();
-                            });
-                }
-        }
     }
 }

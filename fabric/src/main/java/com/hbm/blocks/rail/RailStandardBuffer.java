@@ -10,21 +10,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 
 public class RailStandardBuffer extends BlockRailNTM {
-
-    private static final int[] DIMENSIONS = {0, 0, 2, 2, 1, 0};
-
     public RailStandardBuffer(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 2;
     }
 
     @Override

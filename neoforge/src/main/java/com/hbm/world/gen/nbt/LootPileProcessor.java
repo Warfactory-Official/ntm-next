@@ -11,6 +11,7 @@ import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
@@ -39,12 +40,15 @@ public final class LootPileProcessor implements StructureProcessor {
         if (pool.isEmpty()) return processedBlockInfo;
 
         BlockPos pos = processedBlockInfo.pos();
+        if (settings.getBoundingBox() != null && !settings.getBoundingBox().isInside(pos))
+            return processedBlockInfo;
         CompoundTag rolled = nbt.copy();
         rolled.remove(POOL);
         rolled.merge(
                 BlockEntityLoot.tagOf(
                         LootGenerator.roll(
                                 pool.get(),
+                                ((ServerLevelAccessor) level).getLevel(),
                                 ProcessorRandom.source(level, pos, ProcessorRandom.LOOT_PILE),
                                 ProcessorRandom.worldSeed(level)),
                         level.registryAccess()));

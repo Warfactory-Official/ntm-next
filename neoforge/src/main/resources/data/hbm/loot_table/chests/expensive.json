@@ -5,274 +5,796 @@
     {
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "hbm:chlorine_pinwheel",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:circuit_vacuum_tube",
-          "weight": 4
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:circuit_analog",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:circuit_chip",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:gun_kit_1",
-          "weight": 6
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:gun_kit_2",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:gun_panzerschreck",
-          "weight": 4
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:ammo_standard_rocket_he",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:ammo_standard_g26_flare_supply",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:ammo_standard_g26_flare_weapon",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "components": {
-                "hbm:grenade": {
-                  "filling": "nuclear",
-                  "fuze": "s7",
-                  "shell": "nuke"
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 0
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 7,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:chlorine_pinwheel",
+                          "weight": 1
+                        },
+                        {
+                          "type": "minecraft:alternatives",
+                          "children": [
+                            {
+                              "type": "minecraft:item",
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:value_check",
+                                  "range": {
+                                    "max": 3
+                                  },
+                                  "value": {
+                                    "type": "minecraft:uniform",
+                                    "max": 6,
+                                    "min": 0
+                                  }
+                                }
+                              ],
+                              "name": "hbm:circuit_vacuum_tube",
+                              "weight": 4
+                            },
+                            {
+                              "type": "minecraft:item",
+                              "name": "hbm:circuit_analog",
+                              "weight": 3
+                            }
+                          ]
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 7
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 22,
+                            "min": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:alternatives",
+                          "children": [
+                            {
+                              "type": "minecraft:item",
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:value_check",
+                                  "range": {
+                                    "max": 1
+                                  },
+                                  "value": {
+                                    "type": "minecraft:uniform",
+                                    "max": 7,
+                                    "min": 0
+                                  }
+                                }
+                              ],
+                              "name": "hbm:circuit_chip",
+                              "weight": 2
+                            },
+                            {
+                              "type": "minecraft:item",
+                              "functions": [
+                                {
+                                  "count": {
+                                    "type": "minecraft:uniform",
+                                    "max": 3.0,
+                                    "min": 1.0
+                                  },
+                                  "function": "minecraft:set_count"
+                                }
+                              ],
+                              "name": "hbm:gun_kit_1",
+                              "weight": 6
+                            }
+                          ],
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 7
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 14,
+                                "min": 0
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "minecraft:alternatives",
+                          "children": [
+                            {
+                              "type": "minecraft:item",
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:value_check",
+                                  "range": {
+                                    "max": 2
+                                  },
+                                  "value": {
+                                    "type": "minecraft:uniform",
+                                    "max": 6,
+                                    "min": 0
+                                  }
+                                }
+                              ],
+                              "functions": [
+                                {
+                                  "count": {
+                                    "type": "minecraft:uniform",
+                                    "max": 2.0,
+                                    "min": 1.0
+                                  },
+                                  "function": "minecraft:set_count"
+                                }
+                              ],
+                              "name": "hbm:gun_kit_2",
+                              "weight": 3
+                            },
+                            {
+                              "type": "minecraft:item",
+                              "name": "hbm:gun_panzerschreck",
+                              "weight": 4
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 22
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 44,
+                        "min": 0
+                      }
+                    }
+                  ]
                 },
-                "minecraft:max_stack_size": 1
-              },
-              "function": "minecraft:set_components"
-            }
-          ],
-          "name": "hbm:grenade_universal",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:alternatives",
+                          "children": [
+                            {
+                              "type": "minecraft:item",
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:value_check",
+                                  "range": {
+                                    "max": 4
+                                  },
+                                  "value": {
+                                    "type": "minecraft:uniform",
+                                    "max": 9,
+                                    "min": 0
+                                  }
+                                }
+                              ],
+                              "functions": [
+                                {
+                                  "count": {
+                                    "type": "minecraft:uniform",
+                                    "max": 4.0,
+                                    "min": 1.0
+                                  },
+                                  "function": "minecraft:set_count"
+                                }
+                              ],
+                              "name": "hbm:ammo_standard_rocket_he",
+                              "weight": 5
+                            },
+                            {
+                              "type": "minecraft:item",
+                              "name": "hbm:ammo_standard_g26_flare_supply",
+                              "weight": 5
+                            }
+                          ],
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 9
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 14,
+                                "min": 0
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "minecraft:alternatives",
+                          "children": [
+                            {
+                              "type": "minecraft:item",
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:value_check",
+                                  "range": {
+                                    "max": 2
+                                  },
+                                  "value": {
+                                    "type": "minecraft:uniform",
+                                    "max": 4,
+                                    "min": 0
+                                  }
+                                }
+                              ],
+                              "name": "hbm:ammo_standard_g26_flare_weapon",
+                              "weight": 3
+                            },
+                            {
+                              "type": "minecraft:item",
+                              "functions": [
+                                {
+                                  "components": {
+                                    "hbm:grenade": {
+                                      "filling": "nuclear",
+                                      "fuze": "s7",
+                                      "shell": "nuke"
+                                    },
+                                    "minecraft:max_stack_size": 1
+                                  },
+                                  "function": "minecraft:set_components"
+                                }
+                              ],
+                              "name": "hbm:grenade_universal",
+                              "weight": 2
+                            }
+                          ]
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 14
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 21,
+                            "min": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:alternatives",
+                          "children": [
+                            {
+                              "type": "minecraft:item",
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:value_check",
+                                  "range": {
+                                    "max": 2
+                                  },
+                                  "value": {
+                                    "type": "minecraft:uniform",
+                                    "max": 3,
+                                    "min": 0
+                                  }
+                                }
+                              ],
+                              "functions": [
+                                {
+                                  "components": {
+                                    "hbm:grenade": {
+                                      "filling": "cluster",
+                                      "fuze": "s7",
+                                      "shell": "frag"
+                                    },
+                                    "minecraft:max_stack_size": 4
+                                  },
+                                  "function": "minecraft:set_components"
+                                },
+                                {
+                                  "count": {
+                                    "type": "minecraft:uniform",
+                                    "max": 3.0,
+                                    "min": 1.0
+                                  },
+                                  "function": "minecraft:set_count"
+                                }
+                              ],
+                              "name": "hbm:grenade_universal",
+                              "weight": 3
+                            },
+                            {
+                              "type": "minecraft:item",
+                              "name": "hbm:grenade_extra_triplex",
+                              "weight": 1
+                            }
+                          ],
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 3
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 6,
+                                "min": 0
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "minecraft:alternatives",
+                          "children": [
+                            {
+                              "type": "minecraft:item",
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:value_check",
+                                  "range": {
+                                    "max": 1
+                                  },
+                                  "value": {
+                                    "type": "minecraft:uniform",
+                                    "max": 2,
+                                    "min": 0
+                                  }
+                                }
+                              ],
+                              "name": "hbm:stealth_boy",
+                              "weight": 2
+                            },
+                            {
+                              "type": "minecraft:item",
+                              "name": "hbm:battery_pack_battery_lithium",
+                              "weight": 1
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:value_check",
+                  "range": {
+                    "max": 44
+                  },
+                  "value": {
+                    "type": "minecraft:uniform",
+                    "max": 85,
+                    "min": 0
+                  }
+                }
+              ]
+            },
             {
-              "components": {
-                "hbm:grenade": {
-                  "filling": "cluster",
-                  "fuze": "s7",
-                  "shell": "frag"
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 0
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 10,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:syringe_awesome",
+                          "weight": 1
+                        },
+                        {
+                          "type": "minecraft:alternatives",
+                          "children": [
+                            {
+                              "type": "minecraft:item",
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:value_check",
+                                  "range": {
+                                    "max": 3
+                                  },
+                                  "value": {
+                                    "type": "minecraft:uniform",
+                                    "max": 9,
+                                    "min": 0
+                                  }
+                                }
+                              ],
+                              "name": "hbm:fusion_core",
+                              "weight": 4
+                            },
+                            {
+                              "type": "minecraft:item",
+                              "functions": [
+                                {
+                                  "count": {
+                                    "type": "minecraft:uniform",
+                                    "max": 3.0,
+                                    "min": 1.0
+                                  },
+                                  "function": "minecraft:set_count"
+                                }
+                              ],
+                              "name": "hbm:bottle_nuka",
+                              "weight": 6
+                            }
+                          ]
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 10
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 24,
+                            "min": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:alternatives",
+                          "children": [
+                            {
+                              "type": "minecraft:item",
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:value_check",
+                                  "range": {
+                                    "max": 2
+                                  },
+                                  "value": {
+                                    "type": "minecraft:uniform",
+                                    "max": 8,
+                                    "min": 0
+                                  }
+                                }
+                              ],
+                              "name": "hbm:bottle_quantum",
+                              "weight": 3
+                            },
+                            {
+                              "type": "minecraft:item",
+                              "name": "hbm:red_barrel",
+                              "weight": 6
+                            }
+                          ],
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 8
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 13,
+                                "min": 0
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "minecraft:alternatives",
+                          "children": [
+                            {
+                              "type": "minecraft:item",
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:value_check",
+                                  "range": {
+                                    "max": 1
+                                  },
+                                  "value": {
+                                    "type": "minecraft:uniform",
+                                    "max": 4,
+                                    "min": 0
+                                  }
+                                }
+                              ],
+                              "functions": [
+                                {
+                                  "components": {
+                                    "hbm:fluid_content": {
+                                      "type": "hbm:diesel",
+                                      "amount": 1000
+                                    }
+                                  },
+                                  "function": "minecraft:set_components"
+                                },
+                                {
+                                  "count": {
+                                    "type": "minecraft:uniform",
+                                    "max": 2.0,
+                                    "min": 1.0
+                                  },
+                                  "function": "minecraft:set_count"
+                                }
+                              ],
+                              "name": "hbm:canister",
+                              "weight": 2
+                            },
+                            {
+                              "type": "minecraft:item",
+                              "functions": [
+                                {
+                                  "components": {
+                                    "hbm:fluid_content": {
+                                      "type": "hbm:biofuel",
+                                      "amount": 1000
+                                    }
+                                  },
+                                  "function": "minecraft:set_components"
+                                },
+                                {
+                                  "count": {
+                                    "type": "minecraft:uniform",
+                                    "max": 2.0,
+                                    "min": 1.0
+                                  },
+                                  "function": "minecraft:set_count"
+                                }
+                              ],
+                              "name": "hbm:canister",
+                              "weight": 3
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 24
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 40,
+                        "min": 0
+                      }
+                    }
+                  ]
                 },
-                "minecraft:max_stack_size": 4
-              },
-              "function": "minecraft:set_components"
-            },
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:grenade_universal",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:grenade_extra_triplex",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:stealth_boy",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:battery_pack_battery_lithium",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:syringe_awesome",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:fusion_core",
-          "weight": 4
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:bottle_nuka",
-          "weight": 6
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:bottle_quantum",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:red_barrel",
-          "weight": 6
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "components": {
-                "hbm:fluid_content": {
-                  "type": "hbm:diesel",
-                  "amount": 1000
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:alternatives",
+                          "children": [
+                            {
+                              "type": "minecraft:item",
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:value_check",
+                                  "range": {
+                                    "max": 4
+                                  },
+                                  "value": {
+                                    "type": "minecraft:uniform",
+                                    "max": 6,
+                                    "min": 0
+                                  }
+                                }
+                              ],
+                              "functions": [
+                                {
+                                  "components": {
+                                    "minecraft:damage": 60
+                                  },
+                                  "function": "minecraft:set_components"
+                                }
+                              ],
+                              "name": "hbm:gas_mask_m65",
+                              "weight": 5
+                            },
+                            {
+                              "type": "minecraft:item",
+                              "name": "hbm:bomb_caller_carpet_bombing",
+                              "weight": 2
+                            }
+                          ],
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 6
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 8,
+                                "min": 0
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "minecraft:alternatives",
+                          "children": [
+                            {
+                              "type": "minecraft:item",
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:value_check",
+                                  "range": {
+                                    "max": 0
+                                  },
+                                  "value": {
+                                    "type": "minecraft:uniform",
+                                    "max": 1,
+                                    "min": 0
+                                  }
+                                }
+                              ],
+                              "name": "hbm:bomb_caller_napalm",
+                              "weight": 1
+                            },
+                            {
+                              "type": "minecraft:item",
+                              "name": "hbm:bomb_caller_poison_gas",
+                              "weight": 1
+                            }
+                          ]
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 8
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 15,
+                            "min": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:alternatives",
+                          "children": [
+                            {
+                              "type": "minecraft:item",
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:value_check",
+                                  "range": {
+                                    "max": 3
+                                  },
+                                  "value": {
+                                    "type": "minecraft:uniform",
+                                    "max": 4,
+                                    "min": 0
+                                  }
+                                }
+                              ],
+                              "name": "hbm:gas_mask_filter",
+                              "weight": 4
+                            },
+                            {
+                              "type": "minecraft:item",
+                              "name": "hbm:launch_code_piece",
+                              "weight": 1
+                            }
+                          ],
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 4
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 6,
+                                "min": 0
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "minecraft:alternatives",
+                          "children": [
+                            {
+                              "type": "minecraft:item",
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:value_check",
+                                  "range": {
+                                    "max": 0
+                                  },
+                                  "value": {
+                                    "type": "minecraft:uniform",
+                                    "max": 1,
+                                    "min": 0
+                                  }
+                                }
+                              ],
+                              "name": "hbm:gun_double_barrel",
+                              "weight": 1
+                            },
+                            {
+                              "type": "minecraft:item",
+                              "name": "hbm:blueprint_folder_discover",
+                              "weight": 1
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 }
-              },
-              "function": "minecraft:set_components"
-            },
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+              ]
             }
-          ],
-          "name": "hbm:canister",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "components": {
-                "hbm:fluid_content": {
-                  "type": "hbm:biofuel",
-                  "amount": 1000
-                }
-              },
-              "function": "minecraft:set_components"
-            },
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:canister",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "components": {
-                "minecraft:damage": 60
-              },
-              "function": "minecraft:set_components"
-            }
-          ],
-          "name": "hbm:gas_mask_m65",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:bomb_caller_carpet_bombing",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:bomb_caller_napalm",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:bomb_caller_poison_gas",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:gas_mask_filter",
-          "weight": 4
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:launch_code_piece",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:gun_double_barrel",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:blueprint_folder_discover",
-          "weight": 1
+          ]
         }
       ],
       "rolls": 1

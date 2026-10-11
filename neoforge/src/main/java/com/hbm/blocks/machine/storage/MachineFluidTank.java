@@ -45,7 +45,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
@@ -58,7 +57,6 @@ public class MachineFluidTank extends BlockMultiblockCore
                 IToolable {
 
     public static final BooleanProperty DAMAGED = BooleanProperty.create("damaged");
-    private static final int[] DIMENSIONS = {2, 0, 1, 1, 2, 2};
 
     public MachineFluidTank(Properties props) {
         super(props);
@@ -72,59 +70,8 @@ public class MachineFluidTank extends BlockMultiblockCore
     }
 
     @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-
-        Direction rot = facing.getClockWise();
-        BlockPos front = core.relative(facing, 1);
-        BlockPos back = core.relative(facing, -1);
-
-        visitor.cell(front.relative(rot), MASK_SOUTH);
-        visitor.cell(front.relative(rot, -1), MASK_SOUTH);
-        visitor.cell(back.relative(rot), MASK_NORTH);
-        visitor.cell(back.relative(rot, -1), MASK_NORTH);
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_NONE;
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        Direction rot = facing.getClockWise();
-        BlockPos front = core.relative(facing, 1);
-        BlockPos back = core.relative(facing, -1);
-
-        visitor.passiveCell(front.relative(rot), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(front.relative(rot, -1), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(back.relative(rot), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(back.relative(rot, -1), MASK_ALL, PASSIVE_FLUID_IN);
-    }
-
-    @Override
-    public AABB climbBox(Direction facing) {
-        Direction rot = facing.getClockWise();
-        return new AABB(0, 0, 0, 1, 2.875, 1)
-                .move(
-                        facing.getStepX() * 0.5 - rot.getStepX() * 2.25,
-                        0,
-                        facing.getStepZ() * 0.5 - rot.getStepZ() * 2.25);
     }
 
     @Override

@@ -47,6 +47,7 @@ public final class LogicBlockConditions {
             if (tile.phase == 0 && tile.isPowered()) {
                 Player player =
                         level.getNearestPlayer(pos.getX(), pos.getY(), pos.getZ(), 25.0, false);
+                if (player == null) return false;
                 player.sendSystemMessage(
                         Component.translatable("chat.logicBlockConditions.findA")
                                 .append(
@@ -89,17 +90,15 @@ public final class LogicBlockConditions {
             return false;
 
         BlockPos pos = tile.getBlockPos();
-        boolean playerNearby =
-                !level.getEntitiesOfClass(Player.class, legacyPlayerBox(pos, 10)).isEmpty();
-        if (tile.phase == 0) return TickPhase.every(tile, 20) && playerNearby;
-        if (tile.phase < 3) {
-            return TickPhase.every(tile, 20)
-                    && tile.timer >= 60
-                    && level.getEntitiesOfClass(EntityUndeadSoldier.class, legacySoldierBox(pos))
-                            .isEmpty()
-                    && playerNearby;
+        if (tile.phase >= 3 || !TickPhase.every(tile, 20)) return false;
+        if (tile.phase > 0
+                && (tile.timer < 60
+                        || !level.getEntitiesOfClass(
+                                        EntityUndeadSoldier.class, legacySoldierBox(pos))
+                                .isEmpty())) {
+            return false;
         }
-        return false;
+        return !level.getEntitiesOfClass(Player.class, legacyPlayerBox(pos, 10)).isEmpty();
     }
 
     private static AABB legacySoldierBox(BlockPos pos) {

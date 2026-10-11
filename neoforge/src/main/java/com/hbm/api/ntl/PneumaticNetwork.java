@@ -7,7 +7,6 @@ import com.hbm.blockentity.machine.BlockEntityMachineAutocrafter;
 import com.hbm.blockentity.network.pneumatic.BlockEntityPneumaticStorageBase;
 import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTube;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.platform.NeoForgeServerEvents;
 import com.hbm.platform.SophisticatedCoreNesting;
 import com.hbm.tags.HbmItemTags;
 import com.hbm.uninos.graph.EdgeFaces;
@@ -24,14 +23,12 @@ import java.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.saveddata.SavedDataType;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
@@ -60,15 +57,11 @@ public final class PneumaticNetwork {
                     return a.isEmpty() == b.isEmpty() && ItemStack.isSameItemSameComponents(a, b);
                 }
             };
-    public static final SavedDataType<LevelNodeGraph<PneumaticData>> GRAPH =
-            LevelNodeGraph.type(PneumaticGraphProvider.INSTANCE, "pneumatic_graph");
+    public static final LevelNodeGraph.Kind<PneumaticData> GRAPH =
+            LevelNodeGraph.kind(PneumaticGraphProvider.INSTANCE, "pneumatic_graph");
     private static final int MAX_ATTEMPTS = 5;
     public final RandomSource rand = RandomSource.create();
     private @Nullable NodeNetwork<PneumaticData> network;
-
-    public static void init() {
-        NeoForgeServerEvents.onServerTickPost(PneumaticNetwork::onServerTick);
-    }
 
     public static @Nullable PneumaticNetwork at(ServerLevel level, BlockPos pos) {
         NodeNetwork<PneumaticData> net = netAt(level, pos);
@@ -80,33 +73,21 @@ public final class PneumaticNetwork {
         return state;
     }
 
-    private static void onServerTick(MinecraftServer server) {
-        for (ServerLevel level : server.getAllLevels()) {
-            LevelNodeGraph<PneumaticData> graph = get(level);
-            graph.applyCompiledSwaps();
-        }
-    }
-
-    private static LevelNodeGraph.Probe isDestination(
-            ServerLevel level,
-            LevelNodeGraph<PneumaticData> graph,
-            long nodeKey,
-            LevelChunk cellChunk,
-            int face) {
-        if (face != EdgeFaces.SELF) return LevelNodeGraph.Probe.ABSENT;
+    private static long isDestination(
+            ServerLevel level, long nodeKey, LevelChunk cellChunk, int face) {
+        if (face != EdgeFaces.SELF) return LevelNodeGraph.ABSENT;
         BlockPos pos = BlockPos.of(nodeKey);
         if (!(cellChunk.getBlockEntity(pos) instanceof BlockEntityPneumoTube tube))
-            return LevelNodeGraph.Probe.ABSENT;
-        if (tube.ejectionDir == null) return LevelNodeGraph.Probe.ABSENT;
+            return LevelNodeGraph.ABSENT;
+        if (tube.ejectionDir == null) return LevelNodeGraph.ABSENT;
         BlockPos target = pos.relative(tube.ejectionDir);
         if (BlockMultiblockCore.readableChunk(level, target.getX(), target.getZ(), cellChunk)
                 == null) {
-            graph.probeBlocker = LevelNodeGraph.chunkOf(target.asLong());
-            return LevelNodeGraph.Probe.UNKNOWN;
+            return LevelNodeGraph.chunkOf(target.asLong());
         }
         return ForeignItems.present(level, target, tube.ejectionDir.getOpposite())
-                ? LevelNodeGraph.Probe.PRESENT
-                : LevelNodeGraph.Probe.ABSENT;
+                ? LevelNodeGraph.PRESENT
+                : LevelNodeGraph.ABSENT;
     }
 
     public static List<Destination> destinations(
@@ -119,7 +100,7 @@ public final class PneumaticNetwork {
                         net,
                         level,
                         (lvl, g, cellPos, cellChunk, faces, face) ->
-                                isDestination(lvl, g, cellPos, cellChunk, face))) {
+                                isDestination(lvl, cellPos, cellChunk, face))) {
             EdgeFaces ef = member.ef;
             if (ef == null || (ef.activeMask & (1 << EdgeFaces.SELF)) == 0) continue;
             BlockPos node = BlockPos.of(member.posKey);

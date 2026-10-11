@@ -4,6 +4,7 @@
 package com.hbm.world.gen.dungeon;
 
 import com.hbm.lib.Library;
+import com.hbm.world.structure.ColumnBiome;
 import com.hbm.world.structure.HbmStructureTypes;
 import com.mojang.serialization.MapCodec;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 
-public class JungleDungeonStructure extends Structure {
+public class JungleDungeonStructure extends Structure implements ColumnBiome.SelfTested {
 
     public static final MapCodec<JungleDungeonStructure> CODEC =
             simpleCodec(JungleDungeonStructure::new);
@@ -119,6 +120,7 @@ public class JungleDungeonStructure extends Structure {
         ChunkPos chunkPos = context.chunkPos();
         int x = chunkPos.getBlockX(8);
         int z = chunkPos.getBlockZ(8);
+        if (!ColumnBiome.valid(context, x, z)) return Optional.empty();
 
         Registry<StructureTemplatePool> pools =
                 context.registryAccess().lookupOrThrow(Registries.TEMPLATE_POOL);

@@ -10,6 +10,7 @@ import com.hbm.entity.projectile.EntityBulletBaseMK4;
 import com.hbm.inventory.container.MenuTurretBase;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.fluid.trait.FT_Combustible;
 import com.hbm.inventory.fluid.trait.FT_Flammable;
@@ -43,7 +44,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityTurretFritz extends BlockEntityTurretBaseNT
-        implements IFluidHandlerMK2, IFluidCopiable {
+        implements FluidTankAccess, IFluidHandlerMK2, IFluidCopiable {
 
     private static final int[] FRITZ_SLOTS = {1, 2, 3, 4, 5, 6, 7, 8};
 
@@ -216,8 +217,14 @@ public class BlockEntityTurretFritz extends BlockEntityTurretBaseNT
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {tank};
+    public int tankCount() {
+        return 1;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        if (index != 0) throw new IndexOutOfBoundsException(index);
+        return tank;
     }
 
     @Override

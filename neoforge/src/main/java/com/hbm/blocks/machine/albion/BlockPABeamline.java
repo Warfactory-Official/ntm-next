@@ -24,8 +24,6 @@ public class BlockPABeamline extends BlockMultiblockCore implements EntityBlock,
 
     public static final BooleanProperty WINDOW = BooleanProperty.create("window");
 
-    private static final int[] DIMENSIONS = {0, 0, 0, 0, 1, 1};
-
     public BlockPABeamline(Properties props) {
         super(props);
         registerDefaultState(defaultBlockState().setValue(WINDOW, false));
@@ -35,16 +33,6 @@ public class BlockPABeamline extends BlockMultiblockCore implements EntityBlock,
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(WINDOW);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
     }
 
     @Override

@@ -50,6 +50,7 @@ import com.hbm.client.render.flywheel.MultiblockCrumblingVisuals;
 import com.hbm.client.render.flywheel.TorexVisuals;
 import com.hbm.client.render.flywheel.TurretVisuals;
 import com.hbm.client.sound.ClientAudioFactory;
+import com.hbm.client.sound.MachineSoundInstance;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.particle.EntityChlorineFX;
 import com.hbm.entity.particle.EntityCloudFX;
@@ -184,6 +185,7 @@ public final class ClientRegistry {
                                     .is(ModItems.ASHGLASSES.get());
                 };
         ClientGameTime.install();
+        FarView.init();
         EntityEffectHandler.CLIENT_RADIATION_FX = ClientEffects::radiationAura;
         EntityEffectHandler.CLIENT_CRATER_AURA = ClientEffects::craterAura;
         AudioSystem.installClientFactory(ClientAudioFactory.INSTANCE);
@@ -235,7 +237,8 @@ public final class ClientRegistry {
                     Minecraft.getInstance()
                             .getSoundManager()
                             .play(
-                                    new SimpleSoundInstance(
+                                    new MachineSoundInstance(
+                                            pos,
                                             ModSounds.BOLTGUN.get(),
                                             SoundSource.BLOCKS,
                                             be.getVolume(0.25F),

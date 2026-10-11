@@ -44,6 +44,7 @@ import com.hbm.entity.missile.EntityMissileTier4.EntityMissileNuclear;
 import com.hbm.entity.missile.EntityMissileTier4.EntityMissileVolcano;
 import com.hbm.interfaces.IBomb;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemMissile;
@@ -65,6 +66,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -78,7 +80,8 @@ import org.jspecify.annotations.Nullable;
         components = false,
         units = 1L << 4)
 public abstract class BlockEntityLaunchPadBase extends BlockEntityMachineBase
-        implements IEnergyHandlerMK2,
+        implements FluidTankAccess,
+                IEnergyHandlerMK2,
                 IFluidHandlerMK2,
                 MenuProvider,
                 IFluidCopiable,
@@ -397,8 +400,13 @@ public abstract class BlockEntityLaunchPadBase extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     @Override
@@ -437,8 +445,7 @@ public abstract class BlockEntityLaunchPadBase extends BlockEntityMachineBase
             case 4 -> {
                 int id = input.readInt();
                 Item item = id == -1 ? null : BuiltInRegistries.ITEM.byId(id);
-                if (id != -1
-                        && (id < 0 || item == null || item == net.minecraft.world.item.Items.AIR)) {
+                if (id != -1 && (id < 0 || item == null || item == Items.AIR)) {
                     throw new io.netty.handler.codec.DecoderException(
                             "Unknown launch-pad missile item");
                 }

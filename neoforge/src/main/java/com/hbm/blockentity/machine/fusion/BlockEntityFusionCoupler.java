@@ -3,7 +3,6 @@
 
 package com.hbm.blockentity.machine.fusion;
 
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
@@ -15,7 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityFusionCoupler extends BlockEntity
-        implements GraphResident, FoldedCoreResident, IFusionPowerReceiver {
+        implements GraphResident, IFusionPowerReceiver {
 
     public BlockEntityFusionCoupler(BlockPos pos, BlockState state) {
         super(ModBlockEntities.FUSION_COUPLER.get(), pos, state);

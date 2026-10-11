@@ -4,8 +4,11 @@
 package com.hbm.blockentity;
 
 import com.hbm.sound.AudioWrapper;
+import net.minecraft.core.BlockPos;
 
 public interface Audible {
+
+    BlockPos getBlockPos();
 
     default AudioWrapper createAudioLoop() {
         return null;
@@ -14,7 +17,7 @@ public interface Audible {
     default AudioWrapper rebootAudio(AudioWrapper wrapper) {
         wrapper.stopSound();
         AudioWrapper audio = createAudioLoop();
-        audio.startSound();
+        audio.startSound(getBlockPos());
         return audio;
     }
 

@@ -4,6 +4,7 @@
 package com.hbm.api.energymk2;
 
 import com.hbm.uninos.IBufferedEndpoint;
+import com.hbm.util.ChunkUtil;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public interface IEnergyHandlerMK2 extends IBufferedEndpoint {
@@ -41,8 +42,7 @@ public interface IEnergyHandlerMK2 extends IBufferedEndpoint {
     }
 
     default void energyChanged() {
-        if (this instanceof BlockEntity be && be.getLevel() != null)
-            be.getLevel().blockEntityChanged(be.getBlockPos());
+        if (this instanceof BlockEntity be) ChunkUtil.markUnsaved(be);
     }
 
     default long getReceiverSpeed() {

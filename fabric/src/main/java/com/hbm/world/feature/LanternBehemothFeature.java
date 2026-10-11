@@ -43,7 +43,10 @@ public final class LanternBehemothFeature extends Feature<NoneFeatureConfigurati
                     level,
                     loot,
                     LootGenerator.roll(
-                            LootGenerator.LOOT_BOOKLET, context.random(), level.getSeed()));
+                            LootGenerator.LOOT_BOOKLET,
+                            level.getLevel(),
+                            context.random(),
+                            level.getSeed()));
         }
         return true;
     }

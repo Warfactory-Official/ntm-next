@@ -8,6 +8,7 @@ import com.hbm.registration.FabricRegistrar;
 import com.hbm.registration.RegistryHandle;
 import com.hbm.world.feature.*;
 import com.hbm.world.placement.LightBlockingHeightPlacement;
+import com.hbm.world.placement.OreHostPlacement;
 import com.hbm.world.placement.WorldConfigPlacement;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -52,6 +53,7 @@ public final class HbmFeatures {
     public static void register() {
         LightBlockingHeightPlacement.register();
         WorldConfigPlacement.register();
+        OreHostPlacement.register();
         STRATUM = FabricRegistrar.registerFeature("stratum", new StratumFeature());
         STRATUM_3D = FabricRegistrar.registerFeature("stratum_3d", new Stratum3DFeature());
         DEPTH_DEPOSIT = FabricRegistrar.registerFeature("depth_deposit", new DepthDepositFeature());

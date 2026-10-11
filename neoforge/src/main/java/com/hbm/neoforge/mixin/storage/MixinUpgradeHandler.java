@@ -5,13 +5,12 @@ package com.hbm.neoforge.mixin.storage;
 
 import com.hbm.inventory.InventoryAlias;
 import net.p3pp3rf1y.sophisticatedcore.inventory.ContainerContents;
+import net.p3pp3rf1y.sophisticatedcore.upgrades.UpgradeHandler;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Pseudo
-@Mixin(targets = "net.p3pp3rf1y.sophisticatedcore.upgrades.UpgradeHandler", remap = false)
+@Mixin(value = UpgradeHandler.class, remap = false, priority = 500)
 public abstract class MixinUpgradeHandler implements InventoryAlias {
     @Shadow @Final private ContainerContents.UpgradeData upgradeData;
 

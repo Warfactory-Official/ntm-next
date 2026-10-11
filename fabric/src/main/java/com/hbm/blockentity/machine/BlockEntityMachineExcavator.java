@@ -21,6 +21,7 @@ import com.hbm.entity.item.EntityMovingItem;
 import com.hbm.inventory.container.ContainerSync;
 import com.hbm.inventory.container.MenuMachineExcavator;
 import com.hbm.inventory.fluid.FluidStackNTM;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.ShredderRecipe;
 import com.hbm.inventory.recipes.ShredderRecipes;
@@ -33,6 +34,7 @@ import com.hbm.items.special.BedrockOreSet;
 import com.hbm.items.special.ItemBedrockOreBase;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
+import com.hbm.platform.FabricCaps;
 import com.hbm.tags.HbmBlockTags;
 import com.hbm.util.InventoryUtil;
 import com.hbm.util.TickPhase;
@@ -42,6 +44,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
@@ -71,7 +76,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityMachineExcavator extends BlockEntityMachineBase
-        implements IEnergyHandlerMK2,
+        implements FluidTankAccess,
+                IEnergyHandlerMK2,
                 FluidTankEndpoint,
                 MenuProvider,
                 IUpgradeInfoProvider,
@@ -599,10 +605,11 @@ public class BlockEntityMachineExcavator extends BlockEntityMachineBase
         if (!level.isLoaded(pos)) return;
         Direction side = facing().getOpposite();
 
-        if (InventoryUtil.inventoryAt(level, pos, side)) {
+        Storage<ItemVariant> dest = ItemStorage.SIDED.find(level, pos, side);
+        if (dest != null) {
             for (ItemStack item : items) {
                 if (item.isEmpty()) continue;
-                InventoryUtil.insertAt(level, pos, side, item);
+                item.setCount(FabricCaps.insert(dest, item).getCount());
                 chuteTimer = CHUTE_TIME;
             }
         }
@@ -717,8 +724,14 @@ public class BlockEntityMachineExcavator extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {tank};
+    public int tankCount() {
+        return 1;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        if (index != 0) throw new IndexOutOfBoundsException(index);
+        return tank;
     }
 
     @Override

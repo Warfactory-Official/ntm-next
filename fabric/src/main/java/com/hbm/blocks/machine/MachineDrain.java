@@ -32,31 +32,13 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineDrain extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {0, 0, 2, 0, 0, 0};
-
     public MachineDrain(Properties props) {
         super(props);
     }
 
     @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
-    }
-
-    @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_SOUTH | MASK_WEST | MASK_EAST;
     }
 
     @Override

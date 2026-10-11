@@ -19,7 +19,6 @@ import com.hbm.items.machine.FluidIdentifierItem;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -36,60 +35,8 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineOrbus extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock, IPersistentInfoProvider {
-
-    private static final int[] DIMENSIONS = {4, 0, 2, 1, 2, 1};
-
     public MachineOrbus(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-
-        Direction back = facing.getOpposite();
-        Direction rot = facing.getClockWise();
-        BlockPos top = core.above(4);
-
-        visitor.cell(core.relative(back), MASK_DOWN);
-        visitor.cell(core.relative(rot), MASK_DOWN);
-        visitor.cell(core.relative(back).relative(rot), MASK_DOWN);
-
-        visitor.cell(top, MASK_UP);
-        visitor.cell(top.relative(back), MASK_UP);
-        visitor.cell(top.relative(rot), MASK_UP);
-        visitor.cell(top.relative(back).relative(rot), MASK_UP);
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_DOWN;
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        Direction back = facing.getOpposite();
-        Direction rot = facing.getClockWise();
-        BlockPos top = core.above(4);
-
-        visitor.passiveCell(core.relative(back), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(core.relative(rot), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(core.relative(back).relative(rot), MASK_ALL, PASSIVE_FLUID_IN);
-
-        visitor.passiveCell(top, MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(top.relative(back), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(top.relative(rot), MASK_ALL, PASSIVE_FLUID_IN);
-        visitor.passiveCell(top.relative(back).relative(rot), MASK_ALL, PASSIVE_FLUID_IN);
     }
 
     @Override

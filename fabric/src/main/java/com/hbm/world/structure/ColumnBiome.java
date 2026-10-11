@@ -13,25 +13,38 @@ public final class ColumnBiome {
 
     private ColumnBiome() {}
 
+    public interface SelfTested {}
+
     public static boolean valid(
             Structure.GenerationStub stub, Structure.GenerationContext context) {
         BlockPos pos = stub.position();
+        return valid(context, pos.getX(), pos.getZ());
+    }
+
+    public static boolean valid(Structure.GenerationContext context, int x, int z) {
+        return valid(
+                context,
+                x,
+                context.chunkGenerator()
+                        .getBaseHeight(
+                                x,
+                                z,
+                                Heightmap.Types.WORLD_SURFACE_WG,
+                                context.heightAccessor(),
+                                context.randomState()),
+                z);
+    }
+
+    public static boolean valid(Structure.GenerationContext context, int x, int surface, int z) {
         ChunkGenerator generator = context.chunkGenerator();
-        int surface =
-                generator.getBaseHeight(
-                        pos.getX(),
-                        pos.getZ(),
-                        Heightmap.Types.WORLD_SURFACE_WG,
-                        context.heightAccessor(),
-                        context.randomState());
         return context.validBiome()
                 .test(
                         generator
                                 .getBiomeSource()
                                 .getNoiseBiome(
-                                        QuartPos.fromBlock(pos.getX()),
+                                        QuartPos.fromBlock(x),
                                         QuartPos.fromBlock(surface),
-                                        QuartPos.fromBlock(pos.getZ()),
+                                        QuartPos.fromBlock(z),
                                         context.randomState().sampler()));
     }
 }

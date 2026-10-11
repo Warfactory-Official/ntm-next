@@ -11,9 +11,11 @@ import com.hbm.blockentity.machine.fusion.FusionPorts;
 import com.hbm.blocks.machine.BlockCMPort;
 import com.hbm.blocks.machine.BlockPWR;
 import com.hbm.blocks.machine.CustomMachinePorts;
+import com.hbm.blocks.multiblock.BlockMultiblockCell;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockCellCaps;
 import com.hbm.blocks.multiblock.MultiblockCellShapes;
+import com.hbm.blocks.multiblock.MultiblockLayouts;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.capability.port.IPortHost;
 import com.hbm.capability.port.PortDomain;
@@ -28,7 +30,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.minecraft.core.BlockPos;
@@ -79,25 +80,28 @@ public final class NtmCapabilities {
         NtmContracts.register();
     }
 
-    public static void declareAll() {
+    public static void declareAll(boolean bakedLayouts) {
         Set<String> beKeyed = new HashSet<>();
         FLUID_EXPOSED.clear();
         MultiblockCellShapes.reset();
+        BlockMultiblockCell.resetNeighborForwarding();
         List<RegistryHandle<? extends Block>> roster = FabricRegistrar.registeredBlocks;
         MultiblockCellCaps.declare(roster);
         BlockPWR.declareProxies();
         NtmContracts.registerAll(roster);
         ComputerCraft.declare(roster);
         for (RegistryHandle<? extends Block> handle : roster) {
+            MachineCaps caps = MachineCaps.declared(handle.get());
             if (handle.get() instanceof BlockMultiblockCore core) {
-                core.bakeMaskTable(
-                        handle.get() instanceof ICapabilityBlock d
-                                ? d.caps().declaredBits()
-                                : MachineCaps.NONE.declaredBits());
+                if (bakedLayouts)
+                    core.installBakedLayout(
+                            caps != null ? caps.declaredBits() : MachineCaps.NONE.declaredBits());
             }
-            if (!(handle.get() instanceof ICapabilityBlock declaring)) continue;
-            declare(handle, declaring, beKeyed);
+            if (caps == null) continue;
+            declare(handle, (ICapabilityBlock) handle.get(), caps, beKeyed);
         }
+        MultiblockCellShapes.publish();
+        if (bakedLayouts) MultiblockLayouts.release();
     }
 
     public enum CapRole {
@@ -111,11 +115,13 @@ public final class NtmCapabilities {
 
         public final int bit;
         public final int passivePlane;
+        public final boolean fluid;
         public final int planeIndex;
 
         CapRole(int bit, int passivePlane) {
             this.bit = bit;
             this.passivePlane = passivePlane;
+            this.fluid = bit == MachineCaps.FLUID_IN || bit == MachineCaps.FLUID_OUT;
             this.planeIndex = ordinal();
         }
     }
@@ -127,8 +133,8 @@ public final class NtmCapabilities {
     private static void declare(
             RegistryHandle<? extends Block> handle,
             ICapabilityBlock declaring,
+            MachineCaps caps,
             Set<String> beKeyed) {
-        MachineCaps caps = declaring.caps();
         assertOwnsItsBeType(handle, caps);
         boolean multiblock = handle.get() instanceof BlockMultiblockCore;
         boolean own = !caps.selfProvided;
@@ -140,8 +146,7 @@ public final class NtmCapabilities {
                     beKeyed,
                     EnergyCaps.RECEIVER,
                     IEnergyHandlerMK2.class,
-                    CapRole.POWER_IN,
-                    caps.faceGate());
+                    CapRole.POWER_IN);
         if (caps.powerOut && own)
             provider(
                     handle,
@@ -150,8 +155,7 @@ public final class NtmCapabilities {
                     beKeyed,
                     EnergyCaps.PROVIDER,
                     IEnergyHandlerMK2.class,
-                    CapRole.POWER_OUT,
-                    caps.faceGate());
+                    CapRole.POWER_OUT);
         if (caps.fluidIn && own)
             provider(
                     handle,
@@ -160,8 +164,7 @@ public final class NtmCapabilities {
                     beKeyed,
                     FluidCaps.RECEIVER,
                     IFluidHandlerMK2.class,
-                    CapRole.FLUID_IN,
-                    caps.fluidGate());
+                    CapRole.FLUID_IN);
         if (caps.fluidOut && own)
             provider(
                     handle,
@@ -170,8 +173,7 @@ public final class NtmCapabilities {
                     beKeyed,
                     FluidCaps.PROVIDER,
                     IFluidHandlerMK2.class,
-                    CapRole.FLUID_OUT,
-                    caps.fluidGate());
+                    CapRole.FLUID_OUT);
 
         if (caps.fluidIn || caps.fluidOut) exposeFluid(handle);
 
@@ -221,35 +223,47 @@ public final class NtmCapabilities {
             Set<String> beKeyed,
             BlockApiLookup<T, C> token,
             Class<T> type,
-            CapRole role,
-            BiPredicate<BlockEntity, ? super C> accepts) {
+            CapRole role) {
         if (multiblock) {
             FabricCaps.pendingBlocks.add(
                     new FabricCaps.BlockRegistration<>(
                             token,
                             (Supplier<? extends Block>) handle,
-                            (level, pos, state, be, context) -> {
-                                T owner =
-                                        fullSurfaceCap(
-                                                level,
-                                                pos,
-                                                state,
-                                                FacedContext.sideOf(context),
-                                                type,
-                                                role);
-                                if (owner == null) return null;
-                                return owner instanceof BlockEntity ownerBe
-                                                && !accepts.test(ownerBe, context)
-                                        ? null
-                                        : owner;
-                            }));
+                            (level, pos, state, be, context) ->
+                                    surfaceCap(level, pos, state, context, type, role)));
         } else if (once(beKeyed, caps, role.name())) {
             FabricCaps.registerProvider(
                     token,
                     caps.beType(),
-                    (be, context) ->
-                            context == null || accepts.test(be, context) ? type.cast(be) : null);
+                    (be, context) -> MachineCaps.accepts(be, context, role) ? type.cast(be) : null);
         }
+    }
+
+    public static <T> @Nullable T surfaceCap(
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            @Nullable Object context,
+            Class<T> type,
+            CapRole role) {
+        return gated(
+                resolveCap(
+                        level,
+                        pos,
+                        state,
+                        FacedContext.sideOf(context),
+                        type,
+                        role,
+                        role.passivePlane),
+                context,
+                role);
+    }
+
+    private static <T> @Nullable T gated(
+            @Nullable T found, @Nullable Object context, CapRole role) {
+        return found instanceof BlockEntity owner && !MachineCaps.accepts(owner, context, role)
+                ? null
+                : found;
     }
 
     public static <T> @Nullable T feCap(
@@ -260,12 +274,11 @@ public final class NtmCapabilities {
             Class<T> type,
             CapRole role) {
         int plane = role == CapRole.POWER_IN ? FE_INSERT_PLANE : FE_EXTRACT_PLANE;
-        if (!MultiblockSurface.isOpen(level, pos, state, side, plane, role)) return null;
         BlockEntity core = MultiblockSurface.resolveOwner(level, pos, state, side, plane, role);
         if (core == null || core.isRemoved() || !type.isInstance(core)) return null;
         if ((MachineCaps.declaredDomains(core) & role.bit) == 0) return null;
         if (!MultiblockSurface.ownerDeclares(core, MachineCaps.FE)) return null;
-        if (!MachineCaps.acceptsFace(core, side)) return null;
+        if (!MachineCaps.accepts(core, side, role)) return null;
         PortDomain<? extends PortView> domain = PortDomain.forCapability(type);
         if (domain != null && core instanceof IPortHost host) {
             PortView port = host.portAccess(domain, pos, side);
@@ -278,20 +291,20 @@ public final class NtmCapabilities {
             Level level,
             BlockPos pos,
             BlockState state,
-            @Nullable Direction side,
+            @Nullable Object context,
             Class<T> type,
             CapRole role) {
-        return resolveCap(level, pos, state, side, type, role, BlockMultiblockCore.PASSIVE_NONE);
-    }
-
-    public static <T> @Nullable T fullSurfaceCap(
-            Level level,
-            BlockPos pos,
-            BlockState state,
-            @Nullable Direction side,
-            Class<T> type,
-            CapRole role) {
-        return resolveCap(level, pos, state, side, type, role, role.passivePlane);
+        return gated(
+                resolveCap(
+                        level,
+                        pos,
+                        state,
+                        FacedContext.sideOf(context),
+                        type,
+                        role,
+                        BlockMultiblockCore.PASSIVE_NONE),
+                context,
+                role);
     }
 
     private static <T> @Nullable T resolveCap(

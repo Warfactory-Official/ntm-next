@@ -3,7 +3,6 @@
 
 package com.hbm.inventory.recipes.crafting;
 
-import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.network.FluidPipeBlockItem;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.recipes.ingredient.RecipeInputState;
@@ -13,6 +12,7 @@ import com.hbm.items.machine.FluidIdentifierItem;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -32,7 +32,7 @@ public class DuctRetypeRecipe extends HbmCustomRecipe {
     @Override
     protected boolean matchesInput(CraftingInput input, Level level) {
         boolean hasId = false;
-        int ducts = 0;
+        Item duct = null;
         for (int slot = 0; slot < input.size(); slot++) {
             ItemStack stack = input.getItem(slot);
             if (stack.isEmpty()) continue;
@@ -45,12 +45,13 @@ public class DuctRetypeRecipe extends HbmCustomRecipe {
                 if (data.primary() == Fluids.EMPTY) return false;
                 hasId = true;
             } else if (stack.getItem() instanceof FluidPipeBlockItem) {
-                ducts++;
+                if (duct != null && stack.getItem() != duct) return false;
+                duct = stack.getItem();
             } else {
                 return false;
             }
         }
-        return hasId && ducts > 0;
+        return hasId && duct != null;
     }
 
     @Override
@@ -63,6 +64,7 @@ public class DuctRetypeRecipe extends HbmCustomRecipe {
     @Override
     public ItemStack assemble(CraftingInput input) {
         Fluid fluid = Fluids.EMPTY;
+        Item duct = null;
         int ducts = 0;
         for (int slot = 0; slot < input.size(); slot++) {
             ItemStack stack = input.getItem(slot);
@@ -74,10 +76,11 @@ public class DuctRetypeRecipe extends HbmCustomRecipe {
                                         FluidIdentifierData.EMPTY)
                                 .primary();
             } else if (stack.getItem() instanceof FluidPipeBlockItem) {
+                duct = stack.getItem();
                 ducts++;
             }
         }
-        ItemStack result = new ItemStack(ModBlocks.FLUID_PIPE.get(), ducts);
+        ItemStack result = new ItemStack(duct, ducts);
         if (fluid != Fluids.EMPTY) {
             result.set(ModDataComponents.FLUID_CONTENT.get(), new FluidStackNTM(fluid, 0, 0));
         }

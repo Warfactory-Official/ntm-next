@@ -24,8 +24,6 @@ import org.jspecify.annotations.Nullable;
 @RefreshesNeighborState(be = BlockEntityBatterySocket.class, calling = "refreshMode")
 public class MachineBatterySocket extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock, ILookOverlay {
-
-    private static final int[] DIMENSIONS = {1, 0, 1, 0, 1, 0};
     private static final int NODE_MASK =
             (1 << Direction.NORTH.ordinal())
                     | (1 << Direction.SOUTH.ordinal())
@@ -34,16 +32,6 @@ public class MachineBatterySocket extends BlockMultiblockCore
 
     public MachineBatterySocket(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
     }
 
     @Override
@@ -62,38 +50,8 @@ public class MachineBatterySocket extends BlockMultiblockCore
     }
 
     @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        Direction rot = facing.getClockWise();
-        visitor.cell(
-                core.offset(-facing.getStepX(), 0, -facing.getStepZ()), MASK_NORTH | MASK_EAST);
-        visitor.cell(core.offset(rot.getStepX(), 0, rot.getStepZ()), MASK_WEST | MASK_SOUTH);
-        visitor.cell(
-                core.offset(
-                        -facing.getStepX() + rot.getStepX(),
-                        0,
-                        -facing.getStepZ() + rot.getStepZ()),
-                MASK_NORTH | MASK_WEST);
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_SOUTH | MASK_EAST;
-    }
-
-    @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        Direction back = facing.getOpposite();
-        Direction rot = facing.getClockWise();
-        int domains = PASSIVE_POWER_IN | PASSIVE_ITEMS;
-        visitor.passiveCell(core.relative(back), MASK_ALL, domains);
-        visitor.passiveCell(core.relative(rot), MASK_ALL, domains);
-        visitor.passiveCell(core.relative(back).relative(rot), MASK_ALL, domains);
     }
 
     public static void mintNodes(ServerLevel level, BlockPos core, BlockState state) {

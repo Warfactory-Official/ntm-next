@@ -3,7 +3,6 @@
 
 package com.hbm.hazard.type;
 
-import com.hbm.config.RadiationConfig;
 import com.hbm.data.RadiationData;
 import com.hbm.hazard.helper.HazardHelper;
 import com.hbm.hazard.modifier.IHazardModifier;
@@ -21,7 +20,8 @@ public class HazardTypeHot implements IHazardType {
     public void onUpdate(LivingEntity target, double level, ItemStack stack) {
         boolean wetOrReacher = HazardHelper.isHoldingReacher(target) || target.isInWaterOrRain();
         if (RadiationData.DISABLE_HOT.get() || wetOrReacher || level <= 0) return;
-        target.setRemainingFireTicks((int) Math.ceil(level) * RadiationConfig.hazardRate);
+        if (target.getRemainingFireTicks() > 0) return;
+        target.igniteForSeconds((int) Math.ceil(level));
     }
 
     @Override

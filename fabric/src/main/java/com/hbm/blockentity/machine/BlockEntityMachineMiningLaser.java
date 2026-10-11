@@ -9,6 +9,8 @@ import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.energymk2.ItemEnergyTransfer;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blockentity.IUpgradeInfoProvider;
 import com.hbm.blocks.ModBlockEntities;
@@ -30,10 +32,13 @@ import com.hbm.items.machine.upgrade.UpgradeType;
 import com.hbm.lib.Library;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
+import com.hbm.platform.FabricCaps;
 import com.hbm.sound.ModSounds;
-import com.hbm.util.ForeignItems;
 import com.hbm.util.InventoryUtil;
 import io.netty.buffer.ByteBuf;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
@@ -277,11 +282,13 @@ public class BlockEntityMachineMiningLaser extends BlockEntityMachineBase
     }
 
     private void tryFillNeighbour(BlockPos pos, Direction face) {
+        Storage<ItemVariant> dest = ItemStorage.SIDED.find(level, pos, face);
+        if (dest == null) return;
         for (int i = SLOT_OUTPUT_START; i <= SLOT_OUTPUT_END; i++) {
             ItemStack stack = inventory.get(i);
             if (stack.isEmpty()) continue;
             int prev = stack.getCount();
-            ItemStack left = ForeignItems.insert(level, pos, face, stack);
+            ItemStack left = FabricCaps.insert(dest, stack);
             inventory.set(i, left);
             if (left.isEmpty() || left.getCount() < prev) {
                 markChanged();
@@ -531,6 +538,11 @@ public class BlockEntityMachineMiningLaser extends BlockEntityMachineBase
     @Override
     public FluidTankNTM[] getSendingTanks() {
         return sending;
+    }
+
+    @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
     }
 
     @Override

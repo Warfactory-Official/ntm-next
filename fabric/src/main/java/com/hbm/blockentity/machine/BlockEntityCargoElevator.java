@@ -4,7 +4,6 @@
 package com.hbm.blockentity.machine;
 
 import com.hbm.api.redstoneoverradio.IRORInteractive;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.machine.BlockCargoElevator.Part;
@@ -31,7 +30,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BlockEntityCargoElevator extends BlockEntity
-        implements Synced, FoldedCoreResident, SyncUnitSchema, IRORInteractive {
+        implements Synced, SyncUnitSchema, IRORInteractive {
 
     public static final double SPEED = 2D / 20D;
 

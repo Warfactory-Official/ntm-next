@@ -12,16 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.saveddata.SavedDataType;
 import org.jspecify.annotations.Nullable;
 
 public final class FoundryChannelGraph implements IGraphProvider<@Nullable NTMMaterial> {
 
     public static final FoundryChannelGraph PROVIDER = new FoundryChannelGraph();
 
-    public static final SavedDataType<LevelNodeGraph<@Nullable NTMMaterial>> TYPE =
-            LevelNodeGraph.type(PROVIDER, "foundry_channel_graph");
+    public static final LevelNodeGraph.Kind<@Nullable NTMMaterial> TYPE =
+            LevelNodeGraph.kind(PROVIDER, "foundry_channel_graph");
 
     public static final int OPEN_HORIZONTALS =
             (1 << Direction.NORTH.ordinal())
@@ -33,11 +31,6 @@ public final class FoundryChannelGraph implements IGraphProvider<@Nullable NTMMa
 
     public static LevelNodeGraph<@Nullable NTMMaterial> get(ServerLevel level) {
         return LevelNodeGraph.getOrCreate(level, TYPE);
-    }
-
-    @Override
-    public @Nullable NTMMaterial createData(BlockState state) {
-        return null;
     }
 
     @Override

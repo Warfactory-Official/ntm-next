@@ -6,7 +6,6 @@ package com.hbm.blockentity.network;
 import com.hbm.api.control.IControlReceiver;
 import com.hbm.api.energymk2.IEnergyHandlerMK2.ConnectionPriority;
 import com.hbm.api.fluidmk2.*;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -18,7 +17,6 @@ import com.hbm.platform.BlockLookupCache;
 import com.hbm.platform.FabricCaps;
 import com.hbm.uninos.graph.GraphNode;
 import com.hbm.uninos.graph.LevelNodeGraph;
-import com.hbm.uninos.graph.NodeNetwork;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,12 +34,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityFluidPump extends BlockEntity
-        implements Synced,
-                GraphResident,
-                FoldedCoreResident,
-                IFluidHandlerMK2,
-                IControlReceiver,
-                SyncUnitSchema {
+        implements Synced, GraphResident, IFluidHandlerMK2, IControlReceiver, SyncUnitSchema {
 
     public static final int MAX_RATE = 10_000;
     public static final int DEFAULT_RATE = 100;
@@ -71,6 +64,8 @@ public class BlockEntityFluidPump extends BlockEntity
     public ConnectionPriority priority = ConnectionPriority.NORMAL;
 
     private long moved;
+    private long stock;
+    private long arriving;
 
     @SyncField(units = 1L << 4)
     private long lastMoved;
@@ -86,6 +81,7 @@ public class BlockEntityFluidPump extends BlockEntity
     }
 
     private @Nullable BlockLookupCache<IFluidHandlerMK2> outputReceiver;
+    private @Nullable Fluid outputFluid;
 
     public BlockEntityFluidPump(BlockPos pos, BlockState state) {
         super(ModBlockEntities.PIPE_PUMP.get(), pos, state);
@@ -95,6 +91,8 @@ public class BlockEntityFluidPump extends BlockEntity
         lastMoved = moved;
         moved = 0;
         pulses = 0;
+        stock += arriving;
+        arriving = 0;
         networkPackNT(15);
     }
 
@@ -104,6 +102,15 @@ public class BlockEntityFluidPump extends BlockEntity
 
     public Direction intake() {
         return getBlockState().getValue(FluidPumpBlock.FACING).getClockWise();
+    }
+
+    @Override
+    public void setBlockState(BlockState state) {
+        if (getBlockState().getValue(FluidPumpBlock.FACING)
+                != state.getValue(FluidPumpBlock.FACING)) {
+            outputReceiver = null;
+        }
+        super.setBlockState(state);
     }
 
     public Direction output() {
@@ -120,20 +127,36 @@ public class BlockEntityFluidPump extends BlockEntity
         return fluid != Fluids.EMPTY && fluid == type;
     }
 
+    private boolean outputIsNet(Fluid fluid) {
+        Direction out = output();
+        long outKey = worldPosition.relative(out).asLong();
+        LevelNodeGraph<PipeData> graph = FluidPipeGraph.graphAt((ServerLevel) level, outKey);
+        GraphNode<PipeData> node = graph == null ? null : graph.getNode(outKey);
+        return node != null && node.isOpen(out.getOpposite()) && node.data.fluid() == fluid;
+    }
+
+    private long netRoom() {
+        return Math.max(0, Math.min(rate - arriving, 2L * rate - stock - arriving));
+    }
+
+    public long inTransit() {
+        return stock + arriving;
+    }
+
     @Override
     public long getDemand(Fluid fluid, int lane) {
         if (redstone || fluid != type || fluid == null || lane != pressure) return 0;
-        return Math.max(0, rate - moved);
+        return getReceiverSpeed(fluid, lane);
     }
 
     @Override
     public long getReceiverSpeed(Fluid fluid, int lane) {
-        return Math.max(0, rate - moved);
+        return outputIsNet(fluid) ? netRoom() : Math.max(0, rate - moved);
     }
 
     @Override
-    public int[] getReceivingPressureRange(Fluid fluid) {
-        return new int[] {pressure, pressure};
+    public int receivingPressureMask(Fluid fluid) {
+        return 1 << pressure;
     }
 
     @Override
@@ -144,6 +167,14 @@ public class BlockEntityFluidPump extends BlockEntity
     @Override
     public long transferFluid(Fluid fluid, int lane, long amount) {
         if (recursionBrake || redstone || fluid != type || lane != pressure) return amount;
+        if (outputIsNet(fluid)) {
+            long accepted = Math.min(amount, netRoom());
+            if (accepted > 0) {
+                arriving += accepted;
+                setChanged();
+            }
+            return amount - accepted;
+        }
         pulses++;
         if (pulses > 10) return amount;
         long toMove = Math.min(amount, rate - moved);
@@ -153,33 +184,19 @@ public class BlockEntityFluidPump extends BlockEntity
         try {
             ServerLevel sl = (ServerLevel) level;
             Direction out = output();
-            long outKey = worldPosition.relative(out).asLong();
-            LevelNodeGraph<PipeData> graph = FluidPipeGraph.graphAt(sl, outKey);
-            GraphNode<PipeData> node = graph == null ? null : graph.getNode(outKey);
-
-            if (node != null && node.isOpen(out.getOpposite()) && node.data.fluid() == fluid) {
-                NodeNetwork<PipeData> net = graph.networkAt(outKey);
-                if (net != null) {
-                    long leftover = FluidNetwork.injectDiode(sl, graph, net, fluid, lane, toMove);
-                    long transferred = toMove - leftover;
-                    moved += transferred;
-                    if (transferred > 0) setChanged();
-                    return amount - transferred;
-                }
-            }
-
-            if (outputReceiver == null) {
+            if (outputReceiver == null || outputFluid != fluid) {
+                outputFluid = fluid;
                 outputReceiver =
                         FabricCaps.createCache(
                                 FluidCaps.RECEIVER,
                                 sl,
                                 worldPosition.relative(out),
-                                FluidFace.any(out.getOpposite()));
+                                FluidFace.of(out.getOpposite(), fluid));
             }
             IFluidHandlerMK2 rec = outputReceiver.find();
             if (rec != null && rec != this) {
-                int[] range = rec.getReceivingPressureRange(fluid);
-                if (lane >= range[0] && lane <= range[1]) {
+                int mask = rec.receivingPressureMask(fluid);
+                if ((mask & 1 << lane) != 0) {
                     long grant =
                             Math.min(
                                     toMove,
@@ -202,15 +219,25 @@ public class BlockEntityFluidPump extends BlockEntity
 
     @Override
     public long getFluidAvailable(Fluid fluid, int lane) {
-        return 0;
+        return fluid != type || lane != pressure ? 0 : Math.min(stock, rate);
     }
 
     @Override
-    public void useUpFluid(Fluid fluid, int lane, long amount) {}
+    public void useUpFluid(Fluid fluid, int lane, long amount) {
+        if (amount <= 0) return;
+        stock = Math.max(0, stock - amount);
+        moved += amount;
+        setChanged();
+    }
 
     @Override
-    public int[] getProvidingPressureRange(Fluid fluid) {
-        return new int[] {pressure, pressure};
+    public boolean passThrough() {
+        return true;
+    }
+
+    @Override
+    public int providingPressureMask(Fluid fluid) {
+        return 1 << pressure;
     }
 
     @Override
@@ -295,6 +322,7 @@ public class BlockEntityFluidPump extends BlockEntity
                                 0,
                                 ConnectionPriority.VALUES.length - 1)];
         redstone = input.getBooleanOr("redstone", false);
+        stock = Math.max(0L, input.getLongOr("stock", 0L));
     }
 
     @Override
@@ -305,6 +333,7 @@ public class BlockEntityFluidPump extends BlockEntity
         output.putInt("rate", rate);
         output.putByte("p", (byte) priority.ordinal());
         output.putBoolean("redstone", redstone);
+        if (inTransit() > 0) output.putLong("stock", inTransit());
     }
 
     @Override

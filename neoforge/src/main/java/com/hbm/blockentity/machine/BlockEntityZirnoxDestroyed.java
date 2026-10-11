@@ -50,10 +50,10 @@ public class BlockEntityZirnoxDestroyed extends BlockEntity {
         if (--waveTimer <= 0) {
             waveTimer = 100 + rand.nextInt(20);
             ((ZirnoxDestroyed) getBlockState().getBlock())
-                    .visitCells(
+                    .footprint(getBlockState().getValue(BlockMultiblockCore.FACING))
+                    .visit(
                             pos,
-                            getBlockState().getValue(BlockMultiblockCore.FACING),
-                            (cell, mask) -> {
+                            cell -> {
                                 BlockPos vent = cell.above();
                                 BlockState above = server.getBlockState(vent);
                                 if (above.isAir()) {

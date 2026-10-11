@@ -14,7 +14,6 @@ import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.util.BobMathUtil;
 import java.util.Locale;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -23,9 +22,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineCondenserPowered extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {2, 0, 1, 1, 3, 3};
-
     public MachineCondenserPowered(Properties props) {
         super(props);
     }
@@ -44,48 +40,8 @@ public class MachineCondenserPowered extends BlockMultiblockCore
     }
 
     @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        Direction rot = facing.getClockWise();
-        int dx = facing.getStepX(), dz = facing.getStepZ();
-        int rx = rot.getStepX(), rz = rot.getStepZ();
-
-        visitor.cell(core.offset(rx * 3, 1, rz * 3), MASK_WEST);
-        visitor.cell(core.offset(-rx * 3, 1, -rz * 3), MASK_EAST);
-        visitor.cell(core.offset(dx + rx, 1, dz + rz), MASK_SOUTH);
-        visitor.cell(core.offset(dx - rx, 1, dz - rz), MASK_SOUTH);
-        visitor.cell(core.offset(-dx + rx, 1, -dz + rz), MASK_NORTH);
-        visitor.cell(core.offset(-dx - rx, 1, -dz - rz), MASK_NORTH);
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        Direction rot = facing.getClockWise();
-        int dx = facing.getStepX(), dz = facing.getStepZ();
-        int rx = rot.getStepX(), rz = rot.getStepZ();
-        int domains = PASSIVE_POWER_IN | PASSIVE_FLUID_IN;
-
-        visitor.passiveCell(core.offset(rx * 3, 1, rz * 3), MASK_ALL, domains);
-        visitor.passiveCell(core.offset(-rx * 3, 1, -rz * 3), MASK_ALL, domains);
-        visitor.passiveCell(core.offset(dx + rx, 1, dz + rz), MASK_ALL, domains);
-        visitor.passiveCell(core.offset(dx - rx, 1, dz - rz), MASK_ALL, domains);
-        visitor.passiveCell(core.offset(-dx + rx, 1, -dz + rz), MASK_ALL, domains);
-        visitor.passiveCell(core.offset(-dx - rx, 1, -dz - rz), MASK_ALL, domains);
     }
 
     @Override

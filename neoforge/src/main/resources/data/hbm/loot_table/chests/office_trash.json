@@ -5,149 +5,401 @@
     {
       "entries": [
         {
-          "type": "minecraft:item",
-          "functions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 12.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:paper",
-          "weight": 10
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 9
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 19,
+                            "min": 0
+                          }
+                        }
+                      ],
+                      "functions": [
+                        {
+                          "count": {
+                            "type": "minecraft:uniform",
+                            "max": 12.0,
+                            "min": 1.0
+                          },
+                          "function": "minecraft:set_count"
+                        }
+                      ],
+                      "name": "minecraft:paper",
+                      "weight": 10
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 3
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 9,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 3.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "minecraft:book",
+                          "weight": 4
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 2.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:twinkie",
+                          "weight": 6
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 19
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 31,
+                        "min": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 3
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 5,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:coffee",
+                          "weight": 4
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:flame_politics",
+                          "weight": 2
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 5
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 11,
+                            "min": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 3
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 5,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:ring_pull",
+                          "weight": 4
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:can_empty",
+                          "weight": 2
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:value_check",
+                  "range": {
+                    "max": 31
+                  },
+                  "value": {
+                    "type": "minecraft:uniform",
+                    "max": 44,
+                    "min": 0
+                  }
+                }
+              ]
+            },
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 1
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 3,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 2.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:can_creature",
+                          "weight": 2
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 3.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:can_smart",
+                          "weight": 2
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 3
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 7,
+                            "min": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 1
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 3,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 2.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:can_mrsugar",
+                          "weight": 2
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "functions": [
+                            {
+                              "count": {
+                                "type": "minecraft:uniform",
+                                "max": 16.0,
+                                "min": 1.0
+                              },
+                              "function": "minecraft:set_count"
+                            }
+                          ],
+                          "name": "hbm:cap_nuka",
+                          "weight": 2
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "condition": "minecraft:value_check",
+                      "range": {
+                        "max": 7
+                      },
+                      "value": {
+                        "type": "minecraft:uniform",
+                        "max": 12,
+                        "min": 0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:alternatives",
+                  "children": [
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 0
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 1,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:book_guide_starter",
+                          "weight": 1
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:deco_computer",
+                          "weight": 1
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "condition": "minecraft:value_check",
+                          "range": {
+                            "max": 1
+                          },
+                          "value": {
+                            "type": "minecraft:uniform",
+                            "max": 4,
+                            "min": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "minecraft:alternatives",
+                      "children": [
+                        {
+                          "type": "minecraft:item",
+                          "conditions": [
+                            {
+                              "condition": "minecraft:value_check",
+                              "range": {
+                                "max": 0
+                              },
+                              "value": {
+                                "type": "minecraft:uniform",
+                                "max": 2,
+                                "min": 0
+                              }
+                            }
+                          ],
+                          "name": "hbm:blueprint_folder",
+                          "weight": 1
+                        },
+                        {
+                          "type": "minecraft:item",
+                          "name": "hbm:coin_token",
+                          "weight": 2
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
-          ],
-          "name": "minecraft:book",
-          "weight": 4
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:twinkie",
-          "weight": 6
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:coffee",
-          "weight": 4
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:flame_politics",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:ring_pull",
-          "weight": 4
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:can_empty",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:can_creature",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:can_smart",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:can_mrsugar",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 16.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "hbm:cap_nuka",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:book_guide_starter",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:deco_computer",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:blueprint_folder",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "hbm:coin_token",
-          "weight": 2
+          ]
         }
       ],
       "rolls": 1

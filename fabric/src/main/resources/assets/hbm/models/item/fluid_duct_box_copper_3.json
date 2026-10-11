@@ -4,7 +4,13 @@
     {
       "faces": {
         "down": {
-          "texture": "#straight"
+          "texture": "#straight",
+          "uv": [
+            5,
+            16,
+            11,
+            0
+          ]
         },
         "east": {
           "rotation": 90,

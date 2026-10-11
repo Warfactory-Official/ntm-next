@@ -56,8 +56,11 @@ public final class OccluderMasks {
         }
     }
 
-    public static Map<BlockStateModel, SectionGeometry.Mesh> derive(
-            Map<BlockState, BlockStateModel> models) {
+    record Derived(
+            IdentityHashMap<BlockState, Mask> masks,
+            IdentityHashMap<BlockStateModel, SectionGeometry.Mesh> meshes) {}
+
+    static Derived derive(Map<BlockState, BlockStateModel> models) {
         var distinct = new IdentityHashMap<BlockStateModel, Integer>();
         var owners = new ArrayList<BlockState>();
         for (RegistryHandle<? extends Block> handle : FabricRegistrar.registeredBlocks) {
@@ -113,10 +116,13 @@ public final class OccluderMasks {
                                 : Mask.EMPTY);
             }
         }
-        published = result;
         var captured = new IdentityHashMap<BlockStateModel, SectionGeometry.Mesh>();
         distinct.forEach((model, index) -> captured.put(model, meshes[index].mesh()));
-        return captured;
+        return new Derived(result, captured);
+    }
+
+    static void publish(IdentityHashMap<BlockState, Mask> masks) {
+        published = masks;
     }
 
     private record PartsKey(List<BlockStateModelPart> parts) {

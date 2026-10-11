@@ -5,7 +5,6 @@ package com.hbm.blockentity.network;
 
 import com.hbm.api.control.IControlReceiver;
 import com.hbm.api.redstoneoverradio.IRORInfo;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.network.RadioTorchBlock;
@@ -32,7 +31,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public abstract class BlockEntityRadioTorch extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, IControlReceiver, SyncUnitSchema {
+        implements Synced, GraphResident, IControlReceiver, SyncUnitSchema {
 
     protected static final int SIGNAL_UNIT = 32;
     protected static final long SIGNAL_MASK = 1L << SIGNAL_UNIT;
@@ -119,10 +118,15 @@ public abstract class BlockEntityRadioTorch extends BlockEntity
         if (lastState == state) return;
         lastState = state;
         BlockState blockState = getBlockState();
-        level.setBlock(
-                worldPosition,
-                blockState.setValue(RadioTorchBlock.LIT, state > 0),
-                notifyNeighbors ? Block.UPDATE_ALL : Block.UPDATE_CLIENTS);
+        BlockState nextState = blockState.setValue(RadioTorchBlock.LIT, state > 0);
+        if (blockState != nextState) {
+            level.setBlock(
+                    worldPosition,
+                    nextState,
+                    notifyNeighbors ? Block.UPDATE_ALL : Block.UPDATE_CLIENTS);
+        } else if (notifyNeighbors) {
+            level.updateNeighborsAt(worldPosition, blockState.getBlock());
+        }
         setChanged();
     }
 

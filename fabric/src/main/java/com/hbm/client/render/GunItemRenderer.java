@@ -888,25 +888,6 @@ public class GunItemRenderer
             return out;
         }
 
-        private static Matrix4fc validatedModTable(Matrix4fc body) {
-            float determinant = new Matrix4f(body).determinant3x3();
-            if (determinant >= 0F) {
-                throw new IllegalStateException(
-                        "mod_table must carry a negative uniform scale, as every 1.7 "
-                                + "setupModTable does; this body's 3x3 determinant is "
-                                + determinant);
-            }
-            float scale = (float) Math.cbrt(-determinant);
-            Matrix3f rotation = new Matrix3f(new Matrix4f(body)).scale(-1F / scale);
-            if (!rotation.mul(new Matrix3f(rotation).transpose(), new Matrix3f())
-                    .equals(new Matrix3f(), 1.0E-4F)) {
-                throw new IllegalStateException(
-                        "mod_table must be a uniform scale times a rotation, since the "
-                                + "weapon table's picture-in-picture takes a scale and a quaternion; this body is not");
-            }
-            return body;
-        }
-
         private static List<BakedMuzzle> bakeMuzzles(Optional<List<Muzzle>> list) {
             return list.orElse(List.of()).stream()
                     .map(
@@ -1014,10 +995,7 @@ public class GunItemRenderer
             List<Map<ItemDisplayContext, Matrix4f>> variants = new ArrayList<>();
             List<Matrix4fc> modTables = new ArrayList<>();
             variants.add(Map.of());
-            modTables.add(
-                    modTable.<Matrix4fc>map(Matrix4f::new)
-                            .map(Unbaked::validatedModTable)
-                            .orElse(MOD_TABLE_BASE));
+            modTables.add(modTable.<Matrix4fc>map(Matrix4f::new).orElse(MOD_TABLE_BASE));
             List<PoseOverride> overrides = poseOverrides.orElse(List.of());
             for (PoseOverride override : overrides) {
                 variants.add(slotDeltas(override));

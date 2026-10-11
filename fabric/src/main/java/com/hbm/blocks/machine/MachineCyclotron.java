@@ -11,7 +11,6 @@ import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.sound.ModSounds;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -25,54 +24,8 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineCyclotron extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {2, 0, 2, 2, 2, 2};
-    private static final int REACH = 2;
-    private static final int OFFSET = 1;
-
     public MachineCyclotron(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return REACH;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-
-        visitor.cell(core.offset(REACH, 0, OFFSET), MASK_EAST, ROLE_ALL);
-        visitor.cell(core.offset(REACH, 0, -OFFSET), MASK_EAST, ROLE_ALL);
-        visitor.cell(core.offset(-REACH, 0, OFFSET), MASK_WEST, ROLE_ALL);
-        visitor.cell(core.offset(-REACH, 0, -OFFSET), MASK_WEST, ROLE_ALL);
-        visitor.cell(core.offset(OFFSET, 0, REACH), MASK_SOUTH, ROLE_ALL);
-        visitor.cell(core.offset(-OFFSET, 0, REACH), MASK_SOUTH, ROLE_ALL);
-        visitor.cell(core.offset(OFFSET, 0, -REACH), MASK_NORTH, ROLE_ALL);
-        visitor.cell(core.offset(-OFFSET, 0, -REACH), MASK_NORTH, ROLE_ALL);
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        int domains = PASSIVE_POWER_IN | PASSIVE_FLUID_IN | PASSIVE_ITEMS;
-
-        for (int off = -OFFSET; off <= OFFSET; off++) {
-            visitor.passiveCell(core.offset(REACH, 0, off), MASK_ALL, domains);
-            visitor.passiveCell(core.offset(-REACH, 0, off), MASK_ALL, domains);
-            visitor.passiveCell(core.offset(off, 0, REACH), MASK_ALL, domains);
-            visitor.passiveCell(core.offset(off, 0, -REACH), MASK_ALL, domains);
-        }
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_NONE;
     }
 
     @Override

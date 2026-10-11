@@ -8,14 +8,16 @@ import com.hbm.advancement.DetonationTrigger;
 import com.hbm.advancement.HbmCriteria;
 import com.hbm.api.fluidmk2.FluidCaps;
 import com.hbm.api.fluidmk2.FluidFace;
+import com.hbm.api.fluidmk2.FluidPipeGraph;
 import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.IFluidHandlerMK2;
+import com.hbm.api.fluidmk2.PipeData;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.rbmk.RBMKBase;
 import com.hbm.blocks.machine.rbmk.RBMKLoader;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockSurface;
-import com.hbm.blocks.network.FluidPipeBlock;
 import com.hbm.entity.ModEntities;
 import com.hbm.entity.effect.EntitySpear;
 import com.hbm.entity.projectile.EntityRBMKDebris;
@@ -26,12 +28,14 @@ import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.packet.SyncField;
 import com.hbm.particle.helper.ExplosionCreator;
-import com.hbm.platform.FabricCaps;
 import com.hbm.sound.ModSounds;
+import com.hbm.uninos.graph.GraphNode;
+import com.hbm.uninos.graph.GraphSegment;
+import com.hbm.uninos.graph.LevelNodeGraph;
+import com.hbm.uninos.graph.NodeNetwork;
 import com.hbm.util.ChunkUtil;
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.longs.LongIterator;
-import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -46,6 +50,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
@@ -54,6 +59,8 @@ public abstract class BlockEntityRBMKBase extends BlockEntityMachineBase {
     public static final int maxWater = 16000;
     public static final int maxSteam = 16000;
     public static final ReferenceOpenHashSet<BlockEntityRBMKBase> columns =
+            new ReferenceOpenHashSet<>();
+    public static final ReferenceOpenHashSet<NodeNetwork<PipeData>> pipes =
             new ReferenceOpenHashSet<>();
     private static final Direction[] neighborDirs = {
         Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST
@@ -308,6 +315,7 @@ public abstract class BlockEntityRBMKBase extends BlockEntityMachineBase {
     public void meltdown() {
         RBMKBase.dropLids = false;
         columns.clear();
+        pipes.clear();
         getFF(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
 
         int minX = worldPosition.getX(), maxX = minX, minZ = worldPosition.getZ(), maxZ = minZ;
@@ -359,7 +367,9 @@ public abstract class BlockEntityRBMKBase extends BlockEntityMachineBase {
                     50,
                     p -> HbmCriteria.detonation(p, DetonationTrigger.Kind.RBMK));
         }
-        if (RBMKConfig.getOverpressure(level) && level instanceof ServerLevel serverLevel) {
+        if (RBMKConfig.getOverpressure(level)
+                && !pipes.isEmpty()
+                && level instanceof ServerLevel serverLevel) {
             overpressure(serverLevel);
         }
         if (RBMKBase.digamma) {
@@ -370,6 +380,7 @@ public abstract class BlockEntityRBMKBase extends BlockEntityMachineBase {
         }
         RBMKBase.dropLids = true;
         columns.clear();
+        pipes.clear();
     }
 
     private void spreadHotDebris() {
@@ -397,46 +408,26 @@ public abstract class BlockEntityRBMKBase extends BlockEntityMachineBase {
     }
 
     private void overpressure(ServerLevel level) {
-        LongOpenHashSet pipes = new LongOpenHashSet();
-        Queue<BlockPos> queue = new ArrayDeque<>();
-        for (BlockEntityRBMKBase col : columns) {
-            for (Direction dir : Direction.VALUES) {
-                BlockPos p = col.worldPosition.relative(dir);
-                if (level.getBlockState(p).getBlock() instanceof FluidPipeBlock
-                        && pipes.add(p.asLong())) queue.add(p);
-            }
-        }
-        if (pipes.isEmpty()) return;
-
-        ReferenceOpenHashSet<BlockPos> receivers = new ReferenceOpenHashSet<>();
-        int safety = 10_000;
-        while (!queue.isEmpty() && safety-- > 0) {
-            BlockPos p = queue.poll();
-            for (Direction dir : Direction.VALUES) {
-                BlockPos n = p.relative(dir);
-                if (level.getBlockState(n).getBlock() instanceof FluidPipeBlock) {
-                    if (pipes.add(n.asLong())) queue.add(n);
-                } else if (FabricCaps.find(
-                                FluidCaps.RECEIVER, level, n, FluidFace.any(dir.getOpposite()))
-                        != null) {
-                    receivers.add(n.immutable());
-                }
+        LevelNodeGraph<PipeData> graph = FluidPipeGraph.get(level);
+        LongArrayList cells = new LongArrayList();
+        ReferenceOpenHashSet<BlockEntity> receivers = new ReferenceOpenHashSet<>();
+        for (NodeNetwork<PipeData> net : pipes) {
+            for (GraphNode<PipeData> node : net.nodes)
+                collect(level, graph, node.posKey, cells, receivers);
+            for (GraphSegment<PipeData> run : net.segments) {
+                for (int i = 0; i < run.cellCount(); i++)
+                    collect(level, graph, run.cellAt(i), cells, receivers);
             }
         }
 
-        int max = Math.min(pipes.size() / 5, 100);
-        int count = 0;
-        for (LongIterator it = pipes.iterator(); it.hasNext() && count < max; count++) {
-            level.setBlock(BlockPos.of(it.nextLong()), Blocks.AIR.defaultBlockState(), 3);
+        int max = Math.min(cells.size() / 5, 100);
+        for (int i = 0; i < max; i++) {
+            level.setBlock(BlockPos.of(cells.getLong(i)), Blocks.AIR.defaultBlockState(), 3);
         }
-        for (BlockPos p : receivers) {
-            BlockEntity be = level.getBlockEntity(p);
-            if (be == null) {
-                BlockPos core = MultiblockSurface.coreOfAny(level, p);
-                if (core != null) be = level.getBlockEntity(core);
-            }
+        for (BlockEntity be : receivers) {
+            BlockPos p = be.getBlockPos();
             if (be instanceof IOverpressurable op) {
-                op.explode(level, be.getBlockPos());
+                op.explode(level, p);
             } else {
                 level.setBlock(p, Blocks.AIR.defaultBlockState(), 3);
                 level.explode(
@@ -448,6 +439,43 @@ public abstract class BlockEntityRBMKBase extends BlockEntityMachineBase {
                         Level.ExplosionInteraction.NONE);
             }
         }
+    }
+
+    private static void collect(
+            ServerLevel level,
+            LevelNodeGraph<PipeData> graph,
+            long cell,
+            LongArrayList cells,
+            ReferenceOpenHashSet<BlockEntity> receivers) {
+        if (!LevelNodeGraph.resident(level, cell)) return;
+        cells.add(cell);
+        Fluid fluid = graph.dataAt(cell).fluid();
+        BlockPos at = BlockPos.of(cell);
+        for (Direction dir : Direction.VALUES) {
+            if (!graph.isOpenAt(cell, dir)) continue;
+            BlockPos n = at.relative(dir);
+            BlockState state = ChunkUtil.blockStateIfLoaded(level, n);
+            if (state == null) continue;
+            IFluidHandlerMK2 receiver =
+                    FluidCaps.RECEIVER.find(
+                            (Level) level, n, FluidFace.of(dir.getOpposite(), fluid));
+            if (receiver == null || !subscribed(receiver, fluid)) continue;
+            BlockEntity owner = receiver instanceof BlockEntity be ? be : null;
+            if (owner == null) {
+                BlockPos core = MultiblockSurface.coreOfAny(level, n, state);
+                owner = ChunkUtil.blockEntityIfLoaded(level, core != null ? core : n);
+            }
+            if (owner != null) receivers.add(owner);
+        }
+    }
+
+    private static boolean subscribed(IFluidHandlerMK2 receiver, Fluid fluid) {
+        if (!receiver.netSubscribed() || !receiver.canReceiveFluid(fluid)) return false;
+        for (int lanes = receiver.receivingPressureMask(fluid); lanes != 0; lanes &= lanes - 1) {
+            if (receiver.getReceiverSpeed(fluid, Integer.numberOfTrailingZeros(lanes)) > 0)
+                return true;
+        }
+        return false;
     }
 
     private void getFF(int x, int y, int z) {

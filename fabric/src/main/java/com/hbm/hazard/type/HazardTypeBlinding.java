@@ -27,7 +27,9 @@ public class HazardTypeBlinding implements IHazardType {
         if (!ArmorRegistry.hasProtection(target, EquipmentSlot.HEAD, HazardClass.LIGHT)) {
             target.addEffect(
                     new MobEffectInstance(
-                            MobEffects.BLINDNESS, (int) level * RadiationConfig.hazardRate, 0));
+                            MobEffects.BLINDNESS,
+                            (int) Math.ceil(level) * RadiationConfig.hazardRate,
+                            0));
         }
     }
 

@@ -71,11 +71,6 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase {
     }
 
     @Override
-    public boolean shouldRenderAtSqrDistance(double distance) {
-        return true;
-    }
-
-    @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         if (!super.hurtServer(level, source, amount)) return false;
         this.dmgCooldown = 10;

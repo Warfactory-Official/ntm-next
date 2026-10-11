@@ -9,12 +9,16 @@ import com.hbm.inventory.IGUIProvider;
 import com.hbm.inventory.container.MenuCraneInserter;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
-import com.hbm.util.InventoryUtil;
+import com.hbm.platform.BlockLookupCache;
+import com.hbm.platform.FabricCaps;
 import io.netty.buffer.ByteBuf;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -22,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.jspecify.annotations.Nullable;
 
 public class BlockEntityCraneInserter extends BlockEntityCraneBase
         implements IGUIProvider, IControlReceiver, SyncUnitSchema {
@@ -32,6 +37,9 @@ public class BlockEntityCraneInserter extends BlockEntityCraneBase
 
     @SyncField(units = 1L << 0)
     public boolean destroyer = true;
+
+    private @Nullable BlockLookupCache<Storage<ItemVariant>> target;
+    private @Nullable Direction targetSide;
 
     public BlockEntityCraneInserter(BlockPos pos, BlockState state) {
         super(ModBlockEntities.CRANE_INSERTER.get(), pos, state, SLOT_COUNT);
@@ -61,16 +69,22 @@ public class BlockEntityCraneInserter extends BlockEntityCraneBase
 
     private void push() {
         Direction output = getOutputSide();
-        BlockPos targetPos = worldPosition.relative(output);
-        if (!InventoryUtil.inventoryAt(level, targetPos, output.getOpposite())) return;
-
-        Direction face = output.getOpposite();
+        if (target == null || targetSide != output) {
+            target =
+                    FabricCaps.createItemStoreCache(
+                            (ServerLevel) level,
+                            worldPosition.relative(output),
+                            output.getOpposite());
+            targetSide = output;
+        }
+        Storage<ItemVariant> dest = target.find();
+        if (dest == null) return;
 
         for (int i = 0; i < SLOT_COUNT; i++) {
             ItemStack stack = getItem(i);
             if (stack.isEmpty()) continue;
 
-            ItemStack left = InventoryUtil.insertAt(level, targetPos, face, stack.copy());
+            ItemStack left = FabricCaps.insert(dest, stack.copy());
             if (left.getCount() != stack.getCount()) {
                 setItem(i, left);
                 return;
@@ -81,8 +95,7 @@ public class BlockEntityCraneInserter extends BlockEntityCraneBase
             ItemStack stack = getItem(i);
             if (stack.isEmpty()) continue;
 
-            ItemStack left = InventoryUtil.insertAt(level, targetPos, face, stack.copyWithCount(1));
-            if (left.isEmpty()) {
+            if (FabricCaps.insert(dest, stack.copyWithCount(1)).isEmpty()) {
                 removeItem(i, 1);
                 return;
             }

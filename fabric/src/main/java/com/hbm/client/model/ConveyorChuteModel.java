@@ -89,15 +89,6 @@ public class ConveyorChuteModel implements BlockStateModel {
         return sideFace ? ConveyorModel.SIDE : ConveyorModel.BELT;
     }
 
-    private static int[] beltRot(Direction facing) {
-        return switch (facing) {
-            case SOUTH -> (new int[] {3, 0, 0, 0, 0, 3});
-            case EAST -> (new int[] {2, 2, 3, 0, 0, 0});
-            case WEST -> (new int[] {1, 1, 0, 3, 0, 0});
-            default -> (new int[] {0, 3, 0, 0, 3, 0});
-        };
-    }
-
     @Override
     public void collectParts(RandomSource random, List<BlockStateModelPart> output) {
         output.add(fallback);
@@ -154,7 +145,7 @@ public class ConveyorChuteModel implements BlockStateModel {
         List<ObjUnbakedGeometry.BoxQuad> b = new ArrayList<>();
 
         if (lowest) {
-            int[] beltRot = beltRot(facing);
+            int[] beltRot = ConveyorModel.beltRot(facing);
             final Vector3f from = new Vector3f(INNER_MIN, 0F, 0F);
             final Vector3f to = new Vector3f(INNER_MAX, LIP, 16F);
             ConveyorModel.faces(

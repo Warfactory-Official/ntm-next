@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
 public class BlockPWR extends Block implements ICapabilityBlock, AssembledMembers.Member {
@@ -81,6 +82,14 @@ public class BlockPWR extends Block implements ICapabilityBlock, AssembledMember
     @Override
     public int endpointDomains(BlockState state) {
         return state.getValue(PART) == Part.PORT ? MachineCaps.FLUID_IN | MachineCaps.FLUID_OUT : 0;
+    }
+
+    @Override
+    public boolean hasFluidContact(
+            Level level, BlockPos pos, BlockState state, Direction side, Fluid fluid) {
+        if (!isPort(state)) return false;
+        if (level instanceof ServerLevel && ioController(level, pos, state) == null) return true;
+        return ICapabilityBlock.super.hasFluidContact(level, pos, state, side, fluid);
     }
 
     @Override

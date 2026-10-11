@@ -137,6 +137,7 @@ public final class RadioTorchBlock extends Block implements ITickingBlock, ILook
 
     @Override
     protected int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
+        if (!isSignalSource(state)) return 0;
         return level.getBlockEntity(pos) instanceof BlockEntityRadioTorch radio
                 ? radio.lastState
                 : 0;

@@ -21,6 +21,7 @@ public final class HbmStructureProcessors {
     public static RegistryHandle<MapCodec<ImpactVillageProcessor>> IMPACT_VILLAGE;
     public static RegistryHandle<MapCodec<SpawnerEntityProcessor>> SPAWNER_ENTITY;
     public static RegistryHandle<MapCodec<DuctFluidProcessor>> DUCT_FLUID;
+    public static RegistryHandle<MapCodec<MarkerTableProcessor>> MARKER_TABLE;
 
     private HbmStructureProcessors() {}
 
@@ -58,5 +59,8 @@ public final class HbmStructureProcessors {
         DUCT_FLUID =
                 NeoForgeRegistrar.registerStructureProcessorType(
                         "duct_fluid", DuctFluidProcessor.MAP_CODEC);
+        MARKER_TABLE =
+                NeoForgeRegistrar.registerStructureProcessorType(
+                        "marker_table", MarkerTableProcessor.MAP_CODEC);
     }
 }

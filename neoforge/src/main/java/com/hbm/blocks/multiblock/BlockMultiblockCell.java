@@ -3,12 +3,14 @@
 
 package com.hbm.blocks.multiblock;
 
+import com.hbm.blocks.ModBlocks;
 import com.hbm.interfaces.ICopiable;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.interfaces.IToolable;
 import com.hbm.interfaces.PlantSoil;
 import com.hbm.interfaces.RigidPistonStructure;
 import com.hbm.platform.NeoForgePlatform;
+import com.hbm.registration.RegistryHandle;
 import java.util.List;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
@@ -48,6 +50,8 @@ public class BlockMultiblockCell extends Block
 
     public static final BooleanProperty SEALED = BooleanProperty.create("sealed");
     public static final BooleanProperty COMPARATOR = BooleanProperty.create("comparator");
+
+    private boolean forwardsNeighbors;
 
     public static BlockMultiblockCell create(CellBuckets.Plain key, Properties properties) {
         return CellBuckets.supportsComparator(key)
@@ -300,12 +304,26 @@ public class BlockMultiblockCell extends Block
             @Nullable Orientation orientation,
             boolean movedByPiston) {
         super.neighborChanged(state, level, pos, block, orientation, movedByPiston);
-        if (!(level instanceof ServerLevel server)) return;
+        if (!forwardsNeighbors || !(level instanceof ServerLevel server)) return;
         BlockPos core = MultiblockSurface.indexedCore(server, pos);
         if (core == null) return;
         BlockMultiblockCore owner = MultiblockSurface.foldedCore(server.getBlockState(core));
         if (owner != null && owner.wantsNeighborUpdates()) {
             owner.cellNeighborChanged(server, core, pos.immutable());
+        }
+    }
+
+    public boolean forwardsNeighbors() {
+        return forwardsNeighbors;
+    }
+
+    void forwardNeighborUpdates() {
+        forwardsNeighbors = true;
+    }
+
+    public static void resetNeighborForwarding() {
+        for (RegistryHandle<? extends Block> handle : ModBlocks.cellHandles()) {
+            if (handle.get() instanceof BlockMultiblockCell cell) cell.forwardsNeighbors = false;
         }
     }
 

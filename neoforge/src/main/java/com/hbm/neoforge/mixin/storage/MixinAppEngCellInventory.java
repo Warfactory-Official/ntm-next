@@ -3,6 +3,7 @@
 
 package com.hbm.neoforge.mixin.storage;
 
+import appeng.blockentity.inventory.AppEngCellInventory;
 import appeng.util.inv.AppEngInternalInventory;
 import com.hbm.inventory.ListSlotSource;
 import com.hbm.inventory.SlotSource;
@@ -11,11 +12,9 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Pseudo
-@Mixin(targets = "appeng.blockentity.inventory.AppEngCellInventory", remap = false)
+@Mixin(value = AppEngCellInventory.class, remap = false, priority = 500)
 public abstract class MixinAppEngCellInventory implements SlotSource {
     @Shadow @Final private AppEngInternalInventory inv;
 

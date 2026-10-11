@@ -28,6 +28,7 @@ import mov.movblock.tenon.strip.api.DropSafe;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -63,6 +64,7 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
@@ -111,6 +113,12 @@ public class ItemToolAbility extends Item implements IKeybindReceiver {
         rules.add(Tool.Rule.deniesDrops(blocks.getOrThrow(tier.incorrectBlocksForDrops())));
         for (TagKey<Block> mineable : type.mineable()) {
             rules.add(Tool.Rule.minesAndDrops(blocks.getOrThrow(mineable), tier.speed()));
+        }
+        if (type == ToolType.PICKAXE || type == ToolType.MINER) {
+            rules.add(
+                    Tool.Rule.minesAndDrops(
+                            HolderSet.direct(Blocks.GLOWSTONE.builtInRegistryHolder()),
+                            tier.speed()));
         }
 
         Properties properties =

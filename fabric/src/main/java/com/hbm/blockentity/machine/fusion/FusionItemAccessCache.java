@@ -43,7 +43,8 @@ final class FusionItemAccessCache {
                 core.maskAt(
                         MultiblockMaskTable.localX(dx, dy, dz, facing),
                         MultiblockMaskTable.localY(dx, dy, dz, facing),
-                        MultiblockMaskTable.localZ(dx, dy, dz, facing));
+                        MultiblockMaskTable.localZ(dx, dy, dz, facing),
+                        facing);
         return mask == MultiblockMaskTable.NOT_A_CELL || mask == BlockMultiblockCore.MASK_NONE
                 ? ItemPort.none()
                 : output;

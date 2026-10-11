@@ -3,7 +3,6 @@
 
 package com.hbm.blocks.multiblock;
 
-import it.unimi.dsi.fastutil.longs.LongLinkedOpenHashSet;
 import java.util.Arrays;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
@@ -18,15 +17,7 @@ import org.jspecify.annotations.Nullable;
 public final class MultiblockFootprint {
     private MultiblockFootprint() {}
 
-    static Layout bake(BlockMultiblockCore block, Direction facing) {
-        LongLinkedOpenHashSet unique = new LongLinkedOpenHashSet();
-        block.visitCells(
-                BlockPos.ZERO,
-                facing,
-                (pos, mask) -> {
-                    if (!pos.equals(BlockPos.ZERO)) unique.add(pos.asLong());
-                });
-        long[] offsets = unique.toLongArray();
+    static Layout layout(BlockMultiblockCore block, Direction facing, long[] offsets) {
         BlockState[] states = new BlockState[offsets.length];
         BlockState[] swapped = null;
         for (int i = 0; i < offsets.length; i++) {
@@ -89,7 +80,7 @@ public final class MultiblockFootprint {
                     && z <= ((core.getZ() + maxZ) >> 4);
         }
 
-        public void visit(BlockPos core, BlockMultiblockCore.CellVisitor visitor) {
+        public void visit(BlockPos core, BlockMultiblockCore.FootprintVisitor visitor) {
             BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
             for (long offset : offsets) {
                 visitor.cell(
@@ -97,15 +88,14 @@ public final class MultiblockFootprint {
                                 core,
                                 BlockPos.getX(offset),
                                 BlockPos.getY(offset),
-                                BlockPos.getZ(offset)),
-                        BlockMultiblockCore.MASK_NONE);
+                                BlockPos.getZ(offset)));
             }
         }
     }
 
     public static boolean hasDetailedShape(BlockState coreState) {
         BlockMultiblockCore block = (BlockMultiblockCore) coreState.getBlock();
-        return !block.bounding.isEmpty()
+        return block.hasBounding()
                 || !block.usesSharedCells()
                 || block.cellsOpen()
                 || MultiblockCellShapes.hasGeometry(block);
@@ -150,7 +140,7 @@ public final class MultiblockFootprint {
                 level,
                 core,
                 facing,
-                (pos, mask) -> {
+                pos -> {
                     var chunk =
                             level.getChunk(
                                     pos.getX() >> 4, pos.getZ() >> 4, ChunkStatus.FULL, false);

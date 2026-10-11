@@ -6,13 +6,13 @@ package com.hbm.capability;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.platform.NeoForgeServerEvents;
 import com.hbm.util.ChunkPositionIndex;
+import com.hbm.util.ChunkUtil;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongIterator;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import java.lang.ref.WeakReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.FullChunkStatus;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -60,8 +60,7 @@ public final class ResolvedCapCache {
                 && anchor != null
                 && anchorChunk != null
                 && state == entry.queriedState
-                && !anchor.isRemoved()
-                && anchorChunk.getFullStatus().isOrAfter(FullChunkStatus.FULL)
+                && ChunkUtil.resident(anchor, anchorChunk)
                 && anchor.getBlockState() == entry.coreState) {
             return type.cast(value);
         }
@@ -108,7 +107,6 @@ public final class ResolvedCapCache {
                     case FLUID_IN -> 2;
                     case FLUID_OUT -> 3;
                 };
-        if (typeIndex < 0) return -1;
         int planeIndex =
                 switch (passivePlane) {
                     case BlockMultiblockCore.PASSIVE_NONE -> 0;

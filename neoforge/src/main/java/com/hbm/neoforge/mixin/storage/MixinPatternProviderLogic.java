@@ -5,6 +5,7 @@ package com.hbm.neoforge.mixin.storage;
 
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.GenericStack;
+import appeng.helpers.patternprovider.PatternProviderLogic;
 import appeng.helpers.patternprovider.PatternProviderLogicHost;
 import com.hbm.inventory.SlotSource;
 import com.hbm.neoforge.inventory.AE2SendList;
@@ -14,11 +15,9 @@ import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Pseudo
-@Mixin(targets = "appeng.helpers.patternprovider.PatternProviderLogic", remap = false)
+@Mixin(value = PatternProviderLogic.class, remap = false, priority = 500)
 public abstract class MixinPatternProviderLogic implements SlotSource {
     @Shadow @Final @Mutable private List<GenericStack> sendList;
     @Shadow @Final private PatternProviderLogicHost host;

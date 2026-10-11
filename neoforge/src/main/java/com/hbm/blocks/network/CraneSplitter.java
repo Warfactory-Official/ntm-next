@@ -31,8 +31,6 @@ public class CraneSplitter extends BlockMultiblockCore
 
     public static final MapCodec<CraneSplitter> CODEC = simpleCodec(CraneSplitter::new);
 
-    private static final int[] DIMENSIONS = {0, 0, 0, 0, 0, 1};
-
     public CraneSplitter(Properties props) {
         super(props);
     }
@@ -44,16 +42,6 @@ public class CraneSplitter extends BlockMultiblockCore
     @Override
     protected MapCodec<? extends Block> codec() {
         return CODEC;
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
     }
 
     @Override

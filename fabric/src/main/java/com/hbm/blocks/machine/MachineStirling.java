@@ -16,7 +16,6 @@ import com.hbm.sound.ModSounds;
 import com.hbm.util.BobMathUtil;
 import java.util.Locale;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -31,9 +30,6 @@ import org.jspecify.annotations.Nullable;
 @RefreshesNeighborState(be = BlockEntityStirling.class, calling = "refreshHeatBelow")
 public class MachineStirling extends BlockMultiblockCore
         implements ITickingBlock, ILookOverlay, ICapabilityBlock {
-
-    private static final int[] DIMENSIONS = {1, 0, 1, 1, 1, 1};
-
     private final Tier tier;
 
     public MachineStirling(Tier tier, Properties props) {
@@ -43,26 +39,6 @@ public class MachineStirling extends BlockMultiblockCore
 
     public Tier tier() {
         return tier;
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-
-        visitor.cell(core.offset(1, 0, 0), MASK_EAST);
-        visitor.cell(core.offset(-1, 0, 0), MASK_WEST);
-        visitor.cell(core.offset(0, 0, 1), MASK_SOUTH);
-        visitor.cell(core.offset(0, 0, -1), MASK_NORTH);
     }
 
     @Override

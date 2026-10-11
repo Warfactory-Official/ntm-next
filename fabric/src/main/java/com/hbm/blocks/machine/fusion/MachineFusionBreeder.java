@@ -20,72 +20,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class MachineFusionBreeder extends BlockFusionMachine implements ICapabilityBlock {
-    private static final double[] PLACEMENT_EXTRAS = {1.5, 3.5, -2.5, -2.5, 1, -1};
-
-    @Override
-    protected double[] placementExtraBoxes() {
-        return PLACEMENT_EXTRAS;
-    }
-
-    private static final int[] DIMENSIONS = {3, 0, 2, 2, 1, 1};
-
     public MachineFusionBreeder(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 2;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        Direction rot = facing.getClockWise();
-
-        visitor.cell(core.offset(rot.getStepX(), 0, rot.getStepZ()), MASK_WEST);
-        visitor.cell(core.offset(-rot.getStepX(), 0, -rot.getStepZ()), MASK_EAST);
-        visitor.cell(
-                core.offset(
-                        facing.getStepX() + rot.getStepX(), 0, facing.getStepZ() + rot.getStepZ()),
-                MASK_WEST);
-        visitor.cell(
-                core.offset(
-                        facing.getStepX() - rot.getStepX(), 0, facing.getStepZ() - rot.getStepZ()),
-                MASK_EAST);
-        visitor.cell(core.offset(facing.getStepX() * 2, 2, facing.getStepZ() * 2), MASK_SOUTH);
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        Direction rot = facing.getClockWise();
-        visitor.passiveCell(
-                core.offset(rot.getStepX(), 0, rot.getStepZ()),
-                MASK_ALL,
-                PASSIVE_FLUID_IN | PASSIVE_ITEMS);
-        visitor.passiveCell(
-                core.offset(-rot.getStepX(), 0, -rot.getStepZ()),
-                MASK_ALL,
-                PASSIVE_FLUID_IN | PASSIVE_ITEMS);
-        visitor.passiveCell(
-                core.offset(
-                        facing.getStepX() + rot.getStepX(), 0, facing.getStepZ() + rot.getStepZ()),
-                MASK_ALL,
-                PASSIVE_FLUID_IN | PASSIVE_ITEMS);
-        visitor.passiveCell(
-                core.offset(
-                        facing.getStepX() - rot.getStepX(), 0, facing.getStepZ() - rot.getStepZ()),
-                MASK_ALL,
-                PASSIVE_FLUID_IN | PASSIVE_ITEMS);
-        visitor.passiveCell(
-                core.offset(facing.getStepX() * 2, 2, facing.getStepZ() * 2),
-                MASK_ALL,
-                PASSIVE_FLUID_IN | PASSIVE_ITEMS);
     }
 
     @Override

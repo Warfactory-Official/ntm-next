@@ -3,6 +3,7 @@
 
 package com.hbm.client.sound;
 
+import com.hbm.blocks.multiblock.MultiblockSurface;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
@@ -23,6 +24,7 @@ public class AudioDynamic extends AbstractTickableSoundInstance {
     public int timeSinceKA;
     public boolean shouldExpire;
     public @Nullable Entity parentEntity;
+    long machineCore = MultiblockSurface.NO_CORE;
 
     protected AudioDynamic(SoundEvent sound, SoundSource category) {
         super(sound, category, RandomSource.create());
@@ -125,6 +127,10 @@ public class AudioDynamic extends AbstractTickableSoundInstance {
 
     public float rawVolume() {
         return volume;
+    }
+
+    public long machineCore() {
+        return machineCore;
     }
 
     public float rawPitch() {

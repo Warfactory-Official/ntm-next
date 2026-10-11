@@ -13,14 +13,12 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Pseudo
-@Mixin(targets = "appeng.helpers.externalstorage.GenericStackInv", remap = false)
+@Mixin(value = GenericStackInv.class, remap = false, priority = 500)
 public abstract class MixinGenericStackInv implements ArraySlotSource {
     @Shadow @Final protected GenericStack[] stacks;
     @Shadow @Final protected GenericStackInv.Mode mode;

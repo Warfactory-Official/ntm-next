@@ -15,21 +15,8 @@ import org.jspecify.annotations.Nullable;
 
 @RefreshesNeighborState(be = BlockEntityMachinePress.class, calling = "refreshPreheater")
 public class MachinePress extends BlockMultiblockCore implements ITickingBlock {
-
-    private static final int[] DIMENSIONS = {2, 0, 0, 0, 0, 0};
-
     public MachinePress(Properties props) {
         super(props);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
     }
 
     @Override

@@ -54,6 +54,16 @@ public abstract class MixinPatchedDataComponentMap implements SyncSource {
         hbm$unstableDeadline = Long.MIN_VALUE;
         hbm$interiorReferences = null;
         syncChanged(3);
+    }
+
+    @Inject(
+            method = {
+                "applyPatch(Lnet/minecraft/core/component/DataComponentPatch;)V",
+                "restorePatch",
+                "clearPatch"
+            },
+            at = @At("RETURN"))
+    private void hbm$publishFusePatch(CallbackInfo ci) {
         InventorySlotBinding.changed((PatchedDataComponentMap) (Object) this);
     }
 

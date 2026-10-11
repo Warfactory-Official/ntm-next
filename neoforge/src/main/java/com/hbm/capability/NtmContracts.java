@@ -100,11 +100,11 @@ public final class NtmContracts {
                 Level level, BlockPos pos, BlockState state, @Nullable Direction side) {
             Block block = state.getBlock();
             if (type.isInstance(block)) return type.cast(block);
-            return NeoForgeCaps.find(token(), level, pos, side);
+            return token().getCapability(level, pos, null, null, side);
         }
 
         public BlockLookupCache<T> cacheAt(ServerLevel level, BlockPos pos) {
-            return NeoForgeCaps.createCache(token(), level, pos, null);
+            return new NeoForgeCaps.CapCache<>(token(), level, pos, (Direction) null);
         }
 
         private BlockCapability<T, Direction> token() {

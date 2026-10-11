@@ -27,6 +27,7 @@ import com.hbm.items.armor.ModArmorItem;
 import com.hbm.items.armor.ServoEffects;
 import com.hbm.items.food.FoodAdditives;
 import com.hbm.items.weapon.sedna.AkimboGhost;
+import com.hbm.util.EntityDamageUtil;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -57,6 +58,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -522,5 +524,13 @@ public class MixinLivingEntity implements NtmDamageContext, ArmorModWearer {
         return owned == null
                 ? 0
                 : original.call(level, owned, x, y, z, count, xDist, yDist, zDist, speed);
+    }
+
+    @ModifyVariable(method = "actuallyHurt", at = @At("HEAD"), argsOnly = true, ordinal = 0)
+    private float hbm$acceptedDamage(float amount, ServerLevel level, DamageSource source) {
+        LivingEntity self = (LivingEntity) (Object) this;
+        if (self.isInvulnerableTo(level, source)) return amount;
+        float result = EntityDamageUtil.modifyAcceptedDamage(self, source, amount);
+        return result;
     }
 }

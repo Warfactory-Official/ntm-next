@@ -24,29 +24,6 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineFusionTorus extends BlockFusionMachine
         implements ICapabilityBlock, IBlockHighlight {
-    private static final int[] PLACEMENT_DIMENSIONS = {
-        4, 0, 7, 7, 3, 3, 0, 0, 0,
-        4, 0, 6, 6, 4, 4, 0, 0, 0,
-        4, 0, 5, 5, 5, 5, 0, 0, 0,
-        4, 0, 4, 4, 6, 6, 0, 0, 0,
-        4, 0, 3, 3, 7, 7, 0, 0, 0,
-    };
-
-    @Override
-    protected int[] placementDimensionBoxes() {
-        return PLACEMENT_DIMENSIONS;
-    }
-
-    private static final double[] PLACEMENT_EXTRAS = {
-        3.5, 1.5, 7.5, 7.5, 1, -1, 3.5, 1.5, -7.5, -7.5, 1, -1, 3.5, 1.5, 1, -1, 7.5, 7.5, 3.5, 1.5,
-        1, -1, -7.5, -7.5
-    };
-
-    @Override
-    protected double[] placementExtraBoxes() {
-        return PLACEMENT_EXTRAS;
-    }
-
     private static final SilhouetteMesh FUSION_TORUS_LEVEL =
             SilhouetteMesh.octagonalPrism(
                     new float[] {
@@ -171,8 +148,6 @@ public class MachineFusionTorus extends BlockFusionMachine
         }
     };
 
-    private static final int[] DIMENSIONS = {4, 0, 7, 7, 7, 7};
-
     public MachineFusionTorus(Properties props) {
         super(props);
     }
@@ -180,95 +155,6 @@ public class MachineFusionTorus extends BlockFusionMachine
     @Override
     protected boolean tilts() {
         return true;
-    }
-
-    private static int[][] layerAt(int iy) {
-        return LAYOUT[iy > 2 ? 4 - iy : iy];
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 7;
-    }
-
-    @Override
-    public boolean checkRequirement(Level level, BlockPos placed, Direction dir, int o) {
-        BlockPos core = placed.offset(dir.getStepX() * o, 0, dir.getStepZ() * o);
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-
-        for (int iy = 0; iy < 5; iy++) {
-            int[][] layer = layerAt(iy);
-            for (int ix = 0; ix < layer.length; ix++) {
-                for (int iz = 0; iz < layer.length; iz++) {
-                    if (layer[ix][iz] <= 0) continue;
-                    pos.set(
-                            core.getX() + ix - layer.length / 2,
-                            core.getY() + iy,
-                            core.getZ() + iz - layer.length / 2);
-                    if (pos.equals(placed)) continue;
-                    if (!level.getBlockState(pos).canBeReplaced()) return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-
-        for (int iy = 0; iy < 5; iy++) {
-            int[][] layer = layerAt(iy);
-            for (int ix = 0; ix < layer.length; ix++) {
-                for (int iz = 0; iz < layer[0].length; iz++) {
-                    if (layer[ix][iz] <= 0) continue;
-
-                    int ex = ix - layer.length / 2;
-                    int ez = iz - layer.length / 2;
-                    if (iy == 0 && ex == 0 && ez == 0) continue;
-
-                    visitor.cell(
-                            pos.set(core.getX() + ex, core.getY() + iy, core.getZ() + ez),
-                            MASK_NONE);
-                }
-            }
-        }
-
-        visitor.cell(core.offset(0, 4, 0), MASK_UP);
-
-        for (int side = -1; side <= 1; side += 2) {
-            for (int off = -2; off <= 2; off += 2) {
-                visitor.cell(core.offset(6 * side, 0, off), MASK_DOWN);
-                visitor.cell(core.offset(6 * side, 4, off), MASK_UP);
-                visitor.cell(core.offset(off, 0, 6 * side), MASK_DOWN);
-                visitor.cell(core.offset(off, 4, 6 * side), MASK_UP);
-            }
-        }
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_DOWN;
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        int domains = PASSIVE_POWER_IN | PASSIVE_FLUID_IN | PASSIVE_ITEMS;
-        visitor.passiveCell(core.offset(0, 4, 0), MASK_ALL, domains);
-        for (int side = -1; side <= 1; side += 2) {
-            for (int off = -2; off <= 2; off += 2) {
-                visitor.passiveCell(core.offset(6 * side, 0, off), MASK_ALL, domains);
-                visitor.passiveCell(core.offset(6 * side, 4, off), MASK_ALL, domains);
-                visitor.passiveCell(core.offset(off, 0, 6 * side), MASK_ALL, domains);
-                visitor.passiveCell(core.offset(off, 4, 6 * side), MASK_ALL, domains);
-            }
-        }
     }
 
     @Override

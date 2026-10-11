@@ -4,8 +4,14 @@
 package com.hbm.capability;
 
 import com.hbm.api.fluidmk2.IFluidHandlerMK2;
+import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockSurface;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import java.util.Arrays;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -27,8 +33,15 @@ public final class ForeignFluidStaging {
         this.staged = new Fluid[tanks];
     }
 
-    public static FluidTankNTM[] tanksOf(@Nullable IFluidHandlerMK2 machine) {
-        return machine == null ? IFluidHandlerMK2.NO_TANKS : machine.getAllTanks();
+    public static @Nullable BlockEntity ownerOf(
+            Level level, BlockPos pos, Direction side, IFluidHandlerMK2 handler) {
+        if (handler instanceof BlockEntity be) return be.isRemoved() ? null : be;
+        return MultiblockSurface.resolveOwner(
+                level, pos, level.getBlockState(pos), side, BlockMultiblockCore.PASSIVE_ANY, null);
+    }
+
+    public static FluidTankAccess tanksOf(@Nullable IFluidHandlerMK2 machine) {
+        return FluidTankAccess.of(machine);
     }
 
     public int tanks() {
@@ -45,24 +58,24 @@ public final class ForeignFluidStaging {
                 && (inserts ? tank.accepts(fluid) : tank.provides(fluid));
     }
 
-    public Fluid resource(FluidTankNTM[] tanks, int index) {
-        Fluid content = tanks[index].getFluid();
+    public Fluid resource(FluidTankAccess tanks, int index) {
+        Fluid content = tanks.tank(index).getFluid();
         return content != null ? content : Fluids.EMPTY;
     }
 
-    public long amountMb(FluidTankNTM[] tanks, int index) {
-        return Math.max(0L, tanks[index].getFill() + delta[index]);
+    public long amountMb(FluidTankAccess tanks, int index) {
+        return Math.max(0L, tanks.tank(index).getFill() + delta[index]);
     }
 
-    public long capacityMb(FluidTankNTM[] tanks, int index) {
-        return tanks[index].getMaxFill();
+    public long capacityMb(FluidTankAccess tanks, int index) {
+        return tanks.tank(index).getMaxFill();
     }
 
     public long insertableMb(
-            @Nullable IFluidHandlerMK2 receiver, FluidTankNTM[] tanks, int index, Fluid fluid) {
+            @Nullable IFluidHandlerMK2 receiver, FluidTankAccess tanks, int index, Fluid fluid) {
         if (receiver == null || be.isRemoved() || !addressable(tanks, index, fluid, true))
             return 0L;
-        long room = roomIn(tanks[index]) - delta[index];
+        long room = roomIn(tanks.tank(index)) - delta[index];
         long demand =
                 Math.min(
                         receiver.getDemand(fluid, PRESSURE),
@@ -71,10 +84,10 @@ public final class ForeignFluidStaging {
     }
 
     public long extractableMb(
-            @Nullable IFluidHandlerMK2 provider, FluidTankNTM[] tanks, int index, Fluid fluid) {
+            @Nullable IFluidHandlerMK2 provider, FluidTankAccess tanks, int index, Fluid fluid) {
         if (provider == null || be.isRemoved() || !addressable(tanks, index, fluid, false))
             return 0L;
-        long held = tanks[index].getFill() + delta[index];
+        long held = tanks.tank(index).getFill() + delta[index];
         long offered =
                 Math.min(
                         provider.getFluidAvailable(fluid, PRESSURE),
@@ -82,8 +95,8 @@ public final class ForeignFluidStaging {
         return Math.max(0L, Math.min(held, offered - stagedFor(fluid, false)));
     }
 
-    private boolean addressable(FluidTankNTM[] tanks, int index, Fluid fluid, boolean inserts) {
-        if (!addresses(tanks[index], fluid, inserts)) return false;
+    private boolean addressable(FluidTankAccess tanks, int index, Fluid fluid, boolean inserts) {
+        if (!addresses(tanks.tank(index), fluid, inserts)) return false;
         Fluid pending = staged[index];
         return pending == null || pending == fluid;
     }
@@ -99,7 +112,7 @@ public final class ForeignFluidStaging {
 
     public long stageInsert(
             @Nullable IFluidHandlerMK2 receiver,
-            FluidTankNTM[] tanks,
+            FluidTankAccess tanks,
             int index,
             Fluid fluid,
             long maxMb) {
@@ -113,7 +126,7 @@ public final class ForeignFluidStaging {
 
     public long stageExtract(
             @Nullable IFluidHandlerMK2 provider,
-            FluidTankNTM[] tanks,
+            FluidTankAccess tanks,
             int index,
             Fluid fluid,
             long maxMb) {

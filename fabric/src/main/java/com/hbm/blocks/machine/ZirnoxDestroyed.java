@@ -10,7 +10,6 @@ import com.hbm.handler.threading.TargetPoint;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.toclient.RbmkJetPayload;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -24,9 +23,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class ZirnoxDestroyed extends BlockMultiblockCore implements ITickingBlock {
-
-    private static final int[] DIMENSIONS = {1, 0, 2, 2, 2, 2};
-
     private static final int FLAME_CHANCE = 4;
     private static final int FLAME_MAX_AGE = 90;
     private static final int FLAME_RANGE = 75;
@@ -71,24 +67,9 @@ public class ZirnoxDestroyed extends BlockMultiblockCore implements ITickingBloc
     }
 
     @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 2;
-    }
-
-    @Override
     protected InteractionResult useAtCore(
             BlockState coreState, Level level, BlockPos core, Player player, BlockHitResult hit) {
         return InteractionResult.PASS;
-    }
-
-    @Override
-    public void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
     }
 
     @Override

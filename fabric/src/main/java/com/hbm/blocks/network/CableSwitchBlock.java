@@ -43,7 +43,7 @@ public class CableSwitchBlock extends CableConductorBlockBase {
     }
 
     @Override
-    public boolean canConnectCable(BlockState state, Direction side) {
+    public boolean hasPowerContact(Level level, BlockPos pos, BlockState state, Direction side) {
         return true;
     }
 

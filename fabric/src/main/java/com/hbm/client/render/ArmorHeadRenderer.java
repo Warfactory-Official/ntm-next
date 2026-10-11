@@ -83,6 +83,7 @@ public final class ArmorHeadRenderer {
         if (slot != EquipmentSlot.HEAD) return false;
         Mask mask = resolve(stack);
         if (mask == null) return false;
+        if (!ArmorWorldRenderer.visible(model.head, state)) return true;
         pose.pushPose();
         model.root().translateAndRotate(pose);
         mask.submit(pose, collector, light, model.head, state, stack, outlineColor);
@@ -99,6 +100,7 @@ public final class ArmorHeadRenderer {
             ItemModGasmask attachment,
             ItemStack mod,
             int outlineColor) {
+        if (!ArmorWorldRenderer.visible(head, state)) return;
         Identifier texture =
                 attachment.variant() == ItemModGasmask.Variant.MONO
                         ? M65_MONO_TEXTURE

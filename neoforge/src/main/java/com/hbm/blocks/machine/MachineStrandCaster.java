@@ -7,7 +7,6 @@ import com.hbm.blockentity.machine.BlockEntityMachineStrandCaster;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
@@ -36,80 +35,12 @@ import org.jspecify.annotations.Nullable;
 
 public class MachineStrandCaster extends BlockMultiblockCore
         implements ITickingBlock, ICapabilityBlock, ILookOverlay, IToolable {
-    private static final int[] PLACEMENT_DIMENSIONS = {
-        0, 0, 6, 0, 1, 0, 0, 0, 0,
-        2, 0, 1, 0, 1, 0, 0, 0, 0,
-    };
-
-    @Override
-    protected int[] placementDimensionBoxes() {
-        return PLACEMENT_DIMENSIONS;
-    }
-
-    private static final int[] DIMENSIONS = {0, 0, 6, 0, 1, 0};
-    private static final int[] HEAD = {2, 0, 1, 0, 1, 0};
-
-    private static final int PORT_DOMAINS = PASSIVE_FLUID_IN | PASSIVE_ITEMS;
-
     public MachineStrandCaster(Properties props) {
         super(props);
     }
 
     private static @Nullable BlockEntityMachineStrandCaster caster(Level level, BlockPos core) {
         return level.getBlockEntity(core) instanceof BlockEntityMachineStrandCaster be ? be : null;
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
-    }
-
-    @Override
-    public boolean checkRequirement(Level level, BlockPos placed, Direction dir, int o) {
-        if (!super.checkRequirement(level, placed, dir, o)) return false;
-        return MultiblockHandlerXR.checkSpace(level, placed, HEAD, placed, dir);
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        super.visitCells(core, facing, visitor);
-        MultiblockHandlerXR.visitBox(core, HEAD, facing, visitor);
-
-        Direction rot = facing.getClockWise();
-        BlockPos head = core.relative(facing.getOpposite());
-        BlockPos tail = core.relative(facing.getOpposite(), 5);
-
-        visitor.cell(head.relative(rot), MASK_WEST);
-        visitor.cell(head, MASK_EAST);
-        visitor.cell(tail.relative(rot), MASK_WEST);
-        visitor.cell(tail, MASK_EAST);
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        Direction rot = facing.getClockWise();
-        BlockPos head = core.relative(facing.getOpposite());
-        BlockPos tail = core.relative(facing.getOpposite(), 5);
-
-        visitor.passiveCell(head.relative(rot), MASK_ALL, PORT_DOMAINS);
-        visitor.passiveCell(head, MASK_ALL, PORT_DOMAINS);
-        visitor.passiveCell(tail.relative(rot), MASK_ALL, PORT_DOMAINS);
-        visitor.passiveCell(tail, MASK_ALL, PORT_DOMAINS);
-
-        visitor.passiveCell(head.above(2).relative(rot), MASK_ALL, PORT_DOMAINS);
-        visitor.passiveCell(head.above(2), MASK_ALL, PORT_DOMAINS);
-        visitor.passiveCell(core.above(2).relative(rot), MASK_ALL, PORT_DOMAINS);
-        visitor.passiveCell(core.above(2), MASK_ALL, PORT_DOMAINS);
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_NONE;
     }
 
     @Override

@@ -7,20 +7,23 @@ import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.saveddata.SavedDataType;
 import org.jspecify.annotations.Nullable;
 
 public final class FluidPipeGraph {
 
-    public static final SavedDataType<LevelNodeGraph<PipeData>> TYPE =
-            LevelNodeGraph.type(FluidPipeGraphProvider.INSTANCE, "fluid_pipe_graph");
+    public static final LevelNodeGraph.Kind<PipeData> TYPE =
+            LevelNodeGraph.kind(FluidPipeGraphProvider.INSTANCE, "fluid_pipe_graph");
 
-    public static final SavedDataType<LevelNodeGraph<PipeData>> TYPE_SMOKE =
-            LevelNodeGraph.type(FluidPipeGraphProvider.INSTANCE, "fluid_pipe_graph_smoke");
-    public static final SavedDataType<LevelNodeGraph<PipeData>> TYPE_SMOKE_LEADED =
-            LevelNodeGraph.type(FluidPipeGraphProvider.INSTANCE, "fluid_pipe_graph_smoke_leaded");
-    public static final SavedDataType<LevelNodeGraph<PipeData>> TYPE_SMOKE_POISON =
-            LevelNodeGraph.type(FluidPipeGraphProvider.INSTANCE, "fluid_pipe_graph_smoke_poison");
+    public static final LevelNodeGraph.Kind<PipeData> TYPE_SMOKE =
+            LevelNodeGraph.kind(FluidPipeGraphProvider.INSTANCE, "fluid_pipe_graph_smoke");
+    public static final LevelNodeGraph.Kind<PipeData> TYPE_SMOKE_LEADED =
+            LevelNodeGraph.kind(FluidPipeGraphProvider.INSTANCE, "fluid_pipe_graph_smoke_leaded");
+    public static final LevelNodeGraph.Kind<PipeData> TYPE_SMOKE_POISON =
+            LevelNodeGraph.kind(FluidPipeGraphProvider.INSTANCE, "fluid_pipe_graph_smoke_poison");
+
+    @SuppressWarnings("unchecked")
+    public static final LevelNodeGraph.Kind<PipeData>[] KINDS =
+            new LevelNodeGraph.Kind[] {TYPE, TYPE_SMOKE, TYPE_SMOKE_LEADED, TYPE_SMOKE_POISON};
 
     private FluidPipeGraph() {}
 
@@ -42,43 +45,34 @@ public final class FluidPipeGraph {
         return LevelNodeGraph.getOrCreate(level, typeFor(fluid));
     }
 
-    public static SavedDataType<LevelNodeGraph<PipeData>> typeFor(Fluid fluid) {
+    public static LevelNodeGraph.Kind<PipeData> typeFor(Fluid fluid) {
         if (fluid == NTMFluids.SMOKE) return TYPE_SMOKE;
         if (fluid == NTMFluids.SMOKE_LEADED) return TYPE_SMOKE_LEADED;
         if (fluid == NTMFluids.SMOKE_POISON) return TYPE_SMOKE_POISON;
         return TYPE;
     }
 
+    @SuppressWarnings("unchecked")
     public static LevelNodeGraph<PipeData>[] all(ServerLevel level) {
-        @SuppressWarnings("unchecked")
-        LevelNodeGraph<PipeData>[] graphs =
-                new LevelNodeGraph[] {
-                    LevelNodeGraph.getOrCreate(level, TYPE),
-                    LevelNodeGraph.getOrCreate(level, TYPE_SMOKE),
-                    LevelNodeGraph.getOrCreate(level, TYPE_SMOKE_LEADED),
-                    LevelNodeGraph.getOrCreate(level, TYPE_SMOKE_POISON)
-                };
+        LevelNodeGraph<PipeData>[] graphs = new LevelNodeGraph[KINDS.length];
+        for (int i = 0; i < KINDS.length; i++)
+            graphs[i] = LevelNodeGraph.getOrCreate(level, KINDS[i]);
         return graphs;
     }
 
     public static @Nullable LevelNodeGraph<PipeData> graphAt(ServerLevel level, long posKey) {
-        LevelNodeGraph<PipeData> graph = LevelNodeGraph.getOrCreate(level, TYPE);
-        if (graph.containsCell(posKey)) return graph;
-        graph = LevelNodeGraph.getOrCreate(level, TYPE_SMOKE);
-        if (graph.containsCell(posKey)) return graph;
-        graph = LevelNodeGraph.getOrCreate(level, TYPE_SMOKE_LEADED);
-        if (graph.containsCell(posKey)) return graph;
-        graph = LevelNodeGraph.getOrCreate(level, TYPE_SMOKE_POISON);
-        return graph.containsCell(posKey) ? graph : null;
+        for (LevelNodeGraph.Kind<PipeData> kind : KINDS) {
+            LevelNodeGraph<PipeData> graph = LevelNodeGraph.getOrCreate(level, kind);
+            if (graph.containsCell(posKey)) return graph;
+        }
+        return null;
     }
 
     public static @Nullable PipeData dataAt(ServerLevel level, long posKey) {
-        PipeData data = LevelNodeGraph.getOrCreate(level, TYPE).dataAt(posKey);
-        if (data != null) return data;
-        data = LevelNodeGraph.getOrCreate(level, TYPE_SMOKE).dataAt(posKey);
-        if (data != null) return data;
-        data = LevelNodeGraph.getOrCreate(level, TYPE_SMOKE_LEADED).dataAt(posKey);
-        if (data != null) return data;
-        return LevelNodeGraph.getOrCreate(level, TYPE_SMOKE_POISON).dataAt(posKey);
+        for (LevelNodeGraph.Kind<PipeData> kind : KINDS) {
+            PipeData data = LevelNodeGraph.getOrCreate(level, kind).dataAt(posKey);
+            if (data != null) return data;
+        }
+        return null;
     }
 }

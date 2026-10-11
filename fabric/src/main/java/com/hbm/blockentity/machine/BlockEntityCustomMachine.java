@@ -35,9 +35,11 @@ import com.hbm.items.ModDataComponents;
 import com.hbm.module.ModulePatternMatcher;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
+import com.hbm.platform.BlockLookupCache;
 import com.hbm.util.TickPhase;
 import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -110,6 +112,8 @@ public class BlockEntityCustomMachine extends BlockEntityMachinePolluting
     @SyncField(units = 1L)
     public FluidTankNTM[] outputTanks = NO_TANKS;
 
+    private FluidTankNTM[] sendingTanks = getSmokeTanks();
+
     @SyncField(units = 1L)
     public ModulePatternMatcher matcher = new ModulePatternMatcher(0);
 
@@ -121,6 +125,9 @@ public class BlockEntityCustomMachine extends BlockEntityMachinePolluting
     private List<BlockPos> portCells = List.of();
     private List<BlockPos> fluxCells = List.of();
     private List<BlockPos> heatCells = List.of();
+    private List<BlockPos> boundHeats = List.of();
+    private BlockPos[] heatProbes = new BlockPos[0];
+    private BlockLookupCache<IHeatSource>[] heatSources = newHeatSources(0);
 
     public BlockEntityCustomMachine(BlockPos pos, BlockState state) {
         super(
@@ -170,6 +177,9 @@ public class BlockEntityCustomMachine extends BlockEntityMachinePolluting
         outputTanks = new FluidTankNTM[found.fluidOutCount()];
         for (int i = 0; i < outputTanks.length; i++)
             outputTanks[i] = new FluidTankNTM(found.fluidOutCap());
+        FluidTankNTM[] smokeTanks = getSmokeTanks();
+        sendingTanks = Arrays.copyOf(outputTanks, outputTanks.length + smokeTanks.length);
+        System.arraycopy(smokeTanks, 0, sendingTanks, outputTanks.length, smokeTanks.length);
         if (level instanceof ServerLevel) forEachTank(tank -> tank.bindOwner(this));
         matcher = new ModulePatternMatcher(found.itemInCount());
         smoke.changeTankSize(found.maxPollutionCap());
@@ -289,18 +299,16 @@ public class BlockEntityCustomMachine extends BlockEntityMachinePolluting
     }
 
     private void pullHeat() {
-        if (definition.maxHeat() <= 0) return;
-        for (BlockPos cell : heatCells) {
-            for (Direction dir : Direction.VALUES) {
-                BlockPos probe = cell.relative(dir);
-                IHeatSource source = NtmContracts.HEAT_SOURCE.at(level, probe);
-                if (source == null) continue;
-                int diff = source.getHeatStored(level, probe) - heat;
-                if (diff <= 0) continue;
-                source.useUpHeat(level, probe, diff);
-                heat = Math.min(heat + diff, definition.maxHeat());
-                markChanged();
-            }
+        if (definition.maxHeat() <= 0 || heatCells.isEmpty()) return;
+        for (int i = 0; i < heatSources.length; i++) {
+            IHeatSource source = heatSources[i].find();
+            if (source == null) continue;
+            BlockPos probe = heatProbes[i];
+            int diff = source.getHeatStored(level, probe) - heat;
+            if (diff <= 0) continue;
+            source.useUpHeat(level, probe, diff);
+            heat = Math.min(heat + diff, definition.maxHeat());
+            markChanged();
         }
     }
 
@@ -399,6 +407,26 @@ public class BlockEntityCustomMachine extends BlockEntityMachinePolluting
         }
     }
 
+    private void bindHeatSources(List<BlockPos> heats) {
+        boundHeats = heats;
+        int dirs = Direction.VALUES.length;
+        heatProbes = new BlockPos[heats.size() * dirs];
+        heatSources = newHeatSources(heatProbes.length);
+        for (int c = 0; c < heats.size(); c++) {
+            for (int d = 0; d < dirs; d++) {
+                BlockPos probe = heats.get(c).relative(Direction.VALUES[d]);
+                heatProbes[c * dirs + d] = probe;
+                heatSources[c * dirs + d] =
+                        NtmContracts.HEAT_SOURCE.cacheAt((ServerLevel) level, probe);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static BlockLookupCache<IHeatSource>[] newHeatSources(int size) {
+        return new BlockLookupCache[size];
+    }
+
     public boolean checkStructure() {
         structureCheckDelay = STRUCTURE_CHECK_INTERVAL;
         List<BlockPos> priorPorts = portCells;
@@ -431,6 +459,7 @@ public class BlockEntityCustomMachine extends BlockEntityMachinePolluting
         portCells = List.copyOf(ports);
         fluxCells = List.copyOf(flux);
         heatCells = List.copyOf(heats);
+        if (!heatCells.equals(boundHeats)) bindHeatSources(heatCells);
         structureOK = true;
 
         if (!priorPorts.equals(portCells)) {
@@ -525,11 +554,7 @@ public class BlockEntityCustomMachine extends BlockEntityMachinePolluting
 
     @Override
     public FluidTankNTM[] getSendingTanks() {
-        FluidTankNTM[] smokeTanks = getSmokeTanks();
-        FluidTankNTM[] all = new FluidTankNTM[outputTanks.length + smokeTanks.length];
-        System.arraycopy(outputTanks, 0, all, 0, outputTanks.length);
-        System.arraycopy(smokeTanks, 0, all, outputTanks.length, smokeTanks.length);
-        return all;
+        return sendingTanks;
     }
 
     @Override

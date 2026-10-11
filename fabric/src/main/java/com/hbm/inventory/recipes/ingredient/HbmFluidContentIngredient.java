@@ -10,12 +10,13 @@ import com.hbm.items.ModItems;
 import com.hbm.items.machine.IFluidContainerItem;
 import com.hbm.lib.Library;
 import com.hbm.platform.FabricCaps;
-import com.hbm.platform.IFluidHandlerView;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.stream.Stream;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredient;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -68,8 +69,8 @@ public record HbmFluidContentIngredient(Fluid fluid, int amount)
                     && content.amount() == amount;
         }
 
-        IFluidHandlerView view = FabricCaps.findFluidHandler(stack);
-        return view != null && view.extractable(fluid) == amount;
+        Storage<FluidVariant> store = FabricCaps.findFluidStore(stack);
+        return store != null && FabricCaps.extractable(store, fluid) == amount;
     }
 
     @Override

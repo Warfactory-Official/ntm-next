@@ -10,7 +10,6 @@ import com.hbm.blocks.IPersistentInfoProvider;
 import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.blocks.multiblock.MultiblockHandlerXR;
 import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.items.ModDataComponents;
@@ -40,8 +39,6 @@ public class MachineBatteryREDD extends BlockMultiblockCore
 
     public static final MapCodec<MachineBatteryREDD> CODEC = simpleCodec(MachineBatteryREDD::new);
 
-    private static final int[] DIMENSIONS = {9, 0, 2, 2, 4, 4};
-
     public MachineBatteryREDD(Properties props) {
         super(props);
     }
@@ -70,47 +67,6 @@ public class MachineBatteryREDD extends BlockMultiblockCore
     @Override
     protected MapCodec<? extends Block> codec() {
         return CODEC;
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 2;
-    }
-
-    @Override
-    public int coreMask() {
-        return MASK_NONE;
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        for (BlockPos port : ports(core, facing)) {
-            visitor.passiveCell(port, MASK_ALL, PASSIVE_POWER_IN);
-        }
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        BlockPos[] ports = ports(core, facing);
-        MultiblockHandlerXR.visitBox(
-                core,
-                getDimensions(),
-                facing,
-                (CellVisitor)
-                        (pos, mask) -> {
-                            for (BlockPos port : ports) {
-                                if (port.equals(pos)) {
-                                    visitor.cell(pos, MASK_ALL);
-                                    return;
-                                }
-                            }
-                            visitor.cell(pos, mask);
-                        });
     }
 
     @Override

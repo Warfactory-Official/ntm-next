@@ -8,6 +8,7 @@ import com.hbm.blockentity.machine.pile.BlockEntityPileCore.PileChannel;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.machine.pile.BlockPile;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
@@ -21,7 +22,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntityPileVent extends BlockEntityPileDeviceBase
-        implements IFluidHandlerMK2, SyncUnitSchema {
+        implements FluidTankAccess, IFluidHandlerMK2, SyncUnitSchema {
     @SyncField(units = 1L)
     public final FluidTankNTM compair = new FluidTankNTM(NTMFluids.AIR, 4_000).withPressure(1);
 
@@ -98,13 +99,19 @@ public class BlockEntityPileVent extends BlockEntityPileDeviceBase
     }
 
     @Override
-    public int[] getReceivingPressureRange(Fluid type) {
-        return new int[] {compair.getPressure(), compair.getPressure()};
+    public int receivingPressureMask(Fluid type) {
+        return 1 << compair.getPressure();
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {compair};
+    public int tankCount() {
+        return 1;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        if (index != 0) throw new IndexOutOfBoundsException(index);
+        return compair;
     }
 
     @Override

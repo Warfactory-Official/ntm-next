@@ -11,7 +11,6 @@ import com.hbm.interfaces.IBomb;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemLock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -24,13 +23,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class BlastDoor extends BlockMultiblockCore implements ITickingBlock, IBomb {
-    private static final int[] DIMENSIONS = {6, 0, 0, 0, 0, 0};
-
     public static final int LEAF_TOP = 5;
 
     public BlastDoor(Properties props) {
@@ -42,16 +37,6 @@ public class BlastDoor extends BlockMultiblockCore implements ITickingBlock, IBo
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(BlockDoorGeneric.OPEN);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
     }
 
     @Override
@@ -67,12 +52,6 @@ public class BlastDoor extends BlockMultiblockCore implements ITickingBlock, IBo
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
         return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection());
-    }
-
-    @Override
-    public @Nullable VoxelShape cellShape(
-            int lx, int ly, int lz, Direction facing, boolean open, boolean forCollision) {
-        return open && ly >= 1 && ly <= LEAF_TOP ? Shapes.empty() : null;
     }
 
     @Override

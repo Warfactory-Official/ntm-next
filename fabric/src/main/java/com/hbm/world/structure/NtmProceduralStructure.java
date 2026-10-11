@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 
-public class NtmProceduralStructure extends Structure {
+public class NtmProceduralStructure extends Structure implements ColumnBiome.SelfTested {
 
     public static final MapCodec<NtmProceduralStructure> CODEC =
             DataCodecs.strict(simpleCodec(NtmProceduralStructure::new), "type");
@@ -38,6 +38,7 @@ public class NtmProceduralStructure extends Structure {
                                 Heightmap.Types.WORLD_SURFACE_WG,
                                 context.heightAccessor(),
                                 context.randomState());
+        if (!ColumnBiome.valid(context, blockX, surface, blockZ)) return Optional.empty();
 
         NoiseColumn column =
                 context.chunkGenerator()

@@ -42,7 +42,6 @@ import org.jspecify.annotations.Nullable;
 public class BlockCargoElevator extends BlockMultiblockCore implements ITickingBlock {
 
     public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
-    private static final int[] DIMENSIONS = {0, 0, 1, 1, 1, 1};
 
     public BlockCargoElevator(Properties properties) {
         super(properties);
@@ -53,16 +52,6 @@ public class BlockCargoElevator extends BlockMultiblockCore implements ITickingB
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(PART);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return 1;
     }
 
     @Override
@@ -95,7 +84,7 @@ public class BlockCargoElevator extends BlockMultiblockCore implements ITickingB
 
     @Override
     protected void visitPlacedCells(
-            LevelAccessor level, BlockPos core, Direction facing, CellVisitor visitor) {
+            LevelAccessor level, BlockPos core, Direction facing, FootprintVisitor visitor) {
         int height =
                 level.getBlockEntity(core) instanceof BlockEntityCargoElevator elevator
                         ? elevator.height
@@ -105,17 +94,17 @@ public class BlockCargoElevator extends BlockMultiblockCore implements ITickingB
 
     @Override
     protected void visitTeardownCells(
-            LevelAccessor level, BlockPos core, Direction facing, CellVisitor visitor) {
+            LevelAccessor level, BlockPos core, Direction facing, FootprintVisitor visitor) {
         visitSections(core, level.getMaxY() - core.getY(), visitor);
     }
 
-    private static void visitSections(BlockPos core, int height, CellVisitor visitor) {
+    private static void visitSections(BlockPos core, int height, FootprintVisitor visitor) {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         for (int y = 0; y <= height; y++) {
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
                     if (x == 0 && y == 0 && z == 0) continue;
-                    visitor.cell(pos.setWithOffset(core, x, y, z), MASK_NONE);
+                    visitor.cell(pos.setWithOffset(core, x, y, z));
                 }
             }
         }

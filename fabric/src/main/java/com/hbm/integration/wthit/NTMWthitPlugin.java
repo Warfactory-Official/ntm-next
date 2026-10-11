@@ -5,10 +5,10 @@ package com.hbm.integration.wthit;
 
 import com.hbm.NuclearTech;
 import com.hbm.api.energymk2.IEnergyHandlerMK2;
-import com.hbm.api.fluidmk2.IFluidHandlerMK2;
 import com.hbm.blocks.multiblock.BlockMultiblockCell;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockSurface;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import mcp.mobius.waila.api.IBlockAccessor;
 import mcp.mobius.waila.api.IBlockComponentProvider;
@@ -72,14 +72,14 @@ public final class NTMWthitPlugin implements IWailaCommonPlugin, IWailaClientPlu
                                 result.add(
                                         EnergyData.of(machine.getPower(), machine.getMaxPower())));
             }
-            if (target instanceof IFluidHandlerMK2 machine && machine.getAllTanks().length > 0) {
+            if (target instanceof FluidTankAccess tanks && tanks.tankCount() > 0) {
                 data.add(
                         FluidData.TYPE,
                         result -> {
-                            FluidTankNTM[] tanks = machine.getAllTanks();
                             FluidData fluids =
-                                    FluidData.of(FluidData.Unit.MILLIBUCKETS, tanks.length);
-                            for (FluidTankNTM tank : tanks) {
+                                    FluidData.of(FluidData.Unit.MILLIBUCKETS, tanks.tankCount());
+                            for (int i = 0; i < tanks.tankCount(); i++) {
+                                FluidTankNTM tank = tanks.tank(i);
                                 Fluid fluid = tank.getFluid();
                                 if (fluid != null)
                                     fluids.add(

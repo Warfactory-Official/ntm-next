@@ -12,6 +12,7 @@ import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blockentity.IFluidCopiable;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
@@ -27,7 +28,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntitySolarBoiler extends BlockEntityMachineBase
-        implements FluidTankEndpoint, IFluidCopiable, SyncUnitSchema {
+        implements FluidTankAccess, FluidTankEndpoint, IFluidCopiable, SyncUnitSchema {
 
     @SyncField(units = 1L << 1)
     public final FluidTankNTM water = new FluidTankNTM(NTMFluids.WATER, 100);
@@ -107,8 +108,17 @@ public class BlockEntitySolarBoiler extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {water, steam};
+    public int tankCount() {
+        return 2;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return switch (index) {
+            case 0 -> water;
+            case 1 -> steam;
+            default -> throw new IndexOutOfBoundsException(index);
+        };
     }
 
     @Override

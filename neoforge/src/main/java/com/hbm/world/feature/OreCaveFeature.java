@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import org.jspecify.annotations.Nullable;
@@ -47,20 +48,19 @@ public class OreCaveFeature extends Feature<OreCaveConfig> {
         noise.getGrid(baseX, baseZ, SIZE, SIZE, SCALE, SCALE, noiseValues);
         BlockPos.MutableBlockPos pos = scratch.pos;
         BlockPos.MutableBlockPos npos = scratch.neighbor;
+        ChunkAccess center = level.getChunk(baseX >> 4, baseZ >> 4);
 
         int index = 0;
         for (int x = baseX; x < baseX + SIZE; x++) {
             for (int z = baseZ; z < baseZ + SIZE; z++) {
                 double n = noiseValues[index++];
-                if (n <= cfg.threshold()) continue;
-
-                int range = (int) ((n - cfg.threshold()) * cfg.rangeMult());
-                if (range > cfg.maxRange()) range = cfg.maxRange() * 2 - range;
+                int range =
+                        NoiseBand.halfHeight(n, cfg.threshold(), cfg.rangeMult(), cfg.maxRange());
                 if (range < 0) continue;
 
                 for (int y = yLevel - range; y <= yLevel + range; y++) {
                     pos.set(x, y, z);
-                    BlockState cur = level.getBlockState(pos);
+                    BlockState cur = center.getBlockState(pos);
 
                     if (cfg.replaceable().test(cur, rand)) {
                         boolean shouldGen = false;
@@ -68,7 +68,10 @@ public class OreCaveFeature extends Feature<OreCaveConfig> {
 
                         for (Direction dir : Direction.VALUES) {
                             npos.setWithOffset(pos, dir);
-                            BlockState nb = level.getBlockState(npos);
+                            BlockState nb =
+                                    (npos.getX() & ~15) == baseX && (npos.getZ() & ~15) == baseZ
+                                            ? center.getBlockState(npos)
+                                            : level.getBlockState(npos);
                             if (nb.isAir()
                                     || nb.getBlock() instanceof BlockSpike
                                     || exposedByFluid && !nb.getFluidState().isEmpty()) {

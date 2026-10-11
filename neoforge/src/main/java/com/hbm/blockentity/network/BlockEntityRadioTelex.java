@@ -4,7 +4,6 @@
 package com.hbm.blockentity.network;
 
 import com.hbm.api.control.IControlReceiver;
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -32,7 +31,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntityRadioTelex extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, IControlReceiver, SyncUnitSchema {
+        implements Synced, GraphResident, IControlReceiver, SyncUnitSchema {
 
     public static final int LINE_WIDTH = 33;
     public static final char EOL = '\n';

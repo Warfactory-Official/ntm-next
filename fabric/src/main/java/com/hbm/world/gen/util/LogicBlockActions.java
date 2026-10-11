@@ -251,8 +251,7 @@ public final class LogicBlockActions {
                     if (x > 8D) x += level.getRandom().nextInt(10) - 5;
                     EntityUndeadSoldier soldier =
                             ModEntities.UNDEAD_SOLDIER.get().create(level, EntitySpawnReason.EVENT);
-                    if (soldier == null)
-                        throw new IllegalStateException("Could not construct ABERRATOR soldier");
+                    if (soldier == null) break;
                     for (int retry = 0; retry < 7; retry++) {
                         double sx = pos.getX() + 0.5D + x;
                         double sz = pos.getZ() + 0.5D + z;

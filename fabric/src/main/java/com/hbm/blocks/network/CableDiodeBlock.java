@@ -12,7 +12,7 @@ import com.hbm.capability.ICapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.interfaces.ILookOverlay;
 import com.hbm.interfaces.IToolable;
-import com.hbm.lib.Library;
+import com.hbm.uninos.graph.PhysicalGraph;
 import com.hbm.util.BobMathUtil;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
@@ -54,7 +54,7 @@ public class CableDiodeBlock extends Block
     public static Consumer<BlockEntityCableDiode> OPEN_SCREEN = diode -> {};
 
     public CableDiodeBlock(BlockBehaviour.Properties props) {
-        super(props);
+        super(CapabilityDependentShape.deferShapeToFullChunk(props));
         BlockState def = stateDefinition.any().setValue(FACING, Direction.NORTH);
         for (Direction dir : Direction.VALUES) def = def.setValue(connectionFor(dir), false);
         registerDefaultState(def);
@@ -86,7 +86,7 @@ public class CableDiodeBlock extends Block
             state =
                     state.setValue(
                             connectionFor(dir),
-                            Library.canConnect(ctx.getLevel(), npos, dir.getOpposite()));
+                            PhysicalGraph.powerContact(ctx.getLevel(), npos, dir.getOpposite()));
         }
         return state;
     }
@@ -124,9 +124,9 @@ public class CableDiodeBlock extends Block
             BlockPos neighbourPos,
             BlockState neighbourState,
             RandomSource random) {
-        boolean joins = Library.canConnect(level, pos.relative(dir), dir.getOpposite());
+        boolean joins = PhysicalGraph.powerContact(level, pos.relative(dir), dir.getOpposite());
         if (level.isClientSide())
-            return Library.predictArm(state, connectionFor(dir), neighbourState, joins);
+            return PhysicalGraph.predictArm(state, connectionFor(dir), neighbourState, joins);
         return state.setValue(connectionFor(dir), joins);
     }
 
@@ -140,7 +140,7 @@ public class CableDiodeBlock extends Block
             boolean movedByPiston) {
         super.neighborChanged(state, level, pos, block, orientation, movedByPiston);
         if (level instanceof ServerLevel sl) {
-            Library.redrawArms(state, sl, pos);
+            PhysicalGraph.redraw(state, sl, pos);
         }
     }
 
@@ -221,9 +221,15 @@ public class CableDiodeBlock extends Block
     }
 
     @Override
+    public boolean hasPowerContact(Level level, BlockPos pos, BlockState state, Direction side) {
+        return true;
+    }
+
+    @Override
     public MachineCaps caps() {
         return MachineCaps.of(ModBlockEntities.CABLE_DIODE)
                 .powerIn()
-                .faces(BlockEntityCableDiode.class, BlockEntityCableDiode::acceptsFace);
+                .powerOut()
+                .roleFaces(BlockEntityCableDiode.class, BlockEntityCableDiode::acceptsFace);
     }
 }

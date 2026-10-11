@@ -3,12 +3,15 @@
 
 package com.hbm.blocks.multiblock;
 
+import com.hbm.blocks.machine.BlockCMPort;
 import java.util.Arrays;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import org.jspecify.annotations.Nullable;
 
 public final class MultiblockCoreIndex {
     public static final long NO_ENTRY = Long.MIN_VALUE;
@@ -20,6 +23,8 @@ public final class MultiblockCoreIndex {
     private static final int DELTA_BITS = DX_BITS + DY_BITS + DZ_BITS;
     public static final int KEY_SHIFT = DELTA_BITS;
     private static final int KEY_MASK = (1 << (8 + Y_INDEX_BITS)) - 1;
+    public static final int FOLDED = 0, PORT = 1, MEMBER = 2, LEGACY = 3;
+    private static final int POPULATION_SHIFT = KEY_SHIFT + 8 + Y_INDEX_BITS;
     public static final int MAX_INDEXABLE_HEIGHT = 1 << Y_INDEX_BITS;
 
     private MultiblockCoreIndex() {}
@@ -53,6 +58,10 @@ public final class MultiblockCoreIndex {
     }
 
     public static long pack(int key, int dx, int dy, int dz) {
+        return pack(key, dx, dy, dz, FOLDED);
+    }
+
+    public static long pack(int key, int dx, int dy, int dz, int population) {
         checkRange("dx", dx, DX_BITS);
         checkRange("dy", dy, DY_BITS);
         checkRange("dz", dz, DZ_BITS);
@@ -60,7 +69,30 @@ public final class MultiblockCoreIndex {
                 ((long) (dz & mask(DZ_BITS)) << (DY_BITS + DX_BITS))
                         | ((long) (dy & mask(DY_BITS)) << DX_BITS)
                         | (dx & mask(DX_BITS));
-        return ((long) key << DELTA_BITS) | delta;
+        return (long) population << POPULATION_SHIFT | ((long) key << DELTA_BITS) | delta;
+    }
+
+    public static int populationOf(long entry) {
+        return (int) (entry >>> POPULATION_SHIFT) & 3;
+    }
+
+    public static void resolveLegacy(ChunkAccess chunk, LevelHeightAccessor level) {
+        long[] entries = chunk.hbm$coreIndex();
+        boolean changed = false;
+        for (int i = 0, n = entries == null ? 0 : chunk.hbm$coreIndexSize(); i < n; i++) {
+            long entry = entries[i];
+            if (populationOf(entry) != LEGACY) continue;
+            Block block =
+                    chunk.getBlockState(BlockPos.of(cellPacked(chunk.getPos(), level, entry)))
+                            .getBlock();
+            int population =
+                    block instanceof AssembledMembers.Member
+                            ? MEMBER
+                            : block instanceof BlockCMPort ? PORT : FOLDED;
+            entries[i] = entry & ~(3L << POPULATION_SHIFT) | (long) population << POPULATION_SHIFT;
+            changed = true;
+        }
+        if (changed) chunk.markUnsaved();
     }
 
     private static int mask(int bits) {
@@ -163,23 +195,40 @@ public final class MultiblockCoreIndex {
 
         long[] entries = chunk.hbm$coreIndex();
         int size = entries == null ? 0 : chunk.hbm$coreIndexSize();
-
-        int w = 0;
-        for (int r = 0; r < size; r++) {
-            if (entries[r] >= 0 && indexOf(packed, count, keyOf(entries[r])) < 0)
-                entries[w++] = entries[r];
-        }
-        size = w;
+        if (allRecorded(entries, size, packed, count)) return;
+        count = dedupeKeepingLast(packed, count);
 
         if (entries == null || entries.length < size + count) {
             int grown = Math.max(size + count, (entries == null ? 0 : entries.length) * 3 / 2 + 8);
             entries = entries == null ? new long[grown] : Arrays.copyOf(entries, grown);
         }
-        System.arraycopy(packed, 0, entries, size, count);
-        size += count;
-        Arrays.sort(entries, 0, size);
-        chunk.hbm$setCoreIndex(entries, dedupeKeepingLast(entries, size));
+        int read = size - 1;
+        int write = size + count - 1;
+        for (int p = count - 1; read >= 0 || p >= 0; ) {
+            if (p < 0 || (read >= 0 && keyOf(entries[read]) > keyOf(packed[p]))) {
+                long row = entries[read--];
+                if (row >= 0) entries[write--] = row;
+            } else {
+                if (read >= 0 && keyOf(entries[read]) == keyOf(packed[p])) read--;
+                entries[write--] = packed[p--];
+            }
+        }
+        int start = write + 1;
+        size = size + count - start;
+        if (start > 0) System.arraycopy(entries, start, entries, 0, size);
+        chunk.hbm$setCoreIndex(entries, size);
         resetRemovals(chunk);
+        chunk.markUnsaved();
+    }
+
+    private static boolean allRecorded(
+            long @Nullable [] entries, int size, long[] packed, int count) {
+        if (entries == null) return false;
+        for (int i = 0; i < count; i++) {
+            int at = indexOf(entries, size, keyOf(packed[i]));
+            if (at < 0 || entries[at] != packed[i]) return false;
+        }
+        return true;
     }
 
     public static void remove(ChunkAccess chunk, int key) {
@@ -188,6 +237,7 @@ public final class MultiblockCoreIndex {
         int size = chunk.hbm$coreIndexSize();
         int at = indexOf(entries, size, key);
         if (at < 0 || entries[at] < 0) return;
+        chunk.markUnsaved();
         RemovalBatch batch = REMOVALS.get();
         if (batch != null) {
             entries[at] |= Long.MIN_VALUE;

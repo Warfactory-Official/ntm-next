@@ -16,7 +16,7 @@ import com.hbm.items.machine.upgrade.UpgradeType;
 import com.hbm.module.ModulePatternMatcher;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
-import com.hbm.util.InventoryUtil;
+import com.hbm.platform.NeoForgeCaps;
 import io.netty.buffer.ByteBuf;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -33,6 +33,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 public class BlockEntityCraneGrabber extends BlockEntityCraneBase
         implements IGUIProvider, IControlReceiverFilter, SyncUnitSchema {
@@ -148,7 +150,9 @@ public class BlockEntityCraneGrabber extends BlockEntityCraneBase
             return;
         }
 
-        if (!InventoryUtil.inventoryAt(level, outputPos, output.getOpposite())) return;
+        ResourceHandler<ItemResource> dest =
+                NeoForgeCaps.findItemStore(level, outputPos, output.getOpposite());
+        if (dest == null) return;
 
         for (EntityMovingItem item : riders) {
             ItemStack stack = item.getItemStack();
@@ -158,9 +162,7 @@ public class BlockEntityCraneGrabber extends BlockEntityCraneBase
             markChanged();
 
             int toAdd = Math.min(stack.getCount(), amount);
-            ItemStack left =
-                    InventoryUtil.insertAt(
-                            level, outputPos, output.getOpposite(), stack.copyWithCount(toAdd));
+            ItemStack left = NeoForgeCaps.insert(dest, stack.copyWithCount(toAdd));
             int didAdd = toAdd - left.getCount();
             ItemStack remaining = stack.copyWithCount(stack.getCount() - didAdd);
 

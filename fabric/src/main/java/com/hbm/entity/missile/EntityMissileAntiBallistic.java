@@ -7,6 +7,7 @@ package com.hbm.entity.missile;
 import com.hbm.api.entity.IRadarDetectable;
 import com.hbm.api.entity.IRadarDetectableNT;
 import com.hbm.client.ClientEffects;
+import com.hbm.entity.FarVisible;
 import com.hbm.entity.projectile.EntityThrowableInterp;
 import com.hbm.explosion.ExplosionLarge;
 import com.hbm.util.ChunkUtil;
@@ -21,7 +22,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityMissileAntiBallistic extends EntityThrowableInterp
-        implements IRadarDetectable, IRadarDetectableNT {
+        implements IRadarDetectable, IRadarDetectableNT, FarVisible {
 
     public static double baseSpeed = 1.5D;
 

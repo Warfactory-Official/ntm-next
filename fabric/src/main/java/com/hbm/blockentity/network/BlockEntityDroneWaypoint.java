@@ -3,7 +3,6 @@
 
 package com.hbm.blockentity.network;
 
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -25,7 +24,7 @@ import net.minecraft.world.phys.AABB;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityDroneWaypoint extends BlockEntity
-        implements Synced, GraphResident, FoldedCoreResident, IDroneLinkable, SyncUnitSchema {
+        implements Synced, GraphResident, IDroneLinkable, SyncUnitSchema {
 
     private static final int LINE_PARTICLE_RANGE = 150;
     private static final int LINE_COLOUR = 0x0000ff;

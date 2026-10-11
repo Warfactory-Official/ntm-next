@@ -6,13 +6,15 @@ package com.hbm.blockentity.machine;
 import com.hbm.api.environment.Environment;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidFlushSender;
-import com.hbm.blockentity.FoldedCoreResident;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.IFluidCopiable;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.data.MachineData;
 import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.packet.SyncField;
 import com.hbm.packet.SyncUnitSchema;
@@ -35,9 +37,9 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public abstract class BlockEntityMachinePumpBase extends BlockEntity
-        implements Synced,
+        implements FluidTankAccess,
+                Synced,
                 GraphResident,
-                FoldedCoreResident,
                 FluidFlushSender,
                 IFluidCopiable,
                 SyncUnitSchema {
@@ -175,6 +177,11 @@ public abstract class BlockEntityMachinePumpBase extends BlockEntity
     }
 
     @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
+    }
+
+    @Override
     public long getFluidAvailable(Fluid type, int pressure) {
         if (water.provides(type) && pressure == water.getPressure()) return water.getFill();
         return 0L;
@@ -188,8 +195,14 @@ public abstract class BlockEntityMachinePumpBase extends BlockEntity
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return new FluidTankNTM[] {water};
+    public int tankCount() {
+        return 1;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        if (index != 0) throw new IndexOutOfBoundsException(index);
+        return water;
     }
 
     @Override

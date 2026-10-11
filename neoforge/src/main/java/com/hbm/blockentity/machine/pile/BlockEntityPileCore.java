@@ -4,7 +4,6 @@
 
 package com.hbm.blockentity.machine.pile;
 
-import com.hbm.blockentity.FoldedCoreResident;
 import com.hbm.blockentity.GraphResident;
 import com.hbm.blockentity.Synced;
 import com.hbm.blocks.ModBlockEntities;
@@ -44,7 +43,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 public class BlockEntityPileCore extends BlockEntity
-        implements GraphResident, FoldedCoreResident, Synced, SyncUnitSchema {
+        implements GraphResident, Synced, SyncUnitSchema {
     public PileOrientation orientation = PileOrientation.NEITHER;
     public Direction front = Direction.NORTH;
 

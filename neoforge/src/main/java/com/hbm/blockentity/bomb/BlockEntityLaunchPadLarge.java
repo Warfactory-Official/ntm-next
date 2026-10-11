@@ -271,7 +271,7 @@ public class BlockEntityLaunchPadLarge extends BlockEntityLaunchPadBase implemen
                             25F,
                             1.0F,
                             5);
-            audio.startSound();
+            audio.startSound(getBlockPos());
         }
         audio.updateVolume(getVolume(volume));
         audio.keepAlive();

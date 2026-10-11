@@ -17,7 +17,7 @@ import net.fabricmc.fabric.api.client.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.client.renderer.v1.mesh.MutableMesh;
 import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadView;
-import net.fabricmc.fabric.api.client.renderer.v1.sprite.FabricTextureAtlas;
+import net.fabricmc.fabric.api.client.renderer.v1.sprite.SpriteFinder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
@@ -30,7 +30,6 @@ import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
-import net.minecraft.data.AtlasIds;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.CardinalLighting;
@@ -48,6 +47,12 @@ public final class SectionGeometry {
     static final ChunkSectionLayer[] LAYERS = ChunkSectionLayer.values();
 
     private SectionGeometry() {}
+
+    private static volatile @Nullable SpriteFinder blockSprites;
+
+    public static void blockSprites(SpriteFinder finder) {
+        blockSprites = finder;
+    }
 
     public interface TerrainView {}
 
@@ -98,14 +103,7 @@ public final class SectionGeometry {
         var layers = new ByteArrayList();
         var surface = new ByteArrayList();
         boolean[] ownBlock = {true};
-        var finder =
-                sprites == null
-                        ? null
-                        : ((FabricTextureAtlas)
-                                        Minecraft.getInstance()
-                                                .getAtlasManager()
-                                                .getAtlasOrThrow(AtlasIds.BLOCKS))
-                                .spriteFinder();
+        var finder = blockSprites;
         var emitter =
                 Renderer.get()
                         .quadEmitter(

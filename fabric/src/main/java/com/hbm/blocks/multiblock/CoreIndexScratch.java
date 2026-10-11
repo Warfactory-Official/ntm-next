@@ -4,10 +4,7 @@
 package com.hbm.blocks.multiblock;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
-import org.jspecify.annotations.Nullable;
 
 public final class CoreIndexScratch {
 
@@ -15,10 +12,8 @@ public final class CoreIndexScratch {
             ThreadLocal.withInitial(CoreIndexScratch::new);
     private static final ThreadLocal<BlockPos.MutableBlockPos> BOX_CURSOR =
             ThreadLocal.withInitial(BlockPos.MutableBlockPos::new);
-    public final BlockPos.MutableBlockPos walkPos = new BlockPos.MutableBlockPos();
     public final BlockPos.MutableBlockPos cellPos = new BlockPos.MutableBlockPos();
     public final BlockPos.MutableBlockPos notifyPos = new BlockPos.MutableBlockPos();
-    public final CoreIndexCollector collector = new CoreIndexCollector();
     public long[] cells = new long[64];
     public int cellCount;
     public long[] chunkKeys = new long[8];
@@ -62,18 +57,5 @@ public final class CoreIndexScratch {
 
     public void ensurePacked(int needed) {
         if (packed.length < needed) packed = new long[Math.max(needed, packed.length * 3 / 2 + 8)];
-    }
-
-    public static final class CoreIndexCollector implements MultiblockHandlerXR.BoxVisitor {
-
-        public CoreIndexScratch scratch;
-        public @Nullable ServerLevel notifyLevel;
-
-        @Override
-        public void cell(BlockPos pos, Direction facingCore) {
-            if (notifyLevel != null)
-                BlockMultiblockCore.notifyCell(notifyLevel, scratch.notifyPos.set(pos));
-            scratch.addCell(pos);
-        }
     }
 }

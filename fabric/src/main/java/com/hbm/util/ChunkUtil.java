@@ -58,6 +58,17 @@ import org.jspecify.annotations.Nullable;
 import static com.hbm.lib.internal.UnsafeHolder.U;
 
 public final class ChunkUtil {
+    public static boolean resident(BlockEntity be, LevelChunk chunk) {
+        return !be.isRemoved() && chunk.getFullStatus().isOrAfter(FullChunkStatus.FULL);
+    }
+
+    public static void markUnsaved(BlockEntity be) {
+        if (!(be.getLevel() instanceof ServerLevel server)) return;
+        BlockPos pos = be.getBlockPos();
+        LevelChunk chunk = server.getChunkSource().getChunkNow(pos.getX() >> 4, pos.getZ() >> 4);
+        if (chunk != null) chunk.markUnsaved();
+    }
+
     private static final Object2IntOpenHashMap<Identifier> activeTask =
             new Object2IntOpenHashMap<>();
 

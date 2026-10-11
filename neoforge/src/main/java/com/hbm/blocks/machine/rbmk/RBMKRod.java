@@ -13,7 +13,6 @@ import com.hbm.handler.BossSpawnHandler;
 import com.hbm.items.machine.ItemRBMKRod;
 import com.hbm.sound.ModSounds;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -72,8 +71,8 @@ public class RBMKRod extends RBMKBase implements ICapabilityBlock {
     }
 
     @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        visitor.passiveCell(core.above(above()), MASK_ALL, PASSIVE_ITEMS);
+    protected int topPassive() {
+        return PASSIVE_ITEMS;
     }
 
     @Override

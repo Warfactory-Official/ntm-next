@@ -7,12 +7,15 @@ import com.hbm.api.energymk2.IEnergyHandlerMK2;
 import com.hbm.api.energymk2.ItemEnergyTransfer;
 import com.hbm.api.fluidmk2.FluidFlushOutputs;
 import com.hbm.api.fluidmk2.FluidTankEndpoint;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
 import com.hbm.blockentity.BlockEntityMachineBase;
 import com.hbm.blockentity.IFluidCopiable;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.inventory.IGUIProvider;
 import com.hbm.inventory.container.ContainerSync;
 import com.hbm.inventory.container.MenuMachineRadiolysis;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.RadiolysisRecipe;
 import com.hbm.inventory.recipes.RadiolysisRecipes;
@@ -40,7 +43,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockEntityMachineRadiolysis extends BlockEntityMachineBase
-        implements IEnergyHandlerMK2,
+        implements FluidTankAccess,
+                IEnergyHandlerMK2,
                 FluidTankEndpoint,
                 IGUIProvider,
                 IFluidCopiable,
@@ -205,6 +209,11 @@ public class BlockEntityMachineRadiolysis extends BlockEntityMachineBase
     }
 
     @Override
+    public void declareFlush(FlushLanes out) {
+        for (FluidTankNTM tank : getSendingTanks()) out.add(tank, FlushFaces.own());
+    }
+
+    @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
         return slot == SLOT_STERILIZE_IN
                 || (slot < SLOT_FLUID_ID && stack.getItem() instanceof ItemRTGPellet);
@@ -222,8 +231,13 @@ public class BlockEntityMachineRadiolysis extends BlockEntityMachineBase
     }
 
     @Override
-    public FluidTankNTM[] getAllTanks() {
-        return tanks;
+    public int tankCount() {
+        return tanks.length;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return tanks[index];
     }
 
     private void writeTanks(ByteBuf output) {

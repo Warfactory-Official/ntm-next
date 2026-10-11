@@ -34,7 +34,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -43,6 +42,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 
 public final class BossSpawnHandler {
     private static final RandomSource meteorRand = RandomSource.create();
@@ -133,7 +133,7 @@ public final class BossSpawnHandler {
                     spawnZ,
                     Mth.floor(spawnX),
                     Mth.floor(spawnZ),
-                    create(level, ModEntities.MASK_MAN.get()))) {
+                    ModEntities.MASK_MAN.get().create(level, EntitySpawnReason.EVENT))) {
                 player.sendSystemMessage(
                         Component.translatable("chat.bossSpawnHandler.theMaskManIs")
                                 .withStyle(ChatFormatting.RED));
@@ -167,7 +167,7 @@ public final class BossSpawnHandler {
                     spawnZ,
                     (int) spawnX,
                     (int) spawnZ,
-                    create(level, ModEntities.FBI.get()));
+                    ModEntities.FBI.get().create(level, EntitySpawnReason.EVENT));
         }
 
         for (int i = 0; i < MobData.RAID_DRONES.get(); i++) {
@@ -180,7 +180,7 @@ public final class BossSpawnHandler {
                     spawnZ,
                     (int) spawnX,
                     (int) spawnZ,
-                    create(level, ModEntities.FBI_DRONE.get()));
+                    ModEntities.FBI_DRONE.get().create(level, EntitySpawnReason.EVENT));
         }
     }
 
@@ -202,7 +202,8 @@ public final class BossSpawnHandler {
             double spawnX = player.getX() + vec.x + random.nextGaussian();
             double spawnZ = player.getZ() + vec.z + random.nextGaussian();
 
-            EntityRADBeast rad = create(level, ModEntities.RAD_BEAST.get());
+            EntityRADBeast rad = ModEntities.RAD_BEAST.get().create(level, EntitySpawnReason.EVENT);
+            if (rad == null) continue;
             if (i == 0) rad.makeLeader();
 
             trySpawn(level, spawnX, 0D, spawnZ, (int) spawnX, (int) spawnZ, rad);
@@ -223,7 +224,7 @@ public final class BossSpawnHandler {
                 spawnZ,
                 (int) spawnX,
                 (int) spawnZ,
-                create(level, ModEntities.GHOST.get()));
+                ModEntities.GHOST.get().create(level, EntitySpawnReason.EVENT));
     }
 
     public static void markFBI(Player player) {
@@ -245,12 +246,6 @@ public final class BossSpawnHandler {
         return chunk != null && WorldgenHeight.lightBlocking(chunk, x, z) > player.getY() + 3;
     }
 
-    private static <T extends Mob> T create(ServerLevel level, EntityType<T> type) {
-        T mob = type.create(level, EntitySpawnReason.EVENT);
-        if (mob == null) throw new IllegalStateException("Could not construct " + type);
-        return mob;
-    }
-
     private static boolean trySpawn(
             ServerLevel level,
             double x,
@@ -258,7 +253,8 @@ public final class BossSpawnHandler {
             double z,
             int columnX,
             int columnZ,
-            Mob mob) {
+            @Nullable Mob mob) {
+        if (mob == null) return false;
         LevelChunk chunk = level.getChunkSource().getChunkNow(columnX >> 4, columnZ >> 4);
         if (chunk == null) return false;
         mob.snapTo(

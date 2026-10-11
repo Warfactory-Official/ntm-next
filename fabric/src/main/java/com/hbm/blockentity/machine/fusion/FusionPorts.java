@@ -7,6 +7,7 @@ import com.hbm.blocks.machine.fusion.BlockFusionMachine;
 import com.hbm.blocks.multiblock.BlockMultiblockCore;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.lib.Library;
+import com.hbm.platform.BlockLookupCache;
 import com.hbm.platform.FabricCaps;
 import com.hbm.registration.RegistryHandle;
 import java.util.function.Supplier;
@@ -40,7 +41,12 @@ public final class FusionPorts {
     }
 
     public static @Nullable BlockEntity peer(ServerLevel level, Port port) {
-        return FabricCaps.find(
+        return token(port.kind())
+                .find((Level) level, port.cell().relative(port.face()), port.face().getOpposite());
+    }
+
+    public static BlockLookupCache<BlockEntity> cache(ServerLevel level, Port port) {
+        return FabricCaps.createCache(
                 token(port.kind()),
                 level,
                 port.cell().relative(port.face()),

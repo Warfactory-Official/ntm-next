@@ -48,21 +48,25 @@ public final class ItemFluidHandler extends ItemAccessResourceHandler<FluidResou
     @Override
     public int insert(
             int index, FluidResource resource, int amount, TransactionContext transaction) {
-        if (resource.isEmpty()) return 0;
+        int count = itemAccess.getAmount();
+        if (resource.isEmpty() || count == 0) return 0;
         long accepted =
                 ForeignFluidItemAccess.insertableMb(
-                        itemAccess.getResource().toStack(), resource.getFluid(), amount);
-        return accepted <= 0 ? 0 : super.insert(index, resource, (int) accepted, transaction);
+                        itemAccess.getResource().toStack(), resource.getFluid(), amount / count);
+        return accepted <= 0
+                ? 0
+                : super.insert(index, resource, (int) accepted * count, transaction);
     }
 
     @Override
     public int extract(
             int index, FluidResource resource, int amount, TransactionContext transaction) {
-        if (resource.isEmpty()) return 0;
+        int count = itemAccess.getAmount();
+        if (resource.isEmpty() || count == 0) return 0;
         long given =
                 ForeignFluidItemAccess.extractableMb(
-                        itemAccess.getResource().toStack(), resource.getFluid(), amount);
-        return given <= 0 ? 0 : super.extract(index, resource, (int) given, transaction);
+                        itemAccess.getResource().toStack(), resource.getFluid(), amount / count);
+        return given <= 0 ? 0 : super.extract(index, resource, (int) given * count, transaction);
     }
 
     @Override

@@ -34,8 +34,8 @@ public class RBMKControl extends RBMKBase implements ICapabilityBlock {
     }
 
     @Override
-    protected boolean proxyCellAt(int lx, int ly, int lz) {
-        return ly == above();
+    protected boolean proxiesTop() {
+        return true;
     }
 
     @Override
