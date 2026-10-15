@@ -7,28 +7,7 @@ import com.hbm.api.redstoneoverradio.IRORInteractive;
 import com.hbm.blockentity.bomb.BlockEntityLaunchPad;
 import com.hbm.blockentity.bomb.BlockEntityLaunchPadLarge;
 import com.hbm.blockentity.bomb.BlockEntityLaunchTable;
-import com.hbm.blockentity.machine.BlockEntityChungus;
-import com.hbm.blockentity.machine.BlockEntityCoreEmitter;
-import com.hbm.blockentity.machine.BlockEntityCoreInjector;
-import com.hbm.blockentity.machine.BlockEntityCoreReceiver;
-import com.hbm.blockentity.machine.BlockEntityCoreStabilizer;
-import com.hbm.blockentity.machine.BlockEntityGeiger;
-import com.hbm.blockentity.machine.BlockEntityICF;
-import com.hbm.blockentity.machine.BlockEntityMachineCombustionEngine;
-import com.hbm.blockentity.machine.BlockEntityMachineIndustrialTurbine;
-import com.hbm.blockentity.machine.BlockEntityMachineLargeTurbine;
-import com.hbm.blockentity.machine.BlockEntityMachinePWRController;
-import com.hbm.blockentity.machine.BlockEntityMachineRadar;
-import com.hbm.blockentity.machine.BlockEntityMachineRadarLarge;
-import com.hbm.blockentity.machine.BlockEntityMachineReactorBreeding;
-import com.hbm.blockentity.machine.BlockEntityMachineSatLink;
-import com.hbm.blockentity.machine.BlockEntityMachineTurbine;
-import com.hbm.blockentity.machine.BlockEntityMachineTurbineGas;
-import com.hbm.blockentity.machine.BlockEntityMicrowave;
-import com.hbm.blockentity.machine.BlockEntityReactorControl;
-import com.hbm.blockentity.machine.BlockEntityReactorResearch;
-import com.hbm.blockentity.machine.BlockEntityReactorZirnox;
-import com.hbm.blockentity.machine.BlockEntityWatz;
+import com.hbm.blockentity.machine.*;
 import com.hbm.blockentity.machine.albion.BlockEntityPADetector;
 import com.hbm.blockentity.machine.albion.BlockEntityPADipole;
 import com.hbm.blockentity.machine.albion.BlockEntityPAQuadrupole;
@@ -117,6 +96,7 @@ import com.hbm.compat.computercraft.machine.CoreEmitterPeripheral;
 import com.hbm.compat.computercraft.machine.CoreInjectorPeripheral;
 import com.hbm.compat.computercraft.machine.CoreReceiverPeripheral;
 import com.hbm.compat.computercraft.machine.CoreStabilizerPeripheral;
+import com.hbm.compat.computercraft.machine.SmeltingFurnacePeripheral;
 import com.hbm.compat.computercraft.machine.GasTurbinePeripheral;
 import com.hbm.compat.computercraft.machine.GeigerPeripheral;
 import com.hbm.compat.computercraft.machine.ICFPeripheral;
@@ -224,6 +204,16 @@ final class Peripherals {
 
     static final List<Row<?>> ROWS =
             List.of(
+                    proxied(
+                            BlockEntityFurnaceIron.class,
+                            SmeltingFurnacePeripheral<BlockEntityFurnaceIron>::new,
+                            MultiblockSurface::coreOfFoldedCell,
+                            ModBlocks.FURNACE_IRON),
+                    proxied(
+                            BlockEntityFurnaceSteel.class,
+                            SmeltingFurnacePeripheral<BlockEntityFurnaceSteel>::new,
+                            MultiblockSurface::coreOfFoldedCell,
+                            ModBlocks.FURNACE_STEEL),
                     block(
                             BlockEntityPileLoader.class,
                             PileLoaderPeripheral::new,
