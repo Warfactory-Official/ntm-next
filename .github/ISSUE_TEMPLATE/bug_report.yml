@@ -1,20 +1,29 @@
 name: Bug report
 description: Report a reproducible bug.
 type: Bug
+
 body:
   - type: markdown
     attributes:
       value: |
-        Please check the latest release first — it may already be fixed.
-        Skip any field that would not tell us something new.
+        Before creating an issue, check if you are using the latest release. Older releases aren't supported.
+
+        Don't be a [meat proxy](https://gruhn.me/blog/2026-08-03/) of AI. You must personally understand, verify, and be able to answer questions about everything in your report.
+        
+        Include sufficient information to reproduce or diagnose the problem. Logs are always mandatory; if you are on a dedicated server, provide the logs from both sides.
+        
+        Rendering issues must include screenshots with F3 debug screen active and visible.
+        
+        Performance reports must include a profiler capture on the affected JVM; dedicated server TPS issue = server-side capture, integrated server TPS or client FPS issue = client-side capture. We recommend using [Spark](https://modrinth.com/mod/spark/versions) via `/spark profiler start --thread *` to get one; JFR and async-profiler recordings are also accepted. If the issue appears GPU-bound, an Nsight Graphics GPU Trace Profiler .ngfx-gputrace capture is also appreciated.
+
+        Additionally, please do not close an issue you created unless there is a clear mistake. We will close it ourselves when it gets fixed.
 
   - type: input
     id: build
     attributes:
       label: Build
       description: >
-        NTM's version as the mod list shows it, e.g. `1.0.0+a1b2c3d4` — the suffix is the commit
-        the jar was built from.
+        NTM's precise version. It can be found in logs and the in-game Mods menu.
       placeholder: 1.0.0+a1b2c3d4
     validations:
       required: true
@@ -23,7 +32,8 @@ body:
     id: setup
     attributes:
       label: Setup
-      description: Loader, and singleplayer or dedicated server. Say if only one of the two loaders is affected.
+      description: >
+        Loader, and singleplayer or dedicated server. Say if only one of the two loaders is affected.
       placeholder: NeoForge, dedicated server
     validations:
       required: true
@@ -39,13 +49,33 @@ body:
   - type: textarea
     id: log
     attributes:
-      label: Log
-      description: <https://mclo.gs> link, or the crash report — whenever the game logged or crashed.
+      label: Logs
+      description: >
+        Provide client and server logs (both are required for dedicated servers) and any crash reports. https://mclo.gs is preferred.
+    validations:
+      required: true
 
   - type: textarea
     id: context
     attributes:
       label: Context
       description: >
-        Anything that narrows it down: other mods involved, edited configs, save state or world age,
-        JVM or OS if you suspect them, a screenshot or clip for a visual bug.
+        Anything that narrows it down: other mods involved, edited configs, save state or world age, JVM or OS if you suspect them, a screenshot or clip for a visual bug.
+        For performance issues, attach or link the required profiler capture.
+
+  - type: checkboxes
+    id: ai
+    attributes:
+      label: AI involvement
+      options:
+        - label: I used AI assistance in diagnosing or preparing this report.
+          required: false
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: >
+            I personally understand and have verified this report, have provided the required diagnostic evidence, and can answer follow-up questions about it.
+          required: true
