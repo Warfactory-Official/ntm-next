@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -34,8 +33,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class DecoComputerBlock extends HorizontalDirectionalBlock {
-    public static final MapCodec<DecoComputerBlock> CODEC = simpleCodec(DecoComputerBlock::new);
-
     private static final VoxelShape NORTH = Shapes.box(0.125, 0, 0.375, 0.875, 0.875, 1.0);
     private static final VoxelShape SOUTH = Shapes.box(0.125, 0, 0, 0.875, 0.875, 0.625);
     private static final VoxelShape WEST = Shapes.box(0.375, 0, 0.125, 1.0, 0.875, 0.875);
@@ -44,11 +41,6 @@ public class DecoComputerBlock extends HorizontalDirectionalBlock {
     public DecoComputerBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 
     @Override

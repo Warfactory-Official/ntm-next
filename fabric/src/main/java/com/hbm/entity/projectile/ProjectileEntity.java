@@ -124,6 +124,7 @@ public abstract class ProjectileEntity extends ThrowableProjectile {
     public void tickInterpolation() {}
 
     protected final Vec3 flightStart() {
+        if (level().isClientSide() && isInterpolated()) return oldPosition();
         return position();
     }
 

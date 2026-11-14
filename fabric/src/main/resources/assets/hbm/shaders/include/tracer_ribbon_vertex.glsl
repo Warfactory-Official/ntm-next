@@ -1,3 +1,7 @@
+#ifndef NTM_RIBBON_LAYOUT
+#define NTM_RIBBON_LAYOUT(slot)
+#endif
+
 #ifndef NTM_RIBBON_PROJECT
 #define NTM_RIBBON_PROJECT(position, view) (NTM_RIBBON_PROJECTION * view)
 #endif
@@ -6,14 +10,14 @@
 #error NTM_RIBBON_DEPTH_ZERO_TO_ONE must describe the active projection
 #endif
 
-noperspective out vec2 hbmRibbonCoord;
-flat out float hbmRibbonLength;
-flat out vec2 hbmRibbonRadii;
-flat out vec2 hbmRibbonInvW;
-flat out vec4 hbmRibbonHeadColor;
-flat out vec4 hbmRibbonTailColor;
-flat out vec4 hbmRibbonLight;
-flat out vec4 hbmRibbonFog;
+NTM_RIBBON_LAYOUT(0) noperspective out vec2 hbmRibbonCoord;
+NTM_RIBBON_LAYOUT(1) flat out float hbmRibbonLength;
+NTM_RIBBON_LAYOUT(2) flat out vec2 hbmRibbonRadii;
+NTM_RIBBON_LAYOUT(3) flat out vec2 hbmRibbonInvW;
+NTM_RIBBON_LAYOUT(4) flat out vec4 hbmRibbonHeadColor;
+NTM_RIBBON_LAYOUT(5) flat out vec4 hbmRibbonTailColor;
+NTM_RIBBON_LAYOUT(6) flat out vec4 hbmRibbonLight;
+NTM_RIBBON_LAYOUT(7) flat out vec4 hbmRibbonFog;
 
 bool hbmRibbonClipPlane(float headDistance, float tailDistance, inout float first, inout float last) {
     if (headDistance < 0.0 && tailDistance < 0.0) return false;

@@ -281,7 +281,7 @@ public class CanneryCentrifuge extends CanneryBase {
                     data.getDoubleOr("x", 0) + 0.5D,
                     data.getDoubleOr("y", 0),
                     data.getDoubleOr("z", 0) + 0.5D);
-            ps.mulPose(
+            ps.rotate(
                     (Quaternionfc)
                             Axis.YP.rotationDegrees(
                                     switch (data.getIntOr("rotation", 3)) {

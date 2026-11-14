@@ -71,7 +71,7 @@ public class FallingNukeRenderer
             CameraRenderState camera) {
         int light = state.lightCoords;
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
         collector.submitCustomGeometry(
                 poseStack,
                 TYPE,

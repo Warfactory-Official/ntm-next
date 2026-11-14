@@ -31,7 +31,6 @@ import com.hbm.interfaces.LookOverlay;
 import com.hbm.interfaces.LookOverlayProvider;
 import com.hbm.items.ModDataComponents;
 import com.hbm.util.NumberFormatter;
-import com.mojang.serialization.MapCodec;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -53,18 +52,11 @@ public class CapacitorBlock extends DirectionalBlock
                 LookOverlayProvider {
 
     public final long maxPower;
-    private final MapCodec<CapacitorBlock> ownCodec;
 
     public CapacitorBlock(long maxPower, Properties props) {
         super(props);
         this.maxPower = maxPower;
-        this.ownCodec = simpleCodec(p -> new CapacitorBlock(maxPower, p));
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.DOWN));
-    }
-
-    @Override
-    protected MapCodec<? extends DirectionalBlock> codec() {
-        return ownCodec;
     }
 
     @Override

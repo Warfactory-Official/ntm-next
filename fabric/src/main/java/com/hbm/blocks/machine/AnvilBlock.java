@@ -34,7 +34,6 @@
 package com.hbm.blocks.machine;
 
 import com.hbm.inventory.container.AnvilMenu;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -69,9 +68,6 @@ public class AnvilBlock extends FallingBlock {
     public static final int TIER_GERALD = 8;
     public static final int TIER_MURKY = 1916169;
 
-    public static final MapCodec<AnvilBlock> CODEC =
-            simpleCodec(props -> new AnvilBlock(props, TIER_IRON));
-
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
 
     private static final VoxelShape X_AXIS = Shapes.box(0.25D, 0.0D, 0.0D, 0.75D, 0.75D, 1.0D);
@@ -83,11 +79,6 @@ public class AnvilBlock extends FallingBlock {
         super(props);
         this.tier = tier;
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    protected MapCodec<? extends FallingBlock> codec() {
-        return CODEC;
     }
 
     @Override

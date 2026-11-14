@@ -109,7 +109,7 @@ public class ChemicalFactoryRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(BASE_YAW + s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(BASE_YAW + s.yaw));
 
         if (s.frame) part(col, ps, FRAME, light);
 
@@ -117,14 +117,14 @@ public class ChemicalFactoryRenderer
 
         ps.pushPose();
         ps.translate(1.0, 0.0, 0.0);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(fanAngle));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(fanAngle));
         ps.translate(-1.0, 0.0, 0.0);
         part(col, ps, FAN1, light);
         ps.popPose();
 
         ps.pushPose();
         ps.translate(-1.0, 0.0, 0.0);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(fanAngle));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(fanAngle));
         ps.translate(1.0, 0.0, 0.0);
         part(col, ps, FAN2, light);
         ps.popPose();

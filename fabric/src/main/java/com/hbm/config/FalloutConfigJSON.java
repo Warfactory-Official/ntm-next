@@ -31,8 +31,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ExtraCodecs;
@@ -95,7 +95,7 @@ public record FalloutConfigJSON(List<FalloutEntry> rules) {
                 RecordCodecBuilder.create(
                         instance ->
                                 instance.group(
-                                                RegistryCodecs.<Block>homogeneousList(
+                                                RegistryCodecs.<Block>holderSet(
                                                                 (ResourceKey<
                                                                                 ? extends
                                                                                         Registry<

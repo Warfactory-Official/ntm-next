@@ -20,7 +20,6 @@
 package com.hbm.blocks.machine;
 
 import com.hbm.blockentity.machine.FloodlightBeamBlockEntity;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -36,16 +35,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class FloodlightBeamBlock extends Block implements EntityBlock {
-    private static final MapCodec<FloodlightBeamBlock> CODEC =
-            simpleCodec(FloodlightBeamBlock::new);
-
     public FloodlightBeamBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

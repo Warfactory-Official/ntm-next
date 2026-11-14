@@ -122,11 +122,11 @@ public class PumpRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(s.facing)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(s.facing)));
 
         ps.pushPose();
         ps.translate(0, 2.25, 0);
-        ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) (rot - 90)));
+        ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) (rot - 90)));
         ps.translate(0, -2.25, 0);
         part(col, ps, bodyType, light, ROTOR);
         ps.popPose();
@@ -139,7 +139,7 @@ public class PumpRenderer
         ps.pushPose();
         ps.translate(0, 1 - cath + sin, 0);
         ps.translate(0, 4.75, 0);
-        ps.mulPose((Quaternionfc) Axis.ZN.rotationDegrees((float) (Math.toDegrees(ang) - 90)));
+        ps.rotate((Quaternionfc) Axis.ZN.rotationDegrees((float) (Math.toDegrees(ang) - 90)));
         ps.translate(0, -4.75, 0);
         part(col, ps, bodyType, light, ARMS);
         ps.popPose();

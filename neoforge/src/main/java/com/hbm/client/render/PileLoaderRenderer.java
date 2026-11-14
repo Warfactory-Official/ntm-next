@@ -95,11 +95,11 @@ public class PileLoaderRenderer
             CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(0.5D, 0D, 0.5D);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
 
         poseStack.pushPose();
         poseStack.translate(-0.1875D, 0.5D, 0D);
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) state.extension * 90F));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) state.extension * 90F));
         poseStack.translate(0.1875D, -0.5D, 0D);
         collector.submitCustomGeometry(
                 poseStack,

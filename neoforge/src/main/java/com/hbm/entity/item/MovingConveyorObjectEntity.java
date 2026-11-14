@@ -34,6 +34,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.InterpolationHandler;
+import net.minecraft.world.entity.LinearInterpolationHandler;
+import net.minecraft.world.entity.MoveSimulationType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -41,8 +43,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public abstract class MovingConveyorObjectEntity extends Entity {
-    private final InterpolationHandler interpolation = new InterpolationHandler(this);
-
     protected MovingConveyorObjectEntity(
             EntityType<? extends MovingConveyorObjectEntity> type, Level level) {
         super(type, level);
@@ -50,8 +50,8 @@ public abstract class MovingConveyorObjectEntity extends Entity {
     }
 
     @Override
-    public InterpolationHandler getInterpolation() {
-        return this.interpolation;
+    protected InterpolationHandler createInterpolationHandler() {
+        return LinearInterpolationHandler.create(this);
     }
 
     @Override
@@ -77,8 +77,12 @@ public abstract class MovingConveyorObjectEntity extends Entity {
     }
 
     @Override
+    public MoveSimulationType getMoveSimulationType() {
+        return MoveSimulationType.SERVER_AND_CLIENT;
+    }
+
+    @Override
     public void tick() {
-        this.interpolation.interpolate();
         super.tick();
 
         if (!(level() instanceof ServerLevel server)) return;

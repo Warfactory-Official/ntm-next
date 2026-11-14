@@ -122,7 +122,7 @@ public class CombustionEngineRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
         ps.translate(-0.5, 0.0, 3.0);
 
         int canister = s.canisterColor;
@@ -132,7 +132,7 @@ public class CombustionEngineRenderer
                 (pose, buffer) -> model.renderPart(pose, buffer, light, canister, CANISTER));
 
         ps.translate(1.0, 0.0, -2.6875);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-s.doorAngle));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(-s.doorAngle));
         ps.translate(-1.0, 0.0, 2.6875);
         part(col, ps, light, HATCH);
 

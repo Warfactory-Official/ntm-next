@@ -126,9 +126,9 @@ public class HbmConfig {
 
     public static void registerSpecs(ModContainer container) {
         container.registerConfig(
-                ModConfig.Type.COMMON, CONTENT_SPEC, ConfigFiles.neoForgeFile(Domain.CONTENT));
+                ModConfig.Type.LOCAL, CONTENT_SPEC, ConfigFiles.neoForgeFile(Domain.CONTENT));
         container.registerConfig(
-                ModConfig.Type.COMMON, RUNTIME_SPEC, ConfigFiles.neoForgeFile(Domain.RUNTIME));
+                ModConfig.Type.LOCAL, RUNTIME_SPEC, ConfigFiles.neoForgeFile(Domain.RUNTIME));
         container.registerConfig(
                 ModConfig.Type.CLIENT, CLIENT_SPEC, ConfigFiles.neoForgeFile(Domain.CLIENT));
     }

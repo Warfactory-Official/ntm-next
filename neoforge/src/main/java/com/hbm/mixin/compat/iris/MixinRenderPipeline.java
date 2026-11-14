@@ -19,8 +19,10 @@
 
 package com.hbm.mixin.compat.iris;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.vertex.VertexFormat;
+import java.util.ArrayList;
+import java.util.List;
 import net.irisshaders.iris.Iris;
 import net.irisshaders.iris.vertices.ImmediateState;
 import org.spongepowered.asm.mixin.Final;
@@ -33,19 +35,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = RenderPipeline.class, priority = 900)
 public class MixinRenderPipeline {
-    @Shadow @Final private VertexFormat[] vertexFormatPerBuffer;
-    @Unique private VertexFormat[] hbm$irisBindings;
+    @Shadow @Final private List<VertexFormat> vertexFormatPerBuffer;
+    @Unique private List<VertexFormat> hbm$irisBindings;
 
     @Inject(method = "getVertexFormatBindings", at = @At("HEAD"), cancellable = true)
-    private void hbm$keepBindingSlots(CallbackInfoReturnable<VertexFormat[]> cir) {
+    private void hbm$keepBindingSlots(CallbackInfoReturnable<List<VertexFormat>> cir) {
         if (!Iris.isPackInUseQuick() || !ImmediateState.isRenderingLevel) return;
         VertexFormat first = ((RenderPipeline) (Object) this).getVertexFormatBinding(0);
-        if (first == vertexFormatPerBuffer[0]) {
+        if (first == vertexFormatPerBuffer.getFirst()) {
             cir.setReturnValue(vertexFormatPerBuffer);
         } else {
-            if (hbm$irisBindings == null || hbm$irisBindings[0] != first) {
-                hbm$irisBindings = vertexFormatPerBuffer.clone();
-                hbm$irisBindings[0] = first;
+            if (hbm$irisBindings == null || hbm$irisBindings.getFirst() != first) {
+                hbm$irisBindings = new ArrayList<>(vertexFormatPerBuffer);
+                hbm$irisBindings.set(0, first);
             }
             cir.setReturnValue(hbm$irisBindings);
         }

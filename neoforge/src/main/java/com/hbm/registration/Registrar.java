@@ -81,25 +81,23 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.SurfaceRules;
-import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
+import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.material.condition.MaterialCondition;
+import net.minecraft.world.level.levelgen.material.rule.MaterialRule;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
-import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLConstructModEvent;
@@ -153,7 +151,7 @@ public class Registrar {
                     for (SpawnPlacement<?> entry : spawnPlacements) entry.register(event);
                 });
         modBus.addListener(
-                (DataPackRegistryEvent.NewRegistry event) -> {
+                (NewDatapackRegistryEvent event) -> {
                     for (DataPackRegistry<?> entry : dataPackRegistries) entry.declare(event);
                 });
         modBus.addListener(
@@ -606,31 +604,31 @@ public class Registrar {
     }
 
     public static <P extends PlacementModifier>
-            RegistryHandle<PlacementModifierType<P>> registerPlacementModifierType(
+            RegistryHandle<MapCodec<P>> registerPlacementModifierType(
                     String name, MapCodec<P> codec) {
         assertOpen("registerPlacementModifierType");
         Identifier id = RegistryUtil.resolve(name);
-        DeferredHolder<PlacementModifierType<?>, PlacementModifierType<P>> holder =
-                registers(id).placementModifiers.register(id.getPath(), () -> () -> codec);
+        DeferredHolder<MapCodec<? extends PlacementModifier>, MapCodec<P>> holder =
+                registers(id).placementModifiers.register(id.getPath(), () -> codec);
         return RegistryHandle.of(id, holder);
     }
 
     public static <P extends StructurePlacement>
-            RegistryHandle<StructurePlacementType<P>> registerStructurePlacementType(
+            RegistryHandle<MapCodec<P>> registerStructurePlacementType(
                     String name, MapCodec<P> codec) {
         assertOpen("registerStructurePlacementType");
         Identifier id = RegistryUtil.resolve(name);
-        DeferredHolder<StructurePlacementType<?>, StructurePlacementType<P>> holder =
-                registers(id).structurePlacements.register(id.getPath(), () -> () -> codec);
+        DeferredHolder<MapCodec<? extends StructurePlacement>, MapCodec<P>> holder =
+                registers(id).structurePlacements.register(id.getPath(), () -> codec);
         return RegistryHandle.of(id, holder);
     }
 
-    public static <FC extends FeatureConfiguration, F extends Feature<FC>>
-            RegistryHandle<F> registerFeature(String name, F feature) {
+    public static <F extends Feature> RegistryHandle<MapCodec<F>> registerFeature(
+            String name, MapCodec<F> codec) {
         assertOpen("registerFeature");
         Identifier id = RegistryUtil.resolve(name);
-        DeferredHolder<Feature<?>, F> holder =
-                registers(id).features.register(id.getPath(), () -> feature);
+        DeferredHolder<MapCodec<? extends Feature>, MapCodec<F>> holder =
+                registers(id).features.register(id.getPath(), () -> codec);
         return RegistryHandle.of(id, holder);
     }
 
@@ -644,12 +642,21 @@ public class Registrar {
         return RegistryHandle.of(id, holder);
     }
 
-    public static <T extends NumberProvider>
-            RegistryHandle<MapCodec<T>> registerLootNumberProviderType(
+    public static <T extends ContextIntProvider>
+            RegistryHandle<MapCodec<T>> registerContextIntProviderType(
                     String name, MapCodec<T> codec) {
         Identifier id = RegistryUtil.resolve(name);
-        DeferredHolder<MapCodec<? extends NumberProvider>, MapCodec<T>> holder =
-                registers(id).lootNumberProviders.register(id.getPath(), () -> codec);
+        DeferredHolder<MapCodec<? extends ContextIntProvider>, MapCodec<T>> holder =
+                registers(id).contextIntProviders.register(id.getPath(), () -> codec);
+        return RegistryHandle.of(id, holder);
+    }
+
+    public static <T extends ContextFloatProvider>
+            RegistryHandle<MapCodec<T>> registerContextFloatProviderType(
+                    String name, MapCodec<T> codec) {
+        Identifier id = RegistryUtil.resolve(name);
+        DeferredHolder<MapCodec<? extends ContextFloatProvider>, MapCodec<T>> holder =
+                registers(id).contextFloatProviders.register(id.getPath(), () -> codec);
         return RegistryHandle.of(id, holder);
     }
 
@@ -673,12 +680,12 @@ public class Registrar {
         return RegistryHandle.of(id, holder);
     }
 
-    public static <C extends CarverConfiguration, W extends WorldCarver<C>>
-            RegistryHandle<W> registerCarver(String name, W carver) {
+    public static <W extends WorldCarver> RegistryHandle<MapCodec<W>> registerCarver(
+            String name, MapCodec<W> codec) {
         assertOpen("registerCarver");
         Identifier id = RegistryUtil.resolve(name);
-        DeferredHolder<WorldCarver<?>, W> holder =
-                registers(id).carvers.register(id.getPath(), () -> carver);
+        DeferredHolder<MapCodec<? extends WorldCarver>, MapCodec<W>> holder =
+                registers(id).carvers.register(id.getPath(), () -> codec);
         return RegistryHandle.of(id, holder);
     }
 
@@ -692,20 +699,20 @@ public class Registrar {
         return RegistryHandle.of(id, holder);
     }
 
-    public static <T extends SurfaceRules.RuleSource>
-            RegistryHandle<MapCodec<T>> registerMaterialRule(String name, MapCodec<T> codec) {
+    public static <T extends MaterialRule> RegistryHandle<MapCodec<T>> registerMaterialRule(
+            String name, MapCodec<T> codec) {
         assertOpen("registerMaterialRule");
         Identifier id = RegistryUtil.resolve(name);
-        DeferredHolder<MapCodec<? extends SurfaceRules.RuleSource>, MapCodec<T>> holder =
+        DeferredHolder<MapCodec<? extends MaterialRule>, MapCodec<T>> holder =
                 registers(id).materialRules.register(id.getPath(), () -> codec);
         return RegistryHandle.of(id, holder);
     }
 
-    public static <T extends SurfaceRules.ConditionSource>
+    public static <T extends MaterialCondition>
             RegistryHandle<MapCodec<T>> registerMaterialCondition(String name, MapCodec<T> codec) {
         assertOpen("registerMaterialCondition");
         Identifier id = RegistryUtil.resolve(name);
-        DeferredHolder<MapCodec<? extends SurfaceRules.ConditionSource>, MapCodec<T>> holder =
+        DeferredHolder<MapCodec<? extends MaterialCondition>, MapCodec<T>> holder =
                 registers(id).materialConditions.register(id.getPath(), () -> codec);
         return RegistryHandle.of(id, holder);
     }
@@ -746,8 +753,8 @@ public class Registrar {
 
     private record DataPackRegistry<T>(
             ResourceKey<Registry<T>> key, Codec<T> codec, @Nullable Codec<T> networkCodec) {
-        public void declare(DataPackRegistryEvent.NewRegistry event) {
-            event.dataPackRegistry(key, codec, networkCodec);
+        public void declare(NewDatapackRegistryEvent event) {
+            event.worldRegistry(key, codec, networkCodec);
         }
     }
 
@@ -772,17 +779,18 @@ public class Registrar {
         final DeferredRegister<StructureType<?>> structureTypes;
         final DeferredRegister<StructurePieceType> structurePieceTypes;
         final DeferredRegister<StructurePoolElementType<?>> structurePoolElementTypes;
-        final DeferredRegister<PlacementModifierType<?>> placementModifiers;
-        final DeferredRegister<StructurePlacementType<?>> structurePlacements;
-        final DeferredRegister<Feature<?>> features;
+        final DeferredRegister<MapCodec<? extends PlacementModifier>> placementModifiers;
+        final DeferredRegister<MapCodec<? extends StructurePlacement>> structurePlacements;
+        final DeferredRegister<MapCodec<? extends Feature>> features;
         final DeferredRegister<MapCodec<? extends StructureProcessor>> structureProcessors;
-        final DeferredRegister<MapCodec<? extends NumberProvider>> lootNumberProviders;
+        final DeferredRegister<MapCodec<? extends ContextIntProvider>> contextIntProviders;
+        final DeferredRegister<MapCodec<? extends ContextFloatProvider>> contextFloatProviders;
         final DeferredRegister<FluidType> fluidTypes;
         final DeferredRegister<MapCodec<? extends BiomeSource>> biomeSources;
-        final DeferredRegister<WorldCarver<?>> carvers;
+        final DeferredRegister<MapCodec<? extends WorldCarver>> carvers;
         final DeferredRegister<MapCodec<? extends DensityFunction>> densityFunctionTypes;
-        final DeferredRegister<MapCodec<? extends SurfaceRules.RuleSource>> materialRules;
-        final DeferredRegister<MapCodec<? extends SurfaceRules.ConditionSource>> materialConditions;
+        final DeferredRegister<MapCodec<? extends MaterialRule>> materialRules;
+        final DeferredRegister<MapCodec<? extends MaterialCondition>> materialConditions;
 
         Registers(String namespace) {
             blocks = DeferredRegister.createBlocks(namespace);
@@ -811,18 +819,21 @@ public class Registrar {
                     DeferredRegister.create(Registries.PLACEMENT_MODIFIER_TYPE, namespace);
             structurePlacements =
                     DeferredRegister.create(Registries.STRUCTURE_PLACEMENT, namespace);
-            features = DeferredRegister.create(Registries.FEATURE, namespace);
+            features = DeferredRegister.create(Registries.FEATURE_TYPE, namespace);
             structureProcessors =
                     DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, namespace);
-            lootNumberProviders =
-                    DeferredRegister.create(Registries.LOOT_NUMBER_PROVIDER_TYPE, namespace);
+            contextIntProviders =
+                    DeferredRegister.create(Registries.CONTEXT_INT_PROVIDER_TYPE, namespace);
+            contextFloatProviders =
+                    DeferredRegister.create(Registries.CONTEXT_FLOAT_PROVIDER_TYPE, namespace);
             fluidTypes = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, namespace);
             biomeSources = DeferredRegister.create(Registries.BIOME_SOURCE, namespace);
-            carvers = DeferredRegister.create(Registries.CARVER, namespace);
+            carvers = DeferredRegister.create(Registries.CARVER_TYPE, namespace);
             densityFunctionTypes =
                     DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, namespace);
-            materialRules = DeferredRegister.create(Registries.MATERIAL_RULE, namespace);
-            materialConditions = DeferredRegister.create(Registries.MATERIAL_CONDITION, namespace);
+            materialRules = DeferredRegister.create(Registries.MATERIAL_RULE_TYPE, namespace);
+            materialConditions =
+                    DeferredRegister.create(Registries.MATERIAL_CONDITION_TYPE, namespace);
         }
 
         void subscribe(IEventBus modBus) {
@@ -850,7 +861,8 @@ public class Registrar {
             structurePlacements.register(modBus);
             features.register(modBus);
             structureProcessors.register(modBus);
-            lootNumberProviders.register(modBus);
+            contextIntProviders.register(modBus);
+            contextFloatProviders.register(modBus);
             fluidTypes.register(modBus);
             biomeSources.register(modBus);
             carvers.register(modBus);

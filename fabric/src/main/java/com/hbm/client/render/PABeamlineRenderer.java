@@ -97,7 +97,7 @@ public class PABeamlineRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         int argb = Colors.argb(1F, 0.9F * s.flash, 0.9F * s.flash, s.flash);
         col.submitCustomGeometry(

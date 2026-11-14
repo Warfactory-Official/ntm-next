@@ -187,12 +187,12 @@ public class ExcavatorRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
         ps.translate(0.0, BODY_LIFT, 0.0);
 
         ps.pushPose();
         ps.translate(0.0, CRUSHER_PIVOT_Y, CRUSHER1_PIVOT_Z);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-s.crusherRotation));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(-s.crusherRotation));
         ps.translate(0.0, -CRUSHER_PIVOT_Y, -CRUSHER1_PIVOT_Z);
         col.submitCustomGeometry(
                 ps,
@@ -203,7 +203,7 @@ public class ExcavatorRenderer
 
         ps.pushPose();
         ps.translate(0.0, CRUSHER_PIVOT_Y, CRUSHER2_PIVOT_Z);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(s.crusherRotation));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(s.crusherRotation));
         ps.translate(0.0, -CRUSHER_PIVOT_Y, -CRUSHER2_PIVOT_Z);
         col.submitCustomGeometry(
                 ps,
@@ -213,7 +213,7 @@ public class ExcavatorRenderer
         ps.popPose();
 
         ps.pushPose();
-        ps.mulPose((Quaternionfc) Axis.YN.rotationDegrees(s.drillRotation));
+        ps.rotate((Quaternionfc) Axis.YN.rotationDegrees(s.drillRotation));
         ps.translate(0.0, -s.extension, 0.0);
         col.submitCustomGeometry(
                 ps,

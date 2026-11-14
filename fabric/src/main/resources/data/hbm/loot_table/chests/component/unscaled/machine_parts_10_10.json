@@ -9,7 +9,7 @@
           "value": "hbm:chests/machine_parts"
         }
       ],
-      "rolls": 10.0
+      "rolls": 10
     }
   ],
   "random_sequence": "hbm:chests/component/unscaled/machine_parts_10_10"

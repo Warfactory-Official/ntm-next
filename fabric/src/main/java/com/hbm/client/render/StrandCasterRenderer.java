@@ -120,9 +120,9 @@ public class StrandCasterRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180F));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(180F));
 
         ps.pushPose();
         ps.translate(0.0, 0.0, s.strand);

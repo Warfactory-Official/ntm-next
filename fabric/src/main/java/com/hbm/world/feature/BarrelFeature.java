@@ -20,12 +20,15 @@
 package com.hbm.world.feature;
 
 import com.hbm.world.LocationIsValidSpawn;
+import com.mojang.serialization.MapCodec;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BarrelFeature extends PlaceTemplateFeature {
+    public static final MapCodec<BarrelFeature> CODEC = MapCodec.unit(BarrelFeature::new);
+
     private static final List<BlockPos> CORNERS =
             List.of(
                     new BlockPos(0, 0, 0), new BlockPos(4, 0, 0),
@@ -33,6 +36,11 @@ public class BarrelFeature extends PlaceTemplateFeature {
 
     public BarrelFeature() {
         super("barrel");
+    }
+
+    @Override
+    public MapCodec<BarrelFeature> codec() {
+        return CODEC;
     }
 
     @Override

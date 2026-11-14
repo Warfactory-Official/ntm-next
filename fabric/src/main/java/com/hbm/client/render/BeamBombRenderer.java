@@ -89,7 +89,12 @@ public class BeamBombRenderer extends EntityRenderer<B92BeamEntity, BeamBombRend
 
     @Override
     public boolean shouldRender(
-            B92BeamEntity entity, Frustum culler, double camX, double camY, double camZ) {
+            B92BeamEntity entity,
+            Frustum culler,
+            double camX,
+            double camY,
+            double camZ,
+            float partialTicks) {
         return true;
     }
 
@@ -112,8 +117,8 @@ public class BeamBombRenderer extends EntityRenderer<B92BeamEntity, BeamBombRend
             SubmitNodeCollector collector,
             CameraRenderState camera) {
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
-        poseStack.mulPose((Quaternionfc) Axis.XN.rotationDegrees(state.pitch));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        poseStack.rotate((Quaternionfc) Axis.XN.rotationDegrees(state.pitch));
         collector.submitCustomGeometry(
                 poseStack, BeamRenderTypes.ADDITIVE, (pose, buffer) -> beam(buffer, pose));
         poseStack.popPose();

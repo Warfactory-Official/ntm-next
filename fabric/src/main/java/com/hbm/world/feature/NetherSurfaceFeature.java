@@ -33,25 +33,55 @@
 
 package com.hbm.world.feature;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-public class NetherSurfaceFeature extends Feature<NetherSurfaceConfig> {
-    public NetherSurfaceFeature() {
-        super(NetherSurfaceConfig.CODEC);
+public record NetherSurfaceFeature(
+        BlockState state, int attempts, int minD, int dRange, int scanDown) implements Feature {
+    public static final MapCodec<NetherSurfaceFeature> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    inst ->
+                            inst.group(
+                                            BlockState.CODEC
+                                                    .fieldOf("state")
+                                                    .forGetter(NetherSurfaceFeature::state),
+                                            Codec.INT
+                                                    .fieldOf("attempts")
+                                                    .forGetter(NetherSurfaceFeature::attempts),
+                                            Codec.INT
+                                                    .fieldOf("min_d")
+                                                    .forGetter(NetherSurfaceFeature::minD),
+                                            Codec.INT
+                                                    .fieldOf("d_range")
+                                                    .forGetter(NetherSurfaceFeature::dRange),
+                                            Codec.INT
+                                                    .fieldOf("scan_down")
+                                                    .forGetter(NetherSurfaceFeature::scanDown))
+                                    .apply(inst, NetherSurfaceFeature::new));
+
+    @Override
+    public MapCodec<NetherSurfaceFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NetherSurfaceConfig> ctx) {
-        WorldGenLevel level = ctx.level();
-        NetherSurfaceConfig cfg = ctx.config();
-        RandomSource rand = ctx.random();
-        int cx = ctx.origin().getX() & ~15;
-        int cz = ctx.origin().getZ() & ~15;
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        NetherSurfaceFeature cfg = this;
+        RandomSource rand = random;
+        int cx = featureOrigin.getX() & ~15;
+        int cz = featureOrigin.getZ() & ~15;
 
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 

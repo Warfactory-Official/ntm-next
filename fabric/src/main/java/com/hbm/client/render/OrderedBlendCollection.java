@@ -18,3 +18,10 @@
  */
 
 package com.hbm.client.render;
+
+import net.minecraft.client.renderer.feature.phase.SimpleFeatureRenderPhase;
+import org.jspecify.annotations.Nullable;
+
+public interface OrderedBlendCollection {
+    @Nullable SimpleFeatureRenderPhase hbm$orderedBlends();
+}

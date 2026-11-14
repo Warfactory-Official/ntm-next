@@ -152,9 +152,9 @@ public final class NuclearTech {
         HbmStructureTypes.register();
         HbmFeatures.register();
         HbmStructureProcessors.register();
-        Registrar.registerLootNumberProviderType(
+        Registrar.registerContextIntProviderType(
                 "config_scaled", ConfigScaledNumberProvider.MAP_CODEC);
-        Registrar.registerLootNumberProviderType(
+        Registrar.registerContextFloatProviderType(
                 "entity_enchantment_level", EntityEnchantmentLevel.MAP_CODEC);
         Registrar.registerSyncedDataPackRegistry(HazardAssignment.REGISTRY, HazardAssignment.CODEC);
         Registrar.registerSyncedDataPackRegistry(HazmatProtection.REGISTRY, HazmatProtection.CODEC);

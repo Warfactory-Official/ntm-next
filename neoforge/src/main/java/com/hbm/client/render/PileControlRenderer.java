@@ -72,7 +72,7 @@ public class PileControlRenderer
             CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(0.5D, state.extension * 0.75D, 0.5D);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
         collector.submitCustomGeometry(
                 poseStack,
                 MATERIAL,

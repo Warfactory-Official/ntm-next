@@ -117,7 +117,7 @@ public final class GunRenderState {
                     axis == 0
                             ? rotation.rotationX(angle)
                             : axis == 1 ? rotation.rotationY(angle) : rotation.rotationZ(angle);
-            pose.mulPose(rotation2);
+            pose.rotate(rotation2);
         }
         pose.translate(-v[9], -v[10], -v[11]);
         pose.scale((float) v[6], (float) v[7], (float) v[8]);

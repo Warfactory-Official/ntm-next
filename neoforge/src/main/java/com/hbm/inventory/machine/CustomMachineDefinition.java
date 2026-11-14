@@ -25,8 +25,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceKey;
@@ -62,7 +62,7 @@ public record CustomMachineDefinition(
                 RecordCodecBuilder.create(
                         i ->
                                 i.group(
-                                                RegistryCodecs.<Block>homogeneousList(
+                                                RegistryCodecs.<Block>holderSet(
                                                                 (ResourceKey<
                                                                                 ? extends
                                                                                         Registry<

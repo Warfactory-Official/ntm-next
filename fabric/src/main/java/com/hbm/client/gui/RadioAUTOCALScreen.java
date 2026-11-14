@@ -42,6 +42,7 @@ import com.hbm.packet.layout.RadioAutocalPowerLayout;
 import com.hbm.packet.layout.RadioAutocalRebootLayout;
 import com.hbm.packet.layout.RadioAutocalScriptLayout;
 import com.hbm.util.RegistryUtil;
+import com.mojang.blaze3d.Blaze3D;
 import io.netty.buffer.ByteBufUtil;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -60,7 +61,6 @@ import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Util;
 import net.minecraft.world.entity.player.Inventory;
 import org.jspecify.annotations.Nullable;
 
@@ -275,7 +275,7 @@ public class RadioAUTOCALScreen extends MenuScreen<ScreenMenu<RadioAutocalBlockE
                 Files.createDirectories(script.getParent());
                 if (!Files.exists(script)) Files.createFile(script);
                 script.toFile().setExecutable(false);
-                Util.getPlatform().openPath(script);
+                Blaze3D.openPath(script);
             } catch (IOException | RuntimeException ex) {
                 NuclearTech.LOGGER.error("Couldn't open link", ex);
             }
@@ -286,7 +286,7 @@ public class RadioAUTOCALScreen extends MenuScreen<ScreenMenu<RadioAutocalBlockE
                 Path doc = uploadFolder().resolve(DOCUMENTATION);
                 Files.createDirectories(doc.getParent());
                 if (!Files.exists(doc)) writeDocumentation(doc);
-                Util.getPlatform().openPath(doc);
+                Blaze3D.openPath(doc);
             } catch (IOException | RuntimeException ex) {
                 NuclearTech.LOGGER.error("Couldn't open link", ex);
             }

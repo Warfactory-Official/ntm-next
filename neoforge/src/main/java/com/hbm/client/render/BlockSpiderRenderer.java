@@ -109,18 +109,18 @@ public class BlockSpiderRenderer
 
         int light = state.lightCoords;
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180F - state.bodyYaw));
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(180F - state.bodyYaw));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
 
         poseStack.pushPose();
         poseStack.translate(0D, state.swing * 0.005D, 0D);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.swing));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.swing));
         for (int leg : ODD) legPart(poseStack, collector, light, leg);
         poseStack.popPose();
 
         poseStack.pushPose();
         poseStack.translate(0D, state.swing * -0.005D, 0D);
-        poseStack.mulPose((Quaternionfc) Axis.YN.rotationDegrees(state.swing));
+        poseStack.rotate((Quaternionfc) Axis.YN.rotationDegrees(state.swing));
         for (int leg : EVEN) legPart(poseStack, collector, light, leg);
         poseStack.popPose();
 

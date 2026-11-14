@@ -110,7 +110,7 @@ public final class BiomeUtil {
 
         boolean[] changed = {false};
         chunk.fillBiomesFromNoise(
-                (qx, qy, qz, sampler) -> {
+                (qx, qy, qz) -> {
                     Holder<Biome> existing = chunk.getNoiseBiome(qx, qy, qz);
                     Holder<Biome> target =
                             craterBiome(
@@ -118,8 +118,7 @@ public final class BiomeUtil {
                                     innerKey, craterKey, outerKey);
                     changed[0] |= target != existing;
                     return target;
-                },
-                level.getChunkSource().randomState().sampler());
+                });
 
         if (!changed[0]) return;
         chunk.markUnsaved();

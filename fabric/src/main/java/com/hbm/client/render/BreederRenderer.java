@@ -83,11 +83,11 @@ public class BreederRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(s.facing, 90)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(s.facing, 90)));
 
         for (int i = 0; i < SPARKS; i++) {
             ps.pushPose();
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) (Math.PI * i)));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) (Math.PI * i)));
             final int seed = s.seed + i;
             col.submitCustomGeometry(
                     ps,

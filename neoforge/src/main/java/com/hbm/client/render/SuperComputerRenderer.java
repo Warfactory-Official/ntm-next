@@ -89,7 +89,7 @@ public class SuperComputerRenderer
             State state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
         pose.pushPose();
         pose.translate(0.5, 0, 0.5);
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
         int color = state.active ? 0xFFFFFFFF : 0xFF000000;
         collector.submitCustomGeometry(
                 pose,

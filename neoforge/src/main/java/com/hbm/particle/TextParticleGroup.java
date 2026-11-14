@@ -125,8 +125,8 @@ public class TextParticleGroup extends ParticleGroup<Particle> {
             for (Entry e : entries) {
                 pose.pushPose();
                 pose.translate(e.px, e.py, e.pz);
-                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-e.yaw));
-                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(e.pitch));
+                pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-e.yaw));
+                pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(e.pitch));
                 pose.scale(-e.scale, -e.scale, e.scale);
 
                 collector.submitText(

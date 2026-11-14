@@ -21,7 +21,6 @@ package com.hbm.blocks.generic;
 
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.sound.ModSounds;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -52,8 +51,6 @@ public class SpikesBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public static final MapCodec<SpikesBlock> CODEC = simpleCodec(SpikesBlock::new);
-
     public SpikesBlock(Properties props) {
         super(props);
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
@@ -70,11 +67,6 @@ public class SpikesBlock extends Block implements SimpleWaterloggedBlock {
                 .setValue(
                         WATERLOGGED,
                         ctx.getLevel().getFluidState(ctx.getClickedPos()).is(Fluids.WATER));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

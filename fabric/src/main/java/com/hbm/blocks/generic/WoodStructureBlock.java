@@ -34,7 +34,6 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blocks.ClimbBox;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -72,7 +71,6 @@ public class WoodStructureBlock extends Block implements ClimbBox, SimpleWaterlo
 
     public final Kind kind;
     private final VoxelShape physicalShape;
-    private final MapCodec<WoodStructureBlock> codec;
 
     public WoodStructureBlock(Kind kind, BlockBehaviour.Properties properties) {
         super(properties);
@@ -83,7 +81,6 @@ public class WoodStructureBlock extends Block implements ClimbBox, SimpleWaterlo
                     case SCAFFOLD -> WOOD_SCAFFOLD_SHAPE;
                     case CEILING -> WOOD_CEILING_SHAPE;
                 };
-        codec = simpleCodec(codecProperties -> new WoodStructureBlock(kind, codecProperties));
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
     }
 
@@ -142,11 +139,6 @@ public class WoodStructureBlock extends Block implements ClimbBox, SimpleWaterlo
         return state.getValue(WATERLOGGED)
                 ? Fluids.WATER.getSource(false)
                 : super.getFluidState(state);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return codec;
     }
 
     public enum Kind {

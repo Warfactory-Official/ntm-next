@@ -39,6 +39,7 @@ import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ResolvableModel;
 import net.minecraft.client.resources.model.ResolvedModel;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.client.resources.model.geometry.ItemQuads;
 import net.minecraft.client.resources.model.geometry.QuadCollection;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.client.resources.model.sprite.TextureSlots;
@@ -56,8 +57,8 @@ public class HotItemRenderer implements ItemModel {
 
     private static final int OVERLAY_TINT = 1;
 
-    private final List<BakedQuad> icon;
-    private final List<BakedQuad> overlay;
+    private final ItemQuads icon;
+    private final ItemQuads overlay;
     private final boolean animated;
     private final ModelRenderProperties properties;
     private final Matrix4fc transformation;
@@ -69,8 +70,8 @@ public class HotItemRenderer implements ItemModel {
             boolean animated,
             ModelRenderProperties properties,
             Matrix4fc transformation) {
-        this.icon = icon;
-        this.overlay = overlay;
+        this.icon = ItemQuads.split(icon);
+        this.overlay = ItemQuads.split(overlay);
         this.animated = animated;
         this.properties = properties;
         this.transformation = transformation;
@@ -107,12 +108,12 @@ public class HotItemRenderer implements ItemModel {
     }
 
     private ItemStackRenderState.LayerRenderState layer(
-            ItemStackRenderState output, ItemDisplayContext displayContext, List<BakedQuad> quads) {
+            ItemStackRenderState output, ItemDisplayContext displayContext, ItemQuads quads) {
         ItemStackRenderState.LayerRenderState layer = output.newLayer();
         layer.setExtents(extents);
         layer.setLocalTransform(transformation);
         properties.applyToLayer(layer, displayContext);
-        layer.prepareQuadList().addAll(quads);
+        layer.setQuads(quads);
         return layer;
     }
 
@@ -124,7 +125,7 @@ public class HotItemRenderer implements ItemModel {
                         material,
                         Transparency.TRANSLUCENT,
                         info.tintIndex(),
-                        info.shade(),
+                        info.shadeDirectionOverride(),
                         info.lightEmission(),
                         info.ambientOcclusion());
         return new BakedQuad(

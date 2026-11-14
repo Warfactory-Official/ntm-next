@@ -34,6 +34,7 @@ import java.util.function.Predicate;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -335,7 +336,7 @@ public class PneumoStorageAccessMenu extends BlockEntityMenu<PneumoStorageAccess
         setCarried(ItemStack.EMPTY);
         carried.shrink((int) accepted);
         if (!carried.isEmpty()) {
-            playerInventory.placeItemBackInInventory(carried);
+            playerInventory.placeItemBackInInventory(carried, Prediction.SERVER_ONLY);
         }
     }
 
@@ -382,7 +383,7 @@ public class PneumoStorageAccessMenu extends BlockEntityMenu<PneumoStorageAccess
                                 remainder.getCount());
                 remainder.shrink((int) restored);
                 if (!remainder.isEmpty()) {
-                    playerInventory.placeItemBackInInventory(remainder);
+                    playerInventory.placeItemBackInInventory(remainder, Prediction.SERVER_ONLY);
                 }
             }
         }

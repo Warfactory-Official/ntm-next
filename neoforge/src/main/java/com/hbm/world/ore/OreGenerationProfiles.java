@@ -19,7 +19,6 @@
 
 package com.hbm.world.ore;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.util.RegistryUtil;
@@ -45,6 +44,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -52,8 +52,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
+import net.minecraft.world.level.levelgen.feature.AbstractOreFeature;
+import net.minecraft.world.level.levelgen.feature.BlockReplacement;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.OreFeature;
+import net.minecraft.world.level.levelgen.feature.ScatteredOreFeature;
 import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 
@@ -133,8 +136,7 @@ public final class OreGenerationProfiles {
             WorldGenerationContext context,
             Key key,
             Set<Identifier> biomes) {
-        var configured = key.placed.feature().value();
-        var config = configured.config();
+        Feature feature = key.placed.feature().value();
         List<BlockState> targets = new ArrayList<>();
         List<Component> conditions = new ArrayList<>();
         Placement placement = placement(key.placed, context, conditions);
@@ -142,41 +144,41 @@ public final class OreGenerationProfiles {
         OreHeightProfile height = placement.height;
         double attempts = placement.attempts;
         int veinSize = -1;
-        switch (config) {
-            case OreConfiguration ore -> {
+        switch (feature) {
+            case AbstractOreFeature ore -> {
                 oreTargets(ore, targets, conditions);
-                veinSize = ore.size;
-                if (ore.size == 0) return null;
-                if (configured.feature() != Feature.ORE
-                        && configured.feature() != Feature.SCATTERED_ORE) {
+                veinSize = ore.size();
+                if (ore.size() == 0) return null;
+                if (ore.getClass() != OreFeature.class
+                        && ore.getClass() != ScatteredOreFeature.class) {
                     height = OreHeightProfile.unknown();
                     conditions.add(text("custom_feature"));
                 }
             }
-            case WindowedOreConfig window -> {
+            case WindowedOreFeature window -> {
                 oreTargets(window.vein(), targets, conditions);
-                veinSize = window.vein().size;
+                veinSize = window.vein().size();
                 height =
                         OreHeightProfile.uniform(
                                 window.minY(), window.minY() + window.yRange() - 1);
                 if (attempts >= 0) attempts *= (window.attempts() - 1) / 2.0;
                 conditions.addFirst(text("window", window.windowSize(), window.windowSize()));
             }
-            case ColtanDepositConfig regional -> {
+            case ColtanDepositFeature regional -> {
                 oreTargets(regional.vein(), targets, conditions);
-                veinSize = regional.vein().size;
+                veinSize = regional.vein().size();
                 height =
                         OreHeightProfile.uniform(
                                 regional.minY(), regional.minY() + regional.yRange() - 1);
                 if (attempts >= 0) attempts *= (double) regional.outerAttempts() * regional.rings();
                 conditions.addFirst(text("regional", regional.rings(), regional.baseRange()));
             }
-            case DepthDepositConfig deposit -> {
+            case DepthDepositFeature deposit -> {
                 target(deposit.core(), deposit.replaceable(), targets, conditions);
                 targets.add(deposit.filler());
                 conditions.addFirst(text("depth", deposit.size(), deposit.fill()));
             }
-            case StratumConfig stratum -> {
+            case StratumFeature stratum -> {
                 if (stratum.density() <= 0) return null;
                 target(stratum.state(), stratum.replaceable(), targets, conditions);
                 height =
@@ -185,12 +187,12 @@ public final class OreGenerationProfiles {
                                 stratum.yLevel() + stratum.maxRange());
                 conditions.addFirst(text("stratum"));
             }
-            case Stratum3DConfig stratum -> {
+            case Stratum3DFeature stratum -> {
                 target(stratum.state(), stratum.replaceable(), targets, conditions);
                 height = OreHeightProfile.band(Stratum3DFeature.MIN_Y, Stratum3DFeature.MAX_Y);
                 conditions.addFirst(text("stratum_3d"));
             }
-            case OreCaveConfig cave -> {
+            case OreCaveFeature cave -> {
                 target(cave.ore(), cave.replaceable(), targets, conditions);
                 cave.stalactite().ifPresent(targets::add);
                 cave.stalagmite().ifPresent(targets::add);
@@ -201,7 +203,7 @@ public final class OreGenerationProfiles {
                                 cave.yLevel() + cave.maxRange());
                 conditions.addFirst(text("cave"));
             }
-            case NetherSurfaceConfig surface -> {
+            case NetherSurfaceFeature surface -> {
                 targets.add(surface.state());
                 height =
                         OreHeightProfile.band(
@@ -210,19 +212,21 @@ public final class OreGenerationProfiles {
                 conditions.add(text("surface"));
                 attempts = -1;
             }
-            case BedrockOreConfig bedrock -> {
+            case BedrockOreFeature bedrock -> {
                 if (!bedrock.auto()
-                        && bedrock.entries().stream().mapToInt(BedrockOreConfig.Entry::weight).sum()
+                        && bedrock.entries().stream()
+                                        .mapToInt(BedrockOreFeature.Entry::weight)
+                                        .sum()
                                 <= 0) return null;
                 targets.add(ModBlocks.ORE_BEDROCK.get().defaultBlockState());
                 height = OreHeightProfile.band(level.getMinY(), level.getMinY());
                 conditions.add(text(bedrock.auto() ? "bedrock_auto" : "bedrock_weighted"));
             }
-            case OilBubbleConfig oil -> {
+            case OilBubbleFeature oil -> {
                 target(oil.core(), oil.replaceable(), targets, conditions);
                 conditions.addFirst(text("oil_bubble", oil.minSize(), oil.maxSize() - 1));
             }
-            case BedrockOilDepositConfig oil -> {
+            case BedrockOilDepositFeature oil -> {
                 target(oil.core(), oil.replaceable(), targets, conditions);
                 height =
                         OreHeightProfile.band(
@@ -292,15 +296,8 @@ public final class OreGenerationProfiles {
             if (modifier instanceof HeightRangePlacement range) {
                 height = OreHeightProfile.from(range, context);
             } else if (modifier instanceof CountPlacement count) {
-                JsonElement value =
-                        CountPlacement.CODEC
-                                .codec()
-                                .encodeStart(JsonOps.INSTANCE, count)
-                                .getOrThrow()
-                                .getAsJsonObject()
-                                .get("count");
-                if (value.isJsonPrimitive()) {
-                    int n = value.getAsInt();
+                if (count.count() instanceof ConstantInt constant) {
+                    int n = constant.value();
                     if (n == 0) return new Placement(height, 0, supported);
                     if (attempts >= 0) attempts *= n;
                 } else {
@@ -310,14 +307,7 @@ public final class OreGenerationProfiles {
             } else if (modifier instanceof WorldConfigPlacement gate) {
                 if (!gate.open()) return new Placement(height, 0, supported);
             } else if (modifier instanceof RarityFilter rarity) {
-                int chance =
-                        RarityFilter.CODEC
-                                .codec()
-                                .encodeStart(JsonOps.INSTANCE, rarity)
-                                .getOrThrow()
-                                .getAsJsonObject()
-                                .get("chance")
-                                .getAsInt();
+                int chance = rarity.chance();
                 if (attempts >= 0) attempts /= chance;
             } else if (!(modifier instanceof InSquarePlacement)
                     && !(modifier instanceof BiomeFilter)
@@ -328,7 +318,7 @@ public final class OreGenerationProfiles {
                         text(
                                 "placement",
                                 BuiltInRegistries.PLACEMENT_MODIFIER_TYPE
-                                        .getKey(modifier.type())
+                                        .getKey(modifier.codec())
                                         .toString()));
             }
         }
@@ -336,12 +326,12 @@ public final class OreGenerationProfiles {
     }
 
     private static void oreTargets(
-            OreConfiguration ore, List<BlockState> targets, List<Component> conditions) {
-        for (OreConfiguration.TargetBlockState target : ore.targetStates) {
-            target(target.state, target.target, targets, conditions);
+            AbstractOreFeature ore, List<BlockState> targets, List<Component> conditions) {
+        for (BlockReplacement target : ore.targetStates()) {
+            target(target.state(), target.target(), targets, conditions);
         }
-        if (ore.discardChanceOnAirExposure > 0)
-            conditions.add(text("air", ore.discardChanceOnAirExposure * 100));
+        if (ore.discardChanceOnAirExposure() > 0)
+            conditions.add(text("air", ore.discardChanceOnAirExposure() * 100));
         conditions.add(text("vein"));
     }
 

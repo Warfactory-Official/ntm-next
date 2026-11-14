@@ -44,7 +44,6 @@ import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.capability.port.CapabilityPortProvider;
 import com.hbm.capability.port.ItemPort;
 import com.hbm.capability.port.ItemPortCache;
-import com.hbm.handler.FuelHandler;
 import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.handler.pollution.PollutionType;
 import com.hbm.inventory.container.RotaryFurnaceMenu;
@@ -215,10 +214,13 @@ public class RotaryFurnaceBlockEntity extends PollutingMachineBlockEntity
         if (recipe != null) {
 
             ItemStack fuel = inventory.get(4);
-            if (this.burnTime <= 0 && !fuel.isEmpty() && FuelHandler.getBurnTime(level, fuel) > 0) {
+            int newBurnTime =
+                    this.burnTime <= 0 && !fuel.isEmpty()
+                            ? BURN_MODULE.getBurnTime(this, fuel) / 2
+                            : 0;
+            if (newBurnTime > 0) {
                 this.burnHeat = BURN_MODULE.getHeatMod(fuel);
-                this.hbm$syncSet$RotaryFurnaceBlockEntity$burnTime(
-                        BURN_MODULE.getBurnTime(level, fuel) / 2);
+                this.hbm$syncSet$RotaryFurnaceBlockEntity$burnTime(newBurnTime);
                 this.hbm$syncSet$RotaryFurnaceBlockEntity$maxBurnTime(this.burnTime);
                 removeItem(4, 1);
                 setChanged();

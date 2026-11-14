@@ -117,7 +117,7 @@ public final class FramedItem {
     public static void decoBlockPrefix(PoseStack poseStack) {
         poseStack.scale(1.25F, 1.25F, 1.25F);
         poseStack.translate(0.0, 0.05F, 0.0);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
         poseStack.scale(F9, F9, F9);
     }
 
@@ -132,7 +132,7 @@ public final class FramedItem {
     }
 
     public static void framedSpriteAnchor(PoseStack poseStack) {
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180.0F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(180.0F));
         poseStack.translate(0.0F, SPRITE_ANCHOR_Y, SPRITE_ANCHOR_Z);
     }
 

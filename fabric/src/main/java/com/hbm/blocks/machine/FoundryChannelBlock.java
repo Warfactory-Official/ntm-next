@@ -30,6 +30,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Prediction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -193,7 +194,7 @@ public class FoundryChannelBlock extends Block
             channel.hbm$syncSet$FoundryBaseBlockEntity$amount(0);
             channel.hbm$syncSet$FoundryBaseBlockEntity$type(null);
             channel.setChanged();
-            player.getInventory().placeItemBackInInventory(scraps);
+            player.getInventory().placeItemBackInInventory(scraps, Prediction.SERVER_ONLY);
         }
         return InteractionResult.SUCCESS;
     }

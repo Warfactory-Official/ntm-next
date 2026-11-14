@@ -57,7 +57,7 @@ public class ChopperMineRenderer extends EntityRenderer<ChopperMineEntity, Entit
             CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.scale(1.5F, 1.5F, 1.5F);
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180F));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(180F));
         BoxModelRenderer.submit(
                 poseStack, collector, TYPE, BoxModelRenderer.CHOPPER_MINE, state.lightCoords);
         poseStack.popPose();

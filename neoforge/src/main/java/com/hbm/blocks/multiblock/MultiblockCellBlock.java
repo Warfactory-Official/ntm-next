@@ -100,7 +100,7 @@ public class MultiblockCellBlock extends Block implements RigidPistonStructure, 
                 properties
                         .isValidSpawn((state, level, pos, type) -> false)
                         .isSuffocating((state, level, pos) -> false)
-                        .isViewBlocking((state, level, pos) -> false));
+                        .isViewBlocking((state, level, pos, nearPlaneBox) -> false));
         registerDefaultState(stateDefinition.any());
     }
 

@@ -35,6 +35,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Prediction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -91,7 +92,7 @@ public abstract class FoundryCastingBlock extends Block
                 casting.hbm$syncSet$FoundryBaseBlockEntity$amount(0);
                 casting.hbm$syncSet$FoundryBaseBlockEntity$type(null);
                 casting.setChanged();
-                player.getInventory().placeItemBackInInventory(scraps);
+                player.getInventory().placeItemBackInInventory(scraps, Prediction.SERVER_ONLY);
             }
             return InteractionResult.SUCCESS;
         }
@@ -112,7 +113,7 @@ public abstract class FoundryCastingBlock extends Block
     private static void returnSlot(FoundryCastingBaseBlockEntity casting, Player player, int slot) {
         var returned = casting.removeItemNoUpdate(slot);
         casting.setChanged();
-        player.getInventory().placeItemBackInInventory(returned);
+        player.getInventory().placeItemBackInInventory(returned, Prediction.SERVER_ONLY);
     }
 
     @Override

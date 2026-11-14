@@ -127,12 +127,12 @@ public class FusionTorusRenderer
 
         if (s.tilted) {
             ps.translate(0.0, -1.0, 0.0);
-            ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(10F));
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(5F));
+            ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees(10F));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(5F));
         }
 
         ps.pushPose();
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.magnet));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.magnet));
         part(col, ps, baseType, light, -1, MAGNET);
         ps.popPose();
 

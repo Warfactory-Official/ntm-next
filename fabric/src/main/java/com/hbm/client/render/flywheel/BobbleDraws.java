@@ -285,7 +285,7 @@ final class BobbleDraws {
     private void renderGuy(PoseStack pose, Bobble type, SkinMeshes skin, int light) {
         BobbleRenderer.Pose angles = BobbleRenderer.pose(type);
         pose.pushPose();
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) angles.body()));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) angles.body()));
         if (type == BobbleType.PEEP) part(pose, PEEP_TAIL_PART, -1, light);
         limb(pose, skin.leftLeg, 0D, 1D, -.125D, angles.leftLeg(), light);
         limb(pose, skin.rightLeg, 0D, 1D, .125D, angles.rightLeg(), light);
@@ -296,9 +296,9 @@ final class BobbleDraws {
         pose.translate(0D, 1.75D, 0D);
         Matrix4f pivot = new Matrix4f(pose.last().pose());
         PoseStack head = new PoseStack();
-        head.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) angles.head()[0]));
-        head.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) angles.head()[1]));
-        head.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) angles.head()[2]));
+        head.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) angles.head()[0]));
+        head.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) angles.head()[1]));
+        head.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) angles.head()[2]));
         head.translate(0D, -1.75D, 0D);
         bobbing(pivot, head, skin.head, -1, light);
         if (type == BobbleType.VT) bobbing(pivot, head, HORN_PART, -1, light);
@@ -306,7 +306,7 @@ final class BobbleDraws {
         if (type == BobbleType.VAER) holdProp(type, head, pivot);
         if (type == BobbleType.NOS) {
             head.translate(0D, 1.75D, 0D);
-            head.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180F));
+            head.rotate((Quaternionfc) Axis.XP.rotationDegrees(180F));
             head.scale(.095F, .095F, .095F);
             for (MeshPart part : HEV_HAT_PARTS) bobbing(pivot, head, part, -1, light);
         }
@@ -324,9 +324,9 @@ final class BobbleDraws {
             int light) {
         pose.pushPose();
         pose.translate(x, y, z);
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) rotation[0]));
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) rotation[1]));
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) rotation[2]));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) rotation[0]));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) rotation[1]));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) rotation[2]));
         pose.translate(-x, -y, -z);
         part(pose, part, -1, light);
         pose.popPose();
@@ -359,8 +359,8 @@ final class BobbleDraws {
         switch (ntm) {
             case BLUEHAT -> {
                 pose.translate(0D, .875D, -.5D);
-                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90F));
-                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-160F));
+                pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90F));
+                pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-160F));
                 pose.scale(.0625F, .0625F, .0625F);
                 part(pose, HEV_HEAD_PART, 0xFFFFFFFF, 0);
             }
@@ -368,8 +368,8 @@ final class BobbleDraws {
                 pose.pushPose();
                 pose.translate(.8D, 1.6D, .4D);
                 pose.scale(.125F, .125F, .125F);
-                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
-                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(10F));
+                pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
+                pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(10F));
                 for (MeshPart part : NI4NI_PARTS) part(pose, part, -1, 0);
                 pose.popPose();
                 holdProp(type, pose, null);
@@ -377,14 +377,14 @@ final class BobbleDraws {
             case ADAM29 -> holdProp(type, pose, null);
             case PHEO -> {
                 pose.translate(.5D, 1.15D, .45D);
-                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-60F));
+                pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(-60F));
                 pose.scale(2F, 2F, 2F);
                 for (MeshPart part : SHIMMER_AXE_PARTS) part(pose, part, -1, 0);
             }
             case BOB -> {
                 pose.pushPose();
                 pose.translate(0D, .6875D, .625D);
-                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90F));
+                pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90F));
                 pose.scale(.125F, .125F, .125F);
                 pose.translate(-6D, 0D, 0D);
                 for (int i = -1; i <= 1; i++) {
@@ -394,8 +394,8 @@ final class BobbleDraws {
                 pose.popPose();
                 pose.pushPose();
                 pose.translate(.25D, .3125D, -.5D);
-                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90F));
-                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+                pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90F));
+                pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
                 pose.scale(.1F, .1F, .1F);
                 for (MeshPart part : DOUBLE_BARREL_PARTS) part(pose, part, -1, 0);
                 pose.popPose();

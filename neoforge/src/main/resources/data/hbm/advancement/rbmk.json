@@ -3,7 +3,7 @@
   "criteria": {
     "crafted_hbm_rbmk_fuel_empty": {
       "conditions": {
-        "recipe_id": "hbm:rbmk_fuel_empty"
+        "recipes": "hbm:rbmk_fuel_empty"
       },
       "trigger": "minecraft:recipe_crafted"
     }

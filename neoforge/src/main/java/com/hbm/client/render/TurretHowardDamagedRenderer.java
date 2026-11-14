@@ -111,7 +111,7 @@ public class TurretHowardDamagedRenderer
                 state.facing == Direction.NORTH || state.facing == Direction.EAST ? 1D : 0D;
         poseStack.pushPose();
         poseStack.translate(offsetX, 0D, offsetZ);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
         collector.submitCustomGeometry(
                 poseStack,
                 CARRIAGE,
@@ -119,7 +119,7 @@ public class TurretHowardDamagedRenderer
                         ResourceManager.turret_howard_damaged.renderPart(
                                 pose, buffer, state.lightCoords, -1, PART_CARRIAGE));
         poseStack.translate(0D, 2.25D, 0D);
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
         poseStack.translate(0D, -2.25D, 0D);
         collector.submitCustomGeometry(
                 poseStack,
@@ -129,7 +129,7 @@ public class TurretHowardDamagedRenderer
                                 pose, buffer, state.lightCoords, -1, PART_BODY));
         poseStack.pushPose();
         poseStack.translate(0D, 2.5D, 0D);
-        poseStack.mulPose((Quaternionfc) Axis.XN.rotationDegrees(state.spin));
+        poseStack.rotate((Quaternionfc) Axis.XN.rotationDegrees(state.spin));
         poseStack.translate(0D, -2.5D, 0D);
         collector.submitCustomGeometry(
                 poseStack,

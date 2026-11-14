@@ -57,6 +57,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -266,7 +267,7 @@ public class WavelengthLaserBlockEntity extends MachineBlockEntity
 
     public static boolean beamOpaque(BlockState state) {
         return MultiblockSurface.isSurface(state)
-                || state.blocksMotion()
+                || state.is(BlockTags.BLOCKS_MOTION)
                         && state.canOcclude()
                         && state.instrument() != NoteBlockInstrument.HAT
                         && !state.is(Blocks.GLOWSTONE);

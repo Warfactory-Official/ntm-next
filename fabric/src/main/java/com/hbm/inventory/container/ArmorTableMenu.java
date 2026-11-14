@@ -36,6 +36,7 @@ package com.hbm.inventory.container;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.inventory.slot.SlotFiltered;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
@@ -221,7 +222,7 @@ public class ArmorTableMenu extends NtmContainerMenu {
                 for (var socket = 0; socket < ArmorModHandler.MOD_SLOTS; socket++) {
                     var modification = modifications.removeItemNoUpdate(socket);
                     if (!modification.isEmpty()) {
-                        player.drop(modification, false);
+                        player.drop(modification, false, Prediction.SERVER_ONLY);
                         if (!armor.isEmpty()) {
                             ArmorModHandler.removeMod(armor, socket);
                         }
@@ -229,7 +230,7 @@ public class ArmorTableMenu extends NtmContainerMenu {
                 }
                 var detachedArmor = workingArmor.removeItemNoUpdate(0);
                 if (!detachedArmor.isEmpty()) {
-                    player.drop(detachedArmor, false);
+                    player.drop(detachedArmor, false, Prediction.SERVER_ONLY);
                 }
             } finally {
                 rebuilding = false;

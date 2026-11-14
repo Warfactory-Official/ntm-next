@@ -109,7 +109,7 @@ public final class RadarLargeItemRenderer
         part(collector, pose, type, RADAR, light);
 
         pose.pushPose();
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(dishDegrees(GameTime.now())));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(dishDegrees(GameTime.now())));
         part(collector, pose, type, DISH, light);
         pose.popPose();
     }

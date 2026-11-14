@@ -23,12 +23,14 @@ import com.hbm.saveddata.TomSaveData;
 import com.hbm.world.ImpactWorldgen;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.placement.FeaturePlacer;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -43,16 +45,16 @@ public abstract class MixinChunkGenerator {
                     @At(
                             value = "INVOKE",
                             target =
-                                    "Lnet/minecraft/world/level/levelgen/placement/PlacedFeature;placeWithBiomeCheck(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/world/level/chunk/ChunkGenerator;Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/BlockPos;)Z"))
+                                    "Lnet/minecraft/world/level/levelgen/placement/FeaturePlacer;placeWithBiomeCheck(Lnet/minecraft/world/level/levelgen/placement/PlacedFeature;Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/BlockPos;)Z"))
     private boolean hbm$impactDecoration(
+            FeaturePlacer placer,
             PlacedFeature feature,
-            WorldGenLevel level,
-            ChunkGenerator generator,
             RandomSource random,
             BlockPos origin,
-            Operation<Boolean> original) {
+            Operation<Boolean> original,
+            @Local(argsOnly = true) WorldGenLevel level) {
         return ImpactWorldgen.decorates(level, feature, random)
-                && original.call(feature, level, generator, random, origin);
+                && original.call(placer, feature, random, origin);
     }
 
     @Inject(method = "applyBiomeDecoration", at = @At("TAIL"))

@@ -21,7 +21,6 @@ package com.hbm.blocks.generic;
 
 import com.hbm.blockentity.ChlorineSealBlockEntity;
 import com.hbm.blocks.TickingEntityBlock;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -40,16 +39,9 @@ public class ChlorineSealBlock extends Block implements TickingEntityBlock {
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    public static final MapCodec<ChlorineSealBlock> CODEC = simpleCodec(ChlorineSealBlock::new);
-
     public ChlorineSealBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(POWERED, false));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

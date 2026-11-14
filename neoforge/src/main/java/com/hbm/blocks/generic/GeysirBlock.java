@@ -22,7 +22,6 @@ package com.hbm.blocks.generic;
 import com.hbm.blockentity.effect.GeyserBlockEntity;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.TickingEntityBlock;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
@@ -37,16 +36,9 @@ import org.jspecify.annotations.Nullable;
 public class GeysirBlock extends Block implements TickingEntityBlock {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-    public static final MapCodec<GeysirBlock> CODEC = simpleCodec(GeysirBlock::new);
-
     public GeysirBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(ACTIVE, false));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

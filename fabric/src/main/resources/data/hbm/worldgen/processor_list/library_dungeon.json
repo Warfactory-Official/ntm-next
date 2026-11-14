@@ -4,46 +4,32 @@
       "processor_type": "hbm:marker_table",
       "processors": [
         {
-          "marker": {
-            "Name": "minecraft:stone_bricks"
-          },
+          "marker": "minecraft:stone_bricks",
           "options": [
             {
-              "data": {
-                "Name": "minecraft:stone_bricks"
-              },
+              "data": "minecraft:stone_bricks",
               "weight": 1
             },
             {
-              "data": {
-                "Name": "minecraft:mossy_stone_bricks"
-              },
+              "data": "minecraft:mossy_stone_bricks",
               "weight": 1
             },
             {
-              "data": {
-                "Name": "minecraft:cracked_stone_bricks"
-              },
+              "data": "minecraft:cracked_stone_bricks",
               "weight": 1
             }
           ],
           "processor_type": "hbm:weighted_place"
         },
         {
-          "marker": {
-            "Name": "minecraft:oak_planks"
-          },
+          "marker": "minecraft:oak_planks",
           "options": [
             {
-              "data": {
-                "Name": "minecraft:oak_planks"
-              },
+              "data": "minecraft:oak_planks",
               "weight": 1
             },
             {
-              "data": {
-                "Name": "minecraft:bookshelf"
-              },
+              "data": "minecraft:bookshelf",
               "weight": 1
             }
           ],

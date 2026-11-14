@@ -173,7 +173,7 @@ public final class ArcFurnaceAnimationData {
 
     public static void nativeRoot(PoseStack poses, Direction facing, Quaternionf rotation) {
         poses.translate(ROOT_X, ROOT_Y, ROOT_Z);
-        poses.mulPose((Quaternionfc) rotation.rotationY(yaw(facing) * Mth.DEG_TO_RAD));
+        poses.rotate((Quaternionfc) rotation.rotationY(yaw(facing) * Mth.DEG_TO_RAD));
     }
 
     public static void nativeContents(PoseStack poses, int amount, int capacity) {
@@ -189,7 +189,7 @@ public final class ArcFurnaceAnimationData {
         float offset = CABLE_Z[electrode];
         poses.translate(0D, CABLE_PIVOT_Y, offset);
         float degrees = (float) samples[CABLE_DEGREES_SAMPLE];
-        poses.mulPose((Quaternionfc) rotation.rotationX(degrees * Mth.DEG_TO_RAD));
+        poses.rotate((Quaternionfc) rotation.rotationX(degrees * Mth.DEG_TO_RAD));
         poses.translate(0D, -CABLE_PIVOT_Y, -offset);
     }
 

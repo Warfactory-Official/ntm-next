@@ -119,13 +119,13 @@ public final class MeteorRenderer extends EntityRenderer<MeteorEntity, MeteorRen
         RenderType type = FlatCutout.of(TEXTURE);
 
         pose.pushPose();
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180));
-        pose.mulPose(
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(180));
+        pose.rotate(
                 (Quaternionfc)
                         new Quaternionf()
                                 .rotateAxis((float) Math.toRadians(state.spin), 1F, 1F, 1F));
         pose.scale(5F, 5F, 5F);
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(180));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(180));
 
         collector.submitCustomGeometry(pose, type, MeteorRenderer::draw);
         pose.popPose();

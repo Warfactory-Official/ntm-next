@@ -44,7 +44,8 @@ public final class FractalSimplexNoise {
         for (int i = 0; i < octaveCount; i++) {
             SimplexNoise octave = new SimplexNoise(rand);
             int tableOffset = i * SimplexBatch.TABLE_SIZE;
-            System.arraycopy(octave.p, 0, perms, tableOffset, SimplexBatch.TABLE_SIZE);
+            for (int j = 0; j < SimplexBatch.TABLE_SIZE; j++)
+                perms[tableOffset + j] = octave.perms[j] & 0xFF;
             SimplexBatch.gradientTables(perms, tableOffset, gradsX, gradsY, tableOffset);
         }
     }

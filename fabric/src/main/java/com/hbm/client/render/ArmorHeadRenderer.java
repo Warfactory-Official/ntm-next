@@ -54,7 +54,6 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
@@ -285,9 +284,7 @@ public final class ArmorHeadRenderer {
             }
             if (stack.hasFoil()) {
                 collector.submitCustomGeometry(
-                        pose,
-                        RenderTypes.armorEntityGlint(),
-                        (p, buffer) -> mesh.render(p, buffer, light, -1));
+                        pose, ArmorGlint.TYPE, (p, buffer) -> mesh.render(p, buffer, light, -1));
             }
             pose.popPose();
         }
@@ -340,7 +337,7 @@ public final class ArmorHeadRenderer {
         if (stack.hasFoil()) {
             collector.submitCustomGeometry(
                     pose,
-                    RenderTypes.armorEntityGlint(),
+                    ArmorGlint.TYPE,
                     (p, buffer) -> {
                         mesh.renderPart(p, buffer, light, -1, NO9_HELMET);
                         mesh.renderPart(p, buffer, light, -1, NO9_INSIGNIA);
@@ -399,18 +396,16 @@ public final class ArmorHeadRenderer {
                 OverlayTexture.NO_OVERLAY,
                 null,
                 -1,
-                null,
                 outlineColor);
         if (stack.hasFoil()) {
             collector.submitModelPart(
                     part,
                     pose,
-                    RenderTypes.armorEntityGlint(),
+                    ArmorGlint.TYPE,
                     light,
                     OverlayTexture.NO_OVERLAY,
                     null,
                     -1,
-                    null,
                     outlineColor);
         }
         pose.popPose();

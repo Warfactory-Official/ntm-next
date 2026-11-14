@@ -238,8 +238,8 @@ public class BlackHoleRenderer<T extends BlackHoleEntity>
                                 pose, buffer, LightCoordsUtil.FULL_BRIGHT, -1));
 
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(state.entityId % 90 - 45F));
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.entityId % 360));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(state.entityId % 90 - 45F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.entityId % 360));
         if (kind.swirl) {
             submitSwirl(state, poseStack, collector);
         } else {
@@ -255,7 +255,7 @@ public class BlackHoleRenderer<T extends BlackHoleEntity>
 
     private void submitSwirl(State state, PoseStack poseStack, SubmitNodeCollector collector) {
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-5F * state.age));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(-5F * state.age));
         int glow = ARGB.color((int) (kind.glow * 255F), 255, 255, 255);
         for (boolean inner : new boolean[] {true, false}) {
             collector.submitCustomGeometry(
@@ -281,7 +281,7 @@ public class BlackHoleRenderer<T extends BlackHoleEntity>
     private void submitDisc(State state, PoseStack poseStack, SubmitNodeCollector collector) {
         for (int k = 0; k < DISC_STEPS; k++) {
             poseStack.pushPose();
-            poseStack.mulPose(
+            poseStack.rotate(
                     (Quaternionfc)
                             Axis.YP.rotationDegrees(-state.age * (float) Math.pow(k + 1, 1.25D)));
             double scale = 3D - k * 0.175D;

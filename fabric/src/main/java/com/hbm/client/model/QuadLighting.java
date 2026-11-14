@@ -110,7 +110,14 @@ public final class QuadLighting {
         final int emission = info.lightEmission();
         var copy =
                 new BakedQuad.MaterialInfo(
-                        sprite, info.layer(), itemType, tint, info.shade(), emission);
+                        sprite,
+                        info.layer(),
+                        itemType,
+                        info.itemGlintRenderType(),
+                        info.itemGlintSpecialRenderType(),
+                        tint,
+                        info.shadeDirectionOverride(),
+                        emission);
         ((com.hbm.interfaces.injected.QuadLightOriginAccess) (java.lang.Object) (copy))
                 .hbm$setLightOrigin(origin);
         return copy;

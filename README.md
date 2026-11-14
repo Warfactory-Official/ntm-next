@@ -3,7 +3,7 @@
 	<a href="https://discord.gg/eKFrH7P5ZR"><img src="https://img.shields.io/discord/1241479482964054057?color=5865f2&label=Discord&style=flat" alt="Discord"></a>
     <br>
 </h1>
-HBM's Nuclear Tech Mod for Minecraft 26.2, with Fabric and NeoForge builds. The Minecraft 26.3 source is on the [`26.3`](https://github.com/Warfactory-Official/ntm-next/tree/26.3) branch.<br><br>
+HBM's Nuclear Tech Mod for Minecraft 26.3, with Fabric and NeoForge builds. The Minecraft 26.2 source is on the [`master`](https://github.com/Warfactory-Official/ntm-next/tree/master) branch.<br><br>
 
 > [!NOTE]
 > This project will only support Minecraft 26.2+. For 1.20.1, 1.21.1, and 26.1, check out our [NTM Continuum](https://github.com/Warfactory-Official/NTM-Continuum) ([CurseForge](https://www.curseforge.com/minecraft/mc-mods/ntm-continuum)).

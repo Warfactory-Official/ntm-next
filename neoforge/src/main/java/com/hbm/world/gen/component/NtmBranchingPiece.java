@@ -27,9 +27,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import org.jspecify.annotations.Nullable;
 
 public abstract class NtmBranchingPiece extends NtmComponentPiece {
@@ -69,11 +69,11 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
     }
 
     public void buildComponent(
-            NtmBranchingStart start, StructurePieceAccessor accessor, RandomSource random) {}
+            NtmBranchingStart start, StructurePiecesBuilder accessor, RandomSource random) {}
 
     protected final @Nullable StructurePiece generateChildNormal(
             NtmBranchingStart start,
-            StructurePieceAccessor accessor,
+            StructurePiecesBuilder accessor,
             RandomSource random,
             int offset,
             int offsetY) {
@@ -82,7 +82,7 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
 
     protected final @Nullable StructurePiece generateChildAntiNormal(
             NtmBranchingStart start,
-            StructurePieceAccessor accessor,
+            StructurePiecesBuilder accessor,
             RandomSource random,
             int offset,
             int offsetY) {
@@ -91,7 +91,7 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
 
     protected final @Nullable StructurePiece generateChildWest(
             NtmBranchingStart start,
-            StructurePieceAccessor accessor,
+            StructurePiecesBuilder accessor,
             RandomSource random,
             int offset,
             int offsetY) {
@@ -100,7 +100,7 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
 
     protected final @Nullable StructurePiece generateChildEast(
             NtmBranchingStart start,
-            StructurePieceAccessor accessor,
+            StructurePiecesBuilder accessor,
             RandomSource random,
             int offset,
             int offsetY) {
@@ -109,7 +109,7 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
 
     private @Nullable StructurePiece branch(
             NtmBranchingStart start,
-            StructurePieceAccessor accessor,
+            StructurePiecesBuilder accessor,
             RandomSource random,
             Rotation turn,
             int offset,
@@ -130,7 +130,7 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
     @FunctionalInterface
     public interface PieceFactory {
         @Nullable StructurePiece create(
-                StructurePieceAccessor accessor,
+                StructurePiecesBuilder accessor,
                 RandomSource random,
                 int x,
                 int y,
@@ -180,7 +180,7 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
         }
 
         @Nullable StructurePiece grow(
-                StructurePieceAccessor accessor,
+                StructurePiecesBuilder accessor,
                 RandomSource random,
                 int x,
                 int y,
@@ -198,7 +198,7 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
         }
 
         private @Nullable StructurePiece pick(
-                StructurePieceAccessor accessor,
+                StructurePiecesBuilder accessor,
                 RandomSource random,
                 int x,
                 int y,

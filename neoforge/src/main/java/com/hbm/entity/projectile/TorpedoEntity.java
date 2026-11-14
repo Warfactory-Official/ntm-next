@@ -28,14 +28,13 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.InterpolationHandler;
+import net.minecraft.world.entity.LinearInterpolationHandler;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 public class TorpedoEntity extends Entity {
-    private final InterpolationHandler interpolation = new InterpolationHandler(this);
-
     public TorpedoEntity(EntityType<? extends TorpedoEntity> type, Level level) {
         super(type, level);
     }
@@ -50,8 +49,8 @@ public class TorpedoEntity extends Entity {
     protected void addAdditionalSaveData(ValueOutput output) {}
 
     @Override
-    public InterpolationHandler getInterpolation() {
-        return this.interpolation;
+    protected InterpolationHandler createInterpolationHandler() {
+        return LinearInterpolationHandler.create(this);
     }
 
     @Override
@@ -66,7 +65,6 @@ public class TorpedoEntity extends Entity {
 
     @Override
     public void tick() {
-        this.interpolation.interpolate();
         super.tick();
 
         if (level().isClientSide()) return;

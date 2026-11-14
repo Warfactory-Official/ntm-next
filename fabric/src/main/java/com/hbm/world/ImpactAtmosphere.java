@@ -37,11 +37,14 @@ import com.hbm.data.WorldData;
 import com.hbm.handler.ImpactWorldHandler;
 import com.hbm.saveddata.TomSaveData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.ARGB;
 import net.minecraft.world.attribute.EnvironmentAttributeSystem;
 import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.timeline.Timelines;
+import org.joml.Vector3f;
+import org.joml.Vector3fc;
+import org.joml.Vector4f;
+import org.joml.Vector4fc;
 
 public final class ImpactAtmosphere {
 
@@ -60,13 +63,9 @@ public final class ImpactAtmosphere {
                 EnvironmentAttributes.STAR_BRIGHTNESS, (value, tick) -> value * (1 - dust(level)));
         builder.addTimeBasedLayer(
                 EnvironmentAttributes.SUNRISE_SUNSET_COLOR,
-                (value, tick) -> {
-                    float clear = 1 - dust(level);
-                    return ARGB.scaleRGB(ARGB.multiplyAlpha(value, clear), clear);
-                });
+                (value, tick) -> sunriseColor(value, dust(level)));
         builder.addTimeBasedLayer(
-                EnvironmentAttributes.CLOUD_COLOR,
-                (value, tick) -> ARGB.scaleRGB(value, 1 - dust(level)));
+                EnvironmentAttributes.CLOUD_COLOR, (value, tick) -> cloudColor(value, dust(level)));
         builder.addTimeBasedLayer(
                 EnvironmentAttributes.SKY_COLOR,
                 (value, tick) -> skyColor(value, dust(level), fire(level)));
@@ -75,23 +74,43 @@ public final class ImpactAtmosphere {
                 (value, tick) -> fogColor(value, dust(level), fire(level)));
     }
 
-    public static int skyColor(int sky, float dust, float fire) {
-        float brightness = fire + (1 - dust);
-        if (fire > 0) {
-            return ARGB.scaleRGB(
-                    sky,
-                    1.3F * brightness,
-                    Math.max(1 - dust * 1.4F, 0) * brightness,
-                    Math.max(1 - dust * 4, 0) * brightness);
-        }
-        return ARGB.scaleRGB(
-                sky, brightness, (1 - dust * 0.5F) * brightness, (1 - dust) * brightness);
+    public static Vector4fc sunriseColor(Vector4fc sunrise, float dust) {
+        if (dust == 0) return sunrise;
+        float clear = 1 - dust;
+        return new Vector4f(
+                sunrise.x() * clear, sunrise.y() * clear, sunrise.z() * clear, sunrise.w() * clear);
     }
 
-    public static int fogColor(int fog, float dust, float fire) {
+    public static Vector4fc cloudColor(Vector4fc cloud, float dust) {
+        if (dust == 0) return cloud;
+        float clear = 1 - dust;
+        return new Vector4f(cloud.x() * clear, cloud.y() * clear, cloud.z() * clear, cloud.w());
+    }
+
+    public static Vector3fc skyColor(Vector3fc sky, float dust, float fire) {
+        if (dust == 0 && fire == 0) return sky;
+        float brightness = fire + (1 - dust);
+        float red;
+        float green;
+        float blue;
+        if (fire > 0) {
+            red = sky.x() * 1.3F;
+            green = sky.y() * Math.max(1 - dust * 1.4F, 0);
+            blue = sky.z() * Math.max(1 - dust * 4, 0);
+        } else {
+            red = sky.x();
+            green = sky.y() * (1 - dust * 0.5F);
+            blue = sky.z() * (1 - dust);
+        }
+        return new Vector3f(red * brightness, green * brightness, blue * brightness);
+    }
+
+    public static Vector3fc fogColor(Vector3fc fog, float dust, float fire) {
+        if (dust == 0) return fog;
         float brightness = fire > 0 ? Math.max(1 - dust * 2, 0) : 1 - dust;
-        return ARGB.scaleRGB(
-                fog, brightness, (1 - dust * 0.5F) * brightness, (1 - dust) * brightness);
+        float green = fog.y() * (1 - dust * 0.5F);
+        float blue = fog.z() * (1 - dust);
+        return new Vector3f(fog.x() * brightness, green * brightness, blue * brightness);
     }
 
     private static float dust(Level level) {

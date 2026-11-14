@@ -21,37 +21,50 @@ package com.hbm.world.feature;
 
 import com.hbm.saveddata.TomSaveData;
 import com.hbm.world.gen.WorldgenHeight;
-import java.util.function.Supplier;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public final class FlowerPatchFeature extends Feature<NoneFeatureConfiguration> {
-    private final Supplier<Block> flower;
-    private final int odds;
+public record FlowerPatchFeature(Block flower, int odds) implements Feature {
+    public static final MapCodec<FlowerPatchFeature> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    instance ->
+                            instance.group(
+                                            BuiltInRegistries.BLOCK
+                                                    .byNameCodec()
+                                                    .fieldOf("flower")
+                                                    .forGetter(FlowerPatchFeature::flower),
+                                            Codec.intRange(1, Integer.MAX_VALUE)
+                                                    .fieldOf("odds")
+                                                    .forGetter(FlowerPatchFeature::odds))
+                                    .apply(instance, FlowerPatchFeature::new));
 
-    public FlowerPatchFeature(Supplier<Block> flower, int odds) {
-        super(NoneFeatureConfiguration.CODEC);
-        this.flower = flower;
-        this.odds = odds;
+    @Override
+    public MapCodec<FlowerPatchFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        WorldGenLevel level = context.level();
-        RandomSource random = context.random();
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos origin) {
         if (TomSaveData.impact(level.getLevel()) || random.nextInt(odds) != 0) return false;
 
-        BlockPos chunkOrigin = context.origin();
+        BlockPos chunkOrigin = origin;
         int x = (chunkOrigin.getX() & ~15) + random.nextInt(16);
         int z = (chunkOrigin.getZ() & ~15) + random.nextInt(16);
         int y = WorldgenHeight.lightBlocking(level, x, z);
-        BlockState flower = this.flower.get().defaultBlockState();
+        BlockState flower = this.flower.defaultBlockState();
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         boolean placed = false;
 

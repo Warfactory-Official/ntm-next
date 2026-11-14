@@ -25,8 +25,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 
@@ -40,7 +40,7 @@ public record HazmatProtection(HolderSet<Item> targets, double resistance) {
                             RecordCodecBuilder.<HazmatProtection>mapCodec(
                                     instance ->
                                             instance.group(
-                                                            RegistryCodecs.<Item>homogeneousList(
+                                                            RegistryCodecs.<Item>holderSet(
                                                                             (ResourceKey<
                                                                                             ? extends
                                                                                                     Registry<

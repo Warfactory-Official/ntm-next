@@ -141,11 +141,11 @@ public class BatteryREDDRenderer
     public void submit(State s, PoseStack ps, SubmitNodeCollector col, CameraRenderState camera) {
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         ps.pushPose();
         ps.translate(0, PIVOT, 0);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(s.rot));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(s.rot));
         ps.translate(0, -PIVOT, 0);
 
         col.submitCustomGeometry(

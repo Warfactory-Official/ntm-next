@@ -22,24 +22,31 @@ package com.hbm.world.feature;
 import com.hbm.blockentity.bomb.LandmineBlockEntity;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.BalanceConfig;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public final class BosniaMineFeature extends Feature<NoneFeatureConfiguration> {
-    public BosniaMineFeature() {
-        super(NoneFeatureConfiguration.CODEC);
+public final class BosniaMineFeature implements Feature {
+    public static final MapCodec<BosniaMineFeature> CODEC = MapCodec.unit(BosniaMineFeature::new);
+
+    @Override
+    public MapCodec<BosniaMineFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
         if (!BalanceConfig.enable528BosniaSimulator) return false;
-        WorldGenLevel level = context.level();
-        BlockPos pos = context.origin();
+        BlockPos pos = featureOrigin;
         if (!Block.canSupportCenter(level, pos.below(), Direction.UP)) return false;
 
         level.setBlock(pos, ModBlocks.MINE_HE.get().defaultBlockState(), Block.UPDATE_CLIENTS);

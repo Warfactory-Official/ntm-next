@@ -94,10 +94,10 @@ public class HephaestusRenderer
         ps.translate(0.5, 0.0, 0.5);
 
         ps.pushPose();
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.rot));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.rot));
         for (int i = 0; i < 3; i++) {
             part(col, ps, bodyType, light, -1, ROTOR);
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(120));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(120));
         }
         ps.popPose();
 

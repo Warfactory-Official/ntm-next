@@ -65,7 +65,7 @@ public final class Boxes {
             int tint,
             ModelState state) {
         CuboidFace face = new CuboidFace(null, tint, "", uvs, quadrant);
-        return FaceBakery.bakeQuad(baker, from, to, face, material, dir, state, null, true, 0);
+        return FaceBakery.bakeQuad(baker, from, to, face, material, dir, state, null, null, 0);
     }
 
     public static void cube(

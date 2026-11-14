@@ -111,7 +111,7 @@ public class AutosawRenderer
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
 
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-s.turn));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(-s.turn));
         part(col, ps, light, MAIN);
 
         ps.pushPose();
@@ -120,24 +120,24 @@ public class AutosawRenderer
         ps.popPose();
 
         ps.translate(0.0, 1.75, 0.0);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(s.angle));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(s.angle));
         ps.translate(0.0, -1.75, 0.0);
         part(col, ps, light, ARM_UPPER);
 
         ps.translate(0.0, 1.75, -4.0);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(s.angle * -2F));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(s.angle * -2F));
         ps.translate(0.0, -1.75, 4.0);
         ps.translate(-0.01, 0.0, 0.0);
         part(col, ps, light, ARM_LOWER);
         ps.translate(0.01, 0.0, 0.0);
 
         ps.translate(0.0, 1.75, -8.0);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(s.angle));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(s.angle));
         ps.translate(0.0, -1.75, 8.0);
         part(col, ps, light, ARM_TIP);
 
         ps.translate(0.0, 1.75, -10.0);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-s.spin));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(-s.spin));
         ps.translate(0.0, -1.75, 10.0);
         part(col, ps, light, SAWBLADE);
 

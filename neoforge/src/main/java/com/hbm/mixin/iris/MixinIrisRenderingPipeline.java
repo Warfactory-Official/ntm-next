@@ -29,18 +29,29 @@ import com.hbm.client.render.iris.WorldShaderCompiler;
 import com.hbm.interfaces.injected.RibbonPipeline;
 import com.hbm.interfaces.injected.WorldPipeline;
 import com.hbm.mixin.compat.iris.ProgramFallbackResolverAccessor;
-import com.mojang.blaze3d.opengl.GlProgram;
-import com.mojang.blaze3d.opengl.GlRenderPipeline;
-import com.mojang.blaze3d.pipeline.CompiledRenderPipeline;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.renderpearl.api.pipeline.BindGroupLayout;
+import com.mojang.renderpearl.api.pipeline.CompiledRenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.vertex.VertexFormat;
+import com.mojang.renderpearl.backend.api.BackendRenderPipeline.CreateInfo;
+import com.mojang.renderpearl.backend.opengl.GlDevice;
+import com.mojang.renderpearl.backend.opengl.GlProgram;
+import com.mojang.renderpearl.backend.opengl.GlRenderPipeline;
+import com.mojang.renderpearl.backend.opengl.VertexArray;
+import com.mojang.renderpearl.frontend.FrontendGpuDevice;
+import com.mojang.renderpearl.frontend.FrontendRenderPipeline;
+import dev.engine_room.flywheel.backend.compile.RenderPipelineCompiler;
 import dev.engine_room.flywheel.iris.compile.ContractProgram;
 import dev.engine_room.flywheel.iris.compile.ContractProgramSet;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 import net.irisshaders.iris.gl.blending.AlphaTest;
@@ -58,10 +69,15 @@ import net.irisshaders.iris.shaderpack.programs.ProgramFallbackResolver;
 import net.irisshaders.iris.shaderpack.programs.ProgramSource;
 import net.irisshaders.iris.shadows.ShadowRenderTargets;
 import net.irisshaders.iris.targets.RenderTargets;
+import org.lwjgl.opengl.GL20C;
+import org.lwjgl.opengl.GL;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = IrisRenderingPipeline.class, remap = false)
 public abstract class MixinIrisRenderingPipeline implements RibbonPipeline, WorldPipeline {
@@ -89,7 +105,85 @@ public abstract class MixinIrisRenderingPipeline implements RibbonPipeline, Worl
 
     @Unique
     private CompiledRenderPipeline hbm$compile(RenderPipeline pipeline, GlProgram program) {
-        return new GlRenderPipeline(pipeline, program);
+        var descriptions = BindGroupLayout.flattenUniforms(pipeline.getBindGroupLayouts());
+        var indices = new Object2IntOpenHashMap<String>();
+        for (int index = 0; index < descriptions.size(); index++) {
+            indices.put(descriptions.get(index).name(), index);
+        }
+        var formats = pipeline.getVertexFormatBindings();
+        var buffers = new ArrayList<CreateInfo.VertexBuffer>();
+        var attributes = new ArrayList<CreateInfo.AttribBinding>();
+        for (int slot = 0; slot < formats.size(); slot++) {
+            VertexFormat format = formats.get(slot);
+            if (format == null) continue;
+            buffers.add(
+                    new CreateInfo.VertexBuffer(
+                            slot, format.getVertexSize(), format.getStepRate()));
+            String previousName = null;
+            int previousLocation = -1;
+            for (var element : format.getElements()) {
+                String name = element.name();
+                int location;
+                if (name.equals(previousName)) {
+                    location = previousLocation < 0 ? -1 : previousLocation + 1;
+                } else {
+                    location = GL20C.glGetAttribLocation(program.getProgramId(), "iris_" + name);
+                    if (location < 0)
+                        location = GL20C.glGetAttribLocation(program.getProgramId(), name);
+                }
+                if (location >= 0)
+                    attributes.add(
+                            new CreateInfo.AttribBinding(
+                                    slot, location, element.offset(), element.format()));
+                previousName = name;
+                previousLocation = location;
+            }
+        }
+        var info =
+                new CreateInfo(
+                        pipeline.getLocation().toString(),
+                        List.of(),
+                        buffers,
+                        attributes,
+                        descriptions,
+                        pipeline.pushConstantSize(),
+                        pipeline.getDepthStencilState(),
+                        pipeline.getPolygonMode(),
+                        pipeline.isCull(),
+                        pipeline.getColorTargetStates(),
+                        pipeline.getPrimitiveTopology());
+        var device = (GlDevice) ((FrontendGpuDevice) RenderSystem.getDevice()).backend;
+        var vertexArray =
+                VertexArray.createSource(GL.getCapabilities(), new HashSet<>())
+                        .apply(program, info);
+        var backend = new GlRenderPipeline(device, info, program, vertexArray);
+        return new FrontendRenderPipeline(
+                info.name(),
+                backend,
+                formats,
+                indices,
+                descriptions,
+                info.colorTargetStates(),
+                info.depthStencilState() != null,
+                info.pushConstantsSize());
+    }
+
+    @Inject(method = "destroyShaders", at = @At("HEAD"))
+    private void hbm$releaseNativePipelines(CallbackInfo ci) {
+        for (CompiledRenderPipeline compiled : hbm$programs) {
+            if (compiled != null)
+                RenderPipelineCompiler.releaseGuestPipeline((FrontendRenderPipeline) compiled);
+        }
+        if (hbm$litRibbon != null)
+            RenderPipelineCompiler.releaseGuestPipeline((FrontendRenderPipeline) hbm$litRibbon);
+        if (hbm$emissiveRibbon != null)
+            RenderPipelineCompiler.releaseGuestPipeline(
+                    (FrontendRenderPipeline) hbm$emissiveRibbon);
+        if (hbm$emissiveNoFogRibbon != null)
+            RenderPipelineCompiler.releaseGuestPipeline(
+                    (FrontendRenderPipeline) hbm$emissiveNoFogRibbon);
+        Arrays.fill(hbm$programs, null);
+        hbm$litRibbon = hbm$emissiveRibbon = hbm$emissiveNoFogRibbon = null;
     }
 
     @Shadow
@@ -197,20 +291,14 @@ public abstract class MixinIrisRenderingPipeline implements RibbonPipeline, Worl
         if (nativeSky
                 && (phase != 0
                         || !world.isBeforeTranslucent
-                        || !SKY_PHASES.contains(world.getPhase())
-                        || RenderSystem.outputColorTextureOverride != null
-                        || RenderSystem.outputDepthTextureOverride != null)) {
+                        || !SKY_PHASES.contains(world.getPhase()))) {
             throw new UnsupportedOperationException(
                     "native sky requires the main Iris sky before translucents: phase="
                             + phase
                             + ", worldPhase="
                             + world.getPhase()
                             + ", before="
-                            + world.isBeforeTranslucent
-                            + ", colorOverride="
-                            + (RenderSystem.outputColorTextureOverride != null)
-                            + ", depthOverride="
-                            + (RenderSystem.outputDepthTextureOverride != null));
+                            + world.isBeforeTranslucent);
         }
         int index = pipeline.index * 5 + phase;
         if (index >= hbm$programs.length) hbm$programs = Arrays.copyOf(hbm$programs, index + 160);

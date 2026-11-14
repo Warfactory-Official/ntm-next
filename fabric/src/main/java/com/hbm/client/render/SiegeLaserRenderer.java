@@ -127,7 +127,12 @@ public class SiegeLaserRenderer extends EntityRenderer<SiegeLaserEntity, SiegeLa
 
     @Override
     public boolean shouldRender(
-            SiegeLaserEntity entity, Frustum culler, double camX, double camY, double camZ) {
+            SiegeLaserEntity entity,
+            Frustum culler,
+            double camX,
+            double camY,
+            double camZ,
+            float partialTicks) {
         return true;
     }
 
@@ -152,8 +157,8 @@ public class SiegeLaserRenderer extends EntityRenderer<SiegeLaserEntity, SiegeLa
             CameraRenderState camera) {
         int color = state.color;
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch + 180F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch + 180F));
         poseStack.scale(-0.5F, 0.25F, 0.25F);
         collector.submitCustomGeometry(
                 poseStack, BeamRenderTypes.ADDITIVE, (pose, buffer) -> dart(buffer, pose, color));

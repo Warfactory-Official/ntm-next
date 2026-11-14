@@ -290,6 +290,7 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
                 List.of(
                         VanillaHudElements.HOTBAR,
                         VanillaHudElements.INFO_BAR,
+                        VanillaHudElements.INFO_BAR_FOREGROUND,
                         VanillaHudElements.EXPERIENCE_LEVEL,
                         VanillaHudElements.HELD_ITEM_TOOLTIP,
                         VanillaHudElements.SLEEP,
@@ -387,6 +388,8 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
     }
 
     private static int armorBarsLeftHeight() {
-        return HudStatusBarHeightRegistry.getHeight(ClientRegistry.ARMOR_BARS_ID);
+        return HudStatusBarHeightRegistry.getHeight(ClientRegistry.ARMOR_BARS_ID)
+                - HudStatusBarHeightRegistry.getElementHeight(ClientRegistry.ARMOR_BARS_ID)
+                + 10;
     }
 }

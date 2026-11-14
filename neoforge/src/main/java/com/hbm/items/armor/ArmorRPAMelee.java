@@ -165,7 +165,7 @@ public class ArmorRPAMelee extends ArmorPAMeleeBase {
                 -12F * swingLeft + 2F * slapTurn - 5F * slap,
                 6F * slap,
                 5F * swingLeft + 8F * slap);
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(forwardTilt - swingRight * 20F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(forwardTilt - swingRight * 20F));
         pose.translate(outward, 0F, 0F);
         submitArm(
                 pose,
@@ -184,7 +184,7 @@ public class ArmorRPAMelee extends ArmorPAMeleeBase {
                 12F * swingRight - 2F * slapTurn + 5F * slap,
                 6F * slap,
                 5F * swingRight + 8F * slap);
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(forwardTilt - swingLeft * 20F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(forwardTilt - swingLeft * 20F));
         pose.translate(-outward, 0F, 0F);
         submitArm(
                 pose,

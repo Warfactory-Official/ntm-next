@@ -6,14 +6,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "max": 7,
                 "min": 4
-              },
-              "function": "minecraft:set_count"
+              }
             }
           ],
           "name": "minecraft:gold_ingot"
@@ -26,14 +26,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "max": 17,
                 "min": 8
-              },
-              "function": "minecraft:set_count"
+              }
             }
           ],
           "name": "minecraft:gold_nugget"
@@ -46,14 +46,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "max": 4,
                 "min": 2
-              },
-              "function": "minecraft:set_count"
+              }
             }
           ],
           "name": "hbm:powder_gold"
@@ -66,14 +66,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "max": 8,
                 "min": 4
-              },
-              "function": "minecraft:set_count"
+              }
             }
           ],
           "name": "hbm:wire_fine_gold"
@@ -86,14 +86,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "max": 2,
                 "min": 1
-              },
-              "function": "minecraft:set_count"
+              }
             }
           ],
           "name": "hbm:wire_dense_gold"
@@ -103,23 +103,26 @@
     },
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "chance": 0.5,
-          "condition": "minecraft:random_chance"
-        }
-      ],
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:random_chance",
+            "chance": 0.5
+          }
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "max": 2,
                 "min": 1
-              },
-              "function": "minecraft:set_count"
+              }
             }
           ],
           "name": "hbm:plate_gold"
@@ -129,12 +132,15 @@
     },
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "chance": 0.3333333,
-          "condition": "minecraft:random_chance"
-        }
-      ],
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:random_chance",
+            "chance": 0.3333333
+          }
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:item",

@@ -37,6 +37,7 @@ import com.hbm.items.weapon.CustomMissilePartItem;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Prediction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -65,7 +66,8 @@ public class LootCrateItem extends Item {
 
         if (level instanceof ServerLevel) {
             player.getInventory()
-                    .placeItemBackInInventory(new ItemStack(choose(level.getRandom())));
+                    .placeItemBackInInventory(
+                            new ItemStack(choose(level.getRandom())), Prediction.SERVER_ONLY);
         }
 
         stack.shrink(1);

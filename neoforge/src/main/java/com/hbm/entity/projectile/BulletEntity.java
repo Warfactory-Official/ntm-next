@@ -62,7 +62,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.animal.cow.MushroomCow;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -259,12 +259,12 @@ public class BulletEntity extends ProjectileEntity {
         if (instakill
                 && target instanceof LivingEntity
                 && !(target instanceof Player)
-                && !(target instanceof EnderMan)) {
+                && !(target instanceof Enderman)) {
             type = ModDamageTypes.LETHAL_PROJECTILE;
             amount = Float.MAX_VALUE;
         }
         DamageSource source = server.damageSources().source(type, this, getOwner());
-        if (fire || isOnFire() && !(target instanceof EnderMan)) target.igniteForSeconds(5);
+        if (fire || isOnFire() && !(target instanceof Enderman)) target.igniteForSeconds(5);
         if (target.hurtServer(server, ModifiedDamageSource.bypassingCooldown(source), amount)) {
             if (target instanceof LivingEntity living) {
                 if (radioactive && living.isAlive()) irradiate(server, living);

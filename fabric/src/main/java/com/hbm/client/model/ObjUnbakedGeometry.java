@@ -245,7 +245,12 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
             int lightEmission,
             boolean ambientOcclusion) {
         var info =
-                BakedQuad.MaterialInfo.of(material, transparency, tintIndex, true, lightEmission);
+                BakedQuad.MaterialInfo.of(
+                        material,
+                        transparency,
+                        tintIndex,
+                        true ? null : Direction.UP,
+                        lightEmission);
         return ambientOcclusion ? info : QuadLighting.ownBlock(info);
     }
 
@@ -255,7 +260,14 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
         final int tint = info.tintIndex();
         var result =
                 new BakedQuad.MaterialInfo(
-                        sprite, info.layer(), itemType, tint, info.shade(), FULL_BRIGHT);
+                        sprite,
+                        info.layer(),
+                        itemType,
+                        info.itemGlintRenderType(),
+                        info.itemGlintSpecialRenderType(),
+                        tint,
+                        info.shadeDirectionOverride(),
+                        FULL_BRIGHT);
         ((com.hbm.interfaces.injected.QuadLightOriginAccess) (java.lang.Object) (result))
                 .hbm$setLightOrigin(
                         ((com.hbm.interfaces.injected.QuadLightOriginAccess)
@@ -270,8 +282,10 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                         info.sprite(),
                         info.layer(),
                         info.itemRenderType(),
+                        info.itemGlintRenderType(),
+                        info.itemGlintSpecialRenderType(),
                         info.tintIndex(),
-                        false,
+                        false ? null : Direction.UP,
                         info.lightEmission());
         ((com.hbm.interfaces.injected.QuadLightOriginAccess) (java.lang.Object) (result))
                 .hbm$setLightOrigin(
@@ -380,8 +394,12 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
         }
         for (BoxQuad box : boxQuads) {
             emitter.fromBakedQuad(box.quad());
+            emitter.itemGlintRenderType(box.quad().materialInfo().itemGlintRenderType())
+                    .itemGlintSpecialRenderType(
+                            box.quad().materialInfo().itemGlintSpecialRenderType());
             if (!overrides.shade())
-                emitter.diffuseShade(unshaded(box.quad().materialInfo()).shade());
+                emitter.shadeDirectionOverride(
+                        unshaded(box.quad().materialInfo()).shadeDirectionOverride());
             if (box.color() != WHITE)
                 emitter.color(box.color(), box.color(), box.color(), box.color());
             emitter.cullFace(box.cull());
@@ -787,12 +805,14 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                     .normal(i, scratch.normals[i]);
         }
         if (color != WHITE) emitter.color(color, color, color, color);
-        emitter.diffuseShade(info.shade());
+        emitter.shadeDirectionOverride(info.shadeDirectionOverride());
         emitter.nominalFace(direction)
                 .tag(QuadLighting.fabricTag(info))
                 .atlas(QuadAtlas.ofLocation(sprite.atlasLocation()))
                 .chunkLayer(info.layer())
                 .itemRenderType(info.itemRenderType())
+                .itemGlintRenderType(info.itemGlintRenderType())
+                .itemGlintSpecialRenderType(info.itemGlintSpecialRenderType())
                 .animated(sprite.contents().isAnimated())
                 .tintIndex(info.tintIndex())
                 .ambientOcclusion(

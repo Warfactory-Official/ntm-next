@@ -20,7 +20,6 @@
 package com.hbm.blocks.machine;
 
 import com.hbm.inventory.container.ArmorTableMenu;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -34,15 +33,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class ArmorTableBlock extends Block {
-    public static final MapCodec<ArmorTableBlock> CODEC = simpleCodec(ArmorTableBlock::new);
-
     public ArmorTableBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

@@ -118,54 +118,26 @@ public final class HbmCtmLoader {
         @Override
         public boolean shouldConnect(
                 BlockAndTintGetter level,
-                BlockPos pos,
                 BlockState appearance,
                 BlockState state,
-                BlockPos otherPos,
+                BlockPos pos,
                 BlockState otherAppearance,
                 BlockState otherState,
+                BlockPos otherPos,
                 Direction face,
                 TextureAtlasSprite sprite) {
             if (only) return join.test(otherAppearance);
             return base.shouldConnect(
                             level,
-                            pos,
                             appearance,
                             state,
-                            otherPos,
+                            pos,
                             otherAppearance,
                             otherState,
+                            otherPos,
                             face,
                             sprite)
                     || join.test(otherAppearance);
-        }
-
-        public boolean shouldConnect(
-                BlockAndTintGetter level,
-                BlockState appearance,
-                BlockState state,
-                BlockPos pos,
-                BlockState otherAppearance,
-                BlockState otherState,
-                BlockPos otherPos,
-                Direction face,
-                TextureAtlasSprite sprite) {
-            if (only) return join.test(otherAppearance);
-            ConnectionPredicate inner = base;
-            boolean connected = __asm__(boolean) {
-                aload inner;
-                aload level;
-                aload appearance;
-                aload state;
-                aload pos;
-                aload otherAppearance;
-                aload otherState;
-                aload otherPos;
-                aload face;
-                aload sprite;
-                invokeinterface "me/pepperbell/continuity/client/processor/ConnectionPredicate" "shouldConnect" "(Lnet/minecraft/client/renderer/block/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)Z";
-            };
-            return connected || join.test(otherAppearance);
         }
     }
 }

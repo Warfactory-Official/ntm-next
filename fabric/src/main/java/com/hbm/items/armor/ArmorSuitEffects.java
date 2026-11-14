@@ -66,6 +66,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -544,7 +545,7 @@ public final class ArmorSuitEffects {
 
         ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
         player.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
-        player.getInventory().placeItemBackInInventory(helmet);
+        player.getInventory().placeItemBackInInventory(helmet, Prediction.SERVER_ONLY);
 
         player.hurtServer(
                 player.level(), player.level().damageSources().source(ModDamageTypes.LUNAR), 1000F);

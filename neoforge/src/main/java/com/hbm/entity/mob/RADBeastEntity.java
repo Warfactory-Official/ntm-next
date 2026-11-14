@@ -53,6 +53,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -295,7 +296,8 @@ public class RADBeastEntity extends Monster implements SuffocationImmune {
             RadiationSystemNT.incrementRad(server, this.beast.blockPosition(), 100);
             target.hurtServer(
                     server, server.damageSources().source(ModDamageTypes.RADIATION), 16.0F);
-            ((LivingEntity) this.beast).swing(InteractionHand.MAIN_HAND);
+            ((LivingEntity) this.beast)
+                    .swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, false);
             this.beast.playAmbientSound();
             this.beast.attackDelay = 20;
         }

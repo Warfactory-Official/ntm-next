@@ -26,10 +26,13 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
@@ -58,13 +61,17 @@ public class BiomeInjection {
             int min,
             int max) {
         EntityType<?> entity = type.get();
-        BiomeModifications.addSpawn(
-                select(biomes).and(BiomeSelectors.tag(excluded).negate()),
-                entity.getCategory(),
-                entity,
-                weight,
-                min,
-                max);
+        BiomeModifications.create(BuiltInRegistries.ENTITY_TYPE.getKey(entity))
+                .add(
+                        ModificationPhase.ADDITIONS,
+                        select(biomes).and(BiomeSelectors.tag(excluded).negate()),
+                        context ->
+                                context.getMobSpawnSettings()
+                                        .addSpawn(
+                                                entity.getCategory(),
+                                                new MobSpawnSettings.SpawnerData(
+                                                        entity, UniformInt.of(min, max)),
+                                                weight));
     }
 
     private static Predicate<BiomeSelectionContext> select(BiomeTarget biomes) {

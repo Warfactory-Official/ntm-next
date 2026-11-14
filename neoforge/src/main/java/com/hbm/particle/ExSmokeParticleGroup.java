@@ -100,7 +100,7 @@ public class ExSmokeParticleGroup extends ParticleGroup<ExSmokeParticle> {
 
                     pose.pushPose();
                     pose.translate(in.relX + oX, in.relY + oY, in.relZ + oZ);
-                    pose.mulPose((Quaternionfc) camera.orientation);
+                    pose.rotate((Quaternionfc) camera.orientation);
 
                     collector.submitCustomGeometry(
                             pose,

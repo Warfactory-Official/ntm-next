@@ -109,7 +109,7 @@ public class TomRenderer extends EntityRenderer<TomEntity, TomRenderer.State>
         float scroll = state.scroll;
         poseStack.scale(0.8F, 5F, 0.8F);
         for (int shell = 0; shell < SHELL_OFFSETS.length; shell++) {
-            poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(spin + SHELL_OFFSETS[shell]));
+            poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(spin + SHELL_OFFSETS[shell]));
             collector.submitCustomGeometry(
                     poseStack,
                     FLAME,
@@ -123,7 +123,7 @@ public class TomRenderer extends EntityRenderer<TomEntity, TomRenderer.State>
                                     1F,
                                     0F,
                                     scroll));
-            poseStack.mulPose((Quaternionfc) Axis.YN.rotationDegrees(spin));
+            poseStack.rotate((Quaternionfc) Axis.YN.rotationDegrees(spin));
             poseStack.scale(-1.015F, 0.9F, 1.015F);
         }
         poseStack.popPose();

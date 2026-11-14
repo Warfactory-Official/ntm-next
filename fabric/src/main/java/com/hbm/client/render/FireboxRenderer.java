@@ -96,11 +96,11 @@ public class FireboxRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(fireboxYaw(s.facing) - 90F));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(fireboxYaw(s.facing) - 90F));
 
         ps.pushPose();
         ps.translate(1.375, 0.0, 0.375);
-        ps.mulPose((Quaternionfc) Axis.YN.rotationDegrees(s.doorAngle));
+        ps.rotate((Quaternionfc) Axis.YN.rotationDegrees(s.doorAngle));
         ps.translate(-1.375, 0.0, -0.375);
         part(col, ps, bodyType, light, DOOR);
         ps.popPose();

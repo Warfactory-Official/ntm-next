@@ -108,7 +108,7 @@ public class PlushieRenderer
             boolean squishing,
             double squish) {
         poses.translate(.5, 0, .5);
-        poses.mulPose((Quaternionfc) Axis.YN.rotationDegrees(22.5F * rotation + 90F));
+        poses.rotate((Quaternionfc) Axis.YN.rotationDegrees(22.5F * rotation + 90F));
         if (miserable) poses.scale(1F, (float) (1D - misery), 1F);
         else if (squishing)
             poses.scale(1F, (float) (1D + (-Math.sin(squish) * squish) * .025D), 1F);
@@ -159,21 +159,21 @@ public class PlushieRenderer
 
     public static void cigarettePose(PoseStack poses) {
         numberNineFrame(poses);
-        poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees(15F));
+        poses.rotate((Quaternionfc) Axis.XP.rotationDegrees(15F));
         cigaretteOffset(poses);
     }
 
     private static void numberNineFrame(PoseStack poses) {
-        poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
-        poses.mulPose((Quaternionfc) Axis.XN.rotationDegrees(15F));
+        poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
+        poses.rotate((Quaternionfc) Axis.XN.rotationDegrees(15F));
         poses.translate(0, -.25, .75);
     }
 
     private static void cigaretteOffset(PoseStack poses) {
         poses.translate(-.06, 1.13, -.42);
         poses.scale(.25F, .25F, .25F);
-        poses.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90F));
-        poses.mulPose((Quaternionfc) Axis.ZN.rotationDegrees(60F));
+        poses.rotate((Quaternionfc) Axis.YN.rotationDegrees(90F));
+        poses.rotate((Quaternionfc) Axis.ZN.rotationDegrees(60F));
     }
 
     @Override
@@ -288,10 +288,10 @@ public class PlushieRenderer
                                         group,
                                         Face.ALWAYS,
                                         ps));
-                poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees(15F));
+                poses.rotate((Quaternionfc) Axis.XP.rotationDegrees(15F));
                 poses.translate(0, 1, -.6875);
                 poses.scale(.0703125F, .0703125F, .0703125F);
-                poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180F));
+                poses.rotate((Quaternionfc) Axis.XP.rotationDegrees(180F));
                 visitor.accept(Part.NO9, ResourceManager.armor_no9, NO9_HELMET, Face.ALWAYS, poses);
                 visitor.accept(
                         Part.NO9_TRIM, ResourceManager.armor_no9, NO9_INSIGNIA, Face.ALWAYS, poses);

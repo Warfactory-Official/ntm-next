@@ -54,6 +54,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -133,8 +134,14 @@ public class Platform {
     }
 
     public static TriState bonemealEvent(
-            @Nullable Player player, Level level, BlockPos pos, BlockState state, ItemStack stack) {
-        BonemealEvent event = EventHooks.fireBonemealEvent(player, level, pos, state, stack);
+            @Nullable Player player,
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            BonemealSource source,
+            ItemStack stack) {
+        BonemealEvent event =
+                EventHooks.fireBonemealEvent(player, level, pos, state, source, stack);
         return event.isCanceled() ? TriState.from(event.isSuccessful()) : TriState.DEFAULT;
     }
 

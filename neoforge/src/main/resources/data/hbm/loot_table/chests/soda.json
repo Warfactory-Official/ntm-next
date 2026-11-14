@@ -12,19 +12,17 @@
               "children": [
                 {
                   "type": "minecraft:item",
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 9
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 15,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 9
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 15,
+                      "min": 0
                     }
-                  ],
+                  },
                   "name": "hbm:bottle_nuka",
                   "weight": 10
                 },
@@ -33,19 +31,17 @@
                   "children": [
                     {
                       "type": "minecraft:item",
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 4
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 5,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 4
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 5,
+                          "min": 0
                         }
-                      ],
+                      },
                       "name": "hbm:bottle_cherry",
                       "weight": 5
                     },
@@ -57,19 +53,17 @@
                   ]
                 }
               ],
-              "conditions": [
-                {
-                  "condition": "minecraft:value_check",
-                  "range": {
-                    "max": 15
-                  },
-                  "value": {
-                    "type": "minecraft:uniform",
-                    "max": 46,
-                    "min": 0
-                  }
+              "condition": {
+                "type": "minecraft:int_value_check",
+                "test": {
+                  "max": 15
+                },
+                "value": {
+                  "type": "minecraft:uniform",
+                  "max": 46,
+                  "min": 0
                 }
-              ]
+              }
             },
             {
               "type": "minecraft:alternatives",
@@ -79,19 +73,17 @@
                   "children": [
                     {
                       "type": "minecraft:item",
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 9
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 19,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 9
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 19,
+                          "min": 0
                         }
-                      ],
+                      },
                       "name": "hbm:can_bepis",
                       "weight": 10
                     },
@@ -101,38 +93,34 @@
                       "weight": 10
                     }
                   ],
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 19
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 30,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 19
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 30,
+                      "min": 0
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "minecraft:alternatives",
                   "children": [
                     {
                       "type": "minecraft:item",
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 9
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 10,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 9
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 10,
+                          "min": 0
                         }
-                      ],
+                      },
                       "name": "hbm:can_mug",
                       "weight": 10
                     },

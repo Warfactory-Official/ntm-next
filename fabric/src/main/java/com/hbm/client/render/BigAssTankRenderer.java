@@ -122,15 +122,15 @@ public class BigAssTankRenderer
 
         if (s.tilted) {
             ps.translate(0.0, -1.0, 0.0);
-            ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(10F));
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(5F));
+            ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees(10F));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(5F));
         }
 
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         if (s.hasFluid) {
             ps.pushPose();
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(22.5F));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(22.5F));
             int health = s.health, flame = s.flame, react = s.react;
             HazardSymbol symbol = s.symbol;
             for (int j = 0; j < 2; j++) {
@@ -143,7 +143,7 @@ public class BigAssTankRenderer
                                 BarrelRenderer.pront(
                                         pose, buffer, light, health, flame, react, symbol));
                 ps.popPose();
-                ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180F));
+                ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(180F));
             }
             ps.popPose();
         }

@@ -54,16 +54,16 @@ public class PressRenderer<T extends BlockEntity>
     public static final ItemPose PRESS_ITEM =
             (poseStack, yaw) -> {
                 poseStack.translate(0.5, 1.0, -0.5);
-                poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180F));
-                poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90));
+                poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(180F));
+                poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90));
                 poseStack.translate(0.0, 1.0F - 0.0625F * 165 / 100, 0.0);
             };
     public static final ItemPose EPRESS_ITEM =
             (poseStack, yaw) -> {
                 poseStack.translate(0.5, 1.0, 0.5);
-                poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(yaw));
-                poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90));
-                poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90));
+                poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(yaw));
+                poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90));
+                poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90));
                 poseStack.translate(1.0, 1.0F - 0.0625F * 165 / 100, 0.0);
                 poseStack.translate(-1.0, -1.15, 0.0);
             };
@@ -173,7 +173,7 @@ public class PressRenderer<T extends BlockEntity>
         if (!state.visualized) {
             poseStack.pushPose();
             poseStack.translate(0.5, headBase + state.lift, 0.5);
-            poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+            poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
             if (headScaleXZ != 1.0F) poseStack.scale(headScaleXZ, 1.0F, headScaleXZ);
             collector.submitCustomGeometry(
                     poseStack, headType, (pose, buffer) -> head.render(pose, buffer, light, -1));

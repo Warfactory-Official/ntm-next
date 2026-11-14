@@ -137,7 +137,7 @@ public class LaserMinerRenderer
         ps.translate(0.5D, -1.0D, 0.5D);
 
         ps.pushPose();
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
         col.submitCustomGeometry(
                 ps,
                 pivotType,
@@ -146,9 +146,9 @@ public class LaserMinerRenderer
         ps.popPose();
 
         ps.pushPose();
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
         ps.translate(0D, -1D, 0D);
-        ps.mulPose((Quaternionfc) Axis.XN.rotationDegrees(s.pitch + 90F));
+        ps.rotate((Quaternionfc) Axis.XN.rotationDegrees(s.pitch + 90F));
         ps.translate(0D, 1D, 0D);
         col.submitCustomGeometry(
                 ps,

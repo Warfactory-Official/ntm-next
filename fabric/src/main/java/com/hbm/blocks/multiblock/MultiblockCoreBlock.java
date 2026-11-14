@@ -53,6 +53,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.FullChunkStatus;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -827,7 +828,8 @@ public abstract class MultiblockCoreBlock extends Block
         BlockPos core = placed.offset(dir.getStepX() * o, dir.getStepY() * o, dir.getStepZ() * o);
         if (!placementClear(level, core, dir)) {
             ItemStack refund = stack.copyWithCount(1);
-            if (!pl.getAbilities().instabuild) pl.getInventory().placeItemBackInInventory(refund);
+            if (!pl.getAbilities().instabuild)
+                pl.getInventory().placeItemBackInInventory(refund, Prediction.PREDICTED);
             return;
         }
 
@@ -850,7 +852,9 @@ public abstract class MultiblockCoreBlock extends Block
                                     UPDATE_ALL | UPDATE_SKIP_BLOCK_ENTITY_SIDEEFFECTS);
                         });
                 if (!pl.getAbilities().instabuild)
-                    pl.getInventory().placeItemBackInInventory(stack.copyWithCount(1));
+                    pl.getInventory()
+                            .placeItemBackInInventory(
+                                    stack.copyWithCount(1), Prediction.SERVER_ONLY);
                 return;
             }
             fillSpace(level, core, dir);

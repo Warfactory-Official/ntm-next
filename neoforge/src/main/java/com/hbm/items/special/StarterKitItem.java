@@ -49,6 +49,7 @@ import java.util.function.Supplier;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -121,7 +122,7 @@ public class StarterKitItem extends Item {
             ItemStack stack = player.getItemInHand(hand);
 
             for (ItemStack content : kind.contents.get()) {
-                player.getInventory().placeItemBackInInventory(content);
+                player.getInventory().placeItemBackInInventory(content, Prediction.SERVER_ONLY);
             }
             if (kind.haz != null) giveHaz(server, player, kind.haz);
 

@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,6 +37,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
@@ -80,7 +82,7 @@ public class BlueprintsItem extends Item {
         if (pool.startsWith(GenericRecipes.POOL_PREFIX_SECRET)) return InteractionResult.PASS;
         if (!consumePaper(player)) return InteractionResult.PASS;
 
-        ((LivingEntity) player).swing(hand);
+        ((LivingEntity) player).swing(hand, SwingAnimation.DEFAULT, false);
 
         ItemStack copy = stack.copy();
         copy.setCount(1);
@@ -89,10 +91,10 @@ public class BlueprintsItem extends Item {
             if (stack.getCount() < stack.getMaxStackSize()) {
                 stack.grow(1);
             } else {
-                player.getInventory().placeItemBackInInventory(copy);
+                player.getInventory().placeItemBackInInventory(copy, Prediction.SERVER_ONLY);
             }
         } else {
-            player.drop(copy, false);
+            player.drop(copy, false, Prediction.SERVER_ONLY);
         }
 
         return InteractionResult.SUCCESS;

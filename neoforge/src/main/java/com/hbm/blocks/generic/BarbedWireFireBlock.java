@@ -19,23 +19,14 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 
 public class BarbedWireFireBlock extends BarbedWireBlock {
-    public static final MapCodec<BarbedWireFireBlock> CODEC = simpleCodec(BarbedWireFireBlock::new);
-
     private static final int BURN_SECONDS = 1;
 
     public BarbedWireFireBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

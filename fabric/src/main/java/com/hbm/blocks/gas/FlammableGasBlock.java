@@ -34,7 +34,6 @@
 package com.hbm.blocks.gas;
 
 import com.hbm.particle.AshRevealParticleOptions;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -50,18 +49,11 @@ import net.minecraft.world.level.redstone.Orientation;
 import org.jspecify.annotations.Nullable;
 
 public class FlammableGasBlock extends GasBlock {
-    public static final MapCodec<FlammableGasBlock> CODEC = simpleCodec(FlammableGasBlock::new);
-
     private static final AshRevealParticleOptions REVEAL_TINT =
             new AshRevealParticleOptions(0.8F, 0.8F, 0.2F);
 
     public FlammableGasBlock(BlockBehaviour.Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends FlammableGasBlock> codec() {
-        return CODEC;
     }
 
     @Override

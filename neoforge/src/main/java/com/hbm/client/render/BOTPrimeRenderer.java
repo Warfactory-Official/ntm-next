@@ -92,8 +92,8 @@ public class BOTPrimeRenderer<T extends WormBaseNTEntity>
         int light = state.lightCoords;
 
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch - 90F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch - 90F));
         collector.submitCustomGeometry(
                 poseStack, this.type, (pose, buffer) -> this.mesh.render(pose, buffer, light, -1));
         poseStack.popPose();

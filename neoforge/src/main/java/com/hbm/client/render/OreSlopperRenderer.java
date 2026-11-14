@@ -124,8 +124,8 @@ public class OreSlopperRenderer
 
     public static void samplePose(PoseStack ps) {
         ps.translate(0.0, 4.3125, 2.0);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90));
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(90));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90));
         ps.scale(0.897435875F, 0.897435875F, 0.897435875F);
     }
 
@@ -166,7 +166,7 @@ public class OreSlopperRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(s.facing)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(s.facing)));
 
         ps.pushPose();
         ps.translate(0, 0, s.slide * -3);
@@ -209,7 +209,7 @@ public class OreSlopperRenderer
             boolean fanMode) {
         ps.pushPose();
         ps.translate(x, y, z);
-        ps.mulPose((Quaternionfc) (fanMode ? Axis.XP : Axis.ZP).rotationDegrees(angle));
+        ps.rotate((Quaternionfc) (fanMode ? Axis.XP : Axis.ZP).rotationDegrees(angle));
         ps.translate(-x, -y, -z);
         part(col, ps, light, name);
         ps.popPose();

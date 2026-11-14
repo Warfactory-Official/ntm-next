@@ -71,10 +71,10 @@ public class BulletRenderer extends EntityRenderer<BulletEntity, BulletRenderer.
             SubmitNodeCollector collector,
             CameraRenderState camera) {
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch + 180F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch + 180F));
         poseStack.scale(1.5F, 1.5F, 1.5F);
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(state.roll));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(state.roll));
         BoxModelRenderer.submit(
                 poseStack, collector, state.type, BoxModelRenderer.BULLET, state.lightCoords);
         poseStack.popPose();

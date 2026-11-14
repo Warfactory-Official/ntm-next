@@ -94,7 +94,7 @@ public class SolidifierRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(s.facing)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(s.facing)));
 
         if (s.fluidColor != 0 && s.fluidFrac > 0) {
             ps.pushPose();

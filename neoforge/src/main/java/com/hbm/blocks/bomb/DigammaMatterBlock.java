@@ -34,7 +34,6 @@
 package com.hbm.blocks.bomb;
 
 import com.hbm.blocks.SectionGeometryProvider;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -58,13 +57,6 @@ public class DigammaMatterBlock extends Block implements SectionGeometryProvider
     }
 
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 7);
-
-    public static final MapCodec<DigammaMatterBlock> CODEC = simpleCodec(DigammaMatterBlock::new);
-
-    @Override
-    protected MapCodec<DigammaMatterBlock> codec() {
-        return CODEC;
-    }
 
     public DigammaMatterBlock(BlockBehaviour.Properties properties) {
         super(properties);

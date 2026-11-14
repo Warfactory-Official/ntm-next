@@ -96,7 +96,7 @@ public final class NukeFstbmbVisual
         PoseStack clockPoses = new PoseStack();
         clockPoses.translate(visualPos.getX(), visualPos.getY(), visualPos.getZ());
         clockPoses.translate(.5D, 0D, .5D);
-        clockPoses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(yaw));
+        clockPoses.rotate((Quaternionfc) Axis.YP.rotationDegrees(yaw));
         NukeFstbmbRenderer.clockPose(clockPoses);
         clockPose = clockPoses.last().pose();
         for (int i = 0; i < glints.length; i++) {

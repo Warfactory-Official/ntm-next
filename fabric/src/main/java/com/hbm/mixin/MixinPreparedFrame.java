@@ -19,8 +19,47 @@
 
 package com.hbm.mixin;
 
+import com.hbm.client.render.OrderedBlendFrame;
+import com.mojang.renderpearl.api.commands.RenderPass;
+import java.util.List;
+import java.util.Map;
+import net.minecraft.client.renderer.SubmitNodeStorage;
+import net.minecraft.client.renderer.feature.FeatureFrameContext;
 import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
+import net.minecraft.client.renderer.feature.phase.FeatureRenderPhase;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(FeatureRenderDispatcher.class)
-public abstract class MixinPreparedFrame {}
+@Mixin(FeatureRenderDispatcher.PreparedFrame.class)
+public abstract class MixinPreparedFrame implements OrderedBlendFrame {
+    @Shadow private FeatureFrameContext context;
+    @Shadow private SubmitNodeStorage submitNodeStorage;
+    @Shadow @Final private Map<FeatureRenderPhase<?>, List<?>> groupsByPhase;
+
+    @Shadow
+    protected abstract void executePhase(
+            FeatureRenderPhase<?> phase, FeatureFrameContext context, RenderPass pass);
+
+    @Override
+    public boolean hbm$hasOrderedBlends() {
+        for (var collection : submitNodeStorage.getSubmitsPerOrder().values()) {
+            var phase =
+                    ((com.hbm.client.render.OrderedBlendCollection) (collection))
+                            .hbm$orderedBlends();
+            if (phase != null && !groupsByPhase.getOrDefault(phase, List.of()).isEmpty())
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void hbm$drawOrderedBlends(RenderPass pass) {
+        for (var collection : submitNodeStorage.getSubmitsPerOrder().values()) {
+            var phase =
+                    ((com.hbm.client.render.OrderedBlendCollection) (collection))
+                            .hbm$orderedBlends();
+            if (phase != null) executePhase(phase, context, pass);
+        }
+    }
+}

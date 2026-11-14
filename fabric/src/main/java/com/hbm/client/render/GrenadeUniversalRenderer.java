@@ -63,9 +63,9 @@ public final class GrenadeUniversalRenderer
             State state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
         pose.pushPose();
         pose.scale(0.0625F, 0.0625F, 0.0625F);
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(state.spin));
-        if (state.bounces > 0) pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-80F));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(state.spin));
+        if (state.bounces > 0) pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-80F));
         GrenadeItemRenderer.draw(collector, pose, state.data, ItemDisplayContext.NONE, state.light);
         pose.popPose();
         super.submit(state, pose, collector, camera);

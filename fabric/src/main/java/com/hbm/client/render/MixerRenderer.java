@@ -104,7 +104,7 @@ public class MixerRenderer
         ps.translate(0.5, 0.0, 0.5);
 
         ps.pushPose();
-        ps.mulPose((Quaternionfc) Axis.YN.rotationDegrees(s.rotation));
+        ps.rotate((Quaternionfc) Axis.YN.rotationDegrees(s.rotation));
         part(col, ps, MIXER, light);
         ps.popPose();
 

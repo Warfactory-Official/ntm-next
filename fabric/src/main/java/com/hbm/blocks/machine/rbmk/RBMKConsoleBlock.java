@@ -43,6 +43,7 @@ import com.hbm.items.ModItems;
 import com.hbm.items.tool.GuideBookItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -111,7 +112,8 @@ public class RBMKConsoleBlock extends MultiblockCoreBlock
                 var manual = ModItems.GUIDE_BOOK.get(GuideBookItem.BookType.RBMK);
                 var inventory = player.getInventory();
                 if (!inventory.contains(stack -> stack.is(manual))) {
-                    inventory.placeItemBackInInventory(new ItemStack(manual));
+                    inventory.placeItemBackInInventory(
+                            new ItemStack(manual), Prediction.SERVER_ONLY);
                     player.inventoryMenu.broadcastChanges();
                     return InteractionResult.SUCCESS;
                 }

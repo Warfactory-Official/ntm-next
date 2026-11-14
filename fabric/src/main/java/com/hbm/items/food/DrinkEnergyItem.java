@@ -26,6 +26,7 @@ import net.fabricmc.fabric.api.entity.FakePlayer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -95,7 +96,8 @@ public class DrinkEnergyItem extends CustomLoreItem {
 
         boolean returns = !player.getAbilities().instabuild;
         if (returns && cap != null)
-            player.getInventory().placeItemBackInInventory(new ItemStack(resolve(cap)));
+            player.getInventory()
+                    .placeItemBackInInventory(new ItemStack(resolve(cap)), Prediction.SERVER_ONLY);
         ItemStack result = super.finishUsingItem(stack, level, entity);
 
         VersatileConfig.applyPotionSickness(player, 5);
@@ -105,7 +107,8 @@ public class DrinkEnergyItem extends CustomLoreItem {
             ItemStackTemplate container = getCraftingRemainder();
             if (container != null) {
                 if (result.isEmpty()) return container.create();
-                player.getInventory().placeItemBackInInventory(container.create());
+                player.getInventory()
+                        .placeItemBackInInventory(container.create(), Prediction.SERVER_ONLY);
             }
         }
         return result;

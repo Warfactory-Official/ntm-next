@@ -24,6 +24,7 @@ import com.hbm.inventory.slot.SlotRecipeOutput;
 import com.hbm.items.ModItems;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -58,7 +59,9 @@ public final class LemegetonMenu extends NtmContainerMenu {
                             else if (ItemStack.isSameItemSameComponents(remaining, remainder)) {
                                 remainder.grow(remaining.getCount());
                                 input.setItem(0, remainder);
-                            } else owner.getInventory().placeItemBackInInventory(remainder);
+                            } else
+                                owner.getInventory()
+                                        .placeItemBackInInventory(remainder, Prediction.PREDICTED);
                         }
                     }
                 });

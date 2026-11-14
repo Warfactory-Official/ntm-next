@@ -87,7 +87,7 @@ public class BlastFurnaceMenu extends BlockEntityMenu<BlastFurnaceBlockEntity> {
 
                     if (index < machineEnd)
                         return moveItemStackToFiltered(stack, machineEnd, invEnd, true);
-                    if (FuelHandler.getBurnTime(player.level(), stack) > 0)
+                    if (FuelHandler.isFuel(blockEntity(), stack))
                         return moveItemStackToFiltered(
                                 stack,
                                 BlastFurnaceBlockEntity.SLOT_FUEL,

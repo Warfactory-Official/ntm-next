@@ -199,7 +199,7 @@ public final class GrenadeItemRenderer
         pose.translate(bodyMove[0], bodyMove[1], bodyMove[2]);
         switch (data.shell()) {
             case FRAG -> {
-                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) bodyTurn[2]));
+                pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) bodyTurn[2]));
                 drawStandardBody(
                         visitor,
                         pose,
@@ -212,12 +212,12 @@ public final class GrenadeItemRenderer
                 visitor.accept(pose, ResourceManager.grenade_frag_tex, FRAG_SPOON, -1, false);
                 if (renderRing[0] != 0) {
                     pose.translate(ringMove[0], ringMove[1], ringMove[2]);
-                    pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) ringTurn[2]));
+                    pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) ringTurn[2]));
                     visitor.accept(pose, ResourceManager.grenade_frag_tex, FRAG_RING, -1, false);
                 }
             }
             case STICK -> {
-                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) bodyTurn[2]));
+                pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) bodyTurn[2]));
                 drawStandardBody(
                         visitor,
                         pose,
@@ -229,7 +229,7 @@ public final class GrenadeItemRenderer
                         ResourceManager.grenade_stick_fuze_tex);
                 if (renderRing[0] != 0) {
                     pose.translate(ringMove[0], ringMove[1], ringMove[2]);
-                    pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) ringTurn[1]));
+                    pose.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) ringTurn[1]));
                     visitor.accept(pose, ResourceManager.grenade_stick_tex, STICK_CAP, -1, false);
                     visitor.accept(
                             pose,
@@ -240,16 +240,16 @@ public final class GrenadeItemRenderer
                 }
             }
             case TECH -> {
-                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) bodyTurn[2]));
+                pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) bodyTurn[2]));
                 drawTechBody(visitor, pose, data);
                 if (renderRing[0] != 0) {
                     pose.translate(ringMove[0], ringMove[1], ringMove[2]);
-                    pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) ringTurn[2]));
+                    pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) ringTurn[2]));
                     visitor.accept(pose, ResourceManager.grenade_tech_tex, TECH_RING, -1, false);
                 }
             }
             case NUKE -> {
-                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) bodyTurn[2]));
+                pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) bodyTurn[2]));
                 drawStandardBody(
                         visitor,
                         pose,
@@ -263,7 +263,7 @@ public final class GrenadeItemRenderer
                 if (renderRing[0] != 0) {
                     pose.translate(ringMove[0], ringMove[1], ringMove[2]);
                     pose.translate(-1, 5, 0);
-                    pose.mulPose((Quaternionfc) Axis.ZN.rotationDegrees((float) ringTurn[2]));
+                    pose.rotate((Quaternionfc) Axis.ZN.rotationDegrees((float) ringTurn[2]));
                     pose.translate(1, -5, 0);
                     visitor.accept(pose, ResourceManager.grenade_nuka_tex, NUKA_RING, -1, false);
                 }

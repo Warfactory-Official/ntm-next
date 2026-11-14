@@ -45,7 +45,7 @@ public abstract class MixinFlatLightPipeline {
     @Shadow @Final protected LightDataAccess lightCache;
 
     @Shadow
-    abstract float getShade(BlockAndTintGetter level, Direction face, boolean shade);
+    abstract float getShade(BlockAndTintGetter level, Direction face, Direction shadeOverride);
 
     @Inject(method = "calculate", at = @At("HEAD"), cancellable = true)
     private void hbm$ownLight(
@@ -54,7 +54,7 @@ public abstract class MixinFlatLightPipeline {
             QuadLightData out,
             Direction cullFace,
             Direction lightFace,
-            boolean shade,
+            Direction shadeOverride,
             boolean enhanced,
             CallbackInfo ci) {
         if (!(quad instanceof QuadViewImpl view) || !QuadLighting.isOwnBlock(view.getTag())) return;
@@ -73,10 +73,10 @@ public abstract class MixinFlatLightPipeline {
                         LightDataAccess.getEmissiveLightmap(word), view.getTag()));
         Arrays.fill(
                 out.br,
-                enhanced && !aligned
+                enhanced && !aligned && shadeOverride == null
                         ? PlatformBlockAccess.getInstance()
-                                .getNormalVectorShade(quad, lightCache.getLevel(), shade)
-                        : getShade(lightCache.getLevel(), lightFace, shade));
+                                .getNormalVectorShade(quad, lightCache.getLevel(), true)
+                        : getShade(lightCache.getLevel(), lightFace, shadeOverride));
         ci.cancel();
     }
 

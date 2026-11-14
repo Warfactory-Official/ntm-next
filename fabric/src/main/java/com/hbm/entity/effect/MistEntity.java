@@ -164,7 +164,7 @@ public class MistEntity extends Entity {
 
     @Override
     public PushReaction getPistonPushReaction() {
-        return ((PushReaction) (PushReaction.IGNORE));
+        return ((PushReaction) (PushReaction.IGNORE_ENTITY));
     }
 
     @Override

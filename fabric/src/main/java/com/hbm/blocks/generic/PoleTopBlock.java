@@ -19,18 +19,10 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.block.Block;
 
 public class PoleTopBlock extends Block {
-    public static final MapCodec<PoleTopBlock> CODEC = simpleCodec(PoleTopBlock::new);
-
     public PoleTopBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 }

@@ -70,6 +70,7 @@ import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Prediction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -398,7 +399,7 @@ public final class ArcFurnaceBlockEntity extends MachineBlockEntity
                         worldPosition.getY() + 0.5D,
                         worldPosition.getZ() + 0.5D,
                         stack);
-            else player.getInventory().placeItemBackInInventory(stack);
+            else player.getInventory().placeItemBackInInventory(stack, Prediction.SERVER_ONLY);
         }
     }
 

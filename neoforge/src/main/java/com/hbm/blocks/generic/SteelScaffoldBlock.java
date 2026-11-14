@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -48,7 +47,6 @@ public class SteelScaffoldBlock extends Block implements SimpleWaterloggedBlock 
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public static final MapCodec<SteelScaffoldBlock> CODEC = simpleCodec(SteelScaffoldBlock::new);
     public static final EnumProperty<Orient> ORIENT = EnumProperty.create("orient", Orient.class);
     private static final VoxelShape Z_THIN = Shapes.box(0D, 0D, 2 / 16D, 1D, 1D, 14 / 16D);
     private static final VoxelShape Y_THIN = Shapes.box(0D, 2 / 16D, 0D, 1D, 14 / 16D, 1D);
@@ -61,11 +59,6 @@ public class SteelScaffoldBlock extends Block implements SimpleWaterloggedBlock 
                         .any()
                         .setValue(ORIENT, Orient.NS_UPRIGHT)
                         .setValue(WATERLOGGED, false));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

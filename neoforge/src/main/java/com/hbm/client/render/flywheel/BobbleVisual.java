@@ -140,7 +140,7 @@ public final class BobbleVisual extends AbstractBoundedBlockEntityVisual<BobbleB
         PoseStack pose = new PoseStack();
         pose.translate(.5D, 0D, .5D);
         pose.scale(.25F, .25F, .25F);
-        pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(22.5F * rotation + 90F));
+        pose.rotate((Quaternionfc) Axis.YN.rotationDegrees(22.5F * rotation + 90F));
         BobbleDraws built = new BobbleDraws(type, pose);
         draws = built.draws;
         propLocal.set(built.propLocal);

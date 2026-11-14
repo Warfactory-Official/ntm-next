@@ -133,7 +133,7 @@ public class BrickFurnaceBlockEntity extends SmeltingFurnaceBlockEntity
     }
 
     private int fuelTime(ItemStack fuel) {
-        return FuelHandler.getBurnTime(level, fuel);
+        return FuelHandler.getBurnTime(this, fuel);
     }
 
     public static int speed(ItemStack input) {
@@ -167,7 +167,7 @@ public class BrickFurnaceBlockEntity extends SmeltingFurnaceBlockEntity
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        return slot == SLOT_INPUT || slot == SLOT_FUEL && fuelTime(stack) > 0;
+        return slot == SLOT_INPUT || slot == SLOT_FUEL && FuelHandler.isFuel(this, stack);
     }
 
     @Override

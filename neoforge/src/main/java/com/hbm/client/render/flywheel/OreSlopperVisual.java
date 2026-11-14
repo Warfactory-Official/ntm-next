@@ -148,7 +148,7 @@ public final class OreSlopperVisual extends AbstractBoundedBlockEntityVisual<Ore
         PoseStackBuilder pose = poseBuilder;
         pose.poses.setIdentity();
         pose.poses.translate(.5D, 0D, .5D);
-        pose.poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(fixedYaw));
+        pose.poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(fixedYaw));
         pose.poses.pushPose();
         pose.poses.translate(0D, 0D, slide * -3D);
         pose.capture(SLIDER);
@@ -212,7 +212,7 @@ public final class OreSlopperVisual extends AbstractBoundedBlockEntityVisual<Ore
         private void rotate(double x, double y, double z, float angle, Axis axis, int part) {
             poses.pushPose();
             poses.translate(x, y, z);
-            poses.mulPose((Quaternionfc) axis.rotationDegrees(angle));
+            poses.rotate((Quaternionfc) axis.rotationDegrees(angle));
             poses.translate(-x, -y, -z);
             capture(part);
             poses.popPose();

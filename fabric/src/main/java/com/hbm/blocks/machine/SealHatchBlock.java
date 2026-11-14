@@ -20,7 +20,6 @@
 package com.hbm.blocks.machine;
 
 import com.hbm.blocks.multiblock.AssembledMembers;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
@@ -28,15 +27,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SealHatchBlock extends Block implements AssembledMembers.Member {
-    public static final MapCodec<SealHatchBlock> CODEC = simpleCodec(SealHatchBlock::new);
-
     public SealHatchBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

@@ -53,6 +53,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -109,7 +110,7 @@ public class StrandCasterBlock extends MultiblockCoreBlock
                 caster.hbm$syncSet$FoundryBaseBlockEntity$amount(0);
                 caster.hbm$syncSet$FoundryBaseBlockEntity$type(null);
                 caster.setChanged();
-                player.getInventory().placeItemBackInInventory(scrap);
+                player.getInventory().placeItemBackInInventory(scrap, Prediction.SERVER_ONLY);
             }
             return InteractionResult.SUCCESS;
         }
@@ -149,7 +150,7 @@ public class StrandCasterBlock extends MultiblockCoreBlock
         if (!level.isClientSide()) {
             caster.inventory.set(ContinuousCaster.SLOT_MOLD, ItemStack.EMPTY);
             caster.setChanged();
-            player.getInventory().placeItemBackInInventory(mold);
+            player.getInventory().placeItemBackInInventory(mold, Prediction.SERVER_ONLY);
         }
         return true;
     }

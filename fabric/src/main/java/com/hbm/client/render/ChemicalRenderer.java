@@ -113,7 +113,7 @@ public class ChemicalRenderer extends EntityRenderer<ChemicalEntity, ChemicalRen
                         & 0xFFFFFF;
         int alpha = Math.max((int) (255F * (1F - exp)), 0);
 
-        pose.mulPose((Quaternionfc) camera.orientation);
+        pose.rotate((Quaternionfc) camera.orientation);
         billboard(pose, collector, size, rgb, alpha, 1, 1, 0, 0, state.lightCoords);
     }
 
@@ -127,7 +127,7 @@ public class ChemicalRenderer extends EntityRenderer<ChemicalEntity, ChemicalRen
         int i = rand.nextInt(2);
         int j = rand.nextInt(2);
 
-        pose.mulPose((Quaternionfc) camera.orientation);
+        pose.rotate((Quaternionfc) camera.orientation);
         billboard(pose, collector, size, state.color, alpha, 1 - i, 1 - j, i, j, state.lightCoords);
     }
 
@@ -155,8 +155,8 @@ public class ChemicalRenderer extends EntityRenderer<ChemicalEntity, ChemicalRen
     }
 
     private void submitBeam(State state, PoseStack pose, SubmitNodeCollector collector) {
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
 
         float length = (float) state.beamLength;
         float size = 0.0625F;

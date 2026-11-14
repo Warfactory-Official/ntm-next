@@ -23,25 +23,33 @@ import com.hbm.blockentity.machine.storage.CargoCapsuleBlockEntity;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.SoyuzCapsuleBlock;
 import com.hbm.items.ModItems;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class CapsuleFeature extends Feature<NoneFeatureConfiguration> {
+public class CapsuleFeature implements Feature {
+    public static final MapCodec<CapsuleFeature> CODEC = MapCodec.unit(CapsuleFeature::new);
+
     private static final int DEPTH = 4;
 
-    public CapsuleFeature() {
-        super(NoneFeatureConfiguration.CODEC);
+    @Override
+    public MapCodec<CapsuleFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
-        var level = ctx.level();
-        BlockPos site = ctx.origin().below(DEPTH);
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        BlockPos site = featureOrigin.below(DEPTH);
         BlockPos lid = site.above();
         if (!level.getBlockState(lid).isFaceSturdy(level, lid, Direction.UP)) return false;
 
@@ -55,7 +63,7 @@ public class CapsuleFeature extends Feature<NoneFeatureConfiguration> {
 
         if (level.getBlockEntity(site) instanceof CargoCapsuleBlockEntity capsule) {
             capsule.setItem(
-                    ctx.random().nextInt(CargoCapsuleBlockEntity.SLOT_COUNT),
+                    random.nextInt(CargoCapsuleBlockEntity.SLOT_COUNT),
                     new ItemStack(ModItems.RECORD_GLASS.get()));
         }
         return true;

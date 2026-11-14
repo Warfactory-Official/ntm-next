@@ -67,8 +67,8 @@ public class BombletZetaRenderer
             State state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
         int light = state.lightCoords;
         pose.pushPose();
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
         pose.scale(0.5F, 0.5F, 0.5F);
         collector.submitCustomGeometry(
                 pose, body, (p, buf) -> ResourceManager.bomblet_theta.render(p, buf, light, -1));

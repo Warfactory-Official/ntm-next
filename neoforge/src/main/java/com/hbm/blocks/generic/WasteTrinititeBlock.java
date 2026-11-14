@@ -20,7 +20,6 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.potion.HbmPotion;
-import com.mojang.serialization.MapCodec;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -36,8 +35,6 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 
 public class WasteTrinititeBlock extends Block {
-    public static final MapCodec<WasteTrinititeBlock> CODEC = simpleCodec(WasteTrinititeBlock::new);
-
     public WasteTrinititeBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -48,11 +45,6 @@ public class WasteTrinititeBlock extends Block {
                 .strength(0.5F, 1.5F)
                 .sound(SoundType.SAND)
                 .noLootTable();
-    }
-
-    @Override
-    protected MapCodec<WasteTrinititeBlock> codec() {
-        return CODEC;
     }
 
     @Override

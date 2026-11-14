@@ -6,19 +6,17 @@
         "item": {
           "items": "hbm:cigarette"
         },
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "minecraft:equipment": {
-                "head": {
-                  "items": "hbm:no9"
-                }
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:equipment": {
+              "head": {
+                "items": "hbm:no9"
               }
             }
           }
-        ]
+        }
       },
       "trigger": "hbm:smoked"
     }

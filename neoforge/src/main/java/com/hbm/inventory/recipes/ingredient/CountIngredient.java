@@ -28,10 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Stream;
 import net.minecraft.advancements.predicates.DataComponentMatchers;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponentExactPredicate;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.predicates.DataComponentPredicate;
@@ -46,6 +45,7 @@ import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
@@ -80,11 +80,12 @@ public record CountIngredient(Ingredient ingredient, int count)
                     CountIngredient::new);
 
     private static final ContextMap DISPLAY_CONTEXT =
-            new ContextMap.Builder()
-                    .withParameter(
+            ContextMap.builder()
+                    .set(
                             SlotDisplayContext.REGISTRIES,
-                            HolderLookup.Provider.create(Stream.of(BuiltInRegistries.ITEM)))
-                    .create(SlotDisplayContext.CONTEXT);
+                            new RegistryAccess.ImmutableRegistryAccess(
+                                    List.of(BuiltInRegistries.ITEM)))
+                    .buildAndValidate(SlotDisplayContext.CONTEXT);
 
     public static CountIngredient of(ItemLike item) {
         return new CountIngredient(Ingredient.of(item), 1);
@@ -133,8 +134,17 @@ public record CountIngredient(Ingredient ingredient, int count)
     }
 
     public static List<ItemStack> displayStacks(Ingredient ingredient, int count) {
-        List<ItemStack> stacks =
-                new ArrayList<>(ingredient.display().resolveForStacks(DISPLAY_CONTEXT));
+        SlotDisplay display = ingredient.display();
+        if (display instanceof SlotDisplay.TagSlotDisplay(HolderSet<Item> tag)
+                && tag.unwrapKey().isPresent()) {
+            HolderSet<Item> contents =
+                    BuiltInRegistries.ITEM
+                            .get(tag.unwrapKey().orElseThrow())
+                            .<HolderSet<Item>>map(named -> named)
+                            .orElseGet(HolderSet::empty);
+            display = new SlotDisplay.TagSlotDisplay(contents);
+        }
+        List<ItemStack> stacks = new ArrayList<>(display.resolveForStacks(DISPLAY_CONTEXT));
         stacks.replaceAll(stack -> stack.copyWithCount(count));
         return stacks;
     }

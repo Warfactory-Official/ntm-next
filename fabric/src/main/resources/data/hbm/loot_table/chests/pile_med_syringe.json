@@ -9,19 +9,17 @@
           "children": [
             {
               "type": "minecraft:item",
-              "conditions": [
-                {
-                  "condition": "minecraft:value_check",
-                  "range": {
-                    "max": 9
-                  },
-                  "value": {
-                    "type": "minecraft:uniform",
-                    "max": 19,
-                    "min": 0
-                  }
+              "condition": {
+                "type": "minecraft:int_value_check",
+                "test": {
+                  "max": 9
+                },
+                "value": {
+                  "type": "minecraft:uniform",
+                  "max": 19,
+                  "min": 0
                 }
-              ],
+              },
               "name": "hbm:syringe_metal_stimpak",
               "weight": 10
             },
@@ -30,19 +28,17 @@
               "children": [
                 {
                   "type": "minecraft:empty",
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 4
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 9,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 4
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 9,
+                      "min": 0
                     }
-                  ],
+                  },
                   "weight": 5
                 },
                 {

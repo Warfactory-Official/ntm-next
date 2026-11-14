@@ -27,7 +27,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
-import net.minecraft.world.level.block.entity.SignText;
+import net.minecraft.world.level.block.entity.SignTextSlot;
 
 public final class BobmazonSignHandler {
 
@@ -37,13 +37,13 @@ public final class BobmazonSignHandler {
         if (level.isClientSide()) return false;
         if (!(level.getBlockEntity(pos) instanceof SignBlockEntity sign)) return false;
 
-        SignText text = sign.getFrontText();
+        var messages = sign.getText(SignTextSlot.FRONT).getMessages(false);
         String result =
                 ShadyUtil.smoosh(
-                        text.getMessage(0, false).getString(),
-                        text.getMessage(1, false).getString(),
-                        text.getMessage(2, false).getString(),
-                        text.getMessage(3, false).getString());
+                        messages.get(0).getString(),
+                        messages.get(1).getString(),
+                        messages.get(2).getString(),
+                        messages.get(3).getString());
 
         if (!ShadyUtil.HASHES.contains(result)) return false;
 

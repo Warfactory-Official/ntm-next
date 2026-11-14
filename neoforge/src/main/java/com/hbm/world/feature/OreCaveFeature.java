@@ -35,36 +35,98 @@ package com.hbm.world.feature;
 
 import com.hbm.blocks.generic.SpikeBlock;
 import com.hbm.world.NtmWorldgenFields;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import org.jspecify.annotations.Nullable;
 
-public class OreCaveFeature extends Feature<OreCaveConfig> {
+public record OreCaveFeature(
+        BlockState ore,
+        Optional<BlockState> fluid,
+        Optional<BlockState> stalactite,
+        Optional<BlockState> stalagmite,
+        RuleTest replaceable,
+        double threshold,
+        int rangeMult,
+        int maxRange,
+        int yLevel,
+        Identifier domain,
+        boolean exposedByFluid)
+        implements Feature {
+
+    public static final MapCodec<OreCaveFeature> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    inst ->
+                            inst.group(
+                                            BlockState.CODEC
+                                                    .fieldOf("ore")
+                                                    .forGetter(OreCaveFeature::ore),
+                                            BlockState.CODEC
+                                                    .optionalFieldOf("fluid")
+                                                    .forGetter(OreCaveFeature::fluid),
+                                            BlockState.CODEC
+                                                    .optionalFieldOf("stalactite")
+                                                    .forGetter(OreCaveFeature::stalactite),
+                                            BlockState.CODEC
+                                                    .optionalFieldOf("stalagmite")
+                                                    .forGetter(OreCaveFeature::stalagmite),
+                                            RuleTest.CODEC
+                                                    .fieldOf("replaceable")
+                                                    .forGetter(OreCaveFeature::replaceable),
+                                            Codec.DOUBLE
+                                                    .fieldOf("threshold")
+                                                    .forGetter(OreCaveFeature::threshold),
+                                            Codec.INT
+                                                    .fieldOf("range_mult")
+                                                    .forGetter(OreCaveFeature::rangeMult),
+                                            Codec.INT
+                                                    .fieldOf("max_range")
+                                                    .forGetter(OreCaveFeature::maxRange),
+                                            Codec.INT
+                                                    .fieldOf("y_level")
+                                                    .forGetter(OreCaveFeature::yLevel),
+                                            Identifier.CODEC
+                                                    .fieldOf("domain")
+                                                    .forGetter(OreCaveFeature::domain),
+                                            Codec.BOOL
+                                                    .optionalFieldOf("exposed_by_fluid", false)
+                                                    .forGetter(OreCaveFeature::exposedByFluid))
+                                    .apply(inst, OreCaveFeature::new));
+
+    @Override
+    public MapCodec<OreCaveFeature> codec() {
+        return CODEC;
+    }
+
     private static final int UPDATE = 2 | 16;
     private static final double SCALE = 0.01D;
     private static final int SIZE = 16;
     private static final ThreadLocal<Scratch> SCRATCH = ThreadLocal.withInitial(Scratch::new);
 
-    public OreCaveFeature() {
-        super(OreCaveConfig.CODEC);
-    }
-
     @Override
-    public boolean place(FeaturePlaceContext<OreCaveConfig> ctx) {
-        WorldGenLevel level = ctx.level();
-        OreCaveConfig cfg = ctx.config();
-        RandomSource rand = ctx.random();
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        OreCaveFeature cfg = this;
+        RandomSource rand = random;
 
         FractalSimplexNoise noise = NtmWorldgenFields.get(level).fractal(cfg.domain(), 2);
 
-        int baseX = ctx.origin().getX() & ~15;
-        int baseZ = ctx.origin().getZ() & ~15;
+        int baseX = featureOrigin.getX() & ~15;
+        int baseZ = featureOrigin.getZ() & ~15;
         int yLevel = cfg.yLevel();
         BlockState ore = cfg.ore();
         @Nullable BlockState fluid = cfg.fluid().orElse(null);
@@ -91,7 +153,7 @@ public class OreCaveFeature extends Feature<OreCaveConfig> {
                     pos.set(x, y, z);
                     BlockState cur = center.getBlockState(pos);
 
-                    if (cfg.replaceable().test(cur, rand)) {
+                    if (cfg.replaceable().test(cur, (BlockPos) pos, rand)) {
                         boolean shouldGen = false;
                         boolean canGenFluid = fluid != null && rand.nextBoolean();
 

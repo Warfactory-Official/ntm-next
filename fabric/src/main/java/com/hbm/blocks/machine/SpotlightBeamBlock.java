@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.machine;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -36,15 +35,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class SpotlightBeamBlock extends LightBlock {
-    public static final MapCodec<LightBlock> CODEC = simpleCodec(SpotlightBeamBlock::new);
-
     public SpotlightBeamBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    public MapCodec<LightBlock> codec() {
-        return CODEC;
     }
 
     @Override

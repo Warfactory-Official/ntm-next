@@ -28,6 +28,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
@@ -216,7 +217,7 @@ public abstract class ClassicFluid extends FlowingFluid {
         ClassicFluidBlock block = spec.block.get();
         BlockPos below = pos.below();
         BlockState under = level.getBlockState(below);
-        if (under.blocksMotion() && block.displaces(under)) {
+        if (under.is(BlockTags.BLOCKS_MOTION) && block.displaces(under)) {
             level.setBlock(below, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
         }
         super.tick(level, pos, blockState, fluidState);

@@ -117,7 +117,7 @@ public class RBMKKeyPadRenderer
             State state, PoseStack poses, SubmitNodeCollector collector, CameraRenderState camera) {
         poses.pushPose();
         poses.translate(.5, 0, .5);
-        poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
         int light = state.lightCoords;
         for (int i = 0; i < state.keys.length; i++) {
             Key key = state.keys[i];
@@ -147,7 +147,7 @@ public class RBMKKeyPadRenderer
                 int width = font.width(key.label);
                 float scale = Math.min(.0125F, .4F / Math.max(width, 1));
                 poses.scale(scale, -scale, scale);
-                poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+                poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
                 collector.submitText(
                         poses,
                         -width / 2,

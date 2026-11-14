@@ -38,7 +38,6 @@ import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
 import com.hbm.items.food.MarshmallowItem;
 import com.hbm.util.ContaminationUtil;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -58,9 +57,6 @@ import net.minecraft.world.phys.AABB;
 public class RBMKDebrisRadiatingBlock extends RBMKDebrisBurningBlock {
     public static final IntegerProperty BURN = IntegerProperty.create("burn", 0, 15);
 
-    public static final MapCodec<RBMKDebrisRadiatingBlock> CODEC =
-            simpleCodec(RBMKDebrisRadiatingBlock::new);
-
     private static final double RADS = 1_000_000D;
     private static final double RANGE = 100D;
 
@@ -77,11 +73,6 @@ public class RBMKDebrisRadiatingBlock extends RBMKDebrisBurningBlock {
     public RBMKDebrisRadiatingBlock(BlockBehaviour.Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(BURN, 0));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

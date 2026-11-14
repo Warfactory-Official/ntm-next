@@ -78,7 +78,7 @@ public class TapeDriveRenderer
             State state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
         pose.pushPose();
         pose.translate(0.5, 0, 0.5);
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
         for (int i = 0; i < TapeDriveBlockEntity.SLOT_COUNT; i++) {
             int category = state.categories[i];
             if (category == TapeDriveBlockEntity.VISUAL_EMPTY) continue;

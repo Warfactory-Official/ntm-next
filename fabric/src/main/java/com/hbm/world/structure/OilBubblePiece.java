@@ -36,6 +36,7 @@ package com.hbm.world.structure;
 import com.hbm.world.feature.OilSurfaceScarring;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -166,7 +167,7 @@ public class OilBubblePiece extends StructurePiece {
                     if (dist >= threshold) continue;
 
                     pos.set(x, y, z);
-                    if (replaceable.test(level.getBlockState(pos), random)) {
+                    if (replaceable.test(level.getBlockState(pos), (BlockPos) pos, random)) {
                         level.setBlock(pos, core, 2);
                     }
                 }
@@ -186,7 +187,7 @@ public class OilBubblePiece extends StructurePiece {
     }
 
     public void projectHole(ProtoChunk chunk) {
-        if (!core.blocksMotion())
+        if (!core.is(BlockTags.BLOCKS_MOTION))
             throw new IllegalStateException("Surface projection requires a solid bubble core");
         OilSurfaceScarring.cutHoleColumn(
                 chunk,

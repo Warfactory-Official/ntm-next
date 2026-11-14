@@ -124,7 +124,7 @@ public class RBMKIndicatorRenderer
             State state, PoseStack poses, SubmitNodeCollector collector, CameraRenderState camera) {
         poses.pushPose();
         poses.translate(.5, 0, .5);
-        poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
         int light = state.lightCoords;
         for (int i = 0; i < state.lamps.length; i++) {
             Lamp lamp = state.lamps[i];
@@ -156,7 +156,7 @@ public class RBMKIndicatorRenderer
                 int width = font.width(lamp.label);
                 float scale = Math.min(.0125F, .3F / Math.max(width, 1));
                 poses.scale(scale, -scale, scale);
-                poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+                poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
                 collector.submitText(
                         poses,
                         -width / 2,

@@ -21,7 +21,6 @@ package com.hbm.blocks.generic;
 
 import com.hbm.blockentity.encounter.LogicBlockEntity;
 import com.hbm.blocks.TickingEntityBlock;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,15 +28,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class InvisibleLogicBlock extends Block implements TickingEntityBlock {
-    public static final MapCodec<InvisibleLogicBlock> CODEC = simpleCodec(InvisibleLogicBlock::new);
-
     public InvisibleLogicBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

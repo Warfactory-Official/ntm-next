@@ -122,7 +122,7 @@ public class RocketFlameParticleGroup extends ParticleGroup<RocketFlameParticle>
 
                     pose.pushPose();
                     pose.translate(in.relX + oX, in.relY + oY, in.relZ + oZ);
-                    pose.mulPose((Quaternionfc) camera.orientation);
+                    pose.rotate((Quaternionfc) camera.orientation);
 
                     collector.submitCustomGeometry(
                             pose,

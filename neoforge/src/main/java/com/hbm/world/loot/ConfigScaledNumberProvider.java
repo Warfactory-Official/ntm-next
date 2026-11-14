@@ -22,16 +22,20 @@ package com.hbm.world.loot;
 import com.hbm.data.WorldData;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProviders;
+import net.minecraft.world.level.storage.loot.Validatable;
+import net.minecraft.world.level.storage.loot.ValidationContext;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
-public record ConfigScaledNumberProvider(NumberProvider value) implements NumberProvider {
+public record ConfigScaledNumberProvider(Holder<ContextIntProvider> value)
+        implements ContextIntProvider {
     public static final MapCodec<ConfigScaledNumberProvider> MAP_CODEC =
             RecordCodecBuilder.mapCodec(
                     i ->
                             i.group(
-                                            NumberProviders.CODEC
+                                            ContextIntProviders.CODEC
                                                     .fieldOf("value")
                                                     .forGetter(ConfigScaledNumberProvider::value))
                                     .apply(i, ConfigScaledNumberProvider::new));
@@ -50,12 +54,12 @@ public record ConfigScaledNumberProvider(NumberProvider value) implements Number
     }
 
     @Override
-    public float getFloat(LootContext context) {
-        return scaledRolls(value.getInt(context), factor());
+    public void validate(ValidationContext context) {
+        Validatable.validateHolder(context, "value", value);
     }
 
     @Override
-    public int getInt(LootContext context) {
-        return scaledRolls(value.getInt(context), factor());
+    public int getIntUnsafe(LootContext context) {
+        return scaledRolls(value.value().getIntUnsafe(context), factor());
     }
 }

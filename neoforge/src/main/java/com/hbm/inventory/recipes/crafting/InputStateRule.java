@@ -77,8 +77,8 @@ public record InputStateRule(DataComponentMatchers matchers, Preservation preser
 
     public @Nullable String resultError(ItemStackTemplate result) {
         if (result.count() != 1) return "result preservation requires count 1";
-        for (var expected : matchers.exact().asPatch().entrySet()) {
-            for (var override : result.components().entrySet()) {
+        for (var expected : matchers.exact().asPatch().map.entrySet()) {
+            for (var override : result.components().map.entrySet()) {
                 if (override.getKey() == expected.getKey()
                         && !override.getValue().equals(expected.getValue()))
                     return "result component override conflicts with a preserved input requirement: "

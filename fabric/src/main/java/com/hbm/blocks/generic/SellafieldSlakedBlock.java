@@ -20,7 +20,6 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blocks.ModBlocks;
-import com.mojang.serialization.MapCodec;
 import java.util.List;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -37,9 +36,6 @@ public class SellafieldSlakedBlock extends Block {
         int brightness = Math.round((1F - shade / 15F) * 255);
         return 0xFF000000 | brightness << 16 | brightness << 8 | brightness;
     }
-
-    public static final MapCodec<SellafieldSlakedBlock> CODEC =
-            simpleCodec(SellafieldSlakedBlock::new);
 
     public static final IntegerProperty SHADE = IntegerProperty.create("shade", 0, 15);
 
@@ -64,11 +60,6 @@ public class SellafieldSlakedBlock extends Block {
                 .sound(SoundType.STONE)
                 .isValidSpawn((state, level, pos, type) -> false)
                 .noLootTable();
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

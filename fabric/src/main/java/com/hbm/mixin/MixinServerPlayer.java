@@ -52,7 +52,7 @@ public abstract class MixinServerPlayer {
     @Inject(method = "setKnownMovement", at = @At("TAIL"))
     private void hbm$trackArmorFlightMovement(Vec3 movement, CallbackInfo ci) {
         ServerPlayer player = (ServerPlayer) (Object) this;
-        if (player.isPassenger() || ((Entity) player).hurtMarked || player.needsSync) return;
+        if (player.isPassenger() || ((Entity) player).syncVelocity || player.needsSync) return;
         if (ArmorSuitEffects.jetpackKind(player) != null
                 || ArmorSuitEffects.wingsKind(player) != null) player.setDeltaMovement(movement);
     }

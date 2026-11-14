@@ -229,7 +229,8 @@ public abstract class InfoContainerScreen<T extends AbstractContainerMenu>
                                 mouseX,
                                 mouseY - SLOT_TOOLTIP_LIFT,
                                 DefaultTooltipPositioner.INSTANCE,
-                                null));
+                                null,
+                                true));
     }
 
     protected List<Component> slotTooltip(Slot slot) {
@@ -420,13 +421,6 @@ public abstract class InfoContainerScreen<T extends AbstractContainerMenu>
         }
         FluidTraitTooltip.describe(type, lines::add);
         graphics.setTooltipForNextFrame(
-                font,
-                lines.stream().map(Component::getVisualOrderText).toList(),
-                Optional.of(FluidTooltipFrame.of(type)),
-                DefaultTooltipPositioner.INSTANCE,
-                mouseX,
-                mouseY,
-                false,
-                null);
+                font, lines, Optional.of(FluidTooltipFrame.of(type)), mouseX, mouseY, null, true);
     }
 }

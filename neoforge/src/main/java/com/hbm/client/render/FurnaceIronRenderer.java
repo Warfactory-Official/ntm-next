@@ -106,7 +106,7 @@ public class FurnaceIronRenderer
     public void submit(State s, PoseStack ps, SubmitNodeCollector col, CameraRenderState camera) {
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(ironYaw(s.facing)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(ironYaw(s.facing)));
         ps.translate(-0.5, 0.0, -0.5);
 
         if (s.wasOn) {

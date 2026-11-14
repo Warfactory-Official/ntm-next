@@ -158,7 +158,7 @@ public abstract class NtmComponentPiece extends StructurePiece {
         StructureTemplate template =
                 level.getLevel()
                         .getServer()
-                        .getStructureManager()
+                        .getStructureTemplateManager()
                         .get(id)
                         .orElseThrow(
                                 () ->

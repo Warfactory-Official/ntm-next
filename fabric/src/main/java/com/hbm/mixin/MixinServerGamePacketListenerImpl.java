@@ -58,7 +58,7 @@ public class MixinServerGamePacketListenerImpl implements FarViewer {
     }
 
     @ModifyExpressionValue(
-            method = "handleMovePlayer",
+            method = "handlePlayerPositionChange(DDDFFZZ)V",
             at =
                     @At(
                             value = "INVOKE",

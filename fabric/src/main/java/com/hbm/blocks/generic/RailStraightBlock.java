@@ -20,7 +20,6 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blocks.MinecartRail;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -37,13 +36,11 @@ public class RailStraightBlock extends BaseRailBlock implements MinecartRail {
 
     public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE_STRAIGHT;
 
-    private final MapCodec<? extends RailStraightBlock> codec;
     private final float maxSpeed;
 
     public RailStraightBlock(BlockBehaviour.Properties properties, float maxSpeed) {
         super(true, properties);
         this.maxSpeed = maxSpeed;
-        this.codec = simpleCodec(props -> new RailStraightBlock(props, maxSpeed));
         registerDefaultState(
                 stateDefinition
                         .any()
@@ -54,11 +51,6 @@ public class RailStraightBlock extends BaseRailBlock implements MinecartRail {
     @Override
     public float railMaxSpeed() {
         return maxSpeed;
-    }
-
-    @Override
-    protected MapCodec<? extends BaseRailBlock> codec() {
-        return codec;
     }
 
     @Override

@@ -586,7 +586,7 @@ public final class FusionPlasmaForgeVisual
         iconPoses.setIdentity();
         iconPoses.translate(visualPos.getX(), visualPos.getY(), visualPos.getZ());
         iconPoses.translate(0.5, 0.0, 0.5);
-        iconPoses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(yaw));
+        iconPoses.rotate((Quaternionfc) Axis.YP.rotationDegrees(yaw));
         iconPartialTick = partialTick;
         FusionPlasmaForgeRenderer.iconPose(
                 iconPoses, arm, stack.getItem() instanceof BlockItem, ticks, iconWrite);

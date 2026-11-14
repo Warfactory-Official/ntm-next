@@ -63,7 +63,7 @@ public class SchnitzelVeganItem extends Item {
         entity.igniteForSeconds(FIRE_SECONDS);
         Vec3 motion = entity.getDeltaMovement();
         entity.setDeltaMovement(motion.x, LAUNCH, motion.z);
-        ((Entity) entity).hurtMarked = true;
+        ((Entity) entity).syncVelocity = true;
         return rest;
     }
 }

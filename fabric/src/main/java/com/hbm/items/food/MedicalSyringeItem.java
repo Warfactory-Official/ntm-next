@@ -45,6 +45,7 @@ import java.util.function.Supplier;
 import net.minecraft.SharedConstants;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -87,7 +88,7 @@ public final class MedicalSyringeItem extends CustomLoreItem {
     }
 
     private static void give(Player player, ItemStack stack) {
-        player.getInventory().placeItemBackInInventory(stack);
+        player.getInventory().placeItemBackInInventory(stack, Prediction.SERVER_ONLY);
     }
 
     private static void play(ServerLevel level, LivingEntity entity) {

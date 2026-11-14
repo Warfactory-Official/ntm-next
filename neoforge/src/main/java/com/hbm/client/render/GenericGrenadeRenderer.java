@@ -84,7 +84,7 @@ public class GenericGrenadeRenderer<T extends Entity>
             State state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
         pose.pushPose();
         pose.scale(0.5F, 0.5F, 0.5F);
-        pose.mulPose((Quaternionfc) camera.orientation);
+        pose.rotate((Quaternionfc) camera.orientation);
 
         quad(state, pose, collector, state.base, 1F, 1F, 1F);
 

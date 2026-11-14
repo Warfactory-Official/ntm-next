@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -36,7 +35,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class DecoToasterBlock extends Block {
-    public static final MapCodec<DecoToasterBlock> CODEC = simpleCodec(DecoToasterBlock::new);
     public static final IntegerProperty ROTATION = IntegerProperty.create("rotation", 0, 3);
 
     private static final VoxelShape EVEN = Shapes.box(0.25, 0, 0.375, 0.75, 0.325, 0.625);
@@ -45,11 +43,6 @@ public class DecoToasterBlock extends Block {
     public DecoToasterBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(ROTATION, 0));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

@@ -24,7 +24,7 @@ import com.hbm.client.render.iris.RibbonShaderTransform;
 import com.hbm.client.render.iris.WorldShaderCompiler;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.renderpearl.api.vertex.VertexFormat;
 import net.irisshaders.iris.gl.state.ShaderAttributeInputs;
 import net.irisshaders.iris.pipeline.programs.PartialShader;
 import net.irisshaders.iris.pipeline.programs.ShaderCreator;

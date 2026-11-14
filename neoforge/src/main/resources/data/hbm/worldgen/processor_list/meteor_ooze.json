@@ -4,49 +4,32 @@
       "processor_type": "hbm:marker_table",
       "processors": [
         {
-          "marker": {
-            "Name": "hbm:meteor_brick"
-          },
+          "marker": "hbm:meteor_brick",
           "options": [
             {
-              "data": {
-                "Name": "hbm:meteor_brick"
-              },
+              "data": "hbm:meteor_brick",
               "weight": 4
             },
             {
-              "data": {
-                "Name": "hbm:meteor_brick_mossy"
-              },
+              "data": "hbm:meteor_brick_mossy",
               "weight": 3
             },
             {
-              "data": {
-                "Name": "hbm:meteor_brick_cracked"
-              },
+              "data": "hbm:meteor_brick_cracked",
               "weight": 3
             }
           ],
           "processor_type": "hbm:weighted_place"
         },
         {
-          "marker": {
-            "Name": "hbm:concrete_lime"
-          },
+          "marker": "hbm:concrete_lime",
           "options": [
             {
-              "data": {
-                "Name": "hbm:toxic_block",
-                "Properties": {
-                  "level": "0"
-                }
-              },
+              "data": "hbm:toxic_block",
               "weight": 8
             },
             {
-              "data": {
-                "Name": "hbm:meteor_polished"
-              },
+              "data": "hbm:meteor_polished",
               "weight": 2
             }
           ],

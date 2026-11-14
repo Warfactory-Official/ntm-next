@@ -77,8 +77,8 @@ public class CoinRenderer extends EntityRenderer<CoinEntity, CoinRenderer.State>
     public void submit(
             State state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
         pose.pushPose();
-        pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(state.yaw - 90.0F));
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.spin));
+        pose.rotate((Quaternionfc) Axis.YN.rotationDegrees(state.yaw - 90.0F));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.spin));
         pose.scale(0.125F, 0.125F, 0.125F);
         int light = state.light;
         collector.submitCustomGeometry(

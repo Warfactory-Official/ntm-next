@@ -23,7 +23,6 @@ import com.hbm.blockentity.PartEmitterBlockEntity;
 import com.hbm.blocks.TickingEntityBlock;
 import com.hbm.interfaces.ToolInteractionHandler;
 import com.hbm.interfaces.ToolType;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -35,15 +34,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class PartEmitterBlock extends Block implements TickingEntityBlock, ToolInteractionHandler {
-    public static final MapCodec<PartEmitterBlock> CODEC = simpleCodec(PartEmitterBlock::new);
-
     public PartEmitterBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

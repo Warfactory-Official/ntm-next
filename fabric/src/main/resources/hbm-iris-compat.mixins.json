@@ -7,7 +7,7 @@
     "iris.ProgramFallbackResolverAccessor",
     "iris.MixinChunkVertexConsumer",
     "iris.MixinVertex",
-    "iris.MixinGlDevice",
+    "iris.MixinRenderSystem",
     "iris.MixinRenderPipeline"
   ],
   "injectors": {

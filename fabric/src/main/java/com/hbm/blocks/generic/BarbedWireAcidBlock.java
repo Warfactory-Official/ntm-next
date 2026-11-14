@@ -20,24 +20,15 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.handler.ArmorUtil;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 
 public class BarbedWireAcidBlock extends BarbedWireBlock {
-    public static final MapCodec<BarbedWireAcidBlock> CODEC = simpleCodec(BarbedWireAcidBlock::new);
-
     private static final int SUIT_DAMAGE = 1;
 
     public BarbedWireAcidBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

@@ -130,7 +130,7 @@ public class RailRenderer
                 0.5 + facing.getClockWise().getStepX() * 0.5,
                 0.0,
                 0.5 + facing.getClockWise().getStepZ() * 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(yawTurned(facing)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(yawTurned(facing)));
         col.submitCustomGeometry(
                 ps,
                 s.flipped ? signFlippedType : signType,

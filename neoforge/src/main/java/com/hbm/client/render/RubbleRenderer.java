@@ -80,8 +80,8 @@ public class RubbleRenderer extends EntityRenderer<RubbleEntity, RubbleRenderer.
             SubmitNodeCollector collector,
             CameraRenderState camera) {
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180F));
-        poseStack.mulPose((Quaternionfc) TUMBLE.rotationDegrees(state.ageInTicks % 360F * 10F));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(180F));
+        poseStack.rotate((Quaternionfc) TUMBLE.rotationDegrees(state.ageInTicks % 360F * 10F));
         collector.submitModelPart(
                 model, poseStack, state.skin, state.lightCoords, OverlayTexture.NO_OVERLAY, null);
         poseStack.popPose();

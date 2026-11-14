@@ -19,12 +19,14 @@
 
 package com.hbm.client.render;
 
-import com.mojang.blaze3d.GpuFormat;
-import com.mojang.blaze3d.pipeline.RenderPipeline.Builder;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.renderpearl.api.GpuFormat;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline.Builder;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.vertex.VertexFormat;
 import net.minecraft.client.renderer.ShaderDefines;
+import net.minecraft.client.renderer.oit.OitPipelineSet;
 
 public final class TracerRibbon {
     public static final float MIN_WIDTH_PIXELS = 1F;
@@ -47,9 +49,10 @@ public final class TracerRibbon {
         return new Pipeline(builder.build());
     }
 
-    private static final class Pipeline extends RenderPipeline {
+    private static final class Pipeline extends RenderPipeline implements OitPipelineOwner {
         private final ShaderDefines zeroToOne;
         private final ShaderDefines negativeOneToOne;
+        private final OitPipelineSet oitPipelines;
 
         private Pipeline(RenderPipeline source) {
             this(source, true);
@@ -58,16 +61,16 @@ public final class TracerRibbon {
         private Pipeline(RenderPipeline source, boolean buildOit) {
             super(
                     source.getLocation(),
-                    source.getVertexShader(),
-                    source.getFragmentShader(),
+                    source.getShaders(),
                     source.getShaderDefines(),
                     source.getBindGroupLayouts(),
-                    source.getColorTargetStates(),
+                    source.getColorTargetStates().toArray(ColorTargetState[]::new),
                     source.getDepthStencilState(),
                     source.getPolygonMode(),
                     source.isCull(),
-                    source.vertexFormatPerBuffer,
+                    source.vertexFormatPerBuffer.toArray(VertexFormat[]::new),
                     source.getPrimitiveTopology(),
+                    source.pushConstantSize(),
                     source.getSortKey());
             zeroToOne =
                     source.getShaderDefines()
@@ -81,6 +84,24 @@ public final class TracerRibbon {
                                     ShaderDefines.builder()
                                             .define("NTM_RIBBON_DEPTH_ZERO_TO_ONE", 0)
                                             .build());
+            var stages = buildOit ? NativeOitPipelines.create(source, false) : null;
+            oitPipelines =
+                    stages == null
+                            ? null
+                            : new OitPipelineSet(
+                                    new Pipeline(stages.depthBoundsPipeline(), false),
+                                    new Pipeline(stages.transmittancePipeline(), false),
+                                    new Pipeline(stages.accumulatePipeline(), false));
+        }
+
+        @Override
+        public OitPipelineSet oitPipelines() {
+            return oitPipelines;
+        }
+
+        @Override
+        public boolean orderedBlend() {
+            return false;
         }
 
         @Override

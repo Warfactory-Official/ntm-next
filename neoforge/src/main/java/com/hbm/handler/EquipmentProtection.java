@@ -30,8 +30,8 @@ import java.util.Locale;
 import java.util.Optional;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
@@ -52,7 +52,7 @@ public record EquipmentProtection(
                             RecordCodecBuilder.<EquipmentProtection>mapCodec(
                                     i ->
                                             i.group(
-                                                            RegistryCodecs.<Item>homogeneousList(
+                                                            RegistryCodecs.<Item>holderSet(
                                                                             (ResourceKey<
                                                                                             ? extends
                                                                                                     Registry<

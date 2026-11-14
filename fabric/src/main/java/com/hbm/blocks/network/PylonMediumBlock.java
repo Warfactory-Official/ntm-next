@@ -22,7 +22,6 @@ package com.hbm.blocks.network;
 import com.hbm.blockentity.network.PylonMediumBlockEntity;
 import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.capability.PhysicalConnector;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -31,7 +30,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,17 +39,10 @@ import org.jspecify.annotations.Nullable;
 public class PylonMediumBlock extends MultiblockCoreBlock
         implements EntityBlock, PhysicalConnector {
     private final boolean transformer;
-    private final MapCodec<PylonMediumBlock> ownCodec;
 
     public PylonMediumBlock(boolean transformer, Properties props) {
         super(props);
         this.transformer = transformer;
-        this.ownCodec = simpleCodec(p -> new PylonMediumBlock(transformer, p));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return ownCodec;
     }
 
     private int nodeMask(BlockState state) {

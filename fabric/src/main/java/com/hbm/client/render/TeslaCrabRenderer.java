@@ -135,15 +135,15 @@ public class TeslaCrabRenderer<T extends Mob> extends EntityRenderer<T, TeslaCra
         float swing = -(Mth.cos(state.walkCycle * 0.6662F * 2F) * 0.4F) * state.walkSpeed * 57.3F;
 
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180F - state.bodyYaw));
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(baseYaw));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(180F - state.bodyYaw));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(baseYaw));
         part(poseStack, collector, light, body);
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(swing));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(swing));
         part(poseStack, collector, light, legsLeft);
         poseStack.popPose();
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YN.rotationDegrees(swing));
+        poseStack.rotate((Quaternionfc) Axis.YN.rotationDegrees(swing));
         part(poseStack, collector, light, legsRight);
         poseStack.popPose();
         poseStack.popPose();

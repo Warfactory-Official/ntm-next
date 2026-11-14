@@ -5,8 +5,8 @@
       "processors": [
         {
           "marker": {
-            "Name": "minecraft:chiseled_bookshelf",
-            "Properties": {
+            "id": "minecraft:chiseled_bookshelf",
+            "properties": {
               "facing": "east",
               "slot_0_occupied": "false",
               "slot_1_occupied": "false",
@@ -18,14 +18,12 @@
           },
           "probability": 0.65,
           "processor_type": "hbm:maybe_place",
-          "result": {
-            "Name": "minecraft:sand"
-          }
+          "result": "minecraft:sand"
         },
         {
           "marker": {
-            "Name": "minecraft:chiseled_bookshelf",
-            "Properties": {
+            "id": "minecraft:chiseled_bookshelf",
+            "properties": {
               "facing": "east",
               "slot_0_occupied": "false",
               "slot_1_occupied": "false",
@@ -37,14 +35,12 @@
           },
           "probability": 0.25,
           "processor_type": "hbm:maybe_place",
-          "result": {
-            "Name": "hbm:crate_metal"
-          }
+          "result": "hbm:crate_metal"
         },
         {
           "marker": {
-            "Name": "minecraft:chiseled_bookshelf",
-            "Properties": {
+            "id": "minecraft:chiseled_bookshelf",
+            "properties": {
               "facing": "east",
               "slot_0_occupied": "false",
               "slot_1_occupied": "false",
@@ -56,35 +52,27 @@
           },
           "probability": 0.25,
           "processor_type": "hbm:maybe_place",
-          "result": {
-            "Name": "minecraft:sand"
-          }
+          "result": "minecraft:sand"
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "0",
               "waterlogged": "true"
             }
           },
           "options": [
             {
-              "data": {
-                "Name": "minecraft:sandstone"
-              },
+              "data": "minecraft:sandstone",
               "weight": 4
             },
             {
-              "data": {
-                "Name": "hbm:reinforced_sand"
-              },
+              "data": "hbm:reinforced_sand",
               "weight": 5
             },
             {
-              "data": {
-                "Name": "minecraft:sand"
-              },
+              "data": "minecraft:sand",
               "weight": 1
             }
           ],

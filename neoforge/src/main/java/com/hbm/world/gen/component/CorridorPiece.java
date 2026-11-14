@@ -32,8 +32,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 
 public class CorridorPiece extends NtmBranchingPiece {
 
@@ -57,7 +57,7 @@ public class CorridorPiece extends NtmBranchingPiece {
     }
 
     public static StructurePiece findValidPlacement(
-            StructurePieceAccessor accessor,
+            StructurePiecesBuilder accessor,
             RandomSource random,
             int x,
             int y,
@@ -77,7 +77,7 @@ public class CorridorPiece extends NtmBranchingPiece {
 
     @Override
     public void buildComponent(
-            NtmBranchingStart start, StructurePieceAccessor accessor, RandomSource random) {
+            NtmBranchingStart start, StructurePiecesBuilder accessor, RandomSource random) {
         this.path = this.generateChildNormal(start, accessor, random, 3, 1) != null;
     }
 

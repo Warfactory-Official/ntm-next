@@ -157,7 +157,7 @@ public class ItemBoxMenu extends NtmContainerMenu {
         if (type == ModMenus.PLASTIC_BAG.get()
                 || type == ModMenus.TOOLBOX.get()
                 || type == ModMenus.CONTAINMENT_BOX.get()) return true;
-        for (var component : stack.getComponentsPatch().entrySet()) {
+        for (var component : stack.getComponentsPatch().map.entrySet()) {
             if (component.getKey() != DataComponents.DAMAGE
                     && !ItemStates.isState(component.getKey())) {
                 return false;

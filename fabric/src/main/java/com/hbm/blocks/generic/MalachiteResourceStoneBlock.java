@@ -21,7 +21,6 @@ package com.hbm.blocks.generic;
 
 import com.hbm.items.ModItems;
 import com.hbm.items.variant.OreChunkType;
-import com.mojang.serialization.MapCodec;
 import java.util.List;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -37,16 +36,8 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 public class MalachiteResourceStoneBlock extends Block {
-    public static final MapCodec<MalachiteResourceStoneBlock> CODEC =
-            simpleCodec(MalachiteResourceStoneBlock::new);
-
     public MalachiteResourceStoneBlock(BlockBehaviour.Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<MalachiteResourceStoneBlock> codec() {
-        return CODEC;
     }
 
     @Override

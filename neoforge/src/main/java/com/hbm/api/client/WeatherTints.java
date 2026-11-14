@@ -19,14 +19,14 @@
 
 package com.hbm.api.client;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import java.util.Arrays;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.oit.OitPipelineSet;
 import org.jspecify.annotations.Nullable;
 
 public final class WeatherTints {
-    public record Tint(
-            RenderPipeline depthWrite, RenderPipeline noDepthWrite, int rain, int snow) {}
+    public record Tint(RenderPipeline pipeline, OitPipelineSet oit, int rain, int snow) {}
 
     public interface Provider {
         @Nullable Tint tint(ClientLevel level);

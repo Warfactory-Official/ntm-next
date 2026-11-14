@@ -226,7 +226,7 @@ public class GlyphidVisual extends HbmDynamicEntityVisual<GlyphidEntity> {
 
     private void refresh(float partialTick) {
         float walking = entity.walkAnimation.position(partialTick);
-        float swing = ((LivingEntity) entity).getAttackAnim(partialTick);
+        float swing = ((LivingEntity) entity).getSwingAnimation(partialTick);
         int nextWalkingBits = Float.floatToRawIntBits(walking);
         int nextSwingBits = Float.floatToRawIntBits(swing);
         if (!initialized || nextWalkingBits != walkingBits) {

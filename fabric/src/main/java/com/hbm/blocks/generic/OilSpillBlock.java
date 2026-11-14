@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -42,8 +41,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class OilSpillBlock extends Block {
-    public static final MapCodec<OilSpillBlock> CODEC = simpleCodec(OilSpillBlock::new);
-
     public static final IntegerProperty LAYERS = BlockStateProperties.LAYERS;
     private static final VoxelShape[] SHAPES =
             Block.boxes(SnowLayerBlock.MAX_HEIGHT, h -> Block.column(16.0D, 0.0D, h * 2.0D));
@@ -61,11 +58,6 @@ public class OilSpillBlock extends Block {
                 .noOcclusion()
                 .noLootTable()
                 .replaceable();
-    }
-
-    @Override
-    protected MapCodec<OilSpillBlock> codec() {
-        return CODEC;
     }
 
     @Override

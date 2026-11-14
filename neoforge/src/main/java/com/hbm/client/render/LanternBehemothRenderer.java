@@ -109,8 +109,8 @@ public final class LanternBehemothRenderer
         pose.pushPose();
         pose.translate(0.5D, 0.0D, 0.5D);
         if (state.broken) {
-            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(5.0F));
-            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(10.0F));
+            pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(5.0F));
+            pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(10.0F));
             collector.submitCustomGeometry(
                     pose,
                     BODY,

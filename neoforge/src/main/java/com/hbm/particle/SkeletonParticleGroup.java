@@ -87,9 +87,9 @@ public class SkeletonParticleGroup extends ParticleGroup<SkeletonParticle> {
                         for (Instance in : instances) {
                             pose.pushPose();
                             pose.translate(in.px, in.py, in.pz);
-                            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(in.yaw));
-                            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(in.pitch));
-                            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90F));
+                            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(in.yaw));
+                            pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(in.pitch));
+                            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90F));
                             ResourceManager.skeleton_obj.renderPart(
                                     pose.last(), tess, in.light, in.color, in.part);
                             pose.popPose();

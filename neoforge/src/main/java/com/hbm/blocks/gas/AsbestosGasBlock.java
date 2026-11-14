@@ -37,7 +37,6 @@ import com.hbm.extprop.LivingHazards;
 import com.hbm.hazard.Exposure;
 import com.hbm.particle.AshRevealParticleOptions;
 import com.hbm.util.ArmorRegistry;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -52,15 +51,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class AsbestosGasBlock extends GasBlock {
-    public static final MapCodec<AsbestosGasBlock> CODEC = simpleCodec(AsbestosGasBlock::new);
-
     public AsbestosGasBlock(BlockBehaviour.Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends AsbestosGasBlock> codec() {
-        return CODEC;
     }
 
     @Override

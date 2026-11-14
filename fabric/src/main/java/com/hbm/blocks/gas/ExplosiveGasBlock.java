@@ -19,22 +19,14 @@
 
 package com.hbm.blocks.gas;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class ExplosiveGasBlock extends FlammableGasBlock {
-    public static final MapCodec<ExplosiveGasBlock> CODEC = simpleCodec(ExplosiveGasBlock::new);
-
     public ExplosiveGasBlock(BlockBehaviour.Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends ExplosiveGasBlock> codec() {
-        return CODEC;
     }
 
     @Override

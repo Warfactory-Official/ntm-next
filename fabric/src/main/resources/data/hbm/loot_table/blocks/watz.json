@@ -6,10 +6,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 48,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 48
             }
           ],
           "name": "hbm:watz_end"
@@ -22,10 +22,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 64,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 64
             }
           ],
           "name": "hbm:bolt_dura_steel"
@@ -38,10 +38,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 64,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 64
             }
           ],
           "name": "hbm:bolt_dura_steel"
@@ -54,10 +54,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 64,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 64
             }
           ],
           "name": "hbm:bolt_dura_steel"
@@ -70,10 +70,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 36,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 36
             }
           ],
           "name": "hbm:watz_element"
@@ -86,10 +86,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 26,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 26
             }
           ],
           "name": "hbm:watz_cooler"
@@ -102,10 +102,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 1,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 1
             }
           ],
           "name": "hbm:struct_watz_core"

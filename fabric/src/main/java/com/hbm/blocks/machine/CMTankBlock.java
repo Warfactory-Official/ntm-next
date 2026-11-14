@@ -19,22 +19,14 @@
 
 package com.hbm.blocks.machine;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CMTankBlock extends Block {
-    public static final MapCodec<CMTankBlock> CODEC = simpleCodec(CMTankBlock::new);
-
     public CMTankBlock(BlockBehaviour.Properties properties) {
         super(properties);
-    }
-
-    @Override
-    public MapCodec<CMTankBlock> codec() {
-        return CODEC;
     }
 
     @Override

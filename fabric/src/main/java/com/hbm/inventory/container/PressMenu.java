@@ -93,7 +93,7 @@ public class PressMenu extends BlockEntityMenu<BurnerPressBlockEntity> {
                     int machineEnd = BurnerPressBlockEntity.SLOT_COUNT;
                     int invEnd = slots.size();
                     if (index < machineEnd) return moveItemStackTo(stack, machineEnd, invEnd, true);
-                    if (FuelHandler.getBurnTime(player.level(), stack) > 0)
+                    if (FuelHandler.isFuel(blockEntity(), stack))
                         return moveItemStackTo(
                                         stack,
                                         BurnerPressBlockEntity.SLOT_FUEL,

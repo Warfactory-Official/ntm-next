@@ -167,7 +167,7 @@ public class ChemicalPlantRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(BASE_YAW + s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(BASE_YAW + s.yaw));
 
         if (s.frame) part(col, ps, FRAME, light);
 
@@ -178,7 +178,7 @@ public class ChemicalPlantRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) ((s.anim * 15) % 360D)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) ((s.anim * 15) % 360D)));
         ps.translate(-0.5, 0.0, -0.5);
         part(col, ps, SPINNER, light);
         ps.popPose();

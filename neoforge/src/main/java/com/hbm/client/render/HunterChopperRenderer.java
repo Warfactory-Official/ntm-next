@@ -75,9 +75,9 @@ public class HunterChopperRenderer
         poseStack.translate(0F, 2F, 0F);
         poseStack.translate(0F, 0.75F, 0F);
         poseStack.scale(4F, 4F, 4F);
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180F));
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(180F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
         collector.submitModel(
                 this.model,
                 state,
@@ -85,8 +85,7 @@ public class HunterChopperRenderer
                 TEXTURE,
                 state.lightCoords,
                 OverlayTexture.NO_OVERLAY,
-                state.outlineColor,
-                null);
+                state.outlineColor);
         poseStack.popPose();
         super.submit(state, poseStack, collector, camera);
     }

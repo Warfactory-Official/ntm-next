@@ -35,29 +35,83 @@ package com.hbm.world.feature;
 
 import com.hbm.util.SectionAccess;
 import com.hbm.world.NtmWorldgenFields;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 
-public class StratumFeature extends Feature<StratumConfig> {
+public record StratumFeature(
+        Identifier domain,
+        BlockState state,
+        RuleTest replaceable,
+        double scale,
+        int threshold,
+        int rangeMult,
+        int maxRange,
+        int yLevel,
+        float density)
+        implements Feature {
+
+    public static final MapCodec<StratumFeature> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    inst ->
+                            inst.group(
+                                            Identifier.CODEC
+                                                    .fieldOf("domain")
+                                                    .forGetter(StratumFeature::domain),
+                                            BlockState.CODEC
+                                                    .fieldOf("state")
+                                                    .forGetter(StratumFeature::state),
+                                            RuleTest.CODEC
+                                                    .fieldOf("replaceable")
+                                                    .forGetter(StratumFeature::replaceable),
+                                            Codec.DOUBLE
+                                                    .fieldOf("scale")
+                                                    .forGetter(StratumFeature::scale),
+                                            Codec.INT
+                                                    .fieldOf("threshold")
+                                                    .forGetter(StratumFeature::threshold),
+                                            Codec.INT
+                                                    .fieldOf("range_mult")
+                                                    .forGetter(StratumFeature::rangeMult),
+                                            Codec.INT
+                                                    .fieldOf("max_range")
+                                                    .forGetter(StratumFeature::maxRange),
+                                            Codec.INT
+                                                    .fieldOf("y_level")
+                                                    .forGetter(StratumFeature::yLevel),
+                                            Codec.FLOAT
+                                                    .fieldOf("density")
+                                                    .forGetter(StratumFeature::density))
+                                    .apply(inst, StratumFeature::new));
+
+    @Override
+    public MapCodec<StratumFeature> codec() {
+        return CODEC;
+    }
+
     private static final int SIZE = 16;
     private static final ThreadLocal<Scratch> SCRATCH = ThreadLocal.withInitial(Scratch::new);
 
-    public StratumFeature() {
-        super(StratumConfig.CODEC);
-    }
-
     @Override
-    public boolean place(FeaturePlaceContext<StratumConfig> ctx) {
-        WorldGenLevel level = ctx.level();
-        StratumConfig cfg = ctx.config();
-        RandomSource rand = ctx.random();
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        StratumFeature cfg = this;
+        RandomSource rand = random;
 
-        int cx = ctx.origin().getX() & ~15;
-        int cz = ctx.origin().getZ() & ~15;
+        int cx = featureOrigin.getX() & ~15;
+        int cz = featureOrigin.getZ() & ~15;
 
         FractalSimplexNoise noise = NtmWorldgenFields.get(level).fractal(cfg.domain(), 4);
 
@@ -85,7 +139,7 @@ public class StratumFeature extends Feature<StratumConfig> {
                 for (int y = cfg.yLevel() - range; y <= cfg.yLevel() + range; y++) {
                     if (cfg.density() < 1.0F && rand.nextFloat() >= cfg.density()) continue;
                     pos.set(x, y, z);
-                    if (cfg.replaceable().test(reader.read(x, y, z), rand)) {
+                    if (cfg.replaceable().test(reader.read(x, y, z), (BlockPos) pos, rand)) {
                         level.setBlock(pos, cfg.state(), 2);
                     }
                 }

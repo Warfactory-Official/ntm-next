@@ -25,7 +25,6 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.TickingEntityBlock;
 import com.hbm.capability.CapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -41,16 +40,9 @@ public class FissureBlock extends Block implements TickingEntityBlock, Capabilit
 
     public static final BooleanProperty CRATER = BooleanProperty.create("crater");
 
-    public static final MapCodec<FissureBlock> CODEC = simpleCodec(FissureBlock::new);
-
     public FissureBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(CRATER, false));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

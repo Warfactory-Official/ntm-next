@@ -3155,7 +3155,7 @@ public final class ModBlocks {
                                     .noCollision()
                                     .strength(0.0F, 90.0F)
                                     .lightLevel(state -> 15)
-                                    .pushReaction(((PushReaction) (PushReaction.DESTROY)))
+                                    .pushReaction(((PushReaction) (PushReaction.POPPED)))
                                     .noLootTable());
     public static final RegistryHandle<FiniteCoriumBlock> CORIUM =
             Reg.block(
@@ -3169,7 +3169,7 @@ public final class ModBlocks {
                                     .randomTicks()
                                     .lightLevel(FiniteCoriumBlock::light)
                                     .noLootTable()
-                                    .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                    .pushReaction(((PushReaction) (PushReaction.POPPED))));
 
     public static RegistryHandle<RadonGasBlock> GAS_RADON;
     public static RegistryHandle<DenseRadonGasBlock> GAS_RADON_DENSE;
@@ -3217,7 +3217,7 @@ public final class ModBlocks {
                             pwrProps()
                                     .strength(15.0F, 6.0F)
                                     .noLootTable()
-                                    .pushReaction(((PushReaction) (PushReaction.BLOCK))));
+                                    .pushReaction(((PushReaction) (PushReaction.IMMOVEABLE))));
 
     public static final RegistryHandle<Block> PWR_CASING = pwrPart("pwr_casing", 2);
     public static final RegistryHandle<Block> PWR_PORT =
@@ -3278,7 +3278,7 @@ public final class ModBlocks {
                                     .sound(SoundType.STONE)
                                     .requiresCorrectToolForDrops()
                                     .noLootTable()
-                                    .pushReaction(((PushReaction) (PushReaction.BLOCK))));
+                                    .pushReaction(((PushReaction) (PushReaction.IMMOVEABLE))));
 
     public static final RegistryHandle<ICFMachineBlock> MACHINE_ICF =
             Reg.blockItem("icf", ICFMachineBlock::new, () -> icfProps().noOcclusion());
@@ -4177,7 +4177,7 @@ public final class ModBlocks {
                                     .strength(0.5F, 0.5F)
                                     .sound(ModSoundTypes.FLESH)
                                     .noLootTable()
-                                    .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                    .pushReaction(((PushReaction) (PushReaction.POPPED))));
     public static final RegistryHandle<Block> GLYPHID_BASE_INFESTED =
             Reg.blockItem(
                     "glyphid_base_infested",
@@ -4188,7 +4188,7 @@ public final class ModBlocks {
                                     .strength(0.5F, 0.5F)
                                     .sound(ModSoundTypes.FLESH)
                                     .noLootTable()
-                                    .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                    .pushReaction(((PushReaction) (PushReaction.POPPED))));
     public static final RegistryHandle<Block> GLYPHID_BASE_RAD =
             Reg.blockItem(
                     "glyphid_base_rad",
@@ -4199,7 +4199,7 @@ public final class ModBlocks {
                                     .strength(0.5F, 0.5F)
                                     .sound(ModSoundTypes.FLESH)
                                     .noLootTable()
-                                    .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                    .pushReaction(((PushReaction) (PushReaction.POPPED))));
     public static final RegistryHandle<GlyphidSpawnerBlock> GLYPHID_SPAWNER =
             Reg.blockItem(
                     "glyphid_spawner",
@@ -4209,7 +4209,7 @@ public final class ModBlocks {
                                     .mapColor(MapColor.COLOR_ORANGE)
                                     .strength(0.5F, 0.5F)
                                     .sound(ModSoundTypes.FLESH)
-                                    .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                    .pushReaction(((PushReaction) (PushReaction.POPPED))));
     public static final RegistryHandle<GlyphidSpawnerBlock> GLYPHID_SPAWNER_INFESTED =
             Reg.blockItem(
                     "glyphid_spawner_infested",
@@ -4219,7 +4219,7 @@ public final class ModBlocks {
                                     .mapColor(MapColor.COLOR_ORANGE)
                                     .strength(0.5F, 0.5F)
                                     .sound(ModSoundTypes.FLESH)
-                                    .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                    .pushReaction(((PushReaction) (PushReaction.POPPED))));
     public static final RegistryHandle<GlyphidSpawnerBlock> GLYPHID_SPAWNER_RAD =
             Reg.blockItem(
                     "glyphid_spawner_rad",
@@ -4229,7 +4229,7 @@ public final class ModBlocks {
                                     .mapColor(MapColor.COLOR_ORANGE)
                                     .strength(0.5F, 0.5F)
                                     .sound(ModSoundTypes.FLESH)
-                                    .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                    .pushReaction(((PushReaction) (PushReaction.POPPED))));
     public static final RegistryHandle<TritiumLampBlock> LAMP_TRITIUM_GREEN =
             tritiumLamp("lamp_tritium_green");
     public static final RegistryHandle<TritiumLampBlock> LAMP_TRITIUM_BLUE =
@@ -4271,7 +4271,7 @@ public final class ModBlocks {
                                             .noOcclusion()
                                             .requiresCorrectToolForDrops()
                                             .ignitedByLava()
-                                            .pushReaction(((PushReaction) (PushReaction.DESTROY))))
+                                            .pushReaction(((PushReaction) (PushReaction.POPPED))))
                     .bakedBy(() -> new HangingVineModel.Family())
                     .andThen(
                             block -> {
@@ -4685,7 +4685,7 @@ public final class ModBlocks {
                                             .strength(5.0F, 3.0F)
                                             .noOcclusion()
                                             .requiresCorrectToolForDrops()
-                                            .pushReaction(((PushReaction) (PushReaction.DESTROY))))
+                                            .pushReaction(((PushReaction) (PushReaction.POPPED))))
                     .andThen(
                             block -> {
                                 var item = decoItem("door_metal", block);
@@ -4719,7 +4719,7 @@ public final class ModBlocks {
                                     BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_DOOR)
                                             .strength(10.0F, 60.0F)
                                             .requiresCorrectToolForDrops()
-                                            .pushReaction(((PushReaction) (PushReaction.DESTROY))))
+                                            .pushReaction(((PushReaction) (PushReaction.POPPED))))
                     .andThen(h -> decoItem("door_red", h));
     public static final RegistryHandle<DoorBlock> DOOR_OFFICE =
             Reg.block(
@@ -4731,7 +4731,7 @@ public final class ModBlocks {
                                             .strength(10.0F, 6.0F)
                                             .noOcclusion()
                                             .requiresCorrectToolForDrops()
-                                            .pushReaction(((PushReaction) (PushReaction.DESTROY))))
+                                            .pushReaction(((PushReaction) (PushReaction.POPPED))))
                     .andThen(
                             block -> {
                                 var item = decoItem("door_office", block);
@@ -4748,7 +4748,7 @@ public final class ModBlocks {
                                             .strength(10.0F, 60.0F)
                                             .noOcclusion()
                                             .requiresCorrectToolForDrops()
-                                            .pushReaction(((PushReaction) (PushReaction.DESTROY))))
+                                            .pushReaction(((PushReaction) (PushReaction.POPPED))))
                     .andThen(
                             block -> {
                                 var item = decoItem("door_bunker", block);
@@ -5237,7 +5237,7 @@ public final class ModBlocks {
                                             .noOcclusion()
                                             .noLootTable()
                                             .ignitedByLava()
-                                            .pushReaction(((PushReaction) (PushReaction.DESTROY)))
+                                            .pushReaction(((PushReaction) (PushReaction.POPPED)))
                                             .replaceable())
                     .andThen(h -> DECO_BLOCKS.add(decoItem("leaves_layer", h)));
     public static final RegistryHandle<Block> PLANT_DEAD = deadPlant("plant_dead");
@@ -5341,7 +5341,7 @@ public final class ModBlocks {
                                     .sound(SoundType.METAL)
                                     .noLootTable()
                                     .requiresCorrectToolForDrops()
-                                    .pushReaction(((PushReaction) (PushReaction.BLOCK))));
+                                    .pushReaction(((PushReaction) (PushReaction.IMMOVEABLE))));
 
     public static final RegistryHandle<CargoElevatorBlock> CARGO_ELEVATOR =
             Reg.blockItem(
@@ -6335,6 +6335,7 @@ public final class ModBlocks {
                                                 .isViewBlocking(
                                                         (_,
                                                                 _,
+                                                                _,
                                                                 _) ->
                                                                 false)
                                                 .isValidSpawn(
@@ -6853,7 +6854,7 @@ public final class ModBlocks {
                                         .strength(0.1F)
                                         .forceSolidOff()
                                         .noLootTable()
-                                        .pushReaction(((PushReaction) (PushReaction.DESTROY)))
+                                        .pushReaction(((PushReaction) (PushReaction.POPPED)))
                                         .replaceable());
         DECO_BLOCKS.add(decoItem("foam_layer", FOAM_LAYER));
 
@@ -7118,7 +7119,7 @@ public final class ModBlocks {
                                         .noCollision()
                                         .instabreak()
                                         .lightLevel(_ -> 15)
-                                        .pushReaction(((PushReaction) (PushReaction.DESTROY)))
+                                        .pushReaction(((PushReaction) (PushReaction.POPPED)))
                                         .noLootTable(),
                         BlockItem::new);
 
@@ -7553,7 +7554,7 @@ public final class ModBlocks {
                                         .sound(SoundType.GRASS)
                                         .lightLevel(_ -> 7)
                                         .randomTicks()
-                                        .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                        .pushReaction(((PushReaction) (PushReaction.POPPED))));
         DECO_BLOCKS.add(
                 Reg.<Item>item(
                         "mush",
@@ -7581,6 +7582,7 @@ public final class ModBlocks {
                                         .isViewBlocking(
                                                 (_,
                                                         _,
+                                                        _,
                                                         _) -> false)
                                         .isValidSpawn(
                                                 (_,
@@ -7590,7 +7592,7 @@ public final class ModBlocks {
                                                         type == EntityTypes.OCELOT
                                                                 || type == EntityTypes.PARROT)
                                         .ignitedByLava()
-                                        .pushReaction(((PushReaction) (PushReaction.DESTROY)))
+                                        .pushReaction(((PushReaction) (PushReaction.POPPED)))
                                         .randomTicks());
         DECO_BLOCKS.add(decoItem("waste_leaves", WASTE_LEAVES));
 
@@ -7647,7 +7649,7 @@ public final class ModBlocks {
                                         .mapColor(MapColor.METAL)
                                         .strength(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY)
                                         .requiresCorrectToolForDrops()
-                                        .pushReaction(((PushReaction) (PushReaction.BLOCK))));
+                                        .pushReaction(((PushReaction) (PushReaction.IMMOVEABLE))));
 
         VENT_CHLORINE = vent("vent_chlorine", VentBlock.CHLORINE, 1.5D);
         VENT_CLOUD = vent("vent_cloud", VentBlock.CLOUD, 1.75D);
@@ -8076,7 +8078,7 @@ public final class ModBlocks {
                                                 .noCollision()
                                                 .noOcclusion()
                                                 .pushReaction(
-                                                        ((PushReaction) (PushReaction.DESTROY))))
+                                                        ((PushReaction) (PushReaction.POPPED))))
                         .bakedBy(
                                 () -> {
                                     var base = RegistryUtil.id("block/" + name + "_base");
@@ -8126,7 +8128,7 @@ public final class ModBlocks {
                                                 .noCollision()
                                                 .noOcclusion()
                                                 .pushReaction(
-                                                        ((PushReaction) (PushReaction.DESTROY))))
+                                                        ((PushReaction) (PushReaction.POPPED))))
                         .bakedBy(() -> new RadioTorchModel());
 
         int descriptionLines =
@@ -8513,7 +8515,7 @@ public final class ModBlocks {
                 .replaceable()
                 .noCollision()
                 .strength(0.0F, 300.0F)
-                .pushReaction(((PushReaction) (PushReaction.DESTROY)))
+                .pushReaction(((PushReaction) (PushReaction.POPPED)))
                 .noLootTable()
                 .liquid()
                 .sound(SoundType.EMPTY);
@@ -8626,6 +8628,7 @@ public final class ModBlocks {
                 .isViewBlocking(
                         (_,
                                 _,
+                                _,
                                 _) -> false)
                 .isValidSpawn(
                         (_,
@@ -8662,7 +8665,7 @@ public final class ModBlocks {
                                         .strength(0.25F, 1.2F)
                                         .sound(SoundType.STONE)
                                         .noOcclusion()
-                                        .pushReaction(((PushReaction) (PushReaction.DESTROY))))
+                                        .pushReaction(((PushReaction) (PushReaction.POPPED))))
                 .andThen(
                         block -> {
                             var item = decoItem(name, block);
@@ -8836,7 +8839,7 @@ public final class ModBlocks {
                                         .noCollision()
                                         .instabreak()
                                         .sound(SoundType.GRASS)
-                                        .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                        .pushReaction(((PushReaction) (PushReaction.POPPED))));
         DECO_BLOCKS.add(decoItem(name, block));
         return block;
     }
@@ -8853,7 +8856,7 @@ public final class ModBlocks {
                                         .noOcclusion()
                                         .instabreak()
                                         .sound(SoundType.GRASS)
-                                        .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                        .pushReaction(((PushReaction) (PushReaction.POPPED))));
         DECO_BLOCKS.add(decoItem(name, block));
         return block;
     }
@@ -8937,7 +8940,7 @@ public final class ModBlocks {
                                                 .instabreak()
                                                 .sound(SoundType.GRASS)
                                                 .pushReaction(
-                                                        ((PushReaction) (PushReaction.DESTROY))))
+                                                        ((PushReaction) (PushReaction.POPPED))))
                         .bakedBy(() -> new ReedsModel.Family());
         var item = decoItem(name, block);
         DECO_BLOCKS.add(item);
@@ -8957,7 +8960,7 @@ public final class ModBlocks {
                                         .noOcclusion()
                                         .instabreak()
                                         .sound(SoundType.GRASS)
-                                        .pushReaction(((PushReaction) (PushReaction.DESTROY)))
+                                        .pushReaction(((PushReaction) (PushReaction.POPPED)))
                                         .randomTicks());
         var item = decoItem(name, block);
         DECO_BLOCKS.add(item);

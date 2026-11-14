@@ -40,13 +40,13 @@ import com.hbm.items.armor.ArmorSuitEffects;
 import com.hbm.items.armor.ModArmorItem;
 import com.hbm.items.weapon.sedna.GunBaseNTItem;
 import com.hbm.tags.HbmEntityTypeTags;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.DepthStencilState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.platform.BlendFactor;
-import com.mojang.blaze3d.platform.CompareOp;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.renderpearl.api.pipeline.BlendFactor;
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.CompareOp;
+import com.mojang.renderpearl.api.pipeline.DepthStencilState;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -223,7 +223,7 @@ public final class ArmorOverheadRenderer {
 
             poseStack.pushPose();
             poseStack.translate(pos.x - camera.pos.x, pos.y - camera.pos.y, pos.z - camera.pos.z);
-            poseStack.mulPose((Quaternionfc) camera.orientation);
+            poseStack.rotate((Quaternionfc) camera.orientation);
             poseStack.scale(LABEL_SCALE, -LABEL_SCALE, LABEL_SCALE);
             float tx = -font.width(seq) / 2.0F;
             collector.submitText(

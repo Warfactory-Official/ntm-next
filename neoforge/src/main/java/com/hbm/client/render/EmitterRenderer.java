@@ -118,20 +118,20 @@ public class EmitterRenderer
             State state, PoseStack ps, SubmitNodeCollector collector, CameraRenderState camera) {
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90.0F));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(90.0F));
 
         switch (state.facing) {
             case DOWN -> {
                 ps.translate(0.0, 0.5, -0.5);
-                ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90.0F));
+                ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(90.0F));
             }
             case UP -> {
                 ps.translate(0.0, 0.5, 0.5);
-                ps.mulPose((Quaternionfc) Axis.XN.rotationDegrees(90.0F));
+                ps.rotate((Quaternionfc) Axis.XN.rotationDegrees(90.0F));
             }
-            case NORTH -> ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90.0F));
-            case WEST -> ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180.0F));
-            case SOUTH -> ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(270.0F));
+            case NORTH -> ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(90.0F));
+            case WEST -> ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(180.0F));
+            case SOUTH -> ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(270.0F));
             case EAST -> {}
         }
 

@@ -138,7 +138,7 @@ public class SexyItemRenderer extends AnimatedGunItemRenderer {
                                 NtmMath.lerp(from[0], to[0], cycle),
                                 0.375 + NtmMath.lerp(from[1], to[1], cycle),
                                 0);
-                        pose.mulPose(
+                        pose.rotate(
                                 (Quaternionfc)
                                         Axis.ZP.rotationDegrees(
                                                 (float) NtmMath.lerp(from[2], to[2], cycle)));

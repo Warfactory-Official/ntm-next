@@ -21,7 +21,6 @@ package com.hbm.world.structure;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.QuartPos;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
@@ -52,15 +51,12 @@ public final class ColumnBiome {
     }
 
     public static boolean valid(Structure.GenerationContext context, int x, int surface, int z) {
-        ChunkGenerator generator = context.chunkGenerator();
         return context.validBiome()
                 .test(
-                        generator
-                                .getBiomeSource()
+                        context.biomeResolver()
                                 .getNoiseBiome(
                                         QuartPos.fromBlock(x),
                                         QuartPos.fromBlock(surface),
-                                        QuartPos.fromBlock(z),
-                                        context.randomState().sampler()));
+                                        QuartPos.fromBlock(z)));
     }
 }

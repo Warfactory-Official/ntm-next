@@ -19,8 +19,21 @@
 
 package com.hbm.mixin;
 
+import com.hbm.client.render.OitPipelineOwner;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(RenderSetup.class)
-public class MixinRenderSetup {}
+public class MixinRenderSetup {
+    @Inject(method = "builder", at = @At("RETURN"))
+    private static void hbm$oitVariants(
+            RenderPipeline pipeline, CallbackInfoReturnable<RenderSetup.RenderSetupBuilder> cir) {
+        if (pipeline instanceof OitPipelineOwner owner && owner.oitPipelines() != null) {
+            cir.getReturnValue().setOitPipelines(owner.oitPipelines());
+        }
+    }
+}

@@ -61,7 +61,7 @@ public class BulletMK4Renderer extends EntityRenderer<BulletBaseMK4Entity, Bulle
     }
 
     @Override
-    protected AABB getBoundingBoxForCulling(BulletBaseMK4Entity bullet) {
+    protected AABB getBoundingBoxForCulling(BulletBaseMK4Entity bullet, float partialTicks) {
         var mc = Minecraft.getInstance();
         var camera = mc.gameRenderer.gameRenderState().levelRenderState.cameraRenderState;
         double trail = 2D * Math.max(bullet.prevVelocity, bullet.velocity);
@@ -110,8 +110,8 @@ public class BulletMK4Renderer extends EntityRenderer<BulletBaseMK4Entity, Bulle
         pose.pushPose();
 
         if (state.config.renderRotations) {
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90.0F));
-            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch + 180));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90.0F));
+            pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch + 180));
         }
 
         Tracer tracer = RENDERERS.get(state.config);

@@ -5,8 +5,8 @@
       "processors": [
         {
           "marker": {
-            "Name": "minecraft:chiseled_bookshelf",
-            "Properties": {
+            "id": "minecraft:chiseled_bookshelf",
+            "properties": {
               "facing": "east",
               "slot_0_occupied": "false",
               "slot_1_occupied": "false",
@@ -19,8 +19,8 @@
           "probability": 0.5,
           "processor_type": "hbm:maybe_place",
           "result": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "0",
               "waterlogged": "false"
             }
@@ -28,35 +28,27 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "0",
               "waterlogged": "true"
             }
           },
           "options": [
             {
-              "data": {
-                "Name": "hbm:brick_concrete"
-              },
+              "data": "hbm:brick_concrete",
               "weight": 4
             },
             {
-              "data": {
-                "Name": "hbm:brick_concrete_mossy"
-              },
+              "data": "hbm:brick_concrete_mossy",
               "weight": 3
             },
             {
-              "data": {
-                "Name": "hbm:brick_concrete_cracked"
-              },
+              "data": "hbm:brick_concrete_cracked",
               "weight": 2
             },
             {
-              "data": {
-                "Name": "hbm:brick_concrete_broken"
-              },
+              "data": "hbm:brick_concrete_broken",
               "weight": 1
             }
           ],
@@ -64,26 +56,21 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "0",
               "waterlogged": "false"
             }
           },
           "options": [
             {
-              "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
-                  "rotation": "0"
-                }
-              },
+              "data": "hbm:bobblehead",
               "weight": 1
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "1"
                 }
               },
@@ -91,8 +78,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "2"
                 }
               },
@@ -100,8 +87,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "3"
                 }
               },
@@ -109,8 +96,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "4"
                 }
               },
@@ -118,8 +105,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "5"
                 }
               },
@@ -127,8 +114,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "6"
                 }
               },
@@ -136,8 +123,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "7"
                 }
               },
@@ -145,8 +132,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "8"
                 }
               },
@@ -154,8 +141,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "9"
                 }
               },
@@ -163,8 +150,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "10"
                 }
               },
@@ -172,8 +159,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "11"
                 }
               },
@@ -181,8 +168,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "12"
                 }
               },
@@ -190,8 +177,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "13"
                 }
               },
@@ -199,8 +186,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "14"
                 }
               },
@@ -208,8 +195,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "15"
                 }
               },
@@ -220,8 +207,8 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "1",
               "waterlogged": "true"
             }
@@ -229,8 +216,8 @@
           "options": [
             {
               "data": {
-                "Name": "minecraft:lever",
-                "Properties": {
+                "id": "minecraft:lever",
+                "properties": {
                   "face": "wall",
                   "facing": "west",
                   "powered": "false"
@@ -240,8 +227,8 @@
             },
             {
               "data": {
-                "Name": "minecraft:lever",
-                "Properties": {
+                "id": "minecraft:lever",
+                "properties": {
                   "face": "wall",
                   "facing": "west",
                   "powered": "true"
@@ -254,8 +241,8 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "1",
               "waterlogged": "false"
             }
@@ -263,8 +250,8 @@
           "options": [
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "lower",
                   "hinge": "right",
@@ -276,8 +263,8 @@
             },
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "lower",
                   "hinge": "right",
@@ -292,8 +279,8 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "2",
               "waterlogged": "true"
             }
@@ -301,8 +288,8 @@
           "options": [
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "upper",
                   "hinge": "right",
@@ -314,8 +301,8 @@
             },
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "upper",
                   "hinge": "right",
@@ -331,8 +318,8 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "2",
               "waterlogged": "false"
             }
@@ -340,8 +327,8 @@
           "options": [
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "lower",
                   "hinge": "left",
@@ -353,8 +340,8 @@
             },
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "lower",
                   "hinge": "left",
@@ -369,8 +356,8 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "3",
               "waterlogged": "true"
             }
@@ -378,8 +365,8 @@
           "options": [
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "upper",
                   "hinge": "left",
@@ -391,8 +378,8 @@
             },
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "upper",
                   "hinge": "left",

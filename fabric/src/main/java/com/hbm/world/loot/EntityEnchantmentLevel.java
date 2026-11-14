@@ -28,11 +28,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraft.world.level.storage.loot.LootContextUser;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProvider;
 
 public record EntityEnchantmentLevel(
         LootContext.EntityTarget entity, Holder<Enchantment> enchantment)
-        implements NumberProvider {
+        implements ContextFloatProvider, LootContextUser {
     public static final MapCodec<EntityEnchantmentLevel> MAP_CODEC =
             RecordCodecBuilder.mapCodec(
                     i ->
@@ -51,8 +52,8 @@ public record EntityEnchantmentLevel(
     }
 
     @Override
-    public float getFloat(LootContext context) {
-        return context.getOptionalParameter(entity.contextParam()) instanceof LivingEntity living
+    public float getFloatUnsafe(LootContext context) {
+        return context.getOptional(entity.contextParam()) instanceof LivingEntity living
                 ? EnchantmentHelper.getEnchantmentLevel(enchantment, living)
                 : 0F;
     }

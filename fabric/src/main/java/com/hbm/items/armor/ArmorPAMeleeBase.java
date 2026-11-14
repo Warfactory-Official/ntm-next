@@ -209,8 +209,8 @@ public abstract class ArmorPAMeleeBase implements PowerArmorMeleeWeapon {
             float rollZ,
             float rollY) {
         pose.translate(pivotX, 8F, 0F);
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(rollZ));
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(rollY));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(rollZ));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(rollY));
         pose.translate(-pivotX, -8F, 0F);
         collector.submitCustomGeometry(
                 pose, type, (p, buffer) -> mesh.renderPart(p, buffer, light, -1, part));

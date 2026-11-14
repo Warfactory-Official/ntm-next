@@ -35,7 +35,6 @@ package com.hbm.blocks.machine;
 
 import com.hbm.blockentity.machine.BroadcasterBlockEntity;
 import com.hbm.blocks.TickingEntityBlock;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -58,17 +57,9 @@ public class PinkCloudBroadcasterBlock extends Block implements TickingEntityBlo
     private static final VoxelShape SHAPE_NS = Block.box(1, 0, 4, 15, 10, 12);
     private static final VoxelShape SHAPE_WE = Block.box(4, 0, 1, 12, 10, 15);
 
-    public static final MapCodec<PinkCloudBroadcasterBlock> CODEC =
-            simpleCodec(PinkCloudBroadcasterBlock::new);
-
     public PinkCloudBroadcasterBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

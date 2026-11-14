@@ -20,7 +20,6 @@
 package com.hbm.blocks.network;
 
 import com.hbm.blocks.ModBlocks;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -39,7 +38,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ConveyorLiftBlock extends BaseConveyorBlock {
-    public static final MapCodec<ConveyorLiftBlock> CODEC = simpleCodec(ConveyorLiftBlock::new);
     public static final EnumProperty<ConveyorLiftPart> PART =
             EnumProperty.create("part", ConveyorLiftPart.class);
 
@@ -48,11 +46,6 @@ public class ConveyorLiftBlock extends BaseConveyorBlock {
     public ConveyorLiftBlock(Properties props) {
         super(props);
         registerDefaultState(defaultBlockState().setValue(PART, ConveyorLiftPart.BOTTOM));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

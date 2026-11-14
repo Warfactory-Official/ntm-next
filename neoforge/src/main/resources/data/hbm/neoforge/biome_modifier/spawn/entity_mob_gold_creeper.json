@@ -3,8 +3,11 @@
   "biomes": "#minecraft:is_overworld",
   "spawners": {
     "type": "hbm:entity_mob_gold_creeper",
-    "maxCount": 1,
-    "minCount": 1,
+    "count": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 1,
+      "min_inclusive": 1
+    },
     "weight": 1
   }
 }

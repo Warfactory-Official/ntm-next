@@ -22,11 +22,11 @@ package com.hbm.advancement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Optional;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
 import net.minecraft.advancements.predicates.MinMaxBounds;
-import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 public class ContaminationTrigger
         extends SimpleCriterionTrigger<ContaminationTrigger.TriggerInstance> {
@@ -41,7 +41,7 @@ public class ContaminationTrigger
     }
 
     public record TriggerInstance(
-            Optional<ContextAwarePredicate> player,
+            Optional<Holder<LootItemCondition>> player,
             MinMaxBounds.Doubles level,
             Optional<Boolean> fatal)
             implements SimpleCriterionTrigger.SimpleInstance {
@@ -50,7 +50,7 @@ public class ContaminationTrigger
                 RecordCodecBuilder.create(
                         instance ->
                                 instance.group(
-                                                EntityPredicate.ADVANCEMENT_CODEC
+                                                LootItemCondition.CODEC
                                                         .optionalFieldOf("player")
                                                         .forGetter(TriggerInstance::player),
                                                 MinMaxBounds.Doubles.CODEC

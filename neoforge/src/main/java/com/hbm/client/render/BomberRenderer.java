@@ -78,30 +78,30 @@ public final class BomberRenderer extends EntityRenderer<BomberEntity, BomberRen
     public void submit(
             State state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
         pose.pushPose();
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90F));
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(state.wobble));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(90F));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(state.wobble));
         BomberStyles.Style addon = BomberStyles.get(state.style);
         Identifier texture = addon != null ? addon.texture() : texture(state.style);
         RenderType type = WorldRenderPipeline.oneSidedCutout(texture);
         if (addon != null) {
             pose.scale(addon.scale(), addon.scale(), addon.scale());
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(addon.yaw()));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(addon.yaw()));
             collector.submitCustomGeometry(
                     pose,
                     type,
                     (p, buffer) -> addon.mesh().get().render(p, buffer, state.light, -1));
         } else if (state.style >= 0 && state.style <= 4) {
             pose.scale(5F, 5F, 5F);
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90F));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90F));
             collector.submitCustomGeometry(
                     pose,
                     type,
                     (p, buffer) -> ResourceManager.dornier.render(p, buffer, state.light, -1));
         } else {
             pose.scale(30F / 3.1F, 30F / 3.1F, 30F / 3.1F);
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180F));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(180F));
             collector.submitCustomGeometry(
                     pose,
                     type,

@@ -51,7 +51,6 @@ import com.hbm.interfaces.TriggerResult;
 import com.hbm.inventory.material.Materials;
 import com.hbm.items.ModItems;
 import com.hbm.particle.helper.ExplosionCreator;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -83,17 +82,10 @@ public class CrashedBombBlock extends Block
     }
 
     public final EnumDudType type;
-    private final MapCodec<CrashedBombBlock> codec;
 
     public CrashedBombBlock(Properties properties, EnumDudType type) {
         super(properties);
         this.type = type;
-        codec = simpleCodec(blockProperties -> new CrashedBombBlock(blockProperties, type));
-    }
-
-    @Override
-    protected MapCodec<CrashedBombBlock> codec() {
-        return codec;
     }
 
     @Override

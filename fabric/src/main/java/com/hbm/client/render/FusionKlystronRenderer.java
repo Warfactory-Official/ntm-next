@@ -57,11 +57,11 @@ public class FusionKlystronRenderer
             RenderType type) {
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(yaw));
         ps.translate(-1.0, 0.0, 0.0);
 
         ps.translate(0.0, 2.5, 0.0);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(fan));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(fan));
         ps.translate(0.0, -2.5, 0.0);
         col.submitCustomGeometry(
                 ps, type, (pose, buffer) -> model.renderPart(pose, buffer, light, -1, ROTOR));

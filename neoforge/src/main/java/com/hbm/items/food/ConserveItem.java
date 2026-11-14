@@ -43,6 +43,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -84,7 +85,8 @@ public class ConserveItem extends Item {
                 SoundSource.PLAYERS,
                 0.5F,
                 server.getRandom().nextFloat() * 0.1F + 0.9F);
-        player.getInventory().placeItemBackInInventory(new ItemStack(ModItems.CAN_KEY));
+        player.getInventory()
+                .placeItemBackInInventory(new ItemStack(ModItems.CAN_KEY), Prediction.SERVER_ONLY);
 
         if (type == EnumFoodType.BHOLE) {
             VortexEntity vortex = new VortexEntity(server, 0.5F);
@@ -94,7 +96,8 @@ public class ConserveItem extends Item {
         } else if (type == EnumFoodType.RECURSION && server.getRandom().nextInt(10) > 0) {
             player.getInventory()
                     .placeItemBackInInventory(
-                            ModItems.CANNED_CONSERVE.stack(EnumFoodType.RECURSION));
+                            ModItems.CANNED_CONSERVE.stack(EnumFoodType.RECURSION),
+                            Prediction.SERVER_ONLY);
         } else if (type == EnumFoodType.FIST) {
             player.hurtServer(server, player.damageSources().magic(), 2F);
         }

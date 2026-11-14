@@ -3,7 +3,7 @@
   "criteria": {
     "crafted_hbm_struct_watz_core": {
       "conditions": {
-        "recipe_id": "hbm:struct_watz_core"
+        "recipes": "hbm:struct_watz_core"
       },
       "trigger": "minecraft:recipe_crafted"
     }

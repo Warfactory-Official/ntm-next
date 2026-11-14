@@ -57,11 +57,14 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.InterpolationHandler;
+import net.minecraft.world.entity.LinearInterpolationHandler;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoveSimulationType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.storage.ValueInput;
@@ -90,8 +93,6 @@ public abstract class RailCarBaseEntity extends Entity {
     private final RailStep railInfo = new RailStep();
     private double rotX, rotY, rotZ;
 
-    private final InterpolationHandler interp = new InterpolationHandler(this);
-
     public RailCarBaseEntity(EntityType<? extends RailCarBaseEntity> type, Level level) {
         super(type, level);
     }
@@ -108,9 +109,12 @@ public abstract class RailCarBaseEntity extends Entity {
     }
 
     @Override
-    public void tick() {
-        this.interp.interpolate();
+    public MoveSimulationType getMoveSimulationType() {
+        return MoveSimulationType.SERVER_AND_CLIENT;
+    }
 
+    @Override
+    public void tick() {
         if (this.level().isClientSide()) {
 
             BlockPos anchor = this.getCurrentAnchorPos();
@@ -385,8 +389,8 @@ public abstract class RailCarBaseEntity extends Entity {
     }
 
     @Override
-    public InterpolationHandler getInterpolation() {
-        return this.interp;
+    protected InterpolationHandler createInterpolationHandler() {
+        return LinearInterpolationHandler.create(this);
     }
 
     public static class BoundingBoxDummyEntity extends Entity {
@@ -586,7 +590,7 @@ public abstract class RailCarBaseEntity extends Entity {
                     neighbor.couple(closestNeighborCoupling, this);
                     if (this.ltu != null) this.ltu.dissolveTrain();
                     if (neighbor.ltu != null) neighbor.ltu.dissolveTrain();
-                    ((LivingEntity) player).swing(hand);
+                    ((LivingEntity) player).swing(hand, SwingAnimation.DEFAULT, false);
 
                     player.sendSystemMessage(
                             Component.literal(

@@ -20,7 +20,6 @@
 package com.hbm.blocks.machine;
 
 import com.hbm.entity.logic.NukeExplosionMK3Entity;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -33,15 +32,8 @@ public class FieldDisturberBlock extends Block {
     public static final int TICK_RATE = 10;
     public static final int CLAIM_TICKS = 100;
 
-    public static final MapCodec<FieldDisturberBlock> CODEC = simpleCodec(FieldDisturberBlock::new);
-
     public FieldDisturberBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

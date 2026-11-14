@@ -105,11 +105,13 @@ import com.hbm.sound.AudioSystem;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.RegistryUtil;
 import com.hbm.wiaj.cannery.Jars;
+import com.mojang.blaze3d.Blaze3D;
 import com.mojang.serialization.MapCodec;
 import dev.engine_room.flywheel.impl.compat.EntityFeatureCompat;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -147,7 +149,6 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.CommonColors;
-import net.minecraft.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -273,7 +274,7 @@ public final class ClientRegistry {
         GuideBookItem.OPEN_SCREEN =
                 type -> Minecraft.getInstance().gui.setScreen(new GuideScreen(type));
         GuideBlock.OPEN_WIKI =
-                () -> Util.getPlatform().openUri("https://nucleartech.wiki/wiki/Main_Page");
+                () -> Blaze3D.openUri(URI.create("https://nucleartech.wiki/wiki/Main_Page"));
         BookLoreItem.OPEN_SCREEN =
                 player -> Minecraft.getInstance().gui.setScreen(new BookLoreScreen(player));
         ToolAbilityItem.CYCLE_FROM_USE = Keybinds::cycleFromUse;

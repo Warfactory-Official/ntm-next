@@ -37,11 +37,11 @@ import com.hbm.blockentity.machine.RepulsionFieldBlockEntity;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.Vertices;
 import com.hbm.util.GameTime;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -183,7 +183,7 @@ public class ForceFieldRenderer
 
         ps.pushPose();
         ps.translate(0.5D, 0.0D, 0.5D);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180F));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(180F));
         ps.translate(0.0D, 0.5D, 0.0D);
 
         if (state.up) {
@@ -193,7 +193,7 @@ public class ForceFieldRenderer
             int color = state.color;
             collector.submitCustomGeometry(
                     ps, SHELL, (pose, buf) -> emitShell(pose, buf, l, s, rad, color));
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-state.spin));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(-state.spin));
         }
 
         ps.translate(0.0D, 0.5D, 0.0D);

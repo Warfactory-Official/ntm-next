@@ -35,7 +35,6 @@ package com.hbm.blocks.generic;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.potion.HbmPotion;
-import com.mojang.serialization.MapCodec;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
@@ -64,7 +63,6 @@ public class SellafieldBlock extends Block {
 
     public static final int LEVELS = 6;
     public static final IntegerProperty LEVEL = IntegerProperty.create("level", 0, LEVELS - 1);
-    public static final MapCodec<SellafieldBlock> CODEC = simpleCodec(SellafieldBlock::new);
 
     public SellafieldBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -104,11 +102,6 @@ public class SellafieldBlock extends Block {
                 stack.getOrDefault(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY);
         var value = properties.get(LEVEL);
         return value == null ? 0 : value;
-    }
-
-    @Override
-    protected MapCodec<SellafieldBlock> codec() {
-        return CODEC;
     }
 
     @Override

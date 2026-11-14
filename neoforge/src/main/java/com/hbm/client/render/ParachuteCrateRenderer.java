@@ -71,8 +71,8 @@ public class ParachuteCrateRenderer
         pose.pushPose();
 
         pose.translate(0, PIVOT_HEIGHT, 0);
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.swingZ));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(state.swingX));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.swingZ));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(state.swingX));
         pose.translate(0, -PIVOT_HEIGHT, 0);
 
         collector.submitCustomGeometry(

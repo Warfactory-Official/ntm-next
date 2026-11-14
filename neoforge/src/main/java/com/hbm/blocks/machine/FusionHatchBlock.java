@@ -20,7 +20,6 @@
 package com.hbm.blocks.machine;
 
 import com.hbm.blocks.HorizontalBlock;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -29,16 +28,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 
 public class FusionHatchBlock extends HorizontalBlock {
-    public static final MapCodec<FusionHatchBlock> CODEC = simpleCodec(FusionHatchBlock::new);
-
     public FusionHatchBlock(BlockBehaviour.Properties properties) {
         super(properties);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    public MapCodec<FusionHatchBlock> codec() {
-        return CODEC;
     }
 
     @Override

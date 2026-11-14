@@ -64,6 +64,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
@@ -228,7 +229,8 @@ public class PigeonEntity extends PathfinderMob {
                 BlockPos below = blockPosition();
                 for (int i = 0; i < 25; i++) {
                     BlockPos target = below.below(i);
-                    if (FertilizerUtil.fertilize(level, target, null, ItemStack.EMPTY, true)) {
+                    if (FertilizerUtil.fertilize(
+                            level, target, null, ItemStack.EMPTY, true, BonemealSource.MOB)) {
                         FertilizerUtil.growthParticles(level, target);
                         break;
                     }

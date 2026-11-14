@@ -1,0 +1,5 @@
+{
+  "type": "hbm:flower_patch",
+  "flower": "hbm:plant_flower_tobacco",
+  "odds": 8
+}

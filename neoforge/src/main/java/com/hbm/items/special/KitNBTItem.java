@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -64,7 +65,7 @@ public class KitNBTItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
 
         for (ItemStackTemplate content : contentsOf(stack)) {
-            player.getInventory().placeItemBackInInventory(content.create());
+            player.getInventory().placeItemBackInInventory(content.create(), Prediction.PREDICTED);
         }
 
         stack.shrink(1);

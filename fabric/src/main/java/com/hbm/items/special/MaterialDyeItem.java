@@ -32,6 +32,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SignApplicator;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.entity.SignTextSlot;
 
 public final class MaterialDyeItem extends MaterialShapeItem implements SignApplicator {
 
@@ -48,8 +49,8 @@ public final class MaterialDyeItem extends MaterialShapeItem implements SignAppl
 
     @Override
     public boolean tryApplyToSign(
-            Level level, SignBlockEntity sign, boolean front, ItemStack stack, Player player) {
+            Level level, SignBlockEntity sign, SignTextSlot slot, ItemStack stack, Player player) {
         return ((SignApplicator) Items.DYE.white())
-                .tryApplyToSign(level, sign, front, stack, player);
+                .tryApplyToSign(level, sign, slot, stack, player);
     }
 }

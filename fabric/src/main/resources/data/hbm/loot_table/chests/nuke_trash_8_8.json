@@ -9,7 +9,7 @@
           "value": "hbm:chests/nuke_trash"
         }
       ],
-      "rolls": 8.0
+      "rolls": 8
     }
   ],
   "random_sequence": "hbm:chests/nuke_trash_8_8"

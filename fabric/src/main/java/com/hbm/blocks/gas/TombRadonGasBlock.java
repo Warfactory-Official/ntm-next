@@ -40,7 +40,6 @@ import com.hbm.potion.HbmPotion;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.ContaminationUtil;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -57,18 +56,11 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TombRadonGasBlock extends GasBlock {
-    public static final MapCodec<TombRadonGasBlock> CODEC = simpleCodec(TombRadonGasBlock::new);
-
     private static final AshRevealParticleOptions REVEAL_TINT =
             new AshRevealParticleOptions(0.1F, 0.3F, 0.1F);
 
     public TombRadonGasBlock(BlockBehaviour.Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends TombRadonGasBlock> codec() {
-        return CODEC;
     }
 
     @Override

@@ -99,8 +99,8 @@ public class MaskManRenderer extends EntityRenderer<MaskManEntity, MaskManRender
         int light = state.lightCoords;
 
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(270F - state.bodyYaw));
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(state.swing * -0.1F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(270F - state.bodyYaw));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(state.swing * -0.1F));
 
         part(poseStack, collector, BODY, TORSO, light);
 
@@ -111,7 +111,7 @@ public class MaskManRenderer extends EntityRenderer<MaskManEntity, MaskManRender
 
         poseStack.pushPose();
         poseStack.translate(0.5F, 4F, 0F);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-state.headYaw));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(-state.headYaw));
 
         if (state.wounded) {
             part(poseStack, collector, BODY, SKULL, light);
@@ -136,7 +136,7 @@ public class MaskManRenderer extends EntityRenderer<MaskManEntity, MaskManRender
             float roll) {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(roll));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(roll));
         part(poseStack, collector, BODY, part, light);
         poseStack.popPose();
     }

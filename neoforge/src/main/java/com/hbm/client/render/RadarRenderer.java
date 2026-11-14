@@ -93,8 +93,8 @@ public class RadarRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(BASE_YAW));
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-s.spin));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(BASE_YAW));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(-s.spin));
         ps.translate(DISH_OFFSET_X, 0.0, 0.0);
 
         col.submitCustomGeometry(

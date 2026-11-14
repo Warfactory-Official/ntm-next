@@ -47,12 +47,12 @@ public class FanRenderer
 
     private static void rotate(PoseStack poseStack, Direction facing) {
         switch (facing) {
-            case DOWN -> poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180F));
+            case DOWN -> poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(180F));
             case UP -> {}
-            case NORTH -> poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90F));
-            case SOUTH -> poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90F));
-            case WEST -> poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90F));
-            case EAST -> poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-90F));
+            case NORTH -> poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90F));
+            case SOUTH -> poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(90F));
+            case WEST -> poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(90F));
+            case EAST -> poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-90F));
         }
     }
 
@@ -89,7 +89,7 @@ public class FanRenderer
         poseStack.translate(0.5D, 0.5D, 0.5D);
         rotate(poseStack, state.facing);
         poseStack.translate(0.0D, -0.5D, 0.0D);
-        poseStack.mulPose((Quaternionfc) Axis.YN.rotationDegrees(state.spin));
+        poseStack.rotate((Quaternionfc) Axis.YN.rotationDegrees(state.spin));
         collector.submitCustomGeometry(
                 poseStack,
                 FAN,

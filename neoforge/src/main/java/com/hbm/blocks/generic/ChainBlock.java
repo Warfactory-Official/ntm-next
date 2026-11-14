@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -50,8 +49,6 @@ public class ChainBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public static final MapCodec<ChainBlock> CODEC = simpleCodec(ChainBlock::new);
-
     public static final BooleanProperty END = BooleanProperty.create("end");
     public static final EnumProperty<Direction> FACING =
             EnumProperty.create("facing", Direction.class, direction -> direction != Direction.UP);
@@ -75,11 +72,6 @@ public class ChainBlock extends Block implements SimpleWaterloggedBlock {
                         .setValue(FACING, Direction.DOWN)
                         .setValue(END, true)
                         .setValue(WATERLOGGED, false));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

@@ -33,23 +33,14 @@
 
 package com.hbm.blocks.network;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 
 public class ConveyorTripleBlock extends ConveyorBendableBlock {
-    public static final MapCodec<ConveyorTripleBlock> CODEC = simpleCodec(ConveyorTripleBlock::new);
-
     public ConveyorTripleBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

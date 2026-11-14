@@ -22,7 +22,7 @@ package com.hbm.mixin;
 import com.hbm.api.client.WeatherTints;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -40,8 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(WeatherEffectRenderer.class)
 public class MixinWeatherEffectRenderer {
-    private static final String RENDER =
-            "render(Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/client/renderer/state/level/WeatherRenderState;Lnet/minecraft/client/renderer/state/level/LevelRenderState;)V";
+    private static final String RENDER = "prepare";
 
     @Unique private WeatherTints.@Nullable Tint hbm$tint;
     @Unique private @Nullable List<WeatherEffectRenderer.ColumnInstance> hbm$rain;
@@ -53,17 +52,25 @@ public class MixinWeatherEffectRenderer {
         hbm$rain = state.rainColumns;
     }
 
-    @ModifyVariable(method = RENDER, at = @At("STORE"))
+    @ModifyVariable(
+            method =
+                    "render(Lnet/minecraft/client/renderer/state/level/WeatherRenderState;Lcom/mojang/renderpearl/api/commands/RenderPass;Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;)V",
+            at = @At("HEAD"),
+            argsOnly = true)
     private RenderPipeline hbm$tintPipeline(RenderPipeline pipeline) {
         WeatherTints.Tint tint = hbm$tint;
         if (tint == null) return pipeline;
-        return pipeline == RenderPipelines.WEATHER_DEPTH_WRITE
-                ? tint.depthWrite()
-                : tint.noDepthWrite();
+        if (pipeline == RenderPipelines.OIT_WEATHER.depthBoundsPipeline())
+            return tint.oit().depthBoundsPipeline();
+        if (pipeline == RenderPipelines.OIT_WEATHER.transmittancePipeline())
+            return tint.oit().transmittancePipeline();
+        if (pipeline == RenderPipelines.OIT_WEATHER.accumulatePipeline())
+            return tint.oit().accumulatePipeline();
+        return tint.pipeline();
     }
 
     @ModifyExpressionValue(
-            method = "renderInstances",
+            method = "prepareInstances",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ARGB;white(F)I"))
     private int hbm$tintColumn(
             int white, @Local(argsOnly = true) List<WeatherEffectRenderer.ColumnInstance> columns) {

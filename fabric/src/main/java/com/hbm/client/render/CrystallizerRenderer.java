@@ -96,10 +96,10 @@ public class CrystallizerRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         ps.pushPose();
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.angle));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.angle));
         col.submitCustomGeometry(
                 ps, baseType, (pose, buffer) -> model.renderPart(pose, buffer, light, -1, SPINNER));
         ps.popPose();

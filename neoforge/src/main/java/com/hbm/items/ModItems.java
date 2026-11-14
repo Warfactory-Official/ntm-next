@@ -163,7 +163,6 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
-import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
@@ -6219,93 +6218,94 @@ public final class ModItems {
                                     12.0F,
                                     0,
                                     ToolAbilityItem.repairTag("plate_paa")));
-    public static final RegistryHandle<HoeItem> SCHRABIDIUM_HOE =
+    public static final RegistryHandle<Item> SCHRABIDIUM_HOE =
             Reg.item(
                     "schrabidium_hoe",
                     properties ->
-                            new net.minecraft.world.item.HoeItem(
-                                    ToolTier.SCHRABIDIUM.vanilla(
-                                            Materials.SCHRABIDIUM.tag(MaterialShape.INGOT)),
-                                    HOE_DAMAGE,
-                                    ToolAbilityItem.hoeSpeed(ToolTier.SCHRABIDIUM),
-                                    properties),
+                            new Item(
+                                    properties.hoe(
+                                            ToolTier.SCHRABIDIUM.vanilla(
+                                                    Materials.SCHRABIDIUM.tag(MaterialShape.INGOT)),
+                                            HOE_DAMAGE,
+                                            ToolAbilityItem.hoeSpeed(ToolTier.SCHRABIDIUM))),
                     () -> new Item.Properties().rarity(Rarity.RARE));
-    public static final RegistryHandle<HoeItem> TITANIUM_HOE =
+    public static final RegistryHandle<Item> TITANIUM_HOE =
             Reg.item(
                     "titanium_hoe",
                     properties ->
-                            new net.minecraft.world.item.HoeItem(
-                                    ToolTier.TITANIUM.vanilla(
-                                            Materials.TITANIUM.tag(MaterialShape.INGOT)),
-                                    HOE_DAMAGE,
-                                    ToolAbilityItem.hoeSpeed(ToolTier.TITANIUM),
-                                    properties),
+                            new Item(
+                                    properties.hoe(
+                                            ToolTier.TITANIUM.vanilla(
+                                                    Materials.TITANIUM.tag(MaterialShape.INGOT)),
+                                            HOE_DAMAGE,
+                                            ToolAbilityItem.hoeSpeed(ToolTier.TITANIUM))),
                     () -> new Item.Properties());
-    public static final RegistryHandle<HoeItem> STEEL_HOE =
+    public static final RegistryHandle<Item> STEEL_HOE =
             Reg.item(
                     "steel_hoe",
                     properties ->
-                            new net.minecraft.world.item.HoeItem(
-                                    ToolTier.STEEL.vanilla(
-                                            Materials.STEEL.tag(MaterialShape.INGOT)),
-                                    HOE_DAMAGE,
-                                    ToolAbilityItem.hoeSpeed(ToolTier.STEEL),
-                                    properties),
+                            new Item(
+                                    properties.hoe(
+                                            ToolTier.STEEL.vanilla(
+                                                    Materials.STEEL.tag(MaterialShape.INGOT)),
+                                            HOE_DAMAGE,
+                                            ToolAbilityItem.hoeSpeed(ToolTier.STEEL))),
                     () -> new Item.Properties());
-    public static final RegistryHandle<HoeItem> CMB_HOE =
+    public static final RegistryHandle<Item> CMB_HOE =
             Reg.item(
                     "cmb_hoe",
                     properties ->
-                            new net.minecraft.world.item.HoeItem(
-                                    ToolTier.CMB.vanilla(
-                                            Materials.CMBSTEEL.tag(MaterialShape.INGOT)),
-                                    HOE_DAMAGE,
-                                    ToolAbilityItem.hoeSpeed(ToolTier.CMB),
-                                    properties),
+                            new Item(
+                                    properties.hoe(
+                                            ToolTier.CMB.vanilla(
+                                                    Materials.CMBSTEEL.tag(MaterialShape.INGOT)),
+                                            HOE_DAMAGE,
+                                            ToolAbilityItem.hoeSpeed(ToolTier.CMB))),
                     () -> new Item.Properties());
-    public static final RegistryHandle<HoeItem> DESH_HOE =
+    public static final RegistryHandle<Item> DESH_HOE =
             Reg.item(
                     "desh_hoe",
                     properties ->
-                            new net.minecraft.world.item.HoeItem(
-                                    ToolTier.DESH.vanilla(
-                                            Materials.WORKERS_ALLOY.tag(MaterialShape.INGOT)),
-                                    HOE_DAMAGE,
-                                    ToolAbilityItem.hoeSpeed(ToolTier.DESH),
-                                    properties),
+                            new Item(
+                                    properties.hoe(
+                                            ToolTier.DESH.vanilla(
+                                                    Materials.WORKERS_ALLOY.tag(
+                                                            MaterialShape.INGOT)),
+                                            HOE_DAMAGE,
+                                            ToolAbilityItem.hoeSpeed(ToolTier.DESH))),
                     ModItems::undamageableHoeProperties);
-    public static final RegistryHandle<HoeItem> COBALT_HOE =
+    public static final RegistryHandle<Item> COBALT_HOE =
             Reg.item(
                     "cobalt_hoe",
                     properties ->
-                            new net.minecraft.world.item.HoeItem(
-                                    ToolTier.COBALT.vanilla(
-                                            Materials.COBALT.tag(MaterialShape.INGOT)),
-                                    HOE_DAMAGE,
-                                    ToolAbilityItem.hoeSpeed(ToolTier.COBALT),
-                                    properties),
+                            new Item(
+                                    properties.hoe(
+                                            ToolTier.COBALT.vanilla(
+                                                    Materials.COBALT.tag(MaterialShape.INGOT)),
+                                            HOE_DAMAGE,
+                                            ToolAbilityItem.hoeSpeed(ToolTier.COBALT))),
                     () -> new Item.Properties());
-    public static final RegistryHandle<HoeItem> COBALT_DECORATED_HOE =
+    public static final RegistryHandle<Item> COBALT_DECORATED_HOE =
             Reg.item(
                     "cobalt_decorated_hoe",
                     properties ->
-                            new net.minecraft.world.item.HoeItem(
-                                    ToolTier.COBALT_DECORATED.vanilla(
-                                            Materials.COBALT.tag(MaterialShape.INGOT)),
-                                    HOE_DAMAGE,
-                                    ToolAbilityItem.hoeSpeed(ToolTier.COBALT_DECORATED),
-                                    properties),
+                            new Item(
+                                    properties.hoe(
+                                            ToolTier.COBALT_DECORATED.vanilla(
+                                                    Materials.COBALT.tag(MaterialShape.INGOT)),
+                                            HOE_DAMAGE,
+                                            ToolAbilityItem.hoeSpeed(ToolTier.COBALT_DECORATED))),
                     () -> new Item.Properties());
-    public static final RegistryHandle<HoeItem> STARMETAL_HOE =
+    public static final RegistryHandle<Item> STARMETAL_HOE =
             Reg.item(
                     "starmetal_hoe",
                     properties ->
-                            new net.minecraft.world.item.HoeItem(
-                                    ToolTier.STARMETAL.vanilla(
-                                            Materials.STARMETAL.tag(MaterialShape.INGOT)),
-                                    HOE_DAMAGE,
-                                    ToolAbilityItem.hoeSpeed(ToolTier.STARMETAL),
-                                    properties),
+                            new Item(
+                                    properties.hoe(
+                                            ToolTier.STARMETAL.vanilla(
+                                                    Materials.STARMETAL.tag(MaterialShape.INGOT)),
+                                            HOE_DAMAGE,
+                                            ToolAbilityItem.hoeSpeed(ToolTier.STARMETAL))),
                     () -> new Item.Properties());
     public static final RegistryHandle<SwordMeteoriteItem> METEORITE_SWORD =
             Reg.item(

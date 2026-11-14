@@ -376,7 +376,7 @@ public final class AssemblyFactoryVisual
             previewPoses.setIdentity();
             previewPoses.translate(visualPos.getX(), visualPos.getY(), visualPos.getZ());
             previewPoses.translate(.5, 0, .5);
-            previewPoses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(yaw));
+            previewPoses.rotate((Quaternionfc) Axis.YP.rotationDegrees(yaw));
             AssemblyFactoryRenderer.previewPose(
                     previewPoses, i, arm, stack.getItem() instanceof BlockItem);
             previews[i].write(previewPoses.last().pose(), partialTick);

@@ -27,6 +27,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -61,7 +62,8 @@ public abstract class MixinPacketHandler {
             Operation<Void> original,
             @Local(name = "drop") ItemStack drop,
             @Local(name = "oldState") BlockState state) {
-        if (BulkAction.owns(state)) player.getInventory().placeItemBackInInventory(drop.copy());
+        if (BulkAction.owns(state))
+            player.getInventory().placeItemBackInInventory(drop.copy(), Prediction.SERVER_ONLY);
         else original.call(player, item, count);
     }
 

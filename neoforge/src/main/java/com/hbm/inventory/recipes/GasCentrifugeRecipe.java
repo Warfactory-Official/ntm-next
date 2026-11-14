@@ -44,6 +44,10 @@ import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
 public class GasCentrifugeRecipe extends GenericRecipe {
+    private static final StreamCodec<RegistryFriendlyByteBuf, List<ItemStackTemplate>>
+            DEAD_END_ITEMS_STREAM_CODEC =
+                    ItemStackTemplate.STREAM_CODEC.apply(ByteBufCodecs.list());
+
     private static final MapCodec<Extras> EXTRAS_MAP_CODEC =
             RecordCodecBuilder.mapCodec(
                     i ->
@@ -88,11 +92,7 @@ public class GasCentrifugeRecipe extends GenericRecipe {
                                         ByteBufCodecs.registry(Registries.FLUID)
                                                 .encode((RegistryFriendlyByteBuf) b, f));
                         buf.writeVarInt(extras.deadEndVolume());
-                        buf.writeCollection(
-                                extras.deadEndItems(),
-                                (b, t) ->
-                                        ItemStackTemplate.STREAM_CODEC.encode(
-                                                (RegistryFriendlyByteBuf) b, t));
+                        DEAD_END_ITEMS_STREAM_CODEC.encode(buf, extras.deadEndItems());
                     },
                     buf ->
                             new Extras(
@@ -106,10 +106,7 @@ public class GasCentrifugeRecipe extends GenericRecipe {
                                                     ByteBufCodecs.registry(Registries.FLUID)
                                                             .decode((RegistryFriendlyByteBuf) b)),
                                     buf.readVarInt(),
-                                    buf.readList(
-                                            b ->
-                                                    ItemStackTemplate.STREAM_CODEC.decode(
-                                                            (RegistryFriendlyByteBuf) b))));
+                                    DEAD_END_ITEMS_STREAM_CODEC.decode(buf)));
     private static final BiConsumer<GasCentrifugeRecipe, Extras> APPLY_EXTRAS =
             (recipe, extras) -> {
                 recipe.stage = extras.stage();

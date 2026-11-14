@@ -40,11 +40,11 @@ import com.hbm.main.ResourceManager;
 import com.hbm.render.util.Vertices;
 import com.hbm.util.Facing;
 import com.hbm.util.NtmMath;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -160,7 +160,7 @@ public class RBMKGraphRenderer
             CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(0.5, 0.0, 0.5);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
 
         int light = state.lightCoords;
 
@@ -188,7 +188,7 @@ public class RBMKGraphRenderer
             poseStack.pushPose();
             poseStack.translate(0.032, 0.5 - 0.03125 * 1.5, -0.375 + 0.03125);
             poseStack.scale((float) LINE_SCALE, (float) -LINE_SCALE, (float) LINE_SCALE);
-            poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+            poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
             collector.submitText(
                     poseStack,
                     -font.width(plot.lower),
@@ -219,7 +219,7 @@ public class RBMKGraphRenderer
                 int width = font.width(plot.label);
                 float f3 = Math.min(0.0125F, 0.75F / Math.max(width, 1));
                 poseStack.scale(f3, -f3, f3);
-                poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+                poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
                 collector.submitText(
                         poseStack,
                         -width / 2,

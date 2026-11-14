@@ -39,15 +39,18 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.TntBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
@@ -67,6 +70,12 @@ public abstract class BaseTNTBlock extends TntBlock
     private boolean primeCharge(
             Level level, BlockPos pos, @Nullable LivingEntity igniter, ItemStack ignitionItem) {
         if (!TntRule.explodes(level)) {
+            return false;
+        }
+        if (igniter instanceof Player player
+                && player.gameMode() == GameType.ADVENTURE
+                && !ignitionItem.canBreakBlockInAdventureMode(
+                        new BlockInWorld(level, pos, false))) {
             return false;
         }
 
@@ -146,7 +155,7 @@ public abstract class BaseTNTBlock extends TntBlock
             primeCharge(level, pos, null, ItemStack.EMPTY);
         }
 
-        spawnDestroyParticles(level, player, pos, state);
+        spawnDestroyByEntityParticles(level, player, pos, state);
         if (state.is(BlockTags.GUARDED_BY_PIGLINS) && level instanceof ServerLevel server) {
             PiglinAi.angerNearbyPiglins(server, player, false);
         }
@@ -201,6 +210,9 @@ public abstract class BaseTNTBlock extends TntBlock
 
             LivingEntity igniter = owner instanceof LivingEntity living ? living : null;
             var ignitionItem = ItemStack.EMPTY;
+            if (projectile instanceof AbstractArrow arrow) {
+                ignitionItem = arrow.getPickupItemStackOrigin();
+            }
             if (primeCharge(level, pos, igniter, ignitionItem)) {
                 level.removeBlock(pos, false);
             }

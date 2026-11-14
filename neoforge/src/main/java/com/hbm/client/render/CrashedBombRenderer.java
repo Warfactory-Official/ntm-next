@@ -123,9 +123,9 @@ public class CrashedBombRenderer
 
         poseStack.pushPose();
         poseStack.translate(0.5D, 0.0D, 0.5D);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(state.pitch));
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.roll));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(state.pitch));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.roll));
         poseStack.translate(0.0F, 0.0F, state.lengthwise);
         collector.submitCustomGeometry(
                 poseStack,

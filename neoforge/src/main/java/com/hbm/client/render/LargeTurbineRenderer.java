@@ -99,10 +99,10 @@ public class LargeTurbineRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
         ps.translate(0.0, 0.0, -1.0);
         ps.translate(0.0, 1.0, 0.0);
-        ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(s.rotor));
+        ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees(s.rotor));
         ps.translate(0.0, -1.0, 0.0);
         col.submitCustomGeometry(
                 ps, bladeType, (pose, buf) -> model.renderPart(pose, buf, light, -1, BLADES));

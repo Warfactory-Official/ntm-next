@@ -81,7 +81,7 @@ public final class LaunchPadRustedRenderer
         if (!state.missileLoaded) return;
         poseStack.pushPose();
         poseStack.translate(.5D, 1D, .5D);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
         collector.submitCustomGeometry(
                 poseStack,
                 MISSILE,

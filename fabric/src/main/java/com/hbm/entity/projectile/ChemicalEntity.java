@@ -64,6 +64,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -435,7 +436,7 @@ public class ChemicalEntity extends ProjectileEntity {
         if (level.hasChunkAt(pos)) {
             while (pos.getY() > level.getMinY()) {
                 BlockPos below = pos.below();
-                if (level.getBlockState(below).blocksMotion()) {
+                if (level.getBlockState(below).is(BlockTags.BLOCKS_MOTION)) {
                     e.teleportTo(x, y, z);
                     if (level.noCollision(e) && !level.containsAnyLiquid(e.getBoundingBox()))
                         return true;

@@ -124,17 +124,17 @@ public class ExposureChamberRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         ps.pushPose();
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.angle));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.angle));
         col.submitCustomGeometry(
                 ps, baseType, (pose, buf) -> model.renderPart(pose, buf, light, -1, MAGNETS));
         ps.popPose();
 
         if (s.running) {
             ps.pushPose();
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.angle / 2F));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.angle / 2F));
             ps.translate(0.0, s.bob, 0.0);
             col.submitCustomGeometry(
                     ps,

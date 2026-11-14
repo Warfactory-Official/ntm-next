@@ -112,7 +112,7 @@ public class AssemblyMachineRenderer
     }
 
     public static void previewPose(PoseStack poses, FramedItem.Arm arm, boolean blockItem) {
-        poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+        poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
         poses.translate(0, 1.0625, 0);
         boolean rendered3d = arm == FramedItem.Arm.BLOCK;
         if (rendered3d) {
@@ -121,7 +121,7 @@ public class AssemblyMachineRenderer
             poses.translate(0, -.125, 0);
             poses.scale(.5F, .5F, .5F);
         } else {
-            poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90F));
+            poses.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90F));
             poses.translate(0, -.25, 0);
         }
         poses.scale(1.25F, 1.25F, 1.25F);
@@ -189,23 +189,23 @@ public class AssemblyMachineRenderer
         int light = state.lightCoords;
         poses.pushPose();
         poses.translate(.5, 0, .5);
-        poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(BASE_YAW + state.yaw));
+        poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(BASE_YAW + state.yaw));
         if (!state.itemsOnly) {
             if (state.frame) part(poses, collector, light, FRAME);
             poses.pushPose();
-            poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) state.ring));
+            poses.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) state.ring));
             part(poses, collector, light, RING);
             poses.pushPose();
             poses.translate(0, 1.625, .9375);
-            poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) state.arm1[0]));
+            poses.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) state.arm1[0]));
             poses.translate(0, -1.625, -.9375);
             part(poses, collector, light, ARM_LOWER1);
             poses.translate(0, 2.375, .9375);
-            poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) state.arm1[1]));
+            poses.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) state.arm1[1]));
             poses.translate(0, -2.375, -.9375);
             part(poses, collector, light, ARM_UPPER1);
             poses.translate(0, 2.375, .4375);
-            poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) state.arm1[2]));
+            poses.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) state.arm1[2]));
             poses.translate(0, -2.375, -.4375);
             part(poses, collector, light, HEAD1);
             poses.translate(0, state.arm1[3], 0);
@@ -213,15 +213,15 @@ public class AssemblyMachineRenderer
             poses.popPose();
             poses.pushPose();
             poses.translate(0, 1.625, -.9375);
-            poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) -state.arm2[0]));
+            poses.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) -state.arm2[0]));
             poses.translate(0, -1.625, .9375);
             part(poses, collector, light, ARM_LOWER2);
             poses.translate(0, 2.375, -.9375);
-            poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) -state.arm2[1]));
+            poses.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) -state.arm2[1]));
             poses.translate(0, -2.375, .9375);
             part(poses, collector, light, ARM_UPPER2);
             poses.translate(0, 2.375, -.4375);
-            poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) -state.arm2[2]));
+            poses.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) -state.arm2[2]));
             poses.translate(0, -2.375, .4375);
             part(poses, collector, light, HEAD2);
             poses.translate(0, state.arm2[3], 0);

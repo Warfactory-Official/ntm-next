@@ -169,19 +169,19 @@ public class CyclotronRenderer
 
     private void submitMotto(State s, PoseStack ps, SubmitNodeCollector col) {
         ps.pushPose();
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.ringYaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.ringYaw));
         ps.translate(0.0, RING_LIFT, 0.0);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180F));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(180F));
 
         float rot = 0F;
         for (int i = 0; i < MOTTO.length(); i++) {
             String glyph = String.valueOf(MOTTO.charAt(i));
 
             ps.pushPose();
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(rot));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(rot));
             rot -= font.width(glyph) * 2F;
             ps.translate(RING_RADIUS, 0.0, 0.0);
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90F));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90F));
             ps.scale(RING_SCALE, RING_SCALE, RING_SCALE);
 
             FormattedCharSequence seq =

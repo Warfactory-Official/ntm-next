@@ -1,17 +1,34 @@
 #version 330
+#extension GL_ARB_separate_shader_objects : require
 
-#moj_import <minecraft:dynamictransforms.glsl>
-#moj_import <minecraft:fog.glsl>
-#moj_import <hbm:tracer_ribbon_fragment.glsl>
+#include <minecraft:dynamictransforms.glsl>
+#include <minecraft:oit.glsl>
+#include <minecraft:fog.glsl>
+#define NTM_RIBBON_LAYOUT(slot) layout(location = slot)
+#include <hbm:tracer_ribbon_fragment.glsl>
 
-out vec4 fragColor;
+#ifndef OIT_ALPHA_ONLY
+layout(location = 0) out vec4 fragColor;
+#endif
 
 void main() {
     float perspectiveT;
     vec4 color = hbmRibbonSurface(perspectiveT) * hbmRibbonLight * ColorModulator;
+#ifdef OIT_ALPHA_ONLY
+    executeAlphaOnlyPhase(gl_FragCoord.z, color.a);
+#else
+#ifdef OIT_ACCUMULATE
+    color = sampleColorForAccumulation(color);
+    vec4 fogColor = vec4(FogColor.rgb * color.a, FogColor.a);
+#else
+    vec4 fogColor = FogColor;
+#endif
     color = apply_fog(color, mix(hbmRibbonFog.x, hbmRibbonFog.y, perspectiveT),
             mix(hbmRibbonFog.z, hbmRibbonFog.w, perspectiveT), FogEnvironmentalStart,
-            FogEnvironmentalEnd, FogRenderDistanceStart, FogRenderDistanceEnd, FogColor);
+            FogEnvironmentalEnd, FogRenderDistanceStart, FogRenderDistanceEnd, fogColor);
+#ifndef OIT_ACCUMULATE
     color.rgb *= color.a;
+#endif
     fragColor = color;
+#endif
 }

@@ -23,29 +23,19 @@ import com.hbm.blockentity.turret.TurretSentryBlockEntity;
 import com.hbm.blockentity.turret.TurretSentryDamagedBlockEntity;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.MachineCaps;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class TurretSentryDamagedBlock extends TurretSentryBlock {
-    public static final MapCodec<TurretSentryDamagedBlock> CODEC =
-            simpleCodec(TurretSentryDamagedBlock::new);
-
     public TurretSentryDamagedBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

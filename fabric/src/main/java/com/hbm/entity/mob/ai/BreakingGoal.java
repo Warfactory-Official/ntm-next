@@ -41,6 +41,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -149,7 +150,7 @@ public class BreakingGoal extends Goal {
                 digger.getSoundSource(),
                 sound.getVolume() + 1F,
                 sound.getPitch());
-        ((LivingEntity) digger).swing(InteractionHand.MAIN_HAND);
+        ((LivingEntity) digger).swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, false);
         level.destroyBlockProgress(digger.getId(), marked, (int) (progress * 10F));
     }
 

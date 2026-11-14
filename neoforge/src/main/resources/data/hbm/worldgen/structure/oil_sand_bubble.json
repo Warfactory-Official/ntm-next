@@ -6,9 +6,7 @@
     "minecraft:eroded_badlands",
     "minecraft:wooded_badlands"
   ],
-  "core": {
-    "Name": "hbm:ore_oil_sand"
-  },
+  "core": "hbm:ore_oil_sand",
   "fuzzy": true,
   "max_size": 48,
   "min_size": 16,

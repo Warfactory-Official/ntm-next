@@ -20,7 +20,6 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.items.block.BlastInfoBlockItem;
-import com.mojang.serialization.MapCodec;
 import java.util.Locale;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
@@ -39,7 +38,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 public final class PlatemetalBlock extends Block {
     public static final EnumProperty<Variant> VARIANT =
             EnumProperty.create("variant", Variant.class);
-    public static final MapCodec<PlatemetalBlock> CODEC = simpleCodec(PlatemetalBlock::new);
 
     public PlatemetalBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -72,11 +70,6 @@ public final class PlatemetalBlock extends Block {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(VARIANT);
-    }
-
-    @Override
-    protected MapCodec<PlatemetalBlock> codec() {
-        return CODEC;
     }
 
     public enum Variant implements StringRepresentable {

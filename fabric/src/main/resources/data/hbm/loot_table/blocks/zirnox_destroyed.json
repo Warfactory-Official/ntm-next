@@ -6,10 +6,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 6,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 6
             }
           ],
           "name": "hbm:concrete_smooth"
@@ -22,10 +22,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 4,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 4
             }
           ],
           "name": "hbm:pipe_steel"
@@ -38,10 +38,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 2,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 2
             }
           ],
           "name": "hbm:steel_grate"
@@ -54,10 +54,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 6,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 6
             }
           ],
           "name": "hbm:debris_metal"
@@ -70,10 +70,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 2,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 2
             }
           ],
           "name": "hbm:debris_graphite"
@@ -86,10 +86,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 4,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 4
             }
           ],
           "name": "hbm:falloutitem"

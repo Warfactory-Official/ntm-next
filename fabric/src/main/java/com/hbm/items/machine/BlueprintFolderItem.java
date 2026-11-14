@@ -22,6 +22,7 @@ package com.hbm.items.machine;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -52,7 +53,7 @@ public class BlueprintFolderItem extends Item {
 
         ItemStack blueprint =
                 BlueprintsItem.make(pools.get(player.getRandom().nextInt(pools.size())));
-        player.getInventory().placeItemBackInInventory(blueprint);
+        player.getInventory().placeItemBackInInventory(blueprint, Prediction.SERVER_ONLY);
         folder.shrink(1);
         return InteractionResult.SUCCESS;
     }

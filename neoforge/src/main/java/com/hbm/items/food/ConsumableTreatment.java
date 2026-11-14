@@ -30,9 +30,8 @@ import java.util.Optional;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.StringRepresentable;
@@ -52,7 +51,7 @@ public record ConsumableTreatment(
                             RecordCodecBuilder.<ConsumableTreatment>mapCodec(
                                     i ->
                                             i.group(
-                                                            RegistryCodecs.<Item>homogeneousList(
+                                                            RegistryCodecs.<Item>holderSet(
                                                                             (ResourceKey<
                                                                                             ? extends
                                                                                                     Registry<
@@ -74,15 +73,12 @@ public record ConsumableTreatment(
                                                                     .forGetter(
                                                                             ConsumableTreatment
                                                                                     ::blockWhenPotionSick),
-                                                            ((Codec<Holder<Item>>)
-                                                                            RegistryFixedCodec
-                                                                                    .<Item>create(
-                                                                                            (ResourceKey<
-                                                                                                            ? extends
-                                                                                                                    Registry<
-                                                                                                                            Item>>)
-                                                                                                    Registries
-                                                                                                            .ITEM))
+                                                            RegistryCodecs.<Item>holder(
+                                                                            (ResourceKey<
+                                                                                            ? extends
+                                                                                                    Registry<
+                                                                                                            Item>>)
+                                                                                    Registries.ITEM)
                                                                     .optionalFieldOf("remainder")
                                                                     .forGetter(
                                                                             ConsumableTreatment

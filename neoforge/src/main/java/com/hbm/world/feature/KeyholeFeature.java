@@ -20,26 +20,34 @@
 package com.hbm.world.feature;
 
 import com.hbm.blocks.ModBlocks;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public final class KeyholeFeature extends Feature<NoneFeatureConfiguration> {
-    public KeyholeFeature() {
-        super(NoneFeatureConfiguration.CODEC);
+public final class KeyholeFeature implements Feature {
+    public static final MapCodec<KeyholeFeature> CODEC = MapCodec.unit(KeyholeFeature::new);
+
+    @Override
+    public MapCodec<KeyholeFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        var random = context.random();
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
         if (random.nextInt(4) != 0) return false;
-        int x = (context.origin().getX() & ~15) + random.nextInt(16);
+        int x = (featureOrigin.getX() & ~15) + random.nextInt(16);
         int y = 6 + random.nextInt(13);
-        int z = (context.origin().getZ() & ~15) + random.nextInt(16);
+        int z = (featureOrigin.getZ() & ~15) + random.nextInt(16);
         BlockPos pos = new BlockPos(x, y, z);
-        if (!context.level().getBlockState(pos).is(BlockTags.BASE_STONE_OVERWORLD)) return false;
-        return context.level().setBlock(pos, ModBlocks.STONE_KEYHOLE.get().defaultBlockState(), 2);
+        if (!level.getBlockState(pos).is(BlockTags.BASE_STONE_OVERWORLD)) return false;
+        return level.setBlock(pos, ModBlocks.STONE_KEYHOLE.get().defaultBlockState(), 2);
     }
 }

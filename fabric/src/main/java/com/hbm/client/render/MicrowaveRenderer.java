@@ -88,12 +88,12 @@ public class MicrowaveRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
         ps.translate(OFF_X, OFF_Y, OFF_Z);
 
         if (!Float.isNaN(s.spin)) {
             ps.translate(0.575, 0.0, -0.45);
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.spin));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.spin));
             ps.translate(-0.575, 0.0, 0.45);
         }
         col.submitCustomGeometry(

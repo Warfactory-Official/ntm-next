@@ -56,7 +56,8 @@ public class MinerRocketRenderer<T extends Entity> extends EntityRenderer<T, Ent
     }
 
     @Override
-    public boolean shouldRender(T entity, Frustum culler, double camX, double camY, double camZ) {
+    public boolean shouldRender(
+            T entity, Frustum culler, double camX, double camY, double camZ, float partialTicks) {
         return true;
     }
 
@@ -73,7 +74,7 @@ public class MinerRocketRenderer<T extends Entity> extends EntityRenderer<T, Ent
             CameraRenderState camera) {
         int light = state.lightCoords;
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180F));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(180F));
         collector.submitCustomGeometry(
                 poseStack,
                 type,

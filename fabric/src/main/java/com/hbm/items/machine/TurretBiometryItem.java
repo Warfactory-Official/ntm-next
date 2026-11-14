@@ -34,6 +34,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
@@ -82,7 +83,7 @@ public class TurretBiometryItem extends Item {
                 SoundSource.PLAYERS,
                 1.0F,
                 1.0F);
-        ((LivingEntity) player).swing(hand);
+        ((LivingEntity) player).swing(hand, SwingAnimation.DEFAULT, false);
 
         return InteractionResult.SUCCESS;
     }

@@ -6,10 +6,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 414,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 414
             }
           ],
           "name": "hbm:struct_launcher"
@@ -22,10 +22,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 447,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 447
             }
           ],
           "name": "hbm:struct_scaffold"
@@ -38,10 +38,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 294,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 294
             }
           ],
           "name": "hbm:concrete_smooth"
@@ -54,10 +54,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 1,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 1
             }
           ],
           "name": "hbm:struct_soyuz_core"

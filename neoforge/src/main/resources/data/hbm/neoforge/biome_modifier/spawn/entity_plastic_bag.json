@@ -3,8 +3,11 @@
   "biomes": "#c:is_ocean",
   "spawners": {
     "type": "hbm:entity_plastic_bag",
-    "maxCount": 3,
-    "minCount": 1,
+    "count": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 3,
+      "min_inclusive": 1
+    },
     "weight": 1
   }
 }

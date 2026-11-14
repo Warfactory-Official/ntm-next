@@ -21,24 +21,30 @@ package com.hbm.world.feature;
 
 import com.hbm.world.LocationIsValidSpawn;
 import com.hbm.world.feature.Meteorite;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
-    public MeteoriteFeature() {
-        super(NoneFeatureConfiguration.CODEC);
+public class MeteoriteFeature implements Feature {
+    public static final MapCodec<MeteoriteFeature> CODEC = MapCodec.unit(MeteoriteFeature::new);
+
+    @Override
+    public MapCodec<MeteoriteFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
-        WorldGenLevel level = ctx.level();
-        RandomSource rand = ctx.random();
-        BlockPos source = ctx.origin();
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        RandomSource rand = random;
+        BlockPos source = featureOrigin;
         BlockPos.MutableBlockPos origin =
                 new BlockPos.MutableBlockPos(
                         source.getX(), source.getY() - rand.nextInt(10), source.getZ());

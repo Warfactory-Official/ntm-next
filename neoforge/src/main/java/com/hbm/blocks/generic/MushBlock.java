@@ -44,6 +44,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -129,19 +130,28 @@ public class MushBlock extends BushBlock implements BonemealableBlock {
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(
+            LevelReader level, BlockPos pos, BlockState state, BonemealSource source) {
         return canSurvive(state, level, pos);
     }
 
     @Override
     public boolean isBonemealSuccess(
-            Level level, RandomSource random, BlockPos pos, BlockState state) {
+            Level level,
+            RandomSource random,
+            BlockPos pos,
+            BlockState state,
+            BonemealSource source) {
         return random.nextFloat() < BONEMEAL_CHANCE;
     }
 
     @Override
     public void performBonemeal(
-            ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+            ServerLevel level,
+            RandomSource random,
+            BlockPos pos,
+            BlockState state,
+            BonemealSource source) {
         level.removeBlock(pos, false);
         HugeMushFeature.generate(level, pos);
     }

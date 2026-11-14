@@ -33,31 +33,62 @@
 
 package com.hbm.world.feature;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 
-public class DepthDepositFeature extends Feature<DepthDepositConfig> {
-    public DepthDepositFeature() {
-        super(DepthDepositConfig.CODEC);
+public record DepthDepositFeature(
+        BlockState core, BlockState filler, RuleTest replaceable, int size, float fill)
+        implements Feature {
+    public static final MapCodec<DepthDepositFeature> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    inst ->
+                            inst.group(
+                                            BlockState.CODEC
+                                                    .fieldOf("core")
+                                                    .forGetter(DepthDepositFeature::core),
+                                            BlockState.CODEC
+                                                    .fieldOf("filler")
+                                                    .forGetter(DepthDepositFeature::filler),
+                                            RuleTest.CODEC
+                                                    .fieldOf("replaceable")
+                                                    .forGetter(DepthDepositFeature::replaceable),
+                                            Codec.INT
+                                                    .fieldOf("size")
+                                                    .forGetter(DepthDepositFeature::size),
+                                            Codec.FLOAT
+                                                    .fieldOf("fill")
+                                                    .forGetter(DepthDepositFeature::fill))
+                                    .apply(inst, DepthDepositFeature::new));
+
+    @Override
+    public MapCodec<DepthDepositFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<DepthDepositConfig> ctx) {
-        WorldGenLevel level = ctx.level();
-        DepthDepositConfig cfg = ctx.config();
-        RandomSource rand = ctx.random();
-        BlockPos origin = ctx.origin();
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        DepthDepositFeature cfg = this;
+        RandomSource rand = random;
+        BlockPos origin = featureOrigin;
 
         int size = cfg.size();
         double coreRadius = size * cfg.fill();
-        WorldGenerationContext generation = new WorldGenerationContext(ctx.chunkGenerator(), level);
+        WorldGenerationContext generation = new WorldGenerationContext(chunkGenerator, level);
         int floor = generation.getMinGenY();
         int ceiling = floor + generation.getGenDepth() - 1;
 
@@ -71,7 +102,8 @@ public class DepthDepositFeature extends Feature<DepthDepositConfig> {
                     if (dx * dx + dy * dy + dz * dz > size * size) continue;
                     pos.set(origin.getX() + dx, y, origin.getZ() + dz);
                     BlockState cur = level.getBlockState(pos);
-                    if (!cfg.replaceable().test(cur, rand) && !cur.is(Blocks.BEDROCK)) continue;
+                    if (!cfg.replaceable().test(cur, (BlockPos) pos, rand)
+                            && !cur.is(Blocks.BEDROCK)) continue;
 
                     double len = Mth.length(dx, dy, dz);
                     if (len + rand.nextInt(2) < coreRadius) {

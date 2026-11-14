@@ -273,8 +273,8 @@ dependencies {
     compileOnly(property("dependency_fabric_jade") as String)
     compileOnly(property("dependency_fabric_wthit_api") as String)
 
-    compileOnly("maven.modrinth:continuity:3.0.1+26.2")
-    compileOnly("maven.modrinth:fusion-connected-textures:1.3.16-fabric-mc26.2")
+    compileOnly("maven.modrinth:continuity:Jt2sCWTQ")
+    compileOnly("maven.modrinth:fusion-connected-textures:wRjdAbXf")
 
     implementation("teamreborn:energy:5.0.0")
 }

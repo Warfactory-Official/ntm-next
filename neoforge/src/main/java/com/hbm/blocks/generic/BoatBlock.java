@@ -20,18 +20,10 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blocks.SectionGeometryProvider;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.block.Block;
 
 public class BoatBlock extends Block implements SectionGeometryProvider {
-    public static final MapCodec<BoatBlock> CODEC = simpleCodec(BoatBlock::new);
-
     public BoatBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<BoatBlock> codec() {
-        return CODEC;
     }
 }

@@ -6,22 +6,25 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "conditions": [
-                {
-                  "block": "hbm:pink_slab",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "type": "double"
+              "type": "minecraft:set_count",
+              "condition": {
+                "type": "minecraft:all_of",
+                "terms": [
+                  {
+                    "type": "minecraft:match_block",
+                    "blocks": "hbm:pink_slab",
+                    "state": {
+                      "type": "double"
+                    }
                   }
-                }
-              ],
-              "count": 2,
-              "function": "minecraft:set_count"
+                ]
+              },
+              "count": 2
             },
             {
-              "function": "minecraft:explosion_decay"
+              "type": "minecraft:explosion_decay"
             }
           ],
           "name": "hbm:pink_slab"

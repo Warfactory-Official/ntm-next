@@ -25,7 +25,6 @@ import com.hbm.saveddata.TomSaveData;
 import com.hbm.util.MobUtil;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -35,7 +34,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import org.spongepowered.asm.mixin.Mixin;
@@ -50,7 +48,7 @@ public abstract class MixinNaturalSpawner {
     @Inject(method = "spawnMobsForChunkGeneration", at = @At("HEAD"), cancellable = true)
     private static void hbm$impactDeniesAnimals(
             ServerLevelAccessor level,
-            Holder<Biome> biome,
+            BlockPos sourcePos,
             ChunkPos chunkPos,
             RandomSource random,
             CallbackInfo ci) {

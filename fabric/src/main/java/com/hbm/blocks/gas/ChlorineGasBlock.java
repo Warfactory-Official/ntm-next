@@ -37,7 +37,6 @@ import com.hbm.handler.ArmorUtil;
 import com.hbm.hazard.Exposure;
 import com.hbm.particle.AshRevealParticleOptions;
 import com.hbm.util.ArmorRegistry;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -54,15 +53,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ChlorineGasBlock extends GasBlock {
-    public static final MapCodec<ChlorineGasBlock> CODEC = simpleCodec(ChlorineGasBlock::new);
-
     public ChlorineGasBlock(BlockBehaviour.Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends ChlorineGasBlock> codec() {
-        return CODEC;
     }
 
     @Override

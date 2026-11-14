@@ -79,8 +79,8 @@ public class BeamRenderer extends EntityRenderer<BulletBeamBaseEntity, BeamRende
         pose.pushPose();
 
         if (state.config.renderRotations) {
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90.0F));
-            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch + 180));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90.0F));
+            pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch + 180));
         }
 
         BeamDrawer drawer = RENDERERS.get(state.config);

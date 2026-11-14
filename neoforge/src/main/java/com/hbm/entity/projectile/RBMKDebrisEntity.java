@@ -43,6 +43,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -109,6 +110,11 @@ public class RBMKDebrisEntity extends Entity {
     @Override
     public boolean isPickable() {
         return true;
+    }
+
+    @Override
+    public MoveSimulationType getMoveSimulationType() {
+        return MoveSimulationType.SERVER_AND_CLIENT;
     }
 
     @Override
@@ -195,7 +201,7 @@ public class RBMKDebrisEntity extends Entity {
                         case LID -> new ItemStack(ModItems.RBMK_LID);
                         default -> new ItemStack(ModItems.DEBRIS_METAL);
                     };
-            player.getInventory().placeItemBackInInventory(give);
+            player.getInventory().placeItemBackInInventory(give, Prediction.SERVER_ONLY);
             discard();
         }
         return InteractionResult.SUCCESS;

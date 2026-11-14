@@ -41,7 +41,6 @@ import com.hbm.util.ArmorRegistry;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.ContaminationUtil;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -55,15 +54,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RadonGasBlock extends GasBlock {
-    public static final MapCodec<RadonGasBlock> CODEC = simpleCodec(RadonGasBlock::new);
-
     public RadonGasBlock(BlockBehaviour.Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends RadonGasBlock> codec() {
-        return CODEC;
     }
 
     @Override

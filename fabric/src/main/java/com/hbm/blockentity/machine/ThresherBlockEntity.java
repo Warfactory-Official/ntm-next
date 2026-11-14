@@ -104,6 +104,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.NetherWartBlock;
@@ -317,7 +318,7 @@ public class ThresherBlockEntity extends BlockEntity
         if (state.is(Blocks.NETHER_WART))
             return state.getValue(NetherWartBlock.AGE) == NetherWartBlock.MAX_AGE;
         if (state.getBlock() instanceof BonemealableBlock plant) {
-            return !plant.isValidBonemealTarget(level, pos, state);
+            return !plant.isValidBonemealTarget(level, pos, state, BonemealSource.INTERACTION);
         }
         return true;
     }

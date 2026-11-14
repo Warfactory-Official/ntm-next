@@ -19,7 +19,7 @@
 
 package com.hbm.mixin;
 
-import com.hbm.world.feature.Stratum3DConfig;
+import com.hbm.world.feature.Stratum3DFeature;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import java.util.Map;
@@ -46,7 +46,7 @@ public abstract class MixinRegistryLoadTask {
             Map<ResourceKey<?>, Exception> errors,
             Operation<Void> original) {
         original.call(validator, registry, errors);
-        if (registry.key().equals(Registries.CONFIGURED_FEATURE))
-            Stratum3DConfig.validateRegistry(registry, errors);
+        if (registry.key().equals(Registries.FEATURE))
+            Stratum3DFeature.validateRegistry(registry, errors);
     }
 }

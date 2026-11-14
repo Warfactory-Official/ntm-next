@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.FallingBlock;
@@ -27,15 +26,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BaseFallingBlock extends FallingBlock {
-    public static final MapCodec<BaseFallingBlock> CODEC = simpleCodec(BaseFallingBlock::new);
-
     public BaseFallingBlock(BlockBehaviour.Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<BaseFallingBlock> codec() {
-        return CODEC;
     }
 
     @Override

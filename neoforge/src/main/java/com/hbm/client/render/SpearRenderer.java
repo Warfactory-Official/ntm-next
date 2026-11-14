@@ -36,17 +36,17 @@ package com.hbm.client.render;
 import com.hbm.entity.effect.SpearEntity;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.Vertices;
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.DepthStencilState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.platform.BlendFactor;
-import com.mojang.blaze3d.platform.CompareOp;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.mojang.renderpearl.api.pipeline.BlendFactor;
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.CompareOp;
+import com.mojang.renderpearl.api.pipeline.DepthStencilState;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import java.util.Random;
 import net.minecraft.client.renderer.BindGroupLayouts;
@@ -165,7 +165,7 @@ public class SpearRenderer extends EntityRenderer<SpearEntity, SpearRenderer.Sta
             CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(0.0, 15.0, 0.0);
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(180));
         poseStack.scale(2.0F, 2.0F, 2.0F);
 
         collector.submitCustomGeometry(
@@ -194,11 +194,11 @@ public class SpearRenderer extends EntityRenderer<SpearEntity, SpearRenderer.Sta
             Random rnd = new Random(432L);
             final float sc = 25F;
             for (int i = 0; i < 64; i++) {
-                poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(rnd.nextFloat() * 360F));
-                poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(rnd.nextFloat() * 360F));
-                poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(rnd.nextFloat() * 360F));
-                poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(rnd.nextFloat() * 360F));
-                poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(rnd.nextFloat() * 360F));
+                poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(rnd.nextFloat() * 360F));
+                poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(rnd.nextFloat() * 360F));
+                poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(rnd.nextFloat() * 360F));
+                poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(rnd.nextFloat() * 360F));
+                poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(rnd.nextFloat() * 360F));
 
                 final float v1 = (rnd.nextFloat() * 20F + 5F + 10F) * (i2 * sc);
                 final float v2 = (rnd.nextFloat() * 2F + 1F + 2F) * (i2 * sc);

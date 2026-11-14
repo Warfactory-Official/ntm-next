@@ -31,6 +31,7 @@ import com.hbm.handler.ArmorModHandler;
 import com.hbm.handler.BobmazonSignHandler;
 import com.hbm.handler.CoalGasHandler;
 import com.hbm.handler.ExplosiveEnergisticsHandler;
+import com.hbm.handler.FuelHandler;
 import com.hbm.handler.ImpactWorldHandler;
 import com.hbm.handler.pollution.GlyphidSpawning;
 import com.hbm.handler.pollution.PollutionEffects;
@@ -62,6 +63,7 @@ import com.hbm.util.ContagionUtil;
 import com.hbm.util.RegistryUtil;
 import com.hbm.world.ore.OreGeneration;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
@@ -116,6 +118,16 @@ public final class NuclearTechNeoForge {
                 });
         Registrar.subscribe(modBus);
         NuclearTech.init();
+        modBus.addListener(
+                (ModifyDefaultComponentsEvent event) ->
+                        FuelHandler.forEachUniformFuel(
+                                (item, ticks) ->
+                                        event.modify(
+                                                item,
+                                                (builder, registries, modifiedItem) ->
+                                                        builder.set(
+                                                                DataComponents.COOKING_FUEL,
+                                                                FuelHandler.cookingFuel(item)))));
         NeoForge.EVENT_BUS.addListener(CapabilityInvalidation::onLevelTick);
         NeoForge.EVENT_BUS.addListener(ArmorModChestLootNeoForge::onLootTableLoad);
         modBus.addListener(

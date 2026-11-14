@@ -113,7 +113,7 @@ public class FurnaceSteelRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(steelYaw(s.facing) - 90F));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(steelYaw(s.facing) - 90F));
 
         float sine = (float) Math.sin(GameTime.now() * 0.001);
         int argb = argb(0.5F, 0.875F + sine * 0.125F, 0.625F + sine * 0.375F, 0F);

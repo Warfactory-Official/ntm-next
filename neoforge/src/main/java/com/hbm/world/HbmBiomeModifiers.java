@@ -35,6 +35,7 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.random.Weighted;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -71,7 +72,8 @@ public final class HbmBiomeModifiers {
                     BiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(
                             holders(biomes, req.biomes()),
                             new Weighted<>(
-                                    new MobSpawnSettings.SpawnerData(type, req.min(), req.max()),
+                                    new MobSpawnSettings.SpawnerData(
+                                            type, UniformInt.of(req.min(), req.max())),
                                     req.weight())));
             ctx.register(
                     key(path + "_excluded"),

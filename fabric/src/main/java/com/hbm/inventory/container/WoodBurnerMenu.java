@@ -97,7 +97,7 @@ public class WoodBurnerMenu extends BlockEntityMenu<WoodGeneratorBlockEntity> {
                                 WoodGeneratorBlockEntity.SLOT_BATTERY,
                                 WoodGeneratorBlockEntity.SLOT_BATTERY + 1,
                                 false);
-                    if (FuelHandler.getBurnTime(player.level(), stack) > 0)
+                    if (FuelHandler.isFuel(blockEntity(), stack))
                         return moveItemStackTo(
                                 stack,
                                 WoodGeneratorBlockEntity.SLOT_FUEL,

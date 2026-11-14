@@ -277,7 +277,7 @@ public abstract class WeaponItemRenderer {
         pose.pushPose();
         anchor.place(pose, (Minecraft.getInstance().font.width(label) / 2) * LABEL_SCALE);
         pose.scale(LABEL_SCALE, -LABEL_SCALE, LABEL_SCALE);
-        for (var turn : facing) pose.mulPose(turn);
+        for (var turn : facing) pose.rotate(turn);
         collector.submitText(
                 pose,
                 0,
@@ -483,7 +483,7 @@ public abstract class WeaponItemRenderer {
         pose.pushPose();
         if (otherArm) pose.scale(-1F, 1F, 1F);
         pose.translate(-0.56F, 0.52F, 0.72F);
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(180));
         submitRestBody(
                 stack, pose, otherArm ? new OtherHandCollector(collector) : collector, light);
         pose.popPose();
@@ -553,16 +553,16 @@ public abstract class WeaponItemRenderer {
 
         float armPitch = Mth.lerp(interp, player.xBobO, player.xBob);
         float armYaw = Mth.lerp(interp, player.yBobO, player.yBob);
-        pose.mulPose(
+        pose.rotate(
                 (Quaternionfc)
                         Axis.XP.rotationDegrees(
                                 (player.getViewXRot(interp) - armPitch) * 0.1F * turnMagnitude));
-        pose.mulPose(
+        pose.rotate(
                 (Quaternionfc)
                         Axis.YP.rotationDegrees(
                                 (player.getViewYRot(interp) - armYaw) * 0.1F * turnMagnitude));
 
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(180));
 
         float distanceInterp = player.avatarState().getBackwardsInterpolatedWalkDistance(interp);
         float camYaw = player.avatarState().getInterpolatedBob(interp);
@@ -574,13 +574,13 @@ public abstract class WeaponItemRenderer {
                 -Math.abs(Mth.cos(distanceInterp * (float) Math.PI * swayPeriod) * camYaw)
                         * swayMagnitude,
                 0.0F);
-        pose.mulPose(
+        pose.rotate(
                 (Quaternionfc)
                         Axis.ZP.rotationDegrees(
                                 Mth.sin(distanceInterp * (float) Math.PI * swayPeriod)
                                         * camYaw
                                         * 3.0F));
-        pose.mulPose(
+        pose.rotate(
                 (Quaternionfc)
                         Axis.XP.rotationDegrees(
                                 Math.abs(

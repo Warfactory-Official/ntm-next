@@ -116,7 +116,7 @@ public class FileCabinetRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(cabinetYaw(s.facing)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(cabinetYaw(s.facing)));
 
         ps.pushPose();
         ps.translate(0.0, 0.0, DRAWER_SLIDE * s.lower);

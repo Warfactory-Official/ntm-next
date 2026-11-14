@@ -22,24 +22,33 @@ package com.hbm.world.feature;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.LanternBehemothBlock;
 import com.hbm.itempool.LootPile;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public final class LanternBehemothFeature extends Feature<NoneFeatureConfiguration> {
-    public LanternBehemothFeature() {
-        super(NoneFeatureConfiguration.CODEC);
+public final class LanternBehemothFeature implements Feature {
+    public static final MapCodec<LanternBehemothFeature> CODEC =
+            MapCodec.unit(LanternBehemothFeature::new);
+
+    @Override
+    public MapCodec<LanternBehemothFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        var level = context.level();
-        BlockPos pos = context.origin();
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        BlockPos pos = featureOrigin;
         if (!Block.canSupportCenter(level, pos.below(), Direction.UP)
                 || !isReplaceable(level.getBlockState(pos))) return false;
 
@@ -51,9 +60,9 @@ public final class LanternBehemothFeature extends Feature<NoneFeatureConfigurati
         level.setBlock(pos, state, Block.UPDATE_ALL);
         block.fillSpace(level, pos, Direction.NORTH);
 
-        if (context.random().nextInt(2) == 0) {
+        if (random.nextInt(2) == 0) {
             BlockPos loot = pos.north(2);
-            LootPile.BOOKLET.place(level, loot, context.random(), level.getSeed());
+            LootPile.BOOKLET.place(level, loot, random, level.getSeed());
         }
         return true;
     }

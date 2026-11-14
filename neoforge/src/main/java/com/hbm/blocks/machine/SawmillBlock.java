@@ -48,6 +48,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -133,7 +134,8 @@ public class SawmillBlock extends MultiblockCoreBlock
         if (!saw.getItem(1).isEmpty() || !saw.getItem(2).isEmpty()) {
             for (int slot = 1; slot <= 2; slot++) {
                 var output = saw.removeItemNoUpdate(slot);
-                if (!output.isEmpty()) player.getInventory().placeItemBackInInventory(output);
+                if (!output.isEmpty())
+                    player.getInventory().placeItemBackInInventory(output, Prediction.SERVER_ONLY);
             }
             saw.setChanged();
             return true;

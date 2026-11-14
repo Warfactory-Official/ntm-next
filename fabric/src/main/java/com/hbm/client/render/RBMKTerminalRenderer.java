@@ -130,7 +130,7 @@ public class RBMKTerminalRenderer
             CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(0.5, 0.0, 0.5);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
         poseStack.translate(0.25, 0.0, 0.0);
         poseStack.translate(0.0635, 0.125, 0.0625 * 5.5);
 
@@ -142,7 +142,7 @@ public class RBMKTerminalRenderer
 
             poseStack.pushPose();
             poseStack.scale(SCALE, -SCALE, SCALE);
-            poseStack.mulPose(TEXT_FACING);
+            poseStack.rotate(TEXT_FACING);
             collector.submitText(
                     poseStack,
                     0,

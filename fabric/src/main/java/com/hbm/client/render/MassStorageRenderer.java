@@ -103,8 +103,8 @@ public class MassStorageRenderer
 
     public static void panelPose(PoseStack poseStack, Direction facing) {
         poseStack.translate(0.5F, 0.5F, 0.5F);
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(180F));
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(panelAngle(facing)));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(180F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(panelAngle(facing)));
         poseStack.translate(-0.5F, -0.5F, -0.5F);
         poseStack.translate(0F, 0F, -0.005F);
         poseStack.scale(1F / 16F, 1F / 16F, -0.0001F);

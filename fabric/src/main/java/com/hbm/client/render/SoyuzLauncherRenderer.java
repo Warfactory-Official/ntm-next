@@ -112,7 +112,7 @@ public final class SoyuzLauncherRenderer
 
         poseStack.pushPose();
         poseStack.translate(0D, TOWER_PIVOT_Y, TOWER_PIVOT_Z);
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(state.swing));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(state.swing));
         poseStack.translate(0D, -TOWER_PIVOT_Y, -TOWER_PIVOT_Z);
         part(
                 poseStack,
@@ -131,7 +131,7 @@ public final class SoyuzLauncherRenderer
 
         poseStack.pushPose();
         poseStack.translate(0D, TOWER_PIVOT_Y, SUPPORT_PIVOT_Z);
-        poseStack.mulPose((Quaternionfc) Axis.XN.rotationDegrees(state.swing));
+        poseStack.rotate((Quaternionfc) Axis.XN.rotationDegrees(state.swing));
         poseStack.translate(0D, -TOWER_PIVOT_Y, -SUPPORT_PIVOT_Z);
         part(
                 poseStack,

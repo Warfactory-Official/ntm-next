@@ -44,4 +44,18 @@ public abstract class MixinItemStackTemplate {
                             stored.typeHolder(), stored.getCount(), stored.getComponentsPatch()));
         }
     }
+
+    @Inject(
+            method =
+                    "fromNonEmptyStack(Lnet/minecraft/world/item/ItemStack;I)Lnet/minecraft/world/item/ItemStackTemplate;",
+            at = @At("RETURN"),
+            cancellable = true)
+    private static void hbm$storeCountedGunCounters(
+            ItemStack stack, int count, CallbackInfoReturnable<ItemStackTemplate> cir) {
+        ItemStack stored = GunTimers.forSave(stack);
+        if (stored != stack) {
+            cir.setReturnValue(
+                    new ItemStackTemplate(stored.typeHolder(), count, stored.getComponentsPatch()));
+        }
+    }
 }

@@ -37,26 +37,31 @@ import com.hbm.blockentity.machine.storage.CrateBlockEntity;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.storage.SafeBlock;
 import com.hbm.itempool.ComponentLoot;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public final class LockedSafeFeature extends Feature<NoneFeatureConfiguration> {
-    public LockedSafeFeature() {
-        super(NoneFeatureConfiguration.CODEC);
+public final class LockedSafeFeature implements Feature {
+    public static final MapCodec<LockedSafeFeature> CODEC = MapCodec.unit(LockedSafeFeature::new);
+
+    @Override
+    public MapCodec<LockedSafeFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        WorldGenLevel level = context.level();
-        RandomSource random = context.random();
-        BlockPos pos = context.origin();
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        BlockPos pos = featureOrigin;
         if (!Block.canSupportCenter(level, pos.below(), Direction.UP)) return false;
 
         BlockState state =

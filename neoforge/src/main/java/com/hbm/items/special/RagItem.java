@@ -22,6 +22,7 @@ package com.hbm.items.special;
 import com.hbm.interfaces.DroppedItemUpdateHandler;
 import com.hbm.items.ModItems;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -46,7 +47,9 @@ public class RagItem extends CustomLoreItem implements DroppedItemUpdateHandler 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide()) {
-            player.getInventory().placeItemBackInInventory(new ItemStack(ModItems.RAG_PISS));
+            player.getInventory()
+                    .placeItemBackInInventory(
+                            new ItemStack(ModItems.RAG_PISS), Prediction.SERVER_ONLY);
             player.getItemInHand(hand).shrink(1);
         }
         return InteractionResult.SUCCESS;

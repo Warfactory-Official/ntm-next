@@ -22,6 +22,7 @@ package com.hbm.items.weapon.sedna;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.weapon.sedna.GunBaseNTItem;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
@@ -87,6 +88,6 @@ public final class AkimboGhost {
     }
 
     private static void giveBack(ServerPlayer player, ItemStack stack) {
-        player.getInventory().placeItemBackInInventory(stack, true);
+        player.getInventory().placeItemBackInInventory(stack, true, Prediction.SERVER_ONLY);
     }
 }

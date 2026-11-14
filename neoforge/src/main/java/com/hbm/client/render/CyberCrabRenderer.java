@@ -48,7 +48,7 @@ public class CyberCrabRenderer
     @Override
     protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
         poseStack.translate(0F, 1.5F, 0F);
-        poseStack.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90F));
+        poseStack.rotate((Quaternionfc) Axis.YN.rotationDegrees(90F));
     }
 
     @Override

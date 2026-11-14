@@ -43,7 +43,6 @@ import com.hbm.entity.item.MovingItemEntity;
 import com.hbm.entity.item.MovingPackageEntity;
 import com.hbm.inventory.BlockMenus;
 import com.hbm.items.tool.ConveyorWandItem;
-import com.mojang.serialization.MapCodec;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -63,12 +62,6 @@ import org.jspecify.annotations.Nullable;
 
 public class CraneRouterBlock extends Block implements TickingEntityBlock, ConveyorInputHandler {
     public static final int[] FACE_COLOURS = TransportBlockData.ROUTER_FACE_COLOURS;
-    public static final MapCodec<CraneRouterBlock> CODEC = simpleCodec(CraneRouterBlock::new);
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
-    }
 
     public CraneRouterBlock(Properties properties) {
         super(properties);

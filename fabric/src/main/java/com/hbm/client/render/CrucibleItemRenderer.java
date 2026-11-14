@@ -191,7 +191,7 @@ public final class CrucibleItemRenderer
             }
             guardAngle =
                     !swinging && !charged ? 90 : HeldItemAnimations.getChannelValue("GUARD_ROT", 0);
-            var inHand = Minecraft.getInstance().gameRenderer.itemInHandRenderer;
+            var inHand = Minecraft.getInstance().player.firstPersonHandsAndItems();
             showBlade =
                     inHand.mainHandHeight == 1
                             && inHand.oMainHandHeight == 1

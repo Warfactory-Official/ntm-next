@@ -68,8 +68,7 @@ public class BoatRubberRenderer extends AbstractBoatRenderer
                     ResourceManager.boat_rubber_tex,
                     lightCoords,
                     OverlayTexture.NO_OVERLAY,
-                    state.outlineColor,
-                    null);
+                    state.outlineColor);
         }
     }
 }

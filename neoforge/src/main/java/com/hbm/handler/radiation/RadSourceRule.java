@@ -30,8 +30,8 @@ import java.util.Optional;
 import net.minecraft.advancements.predicates.StatePropertiesPredicate;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -46,7 +46,7 @@ public record RadSourceRule(
             RecordCodecBuilder.create(
                     instance ->
                             instance.group(
-                                            RegistryCodecs.<Block>homogeneousList(
+                                            RegistryCodecs.<Block>holderSet(
                                                             (ResourceKey<? extends Registry<Block>>)
                                                                     Registries.BLOCK)
                                                     .fieldOf("targets")

@@ -61,7 +61,7 @@ public final class NukeFstbmbRenderer
     public static void clockPose(PoseStack poseStack) {
         poseStack.translate(0.815D, 0.9275D, 0.5D);
         poseStack.scale(TEXT_SCALE, -TEXT_SCALE, TEXT_SCALE);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
         poseStack.translate(0.0D, 1.0D, 0.0D);
     }
 
@@ -104,7 +104,7 @@ public final class NukeFstbmbRenderer
 
         poseStack.pushPose();
         poseStack.translate(0.5D, 0.0D, 0.5D);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(yawFor(state.facing)));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(yawFor(state.facing)));
 
         int tint =
                 0xFF000000

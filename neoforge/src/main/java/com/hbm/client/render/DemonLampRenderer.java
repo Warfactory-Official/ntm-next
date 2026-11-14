@@ -97,20 +97,20 @@ public class DemonLampRenderer
 
     public static void orient(PoseStack poseStack, Direction facing) {
         switch (facing) {
-            case DOWN -> poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180));
+            case DOWN -> poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(180));
             case UP -> {}
             case NORTH -> {
-                poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90));
-                poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(180));
+                poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(90));
+                poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(180));
             }
-            case SOUTH -> poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90));
+            case SOUTH -> poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(90));
             case WEST -> {
-                poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90));
-                poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90));
+                poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(90));
+                poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(90));
             }
             case EAST -> {
-                poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90));
-                poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(270));
+                poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(90));
+                poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(270));
             }
         }
     }

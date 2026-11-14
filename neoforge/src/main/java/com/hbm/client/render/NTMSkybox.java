@@ -39,14 +39,7 @@ import com.hbm.extprop.LivingHazards;
 import com.hbm.handler.ImpactWorldHandler;
 import com.hbm.util.GameTime;
 import com.hbm.util.RegistryUtil;
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.buffers.GpuBuffer;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.platform.BlendFactor;
-import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
@@ -54,6 +47,13 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
+import com.mojang.renderpearl.api.commands.RenderPass;
+import com.mojang.renderpearl.api.pipeline.BlendFactor;
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import net.minecraft.client.Minecraft;
@@ -64,7 +64,6 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.state.level.SkyRenderState;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -128,7 +127,12 @@ public final class NTMSkybox {
             mode = Mode.IMPACT;
             dustAlpha = Math.max(1 - dust * 2, 0);
             state.rainBrightness *= dustAlpha;
-            state.sunriseAndSunsetColor = ARGB.color(0, state.sunriseAndSunsetColor);
+            state.sunriseAndSunsetColor =
+                    new Vector4f(
+                            state.sunriseAndSunsetColor.x(),
+                            state.sunriseAndSunsetColor.y(),
+                            state.sunriseAndSunsetColor.z(),
+                            0);
         } else if (level.dimension() == Level.OVERWORLD) {
             mode = Mode.CHAINLOADER;
         } else {
@@ -155,9 +159,9 @@ public final class NTMSkybox {
     }
 
     public static void poseImpactStars(PoseStack pose, float starAngle) {
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
-        pose.mulPose((Quaternionfc) Axis.XP.rotation(starAngle));
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-19.0F));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
+        pose.rotate((Quaternionfc) Axis.XP.rotation(starAngle));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-19.0F));
     }
 
     public static void renderExtras() {
@@ -175,18 +179,18 @@ public final class NTMSkybox {
 
         if (mode == Mode.CHAINLOADER && renderLodeStar) {
             pose.pushPose();
-            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-75.0F));
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(10.0F));
+            pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(-75.0F));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(10.0F));
             draw(LODE_STAR, pose, lodeSize, 100.0F, 1.0F, 1.0F);
             pose.popPose();
         }
 
         float digamma = (float) LivingHazards.digamma(player);
         pose.pushPose();
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
-        pose.mulPose((Quaternionfc) Axis.XP.rotation(sunAngle));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(140.0F));
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-40.0F));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
+        pose.rotate((Quaternionfc) Axis.XP.rotation(sunAngle));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(140.0F));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-40.0F));
         draw(
                 DIGAMMA_STAR,
                 pose,
@@ -198,9 +202,9 @@ public final class NTMSkybox {
 
         long now = GameTime.now();
         pose.pushPose();
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-40.0F));
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(now % 360_000L / 1000.0F));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(now % 36_000L / 100.0F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(-40.0F));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(now % 360_000L / 1000.0F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(now % 36_000L / 100.0F));
         draw(BOBMAZON_SAT, pose, 0.5F, 100.0F, brightness, satAlpha);
         pose.popPose();
     }
@@ -238,10 +242,10 @@ public final class NTMSkybox {
                                 Optional.empty(),
                                 target.getDepthTextureView(),
                                 OptionalDouble.empty())) {
-            pass.setPipeline(RenderPipelines.CELESTIAL);
+            pass.setPipeline(RenderSystem.getCompiledPipeline(RenderPipelines.CELESTIAL));
             RenderSystem.bindDefaultUniforms(pass);
             pass.setUniform("DynamicTransforms", transforms);
-            pass.bindTexture("Sampler0", sprite.getTextureView(), sprite.getSampler());
+            pass.setUniform("Sampler0", sprite.getTextureView(), sprite.getSampler());
             pass.setVertexBuffer(0, vertices.slice());
             pass.setIndexBuffer(indexBuffer, indices.type());
             pass.drawIndexed(6, 1, 0, 0, 0);

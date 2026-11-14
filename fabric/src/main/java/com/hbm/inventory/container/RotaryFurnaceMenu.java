@@ -71,7 +71,7 @@ public class RotaryFurnaceMenu extends BlockEntityMenu<RotaryFurnaceBlockEntity>
                     if (stack.getItem() instanceof FluidIdentifierItem) {
                         return moveItemStackTo(stack, 3, 4, false);
                     }
-                    if (FuelHandler.getBurnTime(player.level(), stack) > 0) {
+                    if (FuelHandler.isFuel(blockEntity(), stack)) {
                         return moveItemStackTo(
                                 stack,
                                 RotaryFurnaceBlockEntity.SLOT_FUEL,

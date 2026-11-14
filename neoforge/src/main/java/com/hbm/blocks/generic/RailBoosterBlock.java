@@ -19,26 +19,16 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
-import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class RailBoosterBlock extends RailStraightBlock {
-    private final MapCodec<? extends RailBoosterBlock> codec;
-
     public RailBoosterBlock(BlockBehaviour.Properties properties, float maxSpeed) {
         super(properties, maxSpeed);
-        this.codec = simpleCodec(props -> new RailBoosterBlock(props, maxSpeed));
     }
 
     @Override
     public void onMinecartPass(AbstractMinecart cart) {
         cart.setDeltaMovement(cart.getDeltaMovement().scale(1.15F));
-    }
-
-    @Override
-    protected MapCodec<? extends BaseRailBlock> codec() {
-        return codec;
     }
 }

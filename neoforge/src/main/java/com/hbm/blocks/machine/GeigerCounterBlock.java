@@ -23,7 +23,6 @@ import com.hbm.blockentity.machine.GeigerBlockEntity;
 import com.hbm.blocks.TickingEntityBlock;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ContaminationUtil;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -44,8 +43,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class GeigerCounterBlock extends HorizontalDirectionalBlock implements TickingEntityBlock {
-    public static final MapCodec<GeigerCounterBlock> CODEC = simpleCodec(GeigerCounterBlock::new);
-
     private static final VoxelShape NORTH = Shapes.box(0.09375D, 0D, 0D, 1D, 0.5625D, 0.875D);
     private static final VoxelShape SOUTH = Shapes.box(0D, 0D, 0.125D, 0.90625D, 0.5625D, 1D);
     private static final VoxelShape WEST = Shapes.box(0D, 0D, 0D, 0.875D, 0.5625D, 0.90625D);
@@ -54,11 +51,6 @@ public class GeigerCounterBlock extends HorizontalDirectionalBlock implements Ti
     public GeigerCounterBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 
     @Override

@@ -31,6 +31,7 @@ import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.SubmitNodeCollection;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.SubmitNodeStorage;
+import net.minecraft.client.renderer.feature.phase.TranslucentFeatureRenderPhase;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
@@ -39,6 +40,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.client.resources.model.geometry.ItemQuads;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
@@ -101,6 +103,7 @@ public final class ItemSprites {
         collector.flat = true;
         collector.passes = new ArrayList<>();
         state.submit(pose, collector, 0, OverlayTexture.NO_OVERLAY, 0);
+        if (collector.flat) collector.passes.forEach(Pass::freeze);
         return collector.flat && !collector.passes.isEmpty() ? collector.passes : null;
     }
 
@@ -112,7 +115,7 @@ public final class ItemSprites {
         @Override
         public SubmitNodeCollection order(int order) {
             flat = false;
-            return new SubmitNodeCollection();
+            return new SubmitNodeCollection(false, new TranslucentFeatureRenderPhase());
         }
 
         @Override
@@ -123,8 +126,9 @@ public final class ItemSprites {
                 int overlay,
                 int outline,
                 int[] tints,
-                List<BakedQuad> quads,
+                ItemQuads itemQuads,
                 ItemStackRenderState.FoilType foil) {
+            List<BakedQuad> quads = itemQuads.all();
             for (BakedQuad quad : quads) {
                 for (int v = 0; v < 4; v++) {
                     float z = quad.position(v).z();
@@ -168,8 +172,10 @@ public final class ItemSprites {
                             sprite,
                             original.layer(),
                             itemType,
+                            original.itemGlintRenderType(),
+                            original.itemGlintSpecialRenderType(),
                             tint,
-                            original.shade(),
+                            original.shadeDirectionOverride(),
                             0,
                             original.ambientOcclusion() && true);
             return new BakedQuad(
@@ -198,10 +204,32 @@ public final class ItemSprites {
 
     public static void passPose(PoseStack pose) {
         pose.translate(1, 0, 7.5F / 16F);
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(180));
     }
 
-    public record Pass(List<BakedQuad> quads, int[] tints) {
+    public static final class Pass {
+        private List<BakedQuad> quads;
+        private final int[] tints;
+        private ItemQuads itemQuads;
+
+        public Pass(List<BakedQuad> quads, int[] tints) {
+            this.quads = quads;
+            this.tints = tints;
+        }
+
+        public List<BakedQuad> quads() {
+            return quads;
+        }
+
+        public int[] tints() {
+            return tints;
+        }
+
+        private void freeze() {
+            itemQuads = ItemQuads.split(quads);
+            quads = itemQuads.all();
+        }
+
         void submit(PoseStack pose, OrderedSubmitNodeCollector collector, int light) {
             pose.pushPose();
             passPose(pose);
@@ -212,7 +240,7 @@ public final class ItemSprites {
                     OverlayTexture.NO_OVERLAY,
                     0,
                     tints,
-                    quads,
+                    itemQuads,
                     ItemStackRenderState.FoilType.NONE);
             pose.popPose();
         }

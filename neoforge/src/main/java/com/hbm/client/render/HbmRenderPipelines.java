@@ -21,9 +21,9 @@ package com.hbm.client.render;
 
 import com.hbm.client.particle.ParticleLayers;
 import com.hbm.render.util.SparksRenderer;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -88,7 +88,6 @@ public final class HbmRenderPipelines {
                                     ParticleLayers.ADDITIVE_NO_FOG_PIPELINE,
                                     ParticleLayers.ADDITIVE_PIPELINE,
                                     ParticleLayers.TRANSLUCENT_PIPELINE,
-                                    ParticleLayers.TRANSLUCENT_COMPOSITE_PIPELINE,
                                     ParticleLayers.TRANSLUCENT_DEPTH_PIPELINE,
                                     ParticleLayers.TRANSLUCENT_SEPARATE_PIPELINE,
                                     ParticleRenderTypes.AMAT_FLASH_PIPELINE,
@@ -154,8 +153,17 @@ public final class HbmRenderPipelines {
     private HbmRenderPipelines() {}
 
     public static void forEach(Consumer<RenderPipeline> registrar) {
+        registrar.accept(ArmorGlint.OIT.depthBoundsPipeline());
+        registrar.accept(ArmorGlint.OIT.transmittancePipeline());
+        registrar.accept(ArmorGlint.OIT.accumulatePipeline());
         for (RenderPipeline pipeline : ALL) {
             registrar.accept(pipeline);
+            if (pipeline instanceof OitPipelineOwner owner && owner.oitPipelines() != null) {
+                var stages = owner.oitPipelines();
+                registrar.accept(stages.depthBoundsPipeline());
+                registrar.accept(stages.transmittancePipeline());
+                registrar.accept(stages.accumulatePipeline());
+            }
         }
     }
 

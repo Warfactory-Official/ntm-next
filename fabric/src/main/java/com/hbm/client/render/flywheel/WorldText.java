@@ -410,6 +410,11 @@ public final class WorldText {
         }
 
         @Override
+        public VertexConsumer setUv3(float pu, float pv) {
+            return this;
+        }
+
+        @Override
         public VertexConsumer setNormal(float nx, float ny, float nz) {
             return this;
         }

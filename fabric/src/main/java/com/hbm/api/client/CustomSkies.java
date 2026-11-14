@@ -62,17 +62,14 @@ public final class CustomSkies {
         return false;
     }
 
-    public static boolean replace(SkyRenderer vanilla, boolean disc) {
+    public static boolean render(SkyRenderer vanilla, SkyRenderState state) {
         Renderer renderer = claimed;
-        SkyRenderState state = claimedState;
-        if (renderer == null || state == null || drawing) return false;
-        if (disc) {
-            drawing = true;
-            try {
-                renderer.render(vanilla, state);
-            } finally {
-                drawing = false;
-            }
+        if (renderer == null || claimedState != state || drawing) return false;
+        drawing = true;
+        try {
+            renderer.render(vanilla, state);
+        } finally {
+            drawing = false;
         }
         return true;
     }

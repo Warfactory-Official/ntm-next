@@ -53,6 +53,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.level.Level;
 
 public class GlyphidBehemothEntity extends GlyphidEntity {
@@ -125,8 +126,9 @@ public class GlyphidBehemothEntity extends GlyphidEntity {
             timer = 120;
             breathTime = 0;
         } else if (breathTime > 0) {
-            if (!((LivingEntity) this).swinging)
-                ((LivingEntity) this).swing(InteractionHand.MAIN_HAND);
+            if (!((LivingEntity) this).isSwinging())
+                ((LivingEntity) this)
+                        .swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, false);
             acidAttack();
             breathTime--;
         } else if (--timer <= 0) {

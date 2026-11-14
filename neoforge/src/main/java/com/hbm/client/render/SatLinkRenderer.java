@@ -97,18 +97,18 @@ public final class SatLinkRenderer
         Direction rot = state.facing.getCounterClockWise();
         pose.pushPose();
         pose.translate(0.5, 0, 0.5);
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(180));
         pose.translate(
                 (state.facing.getStepX() + rot.getStepX()) * 0.5,
                 0,
                 (state.facing.getStepZ() + rot.getStepZ()) * 0.5);
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.rot));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.rot));
         collector.submitCustomGeometry(
                 pose,
                 TYPE,
                 (p, buffer) -> MODEL.renderPart(p, buffer, state.lightCoords, -1, ROTOR));
         pose.translate(0, 7.375, 0);
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.lift));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.lift));
         pose.translate(0, -7.375, 0);
         collector.submitCustomGeometry(
                 pose,

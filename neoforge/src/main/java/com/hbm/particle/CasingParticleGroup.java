@@ -162,9 +162,8 @@ public class CasingParticleGroup extends ParticleGroup<CasingParticle> {
                 work.last().set(base);
                 work.translate(poses[at], poses[at + 1] + casing.meshLift(), poses[at + 2]);
                 work.scale(Casing.MESH_SCALE, Casing.MESH_SCALE, Casing.MESH_SCALE);
-                work.mulPose(
-                        (Quaternionfc) turn.rotationY((180F - poses[at + 3]) * Mth.DEG_TO_RAD));
-                work.mulPose((Quaternionfc) turn.rotationX(-poses[at + 4] * Mth.DEG_TO_RAD));
+                work.rotate((Quaternionfc) turn.rotationY((180F - poses[at + 3]) * Mth.DEG_TO_RAD));
+                work.rotate((Quaternionfc) turn.rotationX(-poses[at + 4] * Mth.DEG_TO_RAD));
                 work.scale(casing.scaleX(), casing.scaleY(), casing.scaleZ());
                 int[] ids = parts[casing.shape().ordinal()];
                 for (int part = 0; part < ids.length; part++) {

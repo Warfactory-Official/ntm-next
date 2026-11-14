@@ -213,7 +213,7 @@ public final class FluidContact<S extends Entity> {
         var from = target.position();
         var moved =
                 target instanceof LivingEntity living
-                        ? living.randomTeleport(x, y, z, false)
+                        ? living.randomTeleport(x, y, z, false, state -> false)
                         : ChemicalEntity.walkTo(level, target, x, y, z);
         if (!moved) return false;
         WorldSounds.play(

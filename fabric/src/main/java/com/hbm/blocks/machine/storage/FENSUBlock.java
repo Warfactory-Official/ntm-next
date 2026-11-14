@@ -46,7 +46,6 @@ import com.hbm.interfaces.LookOverlay;
 import com.hbm.interfaces.LookOverlayProvider;
 import com.hbm.items.ModDataComponents;
 import com.hbm.util.NumberFormatter;
-import com.mojang.serialization.MapCodec;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -57,7 +56,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -68,15 +66,8 @@ public class FENSUBlock extends MultiblockCoreBlock
                 CapabilityBlock,
                 LookOverlayProvider,
                 PersistentItemTooltipProvider {
-    public static final MapCodec<FENSUBlock> CODEC = simpleCodec(FENSUBlock::new);
-
     public FENSUBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

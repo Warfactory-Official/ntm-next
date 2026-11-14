@@ -22,6 +22,7 @@ package com.hbm.blocks.fluid;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -279,7 +280,7 @@ public abstract class FiniteFluidBlock extends Block {
         BlockState state = level.getBlockState(pos);
         if (state.isAir()) return true;
         if (state.getBlock() == this) return false;
-        return !state.blocksMotion();
+        return !state.is(BlockTags.BLOCKS_MOTION);
     }
 
     protected boolean displaceIfPossible(Level level, BlockPos pos) {

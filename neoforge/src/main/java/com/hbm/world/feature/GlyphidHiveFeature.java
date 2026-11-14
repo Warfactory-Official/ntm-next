@@ -24,6 +24,7 @@ import com.hbm.data.MobData;
 import com.hbm.entity.mob.glyphid.GlyphidEntity;
 import com.hbm.itempool.LootPile;
 import com.hbm.util.RegistryUtil;
+import com.mojang.serialization.MapCodec;
 import java.util.ArrayList;
 import java.util.Comparator;
 import net.minecraft.core.BlockPos;
@@ -33,18 +34,15 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
-public class GlyphidHiveFeature extends Feature<NoneFeatureConfiguration> {
-    public static final Identifier TEMPLATE = RegistryUtil.id("glyphid_hive/small");
+public class GlyphidHiveFeature implements Feature {
+    public static final MapCodec<GlyphidHiveFeature> CODEC = MapCodec.unit(GlyphidHiveFeature::new);
 
-    public GlyphidHiveFeature() {
-        super(NoneFeatureConfiguration.CODEC);
-    }
+    public static final Identifier TEMPLATE = RegistryUtil.id("glyphid_hive/small");
 
     private static BlockState base(int subtype) {
         return switch (subtype) {
@@ -71,13 +69,21 @@ public class GlyphidHiveFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
-        if (!MobData.ENABLE_HIVES.get()) return false;
-        if (ctx.random().nextInt(MobData.HIVE_SPAWN.get()) != 0) return false;
+    public MapCodec<GlyphidHiveFeature> codec() {
+        return CODEC;
+    }
 
-        WorldGenLevel level = ctx.level();
-        RandomSource rand = ctx.random();
-        BlockPos origin = ctx.origin();
+    @Override
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        if (!MobData.ENABLE_HIVES.get()) return false;
+        if (random.nextInt(MobData.HIVE_SPAWN.get()) != 0) return false;
+
+        RandomSource rand = random;
+        BlockPos origin = featureOrigin;
         BlockPos.MutableBlockPos check = new BlockPos.MutableBlockPos();
 
         for (int k = 3; k >= -1; k--) {
@@ -106,7 +112,7 @@ public class GlyphidHiveFeature extends Feature<NoneFeatureConfiguration> {
             boolean infected,
             boolean loot) {
         int subtype = infected ? GlyphidEntity.TYPE_INFECTED : GlyphidEntity.TYPE_NORMAL;
-        var template = level.getLevel().getStructureManager().get(TEMPLATE).orElseThrow();
+        var template = level.getLevel().getStructureTemplateManager().get(TEMPLATE).orElseThrow();
         var origin = new BlockPos(x - 5, y - 2, z - 5);
         var settings = new StructurePlaceSettings();
         var cells = new ArrayList<StructureTemplate.StructureBlockInfo>();

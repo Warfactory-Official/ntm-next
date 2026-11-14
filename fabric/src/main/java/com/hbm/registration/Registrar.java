@@ -88,25 +88,23 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.SurfaceRules;
-import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
+import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.material.condition.MaterialCondition;
+import net.minecraft.world.level.levelgen.material.rule.MaterialRule;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
-import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
 import org.jspecify.annotations.Nullable;
 
 public class Registrar {
@@ -460,31 +458,29 @@ public class Registrar {
     }
 
     public static <P extends PlacementModifier>
-            RegistryHandle<PlacementModifierType<P>> registerPlacementModifierType(
+            RegistryHandle<MapCodec<P>> registerPlacementModifierType(
                     String name, MapCodec<P> codec) {
         assertOpen("registerPlacementModifierType");
         Identifier id = RegistryUtil.resolve(name);
-        PlacementModifierType<P> type = () -> codec;
-        Registry.register(BuiltInRegistries.PLACEMENT_MODIFIER_TYPE, id, type);
-        return RegistryHandle.bound(id, type);
+        Registry.register(BuiltInRegistries.PLACEMENT_MODIFIER_TYPE, id, codec);
+        return RegistryHandle.bound(id, codec);
     }
 
     public static <P extends StructurePlacement>
-            RegistryHandle<StructurePlacementType<P>> registerStructurePlacementType(
+            RegistryHandle<MapCodec<P>> registerStructurePlacementType(
                     String name, MapCodec<P> codec) {
         assertOpen("registerStructurePlacementType");
         Identifier id = RegistryUtil.resolve(name);
-        StructurePlacementType<P> type = () -> codec;
-        Registry.register(BuiltInRegistries.STRUCTURE_PLACEMENT, id, type);
-        return RegistryHandle.bound(id, type);
+        Registry.register(BuiltInRegistries.STRUCTURE_PLACEMENT, id, codec);
+        return RegistryHandle.bound(id, codec);
     }
 
-    public static <FC extends FeatureConfiguration, F extends Feature<FC>>
-            RegistryHandle<F> registerFeature(String name, F feature) {
+    public static <F extends Feature> RegistryHandle<MapCodec<F>> registerFeature(
+            String name, MapCodec<F> codec) {
         assertOpen("registerFeature");
         Identifier id = RegistryUtil.resolve(name);
-        Registry.register(BuiltInRegistries.FEATURE, id, feature);
-        return RegistryHandle.bound(id, feature);
+        Registry.register(BuiltInRegistries.FEATURE_TYPE, id, codec);
+        return RegistryHandle.bound(id, codec);
     }
 
     public static <T extends StructureProcessor>
@@ -496,11 +492,19 @@ public class Registrar {
         return RegistryHandle.bound(id, codec);
     }
 
-    public static <T extends NumberProvider>
-            RegistryHandle<MapCodec<T>> registerLootNumberProviderType(
+    public static <T extends ContextIntProvider>
+            RegistryHandle<MapCodec<T>> registerContextIntProviderType(
                     String name, MapCodec<T> codec) {
         Identifier id = RegistryUtil.resolve(name);
-        Registry.register(BuiltInRegistries.LOOT_NUMBER_PROVIDER_TYPE, id, codec);
+        Registry.register(BuiltInRegistries.CONTEXT_INT_PROVIDER_TYPE, id, codec);
+        return RegistryHandle.bound(id, codec);
+    }
+
+    public static <T extends ContextFloatProvider>
+            RegistryHandle<MapCodec<T>> registerContextFloatProviderType(
+                    String name, MapCodec<T> codec) {
+        Identifier id = RegistryUtil.resolve(name);
+        Registry.register(BuiltInRegistries.CONTEXT_FLOAT_PROVIDER_TYPE, id, codec);
         return RegistryHandle.bound(id, codec);
     }
 
@@ -523,12 +527,12 @@ public class Registrar {
         return RegistryHandle.bound(id, codec);
     }
 
-    public static <C extends CarverConfiguration, W extends WorldCarver<C>>
-            RegistryHandle<W> registerCarver(String name, W carver) {
+    public static <W extends WorldCarver> RegistryHandle<MapCodec<W>> registerCarver(
+            String name, MapCodec<W> codec) {
         assertOpen("registerCarver");
         Identifier id = RegistryUtil.resolve(name);
-        Registry.register(BuiltInRegistries.CARVER, id, carver);
-        return RegistryHandle.bound(id, carver);
+        Registry.register(BuiltInRegistries.CARVER_TYPE, id, codec);
+        return RegistryHandle.bound(id, codec);
     }
 
     public static <T extends DensityFunction>
@@ -540,19 +544,19 @@ public class Registrar {
         return RegistryHandle.bound(id, codec);
     }
 
-    public static <T extends SurfaceRules.RuleSource>
-            RegistryHandle<MapCodec<T>> registerMaterialRule(String name, MapCodec<T> codec) {
+    public static <T extends MaterialRule> RegistryHandle<MapCodec<T>> registerMaterialRule(
+            String name, MapCodec<T> codec) {
         assertOpen("registerMaterialRule");
         Identifier id = RegistryUtil.resolve(name);
-        Registry.register(BuiltInRegistries.MATERIAL_RULE, id, codec);
+        Registry.register(BuiltInRegistries.MATERIAL_RULE_TYPE, id, codec);
         return RegistryHandle.bound(id, codec);
     }
 
-    public static <T extends SurfaceRules.ConditionSource>
+    public static <T extends MaterialCondition>
             RegistryHandle<MapCodec<T>> registerMaterialCondition(String name, MapCodec<T> codec) {
         assertOpen("registerMaterialCondition");
         Identifier id = RegistryUtil.resolve(name);
-        Registry.register(BuiltInRegistries.MATERIAL_CONDITION, id, codec);
+        Registry.register(BuiltInRegistries.MATERIAL_CONDITION_TYPE, id, codec);
         return RegistryHandle.bound(id, codec);
     }
 

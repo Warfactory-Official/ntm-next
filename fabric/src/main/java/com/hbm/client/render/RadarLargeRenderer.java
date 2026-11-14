@@ -78,8 +78,8 @@ public class RadarLargeRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(RadarRenderer.BASE_YAW));
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-s.spin));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(RadarRenderer.BASE_YAW));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(-s.spin));
 
         col.submitCustomGeometry(
                 ps, dishType, (pose, buf) -> model.renderPart(pose, buf, light, -1, DISH));

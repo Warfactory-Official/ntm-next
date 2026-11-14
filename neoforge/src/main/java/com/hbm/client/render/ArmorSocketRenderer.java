@@ -131,18 +131,16 @@ public final class ArmorSocketRenderer {
                 OverlayTexture.NO_OVERLAY,
                 null,
                 -1,
-                null,
                 outlineColor);
         if (mod.hasFoil()) {
             collector.submitModelPart(
                     JETPACK,
                     pose,
-                    RenderTypes.armorEntityGlint(),
+                    ArmorGlint.TYPE,
                     light,
                     OverlayTexture.NO_OVERLAY,
                     null,
                     -1,
-                    null,
                     outlineColor);
         }
         pose.popPose();
@@ -212,7 +210,7 @@ public final class ArmorSocketRenderer {
             int base,
             int tip) {
         pose.pushPose();
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-side * INWARD));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-side * INWARD));
         hinge(
                 pose,
                 side * ROOT_X,
@@ -238,7 +236,7 @@ public final class ArmorSocketRenderer {
 
     private static void hinge(PoseStack pose, float x, float y, float z, Quaternionf turn) {
         pose.translate(x, y, z);
-        pose.mulPose((Quaternionfc) turn);
+        pose.rotate((Quaternionfc) turn);
         pose.translate(-x, -y, -z);
     }
 

@@ -76,8 +76,8 @@ public class PileVentRenderer
             CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(0.5D, 0D, 0.5D);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(yaw(state.facing)));
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.spin));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(yaw(state.facing)));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.spin));
         collector.submitCustomGeometry(
                 poseStack,
                 VENT,

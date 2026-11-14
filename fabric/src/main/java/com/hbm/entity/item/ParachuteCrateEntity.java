@@ -32,13 +32,13 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.InterpolationHandler;
+import net.minecraft.world.entity.LinearInterpolationHandler;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class ParachuteCrateEntity extends Entity implements StoredItems, FarVisible {
-    private final InterpolationHandler interpolation = new InterpolationHandler(this);
     public List<ItemStack> items = new ArrayList<>();
 
     @Override
@@ -56,8 +56,8 @@ public class ParachuteCrateEntity extends Entity implements StoredItems, FarVisi
     protected void defineSynchedData(SynchedEntityData.Builder builder) {}
 
     @Override
-    public InterpolationHandler getInterpolation() {
-        return this.interpolation;
+    protected InterpolationHandler createInterpolationHandler() {
+        return LinearInterpolationHandler.create(this);
     }
 
     @Override
@@ -72,7 +72,6 @@ public class ParachuteCrateEntity extends Entity implements StoredItems, FarVisi
 
     @Override
     public void tick() {
-        this.interpolation.interpolate();
         super.tick();
 
         if (level().isClientSide()) return;

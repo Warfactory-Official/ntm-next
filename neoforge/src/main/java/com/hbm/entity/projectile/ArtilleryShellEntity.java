@@ -49,6 +49,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -176,7 +177,7 @@ public class ArtilleryShellEntity extends InterpolatedProjectileEntity
 
             this.getShell().onUpdate(this);
         } else {
-            Vec3 backlog = this.getInterpolation().position().subtract(this.position());
+            Vec3 backlog = this.getClientPosition().subtract(this.position());
             if (backlog.length() < 0.2) {
                 this.level()
                         .addParticle(
@@ -230,7 +231,8 @@ public class ArtilleryShellEntity extends InterpolatedProjectileEntity
     public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
 
         if (!this.level().isClientSide()) {
-            player.getInventory().placeItemBackInInventory(this.cargo.copy());
+            player.getInventory()
+                    .placeItemBackInInventory(this.cargo.copy(), Prediction.SERVER_ONLY);
             this.discard();
         }
 

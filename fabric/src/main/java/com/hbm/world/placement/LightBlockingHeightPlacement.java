@@ -20,37 +20,37 @@
 package com.hbm.world.placement;
 
 import com.hbm.registration.Registrar;
-import com.hbm.registration.RegistryHandle;
 import com.hbm.world.gen.WorldgenHeight;
 import com.mojang.serialization.MapCodec;
-import java.util.stream.Stream;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
-public final class LightBlockingHeightPlacement extends PlacementModifier {
+public final class LightBlockingHeightPlacement implements PlacementModifier {
     public static final LightBlockingHeightPlacement INSTANCE = new LightBlockingHeightPlacement();
     public static final MapCodec<LightBlockingHeightPlacement> CODEC = MapCodec.unit(INSTANCE);
-    private static RegistryHandle<PlacementModifierType<LightBlockingHeightPlacement>> type;
 
     private LightBlockingHeightPlacement() {}
 
     public static void register() {
-        type = Registrar.registerPlacementModifierType("light_blocking_height", CODEC);
+        Registrar.registerPlacementModifierType("light_blocking_height", CODEC);
     }
 
     @Override
-    public Stream<BlockPos> getPositions(
-            PlacementContext context, RandomSource random, BlockPos origin) {
+    public void modify(
+            PlacementContext context,
+            RandomSource random,
+            BlockPos origin,
+            Consumer<BlockPos> output) {
         int x = origin.getX(), z = origin.getZ();
         int height = WorldgenHeight.lightBlocking(context.getLevel(), x, z);
-        return height > context.getMinY() ? Stream.of(new BlockPos(x, height, z)) : Stream.empty();
+        if (height > context.getMinY()) output.accept(new BlockPos(x, height, z));
     }
 
     @Override
-    public PlacementModifierType<?> type() {
-        return type.get();
+    public MapCodec<LightBlockingHeightPlacement> codec() {
+        return CODEC;
     }
 }

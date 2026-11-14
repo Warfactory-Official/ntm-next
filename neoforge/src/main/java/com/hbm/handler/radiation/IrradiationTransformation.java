@@ -26,9 +26,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 
@@ -45,8 +44,7 @@ public record IrradiationTransformation(
                             RecordCodecBuilder.<IrradiationTransformation>mapCodec(
                                     i ->
                                             i.group(
-                                                            RegistryCodecs
-                                                                    .<EntityType<?>>homogeneousList(
+                                                            RegistryCodecs.<EntityType<?>>holderSet(
                                                                             (ResourceKey<
                                                                                             ? extends
                                                                                                     Registry<
@@ -63,17 +61,14 @@ public record IrradiationTransformation(
                                                                     .forGetter(
                                                                             IrradiationTransformation
                                                                                     ::minimumDose),
-                                                            ((Codec<Holder<EntityType<?>>>)
-                                                                            RegistryFixedCodec
-                                                                                    .<EntityType<?>>
-                                                                                            create(
-                                                                                                    (ResourceKey<
-                                                                                                                    ? extends
-                                                                                                                            Registry<
-                                                                                                                                    EntityType<
-                                                                                                                                            ?>>>)
-                                                                                                            Registries
-                                                                                                                    .ENTITY_TYPE))
+                                                            RegistryCodecs.<EntityType<?>>holder(
+                                                                            (ResourceKey<
+                                                                                            ? extends
+                                                                                                    Registry<
+                                                                                                            EntityType<
+                                                                                                                    ?>>>)
+                                                                                    Registries
+                                                                                            .ENTITY_TYPE)
                                                                     .fieldOf("result")
                                                                     .forGetter(
                                                                             IrradiationTransformation

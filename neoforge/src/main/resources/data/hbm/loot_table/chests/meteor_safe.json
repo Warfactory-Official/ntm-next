@@ -15,19 +15,17 @@
                   "children": [
                     {
                       "type": "minecraft:item",
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 0
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 1,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 0
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 1,
+                          "min": 0
                         }
-                      ],
+                      },
                       "name": "hbm:book_of_",
                       "weight": 1
                     },
@@ -37,38 +35,34 @@
                       "weight": 1
                     }
                   ],
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 1
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 3,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 1
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 3,
+                      "min": 0
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "minecraft:alternatives",
                   "children": [
                     {
                       "type": "minecraft:item",
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 0
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 1,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 0
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 1,
+                          "min": 0
                         }
-                      ],
+                      },
                       "name": "hbm:stamp_book_printing2",
                       "weight": 1
                     },
@@ -80,19 +74,17 @@
                   ]
                 }
               ],
-              "conditions": [
-                {
-                  "condition": "minecraft:value_check",
-                  "range": {
-                    "max": 3
-                  },
-                  "value": {
-                    "type": "minecraft:uniform",
-                    "max": 8,
-                    "min": 0
-                  }
+              "condition": {
+                "type": "minecraft:int_value_check",
+                "test": {
+                  "max": 3
+                },
+                "value": {
+                  "type": "minecraft:uniform",
+                  "max": 8,
+                  "min": 0
                 }
-              ]
+              }
             },
             {
               "type": "minecraft:alternatives",
@@ -102,19 +94,17 @@
                   "children": [
                     {
                       "type": "minecraft:item",
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 0
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 1,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 0
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 1,
+                          "min": 0
                         }
-                      ],
+                      },
                       "name": "hbm:stamp_book_printing4",
                       "weight": 1
                     },
@@ -124,38 +114,34 @@
                       "weight": 1
                     }
                   ],
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 1
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 4,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 1
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 4,
+                      "min": 0
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "minecraft:alternatives",
                   "children": [
                     {
                       "type": "minecraft:item",
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 0
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 2,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 0
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 2,
+                          "min": 0
                         }
-                      ],
+                      },
                       "name": "hbm:stamp_book_printing6",
                       "weight": 1
                     },
@@ -164,19 +150,17 @@
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 0
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 1,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 0
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 1,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:stamp_book_printing7",
                           "weight": 1
                         },

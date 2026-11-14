@@ -3,31 +3,34 @@
   "pools": [
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:survives_explosion"
+          }
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "max": 6,
                 "min": 3
-              },
-              "function": "minecraft:set_count"
+              }
             },
             {
+              "type": "minecraft:set_components",
               "components": {
                 "hbm:scrap": {
                   "amount": 72,
                   "material": 30
                 }
-              },
-              "function": "minecraft:set_components"
+              }
             }
           ],
           "name": "hbm:scraps"

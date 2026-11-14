@@ -116,7 +116,7 @@ public class ThresherRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         ps.pushPose();
         ps.translate(0.0, s.engine * 0.01, 0.0);
@@ -124,25 +124,25 @@ public class ThresherRenderer
         ps.popPose();
 
         ps.translate(0.0, 0.5, -1.0);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(s.armAngle));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(s.armAngle));
         ps.translate(0.0, -0.5, 1.0);
         part(col, ps, light, ARM_UPPER);
 
         ps.translate(0.0, 0.5, -5.0);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(s.armAngle * -2F));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(s.armAngle * -2F));
         ps.translate(0.0, -0.5, 5.0);
         ps.translate(-0.01, 0.0, 0.0);
         part(col, ps, light, ARM_LOWER);
         ps.translate(0.01, 0.0, 0.0);
 
         ps.translate(0.0, 0.5, -9.0);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(s.armAngle));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(s.armAngle));
         ps.translate(0.0, -0.5, 9.0);
         ps.translate(0.01, 0.0, 0.0);
         part(col, ps, light, FRONT);
 
         ps.translate(0.0, 0.5, -11.0);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-s.spin));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(-s.spin));
         ps.translate(0.0, -0.5, 11.0);
         part(col, ps, light, WHEEL);
 

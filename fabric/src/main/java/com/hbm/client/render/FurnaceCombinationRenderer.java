@@ -22,15 +22,15 @@ package com.hbm.client.render;
 import com.hbm.blockentity.machine.thermal.CombinationFurnaceBlockEntity;
 import com.hbm.render.util.Vertices;
 import com.hbm.util.RegistryUtil;
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.DepthStencilState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.DepthStencilState;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import net.minecraft.client.renderer.BindGroupLayouts;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -126,7 +126,7 @@ public class FurnaceCombinationRenderer
 
         ps.pushPose();
         ps.translate(0.5, 1.75, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-camera.yRot));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(-camera.yRot));
 
         final float scaleH = 1F, scaleV = 3F;
         col.submitCustomGeometry(

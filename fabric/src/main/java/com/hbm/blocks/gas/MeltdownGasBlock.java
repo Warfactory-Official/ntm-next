@@ -44,7 +44,6 @@ import com.hbm.util.ArmorRegistry;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.ContaminationUtil;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -58,15 +57,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class MeltdownGasBlock extends GasBlock {
-    public static final MapCodec<MeltdownGasBlock> CODEC = simpleCodec(MeltdownGasBlock::new);
-
     public MeltdownGasBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends MeltdownGasBlock> codec() {
-        return CODEC;
     }
 
     @Override

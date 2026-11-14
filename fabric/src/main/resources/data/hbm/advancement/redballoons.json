@@ -3,7 +3,7 @@
   "criteria": {
     "crafted_hbm_mp_warhead_15_boxcar": {
       "conditions": {
-        "recipe_id": "hbm:mp_warhead_15_boxcar"
+        "recipes": "hbm:mp_warhead_15_boxcar"
       },
       "trigger": "minecraft:recipe_crafted"
     },

@@ -1,17 +1,18 @@
 #version 330
+#extension GL_ARB_separate_shader_objects : require
 
-#moj_import <minecraft:dynamictransforms.glsl>
-#moj_import <minecraft:projection.glsl>
-#moj_import <minecraft:globals.glsl>
-#moj_import <minecraft:sample_lightmap.glsl>
+#include <minecraft:dynamictransforms.glsl>
+#include <minecraft:projection.glsl>
+#include <minecraft:globals.glsl>
+#include <minecraft:sample_lightmap.glsl>
 
-in vec3 Position;
-in vec3 OtherPosition;
-in vec4 Color;
-in vec4 OtherColor;
-in vec2 Widths;
-in vec2 UV0;
-in ivec2 UV2;
+layout(location = 0) in vec3 Position;
+layout(location = 1) in vec3 OtherPosition;
+layout(location = 2) in vec4 Color;
+layout(location = 3) in vec4 OtherColor;
+layout(location = 4) in vec2 Widths;
+layout(location = 5) in vec2 UV0;
+layout(location = 6) in ivec2 UV2;
 
 #ifndef EMISSIVE
 uniform sampler2D Sampler2;
@@ -28,7 +29,8 @@ uniform sampler2D Sampler2;
 #define NTM_RIBBON_PROJECTION ProjMat
 #define NTM_RIBBON_SCREEN ScreenSize
 #define NTM_RIBBON_VANILLA
-#moj_import <hbm:tracer_ribbon_vertex.glsl>
+#define NTM_RIBBON_LAYOUT(slot) layout(location = slot)
+#include <hbm:tracer_ribbon_vertex.glsl>
 
 void main() {
     hbmRibbonVertex();

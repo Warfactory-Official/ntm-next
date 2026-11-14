@@ -47,6 +47,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -86,7 +87,7 @@ public class AmmoContainerItem extends Item {
                     ModItems.AMMO_STANDARD.stack(
                             (GunFactory.EnumAmmo) gun.defaultAmmoType, gun.defaultAmmoAmount);
             if (constrained) ammo.setCount((int) Math.ceil(ammo.getCount() / 2.0D));
-            player.getInventory().placeItemBackInInventory(ammo);
+            player.getInventory().placeItemBackInInventory(ammo, Prediction.SERVER_ONLY);
         }
 
         EntitySounds.play(

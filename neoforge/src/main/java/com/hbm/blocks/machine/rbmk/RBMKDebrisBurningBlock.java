@@ -37,7 +37,6 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.layout.RbmkFlameLayout;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -50,9 +49,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RBMKDebrisBurningBlock extends Block {
-    public static final MapCodec<RBMKDebrisBurningBlock> CODEC =
-            simpleCodec(RBMKDebrisBurningBlock::new);
-
     protected static final int FLAME_CHANCE = 5;
     protected static final int FLAME_MAX_AGE = 300;
     protected static final int FLAME_RANGE = 75;
@@ -64,11 +60,6 @@ public class RBMKDebrisBurningBlock extends Block {
 
     public RBMKDebrisBurningBlock(BlockBehaviour.Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     protected int tickRate(RandomSource rand) {

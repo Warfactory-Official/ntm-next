@@ -152,10 +152,13 @@ public class ItemPool {
                             throw new IllegalStateException("unsupported direct-pool entry " + row);
                 };
         DataComponentPatch patch = DataComponentPatch.EMPTY;
-        if (row.has("functions")) {
-            for (JsonElement element : row.getAsJsonArray("functions")) {
+        if (row.has("modifier")) {
+            JsonElement modifier = row.get("modifier");
+            Iterable<JsonElement> functions =
+                    modifier.isJsonArray() ? modifier.getAsJsonArray() : List.of(modifier);
+            for (JsonElement element : functions) {
                 JsonObject function = element.getAsJsonObject();
-                switch (function.get("function").getAsString()) {
+                switch (function.get("type").getAsString()) {
                     case "minecraft:set_components" ->
                             patch =
                                     DataComponentPatch.CODEC

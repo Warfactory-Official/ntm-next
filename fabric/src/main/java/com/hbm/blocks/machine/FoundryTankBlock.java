@@ -27,6 +27,7 @@ import com.hbm.items.machine.ScrapsItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -93,7 +94,7 @@ public class FoundryTankBlock extends Block implements TickingEntityBlock {
 
         if (be.amount > 0 && be.type != null) {
             ItemStack scrap = ScrapsItem.create(new MaterialStack(be.type, be.amount));
-            player.getInventory().placeItemBackInInventory(scrap);
+            player.getInventory().placeItemBackInInventory(scrap, Prediction.SERVER_ONLY);
             be.hbm$syncSet$FoundryBaseBlockEntity$amount(0);
             be.hbm$syncSet$FoundryBaseBlockEntity$type(null);
             be.setChanged();

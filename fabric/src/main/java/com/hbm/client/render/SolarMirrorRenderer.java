@@ -93,8 +93,8 @@ public class SolarMirrorRenderer
         ps.translate(0.5, 0.0, 0.5);
         ps.translate(0.0, 1.0, 0.0);
         if (s.aimed) {
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
-            ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(s.pitch));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+            ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees(s.pitch));
         }
         ps.translate(0.0, -1.0, 0.0);
         col.submitCustomGeometry(

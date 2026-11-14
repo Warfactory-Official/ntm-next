@@ -147,13 +147,15 @@ public class MixinLevelExtractor {
                     @At(
                             value = "INVOKE",
                             target =
-                                    "Lnet/minecraft/client/renderer/LevelRenderer;isSectionCompiledAndVisible(Lnet/minecraft/core/BlockPos;)Z"))
+                                    "Lnet/minecraft/client/renderer/LevelRenderer;isSectionCompiledAndVisible(Lnet/minecraft/core/BlockPos;J)Z"))
     private boolean hbm$unculledEntity(
             LevelRenderer renderer,
             BlockPos pos,
+            long chunkFadeDuration,
             Operation<Boolean> original,
             @Local(argsOnly = true) Entity entity) {
-        if (original.call(renderer, pos) || entity instanceof FarVisible) return true;
+        if (original.call(renderer, pos, chunkFadeDuration) || entity instanceof FarVisible)
+            return true;
         return NuclearTech.MOD_ID.equals(
                         BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getNamespace())
                 && !((com.hbm.client.render.CullableRenderer)

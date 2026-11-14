@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.machine;
 
-import com.mojang.serialization.MapCodec;
 import java.util.Locale;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
@@ -31,17 +30,10 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.block.Block;
 
 public class HadronCoilBlock extends Block {
-    public static final MapCodec<HadronCoilBlock> CODEC = simpleCodec(HadronCoilBlock::new);
-
     private static final int FACTOR = 10;
 
     public HadronCoilBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     public static class CoilItem extends BlockItem {

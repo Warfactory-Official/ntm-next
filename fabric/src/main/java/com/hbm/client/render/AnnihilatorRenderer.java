@@ -95,11 +95,11 @@ public class AnnihilatorRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(s.facing)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(s.facing)));
 
         ps.pushPose();
         ps.translate(0.0, 1.75, 0.0);
-        ps.mulPose((Quaternionfc) Axis.ZN.rotationDegrees(s.rollerAngle));
+        ps.rotate((Quaternionfc) Axis.ZN.rotationDegrees(s.rollerAngle));
         ps.translate(0.0, -1.75, 0.0);
         col.submitCustomGeometry(
                 ps, bodyType, (pose, buffer) -> model.renderPart(pose, buffer, light, -1, ROLLER));

@@ -65,14 +65,15 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
-import net.fabricmc.fabric.api.registry.FuelValueEvents;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.fabricmc.fabric.api.resource.v1.DataResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
@@ -176,12 +177,20 @@ public final class NuclearTechFabric implements ModInitializer {
         LootTableEvents.MODIFY_DROPS.register(
                 (holder, context, drops) -> {
                     if (!ContagionUtil.isContagious(
-                            context.getOptionalParameter(LootContextParams.THIS_ENTITY))) return;
+                            context.getOptional(LootContextParams.THIS_ENTITY))) return;
                     for (ItemStack drop : drops) ContagionUtil.taint(drop);
                 });
 
-        FuelValueEvents.BUILD.register(
-                (builder, context) -> FuelHandler.forEachUniformFuel(builder::add));
+        DefaultItemComponentEvents.MODIFY.register(
+                context ->
+                        FuelHandler.forEachUniformFuel(
+                                (item, ticks) ->
+                                        context.modify(
+                                                item.asItem(),
+                                                builder ->
+                                                        builder.set(
+                                                                DataComponents.COOKING_FUEL,
+                                                                FuelHandler.cookingFuel(item)))));
 
         ResourceConditions.register(FlagResourceCondition.TYPE);
 
